@@ -1107,4 +1107,85 @@
           html += `<span class="player-cls">${player.cls}</span>`;
           html += `</div>`;
           html += `<div class="player-victories">`;
-          html += `<span c
+          html += `<span class="vic-count">${player.vic}/3</span>`;
+          html += createVictoryDots(player.vic);
+          html += `</div>`;
+          html += `</div>`;
+        });
+        html += `</div>`;
+      }
+      html += `</div>`;
+
+      return html;
+    }
+
+    function toggleCard(header) {
+      header.closest('.team-card').classList.toggle('expanded');
+    }
+
+    function poolAvgTeamPts(teams) {
+      const valid = teams.filter(t => t.players && t.players.length > 0);
+      if (valid.length === 0) return 0;
+      return Math.round(valid.reduce((s, t) => s + teamPoints(t), 0) / valid.length);
+    }
+
+    function render(teamKey) {
+      const pool = DATA[teamKey];
+      const teams = sortTeams(pool.teams);
+      const acbbTeam = teams.find(t => t.acbb);
+      const acbbPoints = acbbTeam ? teamPoints(acbbTeam) : 0;
+      const avgCls = poolAvg(pool.teams);
+      const avgTeamPts = poolAvgTeamPts(pool.teams);
+
+      let html = `<div class="pool-info">`;
+      html += `<div class="pool-info-top">`;
+      html += `<div>`;
+      html += `<div class="pool-name">${pool.pool}</div>`;
+      html += `<div class="pool-date">${pool.date}</div>`;
+      html += `</div>`;
+      html += `<span class="level-badge ${pool.levelClass}">${pool.level}</span>`;
+      html += `</div>`;
+      html += `<div class="pool-stats">`;
+      html += `<div class="pool-stat">`;
+      html += `<div class="pool-stat-value">${avgCls}</div>`;
+      html += `<div class="pool-stat-label">Moy. joueur</div>`;
+      html += `</div>`;
+      html += `<div class="pool-stat">`;
+      html += `<div class="pool-stat-value">${avgTeamPts}</div>`;
+      html += `<div class="pool-stat-label">Moy. équipe</div>`;
+      html += `</div>`;
+      html += `</div>`;
+      html += `</div>`;
+
+      teams.forEach((team, i) => {
+        const isExpanded = !!team.acbb;
+        html += renderTeamCard(team, acbbPoints, avgCls, isExpanded, i);
+      });
+
+      document.getElementById('poolInfo').innerHTML = '';
+      document.getElementById('content').innerHTML = html;
+    }
+
+    function initTeamSelector() {
+      const pills = document.getElementById('teamPills');
+      const keys = Object.keys(DATA);
+      keys.forEach(key => {
+        const pill = document.createElement('button');
+        pill.className = 'team-pill' + (key === 'M3' ? ' active' : '');
+        pill.textContent = key;
+        pill.addEventListener('click', () => {
+          document.querySelectorAll('.team-pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          render(key);
+        });
+        pills.appendChild(pill);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTeamSelector();
+      render('M3');
+    });
+  </script>
+</body>
+</html>
