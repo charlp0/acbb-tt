@@ -1,1 +1,976 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACBB TT - Championnat par Équipe v2</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --blue: #2d5aa0;
+      --blue-dark: #1a3a6b;
+      --blue-light: #e8f0f8;
+      --blue-lighter: #f0f5fb;
+      --orange: #f97316;
+      --green: #22c55e;
+      --red: #ef4444;
+      --gray: #6b7280;
+      --gray-light: #f3f4f6;
+      --gray-dark: #374151;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #ffffff;
+      color: #1f2937;
+      line-height: 1.5;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 100%);
+      color: white;
+      padding: 20px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .header p {
+      font-size: 14px;
+      opacity: 0.95;
+      font-weight: 500;
+    }
+    
+    /* Team Selector Sticky */
+    .team-selector {
+      position: sticky;
+      top: 74px;
+      z-index: 99;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding: 0;
+    }
+    
+    .team-pills {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      min-width: max-content;
+    }
+    
+    .team-pill {
+      padding: 8px 16px;
+      border-radius: 20px;
+      background-color: var(--gray-light);
+      border: 2px solid #e5e7eb;
+      color: var(--gray-dark);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    
+    .team-pill:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    
+    .team-pill.active {
+      background-color: var(--blue);
+      border-color: var(--blue);
+      color: white;
+    }
+    
+    /* Pool Info Bar */
+    .pool-info {
+      background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+      padding: 16px;
+      border-bottom: 2px solid var(--blue);
+      margin: 0 0 12px 0;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .pool-info-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .pool-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--blue-dark);
+    }
+
+    .pool-date {
+      font-size: 12px;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    .pool-stats {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #dde3ea;
+    }
+
+    .pool-stat {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      text-align: center;
+      flex: 1;
+    }
+
+    .pool-stat-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--blue-dark);
+    }
+
+    .pool-stat-label {
+      font-size: 10px;
+      color: var(--gray);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    
+    .level-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    
+    .level-regional {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+    
+    .level-prereg {
+      background-color: #fecaca;
+      color: #991b1b;
+    }
+    
+    .level-d1 {
+      background-color: #c7d2fe;
+      color: #3730a3;
+    }
+    
+    .level-d2 {
+      background-color: #d1d5db;
+      color: #374151;
+    }
+
+    .level-nat2 {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .level-pn {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .level-r1 {
+      background-color: #bae6fd;
+      color: #0c4a6e;
+    }
+
+    
+    
+    /* Team Card */
+    .team-card {
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      margin: 0 16px 12px 16px;
+      background-color: white;
+      overflow: hidden;
+    }
+    
+    .team-card.acbb {
+      border-color: var(--blue);
+    }
+    
+    .team-header {
+      padding: 12px 16px;
+      background-color: #f9fafb;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .team-card.acbb .team-header {
+      background-color: var(--blue-light);
+    }
+    
+    .team-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .team-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1f2937;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .acbb-badge {
+      display: inline-block;
+      background-color: var(--blue);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+    }
+    
+    .journee-badge {
+      display: inline-block;
+      background-color: var(--gray-dark);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      min-width: 28px;
+      text-align: center;
+    }
+    
+    .domext-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+    }
+    
+    .domext-tag.dom {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+    
+    .domext-tag.ext {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+    
+    .team-stats {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .stat {
+      text-align: center;
+      min-width: 40px;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--gray);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .stat-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      line-height: 1.2;
+    }
+    
+    .stat-value.points-high {
+      color: var(--orange);
+    }
+    
+    .toggle-icon {
+      font-size: 20px;
+      color: var(--gray);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+    
+    .team-card.expanded .toggle-icon {
+      transform: rotate(180deg);
+    }
+    
+    /* Team Details */
+    .team-details {
+      display: none;
+      border-top: 1px solid #e5e7eb;
+      padding: 12px 16px;
+      background-color: #fafafa;
+    }
+    
+    .team-card.expanded .team-details {
+      display: block;
+    }
+    
+    .na-message {
+      padding: 16px;
+      text-align: center;
+      color: var(--gray);
+      font-size: 14px;
+      font-style: italic;
+    }
+    
+    .player-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 13px;
+    }
+    
+    .player-row:last-child {
+      border-bottom: none;
+    }
+    
+    .player-name {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .player-name-text {
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .player-cls {
+      font-size: 12px;
+      color: var(--gray);
+      font-weight: 500;
+    }
+
+    .player-victories {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .vic-count {
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 16px;
+      text-align: center;
+    }
+    
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    
+    .dot.win {
+      background-color: var(--green);
+    }
+    
+    .dot.loss {
+      background-color: var(--red);
+    }
+    
+    /* Legend */
+    .legend {
+      padding: 16px;
+      background-color: var(--gray-light);
+      border-top: 1px solid #e5e7eb;
+      font-size: 12px;
+      color: var(--gray-dark);
+      margin-top: 20px;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .legend-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .legend-icon {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    
+    /* Content Section */
+    .content {
+      display: none;
+      padding-bottom: 20px;
+    }
+    
+    .content.active {
+      display: block;
+    }
+    
+    /* Empty state */
+    .empty-state {
+      padding: 40px 16px;
+      text-align: center;
+      color: var(--gray);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>ACBB TT - Championnat par Equipe</h1>
+      <p>Phase 2 - J1 - Saison 2025/2026</p>
+    </div>
+    
+    <!-- Team Selector -->
+    <div class="team-selector">
+      <div class="team-pills" id="teamPills"></div>
+    </div>
+    
+    <!-- Pool Info Bar -->
+    <div class="pool-info" id="poolInfo"></div>
+    
+    <!-- Content Areas -->
+    <div id="content"></div>
+    
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-icon" style="background-color: var(--green);"></div>
+        <span>Victoire</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-icon" style="background-color: var(--red);"></div>
+        <span>Défaite</span>
+      </div>
+      <div class="legend-item">
+        <span style="color: var(--orange); font-weight: 700;">◆ Points</span>
+        <span>= adversaire plus fort</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+                                        const DATA = {
+      "F1": {
+        pool: "L08_PN Poule 2", level: "Pré-Nationale", levelClass: "level-pn", date: "7 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLANCOURT 1",acbb:true,players:[{nom:"MERIC",prenom:"Marion",cls:1183,vic:3},{nom:"LESPINASSE",prenom:"Joanne",cls:970,vic:1},{nom:"LESCAUDRON",prenom:"Noemie",cls:1085,vic:2},{nom:"SAVAN",prenom:"Vuthny",cls:960,vic:1}],doubles:1},
+          {name:"SQY PING 2",journee:1,domext:"Dom",players:[{nom:"BESSETTE",prenom:"Aurore",cls:957,vic:1},{nom:"MULLIEZ",prenom:"Albane",cls:773,vic:0},{nom:"MOINGEON",prenom:"Claire",cls:1143,vic:2},{nom:"CHIRI",prenom:"Bissan",cls:1148,vic:2}],doubles:1},
+          {name:"JUMP 1",journee:2,domext:"Ext",players:[{nom:"BELINSKI",prenom:"Anna",cls:556,vic:0},{nom:"CHAMPEIL-DESPLATS",prenom:"Veronique",cls:797,vic:1},{nom:"LYTRAS",prenom:"Hélène",cls:527,vic:0},{nom:"FLABBEE",prenom:"Liliane",cls:518,vic:0}],doubles:0},
+          {name:"CORBEIL-ESSONNES 1",journee:3,domext:"Dom",players:[{nom:"BENAHMED",prenom:"Yasmine",cls:936,vic:3},{nom:"ANUSHAN",prenom:"Angelique",cls:1059,vic:3},{nom:"ANUSHAN",prenom:"Amandine",cls:1177,vic:3},{nom:"LEFEVRE",prenom:"Tessa",cls:1076,vic:2}],doubles:2},
+          {name:"CHATENAY ASVTT 1",journee:4,domext:"Ext",players:[{nom:"LEFORT",prenom:"Emmanuelle",cls:1023,vic:0},{nom:"ZHOU",prenom:"Jie",cls:966,vic:0},{nom:"SCHWITZGABEL",prenom:"Lara",cls:1072,vic:1},{nom:"HELLEGOUARCH",prenom:"Helene",cls:828,vic:0}],doubles:0},
+          {name:"FONTENAY USTT 3",journee:5,domext:"Dom",players:[{nom:"MOND",prenom:"Amelie",cls:930,vic:3},{nom:"REY",prenom:"Valentine",cls:1224,vic:3},{nom:"CHARTIER",prenom:"Aurelia",cls:793,vic:3},{nom:"VALVASORI",prenom:"Charlotte",cls:823,vic:2}],doubles:2},
+          {name:"PALAISEAU US 1",journee:6,domext:"Dom",players:[{nom:"LEBOURGEOIS",prenom:"Aliénor",cls:1192,vic:3},{nom:"AUGIER",prenom:"Elisa",cls:1038,vic:0},{nom:"VINCENT",prenom:"Lilou",cls:950,vic:1},{nom:"COULAIS NOZUE",prenom:"Yuzuki",cls:921,vic:0}],doubles:1},
+          {name:"LEVALLOIS SPORT 2",journee:7,domext:"Ext",players:[{nom:"ROBINI",prenom:"Ines",cls:1315,vic:2},{nom:"CHAMBON",prenom:"Amelie",cls:1135,vic:2},{nom:"GREMILLON-BACHELET",prenom:"Lilou",cls:1042,vic:1},{nom:"THEPSUWAN",prenom:"Kritsornsawan",cls:1181,vic:3}],doubles:1}
+        ]
+      },
+      "F2": {
+        pool: "L08_R1 Poule 3", level: "Régional 1", levelClass: "level-r1", date: "7 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLANCOURT 2",acbb:true,players:[{nom:"LENNON",prenom:"Clémence",cls:879,vic:1},{nom:"DEBBARH",prenom:"Rita",cls:687,vic:0},{nom:"BATT",prenom:"Maylis",cls:792,vic:2},{nom:"LEVIONNOIS",prenom:"Alexia",cls:618,vic:0}],doubles:0},
+          {name:"JUMP 2",journee:1,domext:"Dom",players:[{nom:"CHEN",prenom:"Mengmeng",cls:1234,vic:3},{nom:"DUJARRIER",prenom:"Lou",cls:877,vic:3},{nom:"BLEUZE",prenom:"Carole",cls:885,vic:1},{nom:"DESCAMPS",prenom:"Flora",cls:742,vic:2}],doubles:2},
+          {name:"VITRY ES 1",journee:2,domext:"Ext",players:[{nom:"CHEN FENG",prenom:"Lollia",cls:1088,vic:3},{nom:"CHEN FENG",prenom:"Loanna",cls:877,vic:3},{nom:"GOUIN",prenom:"Isabelle",cls:632,vic:2},{nom:"BONNEFOY-GRAILLOT",prenom:"Maryse",cls:869,vic:3}],doubles:1},
+          {name:"PALAISEAU US 2",journee:3,domext:"Dom",players:[{nom:"LEBOURGEOIS",prenom:"Lea",cls:754,vic:1},{nom:"ANDRIEUX",prenom:"Laora",cls:591,vic:0},{nom:"ANDRIEUX",prenom:"Leelouane",cls:656,vic:0},{nom:"POINSOT",prenom:"Loise",cls:500,vic:0}],doubles:1},
+          {name:"MONTROUGE SM 1",journee:4,domext:"Dom",players:[{nom:"BITBOL",prenom:"Kelly",cls:907,vic:0},{nom:"BLONDEAU",prenom:"Perrine",cls:763,vic:0},{nom:"LAIDAOUI",prenom:"Thiziri",cls:751,vic:0},{nom:"HOURI",prenom:"Nathalie",cls:578,vic:0}],doubles:1},
+          {name:"ATT XV 1",journee:5,domext:"Ext",players:[{nom:"LESCAUDRON",prenom:"Florence",cls:847,vic:1},{nom:"ANGEBAULT",prenom:"Mathilde",cls:553,vic:1},{nom:"BRADELLE",prenom:"Anne",cls:573,vic:0},{nom:"BURGARD-LOTZ",prenom:"Laurine",cls:612,vic:1}],doubles:1},
+          {name:"ANTONY SPORT TT 2",journee:6,domext:"Dom",players:[{nom:"BARTHELEMY",prenom:"Lou Mai",cls:860,vic:3},{nom:"DOUCHET",prenom:"Anabelle",cls:890,vic:3},{nom:"AUGOUVERNAIRE",prenom:"Keity",cls:968,vic:3},{nom:"AHMAD AL HADDAD",prenom:"Maryam",cls:513,vic:3}],doubles:1},
+          {name:"BOURGETIN CTT 2",journee:7,domext:"Ext",players:[{nom:"BACCOUCHE",prenom:"Zeineb",cls:962,vic:3},{nom:"POURLIER",prenom:"Gwendoline",cls:1037,vic:2},{nom:"NGUYEN",prenom:"Afrah",cls:983,vic:3},{nom:"BACCOUCHE",prenom:"Tesnyme",cls:591,vic:1}],doubles:1}
+        ]
+      },
+      "F3": {
+        pool: "D92 Pré-Régionale Poule 1", level: "Pré-Régional", levelClass: "level-prereg", date: "7 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 3",acbb:true,players:[{nom:"MIKAMI",prenom:"Monique",cls:528,vic:0},{nom:"DE ROLLAND",prenom:"Marie-Laure",cls:500,vic:0},{nom:"MOREL",prenom:"Leonie",cls:500,vic:1},{nom:"BLEGER",prenom:"Vanessa",cls:500,vic:0}],doubles:0},
+          {name:"RUEIL ATHLETIC 3",journee:1,domext:"Dom",players:[{nom:"GUERRAULT",prenom:"Anne",cls:500,vic:2},{nom:"TISSERAND",prenom:"Hermine",cls:690,vic:3},{nom:"WINNE",prenom:"Laetitia",cls:722,vic:3},{nom:"MASSON",prenom:"Lucile",cls:681,vic:3}],doubles:2},
+          {name:"TTMC CHATILLON",journee:3,domext:"Dom",na:true,players:[],doubles:0},
+          {name:"COURBEVOIE STT 4",journee:4,domext:"Dom",players:[{nom:"HECHT",prenom:"Mathilde",cls:908,vic:3},{nom:"IZAC",prenom:"Prisca-Victoire",cls:657,vic:3},{nom:"POMMAT-PERRON",prenom:"Lola",cls:943,vic:3},{nom:"LOUNAS",prenom:"Yanelle",cls:711,vic:3}],doubles:2},
+          {name:"BOIS COLOMBES S 2",journee:5,domext:"Ext",players:[{nom:"YVERNAY",prenom:"Mélanie",cls:675,vic:2},{nom:"THOLLON PAYO",prenom:"Athénais",cls:650,vic:3},{nom:"VILLATTE",prenom:"Gaëlle",cls:601,vic:2},{nom:"WATZKO",prenom:"Irina",cls:680,vic:3}],doubles:2},
+          {name:"NANTERRE ES (1)",journee:6,domext:"Dom",players:[{nom:"RANDRIANATOAVINA",prenom:"Judith",cls:500,vic:0},{nom:"DEMAY",prenom:"Laurence",cls:519,vic:0},{nom:"VU THAN",prenom:"Elisabeth",cls:502,vic:0},{nom:"FOUQUET",prenom:"Sylvie",cls:500,vic:0}],doubles:0},
+          {name:"CLAMART CSM 1",journee:7,domext:"Ext",players:[{nom:"ESTRUCH",prenom:"Lauren",cls:516,vic:0},{nom:"N'CIR",prenom:"Magali",cls:500,vic:0},{nom:"HERROUIN",prenom:"Lena",cls:738,vic:2},{nom:"PARUL",prenom:"Hanna",cls:500,vic:0}],doubles:0}
+        ]
+      },
+      "M2": {
+        pool: "FED_Nationale 2 Poule 3", level: "Nationale 2", levelClass: "level-nat2", date: "7 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLANCOURT AC 2",acbb:true,players:[{nom:"DUCOIN",prenom:"Prattana",cls:"N315",vic:2},{nom:"WANG",prenom:"Chen",cls:"N215",vic:2},{nom:"REUSEAU",prenom:"Louis",cls:"N198",vic:2},{nom:"PIRES",prenom:"Theo",cls:"N540",vic:1}],doubles:1},
+          {name:"SAINT EGREVE USTT 1",journee:1,domext:"Ext",players:[{nom:"VEPA",prenom:"Chaitanya",cls:"N302",vic:0},{nom:"RICO",prenom:"Tom",cls:"N604",vic:0},{nom:"DIAMUANGANA",prenom:"Djo",cls:"N319",vic:1},{nom:"BUGLIERY",prenom:"Quentin",cls:"N911",vic:0}],doubles:1},
+          {name:"ANTIBES OJLP 1",journee:2,domext:"Dom",players:[{nom:"BLOT",prenom:"Martin",cls:"N328",vic:3},{nom:"MESTRE",prenom:"Jeremy",cls:"N686",vic:1},{nom:"MASIP",prenom:"Joan",cls:"N170",vic:3},{nom:"BATTAGLIA",prenom:"Maxim",cls:"N702",vic:1}],doubles:1},
+          {name:"ASPTT ALBI 1",journee:3,domext:"Ext",players:[{nom:"MLINARIC",prenom:"Bastien",cls:1860,vic:0},{nom:"DELPECH",prenom:"Louis",cls:"N929",vic:2},{nom:"CABANEL",prenom:"Samuel",cls:"N256",vic:2},{nom:"MIGLIORE",prenom:"Chryss",cls:"N463",vic:2}],doubles:2},
+          {name:"CHATILLON TTMC 1",journee:4,domext:"Dom",players:[{nom:"RAVEZ",prenom:"Jerome",cls:"N582",vic:1},{nom:"KHRIS",prenom:"Tarik",cls:"N746",vic:0},{nom:"RIVOAL",prenom:"Kevin",cls:"N194",vic:1},{nom:"CORRIC",prenom:"Paolo",cls:"N902",vic:0}],doubles:1},
+          {name:"SALINDRES AS 1",journee:5,domext:"Ext",players:[{nom:"MAILLARD",prenom:"Florian",cls:"N488",vic:2},{nom:"MOULIN",prenom:"Lucas",cls:"N673",vic:1},{nom:"CAPEL",prenom:"Nicolas",cls:"N401",vic:2},{nom:"CASANE",prenom:"Damien",cls:"N691",vic:1}],doubles:0},
+          {name:"MONACO AS 1",journee:6,domext:"Ext",players:[{nom:"GEMINIANI",prenom:"Anthony",cls:"N232",vic:1},{nom:"TISO",prenom:"Martin",cls:"N589",vic:0},{nom:"TORTORINO",prenom:"Andrea",cls:2005,vic:1},{nom:"CORTESE",prenom:"Lorenzo",cls:"N915",vic:0}],doubles:0},
+          {name:"COURBEVOIE STT 2",journee:7,domext:"Dom",players:[{nom:"FOSSE",prenom:"Alexandre",cls:"N539",vic:1},{nom:"JOHNSTON",prenom:"David",cls:"N325",vic:2},{nom:"RAFFI",prenom:"Arthur",cls:"N240",vic:2},{nom:"GIRET",prenom:"Clement",cls:"N496",vic:1}],doubles:2}
+        ]
+      },
+      "M3": {
+        pool: "L08_R2 Poule 4", level: "Régional 2", levelClass: "level-regional", date: "7 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLANCOURT 3",acbb:true,players:[{nom:"MARTINOD",prenom:"Thomas",cls:1636,vic:2},{nom:"LE CORRE",prenom:"Erwan",cls:1512,vic:3},{nom:"ZHAO",prenom:"Antoine",cls:1811,vic:3},{nom:"GONTARD",prenom:"Nicolas",cls:1608,vic:2}],doubles:2},
+          {name:"PONTHIERRY COMT 2",journee:1,domext:"Ext",players:[{nom:"PAYET REGRIN",prenom:"Remi",cls:1560,vic:1},{nom:"BERNARD",prenom:"Cyril",cls:1461,vic:0},{nom:"HOUADJ",prenom:"Paul",cls:1380,vic:1},{nom:"MAZURIER",prenom:"Claude",cls:1457,vic:0}],doubles:0},
+          {name:"BOIS COLOMBES S 2",journee:2,domext:"Dom",players:[{nom:"GERMAIN",prenom:"Julien",cls:1578,vic:2},{nom:"LESCURE",prenom:"Paul",cls:1455,vic:0},{nom:"MORIO",prenom:"Maxence",cls:1543,vic:0},{nom:"HOENEN",prenom:"Emma",cls:1477,vic:1}],doubles:1},
+          {name:"LOGNES EP 5",journee:3,domext:"Ext",players:[{nom:"ALAEJOS",prenom:"Rodrigue",cls:1596,vic:1},{nom:"SIM",prenom:"Christophe",cls:1604,vic:3},{nom:"AZIBERT",prenom:"Baptiste",cls:1697,vic:2},{nom:"SISAKOUN",prenom:"Joris",cls:1596,vic:1}],doubles:1},
+          {name:"RAMBOUILLET TT 2",journee:4,domext:"Dom",players:[{nom:"CHEVIRON",prenom:"Gauthier",cls:1968,vic:3},{nom:"VETZEL-MARTIN",prenom:"Loann",cls:1647,vic:2},{nom:"SALLAH DUSE",prenom:"Louis",cls:1555,vic:2},{nom:"PERU",prenom:"Ruben",cls:1747,vic:2}],doubles:1},
+          {name:"ELANCOURT CTT 4",journee:5,domext:"Ext",players:[{nom:"COLINET",prenom:"Sebastien",cls:1675,vic:1},{nom:"HOANG",prenom:"Axel",cls:1513,vic:1},{nom:"FRANTZ",prenom:"Gabriel",cls:1719,vic:3},{nom:"SVAY DELLA ROMA",prenom:"Evan",cls:1305,vic:0}],doubles:1},
+          {name:"CRETEIL USTT 1",journee:6,domext:"Ext",players:[{nom:"BOURIAH",prenom:"Larbi",cls:"N415",vic:3},{nom:"BES-MAZENOUX",prenom:"Fabien",cls:1646,vic:1},{nom:"RADJI-CHARON",prenom:"Theo",cls:1489,vic:1},{nom:"TEA",prenom:"Maxime",cls:1273,vic:0}],doubles:0},
+          {name:"PALAISEAU US 3",journee:7,domext:"Dom",players:[{nom:"BAELDE",prenom:"Eleonore",cls:"N225",vic:2},{nom:"LE BOULC'H",prenom:"Maxime",cls:1643,vic:2},{nom:"BIZEUL",prenom:"Mathieu",cls:1766,vic:2},{nom:"AUDIOT",prenom:"Clement",cls:1663,vic:1}],doubles:2}
+        ]
+      },
+      "M4": {
+        pool: "L08_R3 Poule 11", level: "Régional 3", levelClass: "level-regional", date: "7 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLANCOURT 4",acbb:true,players:[{nom:"SCHULLER",prenom:"Eric",cls:1600,vic:1},{nom:"LESPINASSE",prenom:"Martin",cls:1342,vic:1},{nom:"LOUET",prenom:"Sebastien",cls:1523,vic:1},{nom:"BOUCHE",prenom:"Thomas",cls:1414,vic:1}],doubles:1},
+          {name:"IGNY 4",journee:1,domext:"Ext",players:[{nom:"LACAZE",prenom:"Arman",cls:1610,vic:2},{nom:"GARCIA",prenom:"Simon",cls:1568,vic:2},{nom:"SALAMEH",prenom:"Antoine",cls:1551,vic:1},{nom:"CORTES",prenom:"Nathan",cls:1470,vic:3}],doubles:1},
+          {name:"TENNIS DE TABLE PLUS 1",journee:2,domext:"Dom",players:[{nom:"",prenom:"",cls:500,vic:0}],doubles:0},
+          {name:"CHATOU CROISSY 1",journee:3,domext:"Ext",players:[{nom:"GOURSEAUD",prenom:"Hugo",cls:1488,vic:3},{nom:"PAYET",prenom:"Samuel",cls:1254,vic:2},{nom:"GRANGER",prenom:"Bruno",cls:1601,vic:2},{nom:"TIAN VAN KAI",prenom:"Rafael",cls:1087,vic:2}],doubles:1},
+          {name:"CHESNAY 78 AS 5",journee:4,domext:"Dom",players:[{nom:"",prenom:"",cls:500,vic:0}],doubles:0},
+          {name:"MEUDON AS 2",journee:5,domext:"Ext",players:[{nom:"PRUVOST",prenom:"Antonin",cls:1356,vic:2},{nom:"FERDJANI",prenom:"Racim",cls:1085,vic:0},{nom:"JUMEAU",prenom:"Pierre",cls:1167,vic:1},{nom:"KAHNA",prenom:"Yasmin",cls:1113,vic:0}],doubles:1},
+          {name:"NOISY LE GRAND CSTT 7",journee:6,domext:"Ext",players:[{nom:"ALTAF",prenom:"Ayaan",cls:1175,vic:1},{nom:"ALTAF",prenom:"Subhan",cls:1318,vic:2},{nom:"BORNAREL",prenom:"Selim",cls:1588,vic:3},{nom:"BOUJEDDAIN",prenom:"Hatim",cls:1644,vic:2}],doubles:0},
+          {name:"PARIS 13 TT 5",journee:7,domext:"Dom",players:[{nom:"SUN",prenom:"Stephane",cls:1302,vic:2},{nom:"PRIME",prenom:"Emeric",cls:1364,vic:1},{nom:"BECRET",prenom:"Benoit",cls:1260,vic:1},{nom:"HUYGUES LACOUR",prenom:"Victor",cls:1412,vic:0}],doubles:2}
+        ]
+      },
+      "M5": {
+        pool: "L08_R3 Poule 4", level: "Régional 3", levelClass: "level-regional", date: "7 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLANCOURT 5",acbb:true,players:[{nom:"SUEDE",prenom:"Samuel",cls:1393,vic:3},{nom:"LE FANIC",prenom:"Ronan",cls:1527,vic:2},{nom:"JANUS",prenom:"Krzysztof",cls:1614,vic:3},{nom:"CAMION",prenom:"Celian",cls:1158,vic:1}],doubles:2},
+          {name:"VIRY CHATILLON 1",journee:1,domext:"Dom",players:[{nom:"GREFF-THOMAS",prenom:"Nathael",cls:1046,vic:0},{nom:"VILAR",prenom:"Lucas",cls:1479,vic:2},{nom:"CAMBUSIER",prenom:"Christian",cls:1254,vic:0},{nom:"NOUBISSI",prenom:"Leo",cls:1375,vic:1}],doubles:0},
+          {name:"JUMP 5",journee:2,domext:"Ext",players:[{nom:"BOUDENNE",prenom:"Aurélien",cls:1438,vic:3},{nom:"MOCQUAIS",prenom:"Olivier",cls:1428,vic:2},{nom:"DAHERON",prenom:"Martin",cls:1371,vic:1},{nom:"JOW",prenom:"Christophe",cls:1366,vic:3}],doubles:1},
+          {name:"FONTENAY-TRESIGNY TT 1",journee:3,domext:"Dom",players:[{nom:"BAYLE",prenom:"Gabriel",cls:1667,vic:3},{nom:"SISSOKO",prenom:"Noah",cls:1605,vic:3},{nom:"LE DEUC",prenom:"Benjamin",cls:1542,vic:3},{nom:"VIADERO BRIOLAND",prenom:"Jules",cls:898,vic:3}],doubles:2},
+          {name:"LA FRETTE 1",journee:4,domext:"Ext",players:[{nom:"SAKOVITCH",prenom:"Stephen",cls:1388,vic:0},{nom:"MAISONNEUVE",prenom:"Bertrand",cls:1210,vic:0},{nom:"TOUFANIAN",prenom:"Armen",cls:598,vic:0},{nom:"FANZUTTI",prenom:"Patrick",cls:551,vic:0}],doubles:0},
+          {name:"ROMAINVILLOIS TT 1",journee:5,domext:"Dom",players:[{nom:"BERIBOS",prenom:"Yohann",cls:1406,vic:1},{nom:"FABRE",prenom:"Thomas",cls:1320,vic:0},{nom:"BERIBOS",prenom:"Dylan",cls:1424,vic:1},{nom:"ZRIM",prenom:"Jean Paul",cls:"x",vic:1}],doubles:1},
+          {name:"CSMF PARIS TT 2",journee:6,domext:"Dom",players:[{nom:"PARISOT",prenom:"Maximilien",cls:1163,vic:0},{nom:"BIBANG-BI-NDONG",prenom:"Nicolas",cls:1400,vic:1},{nom:"COMPTE",prenom:"Olivier",cls:1213,vic:0},{nom:"MULOCHER",prenom:"Amaury",cls:1269,vic:2}],doubles:0},
+          {name:"NEUILLY S/M TT 1",journee:7,domext:"Ext",players:[{nom:"KERRIEN",prenom:"Mathieu",cls:1629,vic:3},{nom:"GAUTIER",prenom:"Jérôme",cls:1380,vic:1},{nom:"TRAISNEL",prenom:"Louis",cls:1521,vic:3},{nom:"TINANT",prenom:"Jeremy",cls:1501,vic:2}],doubles:2}
+        ]
+      },
+      "M6": {
+        pool: "D92 Pré-Régionale Poule 3", level: "Pré-Régional", levelClass: "level-prereg", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 6",acbb:true,players:[{nom:"LI",prenom:"Max",cls:1032,vic:1},{nom:"BELKADI",prenom:"Medhi",cls:938,vic:0},{nom:"FERET",prenom:"Hedi",cls:1065,vic:0},{nom:"TU XUAN",prenom:"Minh",cls:944,vic:0}],doubles:0},
+          {name:"CHATENAY ASVTT 1",journee:1,domext:"Dom",players:[{nom:"JUSSEAUME",prenom:"Jonathan",cls:1682,vic:3},{nom:"PIGNIER",prenom:"Romain",cls:1423,vic:2},{nom:"GANGA",prenom:"Yann",cls:1551,vic:3},{nom:"GABARD",prenom:"Romain",cls:1549,vic:3}],doubles:2},
+          {name:"TTMC CHATILLON 6",journee:2,domext:"Ext",players:[{nom:"CHALAUX",prenom:"Thomas",cls:1516,vic:3},{nom:"GREE",prenom:"Eric",cls:1347,vic:1},{nom:"CHALAUX",prenom:"Anaël",cls:844,vic:0},{nom:"BALU",prenom:"Arthur",cls:1195,vic:3}],doubles:2},
+          {name:"NEUILLY ASPN 5",journee:3,domext:"Ext",players:[{nom:"LIU",prenom:"Justin",cls:1101,vic:2},{nom:"D HAULTFOEUILLE-MIMOUNI",prenom:"Alexandre",cls:1148,vic:3},{nom:"NIKOLIC",prenom:"Alexis",cls:1356,vic:1},{nom:"APRA",prenom:"Basile",cls:1193,vic:0}],doubles:0},
+          {name:"BOIS COLOMBES S 4",journee:4,domext:"Dom",players:[{nom:"CHAUDOREILLE",prenom:"Thomas",cls:1597,vic:3},{nom:"LE SEAC'H LOPES",prenom:"Mathieu",cls:1034,vic:2},{nom:"ENJOLRAS",prenom:"Guillaume",cls:1284,vic:2},{nom:"MOSSERI",prenom:"Rémy",cls:1151,vic:1}],doubles:2},
+          {name:"LEVALLOIS SPORT 10",journee:5,domext:"Ext",players:[{nom:"DAS NEVES",prenom:"Alef higor",cls:1139,vic:1},{nom:"CHAMBON",prenom:"Amelie",cls:1135,vic:1},{nom:"MARIA",prenom:"Merlin",cls:1119,vic:1},{nom:"COURTOIS",prenom:"Pierre",cls:1076,vic:2}],doubles:0},
+          {name:"CLAMART CSM 4",journee:6,domext:"Dom",players:[{nom:"DUCOUDRAY",prenom:"Antonin",cls:1153,vic:1},{nom:"AMIOT",prenom:"Paco",cls:1143,vic:1},{nom:"NAVARRE",prenom:"Edgar",cls:1122,vic:1},{nom:"BOYER",prenom:"Hugo",cls:909,vic:1}],doubles:0},
+          {name:"RUEIL ATHLETIC 6",journee:7,domext:"Ext",players:[{nom:"RICART",prenom:"Franck",cls:1445,vic:2},{nom:"BARLOT-LAHAYE",prenom:"Nathan",cls:1286,vic:1},{nom:"DE ROZARIO",prenom:"Fabien",cls:1318,vic:1},{nom:"LOPES",prenom:"Andre",cls:1433,vic:2}],doubles:2}
+        ]
+      },
+      "M7": {
+        pool: "D92 Pré-Régionale Poule 2", level: "Pré-Régional", levelClass: "level-prereg", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 7",acbb:true,players:[{nom:"PEIGNE",prenom:"Gilles",cls:1059,vic:0},{nom:"BATTI",prenom:"Ayoub",cls:1033,vic:2},{nom:"COZIEN",prenom:"Ethan",cls:1041,vic:0},{nom:"COUCHOURON",prenom:"Sebastien",cls:1049,vic:1}],doubles:1},
+          {name:"CLAMART CSM 5",journee:1,domext:"Dom",players:[{nom:"PRUD'HOMME",prenom:"Leo",cls:1300,vic:3},{nom:"ELIE DIT COSAQUE",prenom:"Olivier",cls:1193,vic:3},{nom:"RENET",prenom:"Jean-Baptiste",cls:1009,vic:2},{nom:"D'HONDT",prenom:"Pierre",cls:1036,vic:1}],doubles:1},
+          {name:"NEUILLY ASPN 4",journee:2,domext:"Ext",players:[{nom:"DULOU",prenom:"Ethan",cls:1307,vic:0},{nom:"AMADORU",prenom:"Chamod",cls:1312,vic:2},{nom:"FERREIRA DOS SANTOS",prenom:"Tomas",cls:1256,vic:2},{nom:"GAITAN-APARICIO",prenom:"Thomas",cls:1276,vic:2}],doubles:1},
+          {name:"COLOMBES ES 1",journee:3,domext:"Dom",players:[{nom:"ORO",prenom:"Jeremie",cls:1291,vic:0},{nom:"RAMOND",prenom:"Theo",cls:1611,vic:2},{nom:"LOZACH",prenom:"Antoine",cls:616,vic:0},{nom:"DEMORAT",prenom:"Thibault",cls:1165,vic:0}],doubles:0},
+          {name:"COURBEVOIE STT 9",journee:4,domext:"Ext",players:[{nom:"DELORME",prenom:"Thibault",cls:1662,vic:2},{nom:"TOULAMBAHJI",prenom:"Louai",cls:1104,vic:2},{nom:"MAZERAT",prenom:"Hugo",cls:1474,vic:3},{nom:"BOISARD",prenom:"Clement",cls:1264,vic:3}],doubles:2},
+          {name:"SCEAUX T.T. 1",journee:5,domext:"Dom",players:[{nom:"GINOUX-DEFERMON",prenom:"Theo",cls:1485,vic:2},{nom:"GRANDCHAMP",prenom:"Timothee",cls:1383,vic:2},{nom:"SINGH",prenom:"Arvind",cls:1398,vic:1},{nom:"GUENARD",prenom:"Henri",cls:1359,vic:1}],doubles:1},
+          {name:"TTMC CHATILLON 5",journee:6,domext:"Dom",players:[{nom:"MURESAN",prenom:"Florin",cls:1519,vic:3},{nom:"CARPENTIER",prenom:"Pascal",cls:1108,vic:2},{nom:"ISSA",prenom:"Elias",cls:916,vic:1},{nom:"DO",prenom:"Steeve",cls:943,vic:1}],doubles:2},
+          {name:"ASNIERES TT 3",journee:7,domext:"Ext",players:[{nom:"OUDET",prenom:"Thomas",cls:961,vic:1},{nom:"BINOIS",prenom:"Elias",cls:1030,vic:1},{nom:"CRONIN",prenom:"Maurice",cls:1034,vic:2},{nom:"GALAND",prenom:"Philippe",cls:980,vic:1}],doubles:0}
+        ]
+      },
+      "M8": {
+        pool: "D92 Pré-Régionale Poule 4", level: "Pré-Régional", levelClass: "level-prereg", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 8",acbb:true,players:[{nom:"HABERT",prenom:"Patrick",cls:1268,vic:1},{nom:"LIORZOU",prenom:"Sebastien",cls:1251,vic:1},{nom:"BOITEAU",prenom:"Jean-Serge",cls:1133,vic:1},{nom:"LIMOGES",prenom:"Ulrich",cls:1194,vic:1}],doubles:0},
+          {name:"CLICHY CS 1",journee:1,domext:"Ext",players:[{nom:"",prenom:"",cls:500,vic:0}],doubles:0},
+          {name:"COURBEVOIE STT 8",journee:2,domext:"Dom",players:[{nom:"POMMAT-PERRON",prenom:"Lola",cls:943,vic:0},{nom:"GERBE",prenom:"Benoit",cls:1152,vic:1},{nom:"WANG",prenom:"Louis",cls:1086,vic:1},{nom:"HECHT",prenom:"Mathilde",cls:908,vic:0}],doubles:0},
+          {name:"ASNIERES TT 5",journee:3,domext:"Dom",players:[{nom:"GUILLEMET",prenom:"Maxence",cls:1063,vic:0},{nom:"POCHON",prenom:"Emmanuel",cls:1184,vic:0},{nom:"LEROY",prenom:"Eric",cls:1358,vic:0},{nom:"LOISEL",prenom:"Serge",cls:1371,vic:0}],doubles:1},
+          {name:"SCEAUX T.T. 2",journee:4,domext:"Ext",players:[{nom:"BENOIST",prenom:"Samuel",cls:1264,vic:2},{nom:"KROL",prenom:"Raphael",cls:879,vic:2},{nom:"WOLINER",prenom:"Romain",cls:1406,vic:2},{nom:"KROL",prenom:"Fabien",cls:981,vic:1}],doubles:0},
+          {name:"BOURG LA REINE 1",journee:5,domext:"Dom",players:[{nom:"VO",prenom:"Van Toan",cls:1104,vic:2},{nom:"PHAM MINH",prenom:"Philippe",cls:1038,vic:1},{nom:"MARIA",prenom:"Patrick",cls:1380,vic:2},{nom:"RUBEM",prenom:"Mathilde",cls:796,vic:0}],doubles:2},
+          {name:"BOIS COLOMBES S 5",journee:6,domext:"Ext",players:[{nom:"CHEMINI",prenom:"Hugo",cls:1371,vic:3},{nom:"BOITEL",prenom:"Théo",cls:1330,vic:3},{nom:"WATZKO",prenom:"Frédéric",cls:1694,vic:3},{nom:"PERRIN",prenom:"Romuald",cls:1233,vic:3}],doubles:1},
+          {name:"CHATENAY ASVTT 2",journee:7,domext:"Dom",players:[{nom:"NORDMANN",prenom:"Simon",cls:1357,vic:2},{nom:"DUBOIS",prenom:"Florian",cls:1478,vic:3},{nom:"MOSTAFAVI",prenom:"Mehdi",cls:1204,vic:3},{nom:"GABARD",prenom:"Jean Gilles",cls:1269,vic:2}],doubles:2}
+        ]
+      },
+      "M9": {
+        pool: "D92 Pré-Régionale Poule 1", level: "Pré-Régional", levelClass: "level-prereg", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 9",acbb:true,players:[{nom:"BATOT",prenom:"Ghislain",cls:1323,vic:2},{nom:"DE COSNAC",prenom:"Astrid",cls:1295,vic:0},{nom:"CHAUVEL",prenom:"Sylvain",cls:1303,vic:2},{nom:"LE BOURG",prenom:"Virginie",cls:1329,vic:3}],doubles:1},
+          {name:"ASNIERES TT 4",journee:1,domext:"Dom",players:[{nom:"MINEO",prenom:"Jean-René",cls:1254,vic:1},{nom:"KOCOT",prenom:"Dany",cls:1145,vic:2},{nom:"HASTINGS",prenom:"Vianney",cls:1205,vic:0},{nom:"PACREAU",prenom:"Gerard",cls:1302,vic:1}],doubles:1},
+          {name:"TTMC CHATILLON 4",journee:2,domext:"Ext",players:[{nom:"LEPINE",prenom:"Pierre",cls:1246,vic:1},{nom:"CHEN",prenom:"Francois",cls:1178,vic:2},{nom:"COUPRIE",prenom:"Stephane",cls:1078,vic:3},{nom:"PHLEK",prenom:"Dara",cls:1037,vic:0}],doubles:1},
+          {name:"ANTONY SPORT TT 4",journee:3,domext:"Ext",players:[{nom:"ANDERSSON",prenom:"Alexandre",cls:1162,vic:2},{nom:"DELON",prenom:"Sebastien",cls:1058,vic:2},{nom:"MONTOYA",prenom:"Daniel",cls:959,vic:0},{nom:"MABILLE",prenom:"Mickael",cls:1371,vic:2}],doubles:1},
+          {name:"RUEIL ATHLETIC 7",journee:4,domext:"Dom",players:[{nom:"KOLECKI",prenom:"Michel",cls:1222,vic:0},{nom:"BEAUMONT",prenom:"Guillaume",cls:1512,vic:2},{nom:"DIAN",prenom:"Clement",cls:1105,vic:1},{nom:"PAPOUIN",prenom:"Cyril",cls:1110,vic:3}],doubles:2},
+          {name:"LA GARENNE COLO 1",journee:5,domext:"Ext",players:[{nom:"GUERIN",prenom:"Christophe",cls:1162,vic:1},{nom:"CHAUSSIN",prenom:"Christophe",cls:1472,vic:3},{nom:"DUBOIS",prenom:"Franklin",cls:1198,vic:1},{nom:"GASMI",prenom:"Nasser",cls:1156,vic:1}],doubles:1},
+          {name:"NANTERRE ES 2",journee:6,domext:"Dom",players:[{nom:"DEROUES",prenom:"Brice",cls:1478,vic:3},{nom:"LEROY",prenom:"Jean-louis",cls:1119,vic:1},{nom:"SEROT",prenom:"Quentin",cls:1091,vic:2},{nom:"FERLAY",prenom:"Olivier",cls:1047,vic:0}],doubles:0},
+          {name:"NEUILLY ASPN 6",journee:7,domext:"Ext",players:[{nom:"FARSSI",prenom:"Mehdi",cls:1600,vic:2},{nom:"MORLAINE",prenom:"Lionel",cls:1292,vic:0},{nom:"BRATINA",prenom:"David",cls:1139,vic:1},{nom:"BAKIR",prenom:"Ilyane",cls:1134,vic:2}],doubles:1}
+        ]
+      },
+      "M10": {
+        pool: "D92 D1 Poule 3", level: "Départemental 1", levelClass: "level-d1", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 10",acbb:true,players:[{nom:"MANDELMILECH",prenom:"Adrien",cls:928,vic:0},{nom:"ALLEGRE-GUILLAUME",prenom:"Antoine",cls:725,vic:0},{nom:"CAMION",prenom:"Chloe",cls:914,vic:2},{nom:"RECHATIN",prenom:"Bruno",cls:904,vic:0}],doubles:1},
+          {name:"RUEIL ATHLETIC 9",journee:1,domext:"Ext",players:[{nom:"BOUFADEL",prenom:"Elie",cls:887,vic:2},{nom:"HELOU",prenom:"Amaury-Grégoire",cls:894,vic:3},{nom:"IBRAHIM",prenom:"Antoine",cls:1176,vic:3},{nom:"DIAS",prenom:"Sebastien",cls:876,vic:2}],doubles:1},
+          {name:"LEVALLOIS SPORT 11",journee:2,domext:"Dom",players:[{nom:"BOUDARA",prenom:"Stephane",cls:1102,vic:3},{nom:"SAINSON",prenom:"Michael",cls:1179,vic:3},{nom:"EZNACK",prenom:"Stephane",cls:1125,vic:3},{nom:"PLUYAUD",prenom:"Nicolas",cls:906,vic:2}],doubles:2},
+          {name:"MALAKOFF USM 5",journee:3,domext:"Ext",players:[{nom:"BICHOT",prenom:"Vincent",cls:743,vic:0},{nom:"BLOCH",prenom:"Angus",cls:517,vic:0},{nom:"CLEMENT",prenom:"Philippe",cls:1197,vic:1},{nom:"CORDEIRO",prenom:"Jose",cls:663,vic:0}],doubles:0},
+          {name:"SM MONTROUGE 3",journee:4,domext:"Ext",players:[{nom:"CHALINE",prenom:"Lucas",cls:1177,vic:1},{nom:"GARBARG",prenom:"Raphaël",cls:798,vic:1},{nom:"GAILLARD",prenom:"Thomas",cls:1122,vic:2},{nom:"OBAM",prenom:"Nicolas",cls:1287,vic:3}],doubles:2},
+          {name:"PLESSIS ROBINS. 4",journee:5,domext:"Dom",players:[{nom:"EVEN",prenom:"Alain",cls:847,vic:1},{nom:"LEBRUN",prenom:"Clement",cls:962,vic:1},{nom:"BARBARIA",prenom:"Stephane",cls:796,vic:3},{nom:"SOARES",prenom:"Julien",cls:964,vic:3}],doubles:1},
+          {name:"COURBEVOIE STT 11",journee:6,domext:"Ext",players:[{nom:"LHOMER",prenom:"Paul",cls:883,vic:1},{nom:"AIT HAMLAT",prenom:"Jugurtha",cls:722,vic:2},{nom:"BONZON",prenom:"Baptiste",cls:742,vic:1},{nom:"GUENON",prenom:"Thomas",cls:500,vic:0}],doubles:1},
+          {name:"VOLTIGEURS 1",journee:7,domext:"Dom",players:[{nom:"BARRÉ",prenom:"Bertrand",cls:1161,vic:3},{nom:"RABARIJAONA",prenom:"Zo",cls:979,vic:0},{nom:"DELORY",prenom:"Virgile",cls:956,vic:1},{nom:"LEVASSEUR",prenom:"Arnaud",cls:953,vic:1}],doubles:0}
+        ]
+      },
+      "M11": {
+        pool: "D92 D1 Poule 4", level: "Départemental 1", levelClass: "level-d1", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 11",acbb:true,players:[{nom:"LANGLOIS",prenom:"Xavier",cls:836,vic:1},{nom:"ZHANG",prenom:"Jun",cls:847,vic:1},{nom:"PIQUET",prenom:"Sebastien",cls:737,vic:0},{nom:"GIROU",prenom:"Alain",cls:730,vic:0}],doubles:1},
+          {name:"NEUILLY ASPN 9",journee:1,domext:"Ext",players:[{nom:"WATINE",prenom:"Augustin",cls:1017,vic:2},{nom:"QUIQUEMPOIS",prenom:"Stephane",cls:1442,vic:3},{nom:"MALAGAMMANA",prenom:"Salomé",cls:1025,vic:3},{nom:"DE SOUSA",prenom:"Alexandre",cls:1031,vic:2}],doubles:1},
+          {name:"LEVALLOIS SPORT 12",journee:2,domext:"Dom",players:[{nom:"GOURLAY",prenom:"Vincent",cls:1132,vic:3},{nom:"GUESPIN",prenom:"Eliot",cls:1041,vic:3},{nom:"BACHOREK",prenom:"Gregory",cls:568,vic:1},{nom:"RUSCON",prenom:"Romain",cls:881,vic:2}],doubles:2},
+          {name:"TTMC CHATILLON 8",journee:3,domext:"Ext",players:[{nom:"RENOU",prenom:"Gilles",cls:1053,vic:1},{nom:"HEDJAL",prenom:"Thibaut",cls:995,vic:1},{nom:"VIOLAS",prenom:"Noé",cls:852,vic:0},{nom:"GAO",prenom:"Ivan",cls:799,vic:1}],doubles:0},
+          {name:"RUEIL ATHLETIC 8",journee:4,domext:"Ext",players:[{nom:"CAVIALE",prenom:"Laurent",cls:1041,vic:2},{nom:"CLAVEAU",prenom:"Christophe",cls:1163,vic:3},{nom:"BAFFREY",prenom:"Vincent",cls:979,vic:0},{nom:"LE FRAPPER",prenom:"Romuald",cls:1278,vic:3}],doubles:1},
+          {name:"COLOMBIENNE ES 2",journee:5,domext:"Dom",players:[{nom:"MORIN",prenom:"Nathalie",cls:806,vic:1},{nom:"DECAUX",prenom:"Valentin",cls:840,vic:1},{nom:"NGUYEN-GUILLAUME",prenom:"Jules",cls:816,vic:2},{nom:"MINET",prenom:"Matthieu",cls:749,vic:1}],doubles:1},
+          {name:"ASNIERES TT 7",journee:6,domext:"Ext",players:[{nom:"LIU",prenom:"Katy",cls:857,vic:1},{nom:"MO",prenom:"Milina",cls:865,vic:2},{nom:"SPRECACENERE",prenom:"Cyril",cls:1160,vic:2},{nom:"AT KHEN",prenom:"Kresna",cls:850,vic:2}],doubles:1},
+          {name:"SCEAUX T.T. 3",journee:7,domext:"Dom",players:[{nom:"FROLOV",prenom:"Ilya",cls:1076,vic:2},{nom:"FERRE",prenom:"Valentin",cls:839,vic:0},{nom:"LEFRANC",prenom:"Maxime",cls:870,vic:1},{nom:"GORON",prenom:"Julien",cls:1034,vic:1}],doubles:1}
+        ]
+      },
+      "M12": {
+        pool: "D92 D2 Poule 8", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 12",acbb:true,players:[{nom:"ROUX",prenom:"Yannis",cls:1167,vic:3},{nom:"SAVAN",prenom:"Vuthny",cls:960,vic:3},{nom:"PERROT",prenom:"Charles",cls:953,vic:3},{nom:"LENNON",prenom:"Clémence",cls:879,vic:2}],doubles:1},
+          {name:"COLOMBIENNE ES 4",journee:1,domext:"Ext",players:[{nom:"LANGEVIN",prenom:"Antoine",cls:741,vic:0},{nom:"CARTERON",prenom:"Rémi",cls:579,vic:0},{nom:"CHAILLOT",prenom:"Thomas",cls:663,vic:1},{nom:"BERREBI",prenom:"David",cls:536,vic:0}],doubles:1},
+          {name:"Courbevoie STT 14",journee:2,domext:"Dom",players:[{nom:"PATRY",prenom:"Luca Kai",cls:609,vic:0},{nom:"JOULIE",prenom:"Axel",cls:544,vic:1},{nom:"VAYSSE",prenom:"Aurelien",cls:590,vic:1},{nom:"MARCOS",prenom:"Nicolas",cls:577,vic:1}],doubles:0},
+          {name:"MEUDON AS 6",journee:3,domext:"Dom",players:[{nom:"SOULAS",prenom:"Stephane",cls:727,vic:1},{nom:"KIRKORYAN",prenom:"Léo",cls:673,vic:2},{nom:"MARTINS",prenom:"Enzo",cls:689,vic:2},{nom:"FERREIRA",prenom:"Eliot",cls:976,vic:3}],doubles:2},
+          {name:"CLAMART CSM 10",journee:4,domext:"Ext",players:[{nom:"JANNIN",prenom:"Flavien",cls:500,vic:0},{nom:"FERREIRA",prenom:"Nolan",cls:611,vic:3},{nom:"BALDIT",prenom:"Christophe",cls:500,vic:0},{nom:"MARCHI",prenom:"Gilles",cls:500,vic:1}],doubles:1},
+          {name:"BOIS COLOMBES S 10",journee:5,domext:"Dom",players:[{nom:"MASSONNEAU",prenom:"Christophe",cls:510,vic:2},{nom:"SONNETTE",prenom:"Bruno",cls:619,vic:2},{nom:"YVERNAY",prenom:"Mélanie",cls:675,vic:3},{nom:"CHACHAY",prenom:"Timothée",cls:572,vic:1}],doubles:1},
+          {name:"RUEIL ATHLETIC 15",journee:6,domext:"Ext",players:[{nom:"GAUTHRON",prenom:"Henri",cls:763,vic:3},{nom:"DRUILLOLE",prenom:"Eric",cls:678,vic:1},{nom:"RIPAUD",prenom:"Christophe",cls:611,vic:0},{nom:"LEDIEU",prenom:"Joel",cls:575,vic:0}],doubles:0},
+          {name:"LEVALLOIS SPORT 15",journee:7,domext:"Dom",players:[{nom:"KLOETI",prenom:"Sebastien",cls:733,vic:3},{nom:"DOS SANTOS-LHOSTE",prenom:"Alexandre",cls:741,vic:2},{nom:"GALLAIS",prenom:"Marc",cls:762,vic:3},{nom:"CORNILLET",prenom:"Jean-Francois",cls:617,vic:1}],doubles:2}
+        ]
+      },
+      "M13": {
+        pool: "D92 D2 Poule 11", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 13",acbb:true,players:[{nom:"PERRON",prenom:"Nicolas",cls:650,vic:2},{nom:"SUCHER",prenom:"Antoine",cls:618,vic:0},{nom:"MORRIS",prenom:"Jean-Baptiste",cls:780,vic:2},{nom:"BENETIERE",prenom:"Guy",cls:709,vic:2}],doubles:1},
+          {name:"BOIS COLOMBES S 11",journee:1,domext:"Ext",players:[{nom:"KARRER",prenom:"Remy",cls:719,vic:1},{nom:"MUSEUR",prenom:"Sylvain",cls:599,vic:1},{nom:"EPHIMENCO",prenom:"Maxime",cls:736,vic:3},{nom:"CHILOU",prenom:"Christian",cls:544,vic:1}],doubles:1},
+          {name:"CHATENAY ASVTT 5",journee:2,domext:"Dom",players:[{nom:"PIGNOT",prenom:"Yohann",cls:752,vic:2},{nom:"REYNAUD",prenom:"Philippe",cls:759,vic:3},{nom:"MONTEAU",prenom:"Olivier",cls:817,vic:2},{nom:"DUFOUR",prenom:"Gaspard",cls:715,vic:3}],doubles:2},
+          {name:"ASNIERES TT 8",journee:3,domext:"Ext",players:[{nom:"CHEVRIER",prenom:"Matthias",cls:639,vic:1},{nom:"MARTINEZ",prenom:"Corentin",cls:500,vic:0},{nom:"VIOLANT",prenom:"Kevin",cls:666,vic:1},{nom:"POISSONNIER",prenom:"Xavier",cls:556,vic:0}],doubles:0},
+          {name:"PUTEAUX TT CSM (6)",journee:4,domext:"Ext",players:[{nom:"POUSSIN",prenom:"Patrice",cls:619,vic:0},{nom:"HOUSSINE",prenom:"Koussai",cls:513,vic:0},{nom:"WANG",prenom:"Biao",cls:500,vic:0},{nom:"COULAUD",prenom:"Jérémie",cls:570,vic:0}],doubles:0},
+          {name:"AS FONTENAY TT 2",journee:5,domext:"Dom",players:[{nom:"BUSSON",prenom:"Jean-Jacques",cls:581,vic:0},{nom:"NIQUE",prenom:"David",cls:579,vic:1},{nom:"KRISSIAN",prenom:"Karl",cls:699,vic:2},{nom:"JAOUEN",prenom:"Christophe",cls:526,vic:1}],doubles:1},
+          {name:"Courbevoie STT 15",journee:6,domext:"Ext",players:[{nom:"CHEALY",prenom:"Ratha",cls:577,vic:2},{nom:"MAUGERI",prenom:"Pascal",cls:543,vic:3},{nom:"LANCELOT",prenom:"Maxime",cls:592,vic:3},{nom:"COLIN DE VERDIERE",prenom:"Eric",cls:500,vic:0}],doubles:1},
+          {name:"NEUILLY ASPN 11",journee:7,domext:"Dom",players:[{nom:"PETOTON",prenom:"Louis",cls:766,vic:3},{nom:"PICOVSKY",prenom:"Marc",cls:737,vic:3},{nom:"L ELEU DE LA SIMONE",prenom:"Antoine",cls:688,vic:3},{nom:"CABRAL",prenom:"Marco",cls:719,vic:3}],doubles:2}
+        ]
+      },
+      "M14": {
+        pool: "D92 D2 Poule 12", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 14",acbb:true,players:[{nom:"CASSAGNOU",prenom:"Xavier",cls:637,vic:2},{nom:"MONDINO",prenom:"Christophe",cls:618,vic:0},{nom:"LESPINASSE",prenom:"Hugo",cls:697,vic:2},{nom:"LE GALL",prenom:"Anthony",cls:569,vic:3}],doubles:1},
+          {name:"RUEIL ATHLETIC (14)",journee:1,domext:"Dom",players:[{nom:"VIDAL",prenom:"Bruno",cls:674,vic:2},{nom:"VIVIER",prenom:"Patrick",cls:620,vic:2},{nom:"BAILLY",prenom:"Gregory",cls:701,vic:0},{nom:"BOITEL",prenom:"Christophe",cls:500,vic:1}],doubles:1},
+          {name:"LA GARENNE COLO 2",journee:2,domext:"Ext",players:[{nom:"DEMARQUE",prenom:"Pascal",cls:915,vic:3},{nom:"COMBES",prenom:"Antoine",cls:724,vic:3},{nom:"ALEXIS",prenom:"Sylvain",cls:925,vic:3},{nom:"COUSIN",prenom:"Brendon",cls:772,vic:2}],doubles:2},
+          {name:"TTMC CHATILLON (13)",journee:3,domext:"Dom",players:[{nom:"PEREIRA DESCHAMPS",prenom:"Adriano",cls:596,vic:0},{nom:"BOST",prenom:"Nicolas",cls:635,vic:1},{nom:"BALU",prenom:"Félix",cls:514,vic:0},{nom:"DUSSERT",prenom:"Côme",cls:578,vic:0}],doubles:0},
+          {name:"PLESSIS ROBINS. 8",journee:4,domext:"Dom",players:[{nom:"TESSIER",prenom:"Geoffrey",cls:500,vic:0},{nom:"VIGOGNE",prenom:"Pascal",cls:500,vic:0},{nom:"GAGNIER",prenom:"Ludivine",cls:535,vic:0},{nom:"GAGNIER",prenom:"Emmanuel",cls:500,vic:0}],doubles:0},
+          {name:"VOLTIGEURS 5",journee:5,domext:"Dom",players:[{nom:"WANG",prenom:"Hao",cls:677,vic:1},{nom:"BISMUTH",prenom:"Nicolas",cls:686,vic:0},{nom:"NOUCHI",prenom:"Philippe",cls:556,vic:0},{nom:"FONTAINE",prenom:"Xavier",cls:500,vic:0}],doubles:0},
+          {name:"AS FONTENAY TT 3",journee:6,domext:"Dom",players:[{nom:"SEVELLE",prenom:"Clement",cls:1046,vic:3},{nom:"RODRIGUES",prenom:"Valentin",cls:1003,vic:3},{nom:"DORIOT",prenom:"Thierry",cls:941,vic:3},{nom:"DEBERTHE",prenom:"Denis",cls:906,vic:3}],doubles:2},
+          {name:"ANTONY SPORT TT 6",journee:7,domext:"Ext",players:[{nom:"DERRIEN",prenom:"Mael",cls:754,vic:3},{nom:"DERRIEN",prenom:"Antoine",cls:655,vic:3},{nom:"DI PONZIO",prenom:"Ethan",cls:788,vic:2},{nom:"NOWAKOWSKI",prenom:"Florent",cls:796,vic:3}],doubles:2}
+        ]
+      },
+      "M15": {
+        pool: "D92 D2 Poule 10", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 15",acbb:true,players:[{nom:"MA",prenom:"Qi",cls:633,vic:1},{nom:"ADMI",prenom:"Johara",cls:636,vic:1},{nom:"PIERRON",prenom:"Guillaume",cls:552,vic:2},{nom:"FROMONT",prenom:"Joel",cls:628,vic:2}],doubles:1},
+          {name:"SCEAUX T.T. 5",journee:1,domext:"Ext",players:[{nom:"NING",prenom:"Jiale",cls:528,vic:0},{nom:"LIN",prenom:"Christophe",cls:771,vic:3},{nom:"ARDELLIER",prenom:"Michel",cls:500,vic:1},{nom:"LE CAM",prenom:"Philippe",cls:645,vic:2}],doubles:1},
+          {name:"PLESSIS ROBINS. 7",journee:2,domext:"Dom",players:[{nom:"FICHELLE",prenom:"Francois",cls:870,vic:2},{nom:"FRELON",prenom:"Eric",cls:751,vic:0},{nom:"BERNOT",prenom:"Laurent",cls:723,vic:1},{nom:"FRANCOISE",prenom:"Philippe",cls:741,vic:1}],doubles:0},
+          {name:"NEUILLY ASPN 10",journee:3,domext:"Ext",players:[{nom:"GHATTAS",prenom:"Salah",cls:500,vic:1},{nom:"PETRINE",prenom:"Diego",cls:528,vic:2},{nom:"L ELEU DE LA SIMONE",prenom:"Edouard",cls:644,vic:2},{nom:"NEGRONI",prenom:"Francois Regis",cls:512,vic:2}],doubles:1},
+          {name:"NANTERRE ES 3",journee:4,domext:"Dom",players:[{nom:"CADO",prenom:"Christophe",cls:858,vic:2},{nom:"ZHOU",prenom:"Adrien",cls:651,vic:2},{nom:"SALAUN",prenom:"Pierre",cls:878,vic:2},{nom:"MAURATILLE",prenom:"Vincent",cls:820,vic:2}],doubles:2},
+          {name:"MALAKOFF USM 6",journee:5,domext:"Ext",players:[{nom:"LEONARD",prenom:"Cédric",cls:500,vic:1},{nom:"AURIOL",prenom:"Patrice",cls:500,vic:0},{nom:"JAKUBOWICZ",prenom:"Jeremie",cls:582,vic:2},{nom:"CLEMENT",prenom:"Marceau",cls:502,vic:2}],doubles:1},
+          {name:"LEVALLOIS SPORT 18",journee:6,domext:"Ext",players:[{nom:"RENE-CORAIL",prenom:"Raphael",cls:655,vic:2},{nom:"HUANG",prenom:"Celia",cls:679,vic:1},{nom:"STAMULESCU",prenom:"Alicia",cls:582,vic:2},{nom:"LAVIROTTE",prenom:"Jean-Marie",cls:500,vic:0}],doubles:2},
+          {name:"ISSEENNE E P 10",journee:7,domext:"Dom",players:[{nom:"DELANDEMARE",prenom:"Stephane",cls:500,vic:0},{nom:"LORRE",prenom:"Guillaume",cls:625,vic:3},{nom:"LEROUX",prenom:"Gael",cls:687,vic:1},{nom:"LENOIR",prenom:"Solen",cls:661,vic:3}],doubles:0}
+        ]
+      },
+      "M16": {
+        pool: "D92 D2 Poule 5", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 16",acbb:true,players:[{nom:"RODRIGUEZ",prenom:"German",cls:500,vic:2},{nom:"TERRÉE",prenom:"Jean-Luc",cls:500,vic:1},{nom:"KOL",prenom:"Nicolas",cls:615,vic:3},{nom:"HABERT",prenom:"Jean-Francois",cls:628,vic:2}],doubles:0},
+          {name:"VILLENEUVE LA G 1",journee:1,domext:"Dom",players:[{nom:"GHELAB",prenom:"Hamza",cls:500,vic:1},{nom:"CARTON",prenom:"Thierry",cls:537,vic:1},{nom:"LAGARDE",prenom:"Jeremie",cls:534,vic:2}],doubles:1},
+          {name:"BOIS COLOMBES S 9",journee:2,domext:"Ext",players:[{nom:"PREVOST",prenom:"Laurent",cls:562,vic:1},{nom:"JACQUET",prenom:"Romain",cls:500,vic:1},{nom:"BOITEL",prenom:"Jérôme",cls:500,vic:0},{nom:"COLLEVILLE",prenom:"Didier",cls:500,vic:0}],doubles:1},
+          {name:"LEVALLOIS SPORT 16",journee:3,domext:"Dom",players:[{nom:"MENA",prenom:"Nicolas",cls:691,vic:1},{nom:"AMEDODJI",prenom:"Kwame",cls:586,vic:0},{nom:"HABIAN",prenom:"Franck",cls:514,vic:0},{nom:"BRUNSCHWIG",prenom:"Franck",cls:624,vic:1}],doubles:0},
+          {name:"ISSEENNE E P 11",journee:4,domext:"Ext",players:[{nom:"LE ROY",prenom:"Martial",cls:832,vic:2},{nom:"JACK-ROCH",prenom:"Anthony",cls:585,vic:2},{nom:"MIRIBEL DURHIN",prenom:"Giulia",cls:765,vic:3},{nom:"BAILLY",prenom:"Ewan",cls:745,vic:3}],doubles:2},
+          {name:"ASNIERES TT 10",journee:5,domext:"Dom",players:[{nom:"VACCHAREZZA",prenom:"Victor",cls:544,vic:3},{nom:"MARRAKCHI",prenom:"Youssef",cls:582,vic:2},{nom:"DOUELLE",prenom:"Valentin",cls:549,vic:2},{nom:"LIROU",prenom:"Baptiste",cls:512,vic:3}],doubles:1}
+        ]
+      },
+      "M17": {
+        pool: "D92 D2 Poule 4", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        teams: [
+          {name:"BOULOGNE BILLAN 17",acbb:true,players:[{nom:"LATIMIER",prenom:"Guillaume",cls:500,vic:0},{nom:"KATH",prenom:"Julian",cls:500,vic:1},{nom:"BAUBY",prenom:"Marc",cls:500,vic:0},{nom:"LIZAMBARD",prenom:"Romain",cls:500,vic:0}],doubles:0},
+          {name:"MEUDON AS 4",journee:1,domext:"Ext",players:[{nom:"JUMEAU",prenom:"Cyril",cls:954,vic:3},{nom:"GIRET",prenom:"Bruno",cls:876,vic:2},{nom:"BOUTRY",prenom:"Joanna",cls:867,vic:3},{nom:"PRUVOST",prenom:"Sandra",cls:857,vic:3}],doubles:2},
+          {name:"RUEIL ATHLETIC 17",journee:2,domext:"Dom",players:[{nom:"DIAS",prenom:"Alexandre",cls:563,vic:0},{nom:"MORIN",prenom:"Pascal",cls:629,vic:0},{nom:"PETTON",prenom:"Paul",cls:595,vic:0},{nom:"ALARCON",prenom:"Jean-Marc",cls:504,vic:0}],doubles:0},
+          {name:"VOLTIGEURS 3",journee:4,domext:"Dom",players:[{nom:"BENDA",prenom:"Arthur",cls:657,vic:3},{nom:"COPIN",prenom:"Jérôme",cls:706,vic:3},{nom:"BIGOT",prenom:"Philippe",cls:711,vic:3},{nom:"GIGNOUX",prenom:"Marc",cls:712,vic:3}],doubles:2},
+          {name:"CS Clichy TT (4)",journee:6,domext:"Ext",players:[{nom:"BRIS",prenom:"Balthazar",cls:587,vic:0},{nom:"TIMSIT",prenom:"Lisandro",cls:562,vic:0},{nom:"PARADIS",prenom:"Frederic",cls:601,vic:1},{nom:"DUMOUX",prenom:"Alexandre",cls:541,vic:0}],doubles:0},
+          {name:"Courbevoie STT 13",journee:7,domext:"Dom",players:[{nom:"XIE",prenom:"Dianzhong",cls:634,vic:2},{nom:"LANIEWSKI",prenom:"Wojciech",cls:833,vic:3},{nom:"SAID MOHAMED",prenom:"Seif",cls:671,vic:3},{nom:"FERRER",prenom:"Frederic",cls:691,vic:3}],doubles:2}
+        ]
+      }
+    };
+
+    // === Helper functions ===
+    function getNumericCls(cls) {
+      if (typeof cls === 'number') return cls;
+      if (typeof cls === 'string') {
+        if (cls === 'x') return 0;
+        if (cls.startsWith('N')) return parseInt(cls.substring(1)) || 0;
+        const n = parseInt(cls);
+        return isNaN(n) ? 0 : n;
+      }
+      return 0;
+    }
+
+    function formatCls(cls) {
+      if (typeof cls === 'number') return cls.toString();
+      return cls;
+    }
+
+    function teamPoints(team) {
+      if (!team.players || team.players.length === 0) return null;
+      return team.players.reduce((s, p) => s + getNumericCls(p.cls), 0);
+    }
+
+    function teamAvg(team) {
+      if (!team.players || team.players.length === 0) return null;
+      const pts = teamPoints(team);
+      return pts !== null ? Math.round(pts / team.players.length) : null;
+    }
+
+    function teamSingles(team) {
+      if (!team.players || team.players.length === 0) return 0;
+      return team.players.reduce((s, p) => s + (p.vic || 0), 0);
+    }
+
+    function teamDoubles(team) {
+      return team.doubles || 0;
+    }
+
+    function teamTotal(team) {
+      return teamSingles(team) + teamDoubles(team);
+    }
+
+    function poolAvg(pool) {
+      const teams = pool.teams.filter(t => !t.na && t.players && t.players.length > 0);
+      if (teams.length === 0) return 0;
+      const allPlayers = teams.flatMap(t => t.players);
+      if (allPlayers.length === 0) return 0;
+      return Math.round(allPlayers.reduce((s, p) => s + getNumericCls(p.cls), 0) / allPlayers.length);
+    }
+
+    function poolAvgTeamPts(pool) {
+      const teams = pool.teams.filter(t => !t.na && t.players && t.players.length > 0);
+      if (teams.length === 0) return 0;
+      const total = teams.reduce((s, t) => s + teamPoints(t), 0);
+      return Math.round(total / teams.length);
+    }
+
+    function sortTeams(teams) {
+      return [...teams].sort((a, b) => {
+        if (a.acbb && !b.acbb) return -1;
+        if (!a.acbb && b.acbb) return 1;
+        if (a.na && !b.na) return 1;
+        if (!a.na && b.na) return -1;
+        const ja = a.journee || 0, jb = b.journee || 0;
+        return ja - jb;
+      });
+    }
+
+    function createVictoryDots(vic) {
+      let html = '';
+      for (let i = 0; i < 3; i++) {
+        html += '<span class="dot ' + (i < vic ? 'win' : 'loss') + '"></span>';
+      }
+      return html;
+    }
+
+    // === State ===
+    let currentPool = 'F1';
+
+    // === Render ===
+    function render(poolKey) {
+      const pool = DATA[poolKey];
+      if (!pool) return;
+      currentPool = poolKey;
+
+      // Pool info bar
+      const poolInfo = document.getElementById('poolInfo');
+      const avgCls = poolAvg(pool);
+      const avgPts = poolAvgTeamPts(pool);
+      poolInfo.innerHTML =
+        '<div class="pool-info-top">' +
+          '<div>' +
+            '<div class="pool-name">' + pool.pool + '</div>' +
+            '<div class="pool-date">' + pool.date + '</div>' +
+          '</div>' +
+          '<span class="level-badge ' + pool.levelClass + '">' + pool.level + '</span>' +
+        '</div>' +
+        '<div class="pool-stats">' +
+          '<div class="pool-stat">' +
+            '<div class="pool-stat-value">' + avgCls + '</div>' +
+            '<div class="pool-stat-label">Moy. Classement</div>' +
+          '</div>' +
+          '<div class="pool-stat">' +
+            '<div class="pool-stat-value">' + avgPts + '</div>' +
+            '<div class="pool-stat-label">Moy. Pts/Équipe</div>' +
+          '</div>' +
+        '</div>';
+
+      // Find ACBB team points for comparison
+      const acbbTeam = pool.teams.find(t => t.acbb);
+      const acbbPts = acbbTeam ? teamPoints(acbbTeam) : null;
+
+      // Sort and render teams
+      const sorted = sortTeams(pool.teams);
+      const content = document.getElementById('content');
+      let html = '';
+
+      sorted.forEach(function(team, idx) {
+        const isAcbb = team.acbb === true;
+        const isExpanded = isAcbb && !team.na;
+        const cardClass = 'team-card' + (isAcbb ? ' acbb' : '') + (isExpanded ? ' expanded' : '');
+        const cardId = poolKey + '_' + idx;
+
+        // N/A team
+        if (team.na) {
+          html += '<div class="' + cardClass + '">' +
+            '<div class="team-header">' +
+              '<div class="team-info">' +
+                '<div class="team-name">' +
+                  (team.journee ? '<span class="journee-badge">J' + team.journee + '</span>' : '') +
+                  (team.domext ? '<span class="domext-tag ' + team.domext.toLowerCase() + '">' + team.domext + '</span>' : '') +
+                  team.name +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="na-message">Résultats non disponibles</div>' +
+          '</div>';
+          return;
+        }
+
+        const pts = teamPoints(team);
+        const avg = teamAvg(team);
+        const total = teamTotal(team);
+        const pointsHighClass = (!isAcbb && acbbPts !== null && pts !== null && pts > acbbPts) ? ' points-high' : '';
+
+        html += '<div class="' + cardClass + '" id="card_' + cardId + '">' +
+          '<div class="team-header" onclick="toggleCard(\'' + cardId + '\')">' +
+            '<div class="team-info">' +
+              '<div class="team-name">' +
+                (isAcbb ? '<span class="acbb-badge">ACBB</span>' : '') +
+                (team.journee ? '<span class="journee-badge">J' + team.journee + '</span>' : '') +
+                (team.domext ? '<span class="domext-tag ' + team.domext.toLowerCase() + '">' + team.domext + '</span>' : '') +
+                team.name +
+              '</div>' +
+            '</div>' +
+            '<div class="team-stats">' +
+              '<div class="stat">' +
+                '<div class="stat-value' + pointsHighClass + '">' + (pts !== null ? pts : '-') + '</div>' +
+                '<div class="stat-label">PTS</div>' +
+              '</div>' +
+              '<div class="stat">' +
+                '<div class="stat-value">' + (avg !== null ? avg : '-') + '</div>' +
+                '<div class="stat-label">MOY</div>' +
+              '</div>' +
+              '<div class="stat">' +
+                '<div class="stat-value">' + total + '/14</div>' +
+                '<div class="stat-label">V.</div>' +
+              '</div>' +
+            '</div>' +
+            '<span class="toggle-icon">▼</span>' +
+          '</div>' +
+          '<div class="team-details">';
+
+        // Player rows
+        team.players.forEach(function(p) {
+          html += '<div class="player-row">' +
+            '<div class="player-name">' +
+              '<span class="player-name-text">' + p.nom + ' ' + p.prenom + '</span>' +
+              '<span class="player-cls">' + formatCls(p.cls) + '</span>' +
+            '</div>' +
+            '<div class="player-victories">' +
+              createVictoryDots(p.vic) +
+              '<span class="vic-count">' + p.vic + '/3</span>' +
+            '</div>' +
+          '</div>';
+        });
+
+        // Doubles row
+        html += '<div class="player-row" style="border-top:2px solid #e5e7eb;margin-top:4px;padding-top:8px">' +
+          '<div class="player-name"><span class="player-name-text" style="font-style:italic">Doubles</span></div>' +
+          '<div class="player-victories">' +
+            '<span class="vic-count">' + teamDoubles(team) + '/2</span>' +
+          '</div>' +
+        '</div>';
+
+        html += '</div></div>';
+      });
+
+      content.innerHTML = html;
+    }
+
+    function toggleCard(cardId) {
+      const card = document.getElementById('card_' + cardId);
+      if (card) card.classList.toggle('expanded');
+    }
+
+    function initTeamSelector() {
+      const pills = document.getElementById('teamPills');
+      const keys = Object.keys(DATA);
+      keys.forEach(function(key) {
+        const btn = document.createElement('button');
+        btn.className = 'team-pill' + (key === currentPool ? ' active' : '');
+        btn.textContent = key;
+        btn.onclick = function() {
+          document.querySelectorAll('.team-pill').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          render(key);
+        };
+        pills.appendChild(btn);
+      });
+    }
+
+    // === Init ===
+    document.addEventListener('DOMContentLoaded', function() {
+      initTeamSelector();
+      render('F1');
+    });
+  </script>
+</body>
+</html>
 
