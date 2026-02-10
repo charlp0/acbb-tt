@@ -499,7 +499,7 @@
   </div>
 
   <script>
-                                        const DATA = {
+                                                        const DATA = {
       "F1": {
         pool: "L08_PN Poule 2", level: "Pré-Nationale", levelClass: "level-pn", date: "7 février 2026",
         teams: [
@@ -728,7 +728,8 @@
           {name:"BOIS COLOMBES S 9",journee:2,domext:"Ext",players:[{nom:"PREVOST",prenom:"Laurent",cls:562,vic:1},{nom:"JACQUET",prenom:"Romain",cls:500,vic:1},{nom:"BOITEL",prenom:"Jérôme",cls:500,vic:0},{nom:"COLLEVILLE",prenom:"Didier",cls:500,vic:0}],doubles:1},
           {name:"LEVALLOIS SPORT 16",journee:3,domext:"Dom",players:[{nom:"MENA",prenom:"Nicolas",cls:691,vic:1},{nom:"AMEDODJI",prenom:"Kwame",cls:586,vic:0},{nom:"HABIAN",prenom:"Franck",cls:514,vic:0},{nom:"BRUNSCHWIG",prenom:"Franck",cls:624,vic:1}],doubles:0},
           {name:"ISSEENNE E P 11",journee:4,domext:"Ext",players:[{nom:"LE ROY",prenom:"Martial",cls:832,vic:2},{nom:"JACK-ROCH",prenom:"Anthony",cls:585,vic:2},{nom:"MIRIBEL DURHIN",prenom:"Giulia",cls:765,vic:3},{nom:"BAILLY",prenom:"Ewan",cls:745,vic:3}],doubles:2},
-          {name:"ASNIERES TT 10",journee:5,domext:"Dom",players:[{nom:"VACCHAREZZA",prenom:"Victor",cls:544,vic:3},{nom:"MARRAKCHI",prenom:"Youssef",cls:582,vic:2},{nom:"DOUELLE",prenom:"Valentin",cls:549,vic:2},{nom:"LIROU",prenom:"Baptiste",cls:512,vic:3}],doubles:1}
+          {name:"ASNIERES TT 10",journee:5,domext:"Dom",players:[{nom:"VACCHAREZZA",prenom:"Victor",cls:544,vic:3},{nom:"MARRAKCHI",prenom:"Youssef",cls:582,vic:2},{nom:"DOUELLE",prenom:"Valentin",cls:549,vic:2},{nom:"LIROU",prenom:"Baptiste",cls:512,vic:3}],doubles:1},
+          {name:"CLICHY CS 3",journee:7,domext:"Ext",na:true,players:[],doubles:0}
         ]
       },
       "M17": {
@@ -737,6 +738,7 @@
           {name:"BOULOGNE BILLAN 17",acbb:true,players:[{nom:"LATIMIER",prenom:"Guillaume",cls:500,vic:0},{nom:"KATH",prenom:"Julian",cls:500,vic:1},{nom:"BAUBY",prenom:"Marc",cls:500,vic:0},{nom:"LIZAMBARD",prenom:"Romain",cls:500,vic:0}],doubles:0},
           {name:"MEUDON AS 4",journee:1,domext:"Ext",players:[{nom:"JUMEAU",prenom:"Cyril",cls:954,vic:3},{nom:"GIRET",prenom:"Bruno",cls:876,vic:2},{nom:"BOUTRY",prenom:"Joanna",cls:867,vic:3},{nom:"PRUVOST",prenom:"Sandra",cls:857,vic:3}],doubles:2},
           {name:"RUEIL ATHLETIC 17",journee:2,domext:"Dom",players:[{nom:"DIAS",prenom:"Alexandre",cls:563,vic:0},{nom:"MORIN",prenom:"Pascal",cls:629,vic:0},{nom:"PETTON",prenom:"Paul",cls:595,vic:0},{nom:"ALARCON",prenom:"Jean-Marc",cls:504,vic:0}],doubles:0},
+          {name:"LA GARENNE COLO 4",journee:3,domext:"Ext",na:true,players:[],doubles:0},
           {name:"VOLTIGEURS 3",journee:4,domext:"Dom",players:[{nom:"BENDA",prenom:"Arthur",cls:657,vic:3},{nom:"COPIN",prenom:"Jérôme",cls:706,vic:3},{nom:"BIGOT",prenom:"Philippe",cls:711,vic:3},{nom:"GIGNOUX",prenom:"Marc",cls:712,vic:3}],doubles:2},
           {name:"CS Clichy TT (4)",journee:6,domext:"Ext",players:[{nom:"BRIS",prenom:"Balthazar",cls:587,vic:0},{nom:"TIMSIT",prenom:"Lisandro",cls:562,vic:0},{nom:"PARADIS",prenom:"Frederic",cls:601,vic:1},{nom:"DUMOUX",prenom:"Alexandre",cls:541,vic:0}],doubles:0},
           {name:"Courbevoie STT 13",journee:7,domext:"Dom",players:[{nom:"XIE",prenom:"Dianzhong",cls:634,vic:2},{nom:"LANIEWSKI",prenom:"Wojciech",cls:833,vic:3},{nom:"SAID MOHAMED",prenom:"Seif",cls:671,vic:3},{nom:"FERRER",prenom:"Frederic",cls:691,vic:3}],doubles:2}
@@ -804,8 +806,6 @@
       return [...teams].sort((a, b) => {
         if (a.acbb && !b.acbb) return -1;
         if (!a.acbb && b.acbb) return 1;
-        if (a.na && !b.na) return 1;
-        if (!a.na && b.na) return -1;
         const ja = a.journee || 0, jb = b.journee || 0;
         return ja - jb;
       });
@@ -973,4 +973,3 @@
   </script>
 </body>
 </html>
-
