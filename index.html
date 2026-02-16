@@ -3,138 +3,186 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACBB TT - Championnat par Équipe v2</title>
+  <title>ACBB TT - Championnat par Equipe</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     :root {
-      --blue: #2d5aa0;
-      --blue-dark: #1a3a6b;
-      --blue-light: #e8f0f8;
+      --blue: #2563eb;
+      --blue-dark: #1e3a5f;
+      --blue-light: #eff6ff;
       --blue-lighter: #f0f5fb;
+      --blue-mid: #3b82f6;
       --orange: #f97316;
       --green: #22c55e;
+      --green-dark: #16a34a;
       --red: #ef4444;
+      --red-dark: #dc2626;
       --gray: #6b7280;
       --gray-light: #f3f4f6;
       --gray-dark: #374151;
+      --gray-border: #e5e7eb;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
     }
-    
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background-color: #ffffff;
+      background-color: #f8fafc;
       color: #1f2937;
       line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
-    
+
     .container {
       max-width: 600px;
       margin: 0 auto;
+      background: white;
+      min-height: 100vh;
     }
-    
-    /* Header */
+
+    /* ===== HEADER - cleaner, lighter ===== */
     .header {
-      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 100%);
+      background: linear-gradient(135deg, var(--blue-dark) 0%, #2d5aa0 50%, var(--blue) 100%);
       color: white;
-      padding: 20px 16px;
+      padding: 16px 20px;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-md);
     }
-    
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .header h1 {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 4px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
     }
-    
-    .header p {
-      font-size: 14px;
-      opacity: 0.95;
+
+    .header-subtitle {
+      font-size: 12px;
+      opacity: 0.8;
       font-weight: 500;
+      margin-top: 2px;
     }
-    
-    /* Team Selector Sticky */
+
+    .header-logo {
+      font-size: 28px;
+      opacity: 0.9;
+    }
+
+    /* ===== TEAM SELECTOR - with result indicators ===== */
     .team-selector {
       position: sticky;
-      top: 74px;
+      top: 62px;
       z-index: 99;
       background: white;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--gray-border);
       overflow-x: auto;
       overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
-      padding: 0;
+      scrollbar-width: none;
     }
-    
+
+    .team-selector::-webkit-scrollbar {
+      display: none;
+    }
+
     .team-pills {
       display: flex;
-      gap: 8px;
-      padding: 12px 16px;
+      gap: 6px;
+      padding: 10px 16px;
       min-width: max-content;
     }
-    
+
     .team-pill {
-      padding: 8px 16px;
+      padding: 6px 14px;
       border-radius: 20px;
       background-color: var(--gray-light);
-      border: 2px solid #e5e7eb;
+      border: 2px solid transparent;
       color: var(--gray-dark);
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s ease;
       flex-shrink: 0;
+      position: relative;
     }
-    
+
     .team-pill:hover {
       border-color: var(--blue);
       color: var(--blue);
     }
-    
+
     .team-pill.active {
       background-color: var(--blue);
       border-color: var(--blue);
       color: white;
     }
-    
-    /* Pool Info Bar */
+
+    /* Result indicator dot on pills */
+    .pill-indicator {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+
+    .pill-indicator.win {
+      background-color: var(--green);
+    }
+
+    .pill-indicator.loss {
+      background-color: var(--red);
+    }
+
+    .pill-indicator.mixed {
+      background: linear-gradient(135deg, var(--green) 50%, var(--red) 50%);
+    }
+
+    /* ===== POOL INFO BAR ===== */
     .pool-info {
       background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
-      padding: 16px;
+      padding: 14px 16px;
       border-bottom: 2px solid var(--blue);
-      margin: 0 0 12px 0;
-      border-radius: 0 0 8px 8px;
+      margin: 0;
     }
 
     .pool-info-top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
+      align-items: flex-start;
+      gap: 8px;
     }
 
     .pool-name {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--blue-dark);
-    }
-
-    .pool-date {
-      font-size: 12px;
-      color: var(--gray);
-      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
     }
 
     .pool-stats {
       display: flex;
-      gap: 12px;
+      gap: 8px;
       margin-top: 10px;
       padding-top: 10px;
       border-top: 1px solid #dde3ea;
@@ -142,323 +190,537 @@
 
     .pool-stat {
       background: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: 1px solid #e5e7eb;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--gray-border);
       text-align: center;
       flex: 1;
     }
 
     .pool-stat-value {
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--blue-dark);
     }
 
     .pool-stat-label {
-      font-size: 10px;
+      font-size: 9px;
       color: var(--gray);
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-top: 2px;
     }
-    
+
     .level-badge {
       display: inline-block;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      padding: 4px 8px;
+      padding: 3px 8px;
       border-radius: 4px;
       text-transform: uppercase;
-    }
-    
-    .level-regional {
-      background-color: #dbeafe;
-      color: #1e40af;
-    }
-    
-    .level-prereg {
-      background-color: #fecaca;
-      color: #991b1b;
-    }
-    
-    .level-d1 {
-      background-color: #c7d2fe;
-      color: #3730a3;
-    }
-    
-    .level-d2 {
-      background-color: #d1d5db;
-      color: #374151;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    .level-nat2 {
-      background-color: #fef3c7;
-      color: #92400e;
-    }
+    .level-regional { background-color: #dbeafe; color: #1e40af; }
+    .level-prereg { background-color: #fecaca; color: #991b1b; }
+    .level-d1 { background-color: #c7d2fe; color: #3730a3; }
+    .level-d2 { background-color: #d1d5db; color: #374151; }
+    .level-nat2 { background-color: #fef3c7; color: #92400e; }
+    .level-pn { background-color: #d1fae5; color: #065f46; }
+    .level-r1 { background-color: #bae6fd; color: #0c4a6e; }
 
-    .level-pn {
-      background-color: #d1fae5;
-      color: #065f46;
-    }
-
-    .level-r1 {
-      background-color: #bae6fd;
-      color: #0c4a6e;
-    }
-
-    
-    
-    /* Team Card */
+    /* ===== TEAM CARD ===== */
     .team-card {
-      border: 2px solid #e5e7eb;
-      border-radius: 8px;
-      margin: 0 16px 12px 16px;
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius);
+      margin: 10px 12px;
       background-color: white;
       overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s ease;
     }
-    
+
     .team-card.acbb {
-      border-color: var(--blue);
+      border: 2px solid var(--blue);
+      box-shadow: 0 2px 12px rgba(37, 99, 235, 0.12);
     }
-    
+
     .team-header {
-      padding: 12px 16px;
-      background-color: #f9fafb;
+      padding: 12px 14px;
+      background-color: #fafbfc;
       cursor: pointer;
       user-select: none;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      transition: background-color 0.15s ease;
     }
-    
+
+    .team-header:active {
+      background-color: #f0f1f3;
+    }
+
     .team-card.acbb .team-header {
       background-color: var(--blue-light);
     }
-    
+
     .team-info {
       flex: 1;
       min-width: 0;
     }
-    
+
     .team-name {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: #1f2937;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      flex-wrap: wrap;
     }
-    
+
     .acbb-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       background-color: var(--blue);
       color: white;
-      font-size: 10px;
-      font-weight: 700;
+      font-size: 9px;
+      font-weight: 800;
       padding: 2px 6px;
-      border-radius: 3px;
+      border-radius: 4px;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    
+
     .journee-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       background-color: var(--gray-dark);
       color: white;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
       min-width: 28px;
-      text-align: center;
     }
-    
+
     .domext-tag {
       display: inline-block;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 6px;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 5px;
       border-radius: 3px;
       text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
-    
+
     .domext-tag.dom {
       background-color: #dcfce7;
       color: #166534;
     }
-    
+
     .domext-tag.ext {
       background-color: #dbeafe;
       color: #1e40af;
     }
-    
+
+    /* ===== TEAM HEADER STATS - cleaner layout ===== */
     .team-stats {
       display: flex;
-      gap: 12px;
-      font-size: 12px;
+      gap: 6px;
       flex-shrink: 0;
+      align-items: center;
     }
 
-    .stat {
-      text-align: center;
-      min-width: 40px;
+    .stat-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: white;
+      border: 1px solid var(--gray-border);
+      min-width: 44px;
     }
 
-    .stat-label {
-      font-size: 10px;
+    .team-card.acbb .stat-chip {
+      background: white;
+    }
+
+    .stat-chip-value {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--blue-dark);
+      line-height: 1.1;
+    }
+
+    .stat-chip-label {
+      font-size: 8px;
       color: var(--gray);
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
-      margin-top: 2px;
+      letter-spacing: 0.5px;
+      margin-top: 1px;
     }
 
-    .stat-value {
-      font-size: 16px;
-      font-weight: 700;
-      color: #1f2937;
-      line-height: 1.2;
-    }
-    
-    .stat-value.points-high {
+    .stat-chip-value.points-high {
       color: var(--orange);
     }
-    
+
     .toggle-icon {
-      font-size: 20px;
-      color: var(--gray);
+      font-size: 18px;
+      color: #9ca3af;
       transition: transform 0.3s ease;
       flex-shrink: 0;
     }
-    
+
     .team-card.expanded .toggle-icon {
       transform: rotate(180deg);
     }
-    
-    /* Team Details */
+
+    /* ===== VICTORY GAUGE (replaces vic-bar in header) ===== */
+    .vic-gauge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .vic-gauge-track {
+      width: 40px;
+      height: 8px;
+      background-color: #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .vic-gauge-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+
+    .vic-gauge-fill.good { background: linear-gradient(90deg, #22c55e, #16a34a); }
+    .vic-gauge-fill.medium { background: linear-gradient(90deg, #f97316, #ea580c); }
+    .vic-gauge-fill.low { background: linear-gradient(90deg, #ef4444, #dc2626); }
+
+    .vic-gauge-text {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gray-dark);
+      min-width: 28px;
+      white-space: nowrap;
+    }
+
+    /* ===== TEAM DETAILS ===== */
     .team-details {
       display: none;
-      border-top: 1px solid #e5e7eb;
-      padding: 12px 16px;
-      background-color: #fafafa;
+      border-top: 1px solid var(--gray-border);
+      padding: 10px 14px;
+      background-color: #fafbfc;
     }
-    
+
     .team-card.expanded .team-details {
       display: block;
     }
-    
+
     .na-message {
       padding: 16px;
       text-align: center;
       color: var(--gray);
-      font-size: 14px;
+      font-size: 13px;
       font-style: italic;
     }
-    
+
+    /* ===== PLAYER ROW - improved readability ===== */
     .player-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid #e5e7eb;
+      padding: 7px 0;
+      border-bottom: 1px solid #f0f1f3;
       font-size: 13px;
     }
-    
+
     .player-row:last-child {
       border-bottom: none;
     }
-    
+
     .player-name {
       flex: 1;
       min-width: 0;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .player-name-text {
       font-weight: 600;
       color: #1f2937;
+      font-size: 13px;
     }
 
     .player-cls {
-      font-size: 12px;
-      color: var(--gray);
+      font-size: 11px;
+      color: #9ca3af;
       font-weight: 500;
     }
 
+    /* ===== VICTORY MINI-BARS (replaces dots) ===== */
     .player-victories {
       display: flex;
-      gap: 4px;
+      gap: 3px;
       align-items: center;
       flex-shrink: 0;
+    }
+
+    .vic-mini-bar {
+      width: 6px;
+      height: 18px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .vic-mini-bar.win {
+      background: linear-gradient(180deg, #22c55e, #16a34a);
+    }
+
+    .vic-mini-bar.loss {
+      background-color: #e5e7eb;
     }
 
     .vic-count {
       font-size: 13px;
-      font-weight: 700;
-      min-width: 16px;
-      text-align: center;
-    }
-    
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    
-    .dot.win {
-      background-color: var(--green);
-    }
-    
-    .dot.loss {
-      background-color: var(--red);
-    }
-    
-    /* Legend */
-    .legend {
-      padding: 16px;
-      background-color: var(--gray-light);
-      border-top: 1px solid #e5e7eb;
-      font-size: 12px;
+      font-weight: 800;
+      min-width: 28px;
+      text-align: right;
       color: var(--gray-dark);
-      margin-top: 20px;
     }
-    
-    .legend-item {
+
+    .vic-count.perfect {
+      color: var(--green-dark);
+    }
+
+    .vic-count.zero {
+      color: #d1d5db;
+    }
+
+    /* ===== JOURNEE SUB-CARDS ===== */
+    .journee-subcard {
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius-sm);
+      margin: 6px 0;
+      background-color: white;
+      overflow: hidden;
+    }
+
+    .journee-subcard .journee-header {
+      padding: 10px 12px;
+      background-color: #fafbfc;
+      cursor: pointer;
+      user-select: none;
       display: flex;
+      justify-content: space-between;
       align-items: center;
       gap: 8px;
-      margin-bottom: 8px;
+      font-size: 13px;
+      transition: background-color 0.15s ease;
     }
-    
-    .legend-item:last-child {
-      margin-bottom: 0;
+
+    .journee-subcard .journee-header:active {
+      background-color: #eef2f7;
     }
-    
-    .legend-icon {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
+
+    .journee-subcard.expanded .journee-header {
+      background-color: #eef2f7;
+      border-bottom: 1px solid var(--gray-border);
+    }
+
+    .journee-details {
+      display: none;
+      padding: 6px 12px;
+      background-color: #fafbfc;
+    }
+
+    .journee-subcard.expanded .journee-details {
+      display: block;
+    }
+
+    .journee-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .journee-opponent {
+      font-size: 12px;
+      color: var(--gray);
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .journee-opponent-prominent {
+      font-size: 12px;
+      color: var(--gray-dark);
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .journee-stats {
+      display: flex;
+      gap: 6px;
       flex-shrink: 0;
+      align-items: center;
     }
-    
+
+    .journee-stats .stat-chip {
+      min-width: 38px;
+      padding: 3px 6px;
+    }
+
+    .journee-stats .stat-chip-value {
+      font-size: 13px;
+    }
+
+    .journee-stats .stat-chip-label {
+      font-size: 7px;
+    }
+
+    .journee-subcard .toggle-icon {
+      font-size: 14px;
+    }
+
+    /* Trend indicators */
+    .trend-up { color: var(--green); font-size: 10px; font-weight: 700; margin-left: 1px; }
+    .trend-down { color: var(--red); font-size: 10px; font-weight: 700; margin-left: 1px; }
+    .trend-same { color: var(--gray); font-size: 10px; font-weight: 700; margin-left: 1px; }
+
+    /* Dom/Ext sub-card left border */
+    .journee-subcard.domext-dom .journee-header {
+      border-left: 3px solid var(--green);
+    }
+    .journee-subcard.domext-ext .journee-header {
+      border-left: 3px solid var(--blue-mid);
+    }
+
+    /* Match score badge */
+    .match-score {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .match-score.win {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .match-score.loss {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    .match-score.draw {
+      background-color: #f3f4f6;
+      color: #6b7280;
+    }
+
+    /* Expand all button */
+    .expand-all-btn {
+      display: inline-block;
+      font-size: 11px;
+      color: var(--blue);
+      cursor: pointer;
+      font-weight: 600;
+      padding: 4px 0;
+      margin-bottom: 4px;
+      user-select: none;
+    }
+
+    .expand-all-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* Journee range badge */
+    .journee-range {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--blue);
+      background-color: var(--blue-light);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
     /* Content Section */
     .content {
       display: none;
       padding-bottom: 20px;
     }
-    
+
     .content.active {
       display: block;
     }
-    
+
+    /* Doubles row separator */
+    .doubles-row {
+      border-top: 2px solid #e5e7eb;
+      margin-top: 4px;
+      padding-top: 6px;
+    }
+
+    /* ===== LEGEND ===== */
+    .legend {
+      padding: 14px 16px;
+      background-color: #f8fafc;
+      border-top: 1px solid var(--gray-border);
+      font-size: 11px;
+      color: var(--gray);
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-bar {
+      width: 6px;
+      height: 14px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
     /* Empty state */
     .empty-state {
       padding: 40px 16px;
       text-align: center;
       color: var(--gray);
+    }
+
+    /* Smooth expand animation */
+    @media (prefers-reduced-motion: no-preference) {
+      .team-card, .journee-subcard {
+        transition: box-shadow 0.2s ease;
+      }
     }
   </style>
 </head>
@@ -466,282 +728,287 @@
   <div class="container">
     <!-- Header -->
     <div class="header">
-      <h1>ACBB TT - Championnat par Equipe</h1>
-      <p>Phase 2 - J1 - Saison 2025/2026</p>
+      <div class="header-row">
+        <div>
+          <h1>ACBB Tennis de Table</h1>
+          <div class="header-subtitle" id="headerSubtitle">Championnat par Equipe - Phase 2</div>
+        </div>
+        <div class="header-logo">&#127955;</div>
+      </div>
     </div>
-    
+
     <!-- Team Selector -->
     <div class="team-selector">
       <div class="team-pills" id="teamPills"></div>
     </div>
-    
+
     <!-- Pool Info Bar -->
     <div class="pool-info" id="poolInfo"></div>
-    
+
     <!-- Content Areas -->
     <div id="content"></div>
-    
+
     <!-- Legend -->
     <div class="legend">
       <div class="legend-item">
-        <div class="legend-icon" style="background-color: var(--green);"></div>
+        <div class="legend-bar" style="background:linear-gradient(180deg, #22c55e, #16a34a);"></div>
         <span>Victoire</span>
       </div>
       <div class="legend-item">
-        <div class="legend-icon" style="background-color: var(--red);"></div>
-        <span>Défaite</span>
+        <div class="legend-bar" style="background-color: #e5e7eb;"></div>
+        <span>Defaite</span>
       </div>
       <div class="legend-item">
-        <span style="color: var(--orange); font-weight: 700;">◆ Points</span>
-        <span>= adversaire plus fort</span>
+        <span style="color: var(--orange); font-weight: 700;">&#9670;</span>
+        <span>Plus fort que ACBB</span>
       </div>
     </div>
   </div>
 
   <script>
-                                                        const DATA = {
+                                                                                                const DATA = {
       "F1": {
-        pool: "L08_PN Poule 2", level: "Pré-Nationale", levelClass: "level-pn", date: "7 février 2026",
+        pool: "L08_PN Poule 2", level: "Pré-Nationale", levelClass: "level-pn",
         teams: [
-          {name:"BOULOGNE BILLANCOURT 1",acbb:true,players:[{nom:"MERIC",prenom:"Marion",cls:1183,vic:3},{nom:"LESPINASSE",prenom:"Joanne",cls:970,vic:1},{nom:"LESCAUDRON",prenom:"Noemie",cls:1085,vic:2},{nom:"SAVAN",prenom:"Vuthny",cls:960,vic:1}],doubles:1},
-          {name:"SQY PING 2",journee:1,domext:"Dom",players:[{nom:"BESSETTE",prenom:"Aurore",cls:957,vic:1},{nom:"MULLIEZ",prenom:"Albane",cls:773,vic:0},{nom:"MOINGEON",prenom:"Claire",cls:1143,vic:2},{nom:"CHIRI",prenom:"Bissan",cls:1148,vic:2}],doubles:1},
-          {name:"JUMP 1",journee:2,domext:"Ext",players:[{nom:"BELINSKI",prenom:"Anna",cls:556,vic:0},{nom:"CHAMPEIL-DESPLATS",prenom:"Veronique",cls:797,vic:1},{nom:"LYTRAS",prenom:"Hélène",cls:527,vic:0},{nom:"FLABBEE",prenom:"Liliane",cls:518,vic:0}],doubles:0},
-          {name:"CORBEIL-ESSONNES 1",journee:3,domext:"Dom",players:[{nom:"BENAHMED",prenom:"Yasmine",cls:936,vic:3},{nom:"ANUSHAN",prenom:"Angelique",cls:1059,vic:3},{nom:"ANUSHAN",prenom:"Amandine",cls:1177,vic:3},{nom:"LEFEVRE",prenom:"Tessa",cls:1076,vic:2}],doubles:2},
-          {name:"CHATENAY ASVTT 1",journee:4,domext:"Ext",players:[{nom:"LEFORT",prenom:"Emmanuelle",cls:1023,vic:0},{nom:"ZHOU",prenom:"Jie",cls:966,vic:0},{nom:"SCHWITZGABEL",prenom:"Lara",cls:1072,vic:1},{nom:"HELLEGOUARCH",prenom:"Helene",cls:828,vic:0}],doubles:0},
-          {name:"FONTENAY USTT 3",journee:5,domext:"Dom",players:[{nom:"MOND",prenom:"Amelie",cls:930,vic:3},{nom:"REY",prenom:"Valentine",cls:1224,vic:3},{nom:"CHARTIER",prenom:"Aurelia",cls:793,vic:3},{nom:"VALVASORI",prenom:"Charlotte",cls:823,vic:2}],doubles:2},
-          {name:"PALAISEAU US 1",journee:6,domext:"Dom",players:[{nom:"LEBOURGEOIS",prenom:"Aliénor",cls:1192,vic:3},{nom:"AUGIER",prenom:"Elisa",cls:1038,vic:0},{nom:"VINCENT",prenom:"Lilou",cls:950,vic:1},{nom:"COULAIS NOZUE",prenom:"Yuzuki",cls:921,vic:0}],doubles:1},
-          {name:"LEVALLOIS SPORT 2",journee:7,domext:"Ext",players:[{nom:"ROBINI",prenom:"Ines",cls:1315,vic:2},{nom:"CHAMBON",prenom:"Amelie",cls:1135,vic:2},{nom:"GREMILLON-BACHELET",prenom:"Lilou",cls:1042,vic:1},{nom:"THEPSUWAN",prenom:"Kritsornsawan",cls:1181,vic:3}],doubles:1}
+          {name:"BOULOGNE BILLANCOURT 1",acbb:true,calendar:{1:{opponent:"SQY PING 2",domext:"Dom"},2:{opponent:"JUMP 1",domext:"Ext"},3:{opponent:"CORBEIL-ESSONNES 1",domext:"Dom"},4:{opponent:"CHATENAY ASVTT 1",domext:"Ext"},5:{opponent:"FONTENAY USTT 3",domext:"Dom"},6:{opponent:"PALAISEAU US 1",domext:"Dom"},7:{opponent:"LEVALLOIS SPORT 2",domext:"Ext"}},journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"MERIC",prenom:"Marion",cls:1183,vic:3},{nom:"LESPINASSE",prenom:"Joanne",cls:970,vic:1},{nom:"LESCAUDRON",prenom:"Noemie",cls:1085,vic:2},{nom:"SAVAN",prenom:"Vuthny",cls:960,vic:1}],doubles:1,match_score:22,opp_score:20,opponent:"SQY PING 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"MERIC",prenom:"Marion",cls:1183,vic:2},{nom:"DEBBARH",prenom:"Rita",cls:687,vic:1},{nom:"LESCAUDRON",prenom:"Noemie",cls:1085,vic:2},{nom:"SAVAN",prenom:"Vuthny",cls:960,vic:3}],doubles:2,match_score:24,opp_score:18,opponent:"JUMP 1"}]},
+          {name:"SQY PING 2",acbbJournee:1,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BESSETTE",prenom:"Aurore",cls:957,vic:1},{nom:"MULLIEZ",prenom:"Albane",cls:773,vic:0},{nom:"MOINGEON",prenom:"Claire",cls:1143,vic:2},{nom:"CHIRI",prenom:"Bissan",cls:1148,vic:2}],doubles:1,match_score:20,opp_score:22,opponent:"BOULOGNE BILLANCOURT 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"BUIL",prenom:"Julie",cls:"N241",vic:2},{nom:"BESSETTE",prenom:"Aurore",cls:957,vic:0},{nom:"LE DU",prenom:"Aenor",cls:682,vic:0},{nom:"MULLIEZ",prenom:"Albane",cls:773,vic:0}],doubles:1,match_score:17,opp_score:25,opponent:"LEVALLOIS SPORT 2"}]},
+          {name:"JUMP 1",acbbJournee:2,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BELINSKI",prenom:"Anna",cls:556,vic:0},{nom:"CHAMPEIL-DESPLATS",prenom:"Veronique",cls:797,vic:1},{nom:"LYTRAS",prenom:"Hélène",cls:527,vic:0},{nom:"FLABBEE",prenom:"Liliane",cls:518,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"FONTENAY USTT 3"},{journee:2,date:"14 févr. 2026",players:[{nom:"CHEN",prenom:"Mengmeng",cls:1234,vic:3},{nom:"GARCIA",prenom:"Corinne",cls:808,vic:1},{nom:"BLEUZE",prenom:"Carole",cls:885,vic:0},{nom:"CHAMPEIL-DESPLATS",prenom:"Veronique",cls:797,vic:0}],doubles:0,match_score:18,opp_score:24,opponent:"BOULOGNE BILLANCOURT 1"}]},
+          {name:"CORBEIL-ESSONNES 1",acbbJournee:3,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BENAHMED",prenom:"Yasmine",cls:936,vic:3},{nom:"ANUSHAN",prenom:"Angelique",cls:1059,vic:3},{nom:"ANUSHAN",prenom:"Amandine",cls:1177,vic:3},{nom:"LEFEVRE",prenom:"Tessa",cls:1076,vic:2}],doubles:2,match_score:27,opp_score:15,opponent:"CHATENAY ASVTT 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"ANUSHAN",prenom:"Angelique",cls:1059,vic:1},{nom:"BENAHMED",prenom:"Yasmine",cls:936,vic:2},{nom:"LEFEVRE",prenom:"Tessa",cls:1076,vic:2},{nom:"ANUSHAN",prenom:"Amandine",cls:1177,vic:2}],doubles:1,match_score:22,opp_score:16,opponent:"FONTENAY USTT 3"}]},
+          {name:"CHATENAY ASVTT 1",acbbJournee:4,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"LEFORT",prenom:"Emmanuelle",cls:1023,vic:0},{nom:"ZHOU",prenom:"Jie",cls:966,vic:0},{nom:"SCHWITZGABEL",prenom:"Lara",cls:1072,vic:1},{nom:"HELLEGOUARCH",prenom:"Helene",cls:828,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"CORBEIL-ESSONNES 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"LEFORT",prenom:"Emmanuelle",cls:1023,vic:2},{nom:"BABONNEAU",prenom:"Carine",cls:500,vic:0},{nom:"HAMRANI",prenom:"Maud",cls:539,vic:0},{nom:"GUITEL",prenom:"Johanne",cls:1059,vic:1}],doubles:0,match_score:17,opp_score:25,opponent:"PALAISEAU US 1"}]},
+          {name:"FONTENAY USTT 3",acbbJournee:5,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"MOND",prenom:"Amelie",cls:930,vic:3},{nom:"REY",prenom:"Valentine",cls:1224,vic:3},{nom:"CHARTIER",prenom:"Aurelia",cls:793,vic:3},{nom:"VALVASORI",prenom:"Charlotte",cls:823,vic:2}],doubles:2,match_score:27,opp_score:15,opponent:"JUMP 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"REY",prenom:"Valentine",cls:1224,vic:3},{nom:"MOND",prenom:"Amelie",cls:930,vic:0},{nom:"CHARTIER",prenom:"Aurelia",cls:793,vic:2},{nom:"Joueur absent",prenom:"",cls:0,vic:0}],doubles:1,match_score:16,opp_score:22,opponent:"CORBEIL-ESSONNES 1"}]},
+          {name:"PALAISEAU US 1",acbbJournee:6,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"LEBOURGEOIS",prenom:"Aliénor",cls:1192,vic:3},{nom:"AUGIER",prenom:"Elisa",cls:1038,vic:0},{nom:"VINCENT",prenom:"Lilou",cls:950,vic:1},{nom:"COULAIS NOZUE",prenom:"Yuzuki",cls:921,vic:0}],doubles:1,match_score:19,opp_score:23,opponent:"LEVALLOIS SPORT 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"LEBOURGEOIS",prenom:"Aliénor",cls:1192,vic:3},{nom:"VINCENT",prenom:"Lilou",cls:950,vic:2},{nom:"COULAIS NOZUE",prenom:"Yuzuki",cls:921,vic:2},{nom:"LEBOURGEOIS",prenom:"Lea",cls:754,vic:2}],doubles:2,match_score:25,opp_score:17,opponent:"CHATENAY ASVTT 1"}]},
+          {name:"LEVALLOIS SPORT 2",acbbJournee:7,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"ROBINI",prenom:"Ines",cls:1315,vic:2},{nom:"CHAMBON",prenom:"Amelie",cls:1135,vic:2},{nom:"GREMILLON-BACHELET",prenom:"Lilou",cls:1042,vic:1},{nom:"THEPSUWAN",prenom:"Kritsornsawan",cls:1181,vic:3}],doubles:1,match_score:23,opp_score:19,opponent:"PALAISEAU US 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"CHAMBON",prenom:"Amelie",cls:1135,vic:2},{nom:"GREMILLON-BACHELET",prenom:"Lilou",cls:1042,vic:2},{nom:"ROBINI",prenom:"Ines",cls:1315,vic:3},{nom:"THEPSUWAN",prenom:"Kritsornsawan",cls:1181,vic:3}],doubles:1,match_score:25,opp_score:17,opponent:"SQY PING 2"}]}
         ]
       },
       "F2": {
-        pool: "L08_R1 Poule 3", level: "Régional 1", levelClass: "level-r1", date: "7 février 2026",
+        pool: "L08_R1 Poule 3", level: "Régional 1", levelClass: "level-r1",
         teams: [
-          {name:"BOULOGNE BILLANCOURT 2",acbb:true,players:[{nom:"LENNON",prenom:"Clémence",cls:879,vic:1},{nom:"DEBBARH",prenom:"Rita",cls:687,vic:0},{nom:"BATT",prenom:"Maylis",cls:792,vic:2},{nom:"LEVIONNOIS",prenom:"Alexia",cls:618,vic:0}],doubles:0},
-          {name:"JUMP 2",journee:1,domext:"Dom",players:[{nom:"CHEN",prenom:"Mengmeng",cls:1234,vic:3},{nom:"DUJARRIER",prenom:"Lou",cls:877,vic:3},{nom:"BLEUZE",prenom:"Carole",cls:885,vic:1},{nom:"DESCAMPS",prenom:"Flora",cls:742,vic:2}],doubles:2},
-          {name:"VITRY ES 1",journee:2,domext:"Ext",players:[{nom:"CHEN FENG",prenom:"Lollia",cls:1088,vic:3},{nom:"CHEN FENG",prenom:"Loanna",cls:877,vic:3},{nom:"GOUIN",prenom:"Isabelle",cls:632,vic:2},{nom:"BONNEFOY-GRAILLOT",prenom:"Maryse",cls:869,vic:3}],doubles:1},
-          {name:"PALAISEAU US 2",journee:3,domext:"Dom",players:[{nom:"LEBOURGEOIS",prenom:"Lea",cls:754,vic:1},{nom:"ANDRIEUX",prenom:"Laora",cls:591,vic:0},{nom:"ANDRIEUX",prenom:"Leelouane",cls:656,vic:0},{nom:"POINSOT",prenom:"Loise",cls:500,vic:0}],doubles:1},
-          {name:"MONTROUGE SM 1",journee:4,domext:"Dom",players:[{nom:"BITBOL",prenom:"Kelly",cls:907,vic:0},{nom:"BLONDEAU",prenom:"Perrine",cls:763,vic:0},{nom:"LAIDAOUI",prenom:"Thiziri",cls:751,vic:0},{nom:"HOURI",prenom:"Nathalie",cls:578,vic:0}],doubles:1},
-          {name:"ATT XV 1",journee:5,domext:"Ext",players:[{nom:"LESCAUDRON",prenom:"Florence",cls:847,vic:1},{nom:"ANGEBAULT",prenom:"Mathilde",cls:553,vic:1},{nom:"BRADELLE",prenom:"Anne",cls:573,vic:0},{nom:"BURGARD-LOTZ",prenom:"Laurine",cls:612,vic:1}],doubles:1},
-          {name:"ANTONY SPORT TT 2",journee:6,domext:"Dom",players:[{nom:"BARTHELEMY",prenom:"Lou Mai",cls:860,vic:3},{nom:"DOUCHET",prenom:"Anabelle",cls:890,vic:3},{nom:"AUGOUVERNAIRE",prenom:"Keity",cls:968,vic:3},{nom:"AHMAD AL HADDAD",prenom:"Maryam",cls:513,vic:3}],doubles:1},
-          {name:"BOURGETIN CTT 2",journee:7,domext:"Ext",players:[{nom:"BACCOUCHE",prenom:"Zeineb",cls:962,vic:3},{nom:"POURLIER",prenom:"Gwendoline",cls:1037,vic:2},{nom:"NGUYEN",prenom:"Afrah",cls:983,vic:3},{nom:"BACCOUCHE",prenom:"Tesnyme",cls:591,vic:1}],doubles:1}
+          {name:"BOULOGNE BILLANCOURT 2",acbb:true,calendar:{1:{opponent:"JUMP 2",domext:"Dom"},2:{opponent:"VITRY ES 1",domext:"Ext"},3:{opponent:"PALAISEAU US 2",domext:"Dom"},4:{opponent:"MONTROUGE SM 1",domext:"Dom"},5:{opponent:"ATT XV 1",domext:"Ext"},6:{opponent:"ANTONY SPORT TT 2",domext:"Dom"},7:{opponent:"BOURGETIN CTT 2",domext:"Ext"}},journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"LENNON",prenom:"Clémence",cls:879,vic:1},{nom:"DEBBARH",prenom:"Rita",cls:687,vic:0},{nom:"BATT",prenom:"Maylis",cls:792,vic:2},{nom:"LEVIONNOIS",prenom:"Alexia",cls:618,vic:0}],doubles:0,match_score:17,opp_score:25,opponent:"JUMP 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"LE BOURG",prenom:"Virginie",cls:1329,vic:2},{nom:"BATT",prenom:"Maylis",cls:792,vic:2},{nom:"ALLIX",prenom:"Catherine",cls:798,vic:2},{nom:"LESPINASSE",prenom:"Joanne",cls:970,vic:2}],doubles:1,match_score:23,opp_score:19,opponent:"VITRY ES 1"}]},
+          {name:"JUMP 2",acbbJournee:1,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"CHEN",prenom:"Mengmeng",cls:1234,vic:3},{nom:"DUJARRIER",prenom:"Lou",cls:877,vic:3},{nom:"BLEUZE",prenom:"Carole",cls:885,vic:1},{nom:"DESCAMPS",prenom:"Flora",cls:742,vic:2}],doubles:2,match_score:25,opp_score:17,opponent:"BOULOGNE BILLANCOURT 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"DESCAMPS",prenom:"Flora",cls:742,vic:1},{nom:"LYTRAS",prenom:"Hélène",cls:527,vic:2},{nom:"DUJARRIER",prenom:"Lou",cls:877,vic:2},{nom:"BELINSKI",prenom:"Anna",cls:556,vic:2}],doubles:0,match_score:21,opp_score:21,opponent:"ATT XV 1"}]},
+          {name:"VITRY ES 1",acbbJournee:2,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"CHEN FENG",prenom:"Lollia",cls:1088,vic:3},{nom:"CHEN FENG",prenom:"Loanna",cls:877,vic:3},{nom:"GOUIN",prenom:"Isabelle",cls:632,vic:2},{nom:"BONNEFOY-GRAILLOT",prenom:"Maryse",cls:869,vic:3}],doubles:1,match_score:26,opp_score:16,opponent:"PALAISEAU US 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"CHEN FENG",prenom:"Loanna",cls:877,vic:1},{nom:"CHEN FENG",prenom:"Lollia",cls:1088,vic:3},{nom:"GOUIN",prenom:"Isabelle",cls:632,vic:0},{nom:"BONNEFOY-GRAILLOT",prenom:"Maryse",cls:869,vic:0}],doubles:1,match_score:19,opp_score:23,opponent:"BOULOGNE BILLANCOURT 2"}]},
+          {name:"PALAISEAU US 2",acbbJournee:3,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"LEBOURGEOIS",prenom:"Lea",cls:754,vic:1},{nom:"ANDRIEUX",prenom:"Laora",cls:591,vic:0},{nom:"ANDRIEUX",prenom:"Leelouane",cls:656,vic:0},{nom:"POINSOT",prenom:"Loise",cls:500,vic:0}],doubles:1,match_score:16,opp_score:26,opponent:"VITRY ES 1"}]},
+          {name:"MONTROUGE SM 1",acbbJournee:4,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BITBOL",prenom:"Kelly",cls:907,vic:0},{nom:"BLONDEAU",prenom:"Perrine",cls:763,vic:0},{nom:"LAIDAOUI",prenom:"Thiziri",cls:751,vic:0},{nom:"HOURI",prenom:"Nathalie",cls:578,vic:0}],doubles:1,match_score:15,opp_score:27,opponent:"ANTONY SPORT TT 2"}]},
+          {name:"ATT XV 1",acbbJournee:5,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"LESCAUDRON",prenom:"Florence",cls:847,vic:1},{nom:"ANGEBAULT",prenom:"Mathilde",cls:553,vic:1},{nom:"BRADELLE",prenom:"Anne",cls:573,vic:0},{nom:"BURGARD-LOTZ",prenom:"Laurine",cls:612,vic:1}],doubles:1,match_score:18,opp_score:24,opponent:"BOURGETIN CTT 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"BUTTERLIN",prenom:"Agnes",cls:904,vic:3},{nom:"LESCAUDRON",prenom:"Florence",cls:847,vic:2},{nom:"GRABIEL",prenom:"Tuyet-Mai",cls:639,vic:0},{nom:"BRADELLE",prenom:"Anne",cls:573,vic:0}],doubles:2,match_score:21,opp_score:21,opponent:"JUMP 2"}]},
+          {name:"ANTONY SPORT TT 2",acbbJournee:6,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BARTHELEMY",prenom:"Lou Mai",cls:860,vic:3},{nom:"DOUCHET",prenom:"Anabelle",cls:890,vic:3},{nom:"AUGOUVERNAIRE",prenom:"Keity",cls:968,vic:3},{nom:"AHMAD AL HADDAD",prenom:"Maryam",cls:513,vic:3}],doubles:1,match_score:27,opp_score:15,opponent:"MONTROUGE SM 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"DOUCHET",prenom:"Anabelle",cls:890,vic:0},{nom:"AUGOUVERNAIRE",prenom:"Keity",cls:968,vic:3},{nom:"JIANG",prenom:"Jessica",cls:583,vic:0},{nom:"AHMAD AL HADDAD",prenom:"Maryam",cls:513,vic:1}],doubles:0,match_score:18,opp_score:24,opponent:"BOURGETIN CTT 2"}]},
+          {name:"BOURGETIN CTT 2",acbbJournee:7,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BACCOUCHE",prenom:"Zeineb",cls:962,vic:3},{nom:"POURLIER",prenom:"Gwendoline",cls:1037,vic:2},{nom:"NGUYEN",prenom:"Afrah",cls:983,vic:3},{nom:"BACCOUCHE",prenom:"Tesnyme",cls:591,vic:1}],doubles:1,match_score:24,opp_score:18,opponent:"ATT XV 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"BACCOUCHE",prenom:"Zeineb",cls:962,vic:2},{nom:"POURLIER",prenom:"Gwendoline",cls:1037,vic:2},{nom:"NGUYEN",prenom:"Afrah",cls:983,vic:3},{nom:"BACCOUCHE",prenom:"Tesnyme",cls:591,vic:1}],doubles:2,match_score:24,opp_score:18,opponent:"ANTONY SPORT TT 2"}]}
         ]
       },
       "F3": {
-        pool: "D92 Pré-Régionale Poule 1", level: "Pré-Régional", levelClass: "level-prereg", date: "7 février 2026",
+        pool: "D92 Pré-Régionale Poule 1", level: "Pré-Régional", levelClass: "level-prereg",
         teams: [
-          {name:"BOULOGNE BILLAN 3",acbb:true,players:[{nom:"MIKAMI",prenom:"Monique",cls:528,vic:0},{nom:"DE ROLLAND",prenom:"Marie-Laure",cls:500,vic:0},{nom:"MOREL",prenom:"Leonie",cls:500,vic:1},{nom:"BLEGER",prenom:"Vanessa",cls:500,vic:0}],doubles:0},
-          {name:"RUEIL ATHLETIC 3",journee:1,domext:"Dom",players:[{nom:"GUERRAULT",prenom:"Anne",cls:500,vic:2},{nom:"TISSERAND",prenom:"Hermine",cls:690,vic:3},{nom:"WINNE",prenom:"Laetitia",cls:722,vic:3},{nom:"MASSON",prenom:"Lucile",cls:681,vic:3}],doubles:2},
-          {name:"TTMC CHATILLON",journee:3,domext:"Dom",na:true,players:[],doubles:0},
-          {name:"COURBEVOIE STT 4",journee:4,domext:"Dom",players:[{nom:"HECHT",prenom:"Mathilde",cls:908,vic:3},{nom:"IZAC",prenom:"Prisca-Victoire",cls:657,vic:3},{nom:"POMMAT-PERRON",prenom:"Lola",cls:943,vic:3},{nom:"LOUNAS",prenom:"Yanelle",cls:711,vic:3}],doubles:2},
-          {name:"BOIS COLOMBES S 2",journee:5,domext:"Ext",players:[{nom:"YVERNAY",prenom:"Mélanie",cls:675,vic:2},{nom:"THOLLON PAYO",prenom:"Athénais",cls:650,vic:3},{nom:"VILLATTE",prenom:"Gaëlle",cls:601,vic:2},{nom:"WATZKO",prenom:"Irina",cls:680,vic:3}],doubles:2},
-          {name:"NANTERRE ES (1)",journee:6,domext:"Dom",players:[{nom:"RANDRIANATOAVINA",prenom:"Judith",cls:500,vic:0},{nom:"DEMAY",prenom:"Laurence",cls:519,vic:0},{nom:"VU THAN",prenom:"Elisabeth",cls:502,vic:0},{nom:"FOUQUET",prenom:"Sylvie",cls:500,vic:0}],doubles:0},
-          {name:"CLAMART CSM 1",journee:7,domext:"Ext",players:[{nom:"ESTRUCH",prenom:"Lauren",cls:516,vic:0},{nom:"N'CIR",prenom:"Magali",cls:500,vic:0},{nom:"HERROUIN",prenom:"Lena",cls:738,vic:2},{nom:"PARUL",prenom:"Hanna",cls:500,vic:0}],doubles:0}
+          {name:"BOULOGNE BILLAN 3",acbb:true,calendar:{1:{opponent:"RUEIL ATHLETIC 3",domext:"Dom"},3:{opponent:"TTMC CHATILLON 3",domext:"Dom"},4:{opponent:"COURBEVOIE STT 4",domext:"Dom"},5:{opponent:"BOIS COLOMBES S 2",domext:"Ext"},6:{opponent:"NANTERRE ES (1)",domext:"Dom"},7:{opponent:"CLAMART CSM 1",domext:"Ext"}},journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"MIKAMI",prenom:"Monique",cls:528,vic:0},{nom:"DE ROLLAND",prenom:"Marie-Laure",cls:500,vic:0},{nom:"MOREL",prenom:"Leonie",cls:500,vic:1},{nom:"BLEGER",prenom:"Vanessa",cls:500,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"RUEIL ATHLETIC 3"}]},
+          {name:"RUEIL ATHLETIC 3",acbbJournee:1,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"GUERRAULT",prenom:"Anne",cls:500,vic:2},{nom:"TISSERAND",prenom:"Hermine",cls:690,vic:3},{nom:"WINNE",prenom:"Laetitia",cls:722,vic:3},{nom:"MASSON",prenom:"Lucile",cls:681,vic:3}],doubles:2,match_score:27,opp_score:15,opponent:"BOULOGNE BILLAN 3"},{journee:2,date:"14 févr. 2026",players:[{nom:"GUERRAULT",prenom:"Anne",cls:500,vic:0},{nom:"MALHEIRO DA SILVA",prenom:"Lea",cls:767,vic:3},{nom:"MASSON",prenom:"Lucile",cls:681,vic:1},{nom:"TISSERAND",prenom:"Hermine",cls:690,vic:0}],doubles:1,match_score:19,opp_score:23,opponent:"BOIS COLOMBES S 2"}]},
+          {name:"TTMC CHATILLON 3",acbbJournee:3,acbbDomext:"Dom",na:true,journees:[{journee:2,date:"14 févr. 2026",players:[{nom:"BOST",prenom:"Laure",cls:606,vic:2},{nom:"TAILLADE",prenom:"Francoise",cls:629,vic:0},{nom:"DUCLOY",prenom:"Marianne",cls:500,vic:0},{nom:"BOST",prenom:"Rosalie",cls:513,vic:0}],doubles:0,match_score:16,opp_score:26,opponent:"COURBEVOIE STT 4"}]},
+          {name:"COURBEVOIE STT 4",acbbJournee:4,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"HECHT",prenom:"Mathilde",cls:908,vic:3},{nom:"IZAC",prenom:"Prisca-Victoire",cls:657,vic:3},{nom:"POMMAT-PERRON",prenom:"Lola",cls:943,vic:3},{nom:"LOUNAS",prenom:"Yanelle",cls:711,vic:3}],doubles:2,match_score:28,opp_score:14,opponent:"NANTERRE ES (1)"},{journee:2,date:"14 févr. 2026",players:[{nom:"IZAC",prenom:"Prisca-Victoire",cls:657,vic:2},{nom:"HECHT",prenom:"Mathilde",cls:908,vic:3},{nom:"LOUNAS",prenom:"Yanelle",cls:711,vic:2},{nom:"TANG",prenom:"Yu",cls:539,vic:3}],doubles:2,match_score:26,opp_score:16,opponent:"TTMC CHATILLON 3"}]},
+          {name:"BOIS COLOMBES S 2",acbbJournee:5,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"YVERNAY",prenom:"Mélanie",cls:675,vic:2},{nom:"THOLLON PAYO",prenom:"Athénais",cls:650,vic:3},{nom:"VILLATTE",prenom:"Gaëlle",cls:601,vic:2},{nom:"WATZKO",prenom:"Irina",cls:680,vic:3}],doubles:2,match_score:26,opp_score:16,opponent:"CLAMART CSM 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"WATZKO",prenom:"Irina",cls:680,vic:2},{nom:"YVERNAY",prenom:"Mélanie",cls:675,vic:2},{nom:"CHOMIS",prenom:"Chloé",cls:"N209",vic:3},{nom:"PINEAU",prenom:"Anna",cls:598,vic:1}],doubles:1,match_score:23,opp_score:19,opponent:"RUEIL ATHLETIC 3"}]},
+          {name:"NANTERRE ES (1)",acbbJournee:6,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"RANDRIANATOAVINA",prenom:"Judith",cls:500,vic:0},{nom:"DEMAY",prenom:"Laurence",cls:519,vic:0},{nom:"VU THAN",prenom:"Elisabeth",cls:502,vic:0},{nom:"FOUQUET",prenom:"Sylvie",cls:500,vic:0}],doubles:0,match_score:14,opp_score:28,opponent:"COURBEVOIE STT 4"},{journee:2,date:"14 févr. 2026",players:[{nom:"CLAIRET",prenom:"Christelle",cls:607,vic:1},{nom:"DARNAUX",prenom:"Victoire",cls:502,vic:2},{nom:"NINA",prenom:"Nina",cls:500,vic:1},{nom:"LEITAO MARTINEZ",prenom:"Isabelle",cls:500,vic:0}],doubles:1,match_score:19,opp_score:23,opponent:"CLAMART CSM 1"}]},
+          {name:"CLAMART CSM 1",acbbJournee:7,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"ESTRUCH",prenom:"Lauren",cls:516,vic:0},{nom:"N'CIR",prenom:"Magali",cls:500,vic:0},{nom:"HERROUIN",prenom:"Lena",cls:738,vic:2},{nom:"PARUL",prenom:"Hanna",cls:500,vic:0}],doubles:0,match_score:16,opp_score:26,opponent:"BOIS COLOMBES S 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"N'CIR",prenom:"Magali",cls:500,vic:1},{nom:"HERROUIN",prenom:"Lena",cls:738,vic:3},{nom:"MARTIN BENVENUTO",prenom:"Clara",cls:1018,vic:3},{nom:"HELLEISEN",prenom:"Charline",cls:500,vic:1}],doubles:1,match_score:23,opp_score:19,opponent:"NANTERRE ES (1)"}]}
         ]
       },
       "M2": {
-        pool: "FED_Nationale 2 Poule 3", level: "Nationale 2", levelClass: "level-nat2", date: "7 février 2026",
+        pool: "FED_Nationale 2 Poule 3", level: "Nationale 2", levelClass: "level-nat2",
         teams: [
-          {name:"BOULOGNE BILLANCOURT AC 2",acbb:true,players:[{nom:"DUCOIN",prenom:"Prattana",cls:"N315",vic:2},{nom:"WANG",prenom:"Chen",cls:"N215",vic:2},{nom:"REUSEAU",prenom:"Louis",cls:"N198",vic:2},{nom:"PIRES",prenom:"Theo",cls:"N540",vic:1}],doubles:1},
-          {name:"SAINT EGREVE USTT 1",journee:1,domext:"Ext",players:[{nom:"VEPA",prenom:"Chaitanya",cls:"N302",vic:0},{nom:"RICO",prenom:"Tom",cls:"N604",vic:0},{nom:"DIAMUANGANA",prenom:"Djo",cls:"N319",vic:1},{nom:"BUGLIERY",prenom:"Quentin",cls:"N911",vic:0}],doubles:1},
-          {name:"ANTIBES OJLP 1",journee:2,domext:"Dom",players:[{nom:"BLOT",prenom:"Martin",cls:"N328",vic:3},{nom:"MESTRE",prenom:"Jeremy",cls:"N686",vic:1},{nom:"MASIP",prenom:"Joan",cls:"N170",vic:3},{nom:"BATTAGLIA",prenom:"Maxim",cls:"N702",vic:1}],doubles:1},
-          {name:"ASPTT ALBI 1",journee:3,domext:"Ext",players:[{nom:"MLINARIC",prenom:"Bastien",cls:1860,vic:0},{nom:"DELPECH",prenom:"Louis",cls:"N929",vic:2},{nom:"CABANEL",prenom:"Samuel",cls:"N256",vic:2},{nom:"MIGLIORE",prenom:"Chryss",cls:"N463",vic:2}],doubles:2},
-          {name:"CHATILLON TTMC 1",journee:4,domext:"Dom",players:[{nom:"RAVEZ",prenom:"Jerome",cls:"N582",vic:1},{nom:"KHRIS",prenom:"Tarik",cls:"N746",vic:0},{nom:"RIVOAL",prenom:"Kevin",cls:"N194",vic:1},{nom:"CORRIC",prenom:"Paolo",cls:"N902",vic:0}],doubles:1},
-          {name:"SALINDRES AS 1",journee:5,domext:"Ext",players:[{nom:"MAILLARD",prenom:"Florian",cls:"N488",vic:2},{nom:"MOULIN",prenom:"Lucas",cls:"N673",vic:1},{nom:"CAPEL",prenom:"Nicolas",cls:"N401",vic:2},{nom:"CASANE",prenom:"Damien",cls:"N691",vic:1}],doubles:0},
-          {name:"MONACO AS 1",journee:6,domext:"Ext",players:[{nom:"GEMINIANI",prenom:"Anthony",cls:"N232",vic:1},{nom:"TISO",prenom:"Martin",cls:"N589",vic:0},{nom:"TORTORINO",prenom:"Andrea",cls:2005,vic:1},{nom:"CORTESE",prenom:"Lorenzo",cls:"N915",vic:0}],doubles:0},
-          {name:"COURBEVOIE STT 2",journee:7,domext:"Dom",players:[{nom:"FOSSE",prenom:"Alexandre",cls:"N539",vic:1},{nom:"JOHNSTON",prenom:"David",cls:"N325",vic:2},{nom:"RAFFI",prenom:"Arthur",cls:"N240",vic:2},{nom:"GIRET",prenom:"Clement",cls:"N496",vic:1}],doubles:2}
+          {name:"BOULOGNE BILLANCOURT AC 2",acbb:true,calendar:{1:{opponent:"SAINT EGREVE USTT 1",domext:"Ext"},2:{opponent:"ANTIBES OJLP 1",domext:"Dom"},3:{opponent:"ASPTT ALBI 1",domext:"Ext"},4:{opponent:"CHATILLON TTMC 1",domext:"Dom"},5:{opponent:"SALINDRES AS 1",domext:"Ext"},6:{opponent:"MONACO AS 1",domext:"Ext"},7:{opponent:"COURBEVOIE STT 2",domext:"Dom"}},journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"DUCOIN",prenom:"Prattana",cls:"N315",vic:2},{nom:"WANG",prenom:"Chen",cls:"N215",vic:2},{nom:"REUSEAU",prenom:"Louis",cls:"N198",vic:2},{nom:"PIRES",prenom:"Theo",cls:"N540",vic:1}],doubles:1,match_score:8,opp_score:1,opponent:"SAINT EGREVE USTT 1"}]},
+          {name:"SAINT EGREVE USTT 1",acbbJournee:1,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"VEPA",prenom:"Chaitanya",cls:"N302",vic:0},{nom:"RICO",prenom:"Tom",cls:"N604",vic:0},{nom:"DIAMUANGANA",prenom:"Djo",cls:"N319",vic:1},{nom:"BUGLIERY",prenom:"Quentin",cls:"N911",vic:0}],doubles:1,match_score:1,opp_score:8,opponent:"BOULOGNE BILLANCOURT AC 2"}]},
+          {name:"ANTIBES OJLP 1",acbbJournee:2,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BLOT",prenom:"Martin",cls:"N328",vic:3},{nom:"MESTRE",prenom:"Jeremy",cls:"N686",vic:1},{nom:"MASIP",prenom:"Joan",cls:"N170",vic:3},{nom:"BATTAGLIA",prenom:"Maxim",cls:"N702",vic:1}],doubles:1,match_score:8,opp_score:3,opponent:"CHATILLON TTMC 1"}]},
+          {name:"ASPTT ALBI 1",acbbJournee:3,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"MLINARIC",prenom:"Bastien",cls:1860,vic:0},{nom:"DELPECH",prenom:"Louis",cls:"N929",vic:2},{nom:"CABANEL",prenom:"Samuel",cls:"N256",vic:2},{nom:"MIGLIORE",prenom:"Chryss",cls:"N463",vic:2}],doubles:2,match_score:8,opp_score:6,opponent:"SALINDRES AS 1"}]},
+          {name:"CHATILLON TTMC 1",acbbJournee:4,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"RAVEZ",prenom:"Jerome",cls:"N582",vic:1},{nom:"KHRIS",prenom:"Tarik",cls:"N746",vic:0},{nom:"RIVOAL",prenom:"Kevin",cls:"N194",vic:1},{nom:"CORRIC",prenom:"Paolo",cls:"N902",vic:0}],doubles:1,match_score:3,opp_score:8,opponent:"ANTIBES OJLP 1"}]},
+          {name:"SALINDRES AS 1",acbbJournee:5,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"ASPTT ALBI",prenom:"tennis de table",cls:8852,vic:0},{nom:"MAILLARD",prenom:"Florian",cls:"N488",vic:2},{nom:"MOULIN",prenom:"Lucas",cls:"N673",vic:1},{nom:"CAPEL",prenom:"Nicolas",cls:"N401",vic:2}],doubles:0,match_score:6,opp_score:8,opponent:"ASPTT ALBI 1"}]},
+          {name:"MONACO AS 1",acbbJournee:6,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"GEMINIANI",prenom:"Anthony",cls:"N232",vic:1},{nom:"TISO",prenom:"Martin",cls:"N589",vic:0},{nom:"TORTORINO",prenom:"Andrea",cls:2005,vic:1},{nom:"CORTESE",prenom:"Lorenzo",cls:"N915",vic:0}],doubles:0,match_score:2,opp_score:8,opponent:"COURBEVOIE STT 2"}]},
+          {name:"COURBEVOIE STT 2",acbbJournee:7,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"FOSSE",prenom:"Alexandre",cls:"N539",vic:1},{nom:"JOHNSTON",prenom:"David",cls:"N325",vic:2},{nom:"RAFFI",prenom:"Arthur",cls:"N240",vic:2},{nom:"GIRET",prenom:"Clement",cls:"N496",vic:1}],doubles:2,match_score:8,opp_score:2,opponent:"MONACO AS 1"}]}
         ]
       },
       "M3": {
-        pool: "L08_R2 Poule 4", level: "Régional 2", levelClass: "level-regional", date: "7 février 2026",
+        pool: "L08_R2 Poule 4", level: "Régional 2", levelClass: "level-regional",
         teams: [
-          {name:"BOULOGNE BILLANCOURT 3",acbb:true,players:[{nom:"MARTINOD",prenom:"Thomas",cls:1636,vic:2},{nom:"LE CORRE",prenom:"Erwan",cls:1512,vic:3},{nom:"ZHAO",prenom:"Antoine",cls:1811,vic:3},{nom:"GONTARD",prenom:"Nicolas",cls:1608,vic:2}],doubles:2},
-          {name:"PONTHIERRY COMT 2",journee:1,domext:"Ext",players:[{nom:"PAYET REGRIN",prenom:"Remi",cls:1560,vic:1},{nom:"BERNARD",prenom:"Cyril",cls:1461,vic:0},{nom:"HOUADJ",prenom:"Paul",cls:1380,vic:1},{nom:"MAZURIER",prenom:"Claude",cls:1457,vic:0}],doubles:0},
-          {name:"BOIS COLOMBES S 2",journee:2,domext:"Dom",players:[{nom:"GERMAIN",prenom:"Julien",cls:1578,vic:2},{nom:"LESCURE",prenom:"Paul",cls:1455,vic:0},{nom:"MORIO",prenom:"Maxence",cls:1543,vic:0},{nom:"HOENEN",prenom:"Emma",cls:1477,vic:1}],doubles:1},
-          {name:"LOGNES EP 5",journee:3,domext:"Ext",players:[{nom:"ALAEJOS",prenom:"Rodrigue",cls:1596,vic:1},{nom:"SIM",prenom:"Christophe",cls:1604,vic:3},{nom:"AZIBERT",prenom:"Baptiste",cls:1697,vic:2},{nom:"SISAKOUN",prenom:"Joris",cls:1596,vic:1}],doubles:1},
-          {name:"RAMBOUILLET TT 2",journee:4,domext:"Dom",players:[{nom:"CHEVIRON",prenom:"Gauthier",cls:1968,vic:3},{nom:"VETZEL-MARTIN",prenom:"Loann",cls:1647,vic:2},{nom:"SALLAH DUSE",prenom:"Louis",cls:1555,vic:2},{nom:"PERU",prenom:"Ruben",cls:1747,vic:2}],doubles:1},
-          {name:"ELANCOURT CTT 4",journee:5,domext:"Ext",players:[{nom:"COLINET",prenom:"Sebastien",cls:1675,vic:1},{nom:"HOANG",prenom:"Axel",cls:1513,vic:1},{nom:"FRANTZ",prenom:"Gabriel",cls:1719,vic:3},{nom:"SVAY DELLA ROMA",prenom:"Evan",cls:1305,vic:0}],doubles:1},
-          {name:"CRETEIL USTT 1",journee:6,domext:"Ext",players:[{nom:"BOURIAH",prenom:"Larbi",cls:"N415",vic:3},{nom:"BES-MAZENOUX",prenom:"Fabien",cls:1646,vic:1},{nom:"RADJI-CHARON",prenom:"Theo",cls:1489,vic:1},{nom:"TEA",prenom:"Maxime",cls:1273,vic:0}],doubles:0},
-          {name:"PALAISEAU US 3",journee:7,domext:"Dom",players:[{nom:"BAELDE",prenom:"Eleonore",cls:"N225",vic:2},{nom:"LE BOULC'H",prenom:"Maxime",cls:1643,vic:2},{nom:"BIZEUL",prenom:"Mathieu",cls:1766,vic:2},{nom:"AUDIOT",prenom:"Clement",cls:1663,vic:1}],doubles:2}
+          {name:"BOULOGNE BILLANCOURT 3",acbb:true,calendar:{1:{opponent:"PONTHIERRY COMT 2",domext:"Ext"},2:{opponent:"BOIS COLOMBES S 2",domext:"Dom"},3:{opponent:"LOGNES EP 5",domext:"Ext"},4:{opponent:"RAMBOUILLET TT 2",domext:"Dom"},5:{opponent:"ELANCOURT CTT 4",domext:"Ext"},6:{opponent:"CRETEIL USTT 1",domext:"Ext"},7:{opponent:"PALAISEAU US 3",domext:"Dom"}},journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"MARTINOD",prenom:"Thomas",cls:1636,vic:2},{nom:"LE CORRE",prenom:"Erwan",cls:1512,vic:3},{nom:"ZHAO",prenom:"Antoine",cls:1811,vic:3},{nom:"GONTARD",prenom:"Nicolas",cls:1608,vic:2}],doubles:2,match_score:26,opp_score:16,opponent:"PONTHIERRY COMT 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"LE CORRE",prenom:"Erwan",cls:1512,vic:3},{nom:"GONTARD",prenom:"Nicolas",cls:1608,vic:2},{nom:"ZHAO",prenom:"Antoine",cls:1811,vic:3},{nom:"TARD",prenom:"Gregory",cls:1679,vic:2}],doubles:1,match_score:25,opp_score:17,opponent:"BOIS COLOMBES S 2"}]},
+          {name:"PONTHIERRY COMT 2",acbbJournee:1,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"PAYET REGRIN",prenom:"Remi",cls:1560,vic:1},{nom:"BERNARD",prenom:"Cyril",cls:1461,vic:0},{nom:"HOUADJ",prenom:"Paul",cls:1380,vic:1},{nom:"MAZURIER",prenom:"Claude",cls:1457,vic:0}],doubles:0,match_score:16,opp_score:26,opponent:"BOULOGNE BILLANCOURT 3"},{journee:2,date:"14 févr. 2026",players:[{nom:"LIMA",prenom:"Fernando",cls:1378,vic:1},{nom:"PAYET REGRIN",prenom:"Remi",cls:1560,vic:1},{nom:"HOUADJ",prenom:"Paul",cls:1380,vic:0},{nom:"MAZURIER",prenom:"Claude",cls:1457,vic:1}],doubles:0,match_score:17,opp_score:25,opponent:"CRETEIL USTT 1"}]},
+          {name:"BOIS COLOMBES S 2",acbbJournee:2,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"GERMAIN",prenom:"Julien",cls:1578,vic:2},{nom:"LESCURE",prenom:"Paul",cls:1455,vic:0},{nom:"MORIO",prenom:"Maxence",cls:1543,vic:0},{nom:"HOENEN",prenom:"Emma",cls:1477,vic:1}],doubles:1,match_score:18,opp_score:24,opponent:"RAMBOUILLET TT 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"HOENEN",prenom:"Emma",cls:1477,vic:0},{nom:"LESCURE",prenom:"Paul",cls:1455,vic:1},{nom:"MORIO",prenom:"Maxence",cls:1543,vic:0},{nom:"GERMAIN",prenom:"Julien",cls:1578,vic:1}],doubles:1,match_score:17,opp_score:25,opponent:"BOULOGNE BILLANCOURT 3"}]},
+          {name:"LOGNES EP 5",acbbJournee:3,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"ALAEJOS",prenom:"Rodrigue",cls:1596,vic:1},{nom:"SIM",prenom:"Christophe",cls:1604,vic:3},{nom:"AZIBERT",prenom:"Baptiste",cls:1697,vic:2},{nom:"SISAKOUN",prenom:"Joris",cls:1596,vic:1}],doubles:1,match_score:22,opp_score:20,opponent:"ELANCOURT CTT 4"},{journee:2,date:"14 févr. 2026",players:[{nom:"SIM",prenom:"Christophe",cls:1604,vic:1},{nom:"CATHELIN",prenom:"Leonard",cls:1556,vic:1},{nom:"ALAEJOS",prenom:"Rodrigue",cls:1596,vic:1},{nom:"CARRERAS",prenom:"Keveen",cls:1547,vic:1}],doubles:0,match_score:18,opp_score:24,opponent:"RAMBOUILLET TT 2"}]},
+          {name:"RAMBOUILLET TT 2",acbbJournee:4,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"CHEVIRON",prenom:"Gauthier",cls:1968,vic:3},{nom:"VETZEL-MARTIN",prenom:"Loann",cls:1647,vic:2},{nom:"SALLAH DUSE",prenom:"Louis",cls:1655,vic:2},{nom:"PERU",prenom:"Ruben",cls:1747,vic:2}],doubles:1,match_score:24,opp_score:18,opponent:"BOIS COLOMBES S 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"CHEVIRON",prenom:"Gauthier",cls:1968,vic:3},{nom:"VETZEL-MARTIN",prenom:"Loann",cls:1647,vic:2},{nom:"SALLAH DUSE",prenom:"Louis",cls:1655,vic:1},{nom:"PERU",prenom:"Ruben",cls:1747,vic:2}],doubles:2,match_score:24,opp_score:18,opponent:"LOGNES EP 5"}]},
+          {name:"ELANCOURT CTT 4",acbbJournee:5,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"COLINET",prenom:"Sebastien",cls:1675,vic:1},{nom:"HOANG",prenom:"Axel",cls:1513,vic:1},{nom:"FRANTZ",prenom:"Gabriel",cls:1719,vic:3},{nom:"SVAY DELLA ROMA",prenom:"Evan",cls:1305,vic:0}],doubles:1,match_score:20,opp_score:22,opponent:"LOGNES EP 5"},{journee:2,date:"14 févr. 2026",players:[{nom:"GUEYE",prenom:"Aliou",cls:1405,vic:1},{nom:"SVAY DELLA ROMA",prenom:"Evan",cls:1305,vic:1},{nom:"AMORI",prenom:"Iyed",cls:1304,vic:2},{nom:"LOUCIF",prenom:"Chafid",cls:1512,vic:2}],doubles:1,match_score:7,opp_score:7,opponent:"PALAISEAU US 3"}]},
+          {name:"CRETEIL USTT 1",acbbJournee:6,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BOURIAH",prenom:"Larbi",cls:"N415",vic:3},{nom:"BES-MAZENOUX",prenom:"Fabien",cls:1646,vic:1},{nom:"RADJI-CHARON",prenom:"Theo",cls:1489,vic:1},{nom:"TEA",prenom:"Maxime",cls:1273,vic:0}],doubles:0,match_score:19,opp_score:23,opponent:"PALAISEAU US 3"},{journee:2,date:"14 févr. 2026",players:[{nom:"BOURIAH",prenom:"Larbi",cls:"N415",vic:3},{nom:"BES-MAZENOUX",prenom:"Fabien",cls:1646,vic:1},{nom:"ETIENNE",prenom:"Lilou",cls:"N175",vic:3},{nom:"LEFEVRE",prenom:"Chloe",cls:"N263",vic:2}],doubles:2,match_score:25,opp_score:17,opponent:"PONTHIERRY COMT 2"}]},
+          {name:"PALAISEAU US 3",acbbJournee:7,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BAELDE",prenom:"Eleonore",cls:"N225",vic:2},{nom:"LE BOULC'H",prenom:"Maxime",cls:1643,vic:2},{nom:"BIZEUL",prenom:"Mathieu",cls:1766,vic:2},{nom:"AUDIOT",prenom:"Clement",cls:1663,vic:1}],doubles:2,match_score:23,opp_score:19,opponent:"CRETEIL USTT 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"ZHOU",prenom:"Mingxuan",cls:1670,vic:3},{nom:"SELLAM",prenom:"Julien",cls:1532,vic:1},{nom:"BELIN",prenom:"Clement",cls:1693,vic:2},{nom:"LE BOULC'H",prenom:"Maxime",cls:1643,vic:0}],doubles:1,match_score:7,opp_score:7,opponent:"ELANCOURT CTT 4"}]}
         ]
       },
       "M4": {
-        pool: "L08_R3 Poule 11", level: "Régional 3", levelClass: "level-regional", date: "7 février 2026",
+        pool: "L08_R3 Poule 11", level: "Régional 3", levelClass: "level-regional",
         teams: [
-          {name:"BOULOGNE BILLANCOURT 4",acbb:true,players:[{nom:"SCHULLER",prenom:"Eric",cls:1600,vic:1},{nom:"LESPINASSE",prenom:"Martin",cls:1342,vic:1},{nom:"LOUET",prenom:"Sebastien",cls:1523,vic:1},{nom:"BOUCHE",prenom:"Thomas",cls:1414,vic:1}],doubles:1},
-          {name:"IGNY 4",journee:1,domext:"Ext",players:[{nom:"LACAZE",prenom:"Arman",cls:1610,vic:2},{nom:"GARCIA",prenom:"Simon",cls:1568,vic:2},{nom:"SALAMEH",prenom:"Antoine",cls:1551,vic:1},{nom:"CORTES",prenom:"Nathan",cls:1470,vic:3}],doubles:1},
-          {name:"TENNIS DE TABLE PLUS 1",journee:2,domext:"Dom",players:[{nom:"",prenom:"",cls:500,vic:0}],doubles:0},
-          {name:"CHATOU CROISSY 1",journee:3,domext:"Ext",players:[{nom:"GOURSEAUD",prenom:"Hugo",cls:1488,vic:3},{nom:"PAYET",prenom:"Samuel",cls:1254,vic:2},{nom:"GRANGER",prenom:"Bruno",cls:1601,vic:2},{nom:"TIAN VAN KAI",prenom:"Rafael",cls:1087,vic:2}],doubles:1},
-          {name:"CHESNAY 78 AS 5",journee:4,domext:"Dom",players:[{nom:"",prenom:"",cls:500,vic:0}],doubles:0},
-          {name:"MEUDON AS 2",journee:5,domext:"Ext",players:[{nom:"PRUVOST",prenom:"Antonin",cls:1356,vic:2},{nom:"FERDJANI",prenom:"Racim",cls:1085,vic:0},{nom:"JUMEAU",prenom:"Pierre",cls:1167,vic:1},{nom:"KAHNA",prenom:"Yasmin",cls:1113,vic:0}],doubles:1},
-          {name:"NOISY LE GRAND CSTT 7",journee:6,domext:"Ext",players:[{nom:"ALTAF",prenom:"Ayaan",cls:1175,vic:1},{nom:"ALTAF",prenom:"Subhan",cls:1318,vic:2},{nom:"BORNAREL",prenom:"Selim",cls:1588,vic:3},{nom:"BOUJEDDAIN",prenom:"Hatim",cls:1644,vic:2}],doubles:0},
-          {name:"PARIS 13 TT 5",journee:7,domext:"Dom",players:[{nom:"SUN",prenom:"Stephane",cls:1302,vic:2},{nom:"PRIME",prenom:"Emeric",cls:1364,vic:1},{nom:"BECRET",prenom:"Benoit",cls:1260,vic:1},{nom:"HUYGUES LACOUR",prenom:"Victor",cls:1412,vic:0}],doubles:2}
+          {name:"BOULOGNE BILLANCOURT 4",acbb:true,calendar:{1:{opponent:"IGNY 4",domext:"Ext"},2:{opponent:"TENNIS DE TABLE PLUS 1",domext:"Dom"},3:{opponent:"CHATOU CROISSY 1",domext:"Ext"},4:{opponent:"CHESNAY 78 AS 5",domext:"Dom"},5:{opponent:"MEUDON AS 2",domext:"Ext"},6:{opponent:"NOISY LE GRAND CSTT 7",domext:"Ext"},7:{opponent:"PARIS 13 TT 5",domext:"Dom"}},journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"SCHULLER",prenom:"Eric",cls:1600,vic:1},{nom:"LESPINASSE",prenom:"Martin",cls:1342,vic:1},{nom:"LOUET",prenom:"Sebastien",cls:1523,vic:1},{nom:"BOUCHE",prenom:"Thomas",cls:1414,vic:1}],doubles:1,match_score:19,opp_score:23,opponent:"IGNY 4"},{journee:2,date:"14 févr. 2026",players:[{nom:"DE MONVAL",prenom:"Axel",cls:1489,vic:1},{nom:"LESPINASSE",prenom:"Martin",cls:1342,vic:1},{nom:"LOUET",prenom:"Sebastien",cls:1523,vic:1},{nom:"BOUCHE",prenom:"Thomas",cls:1414,vic:2}],doubles:1,match_score:20,opp_score:22,opponent:"TENNIS DE TABLE PLUS 1"}]},
+          {name:"IGNY 4",acbbJournee:1,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"LACAZE",prenom:"Arman",cls:1610,vic:2},{nom:"GARCIA",prenom:"Simon",cls:1568,vic:2},{nom:"SALAMEH",prenom:"Antoine",cls:1551,vic:1},{nom:"CORTES",prenom:"Nathan",cls:1470,vic:3}],doubles:1,match_score:23,opp_score:19,opponent:"BOULOGNE BILLANCOURT 4"},{journee:2,date:"14 févr. 2026",players:[{nom:"GARCIA",prenom:"Simon",cls:1568,vic:3},{nom:"SALAMEH",prenom:"Antoine",cls:1551,vic:3},{nom:"LACAZE",prenom:"Arman",cls:1610,vic:3},{nom:"CORTES",prenom:"Nathan",cls:1470,vic:2}],doubles:2,match_score:27,opp_score:15,opponent:"NOISY LE GRAND CSTT 7"}]},
+          {name:"TENNIS DE TABLE PLUS 1",acbbJournee:2,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"LEQUITTE",prenom:"Romeo",cls:1533,vic:3},{nom:"MAJOUL",prenom:"Rayan",cls:1516,vic:2},{nom:"TAING",prenom:"Alexandre",cls:1555,vic:2},{nom:"MANSERI",prenom:"Yanis",cls:1390,vic:1}],doubles:1,match_score:23,opp_score:19,opponent:"CHESNAY 78 AS 5"},{journee:2,date:"14 févr. 2026",players:[{nom:"TAING",prenom:"Alexandre",cls:1555,vic:1},{nom:"LEQUITTE",prenom:"Romeo",cls:1533,vic:3},{nom:"MAJOUL",prenom:"Rayan",cls:1516,vic:2},{nom:"MANSERI",prenom:"Yanis",cls:1390,vic:1}],doubles:1,match_score:22,opp_score:20,opponent:"BOULOGNE BILLANCOURT 4"}]},
+          {name:"CHATOU CROISSY 1",acbbJournee:3,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"GOURSEAUD",prenom:"Hugo",cls:1488,vic:3},{nom:"PAYET",prenom:"Samuel",cls:1254,vic:2},{nom:"GRANGER",prenom:"Bruno",cls:1601,vic:2},{nom:"TIAN VAN KAI",prenom:"Rafael",cls:1087,vic:2}],doubles:1,match_score:24,opp_score:18,opponent:"MEUDON AS 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"GOURSEAUD",prenom:"Hugo",cls:1488,vic:1},{nom:"TIAN VAN KAI",prenom:"Rafael",cls:1087,vic:0},{nom:"PAYET",prenom:"Samuel",cls:1254,vic:0},{nom:"GRANGER",prenom:"Bruno",cls:1601,vic:1}],doubles:2,match_score:4,opp_score:10,opponent:"CHESNAY 78 AS 5"}]},
+          {name:"CHESNAY 78 AS 5",acbbJournee:4,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"FONTEZ-CHAPPELL",prenom:"Justin",cls:1406,vic:1},{nom:"DORSEMAINE",prenom:"Alexandre",cls:1492,vic:1},{nom:"GROSS",prenom:"Kylian",cls:1310,vic:1},{nom:"GIRARD",prenom:"Theo",cls:1465,vic:1}],doubles:1,match_score:19,opp_score:23,opponent:"TENNIS DE TABLE PLUS 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"FONTEZ-CHAPPELL",prenom:"Justin",cls:1406,vic:3},{nom:"GMEREK",prenom:"Quentin",cls:1279,vic:2},{nom:"GIRARD",prenom:"Theo",cls:1465,vic:2},{nom:"GROSS",prenom:"Kylian",cls:1310,vic:3}],doubles:0,match_score:10,opp_score:4,opponent:"CHATOU CROISSY 1"}]},
+          {name:"MEUDON AS 2",acbbJournee:5,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"PRUVOST",prenom:"Antonin",cls:1356,vic:2},{nom:"FERDJANI",prenom:"Racim",cls:1085,vic:0},{nom:"JUMEAU",prenom:"Pierre",cls:1167,vic:1},{nom:"KAHNA",prenom:"Yasmin",cls:1113,vic:0}],doubles:1,match_score:18,opp_score:24,opponent:"CHATOU CROISSY 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"PRUVOST",prenom:"Antonin",cls:1356,vic:2},{nom:"FERDJANI",prenom:"Racim",cls:1085,vic:1},{nom:"JUMEAU",prenom:"Pierre",cls:1167,vic:2},{nom:"KAHNA",prenom:"Yasmin",cls:1113,vic:1}],doubles:1,match_score:7,opp_score:7,opponent:"PARIS 13 TT 5"}]},
+          {name:"NOISY LE GRAND CSTT 7",acbbJournee:6,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"ALTAF",prenom:"Ayaan",cls:1175,vic:1},{nom:"ALTAF",prenom:"Subhan",cls:1318,vic:2},{nom:"BORNAREL",prenom:"Selim",cls:1688,vic:3},{nom:"BOUJEDDAIN",prenom:"Hatim",cls:1644,vic:2}],doubles:0,match_score:22,opp_score:20,opponent:"PARIS 13 TT 5"},{journee:2,date:"14 févr. 2026",players:[{nom:"FERRARI JEAN JOSEPH",prenom:"Ugo",cls:1194,vic:0},{nom:"ALTAF",prenom:"Ayaan",cls:1175,vic:1},{nom:"ALTAF",prenom:"Subhan",cls:1318,vic:0},{nom:"BOLOSIER",prenom:"Noah",cls:1111,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"IGNY 4"}]},
+          {name:"PARIS 13 TT 5",acbbJournee:7,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"SUN",prenom:"Stephane",cls:1302,vic:2},{nom:"PRIME",prenom:"Emeric",cls:1364,vic:1},{nom:"BECRET",prenom:"Benoit",cls:1260,vic:1},{nom:"HUYGUES LACOUR",prenom:"Victor",cls:1412,vic:0}],doubles:2,match_score:20,opp_score:22,opponent:"NOISY LE GRAND CSTT 7"},{journee:2,date:"14 févr. 2026",players:[{nom:"BAUDEVIN",prenom:"Noe",cls:1423,vic:3},{nom:"GIRAUD",prenom:"Anthony",cls:1381,vic:2},{nom:"BECRET",prenom:"Benoit",cls:1260,vic:0},{nom:"DUCLOYER",prenom:"Frederic",cls:1006,vic:1}],doubles:1,match_score:7,opp_score:7,opponent:"MEUDON AS 2"}]}
         ]
       },
       "M5": {
-        pool: "L08_R3 Poule 4", level: "Régional 3", levelClass: "level-regional", date: "7 février 2026",
+        pool: "L08_R3 Poule 4", level: "Régional 3", levelClass: "level-regional",
         teams: [
-          {name:"BOULOGNE BILLANCOURT 5",acbb:true,players:[{nom:"SUEDE",prenom:"Samuel",cls:1393,vic:3},{nom:"LE FANIC",prenom:"Ronan",cls:1527,vic:2},{nom:"JANUS",prenom:"Krzysztof",cls:1614,vic:3},{nom:"CAMION",prenom:"Celian",cls:1158,vic:1}],doubles:2},
-          {name:"VIRY CHATILLON 1",journee:1,domext:"Dom",players:[{nom:"GREFF-THOMAS",prenom:"Nathael",cls:1046,vic:0},{nom:"VILAR",prenom:"Lucas",cls:1479,vic:2},{nom:"CAMBUSIER",prenom:"Christian",cls:1254,vic:0},{nom:"NOUBISSI",prenom:"Leo",cls:1375,vic:1}],doubles:0},
-          {name:"JUMP 5",journee:2,domext:"Ext",players:[{nom:"BOUDENNE",prenom:"Aurélien",cls:1438,vic:3},{nom:"MOCQUAIS",prenom:"Olivier",cls:1428,vic:2},{nom:"DAHERON",prenom:"Martin",cls:1371,vic:1},{nom:"JOW",prenom:"Christophe",cls:1366,vic:3}],doubles:1},
-          {name:"FONTENAY-TRESIGNY TT 1",journee:3,domext:"Dom",players:[{nom:"BAYLE",prenom:"Gabriel",cls:1667,vic:3},{nom:"SISSOKO",prenom:"Noah",cls:1605,vic:3},{nom:"LE DEUC",prenom:"Benjamin",cls:1542,vic:3},{nom:"VIADERO BRIOLAND",prenom:"Jules",cls:898,vic:3}],doubles:2},
-          {name:"LA FRETTE 1",journee:4,domext:"Ext",players:[{nom:"SAKOVITCH",prenom:"Stephen",cls:1388,vic:0},{nom:"MAISONNEUVE",prenom:"Bertrand",cls:1210,vic:0},{nom:"TOUFANIAN",prenom:"Armen",cls:598,vic:0},{nom:"FANZUTTI",prenom:"Patrick",cls:551,vic:0}],doubles:0},
-          {name:"ROMAINVILLOIS TT 1",journee:5,domext:"Dom",players:[{nom:"BERIBOS",prenom:"Yohann",cls:1406,vic:1},{nom:"FABRE",prenom:"Thomas",cls:1320,vic:0},{nom:"BERIBOS",prenom:"Dylan",cls:1424,vic:1},{nom:"ZRIM",prenom:"Jean Paul",cls:"x",vic:1}],doubles:1},
-          {name:"CSMF PARIS TT 2",journee:6,domext:"Dom",players:[{nom:"PARISOT",prenom:"Maximilien",cls:1163,vic:0},{nom:"BIBANG-BI-NDONG",prenom:"Nicolas",cls:1400,vic:1},{nom:"COMPTE",prenom:"Olivier",cls:1213,vic:0},{nom:"MULOCHER",prenom:"Amaury",cls:1269,vic:2}],doubles:0},
-          {name:"NEUILLY S/M TT 1",journee:7,domext:"Ext",players:[{nom:"KERRIEN",prenom:"Mathieu",cls:1629,vic:3},{nom:"GAUTIER",prenom:"Jérôme",cls:1380,vic:1},{nom:"TRAISNEL",prenom:"Louis",cls:1521,vic:3},{nom:"TINANT",prenom:"Jeremy",cls:1501,vic:2}],doubles:2}
+          {name:"BOULOGNE BILLANCOURT 5",acbb:true,calendar:{1:{opponent:"VIRY CHATILLON 1",domext:"Dom"},2:{opponent:"JUMP 5",domext:"Ext"},3:{opponent:"FONTENAY-TRESIGNY TT 1",domext:"Dom"},4:{opponent:"LA FRETTE 1",domext:"Ext"},5:{opponent:"ROMAINVILLOIS TT 1",domext:"Dom"},6:{opponent:"CSMF PARIS TT 2",domext:"Dom"},7:{opponent:"NEUILLY S/M TT 1",domext:"Ext"}},journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"SUEDE",prenom:"Samuel",cls:1393,vic:3},{nom:"LE FANIC",prenom:"Ronan",cls:1527,vic:2},{nom:"JANUS",prenom:"Krzysztof",cls:1614,vic:3},{nom:"CAMION",prenom:"Celian",cls:1158,vic:1}],doubles:2,match_score:25,opp_score:17,opponent:"VIRY CHATILLON 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"JANUS",prenom:"Krzysztof",cls:1614,vic:3},{nom:"CAMION",prenom:"Celian",cls:1158,vic:0},{nom:"LE FANIC",prenom:"Ronan",cls:1527,vic:3},{nom:"CRENN-ALDEA",prenom:"Julien",cls:1365,vic:3}],doubles:1,match_score:10,opp_score:4,opponent:"JUMP 5"}]},
+          {name:"VIRY CHATILLON 1",acbbJournee:1,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"GREFF-THOMAS",prenom:"Nathael",cls:1046,vic:0},{nom:"VILAR",prenom:"Lucas",cls:1479,vic:2},{nom:"CAMBUSIER",prenom:"Christian",cls:1254,vic:0},{nom:"NOUBISSI",prenom:"Leo",cls:1375,vic:1}],doubles:0,match_score:17,opp_score:25,opponent:"BOULOGNE BILLANCOURT 5"},{journee:2,date:"14 févr. 2026",players:[{nom:"VILAR",prenom:"Lucas",cls:1479,vic:3},{nom:"NOUBISSI",prenom:"Leo",cls:1375,vic:3},{nom:"CAMBUSIER",prenom:"Christian",cls:1254,vic:0},{nom:"Joueur absent",prenom:"",cls:0,vic:0}],doubles:1,match_score:17,opp_score:21,opponent:"NEUILLY S/M TT 1"}]},
+          {name:"JUMP 5",acbbJournee:2,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BOUDENNE",prenom:"Aurélien",cls:1438,vic:3},{nom:"MOCQUAIS",prenom:"Olivier",cls:1428,vic:2},{nom:"DAHERON",prenom:"Martin",cls:1371,vic:1},{nom:"JOW",prenom:"Christophe",cls:1366,vic:3}],doubles:1,match_score:24,opp_score:18,opponent:"ROMAINVILLOIS TT 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"BOUDENNE",prenom:"Aurélien",cls:1438,vic:1},{nom:"MOCQUAIS",prenom:"Olivier",cls:1428,vic:1},{nom:"DAHERON",prenom:"Martin",cls:1371,vic:0},{nom:"YANG",prenom:"Junfu",cls:1417,vic:1}],doubles:1,match_score:4,opp_score:10,opponent:"BOULOGNE BILLANCOURT 5"}]},
+          {name:"FONTENAY-TRESIGNY TT 1",acbbJournee:3,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BAYLE",prenom:"Gabriel",cls:1667,vic:3},{nom:"SISSOKO",prenom:"Noah",cls:1605,vic:3},{nom:"LE DEUC",prenom:"Benjamin",cls:1542,vic:3},{nom:"VIADERO BRIOLAND",prenom:"Jules",cls:898,vic:3}],doubles:2,match_score:28,opp_score:14,opponent:"LA FRETTE 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"BAYLE",prenom:"Gabriel",cls:1667,vic:3},{nom:"SISSOKO",prenom:"Noah",cls:1605,vic:1},{nom:"LACOGNATA",prenom:"Christophe",cls:1615,vic:2},{nom:"PONTIC",prenom:"Bastien",cls:1446,vic:2}],doubles:2,match_score:24,opp_score:18,opponent:"ROMAINVILLOIS TT 1"}]},
+          {name:"LA FRETTE 1",acbbJournee:4,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"SAKOVITCH",prenom:"Stephen",cls:1388,vic:0},{nom:"MAISONNEUVE",prenom:"Bertrand",cls:1210,vic:0},{nom:"TOUFANIAN",prenom:"Armen",cls:598,vic:0},{nom:"FANZUTTI",prenom:"Patrick",cls:551,vic:0}],doubles:0,match_score:14,opp_score:28,opponent:"FONTENAY-TRESIGNY TT 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"SAKOVITCH",prenom:"Stephen",cls:1388,vic:1},{nom:"LEROUX",prenom:"Theo",cls:1330,vic:0},{nom:"MAISONNEUVE",prenom:"Bertrand",cls:1210,vic:1},{nom:"BONHOMME",prenom:"Renaud",cls:1186,vic:2}],doubles:1,match_score:19,opp_score:23,opponent:"CSMF PARIS TT 2"}]},
+          {name:"ROMAINVILLOIS TT 1",acbbJournee:5,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"BERIBOS",prenom:"Yohann",cls:1406,vic:1},{nom:"FABRE",prenom:"Thomas",cls:1320,vic:0},{nom:"BERIBOS",prenom:"Dylan",cls:1424,vic:1},{nom:"ZRIM",prenom:"Jean Paul",cls:"x",vic:1}],doubles:1,match_score:18,opp_score:24,opponent:"JUMP 5"},{journee:2,date:"14 févr. 2026",players:[{nom:"BERIBOS",prenom:"Yohann",cls:1406,vic:1},{nom:"FABRE",prenom:"Thomas",cls:1320,vic:0},{nom:"BERIBOS",prenom:"Dylan",cls:1424,vic:2},{nom:"ZRIM",prenom:"Jean Paul",cls:"x",vic:1}],doubles:0,match_score:18,opp_score:24,opponent:"FONTENAY-TRESIGNY TT 1"}]},
+          {name:"CSMF PARIS TT 2",acbbJournee:6,acbbDomext:"Dom",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"PARISOT",prenom:"Maximilien",cls:1163,vic:0},{nom:"BIBANG-BI-NDONG",prenom:"Nicolas",cls:1400,vic:1},{nom:"COMPTE",prenom:"Olivier",cls:1213,vic:0},{nom:"MULOCHER",prenom:"Amaury",cls:1269,vic:2}],doubles:0,match_score:17,opp_score:25,opponent:"NEUILLY S/M TT 1"},{journee:2,date:"14 févr. 2026",players:[{nom:"COLIN",prenom:"Jeremy",cls:1645,vic:3},{nom:"COVA",prenom:"Jean-Guillaume",cls:1805,vic:3},{nom:"BIBANG-BI-NDONG",prenom:"Nicolas",cls:1400,vic:1},{nom:"PARISOT",prenom:"Maximilien",cls:1163,vic:1}],doubles:1,match_score:23,opp_score:19,opponent:"LA FRETTE 1"}]},
+          {name:"NEUILLY S/M TT 1",acbbJournee:7,acbbDomext:"Ext",journees:[{journee:1,date:"7 févr. 2026",players:[{nom:"KERRIEN",prenom:"Mathieu",cls:1629,vic:3},{nom:"GAUTIER",prenom:"Jérôme",cls:1380,vic:1},{nom:"TRAISNEL",prenom:"Louis",cls:1521,vic:3},{nom:"TINANT",prenom:"Jeremy",cls:1501,vic:2}],doubles:2,match_score:25,opp_score:17,opponent:"CSMF PARIS TT 2"},{journee:2,date:"14 févr. 2026",players:[{nom:"SAUVEAUX",prenom:"Franck",cls:1258,vic:1},{nom:"BENLAIBA",prenom:"Fahed",cls:1386,vic:1},{nom:"MARCELLIN",prenom:"Antoine",cls:1457,vic:2},{nom:"GAUTIER",prenom:"Jérôme",cls:1380,vic:2}],doubles:1,match_score:21,opp_score:17,opponent:"VIRY CHATILLON 1"}]}
         ]
       },
       "M6": {
-        pool: "D92 Pré-Régionale Poule 3", level: "Pré-Régional", levelClass: "level-prereg", date: "6 février 2026",
+        pool: "D92 Pré-Régionale Poule 3", level: "Pré-Régional", levelClass: "level-prereg",
         teams: [
-          {name:"BOULOGNE BILLAN 6",acbb:true,players:[{nom:"LI",prenom:"Max",cls:1032,vic:1},{nom:"BELKADI",prenom:"Medhi",cls:938,vic:0},{nom:"FERET",prenom:"Hedi",cls:1065,vic:0},{nom:"TU XUAN",prenom:"Minh",cls:944,vic:0}],doubles:0},
-          {name:"CHATENAY ASVTT 1",journee:1,domext:"Dom",players:[{nom:"JUSSEAUME",prenom:"Jonathan",cls:1682,vic:3},{nom:"PIGNIER",prenom:"Romain",cls:1423,vic:2},{nom:"GANGA",prenom:"Yann",cls:1551,vic:3},{nom:"GABARD",prenom:"Romain",cls:1549,vic:3}],doubles:2},
-          {name:"TTMC CHATILLON 6",journee:2,domext:"Ext",players:[{nom:"CHALAUX",prenom:"Thomas",cls:1516,vic:3},{nom:"GREE",prenom:"Eric",cls:1347,vic:1},{nom:"CHALAUX",prenom:"Anaël",cls:844,vic:0},{nom:"BALU",prenom:"Arthur",cls:1195,vic:3}],doubles:2},
-          {name:"NEUILLY ASPN 5",journee:3,domext:"Ext",players:[{nom:"LIU",prenom:"Justin",cls:1101,vic:2},{nom:"D HAULTFOEUILLE-MIMOUNI",prenom:"Alexandre",cls:1148,vic:3},{nom:"NIKOLIC",prenom:"Alexis",cls:1356,vic:1},{nom:"APRA",prenom:"Basile",cls:1193,vic:0}],doubles:0},
-          {name:"BOIS COLOMBES S 4",journee:4,domext:"Dom",players:[{nom:"CHAUDOREILLE",prenom:"Thomas",cls:1597,vic:3},{nom:"LE SEAC'H LOPES",prenom:"Mathieu",cls:1034,vic:2},{nom:"ENJOLRAS",prenom:"Guillaume",cls:1284,vic:2},{nom:"MOSSERI",prenom:"Rémy",cls:1151,vic:1}],doubles:2},
-          {name:"LEVALLOIS SPORT 10",journee:5,domext:"Ext",players:[{nom:"DAS NEVES",prenom:"Alef higor",cls:1139,vic:1},{nom:"CHAMBON",prenom:"Amelie",cls:1135,vic:1},{nom:"MARIA",prenom:"Merlin",cls:1119,vic:1},{nom:"COURTOIS",prenom:"Pierre",cls:1076,vic:2}],doubles:0},
-          {name:"CLAMART CSM 4",journee:6,domext:"Dom",players:[{nom:"DUCOUDRAY",prenom:"Antonin",cls:1153,vic:1},{nom:"AMIOT",prenom:"Paco",cls:1143,vic:1},{nom:"NAVARRE",prenom:"Edgar",cls:1122,vic:1},{nom:"BOYER",prenom:"Hugo",cls:909,vic:1}],doubles:0},
-          {name:"RUEIL ATHLETIC 6",journee:7,domext:"Ext",players:[{nom:"RICART",prenom:"Franck",cls:1445,vic:2},{nom:"BARLOT-LAHAYE",prenom:"Nathan",cls:1286,vic:1},{nom:"DE ROZARIO",prenom:"Fabien",cls:1318,vic:1},{nom:"LOPES",prenom:"Andre",cls:1433,vic:2}],doubles:2}
+          {name:"BOULOGNE BILLAN 6",acbb:true,calendar:{1:{opponent:"CHATENAY ASVTT 1",domext:"Dom"},2:{opponent:"TTMC CHATILLON 6",domext:"Ext"},3:{opponent:"NEUILLY ASPN 5",domext:"Ext"},4:{opponent:"BOIS COLOMBES S 4",domext:"Dom"},5:{opponent:"LEVALLOIS SPORT 10",domext:"Ext"},6:{opponent:"CLAMART CSM 4",domext:"Dom"},7:{opponent:"RUEIL ATHLETIC 6",domext:"Ext"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"LI",prenom:"Max",cls:1032,vic:1},{nom:"BELKADI",prenom:"Medhi",cls:938,vic:0},{nom:"FERET",prenom:"Hedi",cls:1065,vic:0},{nom:"TU XUAN",prenom:"Minh",cls:944,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"CHATENAY ASVTT 1"},{journee:2,date:"13 févr. 2026",players:[{nom:"GRANDJEAN",prenom:"Guillaume",cls:1145,vic:1},{nom:"BELKADI",prenom:"Medhi",cls:938,vic:0},{nom:"FERET",prenom:"Hedi",cls:1065,vic:1},{nom:"TU XUAN",prenom:"Minh",cls:944,vic:1}],doubles:0,opponent:"TTMC CHATILLON 6"}]},
+          {name:"CHATENAY ASVTT 1",acbbJournee:1,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"JUSSEAUME",prenom:"Jonathan",cls:1682,vic:3},{nom:"PIGNIER",prenom:"Romain",cls:1423,vic:2},{nom:"GANGA",prenom:"Yann",cls:1551,vic:3},{nom:"GABARD",prenom:"Romain",cls:1549,vic:3}],doubles:2,match_score:27,opp_score:15,opponent:"BOULOGNE BILLAN 6"},{journee:2,date:"13 févr. 2026",players:[{nom:"JUSSEAUME",prenom:"Jonathan",cls:1682,vic:3},{nom:"GABARD",prenom:"Romain",cls:1549,vic:1},{nom:"GANGA",prenom:"Yann",cls:1551,vic:3},{nom:"PIGNIER",prenom:"Romain",cls:1423,vic:3}],doubles:1,match_score:25,opp_score:17,opponent:"NEUILLY ASPN 5"}]},
+          {name:"TTMC CHATILLON 6",acbbJournee:2,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"CHALAUX",prenom:"Thomas",cls:1516,vic:3},{nom:"GREE",prenom:"Eric",cls:1347,vic:1},{nom:"CHALAUX",prenom:"Anaël",cls:844,vic:0},{nom:"BALU",prenom:"Arthur",cls:1195,vic:3}],doubles:2,match_score:23,opp_score:19,opponent:"LEVALLOIS SPORT 10"},{journee:2,date:"13 févr. 2026",players:[{nom:"GREE",prenom:"Eric",cls:1347,vic:3},{nom:"HOUSSIN",prenom:"Christophe",cls:1129,vic:3},{nom:"CHALAUX",prenom:"Anaël",cls:844,vic:0},{nom:"CHALAUX",prenom:"Thomas",cls:1516,vic:3}],doubles:2,opponent:"BOULOGNE BILLAN 6"}]},
+          {name:"NEUILLY ASPN 5",acbbJournee:3,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"LIU",prenom:"Justin",cls:1101,vic:2},{nom:"D HAULTFOEUILLE-MIMOUNI",prenom:"Alexandre",cls:1146,vic:3},{nom:"NIKOLIC",prenom:"Alexis",cls:1356,vic:1},{nom:"APRA",prenom:"Basile",cls:1193,vic:0}],doubles:0,match_score:20,opp_score:22,opponent:"RUEIL ATHLETIC 6"},{journee:2,date:"13 févr. 2026",players:[{nom:"LIU",prenom:"Justin",cls:1101,vic:0},{nom:"APRA",prenom:"Basile",cls:1193,vic:1},{nom:"BECANE",prenom:"Pascal",cls:1145,vic:0},{nom:"D HAULTFOEUILLE-MIMOUNI",prenom:"Alexandre",cls:1146,vic:1}],doubles:1,match_score:17,opp_score:25,opponent:"CHATENAY ASVTT 1"}]},
+          {name:"BOIS COLOMBES S 4",acbbJournee:4,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"CHAUDOREILLE",prenom:"Thomas",cls:1597,vic:3},{nom:"LE SEAC'H LOPES",prenom:"Mathieu",cls:1034,vic:2},{nom:"ENJOLRAS",prenom:"Guillaume",cls:1284,vic:2},{nom:"MOSSERI",prenom:"Rémy",cls:1151,vic:1}],doubles:2,match_score:24,opp_score:18,opponent:"CLAMART CSM 4"},{journee:2,date:"13 févr. 2026",players:[{nom:"ZHENG",prenom:"Zhile",cls:1221,vic:0},{nom:"WULFMAN",prenom:"Nathanaël",cls:1001,vic:1},{nom:"LE SEAC'H LOPES",prenom:"Mathieu",cls:1034,vic:0},{nom:"MOSSERI",prenom:"Rémy",cls:1151,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"RUEIL ATHLETIC 6"}]},
+          {name:"LEVALLOIS SPORT 10",acbbJournee:5,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"DAS NEVES",prenom:"Alef higor",cls:1139,vic:1},{nom:"CHAMBON",prenom:"Amelie",cls:1135,vic:1},{nom:"MARIA",prenom:"Merlin",cls:1119,vic:1},{nom:"COURTOIS",prenom:"Pierre",cls:1076,vic:2}],doubles:0,match_score:19,opp_score:23,opponent:"TTMC CHATILLON 6"},{journee:2,date:"13 févr. 2026",players:[{nom:"DAS NEVES",prenom:"Alef higor",cls:1139,vic:2},{nom:"CHAMBON",prenom:"Amelie",cls:1135,vic:1},{nom:"PRIEUR",prenom:"Valentin",cls:1341,vic:3},{nom:"THEPSUWAN",prenom:"Kritsornsawan",cls:1181,vic:2}],doubles:0,match_score:22,opp_score:20,opponent:"CLAMART CSM 4"}]},
+          {name:"CLAMART CSM 4",acbbJournee:6,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"DUCOUDRAY",prenom:"Antonin",cls:1153,vic:1},{nom:"AMIOT",prenom:"Paco",cls:1143,vic:1},{nom:"NAVARRE",prenom:"Edgar",cls:1122,vic:1},{nom:"BOYER",prenom:"Hugo",cls:909,vic:1}],doubles:0,match_score:18,opp_score:24,opponent:"BOIS COLOMBES S 4"},{journee:2,date:"13 févr. 2026",players:[{nom:"MOREAUX",prenom:"Dimitri",cls:1330,vic:1},{nom:"PRUD'HOMME",prenom:"Leo",cls:1300,vic:3},{nom:"BOYER",prenom:"Hugo",cls:909,vic:0},{nom:"NAVARRE",prenom:"Edgar",cls:1122,vic:0}],doubles:2,match_score:20,opp_score:22,opponent:"LEVALLOIS SPORT 10"}]},
+          {name:"RUEIL ATHLETIC 6",acbbJournee:7,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"RICART",prenom:"Franck",cls:1445,vic:2},{nom:"BARLOT-LAHAYE",prenom:"Nathan",cls:1286,vic:1},{nom:"DE ROZARIO",prenom:"Fabien",cls:1318,vic:1},{nom:"LOPES",prenom:"Andre",cls:1433,vic:2}],doubles:2,match_score:22,opp_score:20,opponent:"NEUILLY ASPN 5"},{journee:2,date:"13 févr. 2026",players:[{nom:"DE ROZARIO",prenom:"Fabien",cls:1318,vic:2},{nom:"BARLOT-LAHAYE",prenom:"Nathan",cls:1286,vic:3},{nom:"LOPES",prenom:"Andre",cls:1433,vic:3},{nom:"RICART",prenom:"Franck",cls:1445,vic:3}],doubles:2,match_score:27,opp_score:15,opponent:"BOIS COLOMBES S 4"}]}
         ]
       },
       "M7": {
-        pool: "D92 Pré-Régionale Poule 2", level: "Pré-Régional", levelClass: "level-prereg", date: "6 février 2026",
+        pool: "D92 Pré-Régionale Poule 2", level: "Pré-Régional", levelClass: "level-prereg",
         teams: [
-          {name:"BOULOGNE BILLAN 7",acbb:true,players:[{nom:"PEIGNE",prenom:"Gilles",cls:1059,vic:0},{nom:"BATTI",prenom:"Ayoub",cls:1033,vic:2},{nom:"COZIEN",prenom:"Ethan",cls:1041,vic:0},{nom:"COUCHOURON",prenom:"Sebastien",cls:1049,vic:1}],doubles:1},
-          {name:"CLAMART CSM 5",journee:1,domext:"Dom",players:[{nom:"PRUD'HOMME",prenom:"Leo",cls:1300,vic:3},{nom:"ELIE DIT COSAQUE",prenom:"Olivier",cls:1193,vic:3},{nom:"RENET",prenom:"Jean-Baptiste",cls:1009,vic:2},{nom:"D'HONDT",prenom:"Pierre",cls:1036,vic:1}],doubles:1},
-          {name:"NEUILLY ASPN 4",journee:2,domext:"Ext",players:[{nom:"DULOU",prenom:"Ethan",cls:1307,vic:0},{nom:"AMADORU",prenom:"Chamod",cls:1312,vic:2},{nom:"FERREIRA DOS SANTOS",prenom:"Tomas",cls:1256,vic:2},{nom:"GAITAN-APARICIO",prenom:"Thomas",cls:1276,vic:2}],doubles:1},
-          {name:"COLOMBES ES 1",journee:3,domext:"Dom",players:[{nom:"ORO",prenom:"Jeremie",cls:1291,vic:0},{nom:"RAMOND",prenom:"Theo",cls:1611,vic:2},{nom:"LOZACH",prenom:"Antoine",cls:616,vic:0},{nom:"DEMORAT",prenom:"Thibault",cls:1165,vic:0}],doubles:0},
-          {name:"COURBEVOIE STT 9",journee:4,domext:"Ext",players:[{nom:"DELORME",prenom:"Thibault",cls:1662,vic:2},{nom:"TOULAMBAHJI",prenom:"Louai",cls:1104,vic:2},{nom:"MAZERAT",prenom:"Hugo",cls:1474,vic:3},{nom:"BOISARD",prenom:"Clement",cls:1264,vic:3}],doubles:2},
-          {name:"SCEAUX T.T. 1",journee:5,domext:"Dom",players:[{nom:"GINOUX-DEFERMON",prenom:"Theo",cls:1485,vic:2},{nom:"GRANDCHAMP",prenom:"Timothee",cls:1383,vic:2},{nom:"SINGH",prenom:"Arvind",cls:1398,vic:1},{nom:"GUENARD",prenom:"Henri",cls:1359,vic:1}],doubles:1},
-          {name:"TTMC CHATILLON 5",journee:6,domext:"Dom",players:[{nom:"MURESAN",prenom:"Florin",cls:1519,vic:3},{nom:"CARPENTIER",prenom:"Pascal",cls:1108,vic:2},{nom:"ISSA",prenom:"Elias",cls:916,vic:1},{nom:"DO",prenom:"Steeve",cls:943,vic:1}],doubles:2},
-          {name:"ASNIERES TT 3",journee:7,domext:"Ext",players:[{nom:"OUDET",prenom:"Thomas",cls:961,vic:1},{nom:"BINOIS",prenom:"Elias",cls:1030,vic:1},{nom:"CRONIN",prenom:"Maurice",cls:1034,vic:2},{nom:"GALAND",prenom:"Philippe",cls:980,vic:1}],doubles:0}
+          {name:"BOULOGNE BILLAN 7",acbb:true,calendar:{1:{opponent:"CLAMART CSM 5",domext:"Dom"},2:{opponent:"NEUILLY ASPN 4",domext:"Ext"},3:{opponent:"COLOMBES ES 1",domext:"Dom"},4:{opponent:"COURBEVOIE STT 9",domext:"Ext"},5:{opponent:"SCEAUX T.T. 1",domext:"Dom"},6:{opponent:"TTMC CHATILLON 5",domext:"Dom"},7:{opponent:"ASNIERES TT 3",domext:"Ext"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"PEIGNE",prenom:"Gilles",cls:1059,vic:0},{nom:"BATTI",prenom:"Ayoub",cls:1033,vic:2},{nom:"COZIEN",prenom:"Ethan",cls:1041,vic:0},{nom:"COUCHOURON",prenom:"Sebastien",cls:1049,vic:1}],doubles:1,match_score:18,opp_score:24,opponent:"CLAMART CSM 5"},{journee:2,date:"13 févr. 2026",players:[{nom:"COZIEN",prenom:"Ethan",cls:1041,vic:0},{nom:"GAUTIER",prenom:"Olivier",cls:1084,vic:0},{nom:"BOUZANNE DES MAZERY",prenom:"Stephane",cls:1089,vic:0},{nom:"COUCHOURON",prenom:"Sebastien",cls:1049,vic:0}],doubles:1,match_score:15,opp_score:27,opponent:"NEUILLY ASPN 4"}]},
+          {name:"CLAMART CSM 5",acbbJournee:1,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"PRUD'HOMME",prenom:"Leo",cls:1300,vic:2},{nom:"ELIE DIT COSAQUE",prenom:"Olivier",cls:1193,vic:3},{nom:"RENET",prenom:"Jean-Baptiste",cls:1009,vic:3},{nom:"D'HONDT",prenom:"Pierre",cls:1036,vic:1}],doubles:1,match_score:24,opp_score:18,opponent:"BOULOGNE BILLAN 7"},{journee:2,date:"13 févr. 2026",players:[{nom:"ELIE DIT COSAQUE",prenom:"Olivier",cls:1193,vic:2},{nom:"RENET",prenom:"Jean-Baptiste",cls:1009,vic:2},{nom:"AMIOT",prenom:"Paco",cls:1143,vic:3},{nom:"D'HONDT",prenom:"Pierre",cls:1036,vic:3}],doubles:2,match_score:26,opp_score:16,opponent:"ASNIERES TT 3"}]},
+          {name:"NEUILLY ASPN 4",acbbJournee:2,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"DULOU",prenom:"Ethan",cls:1307,vic:0},{nom:"AMADORU",prenom:"Chamod",cls:1312,vic:2},{nom:"FERREIRA DOS SANTOS",prenom:"Tomas",cls:1256,vic:2},{nom:"GAITAN-APARICIO",prenom:"Thomas",cls:1276,vic:2}],doubles:1,match_score:21,opp_score:21,opponent:"SCEAUX T.T. 1"},{journee:2,date:"13 févr. 2026",players:[{nom:"AMADORU",prenom:"Chamod",cls:1312,vic:3},{nom:"GAITAN-APARICIO",prenom:"Thomas",cls:1276,vic:3},{nom:"FERREIRA DOS SANTOS",prenom:"Tomas",cls:1256,vic:3},{nom:"NSEKE",prenom:"Hector",cls:1136,vic:3}],doubles:1,match_score:27,opp_score:15,opponent:"BOULOGNE BILLAN 7"}]},
+          {name:"COLOMBES ES 1",acbbJournee:3,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"ORO",prenom:"Jeremie",cls:1291,vic:0},{nom:"RAMOND",prenom:"Theo",cls:1611,vic:2},{nom:"LOZACH",prenom:"Antoine",cls:616,vic:0},{nom:"DEMORAT",prenom:"Thibault",cls:1165,vic:0}],doubles:0,match_score:16,opp_score:26,opponent:"COURBEVOIE STT 9"},{journee:2,date:"13 févr. 2026",players:[{nom:"RAMOND",prenom:"Theo",cls:1611,vic:2},{nom:"ORO",prenom:"Jeremie",cls:1291,vic:2},{nom:"DEMORAT",prenom:"Thibault",cls:1165,vic:0},{nom:"VOISIN",prenom:"Tom",cls:1108,vic:1}],doubles:1,match_score:20,opp_score:22,opponent:"SCEAUX T.T. 1"}]},
+          {name:"COURBEVOIE STT 9",acbbJournee:4,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"DELORME",prenom:"Thibault",cls:1662,vic:2},{nom:"TOULAMBAHJI",prenom:"Louai",cls:1104,vic:2},{nom:"MAZERAT",prenom:"Hugo",cls:1474,vic:3},{nom:"BOISARD",prenom:"Clement",cls:1264,vic:3}],doubles:2,match_score:26,opp_score:16,opponent:"COLOMBES ES 1"},{journee:2,date:"13 févr. 2026",players:[{nom:"TOULAMBAHJI",prenom:"Louai",cls:1104,vic:0},{nom:"BOISARD",prenom:"Clement",cls:1264,vic:1},{nom:"BENTOLILA",prenom:"Laurent",cls:1401,vic:1},{nom:"TRABELSI",prenom:"Ramzi",cls:962,vic:0}],doubles:1,opponent:"TTMC CHATILLON 5"}]},
+          {name:"SCEAUX T.T. 1",acbbJournee:5,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"GINOUX-DEFERMON",prenom:"Theo",cls:1485,vic:2},{nom:"GRANDCHAMP",prenom:"Timothee",cls:1383,vic:2},{nom:"SINGH",prenom:"Arvind",cls:1398,vic:1},{nom:"GUENARD",prenom:"Henri",cls:1359,vic:1}],doubles:1,match_score:21,opp_score:21,opponent:"NEUILLY ASPN 4"},{journee:2,date:"13 févr. 2026",players:[{nom:"KROL",prenom:"Raphael",cls:879,vic:1},{nom:"GRANDCHAMP",prenom:"Timothee",cls:1383,vic:2},{nom:"GUENARD",prenom:"Henri",cls:1359,vic:2},{nom:"SINGH",prenom:"Arvind",cls:1398,vic:2}],doubles:1,match_score:22,opp_score:20,opponent:"COLOMBES ES 1"}]},
+          {name:"TTMC CHATILLON 5",acbbJournee:6,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"MURESAN",prenom:"Florin",cls:1519,vic:3},{nom:"CARPENTIER",prenom:"Pascal",cls:1108,vic:2},{nom:"ISSA",prenom:"Elias",cls:916,vic:1},{nom:"DO",prenom:"Steeve",cls:943,vic:1}],doubles:2,match_score:23,opp_score:19,opponent:"ASNIERES TT 3"},{journee:2,date:"13 févr. 2026",players:[{nom:"BOST",prenom:"Julie",cls:"N280",vic:3},{nom:"SOULAS",prenom:"Alexis",cls:1606,vic:3},{nom:"BRENOT",prenom:"Jeanne",cls:1355,vic:3},{nom:"CARPENTIER",prenom:"Pascal",cls:1108,vic:1}],doubles:1,opponent:"COURBEVOIE STT 9"}]},
+          {name:"ASNIERES TT 3",acbbJournee:7,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"OUDET",prenom:"Thomas",cls:961,vic:1},{nom:"BINOIS",prenom:"Elias",cls:1030,vic:1},{nom:"CRONIN",prenom:"Maurice",cls:1034,vic:2},{nom:"GALAND",prenom:"Philippe",cls:980,vic:1}],doubles:0,match_score:19,opp_score:23,opponent:"TTMC CHATILLON 5"},{journee:2,date:"13 févr. 2026",players:[{nom:"LIU",prenom:"Christophe",cls:992,vic:2},{nom:"GALAND",prenom:"Philippe",cls:980,vic:0},{nom:"OUDET",prenom:"Thomas",cls:961,vic:0},{nom:"BINOIS",prenom:"Elias",cls:1030,vic:0}],doubles:0,match_score:16,opp_score:26,opponent:"CLAMART CSM 5"}]}
         ]
       },
       "M8": {
-        pool: "D92 Pré-Régionale Poule 4", level: "Pré-Régional", levelClass: "level-prereg", date: "6 février 2026",
+        pool: "D92 Pré-Régionale Poule 4", level: "Pré-Régional", levelClass: "level-prereg",
         teams: [
-          {name:"BOULOGNE BILLAN 8",acbb:true,players:[{nom:"HABERT",prenom:"Patrick",cls:1268,vic:1},{nom:"LIORZOU",prenom:"Sebastien",cls:1251,vic:1},{nom:"BOITEAU",prenom:"Jean-Serge",cls:1133,vic:1},{nom:"LIMOGES",prenom:"Ulrich",cls:1194,vic:1}],doubles:0},
-          {name:"CLICHY CS 1",journee:1,domext:"Ext",players:[{nom:"",prenom:"",cls:500,vic:0}],doubles:0},
-          {name:"COURBEVOIE STT 8",journee:2,domext:"Dom",players:[{nom:"POMMAT-PERRON",prenom:"Lola",cls:943,vic:0},{nom:"GERBE",prenom:"Benoit",cls:1152,vic:1},{nom:"WANG",prenom:"Louis",cls:1086,vic:1},{nom:"HECHT",prenom:"Mathilde",cls:908,vic:0}],doubles:0},
-          {name:"ASNIERES TT 5",journee:3,domext:"Dom",players:[{nom:"GUILLEMET",prenom:"Maxence",cls:1063,vic:0},{nom:"POCHON",prenom:"Emmanuel",cls:1184,vic:0},{nom:"LEROY",prenom:"Eric",cls:1358,vic:0},{nom:"LOISEL",prenom:"Serge",cls:1371,vic:0}],doubles:1},
-          {name:"SCEAUX T.T. 2",journee:4,domext:"Ext",players:[{nom:"BENOIST",prenom:"Samuel",cls:1264,vic:2},{nom:"KROL",prenom:"Raphael",cls:879,vic:2},{nom:"WOLINER",prenom:"Romain",cls:1406,vic:2},{nom:"KROL",prenom:"Fabien",cls:981,vic:1}],doubles:0},
-          {name:"BOURG LA REINE 1",journee:5,domext:"Dom",players:[{nom:"VO",prenom:"Van Toan",cls:1104,vic:2},{nom:"PHAM MINH",prenom:"Philippe",cls:1038,vic:1},{nom:"MARIA",prenom:"Patrick",cls:1380,vic:2},{nom:"RUBEM",prenom:"Mathilde",cls:796,vic:0}],doubles:2},
-          {name:"BOIS COLOMBES S 5",journee:6,domext:"Ext",players:[{nom:"CHEMINI",prenom:"Hugo",cls:1371,vic:3},{nom:"BOITEL",prenom:"Théo",cls:1330,vic:3},{nom:"WATZKO",prenom:"Frédéric",cls:1694,vic:3},{nom:"PERRIN",prenom:"Romuald",cls:1233,vic:3}],doubles:1},
-          {name:"CHATENAY ASVTT 2",journee:7,domext:"Dom",players:[{nom:"NORDMANN",prenom:"Simon",cls:1357,vic:2},{nom:"DUBOIS",prenom:"Florian",cls:1478,vic:3},{nom:"MOSTAFAVI",prenom:"Mehdi",cls:1204,vic:3},{nom:"GABARD",prenom:"Jean Gilles",cls:1269,vic:2}],doubles:2}
+          {name:"BOULOGNE BILLAN 8",acbb:true,calendar:{1:{opponent:"CLICHY CS 1",domext:"Ext"},2:{opponent:"COURBEVOIE STT 8",domext:"Dom"},3:{opponent:"ASNIERES TT 5",domext:"Dom"},4:{opponent:"SCEAUX T.T. 2",domext:"Ext"},5:{opponent:"BOURG LA REINE 1",domext:"Dom"},6:{opponent:"BOIS COLOMBES S 5",domext:"Ext"},7:{opponent:"CHATENAY ASVTT 2",domext:"Dom"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"HABERT",prenom:"Patrick",cls:1268,vic:1},{nom:"LIORZOU",prenom:"Sebastien",cls:1251,vic:1},{nom:"BOITEAU",prenom:"Jean-Serge",cls:1133,vic:1},{nom:"LIMOGES",prenom:"Ulrich",cls:1194,vic:1}],doubles:0,match_score:18,opp_score:24,opponent:"CLICHY CS 1"},{journee:2,date:"13 févr. 2026",players:[{nom:"BOITEAU",prenom:"Jean-Serge",cls:1133,vic:2},{nom:"LIMOGES",prenom:"Ulrich",cls:1194,vic:2},{nom:"LIORZOU",prenom:"Sebastien",cls:1251,vic:3},{nom:"MERIC",prenom:"Marion",cls:1183,vic:2}],doubles:0,match_score:23,opp_score:19,opponent:"COURBEVOIE STT 8"}]},
+          {name:"CLICHY CS 1",acbbJournee:1,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"VALLET",prenom:"Corentin",cls:1459,vic:3},{nom:"CORAD",prenom:"Johann",cls:1206,vic:0},{nom:"SPRONCK",prenom:"Loup",cls:1286,vic:3},{nom:"PETRILLI",prenom:"Alexandre",cls:1004,vic:2}],doubles:2,match_score:24,opp_score:18,opponent:"BOULOGNE BILLAN 8"},{journee:2,date:"13 févr. 2026",players:[{nom:"VALLET",prenom:"Corentin",cls:1459,vic:3},{nom:"CORAD",prenom:"Johann",cls:1206,vic:2},{nom:"SPRONCK",prenom:"Loup",cls:1286,vic:3},{nom:"PETRILLI",prenom:"Alexandre",cls:1004,vic:0}],doubles:2,match_score:24,opp_score:18,opponent:"ASNIERES TT 5"}]},
+          {name:"COURBEVOIE STT 8",acbbJournee:2,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"POMMAT-PERRON",prenom:"Lola",cls:943,vic:0},{nom:"GERBE",prenom:"Benoit",cls:1152,vic:1},{nom:"WANG",prenom:"Louis",cls:1086,vic:1},{nom:"HECHT",prenom:"Mathilde",cls:908,vic:0}],doubles:0,match_score:16,opp_score:26,opponent:"CHATENAY ASVTT 2"},{journee:2,date:"13 févr. 2026",players:[{nom:"VEILLEROT",prenom:"Laurence",cls:1234,vic:1},{nom:"WANG",prenom:"Louis",cls:1086,vic:1},{nom:"FRELAUT",prenom:"Yannick",cls:865,vic:1},{nom:"FOUCO",prenom:"Flavie",cls:1106,vic:0}],doubles:2,match_score:19,opp_score:23,opponent:"BOULOGNE BILLAN 8"}]},
+          {name:"ASNIERES TT 5",acbbJournee:3,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"GUILLEMET",prenom:"Maxence",cls:1063,vic:0},{nom:"POCHON",prenom:"Emmanuel",cls:1184,vic:0},{nom:"LEROY",prenom:"Eric",cls:1358,vic:0},{nom:"LOISEL",prenom:"Serge",cls:1371,vic:0}],doubles:1,match_score:15,opp_score:27,opponent:"BOIS COLOMBES S 5"},{journee:2,date:"13 févr. 2026",players:[{nom:"HASTINGS",prenom:"Vianney",cls:1205,vic:0},{nom:"POCHON",prenom:"Emmanuel",cls:1184,vic:1},{nom:"VIGUIER",prenom:"Vincent",cls:1272,vic:1},{nom:"REGNAULT",prenom:"Alexandre",cls:955,vic:2}],doubles:0,match_score:18,opp_score:24,opponent:"CLICHY CS 1"}]},
+          {name:"SCEAUX T.T. 2",acbbJournee:4,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"BENOIST",prenom:"Samuel",cls:1264,vic:2},{nom:"KROL",prenom:"Raphael",cls:879,vic:2},{nom:"WOLINER",prenom:"Romain",cls:1406,vic:2},{nom:"KROL",prenom:"Fabien",cls:981,vic:1}],doubles:0,match_score:21,opp_score:21,opponent:"BOURG LA REINE 1"},{journee:2,date:"13 févr. 2026",players:[{nom:"ARAB CLAIRAUX",prenom:"Mehdi",cls:1090,vic:1},{nom:"LEFRANC",prenom:"Maxime",cls:870,vic:0},{nom:"THOMPSON",prenom:"Jeremy",cls:705,vic:0},{nom:"Joueur absent",prenom:"",cls:0,vic:0}],doubles:1,match_score:12,opp_score:26,opponent:"CHATENAY ASVTT 2"}]},
+          {name:"BOURG LA REINE 1",acbbJournee:5,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"VO",prenom:"Van Toan",cls:1104,vic:2},{nom:"PHAM MINH",prenom:"Philippe",cls:1038,vic:1},{nom:"MARIA",prenom:"Patrick",cls:1380,vic:2},{nom:"RUBEM",prenom:"Mathilde",cls:796,vic:0}],doubles:2,match_score:21,opp_score:21,opponent:"SCEAUX T.T. 2"},{journee:2,date:"13 févr. 2026",players:[{nom:"VO",prenom:"Van Toan",cls:1104,vic:0},{nom:"PHAM MINH",prenom:"Philippe",cls:1038,vic:0},{nom:"MARIA",prenom:"Patrick",cls:1380,vic:2},{nom:"KHOUNSAMNANE",prenom:"Remi",cls:1050,vic:0}],doubles:0,opponent:"BOIS COLOMBES S 5"}]},
+          {name:"BOIS COLOMBES S 5",acbbJournee:6,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"CHEMINI",prenom:"Hugo",cls:1371,vic:3},{nom:"BOITEL",prenom:"Théo",cls:1330,vic:3},{nom:"WATZKO",prenom:"Frédéric",cls:1694,vic:3},{nom:"PERRIN",prenom:"Romuald",cls:1233,vic:3}],doubles:1,match_score:27,opp_score:15,opponent:"ASNIERES TT 5"},{journee:2,date:"13 févr. 2026",players:[{nom:"CHAUDOREILLE",prenom:"Thomas",cls:1597,vic:3},{nom:"CHEMINI",prenom:"Hugo",cls:1371,vic:3},{nom:"BOITEL",prenom:"Théo",cls:1330,vic:2},{nom:"PERRIN",prenom:"Romuald",cls:1233,vic:2}],doubles:2,opponent:"BOURG LA REINE 1"}]},
+          {name:"CHATENAY ASVTT 2",acbbJournee:7,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"NORDMANN",prenom:"Simon",cls:1357,vic:2},{nom:"DUBOIS",prenom:"Florian",cls:1478,vic:3},{nom:"MOSTAFAVI",prenom:"Mehdi",cls:1204,vic:3},{nom:"GABARD",prenom:"Jean Gilles",cls:1269,vic:2}],doubles:2,match_score:26,opp_score:16,opponent:"COURBEVOIE STT 8"},{journee:2,date:"13 févr. 2026",players:[{nom:"NORDMANN",prenom:"Simon",cls:1357,vic:2},{nom:"DUBOIS",prenom:"Florian",cls:1478,vic:3},{nom:"MOSTAFAVI",prenom:"Mehdi",cls:1204,vic:3},{nom:"GABARD",prenom:"Jean Gilles",cls:1269,vic:3}],doubles:1,match_score:26,opp_score:12,opponent:"SCEAUX T.T. 2"}]}
         ]
       },
       "M9": {
-        pool: "D92 Pré-Régionale Poule 1", level: "Pré-Régional", levelClass: "level-prereg", date: "6 février 2026",
+        pool: "D92 Pré-Régionale Poule 1", level: "Pré-Régional", levelClass: "level-prereg",
         teams: [
-          {name:"BOULOGNE BILLAN 9",acbb:true,players:[{nom:"BATOT",prenom:"Ghislain",cls:1323,vic:2},{nom:"DE COSNAC",prenom:"Astrid",cls:1295,vic:0},{nom:"CHAUVEL",prenom:"Sylvain",cls:1303,vic:2},{nom:"LE BOURG",prenom:"Virginie",cls:1329,vic:3}],doubles:1},
-          {name:"ASNIERES TT 4",journee:1,domext:"Dom",players:[{nom:"MINEO",prenom:"Jean-René",cls:1254,vic:1},{nom:"KOCOT",prenom:"Dany",cls:1145,vic:2},{nom:"HASTINGS",prenom:"Vianney",cls:1205,vic:0},{nom:"PACREAU",prenom:"Gerard",cls:1302,vic:1}],doubles:1},
-          {name:"TTMC CHATILLON 4",journee:2,domext:"Ext",players:[{nom:"LEPINE",prenom:"Pierre",cls:1246,vic:1},{nom:"CHEN",prenom:"Francois",cls:1178,vic:2},{nom:"COUPRIE",prenom:"Stephane",cls:1078,vic:3},{nom:"PHLEK",prenom:"Dara",cls:1037,vic:0}],doubles:1},
-          {name:"ANTONY SPORT TT 4",journee:3,domext:"Ext",players:[{nom:"ANDERSSON",prenom:"Alexandre",cls:1162,vic:2},{nom:"DELON",prenom:"Sebastien",cls:1058,vic:2},{nom:"MONTOYA",prenom:"Daniel",cls:959,vic:0},{nom:"MABILLE",prenom:"Mickael",cls:1371,vic:2}],doubles:1},
-          {name:"RUEIL ATHLETIC 7",journee:4,domext:"Dom",players:[{nom:"KOLECKI",prenom:"Michel",cls:1222,vic:0},{nom:"BEAUMONT",prenom:"Guillaume",cls:1512,vic:2},{nom:"DIAN",prenom:"Clement",cls:1105,vic:1},{nom:"PAPOUIN",prenom:"Cyril",cls:1110,vic:3}],doubles:2},
-          {name:"LA GARENNE COLO 1",journee:5,domext:"Ext",players:[{nom:"GUERIN",prenom:"Christophe",cls:1162,vic:1},{nom:"CHAUSSIN",prenom:"Christophe",cls:1472,vic:3},{nom:"DUBOIS",prenom:"Franklin",cls:1198,vic:1},{nom:"GASMI",prenom:"Nasser",cls:1156,vic:1}],doubles:1},
-          {name:"NANTERRE ES 2",journee:6,domext:"Dom",players:[{nom:"DEROUES",prenom:"Brice",cls:1478,vic:3},{nom:"LEROY",prenom:"Jean-louis",cls:1119,vic:1},{nom:"SEROT",prenom:"Quentin",cls:1091,vic:2},{nom:"FERLAY",prenom:"Olivier",cls:1047,vic:0}],doubles:0},
-          {name:"NEUILLY ASPN 6",journee:7,domext:"Ext",players:[{nom:"FARSSI",prenom:"Mehdi",cls:1600,vic:2},{nom:"MORLAINE",prenom:"Lionel",cls:1292,vic:0},{nom:"BRATINA",prenom:"David",cls:1139,vic:1},{nom:"BAKIR",prenom:"Ilyane",cls:1134,vic:2}],doubles:1}
+          {name:"BOULOGNE BILLAN 9",acbb:true,calendar:{1:{opponent:"ASNIERES TT 4",domext:"Dom"},2:{opponent:"TTMC CHATILLON 4",domext:"Ext"},3:{opponent:"ANTONY SPORT TT 4",domext:"Ext"},4:{opponent:"RUEIL ATHLETIC 7",domext:"Dom"},5:{opponent:"LA GARENNE COLO 1",domext:"Ext"},6:{opponent:"NANTERRE ES 2",domext:"Dom"},7:{opponent:"NEUILLY ASPN 6",domext:"Ext"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"BATOT",prenom:"Ghislain",cls:1323,vic:2},{nom:"DE COSNAC",prenom:"Astrid",cls:1295,vic:0},{nom:"CHAUVEL",prenom:"Sylvain",cls:1303,vic:2},{nom:"LE BOURG",prenom:"Virginie",cls:1329,vic:3}],doubles:1,match_score:22,opp_score:20,opponent:"ASNIERES TT 4"},{journee:2,date:"13 févr. 2026",players:[{nom:"BATOT",prenom:"Ghislain",cls:1323,vic:3},{nom:"LE BOURG",prenom:"Virginie",cls:1329,vic:2},{nom:"LI",prenom:"Max",cls:1032,vic:2},{nom:"CHAUVEL",prenom:"Sylvain",cls:1303,vic:3}],doubles:1,opponent:"TTMC CHATILLON 4"}]},
+          {name:"ASNIERES TT 4",acbbJournee:1,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"MINEO",prenom:"Jean-René",cls:1254,vic:2},{nom:"KOCOT",prenom:"Dany",cls:1145,vic:2},{nom:"HASTINGS",prenom:"Vianney",cls:1205,vic:0},{nom:"PACREAU",prenom:"Gerard",cls:1302,vic:1}],doubles:1,match_score:20,opp_score:22,opponent:"BOULOGNE BILLAN 9"},{journee:2,date:"13 févr. 2026",players:[{nom:"GUILLEMET",prenom:"Maxence",cls:1063,vic:2},{nom:"KOCOT",prenom:"Dany",cls:1145,vic:3},{nom:"MINEO",prenom:"Jean-René",cls:1254,vic:3},{nom:"PACREAU",prenom:"Gerard",cls:1302,vic:3}],doubles:1,match_score:26,opp_score:16,opponent:"ANTONY SPORT TT 4"}]},
+          {name:"TTMC CHATILLON 4",acbbJournee:2,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"LEPINE",prenom:"Pierre",cls:1246,vic:1},{nom:"CHEN",prenom:"Francois",cls:1178,vic:2},{nom:"COUPRIE",prenom:"Stephane",cls:1078,vic:3},{nom:"PHLEK",prenom:"Dara",cls:1037,vic:0}],doubles:1,match_score:21,opp_score:21,opponent:"LA GARENNE COLO 1"},{journee:2,date:"13 févr. 2026",players:[{nom:"LECOMTE",prenom:"Antoine",cls:978,vic:0},{nom:"CHEN",prenom:"Francois",cls:1178,vic:1},{nom:"LEPINE",prenom:"Pierre",cls:1246,vic:1},{nom:"PHLEK",prenom:"Dara",cls:1037,vic:0}],doubles:1,opponent:"BOULOGNE BILLAN 9"}]},
+          {name:"ANTONY SPORT TT 4",acbbJournee:3,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"ANDERSSON",prenom:"Alexandre",cls:1162,vic:2},{nom:"DELON",prenom:"Sebastien",cls:1058,vic:2},{nom:"MONTOYA",prenom:"Daniel",cls:959,vic:0},{nom:"MABILLE",prenom:"Mickael",cls:1371,vic:2}],doubles:1,match_score:21,opp_score:21,opponent:"NEUILLY ASPN 6"},{journee:2,date:"13 févr. 2026",players:[{nom:"DELON",prenom:"Sebastien",cls:1058,vic:1},{nom:"WOLGUSIAK",prenom:"Esteban",cls:817,vic:0},{nom:"VIALLES",prenom:"Jean Michel",cls:959,vic:0},{nom:"MONTOYA",prenom:"Daniel",cls:959,vic:0}],doubles:1,match_score:16,opp_score:26,opponent:"ASNIERES TT 4"}]},
+          {name:"RUEIL ATHLETIC 7",acbbJournee:4,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"KOLECKI",prenom:"Michel",cls:1222,vic:0},{nom:"BEAUMONT",prenom:"Guillaume",cls:1512,vic:2},{nom:"DIAN",prenom:"Clement",cls:1105,vic:1},{nom:"PAPOUIN",prenom:"Cyril",cls:1110,vic:3}],doubles:2,match_score:22,opp_score:20,opponent:"NANTERRE ES 2"},{journee:2,date:"13 févr. 2026",players:[{nom:"KOLECKI",prenom:"Michel",cls:1222,vic:1},{nom:"MORIN",prenom:"François",cls:1125,vic:0},{nom:"BEAUMONT",prenom:"Guillaume",cls:1512,vic:2},{nom:"DIAN",prenom:"Clement",cls:1105,vic:1}],doubles:1,match_score:19,opp_score:23,opponent:"NEUILLY ASPN 6"}]},
+          {name:"LA GARENNE COLO 1",acbbJournee:5,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"GUERIN",prenom:"Christophe",cls:1162,vic:1},{nom:"CHAUSSIN",prenom:"Christophe",cls:1472,vic:3},{nom:"DUBOIS",prenom:"Franklin",cls:1198,vic:1},{nom:"GASMI",prenom:"Nasser",cls:1156,vic:1}],doubles:1,match_score:21,opp_score:21,opponent:"TTMC CHATILLON 4"},{journee:2,date:"13 févr. 2026",players:[{nom:"GASMI",prenom:"Nasser",cls:1156,vic:1},{nom:"CHAUSSIN",prenom:"Christophe",cls:1472,vic:2},{nom:"GUERIN",prenom:"Christophe",cls:1162,vic:1},{nom:"DUBOIS",prenom:"Franklin",cls:1198,vic:3}],doubles:1,match_score:22,opp_score:20,opponent:"NANTERRE ES 2"}]},
+          {name:"NANTERRE ES 2",acbbJournee:6,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"DEROUES",prenom:"Brice",cls:1478,vic:3},{nom:"LEROY",prenom:"Jean-louis",cls:1119,vic:1},{nom:"SEROT",prenom:"Quentin",cls:1091,vic:2},{nom:"FERLAY",prenom:"Olivier",cls:1047,vic:0}],doubles:0,match_score:20,opp_score:22,opponent:"RUEIL ATHLETIC 7"},{journee:2,date:"13 févr. 2026",players:[{nom:"DEROUES",prenom:"Brice",cls:1478,vic:3},{nom:"LEROY",prenom:"Jean-louis",cls:1119,vic:0},{nom:"SEROT",prenom:"Quentin",cls:1091,vic:1},{nom:"FERLAY",prenom:"Olivier",cls:1047,vic:1}],doubles:1,match_score:20,opp_score:22,opponent:"LA GARENNE COLO 1"}]},
+          {name:"NEUILLY ASPN 6",acbbJournee:7,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"FARSSI",prenom:"Mehdi",cls:1600,vic:3},{nom:"MORLAINE",prenom:"Lionel",cls:1292,vic:0},{nom:"BRATINA",prenom:"David",cls:1139,vic:1},{nom:"BAKIR",prenom:"Ilyane",cls:1134,vic:2}],doubles:1,match_score:21,opp_score:21,opponent:"ANTONY SPORT TT 4"},{journee:2,date:"13 févr. 2026",players:[{nom:"RODRIGUEZ",prenom:"Raphael",cls:1442,vic:3},{nom:"BAKIR",prenom:"Ilyane",cls:1134,vic:2},{nom:"BRATINA",prenom:"David",cls:1139,vic:1},{nom:"MORLAINE",prenom:"Lionel",cls:1292,vic:2}],doubles:1,match_score:23,opp_score:19,opponent:"RUEIL ATHLETIC 7"}]}
         ]
       },
       "M10": {
-        pool: "D92 D1 Poule 3", level: "Départemental 1", levelClass: "level-d1", date: "6 février 2026",
+        pool: "D92 D1 Poule 3", level: "Départemental 1", levelClass: "level-d1",
         teams: [
-          {name:"BOULOGNE BILLAN 10",acbb:true,players:[{nom:"MANDELMILECH",prenom:"Adrien",cls:928,vic:0},{nom:"ALLEGRE-GUILLAUME",prenom:"Antoine",cls:725,vic:0},{nom:"CAMION",prenom:"Chloe",cls:914,vic:2},{nom:"RECHATIN",prenom:"Bruno",cls:904,vic:0}],doubles:1},
-          {name:"RUEIL ATHLETIC 9",journee:1,domext:"Ext",players:[{nom:"BOUFADEL",prenom:"Elie",cls:887,vic:2},{nom:"HELOU",prenom:"Amaury-Grégoire",cls:894,vic:3},{nom:"IBRAHIM",prenom:"Antoine",cls:1176,vic:3},{nom:"DIAS",prenom:"Sebastien",cls:876,vic:2}],doubles:1},
-          {name:"LEVALLOIS SPORT 11",journee:2,domext:"Dom",players:[{nom:"BOUDARA",prenom:"Stephane",cls:1102,vic:3},{nom:"SAINSON",prenom:"Michael",cls:1179,vic:3},{nom:"EZNACK",prenom:"Stephane",cls:1125,vic:3},{nom:"PLUYAUD",prenom:"Nicolas",cls:906,vic:2}],doubles:2},
-          {name:"MALAKOFF USM 5",journee:3,domext:"Ext",players:[{nom:"BICHOT",prenom:"Vincent",cls:743,vic:0},{nom:"BLOCH",prenom:"Angus",cls:517,vic:0},{nom:"CLEMENT",prenom:"Philippe",cls:1197,vic:1},{nom:"CORDEIRO",prenom:"Jose",cls:663,vic:0}],doubles:0},
-          {name:"SM MONTROUGE 3",journee:4,domext:"Ext",players:[{nom:"CHALINE",prenom:"Lucas",cls:1177,vic:1},{nom:"GARBARG",prenom:"Raphaël",cls:798,vic:1},{nom:"GAILLARD",prenom:"Thomas",cls:1122,vic:2},{nom:"OBAM",prenom:"Nicolas",cls:1287,vic:3}],doubles:2},
-          {name:"PLESSIS ROBINS. 4",journee:5,domext:"Dom",players:[{nom:"EVEN",prenom:"Alain",cls:847,vic:1},{nom:"LEBRUN",prenom:"Clement",cls:962,vic:1},{nom:"BARBARIA",prenom:"Stephane",cls:796,vic:3},{nom:"SOARES",prenom:"Julien",cls:964,vic:3}],doubles:1},
-          {name:"COURBEVOIE STT 11",journee:6,domext:"Ext",players:[{nom:"LHOMER",prenom:"Paul",cls:883,vic:1},{nom:"AIT HAMLAT",prenom:"Jugurtha",cls:722,vic:2},{nom:"BONZON",prenom:"Baptiste",cls:742,vic:1},{nom:"GUENON",prenom:"Thomas",cls:500,vic:0}],doubles:1},
-          {name:"VOLTIGEURS 1",journee:7,domext:"Dom",players:[{nom:"BARRÉ",prenom:"Bertrand",cls:1161,vic:3},{nom:"RABARIJAONA",prenom:"Zo",cls:979,vic:0},{nom:"DELORY",prenom:"Virgile",cls:956,vic:1},{nom:"LEVASSEUR",prenom:"Arnaud",cls:953,vic:1}],doubles:0}
+          {name:"BOULOGNE BILLAN 10",acbb:true,calendar:{1:{opponent:"RUEIL ATHLETIC 9",domext:"Ext"},2:{opponent:"LEVALLOIS SPORT 11",domext:"Dom"},3:{opponent:"MALAKOFF USM 5",domext:"Ext"},4:{opponent:"SM MONTROUGE 3",domext:"Ext"},5:{opponent:"PLESSIS ROBINS. 4",domext:"Dom"},6:{opponent:"COURBEVOIE STT 11",domext:"Ext"},7:{opponent:"VOLTIGEURS 1",domext:"Dom"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"MANDELMILECH",prenom:"Adrien",cls:928,vic:0},{nom:"ALLEGRE-GUILLAUME",prenom:"Antoine",cls:725,vic:0},{nom:"CAMION",prenom:"Chloe",cls:914,vic:2},{nom:"RECHATIN",prenom:"Bruno",cls:904,vic:0}],doubles:1,match_score:17,opp_score:25,opponent:"RUEIL ATHLETIC 9"},{journee:2,date:"13 févr. 2026",players:[{nom:"SCHULLER",prenom:"Eric",cls:1600,vic:3},{nom:"DIAB BOUSTANI",prenom:"Evan",cls:1076,vic:3},{nom:"JANUS",prenom:"Tomasz",cls:1552,vic:3},{nom:"ATLAN",prenom:"Guillaume",cls:924,vic:2}],doubles:2,match_score:27,opp_score:15,opponent:"LEVALLOIS SPORT 11"}]},
+          {name:"RUEIL ATHLETIC 9",acbbJournee:1,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"BOUFADEL",prenom:"Elie",cls:887,vic:2},{nom:"HELOU",prenom:"Amaury-Grégoire",cls:894,vic:3},{nom:"IBRAHIM",prenom:"Antoine",cls:1176,vic:3},{nom:"DIAS",prenom:"Sebastien",cls:876,vic:2}],doubles:1,match_score:25,opp_score:17,opponent:"BOULOGNE BILLAN 10"},{journee:2,date:"13 févr. 2026",players:[{nom:"PIRIOU",prenom:"Olivier",cls:1255,vic:1},{nom:"BOUFADEL",prenom:"Elie",cls:887,vic:0},{nom:"DIAS",prenom:"Sebastien",cls:876,vic:0},{nom:"IBRAHIM",prenom:"Antoine",cls:1176,vic:1}],doubles:0,opponent:"SM MONTROUGE 3"}]},
+          {name:"LEVALLOIS SPORT 11",acbbJournee:2,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"BOUDARA",prenom:"Stephane",cls:1102,vic:3},{nom:"SAINSON",prenom:"Michael",cls:1179,vic:3},{nom:"EZNACK",prenom:"Stephane",cls:1125,vic:3},{nom:"PLUYAUD",prenom:"Nicolas",cls:906,vic:2}],doubles:2,match_score:27,opp_score:15,opponent:"MALAKOFF USM 5"},{journee:2,date:"13 févr. 2026",players:[{nom:"BOUDARA",prenom:"Stephane",cls:1102,vic:0},{nom:"COURTOIS",prenom:"Pierre",cls:1076,vic:1},{nom:"SAINSON",prenom:"Michael",cls:1179,vic:0},{nom:"PLUYAUD",prenom:"Nicolas",cls:906,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"BOULOGNE BILLAN 10"}]},
+          {name:"MALAKOFF USM 5",acbbJournee:3,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"BICHOT",prenom:"Vincent",cls:743,vic:0},{nom:"BLOCH",prenom:"Angus",cls:517,vic:0},{nom:"CLEMENT",prenom:"Philippe",cls:1197,vic:1},{nom:"CORDEIRO",prenom:"Jose",cls:663,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"LEVALLOIS SPORT 11"},{journee:2,date:"13 févr. 2026",players:[{nom:"CLEMENT",prenom:"Philippe",cls:1197,vic:3},{nom:"BLOCH",prenom:"Angus",cls:517,vic:1},{nom:"BICHOT",prenom:"Vincent",cls:743,vic:1},{nom:"CORDEIRO",prenom:"Jose",cls:663,vic:1}],doubles:2,match_score:22,opp_score:20,opponent:"COURBEVOIE STT 11"}]},
+          {name:"SM MONTROUGE 3",acbbJournee:4,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"CHALINE",prenom:"Lucas",cls:1177,vic:1},{nom:"GARBARG",prenom:"Raphaël",cls:798,vic:1},{nom:"GAILLARD",prenom:"Thomas",cls:1122,vic:2},{nom:"OBAM",prenom:"Nicolas",cls:1287,vic:3}],doubles:2,match_score:23,opp_score:19,opponent:"VOLTIGEURS 1"},{journee:2,date:"13 févr. 2026",players:[{nom:"HONTARREDE",prenom:"Pierre-Alain",cls:1058,vic:3},{nom:"CHARTIN",prenom:"Benoit",cls:1225,vic:2},{nom:"WILSON",prenom:"Rene-Claude",cls:1706,vic:3},{nom:"GAILLARD",prenom:"Thomas",cls:1122,vic:2}],doubles:2,opponent:"RUEIL ATHLETIC 9"}]},
+          {name:"PLESSIS ROBINS. 4",acbbJournee:5,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"EVEN",prenom:"Alain",cls:847,vic:1},{nom:"LEBRUN",prenom:"Clement",cls:962,vic:1},{nom:"BARBARIA",prenom:"Stephane",cls:796,vic:3},{nom:"SOARES",prenom:"Julien",cls:964,vic:3}],doubles:1,match_score:23,opp_score:19,opponent:"COURBEVOIE STT 11"},{journee:2,date:"13 févr. 2026",players:[{nom:"BARBARIA",prenom:"Stephane",cls:796,vic:1},{nom:"LEBRUN",prenom:"Clement",cls:962,vic:2},{nom:"EVEN",prenom:"Alain",cls:847,vic:1},{nom:"SOARES",prenom:"Julien",cls:964,vic:2}],doubles:1,match_score:21,opp_score:21,opponent:"VOLTIGEURS 1"}]},
+          {name:"COURBEVOIE STT 11",acbbJournee:6,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"LHOMER",prenom:"Paul",cls:883,vic:1},{nom:"AIT HAMLAT",prenom:"Jugurtha",cls:722,vic:2},{nom:"BONZON",prenom:"Baptiste",cls:742,vic:1},{nom:"GUENON",prenom:"Thomas",cls:500,vic:0}],doubles:1,match_score:19,opp_score:23,opponent:"PLESSIS ROBINS. 4"},{journee:2,date:"13 févr. 2026",players:[{nom:"CAREAU",prenom:"Jules",cls:914,vic:1},{nom:"BONZON",prenom:"Baptiste",cls:742,vic:1},{nom:"GUENON",prenom:"Thomas",cls:500,vic:1},{nom:"LUU",prenom:"Anh Dung",cls:915,vic:3}],doubles:0,match_score:20,opp_score:22,opponent:"MALAKOFF USM 5"}]},
+          {name:"VOLTIGEURS 1",acbbJournee:7,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"BARRÉ",prenom:"Bertrand",cls:1161,vic:3},{nom:"RABARIJAONA",prenom:"Zo",cls:979,vic:0},{nom:"DELORY",prenom:"Virgile",cls:956,vic:1},{nom:"LEVASSEUR",prenom:"Arnaud",cls:953,vic:1}],doubles:0,match_score:19,opp_score:23,opponent:"SM MONTROUGE 3"},{journee:2,date:"13 févr. 2026",players:[{nom:"DELORY",prenom:"Virgile",cls:956,vic:2},{nom:"RABARIJAONA",prenom:"Zo",cls:979,vic:2},{nom:"BARRÉ",prenom:"Bertrand",cls:1161,vic:2},{nom:"PELLESCHI",prenom:"Thomas",cls:779,vic:0}],doubles:1,match_score:21,opp_score:21,opponent:"PLESSIS ROBINS. 4"}]}
         ]
       },
       "M11": {
-        pool: "D92 D1 Poule 4", level: "Départemental 1", levelClass: "level-d1", date: "6 février 2026",
+        pool: "D92 D1 Poule 4", level: "Départemental 1", levelClass: "level-d1",
         teams: [
-          {name:"BOULOGNE BILLAN 11",acbb:true,players:[{nom:"LANGLOIS",prenom:"Xavier",cls:836,vic:1},{nom:"ZHANG",prenom:"Jun",cls:847,vic:1},{nom:"PIQUET",prenom:"Sebastien",cls:737,vic:0},{nom:"GIROU",prenom:"Alain",cls:730,vic:0}],doubles:1},
-          {name:"NEUILLY ASPN 9",journee:1,domext:"Ext",players:[{nom:"WATINE",prenom:"Augustin",cls:1017,vic:2},{nom:"QUIQUEMPOIS",prenom:"Stephane",cls:1442,vic:3},{nom:"MALAGAMMANA",prenom:"Salomé",cls:1025,vic:3},{nom:"DE SOUSA",prenom:"Alexandre",cls:1031,vic:2}],doubles:1},
-          {name:"LEVALLOIS SPORT 12",journee:2,domext:"Dom",players:[{nom:"GOURLAY",prenom:"Vincent",cls:1132,vic:3},{nom:"GUESPIN",prenom:"Eliot",cls:1041,vic:3},{nom:"BACHOREK",prenom:"Gregory",cls:568,vic:1},{nom:"RUSCON",prenom:"Romain",cls:881,vic:2}],doubles:2},
-          {name:"TTMC CHATILLON 8",journee:3,domext:"Ext",players:[{nom:"RENOU",prenom:"Gilles",cls:1053,vic:1},{nom:"HEDJAL",prenom:"Thibaut",cls:995,vic:1},{nom:"VIOLAS",prenom:"Noé",cls:852,vic:0},{nom:"GAO",prenom:"Ivan",cls:799,vic:1}],doubles:0},
-          {name:"RUEIL ATHLETIC 8",journee:4,domext:"Ext",players:[{nom:"CAVIALE",prenom:"Laurent",cls:1041,vic:2},{nom:"CLAVEAU",prenom:"Christophe",cls:1163,vic:3},{nom:"BAFFREY",prenom:"Vincent",cls:979,vic:0},{nom:"LE FRAPPER",prenom:"Romuald",cls:1278,vic:3}],doubles:1},
-          {name:"COLOMBIENNE ES 2",journee:5,domext:"Dom",players:[{nom:"MORIN",prenom:"Nathalie",cls:806,vic:1},{nom:"DECAUX",prenom:"Valentin",cls:840,vic:1},{nom:"NGUYEN-GUILLAUME",prenom:"Jules",cls:816,vic:2},{nom:"MINET",prenom:"Matthieu",cls:749,vic:1}],doubles:1},
-          {name:"ASNIERES TT 7",journee:6,domext:"Ext",players:[{nom:"LIU",prenom:"Katy",cls:857,vic:1},{nom:"MO",prenom:"Milina",cls:865,vic:2},{nom:"SPRECACENERE",prenom:"Cyril",cls:1160,vic:2},{nom:"AT KHEN",prenom:"Kresna",cls:850,vic:2}],doubles:1},
-          {name:"SCEAUX T.T. 3",journee:7,domext:"Dom",players:[{nom:"FROLOV",prenom:"Ilya",cls:1076,vic:2},{nom:"FERRE",prenom:"Valentin",cls:839,vic:0},{nom:"LEFRANC",prenom:"Maxime",cls:870,vic:1},{nom:"GORON",prenom:"Julien",cls:1034,vic:1}],doubles:1}
+          {name:"BOULOGNE BILLAN 11",acbb:true,calendar:{1:{opponent:"NEUILLY ASPN 9",domext:"Ext"},2:{opponent:"LEVALLOIS SPORT 12",domext:"Dom"},3:{opponent:"TTMC CHATILLON 8",domext:"Ext"},4:{opponent:"RUEIL ATHLETIC 8",domext:"Ext"},5:{opponent:"COLOMBIENNE ES 2",domext:"Dom"},6:{opponent:"ASNIERES TT 7",domext:"Ext"},7:{opponent:"SCEAUX T.T. 3",domext:"Dom"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"LANGLOIS",prenom:"Xavier",cls:836,vic:1},{nom:"ZHANG",prenom:"Jun",cls:847,vic:1},{nom:"PIQUET",prenom:"Sebastien",cls:737,vic:0},{nom:"GIROU",prenom:"Alain",cls:730,vic:0}],doubles:1,match_score:17,opp_score:24,opponent:"NEUILLY ASPN 9"},{journee:2,date:"13 févr. 2026",players:[{nom:"BATTI",prenom:"Ayoub",cls:1033,vic:2},{nom:"PRUDENT",prenom:"Christian",cls:1195,vic:1},{nom:"LESCAUDRON",prenom:"Noemie",cls:1085,vic:2},{nom:"AUBERT",prenom:"Richard",cls:1135,vic:3}],doubles:1,match_score:23,opp_score:19,opponent:"LEVALLOIS SPORT 12"}]},
+          {name:"NEUILLY ASPN 9",acbbJournee:1,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"WATINE",prenom:"Augustin",cls:1017,vic:2},{nom:"QUIQUEMPOIS",prenom:"Stephane",cls:1442,vic:3},{nom:"MALAGAMMANA",prenom:"Salomé",cls:1025,vic:3},{nom:"DE SOUSA",prenom:"Alexandre",cls:1031,vic:2}],doubles:1,match_score:24,opp_score:17,opponent:"BOULOGNE BILLAN 11"},{journee:2,date:"13 févr. 2026",players:[{nom:"MALAGAMMANA",prenom:"Salomé",cls:1025,vic:3},{nom:"WATINE",prenom:"Augustin",cls:1017,vic:2},{nom:"QUIQUEMPOIS",prenom:"Stephane",cls:1442,vic:2},{nom:"NIKOLIC",prenom:"Alexis",cls:1356,vic:2}],doubles:2,match_score:25,opp_score:17,opponent:"RUEIL ATHLETIC 8"}]},
+          {name:"LEVALLOIS SPORT 12",acbbJournee:2,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"GOURLAY",prenom:"Vincent",cls:1132,vic:3},{nom:"GUESPIN",prenom:"Eliot",cls:1041,vic:3},{nom:"BACHOREK",prenom:"Gregory",cls:568,vic:1},{nom:"RUSCON",prenom:"Romain",cls:881,vic:2}],doubles:2,match_score:25,opp_score:17,opponent:"TTMC CHATILLON 8"},{journee:2,date:"13 févr. 2026",players:[{nom:"GUESPIN",prenom:"Eliot",cls:1041,vic:2},{nom:"GOURLAY",prenom:"Vincent",cls:1132,vic:1},{nom:"LIN",prenom:"Haidong",cls:906,vic:1},{nom:"RUSCON",prenom:"Romain",cls:881,vic:0}],doubles:1,match_score:19,opp_score:23,opponent:"BOULOGNE BILLAN 11"}]},
+          {name:"TTMC CHATILLON 8",acbbJournee:3,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"RENOU",prenom:"Gilles",cls:1053,vic:1},{nom:"HEDJAL",prenom:"Thibaut",cls:995,vic:1},{nom:"VIOLAS",prenom:"Noé",cls:852,vic:0},{nom:"GAO",prenom:"Ivan",cls:799,vic:1}],doubles:0,match_score:17,opp_score:25,opponent:"LEVALLOIS SPORT 12"},{journee:2,date:"13 févr. 2026",players:[{nom:"HEDJAL",prenom:"Thibaut",cls:995,vic:2},{nom:"HARDY",prenom:"Lény",cls:749,vic:2},{nom:"GAO",prenom:"Ivan",cls:799,vic:1},{nom:"BOUSQUET",prenom:"Gabriel",cls:829,vic:2}],doubles:1,opponent:"ASNIERES TT 7"}]},
+          {name:"RUEIL ATHLETIC 8",acbbJournee:4,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"CAVIALE",prenom:"Laurent",cls:1041,vic:2},{nom:"CLAVEAU",prenom:"Christophe",cls:1163,vic:3},{nom:"BAFFREY",prenom:"Vincent",cls:979,vic:0},{nom:"LE FRAPPER",prenom:"Romuald",cls:1278,vic:3}],doubles:1,match_score:23,opp_score:19,opponent:"SCEAUX T.T. 3"},{journee:2,date:"13 févr. 2026",players:[{nom:"CAVIALE",prenom:"Laurent",cls:1041,vic:1},{nom:"CLAVEAU",prenom:"Christophe",cls:1163,vic:0},{nom:"BAFFREY",prenom:"Vincent",cls:979,vic:1},{nom:"LE FRAPPER",prenom:"Romuald",cls:1278,vic:1}],doubles:0,match_score:17,opp_score:25,opponent:"NEUILLY ASPN 9"}]},
+          {name:"COLOMBIENNE ES 2",acbbJournee:5,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"MORIN",prenom:"Nathalie",cls:806,vic:1},{nom:"DECAUX",prenom:"Valentin",cls:840,vic:1},{nom:"NGUYEN-GUILLAUME",prenom:"Jules",cls:816,vic:2},{nom:"MINET",prenom:"Matthieu",cls:749,vic:1}],doubles:1,match_score:20,opp_score:22,opponent:"ASNIERES TT 7"},{journee:2,date:"13 févr. 2026",players:[{nom:"DUKUZE",prenom:"Honore",cls:764,vic:0},{nom:"DECAUX",prenom:"Valentin",cls:840,vic:2},{nom:"NGUYEN-GUILLAUME",prenom:"Jules",cls:816,vic:1},{nom:"MINET",prenom:"Matthieu",cls:749,vic:1}],doubles:1,match_score:19,opp_score:23,opponent:"SCEAUX T.T. 3"}]},
+          {name:"ASNIERES TT 7",acbbJournee:6,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"LIU",prenom:"Katy",cls:857,vic:1},{nom:"MO",prenom:"Milina",cls:865,vic:2},{nom:"SPRECACENERE",prenom:"Cyril",cls:1160,vic:2},{nom:"AT KHEN",prenom:"Kresna",cls:850,vic:2}],doubles:1,match_score:22,opp_score:20,opponent:"COLOMBIENNE ES 2"},{journee:2,date:"13 févr. 2026",players:[{nom:"LIU",prenom:"Katy",cls:857,vic:1},{nom:"BRISSON",prenom:"Justine",cls:787,vic:0},{nom:"SPRECACENERE",prenom:"Cyril",cls:1160,vic:3},{nom:"AT KHEN",prenom:"Kresna",cls:850,vic:1}],doubles:1,opponent:"TTMC CHATILLON 8"}]},
+          {name:"SCEAUX T.T. 3",acbbJournee:7,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"FROLOV",prenom:"Ilya",cls:1076,vic:2},{nom:"FERRE",prenom:"Valentin",cls:839,vic:0},{nom:"LEFRANC",prenom:"Maxime",cls:870,vic:1},{nom:"GORON",prenom:"Julien",cls:1034,vic:1}],doubles:1,match_score:19,opp_score:23,opponent:"RUEIL ATHLETIC 8"},{journee:2,date:"13 févr. 2026",players:[{nom:"KROL",prenom:"Fabien",cls:981,vic:2},{nom:"FROLOV",prenom:"Ilya",cls:1076,vic:3},{nom:"LEPRINCE",prenom:"Thomas",cls:1035,vic:3},{nom:"LIN",prenom:"Christophe",cls:771,vic:0}],doubles:1,match_score:23,opp_score:19,opponent:"COLOMBIENNE ES 2"}]}
         ]
       },
       "M12": {
-        pool: "D92 D2 Poule 8", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        pool: "D92 D2 Poule 8", level: "Départemental 2", levelClass: "level-d2",
         teams: [
-          {name:"BOULOGNE BILLAN 12",acbb:true,players:[{nom:"ROUX",prenom:"Yannis",cls:1167,vic:3},{nom:"SAVAN",prenom:"Vuthny",cls:960,vic:3},{nom:"PERROT",prenom:"Charles",cls:953,vic:3},{nom:"LENNON",prenom:"Clémence",cls:879,vic:2}],doubles:1},
-          {name:"COLOMBIENNE ES 4",journee:1,domext:"Ext",players:[{nom:"LANGEVIN",prenom:"Antoine",cls:741,vic:0},{nom:"CARTERON",prenom:"Rémi",cls:579,vic:0},{nom:"CHAILLOT",prenom:"Thomas",cls:663,vic:1},{nom:"BERREBI",prenom:"David",cls:536,vic:0}],doubles:1},
-          {name:"Courbevoie STT 14",journee:2,domext:"Dom",players:[{nom:"PATRY",prenom:"Luca Kai",cls:609,vic:0},{nom:"JOULIE",prenom:"Axel",cls:544,vic:1},{nom:"VAYSSE",prenom:"Aurelien",cls:590,vic:1},{nom:"MARCOS",prenom:"Nicolas",cls:577,vic:1}],doubles:0},
-          {name:"MEUDON AS 6",journee:3,domext:"Dom",players:[{nom:"SOULAS",prenom:"Stephane",cls:727,vic:1},{nom:"KIRKORYAN",prenom:"Léo",cls:673,vic:2},{nom:"MARTINS",prenom:"Enzo",cls:689,vic:2},{nom:"FERREIRA",prenom:"Eliot",cls:976,vic:3}],doubles:2},
-          {name:"CLAMART CSM 10",journee:4,domext:"Ext",players:[{nom:"JANNIN",prenom:"Flavien",cls:500,vic:0},{nom:"FERREIRA",prenom:"Nolan",cls:611,vic:3},{nom:"BALDIT",prenom:"Christophe",cls:500,vic:0},{nom:"MARCHI",prenom:"Gilles",cls:500,vic:1}],doubles:1},
-          {name:"BOIS COLOMBES S 10",journee:5,domext:"Dom",players:[{nom:"MASSONNEAU",prenom:"Christophe",cls:510,vic:2},{nom:"SONNETTE",prenom:"Bruno",cls:619,vic:2},{nom:"YVERNAY",prenom:"Mélanie",cls:675,vic:3},{nom:"CHACHAY",prenom:"Timothée",cls:572,vic:1}],doubles:1},
-          {name:"RUEIL ATHLETIC 15",journee:6,domext:"Ext",players:[{nom:"GAUTHRON",prenom:"Henri",cls:763,vic:3},{nom:"DRUILLOLE",prenom:"Eric",cls:678,vic:1},{nom:"RIPAUD",prenom:"Christophe",cls:611,vic:0},{nom:"LEDIEU",prenom:"Joel",cls:575,vic:0}],doubles:0},
-          {name:"LEVALLOIS SPORT 15",journee:7,domext:"Dom",players:[{nom:"KLOETI",prenom:"Sebastien",cls:733,vic:3},{nom:"DOS SANTOS-LHOSTE",prenom:"Alexandre",cls:741,vic:2},{nom:"GALLAIS",prenom:"Marc",cls:762,vic:3},{nom:"CORNILLET",prenom:"Jean-Francois",cls:617,vic:1}],doubles:2}
+          {name:"BOULOGNE BILLAN 12",acbb:true,calendar:{1:{opponent:"COLOMBIENNE ES 4",domext:"Ext"},2:{opponent:"Courbevoie STT 14",domext:"Dom"},3:{opponent:"MEUDON AS 6",domext:"Dom"},4:{opponent:"CLAMART CSM 10",domext:"Ext"},5:{opponent:"BOIS COLOMBES S 10",domext:"Dom"},6:{opponent:"RUEIL ATHLETIC 15",domext:"Ext"},7:{opponent:"LEVALLOIS SPORT 15",domext:"Dom"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"ROUX",prenom:"Yannis",cls:1167,vic:3},{nom:"SAVAN",prenom:"Vuthny",cls:960,vic:3},{nom:"PERROT",prenom:"Charles",cls:953,vic:3},{nom:"LENNON",prenom:"Clémence",cls:879,vic:2}],doubles:1,match_score:26,opp_score:16,opponent:"COLOMBIENNE ES 4"},{journee:2,date:"13 févr. 2026",players:[{nom:"FONTAINE",prenom:"Sebastien",cls:934,vic:3},{nom:"LANGLOIS",prenom:"Xavier",cls:836,vic:3},{nom:"SAVAN",prenom:"Vuthny",cls:960,vic:3},{nom:"PIQUET",prenom:"Sebastien",cls:737,vic:2}],doubles:2,match_score:27,opp_score:15,opponent:"Courbevoie STT 14"}]},
+          {name:"COLOMBIENNE ES 4",acbbJournee:1,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"LANGEVIN",prenom:"Antoine",cls:741,vic:0},{nom:"CARTERON",prenom:"Rémi",cls:579,vic:0},{nom:"CHAILLOT",prenom:"Thomas",cls:663,vic:1},{nom:"BERREBI",prenom:"David",cls:536,vic:0}],doubles:1,match_score:16,opp_score:26,opponent:"BOULOGNE BILLAN 12"},{journee:2,date:"13 févr. 2026",players:[{nom:"BERREBI",prenom:"David",cls:536,vic:0},{nom:"LOZACH",prenom:"Antoine",cls:616,vic:0},{nom:"CHAILLOT",prenom:"Thomas",cls:663,vic:1},{nom:"CARTERON",prenom:"Rémi",cls:579,vic:0}],doubles:1,match_score:16,opp_score:26,opponent:"MEUDON AS 6"}]},
+          {name:"Courbevoie STT 14",acbbJournee:2,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"PATRY",prenom:"Luca Kai",cls:609,vic:0},{nom:"JOULIE",prenom:"Axel",cls:544,vic:1},{nom:"VAYSSE",prenom:"Aurelien",cls:590,vic:1},{nom:"MARCOS",prenom:"Nicolas",cls:577,vic:1}],doubles:0,match_score:17,opp_score:25,opponent:"LEVALLOIS SPORT 15"},{journee:2,date:"13 févr. 2026",players:[{nom:"JOULIE",prenom:"Axel",cls:544,vic:0},{nom:"VAYSSE",prenom:"Aurelien",cls:590,vic:0},{nom:"PATRY",prenom:"Luca Kai",cls:609,vic:0},{nom:"SEMYKOZ",prenom:"Eduard",cls:601,vic:1}],doubles:0,match_score:15,opp_score:27,opponent:"BOULOGNE BILLAN 12"}]},
+          {name:"MEUDON AS 6",acbbJournee:3,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"SOULAS",prenom:"Stephane",cls:727,vic:1},{nom:"KIRKORYAN",prenom:"Léo",cls:673,vic:2},{nom:"MARTINS",prenom:"Enzo",cls:689,vic:2},{nom:"FERREIRA",prenom:"Eliot",cls:976,vic:3}],doubles:2,match_score:24,opp_score:18,opponent:"RUEIL ATHLETIC 15"},{journee:2,date:"13 févr. 2026",players:[{nom:"KIRKORYAN",prenom:"Léo",cls:673,vic:3},{nom:"SOULAS",prenom:"Stephane",cls:727,vic:3},{nom:"LECOQ",prenom:"Mathis",cls:667,vic:2},{nom:"MARTINS",prenom:"Enzo",cls:689,vic:3}],doubles:1,match_score:26,opp_score:16,opponent:"COLOMBIENNE ES 4"}]},
+          {name:"CLAMART CSM 10",acbbJournee:4,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"JANNIN",prenom:"Flavien",cls:500,vic:0},{nom:"FERREIRA",prenom:"Nolan",cls:611,vic:3},{nom:"BALDIT",prenom:"Christophe",cls:500,vic:0},{nom:"MARCHI",prenom:"Gilles",cls:500,vic:1}],doubles:1,match_score:19,opp_score:23,opponent:"BOIS COLOMBES S 10"},{journee:2,date:"13 févr. 2026",players:[{nom:"THOMAS",prenom:"Antoine",cls:767,vic:3},{nom:"FERREIRA",prenom:"Nolan",cls:611,vic:2},{nom:"JANNIN",prenom:"Flavien",cls:500,vic:0},{nom:"BALDIT",prenom:"Christophe",cls:500,vic:0}],doubles:0,match_score:19,opp_score:23,opponent:"LEVALLOIS SPORT 15"}]},
+          {name:"BOIS COLOMBES S 10",acbbJournee:5,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"MASSONNEAU",prenom:"Christophe",cls:510,vic:2},{nom:"SONNETTE",prenom:"Bruno",cls:619,vic:2},{nom:"YVERNAY",prenom:"Mélanie",cls:675,vic:3},{nom:"CHACHAY",prenom:"Timothée",cls:572,vic:1}],doubles:1,match_score:23,opp_score:19,opponent:"CLAMART CSM 10"},{journee:2,date:"13 févr. 2026",players:[{nom:"MASSONNEAU",prenom:"Christophe",cls:510,vic:0},{nom:"LUPPINO",prenom:"Léandre",cls:540,vic:1},{nom:"YVERNAY",prenom:"Mélanie",cls:675,vic:1},{nom:"SONNETTE",prenom:"Bruno",cls:619,vic:3}],doubles:1,match_score:20,opp_score:22,opponent:"RUEIL ATHLETIC 15"}]},
+          {name:"RUEIL ATHLETIC 15",acbbJournee:6,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"GAUTHRON",prenom:"Henri",cls:763,vic:3},{nom:"DRUILLOLE",prenom:"Eric",cls:678,vic:1},{nom:"RIPAUD",prenom:"Christophe",cls:611,vic:0},{nom:"LEDIEU",prenom:"Joel",cls:575,vic:0}],doubles:0,match_score:18,opp_score:24,opponent:"MEUDON AS 6"},{journee:2,date:"13 févr. 2026",players:[{nom:"GAUTHRON",prenom:"Henri",cls:763,vic:3},{nom:"DRUILLOLE",prenom:"Eric",cls:678,vic:2},{nom:"MAGIER",prenom:"Eddy",cls:584,vic:2},{nom:"RIPAUD",prenom:"Christophe",cls:611,vic:0}],doubles:1,match_score:22,opp_score:20,opponent:"BOIS COLOMBES S 10"}]},
+          {name:"LEVALLOIS SPORT 15",acbbJournee:7,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"KLOETI",prenom:"Sebastien",cls:733,vic:3},{nom:"DOS SANTOS-LHOSTE",prenom:"Alexandre",cls:741,vic:2},{nom:"GALLAIS",prenom:"Marc",cls:762,vic:3},{nom:"CORNILLET",prenom:"Jean-Francois",cls:617,vic:1}],doubles:2,match_score:25,opp_score:17,opponent:"Courbevoie STT 14"},{journee:2,date:"13 févr. 2026",players:[{nom:"LERONDEL",prenom:"Sebastien",cls:642,vic:2},{nom:"CORNILLET",prenom:"Jean-Francois",cls:617,vic:1},{nom:"GALLAIS",prenom:"Marc",cls:762,vic:2},{nom:"FONTAINE",prenom:"Guillaume",cls:705,vic:2}],doubles:2,match_score:23,opp_score:19,opponent:"CLAMART CSM 10"}]}
         ]
       },
       "M13": {
-        pool: "D92 D2 Poule 11", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        pool: "D92 D2 Poule 11", level: "Départemental 2", levelClass: "level-d2",
         teams: [
-          {name:"BOULOGNE BILLAN 13",acbb:true,players:[{nom:"PERRON",prenom:"Nicolas",cls:650,vic:2},{nom:"SUCHER",prenom:"Antoine",cls:618,vic:0},{nom:"MORRIS",prenom:"Jean-Baptiste",cls:780,vic:2},{nom:"BENETIERE",prenom:"Guy",cls:709,vic:2}],doubles:1},
-          {name:"BOIS COLOMBES S 11",journee:1,domext:"Ext",players:[{nom:"KARRER",prenom:"Remy",cls:719,vic:1},{nom:"MUSEUR",prenom:"Sylvain",cls:599,vic:1},{nom:"EPHIMENCO",prenom:"Maxime",cls:736,vic:3},{nom:"CHILOU",prenom:"Christian",cls:544,vic:1}],doubles:1},
-          {name:"CHATENAY ASVTT 5",journee:2,domext:"Dom",players:[{nom:"PIGNOT",prenom:"Yohann",cls:752,vic:2},{nom:"REYNAUD",prenom:"Philippe",cls:759,vic:3},{nom:"MONTEAU",prenom:"Olivier",cls:817,vic:2},{nom:"DUFOUR",prenom:"Gaspard",cls:715,vic:3}],doubles:2},
-          {name:"ASNIERES TT 8",journee:3,domext:"Ext",players:[{nom:"CHEVRIER",prenom:"Matthias",cls:639,vic:1},{nom:"MARTINEZ",prenom:"Corentin",cls:500,vic:0},{nom:"VIOLANT",prenom:"Kevin",cls:666,vic:1},{nom:"POISSONNIER",prenom:"Xavier",cls:556,vic:0}],doubles:0},
-          {name:"PUTEAUX TT CSM (6)",journee:4,domext:"Ext",players:[{nom:"POUSSIN",prenom:"Patrice",cls:619,vic:0},{nom:"HOUSSINE",prenom:"Koussai",cls:513,vic:0},{nom:"WANG",prenom:"Biao",cls:500,vic:0},{nom:"COULAUD",prenom:"Jérémie",cls:570,vic:0}],doubles:0},
-          {name:"AS FONTENAY TT 2",journee:5,domext:"Dom",players:[{nom:"BUSSON",prenom:"Jean-Jacques",cls:581,vic:0},{nom:"NIQUE",prenom:"David",cls:579,vic:1},{nom:"KRISSIAN",prenom:"Karl",cls:699,vic:2},{nom:"JAOUEN",prenom:"Christophe",cls:526,vic:1}],doubles:1},
-          {name:"Courbevoie STT 15",journee:6,domext:"Ext",players:[{nom:"CHEALY",prenom:"Ratha",cls:577,vic:2},{nom:"MAUGERI",prenom:"Pascal",cls:543,vic:3},{nom:"LANCELOT",prenom:"Maxime",cls:592,vic:3},{nom:"COLIN DE VERDIERE",prenom:"Eric",cls:500,vic:0}],doubles:1},
-          {name:"NEUILLY ASPN 11",journee:7,domext:"Dom",players:[{nom:"PETOTON",prenom:"Louis",cls:766,vic:3},{nom:"PICOVSKY",prenom:"Marc",cls:737,vic:3},{nom:"L ELEU DE LA SIMONE",prenom:"Antoine",cls:688,vic:3},{nom:"CABRAL",prenom:"Marco",cls:719,vic:3}],doubles:2}
+          {name:"BOULOGNE BILLAN 13",acbb:true,calendar:{1:{opponent:"BOIS COLOMBES S 11",domext:"Ext"},2:{opponent:"CHATENAY ASVTT 5",domext:"Dom"},3:{opponent:"ASNIERES TT 8",domext:"Ext"},4:{opponent:"PUTEAUX TT CSM (6)",domext:"Ext"},5:{opponent:"AS FONTENAY TT 2",domext:"Dom"},6:{opponent:"Courbevoie STT 15",domext:"Ext"},7:{opponent:"NEUILLY ASPN 11",domext:"Dom"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"PERRON",prenom:"Nicolas",cls:650,vic:2},{nom:"SUCHER",prenom:"Antoine",cls:618,vic:0},{nom:"MORRIS",prenom:"Jean-Baptiste",cls:780,vic:2},{nom:"BENETIERE",prenom:"Guy",cls:709,vic:2}],doubles:1,match_score:21,opp_score:21,opponent:"BOIS COLOMBES S 11"},{journee:2,date:"13 févr. 2026",players:[{nom:"PERRON",prenom:"Nicolas",cls:650,vic:2},{nom:"AVEDISSIAN",prenom:"Muriel",cls:731,vic:0},{nom:"MORRIS",prenom:"Jean-Baptiste",cls:780,vic:1},{nom:"DOUSS",prenom:"Mehdi",cls:620,vic:1}],doubles:0,match_score:18,opp_score:24,opponent:"CHATENAY ASVTT 5"}]},
+          {name:"BOIS COLOMBES S 11",acbbJournee:1,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"KARRER",prenom:"Remy",cls:719,vic:1},{nom:"MUSEUR",prenom:"Sylvain",cls:599,vic:1},{nom:"EPHIMENCO",prenom:"Maxime",cls:736,vic:3},{nom:"CHILOU",prenom:"Christian",cls:544,vic:1}],doubles:1,match_score:21,opp_score:21,opponent:"BOULOGNE BILLAN 13"},{journee:2,date:"13 févr. 2026",players:[{nom:"KARRER",prenom:"Remy",cls:719,vic:3},{nom:"EPHIMENCO",prenom:"Maxime",cls:736,vic:3},{nom:"BOITEL",prenom:"Tom",cls:706,vic:3},{nom:"CHILOU",prenom:"Christian",cls:544,vic:3}],doubles:2,match_score:28,opp_score:14,opponent:"PUTEAUX TT CSM (6)"}]},
+          {name:"CHATENAY ASVTT 5",acbbJournee:2,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"PIGNOT",prenom:"Yohann",cls:752,vic:2},{nom:"REYNAUD",prenom:"Philippe",cls:759,vic:3},{nom:"MONTEAU",prenom:"Olivier",cls:817,vic:2},{nom:"DUFOUR",prenom:"Gaspard",cls:715,vic:3}],doubles:2,match_score:26,opp_score:16,opponent:"ASNIERES TT 8"},{journee:2,date:"13 févr. 2026",players:[{nom:"DUFOUR",prenom:"Gaspard",cls:715,vic:3},{nom:"REYNAUD",prenom:"Philippe",cls:759,vic:2},{nom:"MONTEAU",prenom:"Olivier",cls:817,vic:1},{nom:"LAO",prenom:"Louis-Bao",cls:695,vic:2}],doubles:2,match_score:24,opp_score:18,opponent:"BOULOGNE BILLAN 13"}]},
+          {name:"ASNIERES TT 8",acbbJournee:3,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"CHEVRIER",prenom:"Matthias",cls:639,vic:1},{nom:"MARTINEZ",prenom:"Corentin",cls:500,vic:0},{nom:"VIOLANT",prenom:"Kevin",cls:666,vic:1},{nom:"POISSONNIER",prenom:"Xavier",cls:556,vic:0}],doubles:0,match_score:16,opp_score:26,opponent:"CHATENAY ASVTT 5"},{journee:2,date:"13 févr. 2026",players:[{nom:"ROHR",prenom:"Thierry",cls:556,vic:2},{nom:"POISSONNIER",prenom:"Xavier",cls:556,vic:1},{nom:"KNAPIK",prenom:"Jean Pierre",cls:639,vic:3},{nom:"CHEVRIER",prenom:"Matthias",cls:639,vic:2}],doubles:2,match_score:24,opp_score:18,opponent:"Courbevoie STT 15"}]},
+          {name:"PUTEAUX TT CSM (6)",acbbJournee:4,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"POUSSIN",prenom:"Patrice",cls:619,vic:0},{nom:"HOUSSINE",prenom:"Koussai",cls:513,vic:0},{nom:"WANG",prenom:"Biao",cls:500,vic:0},{nom:"COULAUD",prenom:"Jérémie",cls:570,vic:0}],doubles:0,match_score:14,opp_score:28,opponent:"NEUILLY ASPN 11"},{journee:2,date:"13 févr. 2026",players:[{nom:"HOUSSINE",prenom:"Koussai",cls:513,vic:0},{nom:"POUSSIN",prenom:"Patrice",cls:619,vic:0},{nom:"WANG",prenom:"Biao",cls:500,vic:0},{nom:"COULAUD",prenom:"Jérémie",cls:570,vic:0}],doubles:0,match_score:14,opp_score:28,opponent:"BOIS COLOMBES S 11"}]},
+          {name:"AS FONTENAY TT 2",acbbJournee:5,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"BUSSON",prenom:"Jean-Jacques",cls:581,vic:0},{nom:"NIQUE",prenom:"David",cls:579,vic:1},{nom:"KRISSIAN",prenom:"Karl",cls:699,vic:2},{nom:"JAOUEN",prenom:"Christophe",cls:526,vic:1}],doubles:1,match_score:19,opp_score:23,opponent:"Courbevoie STT 15"},{journee:2,date:"13 févr. 2026",players:[{nom:"THEBAULT",prenom:"Jean-Francois",cls:600,vic:0},{nom:"KRISSIAN",prenom:"Karl",cls:699,vic:1},{nom:"NIQUE",prenom:"David",cls:579,vic:0},{nom:"JAOUEN",prenom:"Christophe",cls:526,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"NEUILLY ASPN 11"}]},
+          {name:"Courbevoie STT 15",acbbJournee:6,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"CHEALY",prenom:"Ratha",cls:577,vic:2},{nom:"MAUGERI",prenom:"Pascal",cls:543,vic:3},{nom:"LANCELOT",prenom:"Maxime",cls:592,vic:3},{nom:"COLIN DE VERDIERE",prenom:"Eric",cls:500,vic:0}],doubles:1,match_score:23,opp_score:19,opponent:"AS FONTENAY TT 2"},{journee:2,date:"13 févr. 2026",players:[{nom:"CHEALY",prenom:"Ratha",cls:577,vic:1},{nom:"LANCELOT",prenom:"Maxime",cls:592,vic:2},{nom:"CAZENEUVE",prenom:"Hugues",cls:500,vic:0},{nom:"MAUGERI",prenom:"Pascal",cls:543,vic:1}],doubles:0,match_score:18,opp_score:24,opponent:"ASNIERES TT 8"}]},
+          {name:"NEUILLY ASPN 11",acbbJournee:7,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"PETOTON",prenom:"Louis",cls:766,vic:3},{nom:"PICOVSKY",prenom:"Marc",cls:737,vic:3},{nom:"L ELEU DE LA SIMONE",prenom:"Antoine",cls:688,vic:3},{nom:"CABRAL",prenom:"Marco",cls:719,vic:3}],doubles:2,match_score:28,opp_score:14,opponent:"PUTEAUX TT CSM (6)"},{journee:2,date:"13 févr. 2026",players:[{nom:"PETOTON",prenom:"Louis",cls:766,vic:3},{nom:"PETRINE",prenom:"Diego",cls:528,vic:3},{nom:"L ELEU DE LA SIMONE",prenom:"Edouard",cls:644,vic:3},{nom:"DUFAURE DE LAJARTE",prenom:"Hugo",cls:534,vic:2}],doubles:2,match_score:27,opp_score:15,opponent:"AS FONTENAY TT 2"}]}
         ]
       },
       "M14": {
-        pool: "D92 D2 Poule 12", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        pool: "D92 D2 Poule 12", level: "Départemental 2", levelClass: "level-d2",
         teams: [
-          {name:"BOULOGNE BILLAN 14",acbb:true,players:[{nom:"CASSAGNOU",prenom:"Xavier",cls:637,vic:2},{nom:"MONDINO",prenom:"Christophe",cls:618,vic:0},{nom:"LESPINASSE",prenom:"Hugo",cls:697,vic:2},{nom:"LE GALL",prenom:"Anthony",cls:569,vic:3}],doubles:1},
-          {name:"RUEIL ATHLETIC (14)",journee:1,domext:"Dom",players:[{nom:"VIDAL",prenom:"Bruno",cls:674,vic:2},{nom:"VIVIER",prenom:"Patrick",cls:620,vic:2},{nom:"BAILLY",prenom:"Gregory",cls:701,vic:0},{nom:"BOITEL",prenom:"Christophe",cls:500,vic:1}],doubles:1},
-          {name:"LA GARENNE COLO 2",journee:2,domext:"Ext",players:[{nom:"DEMARQUE",prenom:"Pascal",cls:915,vic:3},{nom:"COMBES",prenom:"Antoine",cls:724,vic:3},{nom:"ALEXIS",prenom:"Sylvain",cls:925,vic:3},{nom:"COUSIN",prenom:"Brendon",cls:772,vic:2}],doubles:2},
-          {name:"TTMC CHATILLON (13)",journee:3,domext:"Dom",players:[{nom:"PEREIRA DESCHAMPS",prenom:"Adriano",cls:596,vic:0},{nom:"BOST",prenom:"Nicolas",cls:635,vic:1},{nom:"BALU",prenom:"Félix",cls:514,vic:0},{nom:"DUSSERT",prenom:"Côme",cls:578,vic:0}],doubles:0},
-          {name:"PLESSIS ROBINS. 8",journee:4,domext:"Dom",players:[{nom:"TESSIER",prenom:"Geoffrey",cls:500,vic:0},{nom:"VIGOGNE",prenom:"Pascal",cls:500,vic:0},{nom:"GAGNIER",prenom:"Ludivine",cls:535,vic:0},{nom:"GAGNIER",prenom:"Emmanuel",cls:500,vic:0}],doubles:0},
-          {name:"VOLTIGEURS 5",journee:5,domext:"Dom",players:[{nom:"WANG",prenom:"Hao",cls:677,vic:1},{nom:"BISMUTH",prenom:"Nicolas",cls:686,vic:0},{nom:"NOUCHI",prenom:"Philippe",cls:556,vic:0},{nom:"FONTAINE",prenom:"Xavier",cls:500,vic:0}],doubles:0},
-          {name:"AS FONTENAY TT 3",journee:6,domext:"Dom",players:[{nom:"SEVELLE",prenom:"Clement",cls:1046,vic:3},{nom:"RODRIGUES",prenom:"Valentin",cls:1003,vic:3},{nom:"DORIOT",prenom:"Thierry",cls:941,vic:3},{nom:"DEBERTHE",prenom:"Denis",cls:906,vic:3}],doubles:2},
-          {name:"ANTONY SPORT TT 6",journee:7,domext:"Ext",players:[{nom:"DERRIEN",prenom:"Mael",cls:754,vic:3},{nom:"DERRIEN",prenom:"Antoine",cls:655,vic:3},{nom:"DI PONZIO",prenom:"Ethan",cls:788,vic:2},{nom:"NOWAKOWSKI",prenom:"Florent",cls:796,vic:3}],doubles:2}
+          {name:"BOULOGNE BILLAN 14",acbb:true,calendar:{1:{opponent:"RUEIL ATHLETIC (14)",domext:"Dom"},2:{opponent:"LA GARENNE COLO 2",domext:"Ext"},3:{opponent:"TTMC CHATILLON (13)",domext:"Dom"},4:{opponent:"PLESSIS ROBINS. 8",domext:"Dom"},5:{opponent:"VOLTIGEURS 5",domext:"Dom"},6:{opponent:"AS FONTENAY TT 3",domext:"Dom"},7:{opponent:"ANTONY SPORT TT 6",domext:"Ext"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"CASSAGNOU",prenom:"Xavier",cls:637,vic:2},{nom:"MONDINO",prenom:"Christophe",cls:618,vic:0},{nom:"LESPINASSE",prenom:"Hugo",cls:697,vic:2},{nom:"LE GALL",prenom:"Anthony",cls:569,vic:3}],doubles:1,match_score:22,opp_score:20,opponent:"RUEIL ATHLETIC (14)"},{journee:2,date:"13 févr. 2026",players:[{nom:"CASSAGNOU",prenom:"Xavier",cls:637,vic:0},{nom:"LE GALL",prenom:"Anthony",cls:569,vic:0},{nom:"LESPINASSE",prenom:"Hugo",cls:697,vic:1},{nom:"MONDINO",prenom:"Christophe",cls:618,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"LA GARENNE COLO 2"}]},
+          {name:"RUEIL ATHLETIC (14)",acbbJournee:1,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"VIDAL",prenom:"Bruno",cls:674,vic:2},{nom:"VIVIER",prenom:"Patrick",cls:620,vic:2},{nom:"BAILLY",prenom:"Gregory",cls:701,vic:0},{nom:"BOITEL",prenom:"Christophe",cls:500,vic:1}],doubles:1,match_score:20,opp_score:22,opponent:"BOULOGNE BILLAN 14"},{journee:2,date:"13 févr. 2026",players:[{nom:"TIMORES",prenom:"Thierry",cls:646,vic:2},{nom:"VIDAL",prenom:"Bruno",cls:674,vic:2},{nom:"WOLFSPERGER",prenom:"Stephane",cls:633,vic:2},{nom:"BOITEL",prenom:"Christophe",cls:500,vic:1}],doubles:1,match_score:22,opp_score:20,opponent:"VOLTIGEURS 5"}]},
+          {name:"LA GARENNE COLO 2",acbbJournee:2,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"DEMARQUE",prenom:"Pascal",cls:915,vic:3},{nom:"COMBES",prenom:"Antoine",cls:724,vic:3},{nom:"ALEXIS",prenom:"Sylvain",cls:925,vic:3},{nom:"COUSIN",prenom:"Brendon",cls:772,vic:2}],doubles:2,match_score:27,opp_score:15,opponent:"TTMC CHATILLON (13)"},{journee:2,date:"13 févr. 2026",players:[{nom:"DEMARQUE",prenom:"Pascal",cls:915,vic:3},{nom:"ALEXIS",prenom:"Sylvain",cls:925,vic:3},{nom:"ASSERAY",prenom:"Riwan",cls:651,vic:2},{nom:"COUSIN",prenom:"Brendon",cls:772,vic:3}],doubles:2,match_score:27,opp_score:15,opponent:"BOULOGNE BILLAN 14"}]},
+          {name:"TTMC CHATILLON (13)",acbbJournee:3,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"PEREIRA DESCHAMPS",prenom:"Adriano",cls:596,vic:0},{nom:"BOST",prenom:"Nicolas",cls:635,vic:1},{nom:"BALU",prenom:"Félix",cls:514,vic:0},{nom:"DUSSERT",prenom:"Côme",cls:578,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"LA GARENNE COLO 2"},{journee:2,date:"13 févr. 2026",players:[{nom:"BOST",prenom:"Nicolas",cls:635,vic:3},{nom:"WANG",prenom:"Haichen",cls:550,vic:3},{nom:"DUSSERT",prenom:"Côme",cls:578,vic:3},{nom:"BALU",prenom:"Félix",cls:514,vic:2}],doubles:1,match_score:26,opp_score:16,opponent:"PLESSIS ROBINS. 8"}]},
+          {name:"PLESSIS ROBINS. 8",acbbJournee:4,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"TESSIER",prenom:"Geoffrey",cls:500,vic:0},{nom:"VIGOGNE",prenom:"Pascal",cls:500,vic:0},{nom:"GAGNIER",prenom:"Ludivine",cls:535,vic:0},{nom:"GAGNIER",prenom:"Emmanuel",cls:500,vic:0}],doubles:0,match_score:14,opp_score:28,opponent:"AS FONTENAY TT 3"},{journee:2,date:"13 févr. 2026",players:[{nom:"TESSIER",prenom:"Geoffrey",cls:500,vic:0},{nom:"GAGNIER",prenom:"Emmanuel",cls:500,vic:0},{nom:"CHAUVEL",prenom:"Vincent",cls:554,vic:1},{nom:"GAGNIER",prenom:"Ludivine",cls:535,vic:0}],doubles:1,match_score:16,opp_score:26,opponent:"TTMC CHATILLON (13)"}]},
+          {name:"VOLTIGEURS 5",acbbJournee:5,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"WANG",prenom:"Hao",cls:677,vic:1},{nom:"BISMUTH",prenom:"Nicolas",cls:686,vic:0},{nom:"NOUCHI",prenom:"Philippe",cls:556,vic:0},{nom:"FONTAINE",prenom:"Xavier",cls:500,vic:0}],doubles:0,opponent:"ANTONY SPORT TT 6"},{journee:2,date:"13 févr. 2026",players:[{nom:"WANG",prenom:"Hao",cls:677,vic:2},{nom:"NOUCHI",prenom:"Philippe",cls:556,vic:0},{nom:"BISMUTH",prenom:"Nicolas",cls:686,vic:2},{nom:"BIGAUD",prenom:"Yanick",cls:500,vic:1}],doubles:1,match_score:20,opp_score:22,opponent:"RUEIL ATHLETIC (14)"}]},
+          {name:"AS FONTENAY TT 3",acbbJournee:6,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"SEVELLE",prenom:"Clement",cls:1046,vic:3},{nom:"RODRIGUES",prenom:"Valentin",cls:1003,vic:3},{nom:"DORIOT",prenom:"Thierry",cls:941,vic:3},{nom:"DEBERTHE",prenom:"Denis",cls:906,vic:3}],doubles:2,match_score:28,opp_score:14,opponent:"PLESSIS ROBINS. 8"},{journee:2,date:"13 févr. 2026",players:[{nom:"RODRIGUES",prenom:"Valentin",cls:1003,vic:3},{nom:"SEVELLE",prenom:"Clement",cls:1046,vic:3},{nom:"DORIOT",prenom:"Thierry",cls:941,vic:2},{nom:"DEBERTHE",prenom:"Denis",cls:906,vic:3}],doubles:2,match_score:27,opp_score:15,opponent:"ANTONY SPORT TT 6"}]},
+          {name:"ANTONY SPORT TT 6",acbbJournee:7,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"DERRIEN",prenom:"Mael",cls:754,vic:3},{nom:"DERRIEN",prenom:"Antoine",cls:655,vic:3},{nom:"DI PONZIO",prenom:"Ethan",cls:788,vic:2},{nom:"NOWAKOWSKI",prenom:"Florent",cls:796,vic:3}],doubles:2,opponent:"VOLTIGEURS 5"},{journee:2,date:"13 févr. 2026",players:[{nom:"DI PONZIO",prenom:"Ethan",cls:788,vic:0},{nom:"DERRIEN",prenom:"Antoine",cls:655,vic:0},{nom:"DERRIEN",prenom:"Mael",cls:754,vic:1},{nom:"SUARD",prenom:"Alexis",cls:500,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"AS FONTENAY TT 3"}]}
         ]
       },
       "M15": {
-        pool: "D92 D2 Poule 10", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        pool: "D92 D2 Poule 10", level: "Départemental 2", levelClass: "level-d2",
         teams: [
-          {name:"BOULOGNE BILLAN 15",acbb:true,players:[{nom:"MA",prenom:"Qi",cls:633,vic:1},{nom:"ADMI",prenom:"Johara",cls:636,vic:1},{nom:"PIERRON",prenom:"Guillaume",cls:552,vic:2},{nom:"FROMONT",prenom:"Joel",cls:628,vic:2}],doubles:1},
-          {name:"SCEAUX T.T. 5",journee:1,domext:"Ext",players:[{nom:"NING",prenom:"Jiale",cls:528,vic:0},{nom:"LIN",prenom:"Christophe",cls:771,vic:3},{nom:"ARDELLIER",prenom:"Michel",cls:500,vic:1},{nom:"LE CAM",prenom:"Philippe",cls:645,vic:2}],doubles:1},
-          {name:"PLESSIS ROBINS. 7",journee:2,domext:"Dom",players:[{nom:"FICHELLE",prenom:"Francois",cls:870,vic:2},{nom:"FRELON",prenom:"Eric",cls:751,vic:0},{nom:"BERNOT",prenom:"Laurent",cls:723,vic:1},{nom:"FRANCOISE",prenom:"Philippe",cls:741,vic:1}],doubles:0},
-          {name:"NEUILLY ASPN 10",journee:3,domext:"Ext",players:[{nom:"GHATTAS",prenom:"Salah",cls:500,vic:1},{nom:"PETRINE",prenom:"Diego",cls:528,vic:2},{nom:"L ELEU DE LA SIMONE",prenom:"Edouard",cls:644,vic:2},{nom:"NEGRONI",prenom:"Francois Regis",cls:512,vic:2}],doubles:1},
-          {name:"NANTERRE ES 3",journee:4,domext:"Dom",players:[{nom:"CADO",prenom:"Christophe",cls:858,vic:2},{nom:"ZHOU",prenom:"Adrien",cls:651,vic:2},{nom:"SALAUN",prenom:"Pierre",cls:878,vic:2},{nom:"MAURATILLE",prenom:"Vincent",cls:820,vic:2}],doubles:2},
-          {name:"MALAKOFF USM 6",journee:5,domext:"Ext",players:[{nom:"LEONARD",prenom:"Cédric",cls:500,vic:1},{nom:"AURIOL",prenom:"Patrice",cls:500,vic:0},{nom:"JAKUBOWICZ",prenom:"Jeremie",cls:582,vic:2},{nom:"CLEMENT",prenom:"Marceau",cls:502,vic:2}],doubles:1},
-          {name:"LEVALLOIS SPORT 18",journee:6,domext:"Ext",players:[{nom:"RENE-CORAIL",prenom:"Raphael",cls:655,vic:2},{nom:"HUANG",prenom:"Celia",cls:679,vic:1},{nom:"STAMULESCU",prenom:"Alicia",cls:582,vic:2},{nom:"LAVIROTTE",prenom:"Jean-Marie",cls:500,vic:0}],doubles:2},
-          {name:"ISSEENNE E P 10",journee:7,domext:"Dom",players:[{nom:"DELANDEMARE",prenom:"Stephane",cls:500,vic:0},{nom:"LORRE",prenom:"Guillaume",cls:625,vic:3},{nom:"LEROUX",prenom:"Gael",cls:687,vic:1},{nom:"LENOIR",prenom:"Solen",cls:661,vic:3}],doubles:0}
+          {name:"BOULOGNE BILLAN 15",acbb:true,calendar:{1:{opponent:"SCEAUX T.T. 5",domext:"Ext"},2:{opponent:"PLESSIS ROBINS. 7",domext:"Dom"},3:{opponent:"NEUILLY ASPN 10",domext:"Ext"},4:{opponent:"NANTERRE ES 3",domext:"Dom"},5:{opponent:"MALAKOFF USM 6",domext:"Ext"},6:{opponent:"LEVALLOIS SPORT 18",domext:"Ext"},7:{opponent:"ISSEENNE E P 10",domext:"Dom"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"MA",prenom:"Qi",cls:633,vic:1},{nom:"ADMI",prenom:"Johara",cls:636,vic:1},{nom:"PIERRON",prenom:"Guillaume",cls:552,vic:2},{nom:"FROMONT",prenom:"Joel",cls:628,vic:2}],doubles:1,match_score:21,opp_score:21,opponent:"SCEAUX T.T. 5"},{journee:2,date:"13 févr. 2026",players:[{nom:"ADMI",prenom:"Johara",cls:636,vic:0},{nom:"MA",prenom:"Qi",cls:633,vic:1},{nom:"PIERRON",prenom:"Guillaume",cls:552,vic:0},{nom:"KOL",prenom:"Nicolas",cls:615,vic:0}],doubles:1,match_score:16,opp_score:26,opponent:"PLESSIS ROBINS. 7"}]},
+          {name:"SCEAUX T.T. 5",acbbJournee:1,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"NING",prenom:"Jiale",cls:528,vic:0},{nom:"LIN",prenom:"Christophe",cls:771,vic:3},{nom:"ARDELLIER",prenom:"Michel",cls:500,vic:1},{nom:"LE CAM",prenom:"Philippe",cls:645,vic:2}],doubles:1,match_score:21,opp_score:21,opponent:"BOULOGNE BILLAN 15"},{journee:2,date:"13 févr. 2026",players:[{nom:"NING",prenom:"Jiale",cls:528,vic:1},{nom:"LE CAM",prenom:"Philippe",cls:645,vic:1},{nom:"ARDELLIER",prenom:"Michel",cls:500,vic:1},{nom:"JOURDAIN",prenom:"Stéphane",cls:500,vic:1}],doubles:1,match_score:19,opp_score:23,opponent:"LEVALLOIS SPORT 18"}]},
+          {name:"PLESSIS ROBINS. 7",acbbJournee:2,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"FICHELLE",prenom:"Francois",cls:870,vic:2},{nom:"FRELON",prenom:"Eric",cls:751,vic:0},{nom:"BERNOT",prenom:"Laurent",cls:723,vic:1},{nom:"FRANCOISE",prenom:"Philippe",cls:741,vic:1}],doubles:0,match_score:18,opp_score:24,opponent:"NANTERRE ES 3"},{journee:2,date:"13 févr. 2026",players:[{nom:"GALICH",prenom:"Cyril",cls:687,vic:2},{nom:"FICHELLE",prenom:"Francois",cls:870,vic:3},{nom:"FRANCOISE",prenom:"Philippe",cls:741,vic:3},{nom:"BERNOT",prenom:"Laurent",cls:723,vic:3}],doubles:1,match_score:26,opp_score:16,opponent:"BOULOGNE BILLAN 15"}]},
+          {name:"NEUILLY ASPN 10",acbbJournee:3,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"GHATTAS",prenom:"Salah",cls:500,vic:1},{nom:"PETRINE",prenom:"Diego",cls:528,vic:2},{nom:"L ELEU DE LA SIMONE",prenom:"Edouard",cls:644,vic:2},{nom:"NEGRONI",prenom:"Francois Regis",cls:512,vic:2}],doubles:1,match_score:22,opp_score:20,opponent:"MALAKOFF USM 6"},{journee:2,date:"13 févr. 2026",players:[{nom:"NEGRONI",prenom:"Francois Regis",cls:512,vic:0},{nom:"FURET",prenom:"Olivier",cls:500,vic:0},{nom:"MAZELLIER",prenom:"Victoria",cls:500,vic:0},{nom:"Joueur absent",prenom:"",cls:0,vic:0}],doubles:0,match_score:10,opp_score:28,opponent:"NANTERRE ES 3"}]},
+          {name:"NANTERRE ES 3",acbbJournee:4,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"CADO",prenom:"Christophe",cls:858,vic:2},{nom:"ZHOU",prenom:"Adrien",cls:651,vic:2},{nom:"SALAUN",prenom:"Pierre",cls:878,vic:2},{nom:"MAURATILLE",prenom:"Vincent",cls:820,vic:2}],doubles:2,match_score:24,opp_score:18,opponent:"PLESSIS ROBINS. 7"},{journee:2,date:"13 févr. 2026",players:[{nom:"PETER",prenom:"Paul",cls:934,vic:3},{nom:"RAMIREZ",prenom:"Alexandre",cls:791,vic:3},{nom:"SALAUN",prenom:"Pierre",cls:878,vic:3},{nom:"CADO",prenom:"Christophe",cls:858,vic:3}],doubles:2,match_score:28,opp_score:10,opponent:"NEUILLY ASPN 10"}]},
+          {name:"MALAKOFF USM 6",acbbJournee:5,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"LEONARD",prenom:"Cédric",cls:500,vic:1},{nom:"AURIOL",prenom:"Patrice",cls:500,vic:0},{nom:"JAKUBOWICZ",prenom:"Jeremie",cls:582,vic:2},{nom:"CLEMENT",prenom:"Marceau",cls:502,vic:2}],doubles:1,match_score:20,opp_score:22,opponent:"NEUILLY ASPN 10"},{journee:2,date:"13 févr. 2026",players:[{nom:"CLEMENT",prenom:"Marceau",cls:502,vic:2},{nom:"LOISEAU",prenom:"Chris",cls:500,vic:1},{nom:"CHEN",prenom:"Emily",cls:533,vic:0},{nom:"LEFEVRE",prenom:"Maxime",cls:500,vic:2}],doubles:2,match_score:21,opp_score:21,opponent:"ISSEENNE E P 10"}]},
+          {name:"LEVALLOIS SPORT 18",acbbJournee:6,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"RENE-CORAIL",prenom:"Raphael",cls:655,vic:2},{nom:"HUANG",prenom:"Celia",cls:679,vic:1},{nom:"STAMULESCU",prenom:"Alicia",cls:582,vic:2},{nom:"LAVIROTTE",prenom:"Jean-Marie",cls:500,vic:0}],doubles:2,match_score:21,opp_score:21,opponent:"ISSEENNE E P 10"},{journee:2,date:"13 févr. 2026",players:[{nom:"STAMULESCU",prenom:"Alexandre",cls:629,vic:3},{nom:"STAMULESCU",prenom:"Alicia",cls:582,vic:2},{nom:"SALAUN",prenom:"Helene",cls:529,vic:0},{nom:"LAVIROTTE",prenom:"Jean-Marie",cls:500,vic:3}],doubles:1,match_score:23,opp_score:19,opponent:"SCEAUX T.T. 5"}]},
+          {name:"ISSEENNE E P 10",acbbJournee:7,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"DELANDEMARE",prenom:"Stephane",cls:500,vic:0},{nom:"LORRE",prenom:"Guillaume",cls:625,vic:3},{nom:"LEROUX",prenom:"Gael",cls:687,vic:1},{nom:"LENOIR",prenom:"Solen",cls:661,vic:3}],doubles:0,match_score:21,opp_score:21,opponent:"LEVALLOIS SPORT 18"},{journee:2,date:"13 févr. 2026",players:[{nom:"TIERCELIN",prenom:"Gatien",cls:556,vic:3},{nom:"LORRE",prenom:"Guillaume",cls:625,vic:2},{nom:"DI FIORE",prenom:"Christophe",cls:507,vic:1},{nom:"ANDRE",prenom:"Emmanuel",cls:500,vic:1}],doubles:0,match_score:21,opp_score:21,opponent:"MALAKOFF USM 6"}]}
         ]
       },
       "M16": {
-        pool: "D92 D2 Poule 5", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        pool: "D92 D2 Poule 5", level: "Départemental 2", levelClass: "level-d2",
         teams: [
-          {name:"BOULOGNE BILLAN 16",acbb:true,players:[{nom:"RODRIGUEZ",prenom:"German",cls:500,vic:2},{nom:"TERRÉE",prenom:"Jean-Luc",cls:500,vic:1},{nom:"KOL",prenom:"Nicolas",cls:615,vic:3},{nom:"HABERT",prenom:"Jean-Francois",cls:628,vic:2}],doubles:0},
-          {name:"VILLENEUVE LA G 1",journee:1,domext:"Dom",players:[{nom:"GHELAB",prenom:"Hamza",cls:500,vic:1},{nom:"CARTON",prenom:"Thierry",cls:537,vic:1},{nom:"LAGARDE",prenom:"Jeremie",cls:534,vic:2}],doubles:1},
-          {name:"BOIS COLOMBES S 9",journee:2,domext:"Ext",players:[{nom:"PREVOST",prenom:"Laurent",cls:562,vic:1},{nom:"JACQUET",prenom:"Romain",cls:500,vic:1},{nom:"BOITEL",prenom:"Jérôme",cls:500,vic:0},{nom:"COLLEVILLE",prenom:"Didier",cls:500,vic:0}],doubles:1},
-          {name:"LEVALLOIS SPORT 16",journee:3,domext:"Dom",players:[{nom:"MENA",prenom:"Nicolas",cls:691,vic:1},{nom:"AMEDODJI",prenom:"Kwame",cls:586,vic:0},{nom:"HABIAN",prenom:"Franck",cls:514,vic:0},{nom:"BRUNSCHWIG",prenom:"Franck",cls:624,vic:1}],doubles:0},
-          {name:"ISSEENNE E P 11",journee:4,domext:"Ext",players:[{nom:"LE ROY",prenom:"Martial",cls:832,vic:2},{nom:"JACK-ROCH",prenom:"Anthony",cls:585,vic:2},{nom:"MIRIBEL DURHIN",prenom:"Giulia",cls:765,vic:3},{nom:"BAILLY",prenom:"Ewan",cls:745,vic:3}],doubles:2},
-          {name:"ASNIERES TT 10",journee:5,domext:"Dom",players:[{nom:"VACCHAREZZA",prenom:"Victor",cls:544,vic:3},{nom:"MARRAKCHI",prenom:"Youssef",cls:582,vic:2},{nom:"DOUELLE",prenom:"Valentin",cls:549,vic:2},{nom:"LIROU",prenom:"Baptiste",cls:512,vic:3}],doubles:1},
-          {name:"CLICHY CS 3",journee:7,domext:"Ext",na:true,players:[],doubles:0}
+          {name:"BOULOGNE BILLAN 16",acbb:true,calendar:{1:{opponent:"VILLENEUVE LA G 1",domext:"Dom"},2:{opponent:"BOIS COLOMBES S 9",domext:"Ext"},3:{opponent:"LEVALLOIS SPORT 16",domext:"Dom"},4:{opponent:"ISSEENNE E P 11",domext:"Ext"},5:{opponent:"ASNIERES TT 10",domext:"Dom"},7:{opponent:"CLICHY CS 3",domext:"Ext"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"RODRIGUEZ",prenom:"German",cls:500,vic:2},{nom:"TERRÉE",prenom:"Jean-Luc",cls:500,vic:1},{nom:"KOL",prenom:"Nicolas",cls:615,vic:3},{nom:"HABERT",prenom:"Jean-Francois",cls:628,vic:2}],doubles:1,match_score:23,opp_score:15,opponent:"VILLENEUVE LA G 1"},{journee:2,date:"13 févr. 2026",players:[{nom:"RODRIGUEZ",prenom:"German",cls:500,vic:2},{nom:"CINOTTI",prenom:"Pierre",cls:583,vic:3},{nom:"BUCHET",prenom:"Christophe",cls:537,vic:3},{nom:"YANG",prenom:"Fan",cls:555,vic:3}],doubles:1,match_score:26,opp_score:16,opponent:"BOIS COLOMBES S 9"}]},
+          {name:"VILLENEUVE LA G 1",acbbJournee:1,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"GHELAB",prenom:"Hamza",cls:500,vic:1},{nom:"CARTON",prenom:"Thierry",cls:537,vic:1},{nom:"LAGARDE",prenom:"Jeremie",cls:534,vic:2},{nom:"Joueur absent",prenom:"",cls:0,vic:0}],doubles:1,match_score:15,opp_score:23,opponent:"BOULOGNE BILLAN 16"},{journee:2,date:"13 févr. 2026",players:[{nom:"CARTON",prenom:"Thierry",cls:537,vic:0},{nom:"LAGARDE",prenom:"Jeremie",cls:534,vic:0},{nom:"LAGARDE",prenom:"Noam",cls:500,vic:0},{nom:"PATINOT",prenom:"Johan",cls:908,vic:1}],doubles:0,match_score:15,opp_score:27,opponent:"CLICHY CS 3"}]},
+          {name:"BOIS COLOMBES S 9",acbbJournee:2,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"PREVOST",prenom:"Laurent",cls:562,vic:1},{nom:"JACQUET",prenom:"Romain",cls:500,vic:1},{nom:"BOITEL",prenom:"Jérôme",cls:500,vic:0},{nom:"COLLEVILLE",prenom:"Didier",cls:500,vic:0}],doubles:1,match_score:17,opp_score:25,opponent:"ASNIERES TT 10"},{journee:2,date:"13 févr. 2026",players:[{nom:"JACQUET",prenom:"Romain",cls:500,vic:0},{nom:"VILLATTE",prenom:"Gaëlle",cls:601,vic:0},{nom:"LEVI-KUHRY",prenom:"Léo",cls:500,vic:1},{nom:"MORLEC",prenom:"Stéphane",cls:500,vic:0}],doubles:1,match_score:16,opp_score:26,opponent:"BOULOGNE BILLAN 16"}]},
+          {name:"LEVALLOIS SPORT 16",acbbJournee:3,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"MENA",prenom:"Nicolas",cls:691,vic:1},{nom:"AMEDODJI",prenom:"Kwame",cls:586,vic:0},{nom:"HABIAN",prenom:"Franck",cls:514,vic:0},{nom:"BRUNSCHWIG",prenom:"Franck",cls:624,vic:1}],doubles:0,match_score:16,opp_score:26,opponent:"ISSEENNE E P 11"},{journee:2,date:"13 févr. 2026",players:[{nom:"MENA",prenom:"Nicolas",cls:691,vic:3},{nom:"DOUEZY",prenom:"Anne",cls:512,vic:0},{nom:"BRUNSCHWIG",prenom:"Franck",cls:624,vic:2},{nom:"HABIAN",prenom:"Franck",cls:514,vic:2}],doubles:1,match_score:22,opp_score:20,opponent:"ASNIERES TT 10"}]},
+          {name:"ISSEENNE E P 11",acbbJournee:4,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"LE ROY",prenom:"Martial",cls:832,vic:2},{nom:"JACK-ROCH",prenom:"Anthony",cls:585,vic:2},{nom:"MIRIBEL DURHIN",prenom:"Giulia",cls:765,vic:3},{nom:"BAILLY",prenom:"Ewan",cls:745,vic:3}],doubles:2,match_score:26,opp_score:16,opponent:"LEVALLOIS SPORT 16"}]},
+          {name:"ASNIERES TT 10",acbbJournee:5,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"VACCHAREZZA",prenom:"Victor",cls:544,vic:3},{nom:"MARRAKCHI",prenom:"Youssef",cls:582,vic:2},{nom:"DOUELLE",prenom:"Valentin",cls:549,vic:2},{nom:"LIROU",prenom:"Baptiste",cls:512,vic:3}],doubles:1,match_score:25,opp_score:17,opponent:"BOIS COLOMBES S 9"},{journee:2,date:"13 févr. 2026",players:[{nom:"VACCHAREZZA",prenom:"Victor",cls:544,vic:2},{nom:"MARRAKCHI",prenom:"Youssef",cls:582,vic:2},{nom:"DUCHATEAU",prenom:"Jean-Noel",cls:500,vic:0},{nom:"LOFFET",prenom:"Rémi",cls:500,vic:1}],doubles:1,match_score:20,opp_score:22,opponent:"LEVALLOIS SPORT 16"}]},
+          {name:"CLICHY CS 3",acbbJournee:7,acbbDomext:"Ext",na:true,journees:[{journee:2,date:"13 févr. 2026",players:[{nom:"NEBOUT",prenom:"Alix",cls:756,vic:3},{nom:"JACQUELIN",prenom:"Renaud",cls:733,vic:3},{nom:"VALLEE",prenom:"Mikael",cls:642,vic:2},{nom:"JOSQUIN",prenom:"Felix",cls:688,vic:3}],doubles:2,match_score:27,opp_score:15,opponent:"VILLENEUVE LA G 1"}]}
         ]
       },
       "M17": {
-        pool: "D92 D2 Poule 4", level: "Départemental 2", levelClass: "level-d2", date: "6 février 2026",
+        pool: "D92 D2 Poule 4", level: "Départemental 2", levelClass: "level-d2",
         teams: [
-          {name:"BOULOGNE BILLAN 17",acbb:true,players:[{nom:"LATIMIER",prenom:"Guillaume",cls:500,vic:0},{nom:"KATH",prenom:"Julian",cls:500,vic:1},{nom:"BAUBY",prenom:"Marc",cls:500,vic:0},{nom:"LIZAMBARD",prenom:"Romain",cls:500,vic:0}],doubles:0},
-          {name:"MEUDON AS 4",journee:1,domext:"Ext",players:[{nom:"JUMEAU",prenom:"Cyril",cls:954,vic:3},{nom:"GIRET",prenom:"Bruno",cls:876,vic:2},{nom:"BOUTRY",prenom:"Joanna",cls:867,vic:3},{nom:"PRUVOST",prenom:"Sandra",cls:857,vic:3}],doubles:2},
-          {name:"RUEIL ATHLETIC 17",journee:2,domext:"Dom",players:[{nom:"DIAS",prenom:"Alexandre",cls:563,vic:0},{nom:"MORIN",prenom:"Pascal",cls:629,vic:0},{nom:"PETTON",prenom:"Paul",cls:595,vic:0},{nom:"ALARCON",prenom:"Jean-Marc",cls:504,vic:0}],doubles:0},
-          {name:"LA GARENNE COLO 4",journee:3,domext:"Ext",na:true,players:[],doubles:0},
-          {name:"VOLTIGEURS 3",journee:4,domext:"Dom",players:[{nom:"BENDA",prenom:"Arthur",cls:657,vic:3},{nom:"COPIN",prenom:"Jérôme",cls:706,vic:3},{nom:"BIGOT",prenom:"Philippe",cls:711,vic:3},{nom:"GIGNOUX",prenom:"Marc",cls:712,vic:3}],doubles:2},
-          {name:"CS Clichy TT (4)",journee:6,domext:"Ext",players:[{nom:"BRIS",prenom:"Balthazar",cls:587,vic:0},{nom:"TIMSIT",prenom:"Lisandro",cls:562,vic:0},{nom:"PARADIS",prenom:"Frederic",cls:601,vic:1},{nom:"DUMOUX",prenom:"Alexandre",cls:541,vic:0}],doubles:0},
-          {name:"Courbevoie STT 13",journee:7,domext:"Dom",players:[{nom:"XIE",prenom:"Dianzhong",cls:634,vic:2},{nom:"LANIEWSKI",prenom:"Wojciech",cls:833,vic:3},{nom:"SAID MOHAMED",prenom:"Seif",cls:671,vic:3},{nom:"FERRER",prenom:"Frederic",cls:691,vic:3}],doubles:2}
+          {name:"BOULOGNE BILLAN 17",acbb:true,calendar:{1:{opponent:"MEUDON AS 4",domext:"Ext"},2:{opponent:"RUEIL ATHLETIC 17",domext:"Dom"},3:{opponent:"LA GARENNE COLO 4",domext:"Ext"},4:{opponent:"VOLTIGEURS 3",domext:"Dom"},6:{opponent:"CS Clichy TT (4)",domext:"Ext"},7:{opponent:"Courbevoie STT 13",domext:"Dom"}},journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"LATIMIER",prenom:"Guillaume",cls:500,vic:0},{nom:"KATH",prenom:"Julian",cls:500,vic:1},{nom:"BAUBY",prenom:"Marc",cls:500,vic:0},{nom:"LIZAMBARD",prenom:"Romain",cls:500,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"MEUDON AS 4"},{journee:2,date:"13 févr. 2026",players:[{nom:"KATH",prenom:"Julian",cls:500,vic:2},{nom:"JIANG",prenom:"Yingqiu",cls:500,vic:1},{nom:"LIZAMBARD",prenom:"Romain",cls:500,vic:2},{nom:"LATIMIER",prenom:"Guillaume",cls:500,vic:1}],doubles:0,match_score:20,opp_score:22,opponent:"RUEIL ATHLETIC 17"}]},
+          {name:"MEUDON AS 4",acbbJournee:1,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"JUMEAU",prenom:"Cyril",cls:954,vic:3},{nom:"GIRET",prenom:"Bruno",cls:876,vic:2},{nom:"BOUTRY",prenom:"Joanna",cls:867,vic:3},{nom:"PRUVOST",prenom:"Sandra",cls:857,vic:3}],doubles:2,match_score:27,opp_score:15,opponent:"BOULOGNE BILLAN 17"},{journee:2,date:"13 févr. 2026",players:[{nom:"JUMEAU",prenom:"Cyril",cls:954,vic:3},{nom:"PRUVOST",prenom:"Sandra",cls:857,vic:3},{nom:"BOUTRY",prenom:"Joanna",cls:867,vic:3},{nom:"GIRET",prenom:"Bruno",cls:876,vic:3}],doubles:2,match_score:28,opp_score:14,opponent:"CS Clichy TT (4)"}]},
+          {name:"RUEIL ATHLETIC 17",acbbJournee:2,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"DIAS",prenom:"Alexandre",cls:563,vic:0},{nom:"MORIN",prenom:"Pascal",cls:629,vic:0},{nom:"PETTON",prenom:"Paul",cls:595,vic:0},{nom:"ALARCON",prenom:"Jean-Marc",cls:504,vic:0}],doubles:0,match_score:14,opp_score:28,opponent:"VOLTIGEURS 3"},{journee:2,date:"13 févr. 2026",players:[{nom:"MORIN",prenom:"Pascal",cls:629,vic:2},{nom:"PETTON",prenom:"Paul",cls:595,vic:3},{nom:"BRUNET",prenom:"Christophe",cls:527,vic:0},{nom:"ALARCON",prenom:"Jean-Marc",cls:504,vic:1}],doubles:2,match_score:22,opp_score:20,opponent:"BOULOGNE BILLAN 17"}]},
+          {name:"LA GARENNE COLO 4",acbbJournee:3,acbbDomext:"Ext",na:true,journees:[{journee:2,date:"13 févr. 2026",players:[{nom:"CHAPELIER",prenom:"Thierry",cls:500,vic:0},{nom:"BECHER",prenom:"Alexandre",cls:500,vic:0},{nom:"KRAWCZYK",prenom:"Rafal",cls:500,vic:0},{nom:"Joueur absent",prenom:"",cls:0,vic:0}],doubles:0,match_score:10,opp_score:28,opponent:"VOLTIGEURS 3"}]},
+          {name:"VOLTIGEURS 3",acbbJournee:4,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"BENDA",prenom:"Arthur",cls:657,vic:3},{nom:"COPIN",prenom:"Jérôme",cls:706,vic:3},{nom:"BIGOT",prenom:"Philippe",cls:711,vic:3},{nom:"GIGNOUX",prenom:"Marc",cls:712,vic:3}],doubles:2,match_score:28,opp_score:14,opponent:"RUEIL ATHLETIC 17"},{journee:2,date:"13 févr. 2026",players:[{nom:"BENDA",prenom:"Arthur",cls:657,vic:3},{nom:"WAKSMAN",prenom:"Raphaël",cls:521,vic:3},{nom:"COPIN",prenom:"Jérôme",cls:706,vic:3},{nom:"THOMAS",prenom:"Charlotte",cls:598,vic:3}],doubles:2,match_score:28,opp_score:10,opponent:"LA GARENNE COLO 4"}]},
+          {name:"CS Clichy TT (4)",acbbJournee:6,acbbDomext:"Ext",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"BRIS",prenom:"Balthazar",cls:587,vic:0},{nom:"TIMSIT",prenom:"Lisandro",cls:562,vic:0},{nom:"PARADIS",prenom:"Frederic",cls:601,vic:1},{nom:"DUMOUX",prenom:"Alexandre",cls:541,vic:0}],doubles:0,match_score:15,opp_score:27,opponent:"Courbevoie STT 13"},{journee:2,date:"13 févr. 2026",players:[{nom:"PORTIER JOUANJEAN",prenom:"Arthur",cls:594,vic:0},{nom:"CASSEL",prenom:"Boris",cls:500,vic:0},{nom:"PARADIS",prenom:"Frederic",cls:601,vic:0},{nom:"DUMOUX",prenom:"Alexandre",cls:541,vic:0}],doubles:0,match_score:14,opp_score:28,opponent:"MEUDON AS 4"}]},
+          {name:"Courbevoie STT 13",acbbJournee:7,acbbDomext:"Dom",journees:[{journee:1,date:"6 févr. 2026",players:[{nom:"XIE",prenom:"Dianzhong",cls:634,vic:2},{nom:"LANIEWSKI",prenom:"Wojciech",cls:833,vic:3},{nom:"SAID MOHAMED",prenom:"Seif",cls:671,vic:3},{nom:"FERRER",prenom:"Frederic",cls:691,vic:3}],doubles:2,match_score:27,opp_score:15,opponent:"CS Clichy TT (4)"}]}
         ]
       }
     };
@@ -752,7 +1019,7 @@
       if (typeof cls === 'string') {
         if (cls === 'x') return 0;
         if (cls.startsWith('N')) return parseInt(cls.substring(1)) || 0;
-        const n = parseInt(cls);
+        var n = parseInt(cls);
         return isNaN(n) ? 0 : n;
       }
       return 0;
@@ -763,180 +1030,351 @@
       return cls;
     }
 
-    function teamPoints(team) {
-      if (!team.players || team.players.length === 0) return null;
-      return team.players.reduce((s, p) => s + getNumericCls(p.cls), 0);
+    // === Per-journee calculations ===
+    function jPoints(j) {
+      if (!j || !j.players || j.players.length === 0) return null;
+      return j.players.reduce(function(s, p) { return s + getNumericCls(p.cls); }, 0);
     }
 
-    function teamAvg(team) {
-      if (!team.players || team.players.length === 0) return null;
-      const pts = teamPoints(team);
-      return pts !== null ? Math.round(pts / team.players.length) : null;
+    function jAvg(j) {
+      if (!j || !j.players || j.players.length === 0) return null;
+      var pts = jPoints(j);
+      return pts !== null ? Math.round(pts / j.players.length) : null;
     }
 
-    function teamSingles(team) {
-      if (!team.players || team.players.length === 0) return 0;
-      return team.players.reduce((s, p) => s + (p.vic || 0), 0);
+    function jSingles(j) {
+      if (!j || !j.players) return 0;
+      return j.players.reduce(function(s, p) { return s + (p.vic || 0); }, 0);
     }
 
-    function teamDoubles(team) {
-      return team.doubles || 0;
+    function jDoubles(j) {
+      return (j && j.doubles) || 0;
     }
 
-    function teamTotal(team) {
-      return teamSingles(team) + teamDoubles(team);
+    function jTotal(j) {
+      return jSingles(j) + jDoubles(j);
     }
 
-    function poolAvg(pool) {
-      const teams = pool.teams.filter(t => !t.na && t.players && t.players.length > 0);
-      if (teams.length === 0) return 0;
-      const allPlayers = teams.flatMap(t => t.players);
+    // Max victories per journee: 4 players * 3 + 2 doubles = 14
+    var MAX_VIC = 14;
+
+    // === Team-level calculations (averages across journees) ===
+    function teamJournees(team) {
+      if (!team.journees || team.journees.length === 0) return [];
+      return team.journees.filter(function(j) { return j.players && j.players.length > 0; });
+    }
+
+    function teamAvgPts(team) {
+      var js = teamJournees(team);
+      if (js.length === 0) return null;
+      var sum = js.reduce(function(s, j) { return s + (jPoints(j) || 0); }, 0);
+      return Math.round(sum / js.length);
+    }
+
+    function teamAvgJoueur(team) {
+      var js = teamJournees(team);
+      if (js.length === 0) return null;
+      var sum = js.reduce(function(s, j) { return s + (jAvg(j) || 0); }, 0);
+      return Math.round(sum / js.length);
+    }
+
+    function teamAvgVic(team) {
+      var js = teamJournees(team);
+      if (js.length === 0) return null;
+      var sum = js.reduce(function(s, j) { return s + jTotal(j); }, 0);
+      return Math.round(sum / js.length);
+    }
+
+    // === Get last journee result for a team (for pill indicator) ===
+    function teamLastResult(team) {
+      var js = teamJournees(team);
+      if (js.length === 0) return null;
+      var last = js[js.length - 1];
+      var total = jTotal(last);
+      // Win = more than half of max (>7 out of 14)
+      if (total > 7) return 'win';
+      if (total < 7) return 'loss';
+      return 'draw';
+    }
+
+    // === Pool-level calculations ===
+    function poolAvgJoueur(pool) {
+      var allPlayers = [];
+      pool.teams.forEach(function(t) {
+        teamJournees(t).forEach(function(j) {
+          j.players.forEach(function(p) { allPlayers.push(p); });
+        });
+      });
       if (allPlayers.length === 0) return 0;
-      return Math.round(allPlayers.reduce((s, p) => s + getNumericCls(p.cls), 0) / allPlayers.length);
+      return Math.round(allPlayers.reduce(function(s, p) { return s + getNumericCls(p.cls); }, 0) / allPlayers.length);
     }
 
-    function poolAvgTeamPts(pool) {
-      const teams = pool.teams.filter(t => !t.na && t.players && t.players.length > 0);
+    function poolAvgEquipe(pool) {
+      var teams = pool.teams.filter(function(t) { return teamJournees(t).length > 0; });
       if (teams.length === 0) return 0;
-      const total = teams.reduce((s, t) => s + teamPoints(t), 0);
-      return Math.round(total / teams.length);
+      var sum = teams.reduce(function(s, t) { return s + (teamAvgPts(t) || 0); }, 0);
+      return Math.round(sum / teams.length);
     }
 
+    // === Sort ===
     function sortTeams(teams) {
-      return [...teams].sort((a, b) => {
+      return teams.slice().sort(function(a, b) {
         if (a.acbb && !b.acbb) return -1;
         if (!a.acbb && b.acbb) return 1;
-        const ja = a.journee || 0, jb = b.journee || 0;
+        var ja = a.acbbJournee || 0, jb = b.acbbJournee || 0;
         return ja - jb;
       });
     }
 
-    function createVictoryDots(vic) {
-      let html = '';
-      for (let i = 0; i < 3; i++) {
-        html += '<span class="dot ' + (i < vic ? 'win' : 'loss') + '"></span>';
+    // === Victory mini-bars (replaces dots) ===
+    function createVictoryBars(vic, max) {
+      max = max || 3;
+      var html = '';
+      for (var i = 0; i < max; i++) {
+        html += '<span class="vic-mini-bar ' + (i < vic ? 'win' : 'loss') + '"></span>';
       }
       return html;
     }
 
     // === State ===
-    let currentPool = 'F1';
+    var currentPool = 'F1';
 
-    // === Render ===
+    // === Trend indicator ===
+    function trendArrow(current, previous) {
+      if (current === null || previous === null) return '';
+      if (current > previous) return '<span class="trend-up">&#9650;</span>';
+      if (current < previous) return '<span class="trend-down">&#9660;</span>';
+      return '<span class="trend-same">&#9679;</span>';
+    }
+
+    function teamTrend(team, metric) {
+      var js = teamJournees(team);
+      if (js.length < 2) return '';
+      var last = js[js.length - 1];
+      var prev = js[js.length - 2];
+      if (metric === 'pts') return trendArrow(jPoints(last), jPoints(prev));
+      if (metric === 'avg') return trendArrow(jAvg(last), jAvg(prev));
+      if (metric === 'vic') return trendArrow(jTotal(last), jTotal(prev));
+      return '';
+    }
+
+    // === Victory gauge (for headers) ===
+    function vicGauge(total, max) {
+      if (max === 0) return '';
+      var pct = Math.round((total / max) * 100);
+      var cls = pct >= 57 ? 'good' : (pct >= 36 ? 'medium' : 'low');
+      return '<div class="vic-gauge">' +
+        '<div class="vic-gauge-track"><div class="vic-gauge-fill ' + cls + '" style="width:' + pct + '%"></div></div>' +
+        '<span class="vic-gauge-text">' + total + '/' + max + '</span>' +
+      '</div>';
+    }
+
+    // === Journee range for header ===
+    function getJourneeRange() {
+      var minJ = 999, maxJ = 0;
+      Object.keys(DATA).forEach(function(key) {
+        DATA[key].teams.forEach(function(t) {
+          if (t.journees) t.journees.forEach(function(j) {
+            if (j.journee < minJ) minJ = j.journee;
+            if (j.journee > maxJ) maxJ = j.journee;
+          });
+        });
+      });
+      if (minJ === maxJ) return 'J' + minJ;
+      return 'J' + minJ + ' - J' + maxJ;
+    }
+
+    // === Player rows HTML ===
+    function renderPlayerRows(j) {
+      var html = '';
+      j.players.forEach(function(p) {
+        var vicClass = p.vic === 3 ? ' perfect' : (p.vic === 0 ? ' zero' : '');
+        html += '<div class="player-row">' +
+          '<div class="player-name">' +
+            '<span class="player-name-text">' + p.nom + ' ' + p.prenom + '</span>' +
+            '<span class="player-cls">' + formatCls(p.cls) + '</span>' +
+          '</div>' +
+          '<div class="player-victories">' +
+            createVictoryBars(p.vic, 3) +
+            '<span class="vic-count' + vicClass + '">' + p.vic + '/3</span>' +
+          '</div>' +
+        '</div>';
+      });
+      // Doubles row
+      var dblCount = jDoubles(j);
+      var dblClass = dblCount === 2 ? ' perfect' : (dblCount === 0 ? ' zero' : '');
+      html += '<div class="player-row doubles-row">' +
+        '<div class="player-name"><span class="player-name-text" style="font-style:italic;color:var(--gray)">Doubles</span></div>' +
+        '<div class="player-victories">' +
+          createVictoryBars(dblCount, 2) +
+          '<span class="vic-count' + dblClass + '">' + dblCount + '/2</span>' +
+        '</div>' +
+      '</div>';
+      return html;
+    }
+
+    // === RENDER ===
     function render(poolKey) {
-      const pool = DATA[poolKey];
+      var pool = DATA[poolKey];
       if (!pool) return;
       currentPool = poolKey;
 
+      // Dynamic header subtitle
+      var subtitle = document.getElementById('headerSubtitle');
+      if (subtitle) subtitle.textContent = 'Phase 2 - ' + getJourneeRange() + ' - Saison 2025/2026';
+
       // Pool info bar
-      const poolInfo = document.getElementById('poolInfo');
-      const avgCls = poolAvg(pool);
-      const avgPts = poolAvgTeamPts(pool);
+      var poolInfo = document.getElementById('poolInfo');
+      var avgJ = poolAvgJoueur(pool);
+      var avgE = poolAvgEquipe(pool);
+
+      // Detect journee range for this pool
+      var poolJournees = [];
+      pool.teams.forEach(function(t) {
+        if (t.journees) t.journees.forEach(function(j) {
+          if (poolJournees.indexOf(j.journee) === -1) poolJournees.push(j.journee);
+        });
+      });
+      poolJournees.sort();
+      var rangeHtml = poolJournees.length > 1
+        ? '<span class="journee-range">J' + poolJournees[0] + '-J' + poolJournees[poolJournees.length - 1] + '</span>'
+        : '<span class="journee-range">J' + (poolJournees[0] || 1) + '</span>';
+
+      // ACBB victories for this pool
+      var acbbTeam = pool.teams.find(function(t) { return t.acbb; });
+      var acbbAvgVic = acbbTeam ? teamAvgVic(acbbTeam) : null;
+      var acbbPts = acbbTeam ? teamAvgPts(acbbTeam) : null;
+
       poolInfo.innerHTML =
         '<div class="pool-info-top">' +
-          '<div>' +
-            '<div class="pool-name">' + pool.pool + '</div>' +
-            '<div class="pool-date">' + pool.date + '</div>' +
-          '</div>' +
+          '<div class="pool-name">' + pool.pool + ' ' + rangeHtml + '</div>' +
           '<span class="level-badge ' + pool.levelClass + '">' + pool.level + '</span>' +
         '</div>' +
         '<div class="pool-stats">' +
-          '<div class="pool-stat">' +
-            '<div class="pool-stat-value">' + avgCls + '</div>' +
-            '<div class="pool-stat-label">Moy. Classement</div>' +
-          '</div>' +
-          '<div class="pool-stat">' +
-            '<div class="pool-stat-value">' + avgPts + '</div>' +
-            '<div class="pool-stat-label">Moy. Pts/Équipe</div>' +
-          '</div>' +
+          '<div class="pool-stat"><div class="pool-stat-value">' + avgJ + '</div><div class="pool-stat-label">Moy. Joueur</div></div>' +
+          '<div class="pool-stat"><div class="pool-stat-value">' + avgE + '</div><div class="pool-stat-label">Moy. Equipe</div></div>' +
         '</div>';
 
-      // Find ACBB team points for comparison
-      const acbbTeam = pool.teams.find(t => t.acbb);
-      const acbbPts = acbbTeam ? teamPoints(acbbTeam) : null;
-
-      // Sort and render teams
-      const sorted = sortTeams(pool.teams);
-      const content = document.getElementById('content');
-      let html = '';
+      var sorted = sortTeams(pool.teams);
+      var content = document.getElementById('content');
+      var html = '';
 
       sorted.forEach(function(team, idx) {
-        const isAcbb = team.acbb === true;
-        const isExpanded = isAcbb && !team.na;
-        const cardClass = 'team-card' + (isAcbb ? ' acbb' : '') + (isExpanded ? ' expanded' : '');
-        const cardId = poolKey + '_' + idx;
+        var cardId = poolKey + '_' + idx;
+        var isAcbb = team.acbb === true;
+        var js = teamJournees(team);
+        var hasMultiJ = js.length > 1;
 
         // N/A team
-        if (team.na) {
-          html += '<div class="' + cardClass + '">' +
+        if (team.na && (!team.journees || team.journees.length === 0)) {
+          html += '<div class="team-card" id="card_' + cardId + '">' +
             '<div class="team-header">' +
-              '<div class="team-info">' +
-                '<div class="team-name">' +
-                  (team.journee ? '<span class="journee-badge">J' + team.journee + '</span>' : '') +
-                  (team.domext ? '<span class="domext-tag ' + team.domext.toLowerCase() + '">' + team.domext + '</span>' : '') +
-                  team.name +
-                '</div>' +
-              '</div>' +
+              '<div class="team-info"><div class="team-name">' +
+                (team.acbbJournee ? '<span class="journee-badge">J' + team.acbbJournee + '</span>' : '') +
+                (team.acbbDomext ? '<span class="domext-tag ' + team.acbbDomext.toLowerCase() + '">' + team.acbbDomext + '</span>' : '') +
+                team.name +
+              '</div></div>' +
             '</div>' +
-            '<div class="na-message">Résultats non disponibles</div>' +
+            '<div class="na-message">Resultats non disponibles</div>' +
           '</div>';
           return;
         }
 
-        const pts = teamPoints(team);
-        const avg = teamAvg(team);
-        const total = teamTotal(team);
-        const pointsHighClass = (!isAcbb && acbbPts !== null && pts !== null && pts > acbbPts) ? ' points-high' : '';
+        var pts = teamAvgPts(team);
+        var avg = teamAvgJoueur(team);
+        var vic = teamAvgVic(team);
+        var pointsHigh = (!isAcbb && acbbPts !== null && pts !== null && pts > acbbPts) ? ' points-high' : '';
+        var isExpanded = isAcbb;
 
-        html += '<div class="' + cardClass + '" id="card_' + cardId + '">' +
+        // Trend arrows for multi-journee
+        var trendPts = hasMultiJ ? teamTrend(team, 'pts') : '';
+        var trendAvg = hasMultiJ ? teamTrend(team, 'avg') : '';
+
+        html += '<div class="team-card' + (isAcbb ? ' acbb' : '') + (isExpanded ? ' expanded' : '') + '" id="card_' + cardId + '">' +
           '<div class="team-header" onclick="toggleCard(\'' + cardId + '\')">' +
-            '<div class="team-info">' +
-              '<div class="team-name">' +
-                (isAcbb ? '<span class="acbb-badge">ACBB</span>' : '') +
-                (team.journee ? '<span class="journee-badge">J' + team.journee + '</span>' : '') +
-                (team.domext ? '<span class="domext-tag ' + team.domext.toLowerCase() + '">' + team.domext + '</span>' : '') +
-                team.name +
-              '</div>' +
-            '</div>' +
+            '<div class="team-info"><div class="team-name">' +
+              (isAcbb ? '<span class="acbb-badge">ACBB</span>' : '') +
+              (!isAcbb && team.acbbJournee ? '<span class="journee-badge">J' + team.acbbJournee + '</span>' : '') +
+              (!isAcbb && team.acbbDomext ? '<span class="domext-tag ' + team.acbbDomext.toLowerCase() + '">' + team.acbbDomext + '</span>' : '') +
+              team.name +
+            '</div></div>' +
             '<div class="team-stats">' +
-              '<div class="stat">' +
-                '<div class="stat-value' + pointsHighClass + '">' + (pts !== null ? pts : '-') + '</div>' +
-                '<div class="stat-label">PTS</div>' +
-              '</div>' +
-              '<div class="stat">' +
-                '<div class="stat-value">' + (avg !== null ? avg : '-') + '</div>' +
-                '<div class="stat-label">MOY</div>' +
-              '</div>' +
-              '<div class="stat">' +
-                '<div class="stat-value">' + total + '/14</div>' +
-                '<div class="stat-label">V.</div>' +
-              '</div>' +
+              '<div class="stat-chip"><div class="stat-chip-value' + pointsHigh + '">' + (pts !== null ? pts : '-') + trendPts + '</div><div class="stat-chip-label">Equipe</div></div>' +
+              '<div class="stat-chip"><div class="stat-chip-value">' + (avg !== null ? avg : '-') + trendAvg + '</div><div class="stat-chip-label">Joueur</div></div>' +
+              '<div class="stat-chip">' + (vic !== null ? vicGauge(vic, MAX_VIC) : '<div class="stat-chip-value">-</div>') + '<div class="stat-chip-label">Vic.</div></div>' +
             '</div>' +
-            '<span class="toggle-icon">▼</span>' +
+            '<span class="toggle-icon">&#9660;</span>' +
           '</div>' +
           '<div class="team-details">';
 
-        // Player rows
-        team.players.forEach(function(p) {
-          html += '<div class="player-row">' +
-            '<div class="player-name">' +
-              '<span class="player-name-text">' + p.nom + ' ' + p.prenom + '</span>' +
-              '<span class="player-cls">' + formatCls(p.cls) + '</span>' +
-            '</div>' +
-            '<div class="player-victories">' +
-              createVictoryDots(p.vic) +
-              '<span class="vic-count">' + p.vic + '/3</span>' +
-            '</div>' +
-          '</div>';
-        });
+        if (hasMultiJ) {
+          // Expand all button
+          html += '<span class="expand-all-btn" onclick="event.stopPropagation();toggleAllSubs(\'' + cardId + '\')">&#9654; Tout deplier</span>';
 
-        // Doubles row
-        html += '<div class="player-row" style="border-top:2px solid #e5e7eb;margin-top:4px;padding-top:8px">' +
-          '<div class="player-name"><span class="player-name-text" style="font-style:italic">Doubles</span></div>' +
-          '<div class="player-victories">' +
-            '<span class="vic-count">' + teamDoubles(team) + '/2</span>' +
-          '</div>' +
-        '</div>';
+          // REVERSE ORDER: show last journee first (most recent expanded)
+          var journeesReversed = team.journees.slice().reverse();
+
+          journeesReversed.forEach(function(j, jIdx) {
+            var subId = cardId + '_j' + j.journee;
+            var jp = jPoints(j);
+            var ja = jAvg(j);
+            var jt = jTotal(j);
+            // First in reversed = last chronologically = expand if ACBB
+            var isFirstReversed = (jIdx === 0) && isAcbb;
+
+            // Dom/Ext class for sub-card
+            var domextClass = '';
+            if (isAcbb && team.calendar && team.calendar[j.journee]) {
+              domextClass = ' domext-' + team.calendar[j.journee].domext.toLowerCase();
+            } else if (!isAcbb && team.acbbDomext) {
+              domextClass = ' domext-' + team.acbbDomext.toLowerCase();
+            }
+
+            // Opponent info for ACBB
+            var opponentHtml = '';
+            if (isAcbb && team.calendar && team.calendar[j.journee]) {
+              var cal = team.calendar[j.journee];
+              opponentHtml = '<span class="domext-tag ' + cal.domext.toLowerCase() + '">' + cal.domext + '</span>' +
+                '<span class="journee-opponent-prominent">vs ' + cal.opponent + '</span>';
+            } else if (!isAcbb && j.opponent) {
+              opponentHtml = '<span class="journee-opponent">vs ' + j.opponent + '</span>';
+            }
+
+            // Match score badge
+            var matchScoreHtml = '';
+            if (j.match_score !== undefined && j.opp_score !== undefined) {
+              // Use real match scores from data
+              var ms = j.match_score;
+              var os = j.opp_score;
+              var scoreClass = ms > os ? 'win' : (ms < os ? 'loss' : 'draw');
+              matchScoreHtml = '<span class="match-score ' + scoreClass + '">' + ms + '-' + os + '</span>';
+            } else if (jt !== null && j.players && j.players.length > 0) {
+              // Fallback: compute from victories
+              var opponentVic = MAX_VIC - jt;
+              var scoreClass = jt > 7 ? 'win' : (jt < 7 ? 'loss' : 'draw');
+              matchScoreHtml = '<span class="match-score ' + scoreClass + '">' + jt + '-' + opponentVic + '</span>';
+            }
+
+            html += '<div class="journee-subcard' + domextClass + (isFirstReversed ? ' expanded' : '') + '" id="sub_' + subId + '">' +
+              '<div class="journee-header" onclick="toggleSub(\'' + subId + '\')">' +
+                '<div class="journee-info">' +
+                  '<span class="journee-badge">J' + j.journee + '</span>' +
+                  matchScoreHtml +
+                  opponentHtml +
+                '</div>' +
+                '<div class="journee-stats">' +
+                  '<div class="stat-chip"><div class="stat-chip-value">' + (ja !== null ? ja : '-') + '</div><div class="stat-chip-label">Moy.</div></div>' +
+                  '<div class="stat-chip"><div class="stat-chip-value">' + (jp !== null ? jp : '-') + '</div><div class="stat-chip-label">Equipe</div></div>' +
+                  '<div class="stat-chip">' + vicGauge(jt, MAX_VIC) + '</div>' +
+                '</div>' +
+                '<span class="toggle-icon" style="font-size:14px">&#9660;</span>' +
+              '</div>' +
+              '<div class="journee-details">' + renderPlayerRows(j) + '</div>' +
+            '</div>';
+          });
+        } else if (team.journees && team.journees.length === 1) {
+          html += renderPlayerRows(team.journees[0]);
+        }
 
         html += '</div></div>';
       });
@@ -945,17 +1383,50 @@
     }
 
     function toggleCard(cardId) {
-      const card = document.getElementById('card_' + cardId);
+      var card = document.getElementById('card_' + cardId);
       if (card) card.classList.toggle('expanded');
     }
 
+    function toggleSub(subId) {
+      var sub = document.getElementById('sub_' + subId);
+      if (sub) sub.classList.toggle('expanded');
+    }
+
+    function toggleAllSubs(cardId) {
+      var card = document.getElementById('card_' + cardId);
+      if (!card) return;
+      var subs = card.querySelectorAll('.journee-subcard');
+      var allExpanded = true;
+      subs.forEach(function(s) { if (!s.classList.contains('expanded')) allExpanded = false; });
+      subs.forEach(function(s) {
+        if (allExpanded) s.classList.remove('expanded');
+        else s.classList.add('expanded');
+      });
+      var btn = card.querySelector('.expand-all-btn');
+      if (btn) btn.textContent = allExpanded ? '\u25B6 Tout deplier' : '\u25BC Tout replier';
+    }
+
     function initTeamSelector() {
-      const pills = document.getElementById('teamPills');
-      const keys = Object.keys(DATA);
+      var pills = document.getElementById('teamPills');
+      var keys = Object.keys(DATA);
       keys.forEach(function(key) {
-        const btn = document.createElement('button');
+        var btn = document.createElement('button');
         btn.className = 'team-pill' + (key === currentPool ? ' active' : '');
         btn.textContent = key;
+        btn.style.position = 'relative';
+
+        // Add result indicator
+        var pool = DATA[key];
+        var acbbTeam = pool.teams.find(function(t) { return t.acbb; });
+        if (acbbTeam) {
+          var result = teamLastResult(acbbTeam);
+          if (result && result !== 'draw') {
+            var dot = document.createElement('span');
+            dot.className = 'pill-indicator ' + result;
+            btn.appendChild(dot);
+          }
+        }
+
         btn.onclick = function() {
           document.querySelectorAll('.team-pill').forEach(function(b) { b.classList.remove('active'); });
           btn.classList.add('active');
@@ -965,7 +1436,6 @@
       });
     }
 
-    // === Init ===
     document.addEventListener('DOMContentLoaded', function() {
       initTeamSelector();
       render('F1');
