@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACBB TT - Brulage Check</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --blue: #2563eb; --blue-dark: #1e3a5f; --blue-light: #eff6ff;
+      --green: #22c55e; --green-dark: #16a34a;
+      --orange: #f97316; --red: #ef4444;
+      --gray: #6b7280; --gray-light: #f3f4f6; --gray-border: #e5e7eb;
+      --radius: 12px; --radius-sm: 8px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f8fafc; color: #1f2937; line-height: 1.5;
+    }
+    .container { max-width: 600px; margin: 0 auto; background: white; min-height: 100vh; }
+
+    .header {
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+      color: white; padding: 20px 16px 16px;
+    }
+    .header h1 { font-size: 1.3rem; font-weight: 700; }
+    .header p { font-size: 0.8rem; opacity: 0.85; margin-top: 4px; line-height: 1.4; }
+    .back-link { color: white; opacity: 0.8; text-decoration: none; font-size: 0.85rem; display: inline-block; margin-bottom: 6px; }
+    .back-link:hover { opacity: 1; }
+
+    .team-selector {
+      display: flex; gap: 6px; padding: 12px 16px; overflow-x: auto;
+      background: white; border-bottom: 1px solid var(--gray-border);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .team-pill {
+      padding: 6px 14px; border-radius: 20px; border: 2px solid var(--gray-border);
+      background: white; font-weight: 600; font-size: 0.85rem; cursor: pointer;
+      white-space: nowrap; transition: all 0.15s;
+    }
+    .team-pill:hover { border-color: var(--blue); color: var(--blue); }
+    .team-pill.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+    .info-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 16px; background: var(--blue-light); border-bottom: 1px solid var(--gray-border);
+    }
+    .info-bar .count { font-weight: 700; font-size: 1.1rem; color: var(--blue-dark); }
+    .info-bar .subtitle { font-size: 0.8rem; color: var(--gray); }
+
+    .player-list { padding: 0 0 20px; }
+
+    .player-item {
+      display: flex; align-items: center; padding: 10px 16px;
+      border-bottom: 1px solid var(--gray-border); gap: 12px;
+    }
+    .player-rank {
+      width: 28px; height: 28px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-size: 0.75rem;
+      font-weight: 700; flex-shrink: 0; background: var(--gray-light); color: var(--gray);
+    }
+
+    .player-info { flex: 1; min-width: 0; }
+    .player-name { font-weight: 600; font-size: 0.95rem; }
+    .player-tags { display: flex; gap: 4px; margin-top: 3px; flex-wrap: wrap; }
+
+    .tag {
+      font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; font-weight: 600;
+    }
+    .tag.team { background: #dbeafe; color: var(--blue); }
+
+    .player-cls {
+      flex-shrink: 0; font-weight: 700; font-size: 0.9rem;
+      color: var(--blue-dark); min-width: 52px; text-align: right;
+    }
+    .player-cls.national { color: #7c3aed; }
+
+    .empty {
+      padding: 40px 20px; text-align: center; color: var(--gray);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="index.html" class="back-link">&larr; Retour</a>
+      <h1>&#128293; Brulage Check</h1>
+      <p>Selectionnez une equipe pour voir les joueurs eligibles pour J5, tries par classement.</p>
+    </div>
+    <div class="team-selector" id="teamSelector"></div>
+    <div class="info-bar">
+      <div><span class="count" id="playerCount">-</span> <span class="subtitle">joueurs eligibles</span></div>
+    </div>
+    <div class="player-list" id="playerList"></div>
+  </div>
+
+<script>
+    var PLAYERS = [{"nom": "MERIC", "prenom": "Marion", "cls": 1267, "pools": {"F1": 4, "M8": 2}}, {"nom": "LESPINASSE", "prenom": "Joanne", "cls": 1041, "pools": {"F1": 3, "F2": 1, "M4": 3, "M14": 4}}, {"nom": "LESCAUDRON", "prenom": "Noemie", "cls": 1130, "pools": {"F1": 4, "M9": 1, "M11": 1}}, {"nom": "SAVAN", "prenom": "Vuthny", "cls": 945, "pools": {"F1": 3, "M12": 3}}, {"nom": "DEBBARH", "prenom": "Rita", "cls": 687, "pools": {"F1": 1, "F2": 2}}, {"nom": "DE COSNAC", "prenom": "Astrid", "cls": 1251, "pools": {"F1": 1, "M9": 2}}, {"nom": "LENNON", "prenom": "Clemence", "cls": 900, "pools": {"F2": 3, "M12": 3}}, {"nom": "BATT", "prenom": "Maylis", "cls": 822, "pools": {"F2": 2}}, {"nom": "LEVIONNOIS", "prenom": "Alexia", "cls": 607, "pools": {"F2": 3}}, {"nom": "LE BOURG", "prenom": "Virginie", "cls": 1343, "pools": {"F2": 1, "M9": 4}}, {"nom": "ALLIX", "prenom": "Catherine", "cls": 806, "pools": {"F2": 1}}, {"nom": "PIOT", "prenom": "Cassandre", "cls": 635, "pools": {"F2": 1}}, {"nom": "CAMION", "prenom": "Chloe", "cls": 924, "pools": {"F2": 1, "M4": 1, "M5": 3, "M10": 2}}, {"nom": "DE BONNECHOSE", "prenom": "Isabelle", "cls": 682, "pools": {"F2": 1, "M17": 1}}, {"nom": "MIKAMI", "prenom": "Monique", "cls": 518, "pools": {"F3": 1}}, {"nom": "DE ROLLAND", "prenom": "Marie-Laure", "cls": 485, "pools": {"F3": 2}}, {"nom": "MOREL", "prenom": "Leonie", "cls": 545, "pools": {"F3": 2}}, {"nom": "BLEGER", "prenom": "Vanessa", "cls": 495, "pools": {"F3": 1}}, {"nom": "LE GOFFIC", "prenom": "Caroline", "cls": 480, "pools": {"F3": 1}}, {"nom": "RIAHI", "prenom": "Isabelle", "cls": 522, "pools": {"F3": 1}}, {"nom": "AUBRY", "prenom": "Claire", "cls": 587, "pools": {"F3": 2}}, {"nom": "AVEDISSIAN", "prenom": "Muriel", "cls": 699, "pools": {"F3": 1, "M13": 2}}, {"nom": "HAREL", "prenom": "Marie", "cls": 446, "pools": {"F3": 1}}, {"nom": "DUCOIN", "prenom": "Prattana", "cls": 2445, "pools": {"M2": 4}}, {"nom": "WANG", "prenom": "Chen", "cls": 2507, "pools": {"M2": 1, "M3": 1}}, {"nom": "REUSEAU", "prenom": "Louis", "cls": 2529, "pools": {"M2": 4}}, {"nom": "PIRES", "prenom": "Theo", "cls": 2235, "pools": {"M2": 4}}, {"nom": "SATO", "prenom": "Lautaro", "cls": 2580, "pools": {"M2": 3}}, {"nom": "MARTINOD", "prenom": "Thomas", "cls": 1612, "pools": {"M3": 3}}, {"nom": "LE CORRE", "prenom": "Erwan", "cls": 1580, "pools": {"M3": 3}}, {"nom": "ZHAO", "prenom": "Antoine", "cls": 1811, "pools": {"M3": 4}}, {"nom": "GONTARD", "prenom": "Nicolas", "cls": 1603, "pools": {"M3": 3}}, {"nom": "TARD", "prenom": "Gregory", "cls": 1677, "pools": {"M3": 1}}, {"nom": "BOUDJADJA", "prenom": "Mohamed-Sofiane", "cls": 2271, "pools": {"M3": 1, "M5": 1}}, {"nom": "SCHULLER", "prenom": "Eric", "cls": 1603, "pools": {"M4": 3, "M10": 1}}, {"nom": "LOUET", "prenom": "Sebastien", "cls": 1497, "pools": {"M4": 4}}, {"nom": "BOUCHE", "prenom": "Thomas", "cls": 1436, "pools": {"M4": 3}}, {"nom": "DE MONVAL", "prenom": "Axel", "cls": 1464, "pools": {"M4": 1, "M9": 1}}, {"nom": "LI", "prenom": "Max", "cls": 1283, "pools": {"M4": 1, "M6": 1, "M9": 2}}, {"nom": "SUEDE", "prenom": "Samuel", "cls": 1410, "pools": {"M5": 2}}, {"nom": "LE FANIC", "prenom": "Ronan", "cls": 1548, "pools": {"M5": 4}}, {"nom": "JANUS", "prenom": "Krzysztof", "cls": 1634, "pools": {"M5": 4, "M9": 1, "M10": 1}}, {"nom": "CRENN-ALDEA", "prenom": "Julien", "cls": 1388, "pools": {"M5": 2, "M11": 1}}, {"nom": "BELKADI", "prenom": "Medhi", "cls": 951, "pools": {"M6": 3}}, {"nom": "FERET", "prenom": "Hedi", "cls": 1092, "pools": {"M6": 4}}, {"nom": "TU XUAN", "prenom": "Minh", "cls": 959, "pools": {"M6": 4}}, {"nom": "GRANDJEAN", "prenom": "Guillaume", "cls": 1113, "pools": {"M6": 3}}, {"nom": "TORELLI", "prenom": "Jean-Marc", "cls": 876, "pools": {"M6": 1}}, {"nom": "PEIGNE", "prenom": "Gilles", "cls": 1065, "pools": {"M7": 3}}, {"nom": "BATTI", "prenom": "Ayoub", "cls": 1070, "pools": {"M7": 3, "M11": 1}}, {"nom": "COZIEN", "prenom": "Ethan", "cls": 1045, "pools": {"M7": 3}}, {"nom": "COUCHOURON", "prenom": "Sebastien", "cls": 1077, "pools": {"M7": 3}}, {"nom": "GAUTIER", "prenom": "Olivier", "cls": 1087, "pools": {"M7": 1}}, {"nom": "BOUZANNE DES MAZERY", "prenom": "Stephane", "cls": 1092, "pools": {"M7": 2}}, {"nom": "ROUX", "prenom": "Yannis", "cls": 1157, "pools": {"M7": 1, "M12": 1}}, {"nom": "HABERT", "prenom": "Patrick", "cls": 1256, "pools": {"M8": 2, "M16": 2}}, {"nom": "LIORZOU", "prenom": "Sebastien", "cls": 1235, "pools": {"M8": 3}}, {"nom": "BOITEAU", "prenom": "Jean-Serge", "cls": 1176, "pools": {"M8": 3}}, {"nom": "LIMOGES", "prenom": "Ulrich", "cls": 1182, "pools": {"M8": 4}}, {"nom": "AUBERT", "prenom": "Richard", "cls": 1135, "pools": {"M8": 2, "M11": 1}}, {"nom": "BATOT", "prenom": "Ghislain", "cls": 1337, "pools": {"M9": 3}}, {"nom": "CHAUVEL", "prenom": "Sylvain", "cls": 1299, "pools": {"M9": 2}}, {"nom": "MANDELMILECH", "prenom": "Adrien", "cls": 900, "pools": {"M10": 2}}, {"nom": "ALLEGRE-GUILLAUME", "prenom": "Antoine", "cls": 749, "pools": {"M10": 4}}, {"nom": "RECHATIN", "prenom": "Bruno", "cls": 886, "pools": {"M10": 2}}, {"nom": "DIAB BOUSTANI", "prenom": "Evan", "cls": 1106, "pools": {"M10": 1}}, {"nom": "ATLAN", "prenom": "Guillaume", "cls": 1002, "pools": {"M10": 2}}, {"nom": "PERROT", "prenom": "Charles", "cls": 1033, "pools": {"M10": 1, "M12": 1}}, {"nom": "LANGLOIS", "prenom": "Xavier", "cls": 869, "pools": {"M11": 3, "M12": 1}}, {"nom": "ZHANG", "prenom": "Jun", "cls": 850, "pools": {"M11": 2}}, {"nom": "PIQUET", "prenom": "Sebastien", "cls": 760, "pools": {"M11": 2, "M12": 2}}, {"nom": "GIROU", "prenom": "Alain", "cls": 736, "pools": {"M11": 1, "M16": 1}}, {"nom": "PRUDENT", "prenom": "Christian", "cls": 1179, "pools": {"M11": 1}}, {"nom": "ZERBIB", "prenom": "Olivier", "cls": 755, "pools": {"M11": 2}}, {"nom": "NDZOLI EYOKA", "prenom": "Chriss Chancel", "cls": 933, "pools": {"M11": 1}}, {"nom": "FONTAINE", "prenom": "Sebastien", "cls": 935, "pools": {"M12": 3}}, {"nom": "DEGUIL", "prenom": "Christophe", "cls": 840, "pools": {"M12": 1}}, {"nom": "KATH", "prenom": "Julian", "cls": 540, "pools": {"M12": 1, "M17": 2}}, {"nom": "PERRON", "prenom": "Nicolas", "cls": 678, "pools": {"M13": 2}}, {"nom": "SUCHER", "prenom": "Antoine", "cls": 647, "pools": {"M13": 3}}, {"nom": "MORRIS", "prenom": "Jean-Baptiste", "cls": 824, "pools": {"M13": 3}}, {"nom": "BENETIERE", "prenom": "Guy", "cls": 726, "pools": {"M13": 3}}, {"nom": "DOUSS", "prenom": "Mehdi", "cls": 634, "pools": {"M13": 2}}, {"nom": "MOURRE", "prenom": "Aurelien", "cls": 692, "pools": {"M13": 1}}, {"nom": "CASSAGNOU", "prenom": "Xavier", "cls": 646, "pools": {"M14": 4}}, {"nom": "MONDINO", "prenom": "Christophe", "cls": 611, "pools": {"M14": 3}}, {"nom": "LE GALL", "prenom": "Anthony", "cls": 585, "pools": {"M14": 4}}, {"nom": "AGRIOPOULOS", "prenom": "Anastasios", "cls": 641, "pools": {"M14": 1}}, {"nom": "MA", "prenom": "Qi", "cls": 646, "pools": {"M15": 4}}, {"nom": "ADMI", "prenom": "Johara", "cls": 592, "pools": {"M15": 4}}, {"nom": "PIERRON", "prenom": "Guillaume", "cls": 552, "pools": {"M15": 3}}, {"nom": "FROMONT", "prenom": "Joel", "cls": 635, "pools": {"M15": 1}}, {"nom": "KOL", "prenom": "Nicolas", "cls": 639, "pools": {"M15": 1, "M16": 1}}, {"nom": "LAINE", "prenom": "Guillaume", "cls": 648, "pools": {"M15": 1}}, {"nom": "SEGUY", "prenom": "Vincent", "cls": 555, "pools": {"M15": 2}}, {"nom": "RODRIGUEZ", "prenom": "German", "cls": 518, "pools": {"M16": 3}}, {"nom": "TERREE", "prenom": "Jean-Luc", "cls": 490, "pools": {"M16": 1}}, {"nom": "CINOTTI", "prenom": "Pierre", "cls": 616, "pools": {"M16": 2}}, {"nom": "BUCHET", "prenom": "Christophe", "cls": 526, "pools": {"M16": 3}}, {"nom": "YANG", "prenom": "Fan", "cls": 581, "pools": {"M16": 3}}, {"nom": "LATIMIER", "prenom": "Guillaume", "cls": 498, "pools": {"M17": 4}}, {"nom": "BAUBY", "prenom": "Marc", "cls": 494, "pools": {"M17": 1}}, {"nom": "LIZAMBARD", "prenom": "Romain", "cls": 508, "pools": {"M17": 3}}, {"nom": "JIANG", "prenom": "Yingqiu", "cls": 514, "pools": {"M17": 3}}, {"nom": "DRODELOT", "prenom": "Max", "cls": 522, "pools": {"M17": 2}}];
+
+    var MASC_POOLS = ["M2","M3","M4","M5","M6","M7","M8","M9","M10","M11","M12","M13","M14","M15","M16","M17"];
+
+    function higherPools(target) {
+      var idx = MASC_POOLS.indexOf(target);
+      return idx > 0 ? MASC_POOLS.slice(0, idx) : [];
+    }
+
+    // Sort desc : N-ranks (nationaux) en haut, puis classement numerique decroissant
+    function clsSortValue(cls) {
+      if (typeof cls === 'string' && cls.startsWith('N')) {
+        // N1 > N999 : plus petit numero = plus fort
+        return 10000 - parseInt(cls.substring(1));
+      }
+      return cls; // numeric, bigger = higher
+    }
+
+    function formatCls(cls) {
+      return cls;
+    }
+
+    var currentTeam = 'M11';
+
+    function render(team) {
+      currentTeam = team;
+      var higher = higherPools(team);
+      var available = [];
+
+      PLAYERS.forEach(function(p) {
+        var higherCount = 0;
+        var higherDetails = [];
+        higher.forEach(function(pool) {
+          if (p.pools[pool]) {
+            higherCount += p.pools[pool];
+            higherDetails.push(pool + '(' + p.pools[pool] + ')');
+          }
+        });
+        if (higherCount < 2) {
+          available.push({
+            nom: p.nom, prenom: p.prenom, cls: p.cls,
+            higherCount: higherCount, higherDetails: higherDetails,
+            pools: p.pools
+          });
+        }
+      });
+
+      // Sort by classement DESC (meilleurs en haut)
+      available.sort(function(a, b) { return clsSortValue(b.cls) - clsSortValue(a.cls); });
+
+      document.getElementById('playerCount').textContent = available.length;
+
+      document.querySelectorAll('.team-pill').forEach(function(pill) {
+        pill.classList.toggle('active', pill.dataset.team === team);
+      });
+
+      var html = '';
+      if (available.length === 0) {
+        html = '<div class="empty">Aucun joueur eligible pour ' + team + '</div>';
+      } else {
+        available.forEach(function(p, i) { html += renderPlayer(p, i + 1); });
+      }
+      document.getElementById('playerList').innerHTML = html;
+    }
+
+    function renderPlayer(p, rank) {
+      var isNat = (typeof p.cls === 'string' && p.cls.charAt(0) === 'N') || (typeof p.cls === 'number' && p.cls >= 2000);
+      var clsCls = isNat ? 'player-cls national' : 'player-cls';
+
+      var tags = '';
+      Object.keys(p.pools).forEach(function(pool) {
+        tags += '<span class="tag team">' + pool + ' x' + p.pools[pool] + '</span>';
+      });
+
+      return '<div class="player-item">' +
+        '<div class="player-rank">' + rank + '</div>' +
+        '<div class="player-info">' +
+          '<div class="player-name">' + p.prenom + ' ' + p.nom + '</div>' +
+          '<div class="player-tags">' + tags + '</div>' +
+        '</div>' +
+        '<div class="' + clsCls + '">' + formatCls(p.cls) + '</div>' +
+      '</div>';
+    }
+
+    function initSelector() {
+      var sel = document.getElementById('teamSelector');
+      MASC_POOLS.forEach(function(team) {
+        var btn = document.createElement('button');
+        btn.className = 'team-pill' + (team === currentTeam ? ' active' : '');
+        btn.textContent = team;
+        btn.dataset.team = team;
+        btn.onclick = function() { render(team); };
+        sel.appendChild(btn);
+      });
+    }
+
+    initSelector();
+    render(currentTeam);
+</script>
+</body>
+</html>
