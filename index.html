@@ -82,6 +82,38 @@
       opacity: 0.9;
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brulage-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 12px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .brulage-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .brulage-btn:active {
+      transform: translateY(0);
+    }
+
     /* ===== TEAM SELECTOR - with result indicators ===== */
     .team-selector {
       position: sticky;
@@ -733,7 +765,10 @@
           <h1>ACBB Tennis de Table</h1>
           <div class="header-subtitle" id="headerSubtitle">Championnat par Equipe - Phase 2</div>
         </div>
-        <div class="header-logo">&#127955;</div>
+        <div class="header-actions">
+          <a href="dispo.html" class="brulage-btn" title="Verifier les joueurs non brules pour J5">&#128293; Brulage Check</a>
+          <div class="header-logo">&#127955;</div>
+        </div>
       </div>
     </div>
 
