@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACBB TT - Sportive J6/J7</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --blue: #2563eb; --blue-dark: #1e3a5f; --blue-light: #eff6ff;
+      --green: #22c55e; --green-dark: #16a34a; --green-light: #dcfce7;
+      --orange: #f97316; --orange-light: #fff7ed;
+      --red: #ef4444; --red-light: #fee2e2;
+      --yellow: #eab308; --yellow-light: #fef3c7;
+      --gray: #6b7280; --gray-light: #f3f4f6; --gray-border: #e5e7eb;
+      --radius: 12px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f8fafc; color: #1f2937; line-height: 1.5; font-size: 14px;
+    }
+    .container { max-width: 900px; margin: 0 auto; background: white; min-height: 100vh; }
+
+    .header {
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+      color: white; padding: 24px 20px 20px;
+    }
+    .header h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 4px; }
+    .header p { font-size: 0.85rem; opacity: 0.85; }
+
+    section { padding: 20px; border-bottom: 1px solid var(--gray-border); }
+    section h2 {
+      font-size: 1.1rem; font-weight: 800; margin-bottom: 14px;
+      color: var(--blue-dark); letter-spacing: -0.2px;
+    }
+    section h3 {
+      font-size: 0.95rem; font-weight: 700; margin: 14px 0 8px;
+      color: var(--gray);
+    }
+
+    /* === Vue d'ensemble === */
+    .overview {
+      display: grid; gap: 10px; margin-bottom: 4px;
+    }
+    .ov-card {
+      display: grid; grid-template-columns: 80px 1fr auto;
+      align-items: center; gap: 12px;
+      padding: 14px; border-radius: var(--radius);
+      border: 2px solid; position: relative;
+    }
+    .ov-card.green { background: var(--green-light); border-color: #86efac; }
+    .ov-card.orange { background: var(--orange-light); border-color: #fdba74; }
+    .ov-card.red { background: var(--red-light); border-color: #fca5a5; }
+    .ov-card.yellow { background: var(--yellow-light); border-color: #fde047; }
+    .ov-team {
+      font-size: 1.4rem; font-weight: 900; color: var(--blue-dark);
+    }
+    .ov-info { font-size: 0.85rem; }
+    .ov-info b { display: block; font-size: 0.95rem; margin-bottom: 2px; }
+    .ov-info span { color: var(--gray); font-size: 0.75rem; }
+    .ov-prob {
+      font-size: 1.4rem; font-weight: 900;
+      padding: 4px 12px; border-radius: 999px; background: white;
+      text-align: center; min-width: 60px;
+    }
+    .ov-prob.green { color: var(--green-dark); }
+    .ov-prob.orange { color: #c2410c; }
+    .ov-prob.red { color: #b91c1c; }
+    .ov-prob.yellow { color: #a16207; }
+
+    /* === Priorités === */
+    .prio-list { display: flex; flex-direction: column; gap: 8px; }
+    .prio {
+      display: flex; gap: 12px; align-items: center;
+      padding: 12px 14px; border-radius: var(--radius);
+      border-left: 4px solid; background: var(--gray-light);
+    }
+    .prio.p1 { border-color: var(--red); background: var(--red-light); }
+    .prio.p2 { border-color: var(--orange); background: var(--orange-light); }
+    .prio.p3 { border-color: var(--green); background: var(--green-light); }
+    .prio-rank {
+      font-size: 1.3rem; font-weight: 900;
+      min-width: 30px; text-align: center;
+    }
+    .prio-content { flex: 1; }
+    .prio-title { font-weight: 700; font-size: 0.95rem; }
+    .prio-desc { font-size: 0.8rem; color: var(--gray); margin-top: 2px; }
+    .prio-pct { font-size: 0.95rem; font-weight: 800; }
+
+    /* === Team detail === */
+    .team-detail {
+      border-radius: var(--radius); border: 1px solid var(--gray-border);
+      padding: 16px; margin-bottom: 14px; background: white;
+    }
+    .team-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 6px;
+    }
+    .team-name { font-size: 1.1rem; font-weight: 800; color: var(--blue-dark); }
+    .team-badge {
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    }
+    .team-badge.green { background: var(--green); color: white; }
+    .team-badge.orange { background: var(--orange); color: white; }
+    .team-badge.red { background: var(--red); color: white; }
+    .team-badge.yellow { background: var(--yellow); color: white; }
+
+    .team-stat { font-size: 0.8rem; color: var(--gray); margin-bottom: 10px; }
+    .team-stat b { color: #1f2937; }
+    .verdict {
+      padding: 10px 12px; border-radius: 8px;
+      background: var(--blue-light); border-left: 3px solid var(--blue);
+      font-size: 0.85rem; margin-bottom: 12px;
+    }
+    .verdict b { color: var(--blue-dark); }
+
+    .matches { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 600px) { .matches { grid-template-columns: 1fr; } }
+    .match {
+      border: 1px solid var(--gray-border); border-radius: 8px;
+      padding: 10px 12px; background: #fafbfc;
+    }
+    .match.priority { background: #fff5f5; border-color: #fca5a5; }
+    .match-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 6px;
+    }
+    .match-j { font-weight: 800; color: var(--blue-dark); }
+    .match-vs { font-size: 0.85rem; font-weight: 600; }
+    .match-loc { font-size: 0.7rem; color: var(--gray); }
+    .match-strength {
+      font-size: 0.75rem; color: var(--gray); margin-bottom: 8px;
+    }
+    .compo {
+      list-style: none; padding: 0; font-size: 0.83rem;
+    }
+    .compo li { padding: 2px 0; }
+    .compo .featured { font-weight: 700; color: #166534; }
+    .compo .opp { color: var(--gray); }
+    .compo-label {
+      font-size: 0.7rem; text-transform: uppercase; color: var(--gray);
+      font-weight: 700; letter-spacing: 0.5px; margin-top: 6px;
+    }
+
+    .key-action {
+      display: inline-block; padding: 3px 8px; background: var(--yellow);
+      color: #78350f; border-radius: 4px; font-size: 0.7rem;
+      font-weight: 700; margin-left: 6px;
+    }
+
+    /* === Conflicts === */
+    .conflicts { display: flex; flex-direction: column; gap: 6px; }
+    .conflict {
+      padding: 8px 12px; background: var(--gray-light);
+      border-radius: 6px; font-size: 0.83rem;
+    }
+    .conflict b { color: var(--blue-dark); }
+    .conflict.warn { background: var(--yellow-light); }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <h1>&#127955; Sportive — Maintien J6/J7</h1>
+      <p>Analyse condensée : où on est, ce qu'il faut faire. Phase 2 — 2 derniers descendent.</p>
+    </div>
+
+    <!-- VUE D'ENSEMBLE -->
+    <section>
+      <h2>&#128202; Vue d'ensemble</h2>
+      <div class="overview">
+
+        <div class="ov-card red">
+          <div class="ov-team">M6</div>
+          <div class="ov-info">
+            <b>8e / dernier</b>
+            <span>5 pts, GA -54 &middot; CLAMART devant à 7 pts (-19)</span>
+          </div>
+          <div class="ov-prob red">~5%</div>
+        </div>
+
+        <div class="ov-card orange">
+          <div class="ov-team">M7</div>
+          <div class="ov-info">
+            <b>7e / avant-dernier</b>
+            <span>5 pts, GA -36 &middot; TTMC 6e &agrave; 9 pts, ASNIERES 8e a 5 pts</span>
+          </div>
+          <div class="ov-prob orange">~25%</div>
+        </div>
+
+        <div class="ov-card green">
+          <div class="ov-team">M10</div>
+          <div class="ov-info">
+            <b>6e</b>
+            <span>9 pts, GA -10 &middot; MALAKOFF 7e &agrave; 7 pts, COURBEVOIE dernier &agrave; 5 pts</span>
+          </div>
+          <div class="ov-prob green">~90%</div>
+        </div>
+
+        <div class="ov-card yellow">
+          <div class="ov-team">M11</div>
+          <div class="ov-info">
+            <b>5e</b>
+            <span>9 pts, GA -2 &middot; 4 &eacute;quipes &agrave; 9 pts, ACBB devant au GA</span>
+          </div>
+          <div class="ov-prob yellow">~70%</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PRIORITÉS -->
+    <section>
+      <h2>&#127919; Priorit&eacute;s d'action</h2>
+      <div class="prio-list">
+
+        <div class="prio p1">
+          <div class="prio-rank">1</div>
+          <div class="prio-content">
+            <div class="prio-title">M11 J6 &mdash; ACBB Ext vs ASNIERES 7</div>
+            <div class="prio-desc">Confrontation directe maintien. Match d&eacute;cisif. Compo MAX + renfort ROUX.</div>
+          </div>
+          <div class="prio-pct">~70%</div>
+        </div>
+
+        <div class="prio p2">
+          <div class="prio-rank">2</div>
+          <div class="prio-content">
+            <div class="prio-title">M7 J7 &mdash; ACBB Ext vs ASNIERES 3</div>
+            <div class="prio-desc">Pour sortir de la zone descente. Adversaire faible (991 moy). Compo MAX possible.</div>
+          </div>
+          <div class="prio-pct">~75%</div>
+        </div>
+
+        <div class="prio p3">
+          <div class="prio-rank">3</div>
+          <div class="prio-content">
+            <div class="prio-title">M10 J6 &mdash; ACBB Ext vs COURBEVOIE 11</div>
+            <div class="prio-desc">Quasi-acquis (COURBEVOIE dernier, moy 720). Gagner BIG pour bonus GA.</div>
+          </div>
+          <div class="prio-pct">~85%</div>
+        </div>
+
+        <div class="prio p2">
+          <div class="prio-rank">4</div>
+          <div class="prio-content">
+            <div class="prio-title">M7 J6 &mdash; ACBB Dom vs TTMC 5</div>
+            <div class="prio-desc">TTMC fort avec Julie BOST (1615 pts). Tentative renfort HABERT.</div>
+          </div>
+          <div class="prio-pct">~30%</div>
+        </div>
+
+        <div class="prio p1">
+          <div class="prio-rank">5</div>
+          <div class="prio-content">
+            <div class="prio-title">M6 J6 &mdash; ACBB Dom vs CLAMART 4</div>
+            <div class="prio-desc">Match accessible mais maintien M6 quasi-impossible (-35 GA &agrave; combler).</div>
+          </div>
+          <div class="prio-pct">~50% V</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DETAIL PAR EQUIPE -->
+    <section>
+      <h2>&#128203; D&eacute;tail par &eacute;quipe</h2>
+
+      <!-- M6 -->
+      <div class="team-detail">
+        <div class="team-header">
+          <div class="team-name">M6 &mdash; Pr&eacute;-R&eacute;gional Poule 3</div>
+          <div class="team-badge red">Descente probable</div>
+        </div>
+        <div class="team-stat">8e &middot; 5 pts (0V/0N/5D) &middot; GA <b>-54</b></div>
+        <div class="verdict">
+          <b>Verdict :</b> Maintien math&eacute;matiquement possible mais n&eacute;cessite victoire 14-0 vs CLAMART + CLAMART perd 0-14 vs NEUILLY + d&eacute;faite serr&eacute;e vs RUEIL. Probabilit&eacute; &lt;5%.
+          <br><b>Recommandation :</b> aligner habituels, ne pas br&ucirc;ler de cadres d'autres &eacute;quipes.
+        </div>
+        <div class="matches">
+          <div class="match">
+            <div class="match-header">
+              <span class="match-j">J6 (29/5)</span>
+              <span class="match-vs">vs CLAMART 4</span>
+            </div>
+            <div class="match-loc">DOM &middot; CLAMART 7e (7 pts, -19 GA) &middot; moy ~1130</div>
+            <div class="match-strength"><b>Strat&eacute;gie :</b> habituels, viser victoire.</div>
+            <div class="compo-label">Compo</div>
+            <ul class="compo">
+              <li>FERET (1092)</li>
+              <li>GRANDJEAN (1113)</li>
+              <li>BELKADI (951)</li>
+              <li>TU XUAN (959)</li>
+            </ul>
+          </div>
+          <div class="match">
+            <div class="match-header">
+              <span class="match-j">J7 (5/6)</span>
+              <span class="match-vs">vs RUEIL 6</span>
+            </div>
+            <div class="match-loc">EXT &middot; RUEIL 2e (13 pts, +29 GA) &middot; moy ~1370</div>
+            <div class="match-strength"><b>Strat&eacute;gie :</b> compo &eacute;conome, limiter casse.</div>
+            <div class="compo-label">Compo</div>
+            <ul class="compo">
+              <li>FERET (1092)</li>
+              <li>GRANDJEAN (1113)</li>
+              <li>TORELLI (876)</li>
+              <li>LAFORGE (829)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- M7 -->
+      <div class="team-detail">
+        <div class="team-header">
+          <div class="team-name">M7 &mdash; Pr&eacute;-R&eacute;gional Poule 2</div>
+          <div class="team-badge orange">Maintien difficile</div>
+        </div>
+        <div class="team-stat">7e &middot; 5 pts (0V/0N/5D) &middot; GA <b>-36</b> &middot; ASNIERES 8e (5 pts, -38)</div>
+        <div class="verdict">
+          <b>Verdict :</b> Maintien &agrave; ~25%. N&eacute;cessite <b>V J6 vs TTMC + V J7 vs ASNIERES large</b>, et TTMC perd au moins 1 match.
+          <br><b>Cl&eacute; :</b> Julie BOST (1615) peut faire 3 victoires en J6, focus sur les 9 autres rencontres.
+        </div>
+        <div class="matches">
+          <div class="match">
+            <div class="match-header">
+              <span class="match-j">J6 (29/5)</span>
+              <span class="match-vs">vs TTMC 5</span>
+            </div>
+            <div class="match-loc">DOM &middot; TTMC 6e (9 pts, -12 GA) &middot; moy ~1180 si BOST</div>
+            <div class="match-strength"><b>Strat&eacute;gie :</b> renfort HABERT pour neutraliser BOST.</div>
+            <div class="compo-label">Compo</div>
+            <ul class="compo">
+              <li class="featured">HABERT (1256) &mdash; renfort de M8</li>
+              <li>BOUZANNE (1092)</li>
+              <li>GAUTIER (1087)</li>
+              <li>COUCHOURON (1077)</li>
+            </ul>
+          </div>
+          <div class="match priority">
+            <div class="match-header">
+              <span class="match-j">J7 (5/6) <span class="key-action">CL&Eacute;</span></span>
+              <span class="match-vs">vs ASNIERES 3</span>
+            </div>
+            <div class="match-loc">EXT &middot; ASNIERES 8e (5 pts, -38) &middot; moy 991</div>
+            <div class="match-strength"><b>Strat&eacute;gie :</b> compo MAX + ROUX. Gagner 11-3 minimum.</div>
+            <div class="compo-label">Compo</div>
+            <ul class="compo">
+              <li class="featured">ROUX (1157) &mdash; renfort id&eacute;al</li>
+              <li>BOUZANNE (1092)</li>
+              <li>GAUTIER (1087)</li>
+              <li>COUCHOURON (1077)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- M10 -->
+      <div class="team-detail">
+        <div class="team-header">
+          <div class="team-name">M10 &mdash; D&eacute;partemental 1 Poule 3</div>
+          <div class="team-badge green">Maintien probable</div>
+        </div>
+        <div class="team-stat">6e &middot; 9 pts (2V/0N/3D) &middot; GA <b>-10</b> &middot; MALAKOFF 7e (7 pts, -30)</div>
+        <div class="verdict">
+          <b>Verdict :</b> Maintien quasi-acquis. Une victoire en J6 vs COURBEVOIE (dernier) suffit pratiquement.
+          <br><b>Bonus :</b> gagner large en J6 pour booster le GA et finir 4-5e.
+        </div>
+        <div class="matches">
+          <div class="match priority">
+            <div class="match-header">
+              <span class="match-j">J6 (29/5) <span class="key-action">FACILE</span></span>
+              <span class="match-vs">vs COURBEVOIE 11</span>
+            </div>
+            <div class="match-loc">EXT &middot; COURBEVOIE 8e (5 pts, -38) &middot; moy ~720</div>
+            <div class="match-strength"><b>Strat&eacute;gie :</b> gagner 12-2 ou 13-1.</div>
+            <div class="compo-label">Compo</div>
+            <ul class="compo">
+              <li>ATLAN (1002)</li>
+              <li>MANDELMILECH (900)</li>
+              <li>RECHATIN (886)</li>
+              <li>B. ALLEGRE-GUILLAUME (806)</li>
+            </ul>
+          </div>
+          <div class="match">
+            <div class="match-header">
+              <span class="match-j">J7 (5/6)</span>
+              <span class="match-vs">vs VOLTIGEURS 1</span>
+            </div>
+            <div class="match-loc">DOM &middot; VOLT 4e (10 pts, +12 GA) &middot; moy ~1060</div>
+            <div class="match-strength"><b>Strat&eacute;gie :</b> match difficile, pas critique.</div>
+            <div class="compo-label">Compo</div>
+            <ul class="compo">
+              <li>DIAB BOUSTANI (1106)</li>
+              <li>ATLAN (1002)</li>
+              <li>MANDELMILECH (900)</li>
+              <li>RECHATIN (886)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- M11 -->
+      <div class="team-detail">
+        <div class="team-header">
+          <div class="team-name">M11 &mdash; D&eacute;partemental 1 Poule 4</div>
+          <div class="team-badge yellow">Tout sur J6</div>
+        </div>
+        <div class="team-stat">5e &middot; 9 pts (2V/0N/3D) &middot; GA <b>-2</b> &middot; 4 &eacute;quipes &agrave; 9 pts !</div>
+        <div class="verdict">
+          <b>Verdict :</b> Maintien &agrave; ~70% <b>si on bat ASNIERES en J6</b>. Confrontation directe.
+          <br><b>Cl&eacute; :</b> aligner la meilleure compo possible J6, gagner large pour s&eacute;curiser au GA.
+        </div>
+        <div class="matches">
+          <div class="match priority">
+            <div class="match-header">
+              <span class="match-j">J6 (29/5) <span class="key-action">LE MATCH</span></span>
+              <span class="match-vs">vs ASNIERES 7</span>
+            </div>
+            <div class="match-loc">EXT &middot; ASNIERES 7e (9 pts, -12 GA) &middot; moy 933</div>
+            <div class="match-strength"><b>Strat&eacute;gie :</b> renfort ROUX. Gagner 11-3 ou 12-2.</div>
+            <div class="compo-label">Compo</div>
+            <ul class="compo">
+              <li class="featured">ROUX (1157) &mdash; renfort</li>
+              <li>PRUDENT (1179)</li>
+              <li>DIAB BOUSTANI (1106)</li>
+              <li>PERROT (1033)</li>
+            </ul>
+          </div>
+          <div class="match">
+            <div class="match-header">
+              <span class="match-j">J7 (5/6)</span>
+              <span class="match-vs">vs SCEAUX 3</span>
+            </div>
+            <div class="match-loc">DOM &middot; SCEAUX 4e (11 pts, +4 GA) &middot; moy ~1031</div>
+            <div class="match-strength"><b>Strat&eacute;gie :</b> compo solide, match 50/50.</div>
+            <div class="compo-label">Compo</div>
+            <ul class="compo">
+              <li>PRUDENT (1179)</li>
+              <li>DIAB BOUSTANI (1106)</li>
+              <li>PERROT (1033)</li>
+              <li>NDZOLI EYOKA (933)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- CONFLITS JOUEURS -->
+    <section>
+      <h2>&#9888;&#65039; Conflits & gestion des cadres</h2>
+      <div class="conflicts">
+        <div class="conflict warn">
+          <b>Yannis ROUX (1157)</b> &mdash; cl&eacute; M7 J7 ET M11 J6. Journ&eacute;es diff&eacute;rentes, donc <b>peut jouer les 2</b>. Pas de conflit, mais charge.
+        </div>
+        <div class="conflict warn">
+          <b>Patrick HABERT (1256)</b> &mdash; mont&eacute; en M7 J6 pour neutraliser BOST. Br&ucirc;le M8 si 2&egrave;me match haute division.
+        </div>
+        <div class="conflict">
+          <b>Evan DIAB BOUSTANI (1106)</b> &mdash; peut faire M11 J6 + M11 J7 ou M10 J7 + M11 J6, pas de br&ucirc;lage suppl&eacute;mentaire.
+        </div>
+        <div class="conflict">
+          <b>Ne pas br&ucirc;ler M6 :</b> aligner habituels, ne pas monter HABERT/BATOT (perdu d'avance, pr&eacute;server forces).
+        </div>
+      </div>
+    </section>
+
+    <!-- VERDICT FINAL -->
+    <section>
+      <h2>&#128205; Verdict final</h2>
+      <p style="margin-bottom: 12px;">
+        Le club perdra <b>probablement 1 &agrave; 2 &eacute;quipes</b> sur 4 menac&eacute;es :
+      </p>
+      <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;">
+        <li style="padding: 10px 14px; background: var(--red-light); border-left: 3px solid var(--red); border-radius: 6px;">
+          <b>M6 :</b> descente quasi-acquise (math&eacute;matiquement quasi-impossible &agrave; sauver).
+        </li>
+        <li style="padding: 10px 14px; background: var(--orange-light); border-left: 3px solid var(--orange); border-radius: 6px;">
+          <b>M7 :</b> 1 chance sur 4. Gros effort J7 vs ASNIERES + esp&eacute;rer surprise en J6 (BOST absente ?).
+        </li>
+        <li style="padding: 10px 14px; background: var(--green-light); border-left: 3px solid var(--green); border-radius: 6px;">
+          <b>M10 :</b> maintien quasi-acquis.
+        </li>
+        <li style="padding: 10px 14px; background: var(--yellow-light); border-left: 3px solid var(--yellow); border-radius: 6px;">
+          <b>M11 :</b> maintien si on bat ASNIERES J6. <b>Le match du week-end.</b>
+        </li>
+      </ul>
+      <p style="margin-top: 14px; font-size: 0.85rem; color: var(--gray);">
+        <em>Mise &agrave; jour : apr&egrave;s J5. Classements officiels PingPocket. Compos bas&eacute;es sur classements mensuels FFTT.</em>
+      </p>
+    </section>
+
+  </div>
+</body>
+</html>
