@@ -223,12 +223,24 @@
   .sec-a{font-size:10px;color:var(--dim);font-weight:600;letter-spacing:0.3px}
 
   /* ===== CALENDAR strip ===== */
-  .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:0 12px}
+  .calendar{
+    display:flex;gap:5px;margin:0 12px;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .calendar::-webkit-scrollbar{display:none}
   .cal-cell{
-    aspect-ratio:1/1.4;border-radius:10px;
+    flex:0 0 auto;width:74px;
+    aspect-ratio:1/1.4;
+    border-radius:10px;
     background:var(--paper);border:1px solid var(--line);
     padding:6px 4px 5px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;
-    text-align:center;position:relative;
+    text-align:center;position:relative;overflow:hidden;
+  }
+  .cal-opp{overflow:hidden;text-overflow:ellipsis;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  @media (min-width:768px){
+    .calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:visible}
+    .cal-cell{width:auto;aspect-ratio:1/1.4}
   }
   .cal-cell.w{background:var(--win-bg);border-color:rgba(52,211,153,0.35)}
   .cal-cell.l{background:var(--lose-bg);border-color:rgba(248,113,113,0.35)}
