@@ -716,6 +716,97 @@
       padding-top: 6px;
     }
 
+    /* ===== STANDINGS (classement poule) ===== */
+    .standings-section {
+      margin: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-border);
+      background: white;
+      overflow: hidden;
+    }
+    .standings-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      cursor: pointer;
+      user-select: none;
+      background: linear-gradient(180deg, #fafbfc, #f1f5f9);
+      transition: background 0.15s;
+    }
+    .standings-toggle:hover { background: #f1f5f9; }
+    .standings-toggle:active { background: #e2e8f0; }
+    .standings-title {
+      font-weight: 800; font-size: 14px;
+      color: var(--blue-dark);
+      letter-spacing: -0.2px;
+    }
+    .standings-icon {
+      transition: transform 0.2s; font-size: 12px;
+      color: var(--gray);
+    }
+    .standings-section.expanded .standings-icon { transform: rotate(180deg); }
+    .standings-body {
+      display: none;
+      padding: 0;
+    }
+    .standings-section.expanded .standings-body { display: block; }
+    .standings-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .standings-table thead {
+      background: #f8fafc;
+    }
+    .standings-table th {
+      padding: 8px 6px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--gray);
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .standings-table th.left { text-align: left; padding-left: 12px; }
+    .standings-table td {
+      padding: 8px 6px;
+      text-align: center;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .standings-table td.left { text-align: left; padding-left: 12px; font-weight: 600; }
+    .standings-table tr:last-child td { border-bottom: none; }
+    .standings-table tr.acbb { background: #eff6ff; }
+    .standings-table tr.acbb td { font-weight: 700; color: var(--blue-dark); }
+    .standings-table tr.danger td { color: #b91c1c; }
+    .standings-table tr.top1 td { color: #16a34a; }
+    .standings-pos {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      min-width: 22px; height: 22px; border-radius: 50%;
+      background: var(--gray-light); color: var(--gray);
+      font-weight: 700; font-size: 11px;
+    }
+    .standings-table tr.acbb .standings-pos { background: var(--blue); color: white; }
+    .standings-table tr.danger .standings-pos { background: #fee2e2; color: #b91c1c; }
+    .standings-table tr.top1 .standings-pos { background: #dcfce7; color: #166534; }
+    .standings-diff { font-weight: 600; }
+    .standings-diff.pos { color: #16a34a; }
+    .standings-diff.neg { color: #dc2626; }
+    .standings-legend {
+      display: flex; gap: 12px; padding: 8px 12px;
+      background: #f8fafc; border-top: 1px solid var(--gray-border);
+      font-size: 10px; color: var(--gray);
+    }
+    .standings-legend span { display: flex; align-items: center; gap: 4px; }
+    .standings-legend .dot {
+      width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+    }
+    .standings-legend .dot.acbb { background: var(--blue); }
+    .standings-legend .dot.danger { background: #fca5a5; }
+    .standings-legend .dot.top { background: #86efac; }
+
     /* ===== LEGEND ===== */
     .legend {
       padding: 14px 16px;
@@ -801,6 +892,196 @@
   </div>
 
   <script>
+    const STANDINGS = {
+      "F1": [
+        {pos:1,name:"LEVALLOIS SPORT 2",pts:15,mp:5,V:5,N:0,D:0,gf:123,ga:87,diff:36},
+        {pos:2,name:"BOULOGNE BILLANCOURT 1",pts:13,mp:5,V:4,N:0,D:1,gf:114,ga:96,diff:18},
+        {pos:3,name:"CORBEIL-ESSONNES 1",pts:11,mp:5,V:3,N:0,D:2,gf:108,ga:98,diff:10},
+        {pos:4,name:"PALAISEAU US 1",pts:11,mp:5,V:3,N:0,D:2,gf:110,ga:100,diff:10},
+        {pos:5,name:"FONTENAY USTT 3",pts:9,mp:5,V:2,N:0,D:3,gf:104,ga:102,diff:2},
+        {pos:6,name:"JUMP 1",pts:9,mp:5,V:2,N:0,D:3,gf:98,ga:112,diff:-14},
+        {pos:7,name:"CHATENAY ASVTT 1",pts:7,mp:5,V:1,N:0,D:4,gf:89,ga:121,diff:-32},
+        {pos:8,name:"SQY PING 2",pts:5,mp:5,V:0,N:0,D:5,gf:90,ga:120,diff:-30}
+      ],
+      "F2": [
+        {pos:1,name:"BOURGETIN CTT 2",pts:13,mp:5,V:4,N:0,D:1,gf:116,ga:94,diff:22},
+        {pos:2,name:"ANTONY SPORT TT 2",pts:13,mp:5,V:4,N:0,D:1,gf:113,ga:97,diff:16},
+        {pos:3,name:"VITRY ES 1",pts:11,mp:5,V:3,N:0,D:2,gf:107,ga:103,diff:4},
+        {pos:4,name:"BOULOGNE BILLANCOURT 2",pts:10,mp:5,V:2,N:1,D:2,gf:102,ga:108,diff:-6},
+        {pos:5,name:"ATT XV 1",pts:9,mp:5,V:2,N:0,D:3,gf:109,ga:87,diff:22},
+        {pos:6,name:"PALAISEAU US 2",pts:8,mp:5,V:1,N:1,D:3,gf:99,ga:111,diff:-12},
+        {pos:7,name:"JUMP 2",pts:8,mp:5,V:2,N:0,D:3,gf:85,ga:111,diff:-26},
+        {pos:8,name:"MONTROUGE SM 1",pts:7,mp:5,V:0,N:2,D:3,gf:95,ga:115,diff:-20}
+      ],
+      "F3": [
+        {pos:1,name:"COURBEVOIE STT 4",pts:15,mp:5,V:5,N:0,D:0,gf:136,ga:74,diff:62},
+        {pos:2,name:"BOIS COLOMBES S 2",pts:12,mp:4,V:4,N:0,D:0,gf:98,ga:70,diff:28},
+        {pos:3,name:"RUEIL ATHLETIC 3",pts:11,mp:5,V:3,N:0,D:2,gf:112,ga:98,diff:14},
+        {pos:4,name:"TTMC CHATILLON 3",pts:8,mp:4,V:2,N:0,D:2,gf:87,ga:81,diff:6},
+        {pos:5,name:"CLAMART CSM 1",pts:6,mp:4,V:1,N:0,D:3,gf:71,ga:97,diff:-26},
+        {pos:6,name:"NANTERRE ES (1)",pts:4,mp:4,V:0,N:0,D:4,gf:63,ga:105,diff:-42},
+        {pos:7,name:"BOULOGNE BILLAN 3",pts:4,mp:4,V:0,N:0,D:4,gf:63,ga:105,diff:-42}
+      ],
+      "M2": [
+        {pos:1,name:"BOULOGNE BILLANCOURT AC 2",pts:15,mp:5,V:5,N:0,D:0,gf:40,ga:9,diff:31},
+        {pos:2,name:"SAINT EGREVE USTT 1",pts:11,mp:5,V:3,N:0,D:2,gf:31,ga:21,diff:10},
+        {pos:3,name:"COURBEVOIE STT 2",pts:11,mp:5,V:3,N:0,D:2,gf:32,ga:29,diff:3},
+        {pos:4,name:"ANTIBES OJLP 1",pts:10,mp:5,V:2,N:1,D:2,gf:35,ga:32,diff:3},
+        {pos:5,name:"CHATILLON TTMC 1",pts:10,mp:5,V:2,N:1,D:2,gf:27,ga:32,diff:-5},
+        {pos:6,name:"ASPTT ALBI 1",pts:9,mp:5,V:1,N:2,D:2,gf:27,ga:36,diff:-9},
+        {pos:7,name:"SALINDRES AS 1",pts:7,mp:5,V:1,N:0,D:4,gf:22,ga:37,diff:-15},
+        {pos:8,name:"MONACO AS 1",pts:7,mp:5,V:0,N:2,D:3,gf:20,ga:38,diff:-18}
+      ],
+      "M3": [
+        {pos:1,name:"RAMBOUILLET TT 2",pts:13,mp:5,V:4,N:0,D:1,gf:106,ga:76,diff:30},
+        {pos:2,name:"BOULOGNE BILLANCOURT 3",pts:13,mp:5,V:4,N:0,D:1,gf:117,ga:93,diff:24},
+        {pos:3,name:"PALAISEAU US 3",pts:12,mp:5,V:3,N:1,D:1,gf:110,ga:100,diff:10},
+        {pos:4,name:"BOIS COLOMBES S 2",pts:11,mp:5,V:3,N:0,D:2,gf:109,ga:101,diff:8},
+        {pos:5,name:"LOGNES EP 5",pts:9,mp:5,V:2,N:0,D:3,gf:103,ga:107,diff:-4},
+        {pos:6,name:"CRETEIL USTT 1",pts:9,mp:5,V:2,N:0,D:3,gf:85,ga:97,diff:-12},
+        {pos:7,name:"ELANCOURT CTT 4",pts:8,mp:5,V:1,N:1,D:3,gf:102,ga:108,diff:-6},
+        {pos:8,name:"PONTHIERRY COMT 2",pts:5,mp:5,V:0,N:0,D:5,gf:80,ga:130,diff:-50}
+      ],
+      "M4": [
+        {pos:1,name:"TENNIS DE TABLE PLUS 1",pts:15,mp:5,V:5,N:0,D:0,gf:117,ga:93,diff:24},
+        {pos:2,name:"IGNY 4",pts:13,mp:5,V:4,N:0,D:1,gf:120,ga:90,diff:30},
+        {pos:3,name:"CHESNAY 78 AS 5",pts:11,mp:5,V:3,N:0,D:2,gf:109,ga:100,diff:9},
+        {pos:4,name:"BOULOGNE BILLANCOURT 4",pts:11,mp:5,V:3,N:0,D:2,gf:92,ga:90,diff:2},
+        {pos:5,name:"CHATOU CROISSY 1",pts:10,mp:5,V:2,N:1,D:2,gf:103,ga:106,diff:-3},
+        {pos:6,name:"NOISY LE GRAND CSTT 7",pts:8,mp:5,V:1,N:1,D:3,gf:96,ga:114,diff:-18},
+        {pos:7,name:"PARIS 13 TT 5",pts:6,mp:5,V:0,N:1,D:4,gf:94,ga:116,diff:-22},
+        {pos:8,name:"MEUDON AS 2",pts:6,mp:5,V:0,N:1,D:4,gf:80,ga:102,diff:-22}
+      ],
+      "M5": [
+        {pos:1,name:"BOULOGNE BILLANCOURT 5",pts:15,mp:5,V:5,N:0,D:0,gf:121,ga:88,diff:33},
+        {pos:2,name:"NEUILLY S/M TT 1",pts:15,mp:5,V:5,N:0,D:0,gf:114,ga:92,diff:22},
+        {pos:3,name:"JUMP 5",pts:11,mp:5,V:3,N:0,D:2,gf:110,ga:99,diff:11},
+        {pos:4,name:"CSMF PARIS TT 2",pts:10,mp:5,V:2,N:1,D:2,gf:104,ga:106,diff:-2},
+        {pos:5,name:"FONTENAY-TRESIGNY TT 1",pts:9,mp:5,V:2,N:0,D:3,gf:109,ga:101,diff:8},
+        {pos:6,name:"ROMAINVILLOIS TT 1",pts:8,mp:5,V:1,N:1,D:3,gf:101,ga:109,diff:-8},
+        {pos:7,name:"VIRY CHATILLON 1",pts:8,mp:6,V:1,N:0,D:5,gf:112,ga:136,diff:-24},
+        {pos:8,name:"LA FRETTE 1",pts:8,mp:6,V:1,N:0,D:5,gf:106,ga:146,diff:-40}
+      ],
+      "M6": [
+        {pos:1,name:"CHATENAY ASVTT 1",pts:15,mp:5,V:5,N:0,D:0,gf:131,ga:79,diff:52},
+        {pos:2,name:"RUEIL ATHLETIC 6",pts:13,mp:5,V:4,N:0,D:1,gf:119,ga:90,diff:29},
+        {pos:3,name:"NEUILLY ASPN 5",pts:11,mp:5,V:3,N:0,D:2,gf:115,ga:95,diff:20},
+        {pos:4,name:"TTMC CHATILLON 6",pts:11,mp:5,V:3,N:0,D:2,gf:105,ga:105,diff:0},
+        {pos:5,name:"LEVALLOIS SPORT 10",pts:9,mp:5,V:2,N:0,D:3,gf:98,ga:112,diff:-14},
+        {pos:6,name:"BOIS COLOMBES S 4",pts:9,mp:5,V:2,N:0,D:3,gf:98,ga:112,diff:-14},
+        {pos:7,name:"CLAMART CSM 4",pts:7,mp:5,V:1,N:0,D:4,gf:95,ga:114,diff:-19},
+        {pos:8,name:"BOULOGNE BILLAN 6",pts:5,mp:5,V:0,N:0,D:5,gf:78,ga:132,diff:-54}
+      ],
+      "M7": [
+        {pos:1,name:"SCEAUX T.T. 1",pts:14,mp:5,V:4,N:1,D:0,gf:115,ga:95,diff:20},
+        {pos:2,name:"NEUILLY ASPN 4",pts:13,mp:5,V:3,N:2,D:0,gf:120,ga:90,diff:30},
+        {pos:3,name:"CLAMART CSM 5",pts:13,mp:5,V:3,N:2,D:0,gf:120,ga:90,diff:30},
+        {pos:4,name:"COURBEVOIE STT 9",pts:11,mp:5,V:3,N:0,D:2,gf:109,ga:101,diff:8},
+        {pos:5,name:"COLOMBES ES 1",pts:10,mp:5,V:2,N:1,D:2,gf:104,ga:106,diff:-2},
+        {pos:6,name:"TTMC CHATILLON 5",pts:9,mp:5,V:2,N:0,D:3,gf:99,ga:111,diff:-12},
+        {pos:7,name:"BOULOGNE BILLAN 7",pts:5,mp:5,V:0,N:0,D:5,gf:87,ga:123,diff:-36},
+        {pos:8,name:"ASNIERES TT 3",pts:5,mp:5,V:0,N:0,D:5,gf:86,ga:124,diff:-38}
+      ],
+      "M8": [
+        {pos:1,name:"BOIS COLOMBES S 5",pts:15,mp:5,V:5,N:0,D:0,gf:128,ga:79,diff:49},
+        {pos:2,name:"BOULOGNE BILLAN 8",pts:12,mp:5,V:3,N:1,D:1,gf:108,ga:102,diff:6},
+        {pos:3,name:"CHATENAY ASVTT 2",pts:11,mp:5,V:3,N:0,D:2,gf:115,ga:91,diff:24},
+        {pos:4,name:"CLICHY CS 1",pts:11,mp:5,V:3,N:0,D:2,gf:108,ga:102,diff:6},
+        {pos:5,name:"BOURG LA REINE 1",pts:10,mp:5,V:2,N:1,D:2,gf:101,ga:109,diff:-8},
+        {pos:6,name:"SCEAUX T.T. 2",pts:9,mp:5,V:1,N:2,D:2,gf:94,ga:109,diff:-15},
+        {pos:7,name:"COURBEVOIE STT 8",pts:7,mp:5,V:1,N:0,D:4,gf:91,ga:119,diff:-28},
+        {pos:8,name:"ASNIERES TT 5",pts:5,mp:5,V:0,N:0,D:5,gf:88,ga:122,diff:-34}
+      ],
+      "M9": [
+        {pos:1,name:"BOULOGNE BILLAN 9",pts:14,mp:5,V:4,N:1,D:0,gf:115,ga:95,diff:20},
+        {pos:2,name:"NEUILLY ASPN 6",pts:12,mp:5,V:3,N:1,D:1,gf:113,ga:97,diff:16},
+        {pos:3,name:"ASNIERES TT 4",pts:11,mp:5,V:3,N:0,D:2,gf:112,ga:98,diff:14},
+        {pos:4,name:"RUEIL ATHLETIC 7",pts:11,mp:5,V:3,N:0,D:2,gf:111,ga:99,diff:12},
+        {pos:5,name:"TTMC CHATILLON 4",pts:10,mp:5,V:2,N:1,D:2,gf:99,ga:111,diff:-12},
+        {pos:6,name:"LA GARENNE COLO 1",pts:8,mp:5,V:1,N:1,D:3,gf:98,ga:112,diff:-14},
+        {pos:7,name:"NANTERRE ES 2",pts:7,mp:5,V:1,N:0,D:4,gf:99,ga:111,diff:-12},
+        {pos:8,name:"ANTONY SPORT TT 4",pts:7,mp:5,V:0,N:2,D:3,gf:93,ga:117,diff:-24}
+      ],
+      "M10": [
+        {pos:1,name:"SM MONTROUGE 3",pts:15,mp:5,V:5,N:0,D:0,gf:122,ga:84,diff:38},
+        {pos:2,name:"RUEIL ATHLETIC 9",pts:13,mp:5,V:4,N:0,D:1,gf:115,ga:95,diff:20},
+        {pos:3,name:"PLESSIS ROBINS. 4",pts:12,mp:5,V:3,N:1,D:1,gf:109,ga:101,diff:8},
+        {pos:4,name:"VOLTIGEURS 1",pts:10,mp:5,V:2,N:1,D:2,gf:111,ga:99,diff:12},
+        {pos:5,name:"LEVALLOIS SPORT 11",pts:9,mp:5,V:2,N:0,D:3,gf:105,ga:105,diff:0},
+        {pos:6,name:"BOULOGNE BILLAN 10",pts:9,mp:5,V:2,N:0,D:3,gf:100,ga:110,diff:-10},
+        {pos:7,name:"MALAKOFF USM 5",pts:7,mp:5,V:1,N:0,D:4,gf:88,ga:118,diff:-30},
+        {pos:8,name:"COURBEVOIE STT 11",pts:5,mp:5,V:0,N:0,D:5,gf:86,ga:124,diff:-38}
+      ],
+      "M11": [
+        {pos:1,name:"NEUILLY ASPN 9",pts:13,mp:5,V:4,N:0,D:1,gf:118,ga:91,diff:27},
+        {pos:2,name:"LEVALLOIS SPORT 12",pts:12,mp:5,V:3,N:1,D:1,gf:118,ga:92,diff:26},
+        {pos:3,name:"RUEIL ATHLETIC 8",pts:12,mp:5,V:3,N:1,D:1,gf:110,ga:100,diff:10},
+        {pos:4,name:"SCEAUX T.T. 3",pts:11,mp:5,V:3,N:0,D:2,gf:107,ga:103,diff:4},
+        {pos:5,name:"BOULOGNE BILLAN 11",pts:9,mp:5,V:2,N:0,D:3,gf:103,ga:105,diff:-2},
+        {pos:6,name:"TTMC CHATILLON 8",pts:9,mp:5,V:2,N:0,D:3,gf:99,ga:110,diff:-11},
+        {pos:7,name:"ASNIERES TT 7",pts:9,mp:5,V:2,N:0,D:3,gf:99,ga:111,diff:-12},
+        {pos:8,name:"COLOMBIENNE ES 2",pts:5,mp:5,V:0,N:0,D:5,gf:84,ga:126,diff:-42}
+      ],
+      "M12": [
+        {pos:1,name:"MEUDON AS 6",pts:15,mp:5,V:5,N:0,D:0,gf:121,ga:89,diff:32},
+        {pos:2,name:"Courbevoie STT 14",pts:13,mp:5,V:4,N:0,D:1,gf:117,ga:79,diff:38},
+        {pos:3,name:"LEVALLOIS SPORT 15",pts:13,mp:5,V:4,N:0,D:1,gf:115,ga:95,diff:20},
+        {pos:4,name:"BOULOGNE BILLAN 12",pts:10,mp:5,V:3,N:0,D:2,gf:95,ga:101,diff:-6},
+        {pos:5,name:"RUEIL ATHLETIC 15",pts:9,mp:5,V:2,N:0,D:3,gf:99,ga:111,diff:-12},
+        {pos:6,name:"COLOMBIENNE ES 4",pts:7,mp:5,V:1,N:0,D:4,gf:96,ga:114,diff:-18},
+        {pos:7,name:"BOIS COLOMBES S 10",pts:7,mp:5,V:1,N:0,D:4,gf:94,ga:116,diff:-22},
+        {pos:8,name:"CLAMART CSM 10",pts:5,mp:5,V:0,N:0,D:5,gf:89,ga:121,diff:-32}
+      ],
+      "M13": [
+        {pos:1,name:"CHATENAY ASVTT 5",pts:15,mp:5,V:5,N:0,D:0,gf:128,ga:82,diff:46},
+        {pos:2,name:"BOIS COLOMBES S 11",pts:13,mp:5,V:3,N:2,D:0,gf:121,ga:89,diff:32},
+        {pos:3,name:"BOULOGNE BILLAN 13",pts:12,mp:5,V:3,N:1,D:1,gf:112,ga:98,diff:14},
+        {pos:4,name:"NEUILLY ASPN 11",pts:11,mp:5,V:3,N:1,D:1,gf:97,ga:99,diff:-2},
+        {pos:5,name:"ASNIERES TT 8",pts:8,mp:5,V:1,N:1,D:3,gf:101,ga:109,diff:-8},
+        {pos:6,name:"AS FONTENAY TT 2",pts:7,mp:5,V:1,N:0,D:4,gf:94,ga:102,diff:-8},
+        {pos:7,name:"Courbevoie STT 15",pts:7,mp:5,V:1,N:0,D:4,gf:92,ga:118,diff:-26},
+        {pos:8,name:"PUTEAUX TT CSM (6)",pts:6,mp:5,V:0,N:1,D:4,gf:81,ga:129,diff:-48}
+      ],
+      "M14": [
+        {pos:1,name:"AS FONTENAY TT 3",pts:15,mp:5,V:5,N:0,D:0,gf:131,ga:79,diff:52},
+        {pos:2,name:"LA GARENNE COLO 2",pts:13,mp:5,V:4,N:0,D:1,gf:123,ga:87,diff:36},
+        {pos:3,name:"BOULOGNE BILLAN 14",pts:12,mp:5,V:3,N:1,D:1,gf:113,ga:97,diff:16},
+        {pos:4,name:"ANTONY SPORT TT 6",pts:11,mp:5,V:3,N:0,D:2,gf:105,ga:105,diff:0},
+        {pos:5,name:"TTMC CHATILLON (13)",pts:10,mp:5,V:2,N:1,D:2,gf:101,ga:109,diff:-8},
+        {pos:6,name:"RUEIL ATHLETIC (14)",pts:9,mp:5,V:2,N:0,D:3,gf:101,ga:109,diff:-8},
+        {pos:7,name:"VOLTIGEURS 5",pts:5,mp:5,V:0,N:0,D:5,gf:83,ga:127,diff:-44},
+        {pos:8,name:"PLESSIS ROBINS. 8",pts:5,mp:5,V:0,N:0,D:5,gf:83,ga:127,diff:-44}
+      ],
+      "M15": [
+        {pos:1,name:"NANTERRE ES 3",pts:15,mp:5,V:5,N:0,D:0,gf:130,ga:76,diff:54},
+        {pos:2,name:"LEVALLOIS SPORT 18",pts:12,mp:5,V:3,N:1,D:1,gf:112,ga:98,diff:14},
+        {pos:3,name:"PLESSIS ROBINS. 7",pts:11,mp:5,V:3,N:0,D:2,gf:110,ga:100,diff:10},
+        {pos:4,name:"ISSEENNE E P 10",pts:11,mp:5,V:2,N:2,D:1,gf:107,ga:103,diff:4},
+        {pos:5,name:"BOULOGNE BILLAN 15",pts:10,mp:5,V:2,N:1,D:2,gf:99,ga:111,diff:-12},
+        {pos:6,name:"SCEAUX T.T. 5",pts:8,mp:5,V:1,N:1,D:3,gf:101,ga:109,diff:-8},
+        {pos:7,name:"NEUILLY ASPN 10",pts:7,mp:5,V:1,N:0,D:4,gf:87,ga:119,diff:-32},
+        {pos:8,name:"MALAKOFF USM 6",pts:6,mp:5,V:0,N:1,D:4,gf:90,ga:120,diff:-30}
+      ],
+      "M16": [
+        {pos:1,name:"BOULOGNE BILLAN 16",pts:13,mp:5,V:4,N:0,D:1,gf:115,ga:87,diff:28},
+        {pos:2,name:"CLICHY CS 3",pts:12,mp:4,V:4,N:0,D:0,gf:104,ga:64,diff:40},
+        {pos:3,name:"ISSEENNE E P 11",pts:10,mp:4,V:3,N:0,D:1,gf:89,ga:75,diff:14},
+        {pos:4,name:"LEVALLOIS SPORT 16",pts:9,mp:5,V:2,N:0,D:3,gf:94,ga:116,diff:-22},
+        {pos:5,name:"ASNIERES TT 10",pts:6,mp:4,V:1,N:0,D:3,gf:81,ga:87,diff:-6},
+        {pos:6,name:"BOIS COLOMBES S 9",pts:6,mp:4,V:1,N:0,D:3,gf:69,ga:99,diff:-30},
+        {pos:7,name:"VILLENEUVE LA G 1",pts:4,mp:4,V:0,N:0,D:4,gf:70,ga:94,diff:-24}
+      ],
+      "M17": [
+        {pos:1,name:"MEUDON AS 4",pts:12,mp:4,V:4,N:0,D:0,gf:110,ga:58,diff:52},
+        {pos:2,name:"VOLTIGEURS 3",pts:12,mp:4,V:4,N:0,D:0,gf:107,ga:57,diff:50},
+        {pos:3,name:"Courbevoie STT 13",pts:10,mp:4,V:3,N:0,D:1,gf:92,ga:76,diff:16},
+        {pos:4,name:"CS Clichy TT (4)",pts:9,mp:5,V:2,N:0,D:3,gf:94,ga:116,diff:-22},
+        {pos:5,name:"RUEIL ATHLETIC 17",pts:7,mp:5,V:1,N:0,D:4,gf:86,ga:124,diff:-38},
+        {pos:6,name:"BOULOGNE BILLAN 17",pts:6,mp:4,V:1,N:0,D:3,gf:76,ga:88,diff:-12},
+        {pos:7,name:"LA GARENNE COLO 4",pts:4,mp:4,V:0,N:0,D:4,gf:57,ga:103,diff:-46}
+      ]
+    };
+
                                                                                                                                                                                                 const DATA = {
       "F1": {
         pool: "L08_PN Poule 2", level: "Pré-Nationale", levelClass: "level-pn",
@@ -1417,6 +1698,9 @@
         html += '</div></div>';
       });
 
+      // Section classement officiel après dernière journée
+      html += renderStandings(poolKey);
+
       content.innerHTML = html;
     }
 
@@ -1428,6 +1712,55 @@
     function toggleSub(subId) {
       var sub = document.getElementById('sub_' + subId);
       if (sub) sub.classList.toggle('expanded');
+    }
+
+    function toggleStandings() {
+      var s = document.getElementById('standingsSection');
+      if (s) s.classList.toggle('expanded');
+    }
+
+    function renderStandings(poolKey) {
+      var st = STANDINGS[poolKey];
+      if (!st || !st.length) return '';
+      var nbTeams = st.length;
+      // Detect ACBB row
+      var maxJ = 0;
+      st.forEach(function(t) { if (t.mp > maxJ) maxJ = t.mp; });
+      var html = '<div class="standings-section" id="standingsSection">';
+      html += '<div class="standings-toggle" onclick="toggleStandings()">';
+      html += '<span class="standings-title">&#128202; Classement apr&egrave;s J' + maxJ + '</span>';
+      html += '<span class="standings-icon">&#9660;</span>';
+      html += '</div>';
+      html += '<div class="standings-body">';
+      html += '<table class="standings-table"><thead><tr>';
+      html += '<th>Pos</th><th class="left">&Eacute;quipe</th><th>Pts</th><th>J</th><th>V/N/D</th><th>+/-</th>';
+      html += '</tr></thead><tbody>';
+      st.forEach(function(t) {
+        var classes = [];
+        var isAcbb = t.name.indexOf('BOULOGNE') === 0 || t.name.indexOf('Boulogne') === 0;
+        if (isAcbb) classes.push('acbb');
+        // Danger zone = 2 derniers (sauf si tied avec autres)
+        if (t.pos >= nbTeams - 1) classes.push('danger');
+        if (t.pos === 1) classes.push('top1');
+        var diffCls = t.diff > 0 ? 'pos' : (t.diff < 0 ? 'neg' : '');
+        var diffStr = (t.diff > 0 ? '+' : '') + t.diff;
+        html += '<tr class="' + classes.join(' ') + '">';
+        html += '<td><span class="standings-pos">' + t.pos + '</span></td>';
+        html += '<td class="left">' + t.name + '</td>';
+        html += '<td><b>' + t.pts + '</b></td>';
+        html += '<td>' + t.mp + '</td>';
+        html += '<td>' + t.V + '/' + t.N + '/' + t.D + '</td>';
+        html += '<td class="standings-diff ' + diffCls + '">' + diffStr + '</td>';
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      html += '<div class="standings-legend">';
+      html += '<span><span class="dot top"></span> 1er (montee)</span>';
+      html += '<span><span class="dot acbb"></span> ACBB</span>';
+      html += '<span><span class="dot danger"></span> Zone descente (2 derniers)</span>';
+      html += '</div>';
+      html += '</div></div>';
+      return html;
     }
 
     function toggleAllSubs(cardId) {
