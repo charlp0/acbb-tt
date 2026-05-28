@@ -9,26 +9,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F7F3EA;
-    --paper:#FFFEF9;
-    --panel:#FBF7EC;
-    --panel-2:#F1ECDD;
-    --line:#E5DFD0;
-    --line-2:#D2C9B0;
-    --ink:#0F1E33;
-    --ink-2:#3A4660;
-    --dim:#7A8294;
-    --dimmer:#A6ABB6;
-    --acbb:#1B3A6B;
-    --orange:#E26A28;
-    --win:#5F7A4A;
-    --win-bg:#E7EEDC;
-    --win-deep:#3A4F2C;
-    --lose:#C24A2C;
-    --lose-bg:#F8E3D9;
-    --lose-deep:#7E2B16;
-    --draw:#B58A2C;
-    --draw-bg:#F4E8C7;
+    --bg:#070F1F;
+    --paper:#0E1B33;
+    --panel:#0E1B33;
+    --panel-2:#152844;
+    --line:rgba(255,255,255,0.08);
+    --line-2:rgba(255,255,255,0.16);
+    --ink:#F4F7FF;
+    --ink-2:#D5DEEC;
+    --dim:rgba(244,247,255,0.62);
+    --dimmer:rgba(244,247,255,0.38);
+    --acbb:#3D7EFF;
+    --orange:#FF5A1F;
+    --win:#34D399;
+    --win-bg:rgba(52,211,153,0.12);
+    --win-deep:#10B981;
+    --warn:#FBBF24;
+    --warn-bg:rgba(251,191,36,0.12);
+    --warn-deep:#D97706;
+    --alert:#FB923C;
+    --alert-bg:rgba(251,146,60,0.14);
+    --alert-deep:#EA580C;
+    --lose:#F87171;
+    --lose-bg:rgba(248,113,113,0.12);
+    --lose-deep:#EF4444;
+    --draw:#FBBF24;
+    --draw-bg:rgba(251,191,36,0.12);
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;font-size:14px;line-height:1.4}
@@ -42,13 +48,13 @@
   /* HEADER */
   .header{
     position:sticky;top:0;z-index:50;padding:12px 16px 11px;
-    background:rgba(247,243,234,0.92);
+    background:rgba(7,15,31,0.85);
     backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     border-bottom:1px solid var(--line);
   }
   .header-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .logo{display:flex;align-items:center;gap:10px}
-  .logo-img{width:38px;height:38px;border-radius:8px;background:#fff;padding:2px;border:1px solid var(--line);object-fit:contain;flex-shrink:0}
+  .logo-img{width:38px;height:38px;border-radius:8px;background:#fff;padding:3px;border:1px solid var(--line-2);object-fit:contain;flex-shrink:0;box-shadow:0 4px 12px rgba(61,126,255,0.18)}
   .logo-name{font-size:13px;font-weight:700;letter-spacing:-0.3px;line-height:1}
   .logo-sub{font-size:9px;color:var(--dim);font-family:"JetBrains Mono",monospace;margin-top:3px;letter-spacing:0.4px;text-transform:uppercase;white-space:nowrap}
   .head-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
@@ -60,7 +66,7 @@
   }
   .head-link span{font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--dim);font-weight:500;letter-spacing:0.4px;text-transform:uppercase}
   .head-link.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .head-link.active span{color:rgba(247,243,234,0.5)}
+  .head-link.active span{color:rgba(255,255,255,0.45)}
   .back-link{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border-radius:99px;background:var(--panel);border:1px solid var(--line-2);color:var(--ink);font-size:11px;font-weight:600;text-decoration:none}
   .back-link svg{width:11px;height:11px}
 
@@ -75,10 +81,10 @@
   }
   .hero-sub{margin-top:8px;font-size:13px;color:var(--ink-2);max-width:640px;line-height:1.55}
   .rules{
-    margin:14px 0 0;padding:12px 14px;background:var(--draw-bg);border:1px solid #E5D6A2;border-radius:10px;
+    margin:14px 0 0;padding:12px 14px;background:var(--draw-bg);border:1px solid rgba(251,191,36,0.35);border-radius:10px;
     display:flex;gap:10px;align-items:flex-start;
   }
-  .rules-icon{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:10px;color:var(--draw);background:var(--paper);padding:3px 7px;border-radius:5px;border:1px solid #E5D6A2;flex-shrink:0;letter-spacing:0.4px}
+  .rules-icon{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:10px;color:var(--draw);background:var(--paper);padding:3px 7px;border-radius:5px;border:1px solid rgba(251,191,36,0.35);flex-shrink:0;letter-spacing:0.4px}
   .rules-txt{font-size:12px;color:var(--ink-2);line-height:1.5}
   .rules-txt b{color:var(--ink)}
 
@@ -113,7 +119,7 @@
   .sel-pill .lvl{display:block;font-size:8px;color:var(--dim);font-weight:600;letter-spacing:0.4px;text-transform:uppercase;margin-bottom:3px}
   .sel-pill:hover{border-color:var(--ink-2)}
   .sel-pill.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .sel-pill.active .lvl{color:rgba(247,243,234,0.55)}
+  .sel-pill.active .lvl{color:rgba(255,255,255,0.5)}
   .sel-pill .count{
     position:absolute;top:-5px;right:-5px;
     min-width:18px;height:18px;padding:0 5px;border-radius:99px;
@@ -158,7 +164,7 @@
     content:"";position:absolute;top:0;left:14px;right:14px;height:3px;
     background:var(--acbb);border-radius:0 0 99px 99px;
   }
-  .pcard.risk{background:linear-gradient(180deg,var(--draw-bg) 0%,var(--paper) 80%);border-color:#E5D6A2}
+  .pcard.risk{background:linear-gradient(180deg,var(--draw-bg) 0%,var(--paper) 80%);border-color:rgba(251,191,36,0.35)}
   .pcard-rk{
     font-family:"Instrument Serif",serif;font-size:24px;line-height:1;color:var(--dimmer);
     min-width:28px;text-align:center;
@@ -207,7 +213,7 @@
       </div>
     </div>
     <div class="head-actions">
-      <a href="index.html" class="back-link"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4l-4 4 4 4"/></svg>Accueil</a>
+      <a href="accueil.html" class="back-link"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4l-4 4 4 4"/></svg>Accueil</a>
       <a href="tous-joueurs.html" class="head-link">Joueurs<span>club</span></a>
       <a href="sportive.html" class="head-link">Sportive<span>maintien</span></a>
     </div>
