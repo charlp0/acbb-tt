@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=390">
-<title>ACBB TT — Prototype</title>
+<title>ACBB TT — Détail Équipe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -1575,6 +1575,7 @@ window.DATA = DATA;
 
   function renderAll(){
     rebuildSelector();
+    document.title = 'ACBB TT — ' + current + ' (' + (window.DATA[current]?.level || 'Équipe') + ')';
     const c = document.getElementById('content');
     const acbb = U.getAcbbTeam(current);
     const pool = window.DATA[current];
