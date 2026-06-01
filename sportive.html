@@ -376,10 +376,10 @@ var TEAMS_DETAIL = [
     name:"Départemental 1 Poule 4",
     stats:{ pos:"5e", pts:"11 pts", vnd:"2V/1N/3D", ga:-2 },
     verdict:"Maintien à <b>~88%</b>. L'avantage au goal-average sur ASNIERES (-2 contre -12) est conservé. En J7, <b>un nul vs SCEAUX suffit</b> ; et même une défaite sauve l'équipe tant qu'ASNIERES ne bat pas RUEIL (2e). Descente seulement si défaite ACBB + victoire d'ASNIERES sur le 2e.",
-    reco:"Aligner la compo la plus forte disponible pour viser le nul minimum. MOREL (1332) en fer de lance. PRUDENT est indisponible en J7 et AUBERT est brûlé en M11 : remplacés par PERROT, SAVAN et FONTAINE. Renforts possibles : LESCAUDRON (F1, descente OK) ou DIAB BOUSTANI (libérable de la M10, sans enjeu).",
+    reco:"Compo optimale : MOREL (1332), ROUX (1157), LESCAUDRON (1130) et DIAB BOUSTANI (1106) — moyenne ~1181, largement de quoi assurer le nul nécessaire. PRUDENT est indisponible en J7 et AUBERT brûlé en M11.",
     matches:[
       { j:"J7", date:"5/6", vs:"vs SCEAUX 3", loc:"DOM", strength:"SCEAUX 3e (14 pts) · solide. <b>Un nul suffit au maintien.</b>", strategy:"<b>Stratégie :</b> compo MAX. Ne pas perdre = maintien assuré.", kind:"key", kpill:"MAINTIEN",
-        compo:[ {nm:"MOREL Julien",cls:1332,feat:true},{nm:"PERROT",cls:1033},{nm:"SAVAN",cls:945},{nm:"FONTAINE",cls:935} ] },
+        compo:[ {nm:"MOREL Julien",cls:1332,feat:true},{nm:"ROUX",cls:1157},{nm:"LESCAUDRON",cls:1130},{nm:"DIAB BOUSTANI",cls:1106} ] },
     ]
   },
   {
@@ -390,7 +390,7 @@ var TEAMS_DETAIL = [
     reco:"Match plaisir. Gagner vs VOLTIGEURS pour finir 4e-5e.",
     matches:[
       { j:"J7", date:"5/6", vs:"vs VOLTIGEURS 1", loc:"DOM", strength:"VOLT 4e (12 pts) · maintien déjà acquis.", strategy:"<b>Stratégie :</b> sans pression, finir sur une victoire.",
-        compo:[ {nm:"DIAB BOUSTANI",cls:1106},{nm:"ATLAN",cls:1002},{nm:"MANDELMILECH",cls:900},{nm:"RECHATIN",cls:886} ] },
+        compo:[ {nm:"ATLAN",cls:1002},{nm:"MANDELMILECH",cls:900},{nm:"RECHATIN",cls:886},{nm:"ALLEGRE-G. B.",cls:806} ] },
     ]
   },
   {
@@ -418,11 +418,11 @@ var TEAMS_DETAIL = [
 ];
 
 var CONFLICTS = [
-  { kind:"warn", title:"Concentrer les forces sur M11", body:"C'est le seul match à enjeu de J7. Aligner la compo la plus forte disponible (MOREL, PERROT, SAVAN, FONTAINE ; renforts LESCAUDRON ou DIAB BOUSTANI) pour garantir au moins le nul." },
+  { kind:"warn", title:"Concentrer les forces sur M11", body:"C'est le seul match à enjeu de J7. Compo optimale : MOREL, ROUX, LESCAUDRON, DIAB BOUSTANI (moyenne ~1181) — largement de quoi garantir au moins le nul." },
   { kind:"warn", title:"AUBERT Richard (1135) — brûlé M11", body:"A disputé 2 matchs ou plus en M8 (équipe supérieure) : il est désormais brûlé pour la M11 et ne peut plus y être aligné." },
   { kind:"warn", title:"PRUDENT Christian (1179) — indisponible J7", body:"Absent pour la dernière journée. À remplacer par PERROT / SAVAN / FONTAINE aux côtés de MOREL, ou un renfort." },
-  { kind:"ok",   title:"LESCAUDRON Noémie (1130)", body:"Titulaire F1 : descendre en M11 est une descente, <em>toujours autorisée</em>. Renfort de luxe possible si disponible le 5 juin." },
-  { kind:"ok",   title:"DIAB BOUSTANI Evan (1106)", body:"Éligible M11. La M10 étant sans enjeu (maintien acquis), il peut être libéré pour renforcer la M11 en J7." },
+  { kind:"ok",   title:"LESCAUDRON Noémie (1130)", body:"Titulaire F1 : descendre en M11 est une descente, <em>toujours autorisée</em>. Intégrée à la compo optimale M11 pour la J7." },
+  { kind:"ok",   title:"DIAB BOUSTANI Evan (1106)", body:"Éligible M11. La M10 étant sans enjeu (maintien acquis), il est libéré de la M10 pour titulariser la M11 en J7 (les deux matchs ont lieu le même jour)." },
   { kind:"",     title:"Ne rien brûler en M6 et M7", body:"Les deux équipes sont reléguées : aucun intérêt à monter un cadre d'une autre équipe. Aligner les habituels et préserver l'effectif pour la phase suivante." },
 ];
 
