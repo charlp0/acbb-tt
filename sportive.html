@@ -354,13 +354,13 @@
 /* === DATA (replace this block with live data) === */
 var OVERVIEW = [
   { team:"M6",  pos:"8e / dernier",       pts:6, vnd:"0V/0N/6D", ga:-62, prob:0,  status:"lose",  badge:"Reléguée",
-    note:"J6 perdu 17-25 vs CLAMART. Max 8 pts atteignables en J7, le 6e en a déjà 10. Descente mathématique." },
+    note:"Max 8 pts atteignables en J7, le 6e en a déjà 10. Descente mathématique." },
   { team:"M7",  pos:"7e",                 pts:6, vnd:"0V/0N/6D", ga:-42, prob:0,  status:"lose",  badge:"Reléguée",
-    note:"J6 perdu 18-24 vs TTMC. Le 6e (COLOMBES) est à 11 pts, hors d'atteinte (max 8). J7 vs ASNIERES = pour la 7e place." },
+    note:"Le 6e (COLOMBES) est à 11 pts, hors d'atteinte (max 8). J7 vs ASNIERES = pour la 7e place." },
   { team:"M10", pos:"5e",                 pts:12, vnd:"3V/0N/3D", ga:-8, prob:99, status:"green", badge:"Maintien acquis",
-    note:"J6 gagné 22-20 vs COURBEVOIE. 12 pts : intouchable par la zone rouge (rival max 11). J7 sans enjeu." },
+    note:"12 pts : intouchable par la zone rouge (rival max 11). J7 sans enjeu." },
   { team:"M11", pos:"5e",                 pts:11, vnd:"2V/1N/3D", ga:-2, prob:88, status:"warn",  badge:"Maintien en J7",
-    note:"J6 nul 21-21 vs ASNIERES : avantage au goal-average conservé (-2 vs -12). Un nul vs SCEAUX en J7 suffit." },
+    note:"Avantage au goal-average sur ASNIERES (-2 vs -12). Un nul vs SCEAUX en J7 suffit au maintien." },
 ];
 
 var PRIOS = [
@@ -375,11 +375,9 @@ var TEAMS_DETAIL = [
     key:"M11", status:"warn", badge:"Maintien en J7",
     name:"Départemental 1 Poule 4",
     stats:{ pos:"5e", pts:"11 pts", vnd:"2V/1N/3D", ga:-2 },
-    verdict:"Maintien à <b>~88%</b>. Le nul 21-21 en J6 a préservé l'avantage au goal-average sur ASNIERES (-2 contre -12). En J7, <b>un nul vs SCEAUX suffit</b> ; et même une défaite sauve l'équipe tant qu'ASNIERES ne bat pas RUEIL (2e). Descente seulement si défaite ACBB + victoire d'ASNIERES sur le 2e.",
+    verdict:"Maintien à <b>~88%</b>. L'avantage au goal-average sur ASNIERES (-2 contre -12) est conservé. En J7, <b>un nul vs SCEAUX suffit</b> ; et même une défaite sauve l'équipe tant qu'ASNIERES ne bat pas RUEIL (2e). Descente seulement si défaite ACBB + victoire d'ASNIERES sur le 2e.",
     reco:"Aligner la compo la plus forte disponible pour viser le nul minimum. MOREL (1332) + PRUDENT (1179) en fer de lance.",
     matches:[
-      { j:"J6", date:"29/5", vs:"vs ASNIERES 7", loc:"EXT", strength:"Résultat : <b>/dev/null 21-21</b>. Avantage GA conservé.", strategy:"<b>Compo alignée :</b>",
-        compo:[ {nm:"MOREL Julien",cls:1332,feat:true},{nm:"PRUDENT",cls:1195},{nm:"SAVAN",cls:960},{nm:"FONTAINE",cls:934} ] },
       { j:"J7", date:"5/6", vs:"vs SCEAUX 3", loc:"DOM", strength:"SCEAUX 3e (14 pts) · solide. <b>Un nul suffit au maintien.</b>", strategy:"<b>Stratégie :</b> compo MAX. Ne pas perdre = maintien assuré.", kind:"key", kpill:"MAINTIEN",
         compo:[ {nm:"MOREL Julien",cls:1332,feat:true},{nm:"PRUDENT",cls:1179},{nm:"AUBERT",cls:1135},{nm:"DIAB BOUSTANI",cls:1106} ] },
     ]
@@ -388,11 +386,9 @@ var TEAMS_DETAIL = [
     key:"M10", status:"green", badge:"Maintien acquis",
     name:"Départemental 1 Poule 3",
     stats:{ pos:"5e", pts:"12 pts", vnd:"3V/0N/3D", ga:-8 },
-    verdict:"<b>Maintien acquis.</b> La victoire 22-20 en J6 à Courbevoie verrouille la place : 12 pts, le 1er poursuivant de la zone rouge plafonne à 11. J7 sans aucun enjeu comptable.",
+    verdict:"<b>Maintien acquis.</b> Avec 12 pts, la place est verrouillée : le 1er poursuivant de la zone rouge plafonne à 11. J7 sans aucun enjeu comptable.",
     reco:"Match plaisir. Gagner vs VOLTIGEURS pour finir 4e-5e.",
     matches:[
-      { j:"J6", date:"29/5", vs:"vs COURBEVOIE 11", loc:"EXT", strength:"Résultat : <b>victoire 22-20</b> — maintien scellé.", strategy:"<b>Compo alignée :</b>", kind:"facile", kpill:"GAGNÉ",
-        compo:[ {nm:"ATLAN",cls:924},{nm:"MANDELMILECH",cls:928},{nm:"RECHATIN",cls:904},{nm:"ZERBIB",cls:753} ] },
       { j:"J7", date:"5/6", vs:"vs VOLTIGEURS 1", loc:"DOM", strength:"VOLT 4e (12 pts) · maintien déjà acquis.", strategy:"<b>Stratégie :</b> sans pression, finir sur une victoire.",
         compo:[ {nm:"DIAB BOUSTANI",cls:1106},{nm:"ATLAN",cls:1002},{nm:"MANDELMILECH",cls:900},{nm:"RECHATIN",cls:886} ] },
     ]
@@ -401,11 +397,9 @@ var TEAMS_DETAIL = [
     key:"M7", status:"lose", badge:"Reléguée",
     name:"Pré-Régional Poule 2",
     stats:{ pos:"7e", pts:"6 pts", vnd:"0V/0N/6D", ga:-42 },
-    verdict:"<b>Descente actée.</b> Après la défaite J6 (18-24 vs TTMC), ACBB plafonne à 8 pts ; le 6e (COLOMBES) est à 11. Mathématiquement relégué. Le J7 vs ASNIERES (8e, 6 pts) ne joue plus que la 7e place.",
+    verdict:"<b>Descente actée.</b> ACBB plafonne à 8 pts en J7 ; le 6e (COLOMBES) est à 11. Mathématiquement relégué. Le J7 vs ASNIERES (8e, 6 pts) ne joue plus que la 7e place.",
     reco:"Compo habituelle, gagner pour finir 7e. Surtout, ne brûler aucun cadre d'une autre équipe.",
     matches:[
-      { j:"J6", date:"29/5", vs:"vs TTMC 5", loc:"DOM", strength:"Résultat : <b>défaite 18-24</b>.", strategy:"<b>Compo alignée :</b>",
-        compo:[ {nm:"BOUZANNE",cls:1089},{nm:"GAUTIER",cls:1084},{nm:"COZIEN",cls:1041},{nm:"BATTI",cls:1033} ] },
       { j:"J7", date:"5/6", vs:"vs ASNIERES 3", loc:"EXT", strength:"ASNIERES 8e (6 pts) — duel direct pour la 7e place.", strategy:"<b>Stratégie :</b> compo habituelle, viser la victoire pour l'honneur.",
         compo:[ {nm:"BOUZANNE",cls:1092},{nm:"GAUTIER",cls:1087},{nm:"COUCHOURON",cls:1077},{nm:"BATTI",cls:1070} ] },
     ]
@@ -414,11 +408,9 @@ var TEAMS_DETAIL = [
     key:"M6", status:"lose", badge:"Reléguée",
     name:"Pré-Régional Poule 3",
     stats:{ pos:"8e", pts:"6 pts", vnd:"0V/0N/6D", ga:-62 },
-    verdict:"<b>Descente actée.</b> Défaite J6 (17-25 vs CLAMART). Avec 8 pts max possibles en J7 et un 6e déjà à 10, le maintien est mathématiquement hors de portée.",
+    verdict:"<b>Descente actée.</b> Avec 8 pts max possibles en J7 et un 6e déjà à 10, le maintien est mathématiquement hors de portée.",
     reco:"J7 à Rueil : aligner les habituels, préserver les forces, ne monter aucun cadre.",
     matches:[
-      { j:"J6", date:"29/5", vs:"vs CLAMART 4", loc:"DOM", strength:"Résultat : <b>défaite 17-25</b>.", strategy:"<b>Compo alignée :</b>",
-        compo:[ {nm:"BOITEAU",cls:1133},{nm:"FERET",cls:1065},{nm:"TORELLI",cls:874},{nm:"LAFORGE",cls:829} ] },
       { j:"J7", date:"5/6", vs:"vs RUEIL 6", loc:"EXT", strength:"RUEIL 6 2e (14 pts) · costaud. Match à Rueil 5 juin.", strategy:"<b>Stratégie :</b> sans enjeu, habituels, préserver les cadres.",
         compo:[ {nm:"GRANDJEAN",cls:1113},{nm:"FERET",cls:1092},{nm:"TU XUAN",cls:959},{nm:"BELKADI",cls:951} ] },
     ]
@@ -436,7 +428,7 @@ var VERDICTS_FINAL = [
   { team:"M11", status:"warn",  txt:"<b>Maintien à ~88%.</b> Un nul vs SCEAUX en J7 suffit ; une défaite passe encore si ASNIERES ne bat pas le 2e (RUEIL). <em>Le match du week-end.</em>" },
   { team:"M10", status:"green", txt:"<b>Maintien acquis.</b> 12 pts, hors d'atteinte de la zone rouge." },
   { team:"M7",  status:"lose",  txt:"<b>Reléguée.</b> J7 vs ASNIERES seulement pour la 7e place." },
-  { team:"M6",  status:"lose",  txt:"<b>Reléguée.</b> Descente mathématiquement actée après J6." },
+  { team:"M6",  status:"lose",  txt:"<b>Reléguée.</b> Descente mathématiquement actée." },
 ];
 
 /* === RENDERING === */
