@@ -238,6 +238,20 @@
     .nav-cta{padding:7px 10px;font-size:10.5px}
     .brand-img{width:32px;height:32px}
   }
+  /* DIVISION TABLE */
+  .divtable-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
+  .divtable{width:100%;border-collapse:collapse;min-width:580px;font-size:12.5px}
+  .divtable th,.divtable td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  .divtable thead th{font-size:9px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;color:var(--dim);background:var(--panel-2);white-space:nowrap}
+  .divtable tbody tr:last-child td{border-bottom:none}
+  .divtable .dv{font-family:"JetBrains Mono",monospace;font-weight:800;color:var(--orange);font-size:14px;white-space:nowrap}
+  .divtable .dv small{display:block;color:var(--dim);font-weight:500;font-size:9px;letter-spacing:0.3px;margin-top:2px}
+  .divtable .num{font-family:"JetBrains Mono",monospace;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;font-size:14px}
+  .divtable .med{color:#86EFAC}
+  .divtable .gap{font-family:"JetBrains Mono",monospace;font-weight:700;color:var(--ink-2)}
+  .divtable .samp{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);white-space:nowrap}
+  .divtable .lec{color:var(--ink-2);font-size:11.5px;line-height:1.4;min-width:190px}
+  .divtable .lec b{color:var(--ink)}
 </style>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
@@ -263,7 +277,7 @@
       <img class="brand-img" src="data:image/png;base64,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" alt="ACBB">
       <div class="brand-text">
         <div class="brand-name">ACBB TT</div>
-        <div class="brand-sub">Phase 2 · J5</div>
+        <div class="brand-sub">Phase 2 · J6</div>
       </div>
     </a>
     <nav class="nav">
@@ -276,9 +290,9 @@
 </header>
 
 <div class="hero">
-  <div class="eyebrow">Analyse maintien · J6 / J7</div>
-  <h1 class="hero-title"><em>4 équipes</em> menacées<br>de descente.</h1>
-  <p class="hero-sub">Synthèse condensée des 2 dernières journées. Phase 2 : les 2 dernières équipes descendent. Probabilités, compos recommandées, conflits joueurs.</p>
+  <div class="eyebrow">Analyse maintien · après J6 · J7 décisive</div>
+  <h1 class="hero-title"><em>2 reléguées.</em><br>M11 joue son maintien.</h1>
+  <p class="hero-sub">Bilan après J6 — tout se joue en J7 (5 juin). Phase 2 : les 2 dernières équipes descendent. <b>M6 et M7 sont condamnées</b> mathématiquement ; <b>M10 est sauvée</b> ; <b>M11 a son maintien en main</b> (un nul suffit).</p>
 </div>
 
 <!-- VUE D'ENSEMBLE -->
@@ -290,7 +304,7 @@
 <!-- PRIORITÉS -->
 <section class="section">
   <div class="section-h">Priorités d'action</div>
-  <p class="section-sub">5 matchs classés par importance et impact maintien.</p>
+  <p class="section-sub">4 matchs de J7 classés par enjeu maintien.</p>
   <div class="prios" id="prios"></div>
 </section>
 
@@ -310,9 +324,28 @@
 <!-- VERDICT FINAL -->
 <section class="section">
   <div class="section-h">Verdict final</div>
-  <p class="section-sub">Le club perdra probablement <b>1 à 2 équipes</b> sur 4 menacées.</p>
+  <p class="section-sub">Bilan : <b>2 équipes reléguées</b> (M6, M7), <b>M10 sauvée</b>, <b>M11 à ~88%</b>.</p>
   <div class="verdicts" id="verdicts"></div>
-  <p class="source">Mise à jour après J5. Classements officiels PingPocket. Compos basées sur classements mensuels FFTT.</p>
+  <p class="source">Mise à jour après J6 (29 mai). Classements officiels PingPocket. Compos basées sur les classements mensuels FFTT. Matchs à Rueil J6 reportés (salle fermée).</p>
+</section>
+
+<!-- NIVEAU ADVERSE PAR DIVISION -->
+<section class="section">
+  <div class="section-h">Niveau adverse par division</div>
+  <p class="section-sub">Classement des adversaires rencontrés par les équipes ACBB sur J1→J6 (championnat masculin). La <b>médiane</b> donne le niveau type ; la <b>moyenne</b> est sensible aux joueurs hors-norme.</p>
+  <div class="divtable-wrap">
+    <table class="divtable">
+      <thead><tr><th>Division</th><th>Moyenne</th><th>Médiane</th><th>Écart</th><th>Échantillon</th><th>Lecture</th></tr></thead>
+      <tbody>
+        <tr><td class="dv">R2<small>M3</small></td><td class="num">1551</td><td class="num med">1547</td><td class="gap">+4</td><td class="samp">23 j · 1305-1968</td><td class="lec">Poule très homogène, moyenne fiable</td></tr>
+        <tr><td class="dv">R3<small>M4-M5</small></td><td class="num">1343</td><td class="num med">1403</td><td class="gap">−60</td><td class="samp">48 j · 707-1667</td><td class="lec">Adversaires majoritairement <b>forts</b> (~1400) ; quelques faibles tirent la moyenne ↓</td></tr>
+        <tr><td class="dv">PR<small>M6-M9</small></td><td class="num">1191</td><td class="num med">1181</td><td class="gap">+10</td><td class="samp">96 j · 500-1703</td><td class="lec">Distribution équilibrée</td></tr>
+        <tr><td class="dv">D1<small>M10-M11</small></td><td class="num">960</td><td class="num med">924</td><td class="gap">+36</td><td class="samp">48 j · 500-1706</td><td class="lec">1-2 joueurs forts gonflent la moyenne ; niveau <b>type ≈ 924</b></td></tr>
+        <tr><td class="dv">D2<small>M12-M17</small></td><td class="num">632</td><td class="num med">592</td><td class="gap">+40</td><td class="samp">130 j · 500-1046</td><td class="lec">Adversaire <b>courant ≈ 592</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="source">Points officiels de tous les joueurs adverses rencontrés (J1→J6). F1/F2/F3 = championnat féminin, hors de ces 5 divisions masculines.</p>
 </section>
 
 </div>
@@ -320,93 +353,90 @@
 <script>
 /* === DATA (replace this block with live data) === */
 var OVERVIEW = [
-  { team:"M6",  pos:"8e / dernier",         pts:5, vnd:"0V/0N/5D", ga:-54, prob:5,  status:"lose",  badge:"Descente probable",
-    note:"CLAMART devant à 7 pts (-19). Maintien math. impossible." },
-  { team:"M7",  pos:"7e / avant-dernier",   pts:5, vnd:"0V/0N/5D", ga:-36, prob:25, status:"alert", badge:"Maintien difficile",
-    note:"TTMC 6e à 9 pts. ASNIERES 8e à 5 pts (-38)." },
-  { team:"M10", pos:"6e",                   pts:9, vnd:"2V/0N/3D", ga:-10, prob:90, status:"green", badge:"Maintien probable",
-    note:"MALAKOFF 7e à 7 pts. COURBEVOIE dernier à 5 pts." },
-  { team:"M11", pos:"5e",                   pts:9, vnd:"2V/0N/3D", ga:-2,  prob:86, status:"warn",  badge:"Tout sur J6",
-    note:"4 équipes à 9 pts. ACBB devant au GA." },
+  { team:"M6",  pos:"8e / dernier",       pts:6, vnd:"0V/0N/6D", ga:-62, prob:0,  status:"lose",  badge:"Reléguée",
+    note:"J6 perdu 17-25 vs CLAMART. Max 8 pts atteignables en J7, le 6e en a déjà 10. Descente mathématique." },
+  { team:"M7",  pos:"7e",                 pts:6, vnd:"0V/0N/6D", ga:-42, prob:0,  status:"lose",  badge:"Reléguée",
+    note:"J6 perdu 18-24 vs TTMC. Le 6e (COLOMBES) est à 11 pts, hors d'atteinte (max 8). J7 vs ASNIERES = pour la 7e place." },
+  { team:"M10", pos:"5e",                 pts:12, vnd:"3V/0N/3D", ga:-8, prob:99, status:"green", badge:"Maintien acquis",
+    note:"J6 gagné 22-20 vs COURBEVOIE. 12 pts : intouchable par la zone rouge (rival max 11). J7 sans enjeu." },
+  { team:"M11", pos:"5e",                 pts:11, vnd:"2V/1N/3D", ga:-2, prob:88, status:"warn",  badge:"Maintien en J7",
+    note:"J6 nul 21-21 vs ASNIERES : avantage au goal-average conservé (-2 vs -12). Un nul vs SCEAUX en J7 suffit." },
 ];
 
 var PRIOS = [
-  { rk:1, team:"M11", j:"J6", title:"ACBB Ext vs ASNIERES 7", desc:"Confrontation directe maintien. Compo confirmée : PRUDENT / MOREL / SAVAN / FONTAINE.", pct:"~82%", kind:"p1" },
-  { rk:2, team:"M7",  j:"J7", title:"ACBB Ext vs ASNIERES 3", desc:"Pour sortir de la zone descente. Adversaire faible (991 moy). Compo MAX possible.", pct:"~75%", kind:"p2" },
-  { rk:3, team:"M10", j:"J6", title:"ACBB Ext vs COURBEVOIE 11", desc:"Quasi-acquis (dernier, moy 720). Gagner BIG pour bonus GA.", pct:"~85%", kind:"p3" },
-  { rk:4, team:"M7",  j:"J6", title:"ACBB Dom vs TTMC 5", desc:"TTMC fort avec Julie BOST (1615). Tentative renfort HABERT.", pct:"~30%", kind:"p2" },
-  { rk:5, team:"M6",  j:"J6", title:"ACBB Dom vs CLAMART 4", desc:"Match accessible mais maintien M6 quasi-impossible (-35 GA à combler).", pct:"~50%", kind:"p1" },
+  { rk:1, team:"M11", j:"J7", title:"ACBB Dom vs SCEAUX 3", desc:"<b>Le maintien se joue ici.</b> Un nul suffit. Même une défaite passe si ASNIERES ne bat pas RUEIL (2e). Compo MAX recommandée.", pct:"~88%", kind:"p1" },
+  { rk:2, team:"M10", j:"J7", title:"ACBB Dom vs VOLTIGEURS 1", desc:"Maintien déjà acquis. Match plaisir, gagner pour viser la 4-5e place.", pct:"~45%", kind:"p3" },
+  { rk:3, team:"M7",  j:"J7", title:"ACBB Ext vs ASNIERES 3", desc:"Reléguée, mais duel direct pour la 7e place (les deux à 6 pts). Compo habituelle, ne brûler personne.", pct:"~50%", kind:"p2" },
+  { rk:4, team:"M6",  j:"J7", title:"ACBB Ext vs RUEIL 6", desc:"Reléguée. Match à Rueil. Préserver les forces, aucun cadre monté d'une autre équipe.", pct:"~15%", kind:"p2" },
 ];
 
 var TEAMS_DETAIL = [
   {
-    key:"M6", status:"lose", badge:"Descente probable",
-    name:"Pré-Régional Poule 3",
-    stats:{ pos:"8e", pts:"5 pts", vnd:"0V/0N/5D", ga:-54 },
-    verdict:"Maintien mathématiquement possible mais nécessite victoire 14-0 vs CLAMART + CLAMART perd 0-14 vs NEUILLY + défaite serrée vs RUEIL.",
-    reco:"Aligner habituels. Ne pas brûler de cadres d'autres équipes.",
+    key:"M11", status:"warn", badge:"Maintien en J7",
+    name:"Départemental 1 Poule 4",
+    stats:{ pos:"5e", pts:"11 pts", vnd:"2V/1N/3D", ga:-2 },
+    verdict:"Maintien à <b>~88%</b>. Le nul 21-21 en J6 a préservé l'avantage au goal-average sur ASNIERES (-2 contre -12). En J7, <b>un nul vs SCEAUX suffit</b> ; et même une défaite sauve l'équipe tant qu'ASNIERES ne bat pas RUEIL (2e). Descente seulement si défaite ACBB + victoire d'ASNIERES sur le 2e.",
+    reco:"Aligner la compo la plus forte disponible pour viser le nul minimum. MOREL (1332) + PRUDENT (1179) en fer de lance.",
     matches:[
-      { j:"J6", date:"29/5", vs:"vs CLAMART 4", loc:"DOM", strength:"CLAMART 7e (7 pts, -19 GA) · moy ~1130", strategy:"<b>Stratégie :</b> habituels, viser victoire.",
-        compo:[ {nm:"FERET",cls:1092},{nm:"GRANDJEAN",cls:1113},{nm:"BELKADI",cls:951},{nm:"TU XUAN",cls:959} ] },
-      { j:"J7", date:"5/6",  vs:"vs RUEIL 6",   loc:"EXT", strength:"RUEIL 2e (13 pts, +29 GA) · moy ~1370", strategy:"<b>Stratégie :</b> compo économe, limiter casse.",
-        compo:[ {nm:"FERET",cls:1092},{nm:"GRANDJEAN",cls:1113},{nm:"TORELLI",cls:876},{nm:"LAFORGE",cls:829} ] },
+      { j:"J6", date:"29/5", vs:"vs ASNIERES 7", loc:"EXT", strength:"Résultat : <b>/dev/null 21-21</b>. Avantage GA conservé.", strategy:"<b>Compo alignée :</b>",
+        compo:[ {nm:"MOREL Julien",cls:1332,feat:true},{nm:"PRUDENT",cls:1195},{nm:"SAVAN",cls:960},{nm:"FONTAINE",cls:934} ] },
+      { j:"J7", date:"5/6", vs:"vs SCEAUX 3", loc:"DOM", strength:"SCEAUX 3e (14 pts) · solide. <b>Un nul suffit au maintien.</b>", strategy:"<b>Stratégie :</b> compo MAX. Ne pas perdre = maintien assuré.", kind:"key", kpill:"MAINTIEN",
+        compo:[ {nm:"MOREL Julien",cls:1332,feat:true},{nm:"PRUDENT",cls:1179},{nm:"AUBERT",cls:1135},{nm:"DIAB BOUSTANI",cls:1106} ] },
     ]
   },
   {
-    key:"M7", status:"alert", badge:"Maintien difficile",
-    name:"Pré-Régional Poule 2",
-    stats:{ pos:"7e", pts:"5 pts", vnd:"0V/0N/5D", ga:-36 },
-    verdict:"Maintien à ~25%. Nécessite <b>V J6 vs TTMC + V J7 vs ASNIERES large</b>, et TTMC perd au moins 1 match.",
-    reco:"Julie BOST (1615) peut faire 3 victoires en J6, focus sur les 9 autres rencontres.",
-    matches:[
-      { j:"J6", date:"29/5", vs:"vs TTMC 5", loc:"DOM", strength:"TTMC 6e (9 pts, -12 GA) · moy ~1180 si BOST", strategy:"<b>Stratégie :</b> renforts HABERT + AUBERT pour neutraliser BOST.", kind:"key", kpill:"DÉCISIF",
-        compo:[ {nm:"HABERT",cls:1256,feat:true},{nm:"AUBERT",cls:1135,feat:true},{nm:"BOUZANNE",cls:1092},{nm:"BATTI",cls:1070} ] },
-      { j:"J7", date:"5/6",  vs:"vs ASNIERES 3", loc:"EXT", strength:"ASNIERES 8e (5 pts, -38) · moy 991", strategy:"<b>Stratégie :</b> compo MAX + ROUX. Gagner 11-3 minimum.", kind:"key", kpill:"CLÉ",
-        compo:[ {nm:"ROUX",cls:1157,feat:true},{nm:"BOUZANNE",cls:1092},{nm:"GAUTIER",cls:1087},{nm:"COUCHOURON",cls:1077} ] },
-    ]
-  },
-  {
-    key:"M10", status:"green", badge:"Maintien probable",
+    key:"M10", status:"green", badge:"Maintien acquis",
     name:"Départemental 1 Poule 3",
-    stats:{ pos:"6e", pts:"9 pts", vnd:"2V/0N/3D", ga:-10 },
-    verdict:"Maintien quasi-acquis. Une victoire en J6 vs COURBEVOIE (dernier) suffit pratiquement.",
-    reco:"Gagner large en J6 pour booster le GA et finir 4-5e.",
+    stats:{ pos:"5e", pts:"12 pts", vnd:"3V/0N/3D", ga:-8 },
+    verdict:"<b>Maintien acquis.</b> La victoire 22-20 en J6 à Courbevoie verrouille la place : 12 pts, le 1er poursuivant de la zone rouge plafonne à 11. J7 sans aucun enjeu comptable.",
+    reco:"Match plaisir. Gagner vs VOLTIGEURS pour finir 4e-5e.",
     matches:[
-      { j:"J6", date:"29/5", vs:"vs COURBEVOIE 11", loc:"EXT", strength:"COURBEVOIE 8e (5 pts, -38) · moy ~720", strategy:"<b>Stratégie :</b> gagner 12-2 ou 13-1.", kind:"facile", kpill:"FACILE",
-        compo:[ {nm:"ATLAN",cls:1002},{nm:"MANDELMILECH",cls:900},{nm:"RECHATIN",cls:886},{nm:"B. ALLEGRE-G.",cls:806} ] },
-      { j:"J7", date:"5/6",  vs:"vs VOLTIGEURS 1",  loc:"DOM", strength:"VOLT 4e (10 pts, +12 GA) · moy ~1060", strategy:"<b>Stratégie :</b> match difficile, pas critique.",
+      { j:"J6", date:"29/5", vs:"vs COURBEVOIE 11", loc:"EXT", strength:"Résultat : <b>victoire 22-20</b> — maintien scellé.", strategy:"<b>Compo alignée :</b>", kind:"facile", kpill:"GAGNÉ",
+        compo:[ {nm:"ATLAN",cls:924},{nm:"MANDELMILECH",cls:928},{nm:"RECHATIN",cls:904},{nm:"ZERBIB",cls:753} ] },
+      { j:"J7", date:"5/6", vs:"vs VOLTIGEURS 1", loc:"DOM", strength:"VOLT 4e (12 pts) · maintien déjà acquis.", strategy:"<b>Stratégie :</b> sans pression, finir sur une victoire.",
         compo:[ {nm:"DIAB BOUSTANI",cls:1106},{nm:"ATLAN",cls:1002},{nm:"MANDELMILECH",cls:900},{nm:"RECHATIN",cls:886} ] },
     ]
   },
   {
-    key:"M11", status:"warn", badge:"Tout sur J6",
-    name:"Départemental 1 Poule 4",
-    stats:{ pos:"5e", pts:"9 pts", vnd:"2V/0N/3D", ga:-2 },
-    verdict:"Maintien à ~86% avec la compo confirmée. MOREL Julien (1332, classement réel) renforce.",
-    reco:"Battre ASNIERES en J6 (proba V ~82%).",
+    key:"M7", status:"lose", badge:"Reléguée",
+    name:"Pré-Régional Poule 2",
+    stats:{ pos:"7e", pts:"6 pts", vnd:"0V/0N/6D", ga:-42 },
+    verdict:"<b>Descente actée.</b> Après la défaite J6 (18-24 vs TTMC), ACBB plafonne à 8 pts ; le 6e (COLOMBES) est à 11. Mathématiquement relégué. Le J7 vs ASNIERES (8e, 6 pts) ne joue plus que la 7e place.",
+    reco:"Compo habituelle, gagner pour finir 7e. Surtout, ne brûler aucun cadre d'une autre équipe.",
     matches:[
-      { j:"J6", date:"29/5", vs:"vs ASNIERES 7", loc:"EXT", strength:"ASNIERES 7e (9 pts, -12 GA) · moy 933", strategy:"<b>Stratégie :</b> compo confirmée. Moy. 1098. P(V) ~82%, maintien ~86%.", kind:"key", kpill:"LE MATCH",
-        compo:[ {nm:"PRUDENT",cls:1179},{nm:"MOREL Julien",cls:1332,feat:true},{nm:"SAVAN",cls:945},{nm:"FONTAINE",cls:935} ] },
-      { j:"J7", date:"5/6",  vs:"vs SCEAUX 3",   loc:"DOM", strength:"SCEAUX 4e (11 pts, +4 GA) · moy ~1031", strategy:"<b>Stratégie :</b> compo solide, match 50/50.",
-        compo:[ {nm:"PRUDENT",cls:1179},{nm:"DIAB BOUSTANI",cls:1106},{nm:"PERROT",cls:1033,feat:true},{nm:"NDZOLI EYOKA",cls:933} ] },
+      { j:"J6", date:"29/5", vs:"vs TTMC 5", loc:"DOM", strength:"Résultat : <b>défaite 18-24</b>.", strategy:"<b>Compo alignée :</b>",
+        compo:[ {nm:"BOUZANNE",cls:1089},{nm:"GAUTIER",cls:1084},{nm:"COZIEN",cls:1041},{nm:"BATTI",cls:1033} ] },
+      { j:"J7", date:"5/6", vs:"vs ASNIERES 3", loc:"EXT", strength:"ASNIERES 8e (6 pts) — duel direct pour la 7e place.", strategy:"<b>Stratégie :</b> compo habituelle, viser la victoire pour l'honneur.",
+        compo:[ {nm:"BOUZANNE",cls:1092},{nm:"GAUTIER",cls:1087},{nm:"COUCHOURON",cls:1077},{nm:"BATTI",cls:1070} ] },
+    ]
+  },
+  {
+    key:"M6", status:"lose", badge:"Reléguée",
+    name:"Pré-Régional Poule 3",
+    stats:{ pos:"8e", pts:"6 pts", vnd:"0V/0N/6D", ga:-62 },
+    verdict:"<b>Descente actée.</b> Défaite J6 (17-25 vs CLAMART). Avec 8 pts max possibles en J7 et un 6e déjà à 10, le maintien est mathématiquement hors de portée.",
+    reco:"J7 à Rueil : aligner les habituels, préserver les forces, ne monter aucun cadre.",
+    matches:[
+      { j:"J6", date:"29/5", vs:"vs CLAMART 4", loc:"DOM", strength:"Résultat : <b>défaite 17-25</b>.", strategy:"<b>Compo alignée :</b>",
+        compo:[ {nm:"BOITEAU",cls:1133},{nm:"FERET",cls:1065},{nm:"TORELLI",cls:874},{nm:"LAFORGE",cls:829} ] },
+      { j:"J7", date:"5/6", vs:"vs RUEIL 6", loc:"EXT", strength:"RUEIL 6 2e (14 pts) · costaud. Match à Rueil 5 juin.", strategy:"<b>Stratégie :</b> sans enjeu, habituels, préserver les cadres.",
+        compo:[ {nm:"GRANDJEAN",cls:1113},{nm:"FERET",cls:1092},{nm:"TU XUAN",cls:959},{nm:"BELKADI",cls:951} ] },
     ]
   },
 ];
 
 var CONFLICTS = [
-  { kind:"warn", title:"Yannis ROUX (1157)", body:"Clé M7 J7 ET M11 J6. Journées différentes, donc <em>peut jouer les 2</em>. Pas de conflit, mais charge." },
-  { kind:"warn", title:"Patrick HABERT (1256)", body:"Monté en M7 J6 pour neutraliser BOST. Brûle M8 si 2ème match haute division." },
-  { kind:"ok",   title:"Evan DIAB BOUSTANI (1106)", body:"Peut faire M11 J6 + M11 J7 ou M10 J7 + M11 J6, pas de brûlage supplémentaire." },
-  { kind:"warn", title:"PERROT Charles — BRÛLÉ M12", body:"Titulaire M12, a fait 2 montées (M10 + M11). Ne peut plus descendre en M12. Désormais titulaire M11. <em>Éligible M11 J6 et J7</em>. Mais LESCAUDRON plus forte (+97 pts) en J6." },
-  { kind:"ok",   title:"LESCAUDRON Noémie (1130)", body:"Titulaire F1, M11 est une descente (pas de limite). Calendrier OK (F1 samedi, M11 vendredi). <em>Choix préférentiel M11 J6.</em>" },
-  { kind:"",     title:"Ne pas brûler M6", body:"Aligner habituels, ne pas monter HABERT/BATOT (perdu d'avance, préserver forces)." },
+  { kind:"warn", title:"Concentrer les forces sur M11", body:"C'est le seul match à enjeu de J7. Aligner la compo la plus forte disponible (MOREL, PRUDENT, AUBERT, DIAB BOUSTANI / LESCAUDRON) pour garantir au moins le nul." },
+  { kind:"ok",   title:"LESCAUDRON Noémie (1130)", body:"Titulaire F1 : descendre en M11 est une descente, <em>toujours autorisée</em>. Renfort de luxe possible si disponible le 5 juin." },
+  { kind:"",     title:"Ne rien brûler en M6 et M7", body:"Les deux équipes sont reléguées : aucun intérêt à monter un cadre d'une autre équipe. Aligner les habituels et préserver l'effectif pour la phase suivante." },
+  { kind:"ok",   title:"PERROT Charles (1033) — titulaire M11", body:"Éligible M11 J7, mais des options plus fortes existent (MOREL, PRUDENT, AUBERT). À garder en rotation selon disponibilités." },
 ];
 
 var VERDICTS_FINAL = [
-  { team:"M6",  status:"lose",  txt:"<b>Descente quasi-acquise.</b> Mathématiquement quasi-impossible à sauver." },
-  { team:"M7",  status:"alert", txt:"<b>1 chance sur 4.</b> Gros effort J7 vs ASNIERES + espérer surprise en J6 (BOST absente ?)." },
-  { team:"M10", status:"green", txt:"<b>Maintien quasi-acquis.</b>" },
-  { team:"M11", status:"warn",  txt:"<b>86% maintien</b> avec compo confirmée (PRUDENT + MOREL 1332). <em>Le match du week-end.</em>" },
+  { team:"M11", status:"warn",  txt:"<b>Maintien à ~88%.</b> Un nul vs SCEAUX en J7 suffit ; une défaite passe encore si ASNIERES ne bat pas le 2e (RUEIL). <em>Le match du week-end.</em>" },
+  { team:"M10", status:"green", txt:"<b>Maintien acquis.</b> 12 pts, hors d'atteinte de la zone rouge." },
+  { team:"M7",  status:"lose",  txt:"<b>Reléguée.</b> J7 vs ASNIERES seulement pour la 7e place." },
+  { team:"M6",  status:"lose",  txt:"<b>Reléguée.</b> Descente mathématiquement actée après J6." },
 ];
 
 /* === RENDERING === */
