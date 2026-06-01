@@ -1436,7 +1436,7 @@ window.DATA = DATA;
 
   function renderScouting(poolKey, acbb, isN2){
     const cal = acbb.calendar || {};
-    const futureJs = [6, 7].filter(j => cal[j]);
+    const futureJs = [7].filter(j => cal[j]);
     if (!futureJs.length) return '';
 
     const pool = window.DATA[poolKey];
