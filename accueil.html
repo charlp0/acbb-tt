@@ -1275,6 +1275,7 @@ window.DATA = DATA;
           <span class="tc-team">${k}</span>
           <span class="tc-level">${meta.short}<br>${meta.label.replace('Départemental','Dép.').replace('Régional','Rég.')}</span>
         </div>
+        <div style="font-size:8px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--dim);margin-top:10px;margin-bottom:1px">Classement final</div>
         <div class="tc-pos">${ps.pos||'—'}<span class="tot">/${ps.total||'—'}</span></div>
         <div class="tc-pts">${ps.pts||0} pts · ${ps.V||0}V/${ps.N||0}N/${ps.D||0}D</div>
         <div style="font-size:9px;color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.2px;margin-top:3px">${(()=>{const oa=U.oppAvgForTeam(k);return oa? 'Adv. moy. '+oa : '';})()}</div>
