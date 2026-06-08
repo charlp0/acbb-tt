@@ -341,6 +341,11 @@
 </section>
 
 <section class="section">
+  <div class="section-h">Meilleurs joueurs</div>
+  <div id="bestPlayers"></div>
+</section>
+
+<section class="section">
   <div class="section-h">Évolution J1 → J7</div>
   <div class="evo" id="evo"></div>
 </section>
@@ -1073,13 +1078,52 @@ window.DATA = DATA;
     return { vic, played, max: played * matchMax, pct: played ? Math.round(vic / (played * matchMax) * 100) : 0 };
   }
 
+  // Classement moyen des adversaires affrontés (numérique uniquement; M2 = niveau national => null)
+  function oppAvgForTeam(poolKey){
+    if (poolKey === 'M2') return null;
+    const acbb = getAcbbTeam(poolKey);
+    if (!acbb) return null;
+    const vals=[];
+    (acbb.journees||[]).forEach(j=>{
+      const ol = getOpponentLineup(poolKey, j.journee, j.opponent);
+      if (ol && ol.journee && ol.journee.players){
+        ol.journee.players.forEach(p=>{
+          if (p.nom && p.nom!=='Joueur absent' && typeof p.cls==='number' && p.cls>0) vals.push(p.cls);
+        });
+      }
+    });
+    if (!vals.length) return null;
+    return Math.round(vals.reduce((s,v)=>s+v,0)/vals.length);
+  }
+
+  // Agrège les joueurs ACBB sur un sous-ensemble de poules (pour split Masculin/Féminin)
+  function aggregateClubPlayersByPools(pools){
+    const stats={};
+    pools.forEach(k=>{
+      const acbb=getAcbbTeam(k); if(!acbb) return;
+      (acbb.journees||[]).forEach(j=>{
+        (j.players||[]).forEach(p=>{
+          if(!p.nom||p.nom==='Joueur absent') return;
+          const key=(p.nom+'|'+(p.prenom||'')).toUpperCase();
+          if(!stats[key]) stats[key]={nom:p.nom,prenom:p.prenom||'',cls:p.cls,vic:0,played:0,teamCounts:{}};
+          stats[key].vic+=(p.vic||0); stats[key].played+=1; stats[key].cls=p.cls;
+          stats[key].teamCounts[k]=(stats[key].teamCounts[k]||0)+1;
+        });
+      });
+    });
+    return Object.values(stats).map(s=>({nom:s.nom,prenom:s.prenom,cls:s.cls,vic:s.vic,played:s.played,
+      teams:Object.keys(s.teamCounts).sort((a,b)=>((LEVEL_META[a]&&LEVEL_META[a].tier)??99)-((LEVEL_META[b]&&LEVEL_META[b].tier)??99)||a.localeCompare(b)),
+      parties:s.played*3,
+      winRate:s.played?Math.round(s.vic/(s.played*3)*100):0}));
+  }
+
   root.ACBB_UTILS = {
     TEAM_KEYS, LEVEL_META,
     getAcbbTeam, isNat2, enrichJournee, aggregatePlayers,
     buildCalendar, poolAverages, teamSummary, findAcbbStanding,
     shortDate, clsDisplay, firstName, shortName, shortOpp,
-    getOpponentLineup, lineupAvgCls,
-    aggregateAllClubPlayers, playerWinRateInTeam,
+    getOpponentLineup, lineupAvgCls, oppAvgForTeam,
+    aggregateAllClubPlayers, playerWinRateInTeam, aggregateClubPlayersByPools,
   };
   // ====== CLUB-WIDE STATS ======
 
@@ -1245,6 +1289,7 @@ window.DATA = DATA;
         </div>
         <div class="tc-pos">${ps.pos||'—'}<span class="tot">/${ps.total||'—'}</span></div>
         <div class="tc-pts">${ps.pts||0} pts · ${ps.V||0}V/${ps.N||0}N/${ps.D||0}D</div>
+        <div style="font-size:9px;color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.2px;margin-top:3px">${(()=>{const oa=U.oppAvgForTeam(k);return oa? 'Adv. moy. '+oa : 'Adv. niv. national';})()}</div>
         <span class="tc-status">${statusLabel}</span>
       </a>`;
     }).join('');
@@ -1341,6 +1386,35 @@ window.DATA = DATA;
     document.getElementById('records').innerHTML = cards.join('');
   }
 
+  function renderBestPlayers(){
+    const MP = U.TEAM_KEYS.filter(k=>k.charAt(0)==='M');
+    const FP = ['F1','F2','F3'];
+    function row(r,i,metric){
+      const big = metric==='vic' ? (r.vic+'<span style=\'font-size:10px;color:var(--dim)\'>V</span>') : (r.winRate+'<span style=\'font-size:10px;color:var(--dim)\'>%</span>');
+      const sub = metric==='vic' ? (r.winRate+'% · '+r.parties+' parties') : (r.vic+'/'+r.parties+' parties');
+      return '<li style=\'list-style:none;display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--paper,#141416);border-bottom:1px solid var(--line,rgba(255,255,255,.08))\'>'
+        + '<span style=\'font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;color:var(--dim);width:18px\'>'+(i+1)+'</span>'
+        + '<span style=\'flex:1;min-width:0\'><span style=\'font-weight:700;font-size:13px;letter-spacing:-0.2px\'>'+U.firstName(r)+' '+r.nom+'</span>'
+        + '<br><span style=\'font-size:10px;color:var(--dim);font-family:JetBrains Mono,monospace\'>cl. '+U.clsDisplay(r.cls)+' · '+r.teams.join(", ")+'</span></span>'
+        + '<span style=\'text-align:right;line-height:1.1\'><span style=\'font-family:JetBrains Mono,monospace;font-size:18px;font-weight:700\'>'+big+'</span>'
+        + '<br><span style=\'font-size:9px;color:var(--dim);font-family:JetBrains Mono,monospace\'>'+sub+'</span></span></li>';
+    }
+    function panel(title, pools){
+      const rows = U.aggregateClubPlayersByPools(pools);
+      const byVic = rows.slice().sort((a,b)=>b.vic-a.vic||b.winRate-a.winRate).slice(0,5);
+      const byPct = rows.filter(r=>r.parties>=15).sort((a,b)=>b.winRate-a.winRate||b.vic-a.vic).slice(0,5);
+      const list = (arr,metric)=> '<ul style=\'margin:0;padding:0;border:1px solid var(--line,rgba(255,255,255,.08));border-radius:10px;overflow:hidden\'>'+arr.map((r,i)=>row(r,i,metric)).join('')+'</ul>';
+      return '<div style=\'flex:1;min-width:280px\'>'
+        + '<div style=\'font-size:13px;font-weight:800;letter-spacing:-0.2px;margin-bottom:12px;color:var(--orange,#F26A1B)\'>'+title+'</div>'
+        + '<div style=\'font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:6px\'>Top victoires</div>'+list(byVic,'vic')
+        + '<div style=\'font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin:14px 0 6px\'>Top % de victoires <span style=\'font-weight:500;text-transform:none;letter-spacing:0\'>(min. 15 parties)</span></div>'+list(byPct,'pct')
+        + '</div>';
+    }
+    document.getElementById('bestPlayers').innerHTML =
+      '<div style=\'display:flex;gap:24px;flex-wrap:wrap\'>'+panel('Championnat Masculin',MP)+panel('Championnat Féminin',FP)+'</div>';
+  }
+
+  renderBestPlayers();
   renderBilan();
   renderTeamsGrid();
   renderTops();
