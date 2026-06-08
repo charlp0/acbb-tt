@@ -269,6 +269,17 @@
   .teamline:last-child{border-bottom:none}
   .teamline .t{font-family:"JetBrains Mono",monospace;font-weight:700}
   .teamline .r{font-family:"JetBrains Mono",monospace;color:var(--ink-2)}
+
+  /* PLAYER TABS */
+  .ptabs{display:flex;gap:8px;padding:0 20px;margin:4px 0 0;flex-wrap:wrap}
+  .ptab{flex:1 1 auto;min-width:200px;text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--ink-2);
+    border-radius:12px;padding:13px 16px;font-family:"Space Grotesk",sans-serif;transition:all .15s}
+  .ptab .pt-k{font-size:9px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:3px}
+  .ptab .pt-t{font-size:14px;font-weight:700;letter-spacing:-0.2px;color:var(--ink-2)}
+  .ptab:hover{border-color:var(--line-2)}
+  .ptab.active{background:var(--panel-2);border-color:var(--acbb)}
+  .ptab.active .pt-k{color:var(--acbb)}
+  .ptab.active .pt-t{color:var(--ink)}
 </style>
 <link rel="icon" type="image/png" href="logo.png">
 </head><body><div class="wrap">
@@ -301,7 +312,11 @@
     <span class="pl-chip">Équipes <b>M10 · M11 · M12</b></span>
   </div>
 </div>
-<section class="section">
+<div class="ptabs">
+  <button class="ptab active" data-t="phase2"><span class="pt-k">Onglet 1</span><span class="pt-t">Focus Phase 2 · Championnat par Équipe</span></button>
+  <button class="ptab" data-t="annee"><span class="pt-k">Onglet 2</span><span class="pt-t">Saison 2025-2026 complète</span></button>
+</div>
+<section class="section" id="tab-phase2">
   <div class="section-h">Bilan de la Phase 2 · Championnat par Équipe</div>
   <div class="pgrid">
     <div class="pcard"><div class="pc-lbl">Victoires</div><div class="pc-big">10<span class="pct">83%</span></div><div class="pc-sub">en simple, sur 12 matchs</div></div>
@@ -326,4 +341,40 @@
   <p style="font-size:11px;color:var(--dim);font-style:italic;margin-top:14px">Perfs calculées en classement mensuel au moment du match. Données API FFTT. Maquette — fiche de démonstration.</p>
 </section>
 
+<section class="section" id="tab-annee" style="display:none">
+  <div class="section-h">Saison 2025-2026 · Toutes compétitions</div>
+  <div class="pgrid">
+    <div class="pcard"><div class="pc-lbl">Victoires</div><div class="pc-big">26<span class="pct">57%</span></div><div class="pc-sub">en simple, sur 46 parties</div></div>
+    <div class="pcard"><div class="pc-lbl">Défaites</div><div class="pc-big">20<span class="pct">43%</span></div><div class="pc-sub">en simple</div></div>
+    <div class="pcard feat"><div class="pc-lbl">Progression sur la table</div><div class="pc-big green">+140<span style="font-size:15px;color:var(--dim)"> pts</span></div><div class="pc-sub">points gagnés sur l'ensemble des parties classées</div></div>
+    <div class="pcard feat"><div class="pc-lbl">★ Meilleure perf</div><div class="pc-big green">+25,5</div><div class="pc-sub">battu <b>BRATINA David</b> (classé 11) · Critérium · <b>23/11</b></div></div>
+    <div class="pcard bad"><div class="pc-lbl">Plus gros revers</div><div class="pc-big red">−12,5</div><div class="pc-sub">perdu vs <b>BICHOT Vincent</b> (classé 7) · Championnat · <b>20/03</b></div></div>
+    <div class="pcard"><div class="pc-lbl">Par compétition</div>
+      <div class="teamline" style="margin-top:6px"><span class="t" style="font-size:11px">Championnat équipes</span><span class="r">8 / 15</span></div>
+      <div class="teamline"><span class="t" style="font-size:11px">Individuel · Critérium</span><span class="r" style="color:#86EFAC">18 / 31</span></div>
+    </div>
+    <div class="pcard" style="grid-column:1/-1"><div class="pc-lbl">Évolution par mois (pts gagnés / perdus)</div>
+      <div class="teamline" style="margin-top:6px"><span class="t" style="font-size:11px">Octobre 2025 · 7V / 3D</span><span class="r" style="color:#86EFAC">+38</span></div>
+      <div class="teamline"><span class="t" style="font-size:11px">Novembre 2025 · 4V / 6D</span><span class="r" style="color:#86EFAC">+39</span></div>
+      <div class="teamline"><span class="t" style="font-size:11px">Janvier 2026 · 3V / 7D</span><span class="r" style="color:#FCA5A5">−9</span></div>
+      <div class="teamline"><span class="t" style="font-size:11px">Février 2026 · 3V / 0D</span><span class="r" style="color:#86EFAC">+5</span></div>
+      <div class="teamline"><span class="t" style="font-size:11px">Mars 2026 · 7V / 3D</span><span class="r" style="color:#86EFAC">+70</span></div>
+      <div class="teamline"><span class="t" style="font-size:11px">Avril 2026 · 2V / 1D</span><span class="r" style="color:#FCA5A5">−2</span></div>
+    </div>
+  </div>
+  <p style="font-size:11px;color:var(--dim);font-style:italic;margin-top:14px">Base classement officiel FFTT · 46 parties intégrées (10/10/2025 → 03/04/2026). Les parties les plus récentes (championnat J5–J7) seront intégrées au fil des mises à jour fédérales (~2 mois de décalage). Maquette — fiche de démonstration.</p>
+</section>
+
+<script>
+(function(){
+  var tabs=document.querySelectorAll('.ptab');
+  var sec={phase2:document.getElementById('tab-phase2'),annee:document.getElementById('tab-annee')};
+  tabs.forEach(function(b){b.addEventListener('click',function(){
+    tabs.forEach(function(x){x.classList.remove('active')}); b.classList.add('active');
+    var t=b.getAttribute('data-t');
+    for(var k in sec){ sec[k].style.display = (k===t)?'':'none'; }
+    sec[t].classList.remove('anim-in'); void sec[t].offsetWidth; sec[t].classList.add('anim-in');
+  });});
+})();
+</script>
 </div></body></html>
