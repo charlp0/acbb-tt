@@ -1034,7 +1034,7 @@ window.DATA = DATA;
       (acbb.journees || []).forEach(j => {
         (j.players || []).forEach(p => {
           if (!p.nom || p.nom === 'Joueur absent') return;
-          const key = (p.nom + '|' + (p.prenom || '')).toUpperCase();
+          const key = (p.nom + '|' + (p.prenom || '')).replace(/-/g,' ').replace(/\s+/g,' ').trim().toUpperCase();
           if (!stats[key]) stats[key] = {
             nom: p.nom, prenom: p.prenom || '', cls: p.cls, vic: 0, played: 0, teamCounts: {}
           };
@@ -1092,7 +1092,7 @@ window.DATA = DATA;
       (acbb.journees||[]).forEach(j=>{
         (j.players||[]).forEach(p=>{
           if(!p.nom||p.nom==='Joueur absent') return;
-          const key=(p.nom+'|'+(p.prenom||'')).toUpperCase();
+          const key=(p.nom+'|'+(p.prenom||'')).replace(/-/g,' ').replace(/\s+/g,' ').trim().toUpperCase();
           if(!stats[key]) stats[key]={nom:p.nom,prenom:p.prenom||'',cls:p.cls,vic:0,played:0,teamCounts:{}};
           stats[key].vic+=(p.vic||0); stats[key].played+=1; stats[key].cls=p.cls;
           stats[key].teamCounts[k]=(stats[key].teamCounts[k]||0)+1;

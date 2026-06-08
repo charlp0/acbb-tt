@@ -901,15 +901,15 @@ window.DATA = DATA;
 
   // Aggregate all ACBB players across ALL teams (whole club) for the phase.
   // Returns rows with { nom, prenom, cls, vic, played, teams: ['M2','M3'...] }.
-  function aggregateAllClubPlayers() {
+  function aggregateAllClubPlayers(pools) {
     const stats = {};
-    TEAM_KEYS.forEach(k => {
+    (pools || TEAM_KEYS).forEach(k => {
       const acbb = getAcbbTeam(k);
       if (!acbb) return;
       (acbb.journees || []).forEach(j => {
         (j.players || []).forEach(p => {
           if (!p.nom || p.nom === 'Joueur absent') return;
-          const key = (p.nom + '|' + (p.prenom || '')).toUpperCase();
+          const key = (p.nom + '|' + (p.prenom || '')).replace(/-/g,' ').replace(/\s+/g,' ').trim().toUpperCase();
           if (!stats[key]) stats[key] = {
             nom: p.nom, prenom: p.prenom || '', cls: p.cls, vic: 0, played: 0, teamCounts: {}
           };
@@ -1080,28 +1080,27 @@ window.DATA = DATA;
 <script>
 (function(){
   const U = window.ACBB_UTILS;
-  const all = U.aggregateAllClubPlayers();
-
-  // Compute global stats
-  const totalPlayers = all.length;
-  const totalMatches = all.reduce((s,p)=>s+p.played,0);
-  const totalWins = all.reduce((s,p)=>s+p.vic,0);
-  const overallPct = totalMatches ? Math.round(totalWins / (totalMatches * 3) * 100) : 0;
-
-  document.getElementById('meta').innerHTML = `
-    <div><div class="v">${totalPlayers}</div><div class="l">Joueurs</div></div>
-    <div><div class="v">${totalMatches}</div><div class="l">Présences</div></div>
-    <div><div class="v">${totalWins}</div><div class="l">Victoires</div></div>
-  `;
+  let all = U.aggregateAllClubPlayers();
+  function updateMeta(){
+    const tp=all.length, tm=all.reduce((s,p)=>s+p.played,0), tw=all.reduce((s,p)=>s+p.vic,0);
+    document.getElementById('meta').innerHTML =
+      '<div><div class="v">'+tp+'</div><div class="l">Joueurs</div></div>'+
+      '<div><div class="v">'+tm+'</div><div class="l">Présences</div></div>'+
+      '<div><div class="v">'+tw+'</div><div class="l">Victoires</div></div>';
+  }
 
   // Filter chips
   const FILTERS = [
-    { id: 'all', label: 'TOUS', match: () => true },
-    { id: 'f', label: 'FÉMININES', match: p => p.teams.some(k => k[0]==='F') },
-    { id: 'm', label: 'MASCULINES', match: p => p.teams.some(k => k[0]==='M') },
-    { id: 'multi', label: 'MULTI-ÉQUIPES', match: p => p.teams.length > 1 },
-    { id: 'n2', label: 'N2', match: p => p.teams.includes('M2') },
-    { id: 'pn', label: 'PN', match: p => p.teams.includes('F1') },
+    { id:'all', label:'TOUS', pools: U.TEAM_KEYS },
+    { id:'n2', label:'N2', pools:['M2'] },
+    { id:'r2', label:'R2', pools:['M3'] },
+    { id:'r3', label:'R3', pools:['M4','M5'] },
+    { id:'pr', label:'PR', pools:['M6','M7','M8','M9'] },
+    { id:'d1', label:'D1', pools:['M10','M11'] },
+    { id:'d2', label:'D2', pools:['M12','M13','M14','M15','M16','M17'] },
+    { id:'pnf', label:'PN \u2640', pools:['F1'] },
+    { id:'r1f', label:'R1 \u2640', pools:['F2'] },
+    { id:'prf', label:'PR \u2640', pools:['F3'] },
   ];
   let activeFilter = 'all';
 
@@ -1121,7 +1120,7 @@ window.DATA = DATA;
   function renderFilters() {
     const el = document.getElementById('filters');
     el.innerHTML = FILTERS.map(f => {
-      const ct = all.filter(f.match).length;
+      const ct = U.aggregateAllClubPlayers(f.pools).length;
       return `<div class="chip${f.id===activeFilter?' active':''}" data-id="${f.id}">${f.label}<span class="ct">${ct}</span></div>`;
     }).join('');
     el.querySelectorAll('.chip').forEach(c => c.onclick = () => { activeFilter = c.dataset.id; renderAll(); });
@@ -1143,8 +1142,10 @@ window.DATA = DATA;
     renderFilters();
     renderSort();
     const f = FILTERS.find(x=>x.id===activeFilter);
+    all = U.aggregateAllClubPlayers(f.pools);
+    updateMeta();
     const q = document.getElementById('search').value.trim().toUpperCase();
-    let rows = all.filter(f.match);
+    let rows = all.slice();
     if (q) {
       rows = rows.filter(r => (r.nom + ' ' + r.prenom).toUpperCase().includes(q));
     }
