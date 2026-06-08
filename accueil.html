@@ -1078,22 +1078,10 @@ window.DATA = DATA;
     return { vic, played, max: played * matchMax, pct: played ? Math.round(vic / (played * matchMax) * 100) : 0 };
   }
 
-  // Classement moyen des adversaires affrontés (numérique uniquement; M2 = niveau national => null)
+  // Niveau MENSUEL moyen des adversaires au moment du match (calculé via API FFTT SmartPing)
   function oppAvgForTeam(poolKey){
-    if (poolKey === 'M2') return null;
-    const acbb = getAcbbTeam(poolKey);
-    if (!acbb) return null;
-    const vals=[];
-    (acbb.journees||[]).forEach(j=>{
-      const ol = getOpponentLineup(poolKey, j.journee, j.opponent);
-      if (ol && ol.journee && ol.journee.players){
-        ol.journee.players.forEach(p=>{
-          if (p.nom && p.nom!=='Joueur absent' && typeof p.cls==='number' && p.cls>0) vals.push(p.cls);
-        });
-      }
-    });
-    if (!vals.length) return null;
-    return Math.round(vals.reduce((s,v)=>s+v,0)/vals.length);
+    const M={F1:990,F2:882,F3:676,M2:2187,M3:1622,M4:1490,M5:1437,M6:1288,M7:1188,M8:1160,M9:1185,M10:1032,M11:942,M12:806,M13:658,M14:643,M15:676,M16:632,M17:681};
+    return M[poolKey] || null;
   }
 
   // Agrège les joueurs ACBB sur un sous-ensemble de poules (pour split Masculin/Féminin)
@@ -1289,7 +1277,7 @@ window.DATA = DATA;
         </div>
         <div class="tc-pos">${ps.pos||'—'}<span class="tot">/${ps.total||'—'}</span></div>
         <div class="tc-pts">${ps.pts||0} pts · ${ps.V||0}V/${ps.N||0}N/${ps.D||0}D</div>
-        <div style="font-size:9px;color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.2px;margin-top:3px">${(()=>{const oa=U.oppAvgForTeam(k);return oa? 'Adv. moy. '+oa : 'Adv. niv. national';})()}</div>
+        <div style="font-size:9px;color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.2px;margin-top:3px">${(()=>{const oa=U.oppAvgForTeam(k);return oa? 'Adv. moy. '+oa : '';})()}</div>
         <span class="tc-status">${statusLabel}</span>
       </a>`;
     }).join('');
