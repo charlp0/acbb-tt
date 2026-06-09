@@ -77,6 +77,24 @@
   .bilan{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
   @media (min-width:600px){.bilan{grid-template-columns:repeat(3,1fr)}}
   @media (min-width:900px){.bilan{grid-template-columns:repeat(4,1fr)}}
+  /* ===== CERCLES "coup d'œil" ===== */
+  .club-rings{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:520px){.club-rings{gap:7px}}
+  .cring{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 10px 15px;display:flex;flex-direction:column;align-items:center;gap:9px;position:relative;overflow:hidden}
+  .cring::after{content:"";position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;opacity:.5}
+  .cring.win::after{background:radial-gradient(circle,rgba(61,214,140,0.16) 0%,transparent 70%)}
+  .cring.acc::after{background:radial-gradient(circle,rgba(242,106,27,0.16) 0%,transparent 70%)}
+  .cring.gold::after{background:radial-gradient(circle,rgba(250,204,21,0.14) 0%,transparent 70%)}
+  .cring-wrap{position:relative;width:118px;height:118px}
+  @media(max-width:520px){.cring-wrap{width:90px;height:90px}}
+  .cring-wrap svg{transform:rotate(-90deg)}
+  .cring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+  .cring-pct{font-family:"Saira Condensed",sans-serif;font-weight:800;font-style:italic;font-size:34px;line-height:0.85;letter-spacing:0.3px}
+  @media(max-width:520px){.cring-pct{font-size:26px}}
+  .cring-pct .u{font-size:15px;color:var(--dim)}
+  .cring-sub{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--dim);letter-spacing:0.2px;white-space:nowrap}
+  .cring-label{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-2);font-weight:700;text-align:center;line-height:1.2}
+  .cring-foot{font-size:9.5px;color:var(--dim);font-family:"JetBrains Mono",monospace;text-align:center}
   .bilan-cell{padding:22px 20px 20px;background:var(--paper);position:relative;min-height:140px;display:flex;flex-direction:column;justify-content:flex-end}
   .bilan-cell.featured{background:var(--panel-2);border-top:2px solid var(--acbb)}
   .bilan-cell.featured .lbl{color:rgba(255,255,255,0.5)}
@@ -308,6 +326,11 @@
 <section class="section">
   <div class="section-h">Bilan Phase 2</div>
   <div class="bilan" id="bilan"></div>
+</section>
+
+<section class="section">
+  <div class="section-h">Le club en un coup d'œil</div>
+  <div class="club-rings" id="clubRings"></div>
 </section>
 
 <section class="section">
@@ -1404,8 +1427,62 @@ window.DATA = DATA;
       '<div style=\'display:flex;gap:24px;flex-wrap:wrap\'>'+panel('Championnat Masculin',MP)+panel('Championnat Féminin',FP)+'</div>';
   }
 
+  // === Cercles "coup d'œil" ===
+  const ringColor = c => ({win:'#3DD68C',acc:'#F26A1B',gold:'#FACC15'}[c]||'#F26A1B');
+  function ringSVG(color){
+    const r=50, c=2*Math.PI*r;
+    return `<svg width="100%" height="100%" viewBox="0 0 116 116">
+      <circle cx="58" cy="58" r="${r}" fill="none" stroke="var(--panel)" stroke-width="10"/>
+      <circle class="cring-prog" cx="58" cy="58" r="${r}" fill="none" stroke="${ringColor(color)}" stroke-width="10"
+        stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c}" data-c="${c}"
+        style="filter:drop-shadow(0 0 6px ${ringColor(color)}80)"/>
+    </svg>`;
+  }
+  function clubRingData(){
+    const s = U.aggregateClubStats();
+    let played=0, safe=0, positive=0;
+    U.TEAM_KEYS.forEach(k => {
+      const ps = U.statusByPosition(k);
+      const sum = U.teamSummary(k);
+      if (sum.played>0){
+        played++;
+        if (ps.status==='promo' || ps.status==='safe') safe++;
+        if (sum.wins >= sum.losses) positive++;
+      }
+    });
+    return [
+      { label:"Victoires club", color:"win", pct:s.winPct, sub:`${s.wins}V / ${s.losses}D`, foot:`sur ${s.matches} rencontres` },
+      { label:"Équipes en zone sûre", color:"acc", pct:played?Math.round(safe/played*100):0, sub:`${safe} / ${played}`, foot:"maintien ou mieux" },
+      { label:"Bilan positif", color:"gold", pct:played?Math.round(positive/played*100):0, sub:`${positive} / ${played}`, foot:"V ≥ D sur la phase" },
+    ];
+  }
+  function renderClubRings(){
+    const data = clubRingData();
+    document.getElementById('clubRings').innerHTML = data.map(r => `
+      <div class="cring ${r.color}">
+        <div class="cring-wrap">${ringSVG(r.color)}
+          <div class="cring-center">
+            <div class="cring-pct" style="color:${ringColor(r.color)}"><span class="curing" data-count="${r.pct}">0</span><span class="u">%</span></div>
+            <div class="cring-sub">${r.sub}</div>
+          </div>
+        </div>
+        <div class="cring-label">${r.label}</div>
+        <div class="cring-foot">${r.foot}</div>
+      </div>`).join('');
+    document.querySelectorAll('#clubRings .cring-prog').forEach((c,i) => { c.dataset.pct = data[i].pct; });
+    document.querySelectorAll('#clubRings .curing').forEach(el=>{
+      const target=parseFloat(el.dataset.count)||0, steps=30; let n=0;
+      const iv=setInterval(()=>{ n++; const p=Math.min(1,n/steps); el.textContent=Math.round(target*(1-Math.pow(1-p,3))); if(p>=1){clearInterval(iv);el.textContent=target;} },1000/30);
+    });
+    document.querySelectorAll('#clubRings .cring-prog').forEach(c=>{
+      const circ=parseFloat(c.dataset.c), pct=parseFloat(c.dataset.pct)||0; c.style.strokeDashoffset=circ;
+      setTimeout(()=>{ c.style.transition='stroke-dashoffset 1.3s cubic-bezier(.2,.7,.3,1)'; c.style.strokeDashoffset=circ*(1-pct/100); },80);
+    });
+  }
+
   renderBestPlayers();
   renderBilan();
+  renderClubRings();
   renderTeamsGrid();
   renderTops();
   renderEvolution();
