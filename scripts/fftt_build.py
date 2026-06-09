@@ -144,7 +144,7 @@ def build_team_detail(club=CLUB):
 def build_player(lic, nom, prenom, team_detail=None):
     lb=get(f"xml_licence_b.php?licence={lic}")
     initm=float(tag(lb,'initm') or 0) or None
-    point=tag(lb,'point'); pointm=tag(lb,'pointm')
+    point=tag(lb,'point'); pointm=tag(lb,'pointm'); apointm=tag(lb,'apointm')
     # historique points (validé) pour mensuel + jointure pointres par idpartie
     pmysql=get(f"xml_partie_mysql.php?licence={lic}")
     hist=[]; pts_by_id={}; advlic_by_id={}
@@ -173,16 +173,20 @@ def build_player(lic, nom, prenom, team_detail=None):
         pts = pts_by_id.get(idp); pts = pts if pts is not None else grille(my,olvl,won,coef)
         tot_pts+=pts
         key,label=categorize(epr)
-        c=comps.setdefault(key,{'key':key,'label':label,'V':0,'D':0,'pg':0.0,'pl':0.0,'perf':0,'cperf':0,'matches':[]})
+        c=comps.setdefault(key,{'key':key,'label':label,'V':0,'D':0,'pg':0.0,'pl':0.0,'perf':0,'cperf':0,'best':None,'worst':None,'matches':[]})
         if won: V+=1; c['V']+=1
         else: D+=1; c['D']+=1
         if pts>0: c['pg']+=pts
         else: c['pl']+=pts
         gap=round(olvl-my)  # >0 = adversaire mieux classé (au moment du match)
+        rec={'delta':gap,'opp':opp,'opp_cls':olvl,'my':round(my),'date':date,'comp':label}
         if won and gap>0: perfs+=1; c['perf']+=1
         if (not won) and gap<0: cperfs+=1; c['cperf']+=1
-        if won and (best is None or gap>best['delta']): best={'delta':gap,'opp':opp,'opp_cls':olvl,'my':round(my),'date':date,'comp':label}
-        if (not won) and (worst is None or (-gap)>worst['delta']): worst={'delta':-gap,'opp':opp,'opp_cls':olvl,'my':round(my),'date':date,'comp':label}
+        if won and (best is None or gap>best['delta']): best=rec
+        if (not won) and (worst is None or (-gap)>worst['delta']): worst={**rec,'delta':-gap}
+        # best/worst par compétition (en écart de classement, cohérent avec la saison)
+        if won and (c['best'] is None or gap>c['best']['delta']): c['best']=rec
+        if (not won) and (c['worst'] is None or (-gap)>c['worst']['delta']): c['worst']={**rec,'delta':-gap}
         c['matches'].append({'date':date,'opp':opp,'opp_cls':olvl,'won':won,'pts':round(pts,2)})
     for c in comps.values():
         c['pg']=round(c['pg'],1); c['pl']=round(c['pl'],1); c['solde']=round(c['pg']+c['pl'],1)
@@ -199,7 +203,8 @@ def build_player(lic, nom, prenom, team_detail=None):
                 'closest':({'score':f"{d['closest'][0]+2}-{d['closest'][0]}",'opp':d['closest'][1]} if d['closest'] else None),
                 'splits':[{'team':k,'w':v[0],'t':v[1]} for k,v in sorted(d['team'].items())],
             }
-    avenir = round((initm or 0)+tot_pts) if initm is not None else None
+    # à venir = projection officielle FFTT (apointm), bien plus fiable que la re-somme estimée
+    avenir = round(float(apointm)) if apointm else (round(float(pointm)) if pointm else None)
     timeline=[]
     if initm is not None:
         for (lab,(yy,mm)) in zip(MOIS,MB):
@@ -215,7 +220,7 @@ def build_player(lic, nom, prenom, team_detail=None):
         'timeline':timeline,
         'saison':{'V':V,'D':D,'parties':tot,'winpct':round(100*V/tot) if tot else 0,
                   'perfs':perfs,'contre_perfs':cperfs,'best':best,'worst':worst},
-        'competitions':sorted(comps.values(), key=lambda c:-(c['V']+c['D'])),
+        'competitions':sorted([c for c in comps.values() if c['key']!='autre'], key=lambda c:-(c['V']+c['D'])),
     }
 def main():
     if not APPID or not MDP: sys.exit("FFTT_ID / FFTT_PWD manquants (env vars)")
