@@ -1,0 +1,39 @@
+name: Mise à jour données FFTT
+
+on:
+  schedule:
+    - cron: '0 10 * * 1,3'    # lundi & mercredi ~12h Paris (UTC, ±1h selon DST)
+  workflow_dispatch:           # déclenchement manuel (bouton "Run workflow" / gh workflow run)
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fftt-data
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Génération des profils joueurs
+        env:
+          FFTT_ID: ${{ secrets.FFTT_ID }}
+          FFTT_PWD: ${{ secrets.FFTT_PWD }}
+        run: python3 scripts/fftt_build.py
+      - name: Commit si changement
+        run: |
+          git config user.name "acbb-data-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "Aucun changement dans les données."
+          else
+            git commit -m "data: mise à jour auto $(date -u +%Y-%m-%d)"
+            git push
+          fi
