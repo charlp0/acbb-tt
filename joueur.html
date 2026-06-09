@@ -151,8 +151,8 @@
   @media(max-width:560px){.xpc-m{font-size:8px}.xpc-val{font-size:9px}.xpc-val.start,.xpc-val.off,.xpc-val.fut{font-size:11px}}
 
   /* ===== MODE SELECTOR ===== */
-  .modes{display:flex;gap:7px;padding:18px;overflow-x:auto;scrollbar-width:none}
-  .mode{flex:1 0 auto;min-width:140px;text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--card);
+  .modes{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:18px}
+  .mode{min-width:0;text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--card);
     border-radius:14px;padding:13px 15px;transition:all .2s cubic-bezier(.2,.7,.3,1);position:relative;overflow:hidden}
   .mode:hover{border-color:var(--line-2)}
   .mode.active{border-color:var(--orange);background:linear-gradient(160deg,var(--orange-soft) 0%,var(--card) 70%)}
@@ -161,6 +161,13 @@
   .mode.active .mode-n{color:var(--orange)}
   .mode-t{font-family:"Saira Condensed",sans-serif;font-weight:700;font-style:italic;text-transform:uppercase;font-size:17px;line-height:1;margin-top:7px;letter-spacing:0.3px}
   .mode-s{font-size:10px;color:var(--dim);margin-top:5px;font-family:"JetBrains Mono",monospace;letter-spacing:0.2px}
+  @media(max-width:560px){
+    .modes{gap:5px;padding:12px}
+    .mode{padding:9px 7px;border-radius:11px}
+    .mode-n{font-size:8px}
+    .mode-t{font-size:11px;margin-top:4px;line-height:1.1;letter-spacing:0}
+    .mode-s{display:none}
+  }
 
   /* ===== SECTION SHELL ===== */
   .view{display:none;padding:0 18px}
@@ -357,7 +364,7 @@
     <div class="mode-n">03</div><div class="mode-t">Critérium</div><div class="mode-s">Individuel · 4 tours</div>
   </div>
   <div class="mode" data-view="3">
-    <div class="mode-n">04</div><div class="mode-t">Tournois</div><div class="mode-s">2 tournois</div>
+    <div class="mode-n">04</div><div class="mode-t">Tournois</div><div class="mode-s">Boulogne</div>
   </div>
 </nav>
 
@@ -390,12 +397,13 @@ const VIEWS = [
     bars: { title:"Répartition par compétition · à venir", rows:[
       { name:"Championnat", sub:"équipe", w:14, l:7 },
       { name:"Critérium", sub:"individuel", w:16, l:12 },
-      { name:"Tournois", sub:"2 tournois", w:3, l:5 },
+      { name:"Tournoi", sub:"Boulogne", w:1, l:4 },
+      { name:"Coupe", sub:"équipes vs Poissy", w:2, l:1 },
     ]},
     radar: [
       { name:"Championnat", val:83 },
       { name:"Critérium", val:57 },
-      { name:"Tournois", val:38 },
+      { name:"Tournoi", val:20 },
       { name:"Régularité", val:72 },
       { name:"Perfs", val:60 },
     ],
@@ -458,23 +466,26 @@ const VIEWS = [
   },
   { /* 3 — TOURNOIS */
     rings: [
-      { label:"Victoires", pct:38, sub:"3V / 5D", foot:"8 parties · 2 tournois", color:"lose" },
-      { label:"Pertes", pct:77, sub:"−18,4 pts", foot:"point faible assumé", color:"lose" },
-      { label:"Solde", pct:24, sub:"−12,75", foot:"gagnés +5,6", color:"gold" },
+      { label:"Victoires", pct:20, sub:"1V / 4D", foot:"Boulogne · 25/05", color:"lose" },
+      { label:"Pertes", pct:73, sub:"−10,9 pts", foot:"point faible assumé", color:"lose" },
+      { label:"Solde", pct:30, sub:"−10,5", foot:"gagnés +0,4", color:"gold" },
     ],
     tiles: [
-      { v:"3–5", l:"Bilan à venir", x:"<span class='o'>38% victoires</span>", cls:"down" },
-      { v:"+5,6", l:"Points gagnés", x:"<span class='o'>faible volume</span>", cls:"up" },
-      { v:"−18,4", l:"Points perdus", x:"<span class='o'>lourd</span>", cls:"down" },
-      { v:"−12,75", l:"Solde net", x:"<span class='o'>négatif</span>", cls:"down" },
+      { v:"1–4", l:"Bilan à venir", x:"<span class='o'>20% victoires</span>", cls:"down" },
+      { v:"+0,4", l:"Points gagnés", x:"<span class='o'>1 victoire</span>", cls:"up" },
+      { v:"−10,9", l:"Points perdus", x:"<span class='o'>lourd</span>", cls:"down" },
+      { v:"−10,5", l:"Solde net", x:"<span class='o'>négatif</span>", cls:"down" },
     ],
     highlights: [
-      { kind:"lose", tag:"Plus gros contre", delta:"−148", opp:"Piquard Hugo", cls:"882 vs 1030", meta:"Tournoi 03/04" },
-      { kind:"lose", tag:"Défaite la + lourde", delta:"vs 731", opp:"Aussaresses Cédric", cls:"à venir", meta:"Boulogne · 25/05" },
+      { kind:"win", tag:"Seule victoire", delta:"vs 582", opp:"Marrakchi Youssef", cls:"à venir", meta:"Boulogne · 25/05" },
+      { kind:"lose", tag:"Défaite la + lourde", delta:"vs 731", opp:"Aussaresses Cédric", cls:"−7,5 pts", meta:"Boulogne · 25/05" },
     ],
     timeline: [
-      { badge:"T1", name:"Tournoi", date:"03/04 · validé", w:2, l:1, pts:"−2,25" },
-      { badge:"T2", name:"Boulogne", date:"25/05 · à venir", w:1, l:4, pts:"−10,5" },
+      { badge:"D", name:"Aussaresses (731)", date:"25/05", w:0, l:1, pts:"−7,5" },
+      { badge:"V", name:"Marrakchi (582)", date:"25/05", w:1, l:0, pts:"+0,4" },
+      { badge:"D", name:"Carré (1016)", date:"25/05", w:0, l:1, pts:"−1,5" },
+      { badge:"D", name:"Issa (1098)", date:"25/05", w:0, l:1, pts:"−1,5" },
+      { badge:"D", name:"Sablon (1356)", date:"25/05", w:0, l:1, pts:"−0,4" },
     ],
   },
 ];
