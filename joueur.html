@@ -162,11 +162,13 @@
   .mode-t{font-family:"Saira Condensed",sans-serif;font-weight:700;font-style:italic;text-transform:uppercase;font-size:17px;line-height:1;margin-top:7px;letter-spacing:0.3px}
   .mode-s{font-size:10px;color:var(--dim);margin-top:5px;font-family:"JetBrains Mono",monospace;letter-spacing:0.2px}
   @media(max-width:560px){
-    .modes{gap:4px;padding:10px}
-    .mode{padding:8px 4px;border-radius:10px}
-    .mode-n{font-size:7px}
-    .mode-t{font-size:9.5px;margin-top:3px;line-height:1.1;letter-spacing:0}
-    .mode-s{display:none}
+    .modes{grid-template-columns:repeat(6,1fr);gap:6px;padding:12px}
+    .mode{padding:10px 9px;border-radius:11px}
+    .mode:nth-child(-n+3){grid-column:span 2}   /* ligne 1 : 3 onglets */
+    .mode:nth-child(n+4){grid-column:span 3}     /* ligne 2 : 2 onglets */
+    .mode-n{font-size:8px}
+    .mode-t{font-size:12px;margin-top:4px;line-height:1.1;letter-spacing:0}
+    .mode-s{display:block;font-size:8.5px;margin-top:3px}
   }
 
   /* ===== SECTION SHELL ===== */
