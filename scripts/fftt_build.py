@@ -22,6 +22,8 @@ def get(ep):
     return ''
 def tag(s,t):
     m=re.search('<'+t+'>(.*?)</'+t+'>',s,re.S); return m.group(1).strip() if m else ''
+def nrm(s):
+    s=unicodedata.normalize('NFKD',(s or '')); return re.sub(r'[^A-Za-z0-9]','',''.join(c for c in s if not unicodedata.combining(c))).upper()
 def dn(x):
     try: d,m,y=x.split('/'); return int(y)*10000+int(m)*100+int(d)
     except: return 0
@@ -84,7 +86,62 @@ def opp_mensuel_at(lic, date):
     im,hh=OPPC[lic]
     if im is None: return None
     cut=monthstart(date); return im+sum(pr for d,pr in hh if dn(d)<cut)
-def build_player(lic, nom, prenom):
+
+# nom d'équipe ACBB -> clé (M2..M17/F1..F3) pour les splits
+TEAMKEY={nrm(k):v for k,v in {
+ 'BOULOGNE BILLANCOURT 1':'F1','BOULOGNE BILLANCOURT 2':'F2','BOULOGNE BILLAN 3':'F3',
+ 'BOULOGNE BILLANCOURT AC 2':'M2','BOULOGNE BILLANCOURT 3':'M3','BOULOGNE BILLANCOURT 4':'M4','BOULOGNE BILLANCOURT 5':'M5',
+ 'BOULOGNE BILLAN 6':'M6','BOULOGNE BILLAN 7':'M7','BOULOGNE BILLAN 8':'M8','BOULOGNE BILLAN 9':'M9','BOULOGNE BILLAN 10':'M10',
+ 'BOULOGNE BILLAN 11':'M11','BOULOGNE BILLAN 12':'M12','BOULOGNE BILLAN 13':'M13','BOULOGNE BILLAN 14':'M14',
+ 'BOULOGNE BILLAN 15':'M15','BOULOGNE BILLAN 16':'M16','BOULOGNE BILLAN 17':'M17'}.items()}
+def build_team_detail(club=CLUB):
+    """Parcourt toutes les rencontres ACBB (championnat phase 2) une fois, et renvoie
+       par joueur ACBB : manches, doubles, set le plus serré, matchs en 5 manches, split par équipe."""
+    eq=get(f"xml_equipe.php?numclu={club}&type=A")
+    links=[(lib.split(' - ')[0].strip(), html.unescape(l))
+           for lib,l in re.findall(r'<libequipe>(.*?)</libequipe>.*?<liendivision><!\[CDATA\[(.*?)\]\]>', eq, re.S) if 'Phase 2' in lib]
+    ACBB=set()
+    for (nm,pr) in roster(club).values(): ACBB.add(nrm(nm+pr))
+    det={}
+    def D(name):
+        return det.setdefault(nrm(name), {'mw':0,'ml':0,'dw':0,'dt':0,'five':0,'fivew':0,'closest':None,'team':{}})
+    for tname,link in links:
+        tkey=TEAMKEY.get(nrm(tname), tname)
+        res=get("xml_result_equ.php?"+link)
+        for tb in re.finditer(r'<tour>(.*?)</tour>', res, re.S):
+            blk=tb.group(1)
+            ea,eb=tag(blk,'equa'),tag(blk,'equb')
+            if not (nrm(ea).startswith('BOULOGNEBILLAN') or nrm(eb).startswith('BOULOGNEBILLAN')): continue
+            lm=re.search(r'<lien><!\[CDATA\[(.*?)\]\]>',blk,re.S)
+            if not lm: continue
+            cr=get("xml_chp_renc.php?"+html.unescape(lm.group(1)))
+            for pm in re.finditer(r'<partie>(.*?)</partie>', cr, re.S):
+                b=pm.group(1); ja,jb=tag(b,'ja'),tag(b,'jb'); sa,sb=tag(b,'scorea'),tag(b,'scoreb'); detail=tag(b,'detail')
+                if ' et ' in (ja+jb):                         # double : côté ACBB par appartenance roster
+                    pa=[x.strip() for x in re.split(r'\s+et\s+', ja)]; pb=[x.strip() for x in re.split(r'\s+et\s+', jb)]
+                    if any(nrm(x) in ACBB for x in pa): pair, mes,ops, a_is = pa, sa,sb, True
+                    elif any(nrm(x) in ACBB for x in pb): pair, mes,ops, a_is = pb, sb,sa, False
+                    else: continue
+                    won = mes not in ('','-') and (ops in ('','-') or float(mes)>float(ops))
+                    for nm in pair:
+                        d=D(nm); d['dt']+=1; d['dw']+= 1 if won else 0
+                    continue
+                # simple : qui est ACBB (ja ou jb) via le roster
+                if nrm(ja) in ACBB: acbb_ja=True; me=ja
+                elif nrm(jb) in ACBB: acbb_ja=False; me=jb
+                else: continue
+                sets=[int(t) for t in detail.split() if re.match(r'^-?\d+$',t)]
+                ws=sum(1 for v in sets if (v>0)==acbb_ja); ls=len(sets)-ws   # manches (signe detail = côté A)
+                won = (ws>ls) if sets else ((sa if acbb_ja else sb) not in ('','-'))
+                d=D(me); d['mw']+=ws; d['ml']+=ls
+                tk=d['team'].setdefault(tkey,[0,0]); tk[1]+=1; tk[0]+= 1 if won else 0
+                if len(sets)==5: d['five']+=1; d['fivew']+= 1 if won else 0
+                for v in sets:   # set le plus serré gagné
+                    iwon=(v>0)==acbb_ja; lp=abs(v)
+                    if iwon and lp>=8 and (d['closest'] is None or lp>d['closest'][0]):
+                        d['closest']=(lp, (jb if acbb_ja else ja).strip())
+    return det
+def build_player(lic, nom, prenom, team_detail=None):
     lb=get(f"xml_licence_b.php?licence={lic}")
     initm=float(tag(lb,'initm') or 0) or None
     point=tag(lb,'point'); pointm=tag(lb,'pointm')
@@ -130,6 +187,18 @@ def build_player(lic, nom, prenom):
     for c in comps.values():
         c['pg']=round(c['pg'],1); c['pl']=round(c['pl'],1); c['solde']=round(c['pg']+c['pl'],1)
         n=c['V']+c['D']; c['winpct']=round(100*c['V']/n) if n else 0
+    # détail championnat (manches/doubles/sets/splits) si dispo
+    if team_detail and 'equipe' in comps:
+        d=team_detail.get(nrm(nom+prenom))
+        if d:
+            mtot=d['mw']+d['ml']
+            comps['equipe']['detail']={
+                'manches_w':d['mw'],'manches_t':mtot,'manches_pct':round(100*d['mw']/mtot) if mtot else 0,
+                'doubles_w':d['dw'],'doubles_t':d['dt'],
+                'five':d['five'],'five_w':d['fivew'],
+                'closest':({'score':f"{d['closest'][0]+2}-{d['closest'][0]}",'opp':d['closest'][1]} if d['closest'] else None),
+                'splits':[{'team':k,'w':v[0],'t':v[1]} for k,v in sorted(d['team'].items())],
+            }
     avenir = round((initm or 0)+tot_pts) if initm is not None else None
     timeline=[]
     if initm is not None:
@@ -157,11 +226,14 @@ def main():
     else:
         candidates=ranked_roster(CLUB, 0)   # tout le club, trié par classement décroissant
         need = TOP if TOP>0 else len(candidates)
+    print("Collecte du détail championnat (chp_renc)…")
+    team_detail=build_team_detail(CLUB)
+    print(f"  {len(team_detail)} joueurs ACBB avec détail championnat.")
     os.makedirs('data/players', exist_ok=True); index=[]; kept=0; skipped=0
     for (lic,nom,prenom,pts) in candidates:
         if kept>=need: break
         try:
-            prof=build_player(lic,nom,prenom)
+            prof=build_player(lic,nom,prenom,team_detail)
             if not args and prof['saison']['parties']==0:   # exclure ceux qui n'ont pas joué (pros, inactifs)
                 skipped+=1; continue
             json.dump(prof, open(f"data/players/{lic}.json","w"), ensure_ascii=False)
