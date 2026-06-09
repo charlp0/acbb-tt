@@ -797,7 +797,10 @@ const COMP_META={equipe:{label:'Ch. Équipe',sub:'Championnat par équipe'},crit
 let PROFILE=null;
 const clampPct=x=>Math.max(0,Math.min(100,Math.round(x)));
 const fmtPts=x=>{const v=Math.round(x*10)/10;return (v>0?'+':'')+String(v).replace('.',',');};
-function compHighlights(c){let best=null,worst=null;(c.matches||[]).forEach(m=>{if(m.won){if(!best||m.pts>best.pts)best=m;}else{if(!worst||m.pts<worst.pts)worst=m;}});const hi=[];if(best)hi.push({kind:'win',tag:'Meilleure perf',delta:fmtPts(best.pts),opp:best.opp,cls:'adv. '+best.opp_cls,meta:best.date});if(worst)hi.push({kind:'lose',tag:'Plus gros revers',delta:fmtPts(worst.pts),opp:worst.opp,cls:'adv. '+worst.opp_cls,meta:worst.date});return hi;}
+function compHighlights(c){const hi=[];
+  if(c.best)hi.push({kind:'win',tag:'Meilleure perf',delta:'+'+c.best.delta,opp:c.best.opp,cls:'mensuel '+c.best.opp_cls+' vs '+c.best.my,meta:c.best.date});
+  if(c.worst)hi.push({kind:'lose',tag:'Plus gros contre',delta:'−'+c.worst.delta,opp:c.worst.opp,cls:'mensuel '+c.worst.opp_cls+' vs '+c.worst.my,meta:c.worst.date});
+  return hi;}
 function compView(c){
   const n=c.V+c.D,wp=c.winpct;
   const meta=COMP_META[c.key]||{label:c.label,sub:''};
