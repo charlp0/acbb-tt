@@ -64,7 +64,9 @@ def ranked_roster(club, n):
         except: pts=0
         nom=tag(blk,'nom'); prenom=tag(blk,'prenom')
         if lic not in pl or pts>pl[lic][2]: pl[lic]=(nom,prenom,pts)
-    return [(lic,v[0],v[1],v[2]) for lic,v in sorted(pl.items(), key=lambda kv:-kv[1][2])[:n]]
+    ranked=sorted(pl.items(), key=lambda kv:-kv[1][2])
+    if n and n>0: ranked=ranked[:n]
+    return [(lic,v[0],v[1],v[2]) for lic,v in ranked]
 MOIS=['Sept','Oct','Nov','Déc','Janv','Fév','Mars','Avr','Mai','Juin','Juil']
 MB=[(2025,9),(2025,10),(2025,11),(2025,12),(2026,1),(2026,2),(2026,3),(2026,4),(2026,5),(2026,6),(2026,7)]
 EXACT = os.environ.get('FFTT_FAST','0') != '1'   # exact = reconstruire le mensuel adversaire (défaut). FFTT_FAST=1 -> hybride léger
@@ -74,8 +76,11 @@ def opp_mensuel_at(lic, date):
     if lic not in OPPC:
         lb=get(f"xml_licence_b.php?licence={lic}"); im=re.search(r'<initm>([-\d.]+)',lb)
         pm=get(f"xml_partie_mysql.php?licence={lic}")
-        OPPC[lic]=(float(im.group(1)) if im else None,
-                   [(d,float(p)) for p,d in re.findall(r'<pointres>([-\d.]+)</pointres>.*?<date>(.*?)</date>',pm,re.S)])
+        hh=[]
+        for b in re.findall(r'<partie>(.*?)</partie>', pm, re.S):  # parsing par bloc (date AVANT pointres dans le record)
+            d=tag(b,'date'); pr=tag(b,'pointres')
+            if d and pr: hh.append((d,float(pr)))
+        OPPC[lic]=(float(im.group(1)) if im else None, hh)
     im,hh=OPPC[lic]
     if im is None: return None
     cut=monthstart(date); return im+sum(pr for d,pr in hh if dn(d)<cut)
@@ -146,25 +151,27 @@ def build_player(lic, nom, prenom):
 def main():
     if not APPID or not MDP: sys.exit("FFTT_ID / FFTT_PWD manquants (env vars)")
     args=sys.argv[1:]
-    TOP=int(os.environ.get('FFTT_TOP','100') or 0)   # 0 = tout le club ; sinon les N mieux classés
+    TOP=int(os.environ.get('FFTT_TOP','100') or 0)   # 0 = tout le club ; sinon les N mieux classés AYANT joué ≥1 match
     if args:
-        ros=roster(CLUB); targets=[(l, *ros.get(l,('?',''))) for l in args]
-    elif TOP>0:
-        targets=[(l,n,p) for (l,n,p,pts) in ranked_roster(CLUB, TOP)]
-        print(f"Top {TOP} joueurs par classement sélectionnés.")
+        ros=roster(CLUB); candidates=[(l, *ros.get(l,('?','')), 0) for l in args]; need=len(candidates)
     else:
-        ros=roster(CLUB); targets=[(l,n,p) for l,(n,p) in ros.items()]
-    os.makedirs('data/players', exist_ok=True); index=[]
-    for i,(lic,nom,prenom) in enumerate(targets):
+        candidates=ranked_roster(CLUB, 0)   # tout le club, trié par classement décroissant
+        need = TOP if TOP>0 else len(candidates)
+    os.makedirs('data/players', exist_ok=True); index=[]; kept=0; skipped=0
+    for (lic,nom,prenom,pts) in candidates:
+        if kept>=need: break
         try:
             prof=build_player(lic,nom,prenom)
+            if not args and prof['saison']['parties']==0:   # exclure ceux qui n'ont pas joué (pros, inactifs)
+                skipped+=1; continue
             json.dump(prof, open(f"data/players/{lic}.json","w"), ensure_ascii=False)
             index.append({'lic':lic,'nom':nom,'prenom':prenom,
                           'mensuel':prof['classement']['mensuel'],'parties':prof['saison']['parties']})
-            print(f"[{i+1}/{len(targets)}] {lic} {nom} {prenom} — {prof['saison']['parties']}p {prof['saison']['V']}V/{prof['saison']['D']}D, {len(prof['competitions'])} compét.")
+            kept+=1
+            print(f"[{kept}/{need}] {lic} {nom} {prenom} — {prof['saison']['parties']}p {prof['saison']['V']}V/{prof['saison']['D']}D, {len(prof['competitions'])} compét.")
         except Exception as e:
-            print(f"[{i+1}/{len(targets)}] {lic} ERREUR: {e}")
+            print(f"  {lic} ERREUR: {e}")
         time.sleep(0.2)
     json.dump(index, open("data/players_index.json","w"), ensure_ascii=False)
-    print(f"OK — {len(index)} profils générés.")
+    print(f"OK — {kept} profils générés ({skipped} sans match, ignorés).")
 if __name__=='__main__': main()
