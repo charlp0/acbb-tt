@@ -151,7 +151,7 @@
   @media(max-width:560px){.xpc-m{font-size:8px}.xpc-val{font-size:9px}.xpc-val.start,.xpc-val.off,.xpc-val.fut{font-size:11px}}
 
   /* ===== MODE SELECTOR ===== */
-  .modes{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;padding:18px}
+  .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px;padding:18px}
   .mode{min-width:0;text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--card);
     border-radius:14px;padding:13px 15px;transition:all .2s cubic-bezier(.2,.7,.3,1);position:relative;overflow:hidden}
   .mode:hover{border-color:var(--line-2)}
@@ -161,15 +161,7 @@
   .mode.active .mode-n{color:var(--orange)}
   .mode-t{font-family:"Saira Condensed",sans-serif;font-weight:700;font-style:italic;text-transform:uppercase;font-size:17px;line-height:1;margin-top:7px;letter-spacing:0.3px}
   .mode-s{font-size:10px;color:var(--dim);margin-top:5px;font-family:"JetBrains Mono",monospace;letter-spacing:0.2px}
-  @media(max-width:560px){
-    .modes{grid-template-columns:repeat(6,1fr);gap:6px;padding:12px}
-    .mode{padding:10px 9px;border-radius:11px}
-    .mode:nth-child(-n+2){grid-column:span 3}   /* ligne 1 : 2 onglets larges */
-    .mode:nth-child(n+3){grid-column:span 2}     /* ligne 2 : 3 onglets */
-    .mode-n{font-size:8px}
-    .mode-t{font-size:12px;margin-top:4px;line-height:1.1;letter-spacing:0}
-    .mode-s{display:block;font-size:8.5px;margin-top:3px}
-  }
+  @media(max-width:560px){.modes{grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:5px;padding:12px}.mode{padding:9px 7px;border-radius:10px}.mode-n{font-size:7px}.mode-t{font-size:11px;margin-top:3px;line-height:1.1;letter-spacing:0}.mode-s{display:none}}
 
   /* ===== SECTION SHELL ===== */
   .view{display:none;padding:0 18px}
@@ -321,7 +313,7 @@
   <div class="hero-grid">
     <div>
       <div class="id-eyebrow">Fiche joueur · Saison 2025-2026</div>
-      <h1 class="id-name">Charles<br>Perrot</h1>
+      <h1 class="id-name" id="idName">Charles<br>Perrot</h1>
     </div>
     <div class="rank-card">
       <div class="rank-top">
@@ -377,7 +369,7 @@
 
 <script>
 /* ============ DATA ============ */
-const VIEWS = [
+let VIEWS = [
   { /* 0 — ANNÉE COMPLÈTE */
     rings: [
       { label:"Victoires", pct:58, sub:"33V / 24D", foot:"officiel 26V/20D · 57%", color:"win" },
@@ -650,16 +642,19 @@ function buildView(v, i){
 }
 
 const viewsRoot = document.getElementById('views');
-viewsRoot.innerHTML = VIEWS.map(buildView).join('');
+// rendu déclenché par boot()
 
 /* ============ COURBE MENSUELLE (saison) ============ */
-const XP_MONTHS = [
+let XP_MONTHS = [
   {m:'Sept', v:896, lab:'Début'}, {m:'Oct', v:896}, {m:'Nov', v:934}, {m:'Déc', v:972},
   {m:'Janv', v:972}, {m:'Fév', v:959}, {m:'Mars', v:963}, {m:'Avr', v:1033},
   {m:'Mai', v:1031}, {m:'Juin', v:1031, off:true, lab:'Officiel'}, {m:'Juil', v:1047, fut:true, lab:'À venir'}
 ];
-(function buildXPChart(){
-  const lo=880, hi=1060, n=XP_MONTHS.length;
+function buildXPChart(){
+  const n=XP_MONTHS.length;
+  if(!n){ document.getElementById('xpChart').innerHTML=''; return; }
+  const vals=XP_MONTHS.map(p=>p.v); let lo=Math.min(...vals), hi=Math.max(...vals);  // échelle adaptative au joueur
+  const pad=Math.max(20,(hi-lo)*0.3); lo-=pad; hi+=pad; if(hi-lo<80){const mid=(hi+lo)/2; lo=mid-50; hi=mid+50;}
   const xP = i => 5 + (n===1?0:i/(n-1)*90);
   const yP = v => 24 + (1-(v-lo)/(hi-lo))*54;   // zone de tracé 24%..78%
   const pts = XP_MONTHS.map((d,i)=>({...d, x:xP(i), y:yP(d.v)}));
@@ -692,7 +687,7 @@ const XP_MONTHS = [
     ov += `<span class="xpc-m" style="left:${p.x}%">${p.m}</span>`;
   });
   document.getElementById('xpChart').innerHTML = svg + ov;
-})();
+}
 
 /* ============ ANIMATIONS ============ */
 function countUp(el){
@@ -795,7 +790,94 @@ function init(){
   }, 400);
   animateView(0);
 }
-setTimeout(init, 60);
+
+
+/* ============ ADAPTATEUR JSON -> VUES + BOOT ============ */
+const COMP_META={equipe:{label:'Ch. Équipe',sub:'Championnat par équipe'},criterium:{label:'Critérium',sub:'Individuel'},paris:{label:'Ch. Paris',sub:'Championnat de Paris'},tournoi:{label:'Tournois',sub:''},coupe:{label:'Coupe',sub:'par équipes'},autre:{label:'Autres',sub:''}};
+let PROFILE=null;
+const clampPct=x=>Math.max(0,Math.min(100,Math.round(x)));
+const fmtPts=x=>{const v=Math.round(x*10)/10;return (v>0?'+':'')+String(v).replace('.',',');};
+function compHighlights(c){let best=null,worst=null;(c.matches||[]).forEach(m=>{if(m.won){if(!best||m.pts>best.pts)best=m;}else{if(!worst||m.pts<worst.pts)worst=m;}});const hi=[];if(best)hi.push({kind:'win',tag:'Meilleure perf',delta:fmtPts(best.pts),opp:best.opp,cls:'adv. '+best.opp_cls,meta:best.date});if(worst)hi.push({kind:'lose',tag:'Plus gros revers',delta:fmtPts(worst.pts),opp:worst.opp,cls:'adv. '+worst.opp_cls,meta:worst.date});return hi;}
+function compView(c){
+  const n=c.V+c.D,wp=c.winpct;
+  const meta=COMP_META[c.key]||{label:c.label,sub:''};
+  const v={key:c.key,label:meta.label,sub:meta.sub,
+    rings:[{label:'Victoires',pct:wp,sub:c.V+'V / '+c.D+'D',foot:n+' parties',color:'win'},
+           {label:'Perfs',pct:(c.perf+c.cperf)?clampPct(c.perf/(c.perf+c.cperf)*100):0,sub:c.perf+'P · '+c.cperf+'C',foot:'écart mensuel',color:'acc'},
+           {label:'Points',pct:(c.pg-c.pl)?clampPct(c.pg/(c.pg-c.pl)*100):50,sub:fmtPts(c.solde),foot:'gagnés '+fmtPts(c.pg),color:'gold'}],
+    tiles:[{v:c.V+'–'+c.D,l:'Bilan',x:"<span class='o'>"+wp+'% victoires</span>',cls:wp>=50?'up':'down'},
+           {v:fmtPts(c.pg),l:'Points gagnés',x:'',cls:'up'},
+           {v:fmtPts(c.pl),l:'Points perdus',x:'',cls:'down'},
+           {v:fmtPts(c.solde),l:'Solde',x:'',cls:c.solde>=0?'up':'down'}],
+    highlights:compHighlights(c)};
+  if(c.detail){const d=c.detail;
+    v.rings=[{label:'Victoires',pct:wp,sub:c.V+'V / '+c.D+'D',foot:n+' simples',color:'win'},
+             {label:'Manches',pct:d.manches_pct,sub:d.manches_w+' / '+d.manches_t,foot:'gagnées',color:'acc'},
+             {label:'5 manches',pct:d.five?clampPct(d.five_w/d.five*100):0,sub:d.five_w+' / '+d.five,foot:'matchs décisifs',color:'gold'}];
+    v.tiles=[{v:c.V+'–'+c.D,l:'Bilan simples',x:"<span class='o'>"+wp+'%</span>',cls:''},
+             {v:fmtPts(c.solde),l:'Solde points',x:'',cls:c.solde>=0?'up':'down'},
+             {v:d.doubles_w+'/'+d.doubles_t,l:'Doubles gagnés',x:'',cls:'acc'},
+             {v:d.closest?d.closest.score:'—',l:'Set le + serré',x:d.closest?("<span class='o'>vs "+d.closest.opp+'</span>'):'',cls:'gold'}];
+    if(d.splits&&d.splits.length)v.splits=d.splits.map(s=>({team:s.team,lv:'',w:s.w,t:s.t}));
+  }
+  return v;
+}
+function saisonView(p){const s=p.saison,c=p.classement,av=(c.avenir!=null?c.avenir:c.mensuel),delta=av-c.debut,deltaOff=c.mensuel-c.debut;
+  return {key:'saison',label:'Saison Complète',sub:'Toutes compét.',
+    rings:[{label:'Victoires',pct:s.winpct,sub:s.V+'V / '+s.D+'D',foot:'sur '+s.parties+' parties',color:'win'},
+           {label:'Perfs',pct:(s.perfs+s.contre_perfs)?clampPct(s.perfs/(s.perfs+s.contre_perfs)*100):0,sub:s.perfs+'P · '+s.contre_perfs+'C',foot:'écart mensuel',color:'acc'},
+           {label:'Progression',pct:clampPct(50+delta/2),sub:fmtPts(delta)+' pts',foot:'sur la saison',color:'gold'}],
+    tiles:[{v:String(s.parties),l:'Parties jouées',x:"<span class='o'>"+s.V+'V — '+s.D+'D</span>',cls:''},
+           {v:String(s.perfs),l:'Performances',x:"<span class='o'>battu + fort</span>",cls:'up'},
+           {v:String(s.contre_perfs),l:'Contre-perfs',x:"<span class='o'>perdu vs - fort</span>",cls:'down'},
+           {v:fmtPts(delta),l:'Progression',x:"<span class='o'>officiel "+fmtPts(deltaOff)+'</span>',cls:'up'}],
+    highlights:[...(s.best?[{kind:'win',tag:'★ Meilleure perf',delta:'+'+s.best.delta,opp:s.best.opp,cls:'mensuel '+s.best.opp_cls+' vs '+s.best.my,meta:s.best.comp+' · '+s.best.date}]:[]),
+                ...(s.worst?[{kind:'lose',tag:'Plus gros contre',delta:'−'+s.worst.delta,opp:s.worst.opp,cls:'mensuel '+s.worst.opp_cls+' vs '+s.worst.my,meta:s.worst.comp+' · '+s.worst.date}]:[])],
+    bars:{title:'Répartition par compétition',rows:p.competitions.map(c=>({name:(COMP_META[c.key]||{label:c.label}).label,sub:'',w:c.V,l:c.D}))}};
+}
+function adapt(p){PROFILE=p;
+  const tl=p.timeline||[];
+  XP_MONTHS=tl.map((t,i)=>{const o={m:t.m,v:t.v};if(i===0)o.lab='Début';if(t.avenir){o.fut=true;o.lab='À venir';}return o;});
+  for(let i=XP_MONTHS.length-1;i>=0;i--){if(!XP_MONTHS[i].fut){XP_MONTHS[i].off=true;XP_MONTHS[i].lab='Officiel';break;}}
+  VIEWS=[saisonView(p),...p.competitions.map(compView)];
+}
+function setC(id,val){const el=document.getElementById(id);if(el){el.dataset.count=(val==null?0:val);el.textContent='0';}}
+function fillHero(){const c=PROFILE.classement;
+  document.getElementById('idName').innerHTML=(PROFILE.prenom||'')+'<br>'+(PROFILE.nom||'');
+  setC('rankNow',c.mensuel); setC('rkStart',c.debut); setC('rkFrozen',c.officiel); setC('rkFut',c.avenir);
+  const dOff=(c.mensuel||0)-(c.debut||0), dAv=((c.avenir!=null?c.avenir:c.mensuel)||0)-(c.debut||0);
+  const rp=document.getElementById('rankProg'); if(rp)rp.textContent=fmtPts(dOff);
+  const xd=document.querySelector('.xp-delta'); if(xd)xd.innerHTML='<span>'+fmtPts(dOff)+' officiel</span><span class="soft">'+fmtPts(dAv)+' à venir</span>';
+  document.title='ACBB TT — '+(PROFILE.prenom||'')+' '+(PROFILE.nom||'');
+}
+function renderModes(){
+  document.getElementById('modes').innerHTML=VIEWS.map((v,i)=>
+    '<div class="mode'+(i===0?' active':'')+'" data-view="'+i+'"><div class="mode-n">'+String(i+1).padStart(2,'0')+'</div><div class="mode-t">'+v.label+'</div><div class="mode-s">'+(v.sub||'')+'</div></div>').join('');
+  document.querySelectorAll('#modes .mode').forEach(m=>m.addEventListener('click',()=>{
+    const idx=+m.dataset.view;
+    document.querySelectorAll('#modes .mode').forEach(x=>x.classList.toggle('active',x===m));
+    viewsRoot.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',+v.dataset.view===idx));
+    animateView(idx);
+  }));
+}
+async function boot(){
+  const lic=(new URLSearchParams(location.search)).get('lic')||'7824630';
+  try{
+    const r=await fetch('data/players/'+lic+'.json',{cache:'no-cache'});
+    if(!r.ok) throw new Error('profil introuvable');
+    adapt(await r.json());
+  }catch(e){
+    document.getElementById('idName').innerHTML='Joueur<br>introuvable';
+    console.error(e); return;
+  }
+  fillHero();
+  renderModes();
+  viewsRoot.innerHTML=VIEWS.map(buildView).join('');
+  buildXPChart();
+  init();
+}
+boot();
+
 </script>
 </body>
 </html>
