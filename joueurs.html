@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>ACBB TT — Joueurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800;1,900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="logo.png">
+<style>
+  :root{--bg:#0B0B0D;--card:#141416;--panel:#1E1E22;--panel-2:#26262B;--line:rgba(255,255,255,0.08);--line-2:rgba(255,255,255,0.16);
+    --ink:#F6F5F3;--ink-2:#D4D3CF;--dim:rgba(246,245,243,0.60);--dimmer:rgba(246,245,243,0.34);--orange:#F26A1B;--orange-soft:rgba(242,106,27,0.14);
+    --win:#3DD68C;--win-lt:#86EFAC;--lose:#F26356;--lose-lt:#FCA5A5;--gold:#FACC15}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;font-size:14px;line-height:1.4}
+  .wrap{max-width:1180px;margin:0 auto;padding-bottom:50px}
+  ::-webkit-scrollbar{display:none}
+  .header{position:sticky;top:0;z-index:50;padding:10px 16px;background:rgba(11,11,13,0.72);backdrop-filter:blur(20px) saturate(1.2);-webkit-backdrop-filter:blur(20px) saturate(1.2);border-bottom:1px solid var(--line)}
+  .header-row{display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:1180px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+  .brand img{width:34px;height:34px;border-radius:8px;background:#fff;padding:2px;border:1px solid var(--line-2)}
+  .brand b{font-size:12px;font-weight:700;letter-spacing:-0.3px;display:block}
+  .brand span{font-size:8.5px;color:var(--dim);font-family:"JetBrains Mono",monospace;letter-spacing:0.3px;text-transform:uppercase}
+  .nav{display:flex;gap:3px}
+  .nav a{padding:7px 11px;border-radius:99px;font-size:11px;font-weight:600;color:var(--ink-2);text-decoration:none;border:1px solid transparent}
+  .nav a.active{background:var(--panel-2);color:var(--ink);border-color:var(--line-2)}
+  .hero{padding:26px 16px 6px}
+  .eyebrow{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:6px}
+  .eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
+  h1{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:46px;line-height:1;margin:12px 0 4px;letter-spacing:0.5px}
+  h1 em{color:var(--orange);font-style:italic}
+  .sub{color:var(--dim);font-size:13px}
+  .controls{position:sticky;top:55px;z-index:40;background:rgba(11,11,13,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .search{flex:1;min-width:200px;position:relative}
+  .search input{width:100%;background:var(--panel);border:1px solid var(--line-2);border-radius:99px;color:var(--ink);font-size:14px;font-family:inherit;padding:11px 16px 11px 40px;outline:none}
+  .search input:focus{border-color:var(--orange)}
+  .search::before{content:"⌕";position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:18px}
+  .sortbtn{padding:11px 14px;border-radius:99px;background:var(--panel);border:1px solid var(--line-2);color:var(--ink-2);font-size:11px;font-weight:700;font-family:"JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:0.4px;cursor:pointer;white-space:nowrap}
+  .count{font-size:11px;color:var(--dim);font-family:"JetBrains Mono",monospace;padding:0 4px}
+  .grid{display:grid;grid-template-columns:1fr;gap:8px;padding:14px 16px}
+  @media(min-width:560px){.grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:900px){.grid{grid-template-columns:1fr 1fr 1fr}}
+  a.pcard{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-decoration:none;color:var(--ink);transition:transform .12s,border-color .12s}
+  a.pcard:hover{transform:translateY(-1px);border-color:var(--orange);background:linear-gradient(160deg,var(--orange-soft) 0%,var(--card) 70%)}
+  .rk{font-family:"JetBrains Mono",monospace;font-size:20px;font-weight:800;color:var(--orange);min-width:54px;text-align:center;line-height:1}
+  .rk .u{font-size:9px;color:var(--dim);display:block;font-weight:600;margin-top:2px;letter-spacing:0.3px}
+  .pinfo{flex:1;min-width:0}
+  .pname{font-weight:700;font-size:15px;letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pname .pre{color:var(--dim);font-weight:500}
+  .pmeta{font-size:11px;color:var(--dim);font-family:"JetBrains Mono",monospace;margin-top:3px}
+  .chev{color:var(--dimmer);font-size:18px;font-weight:700}
+  .empty{padding:40px 16px;text-align:center;color:var(--dim)}
+</style>
+</head><body><div class="wrap">
+<header class="header"><div class="header-row">
+  <a class="brand" href="accueil.html"><img src="logo.png" alt="ACBB"><div><b>ACBB TT</b><span>Joueurs</span></div></a>
+  <nav class="nav"><a href="accueil.html">Accueil</a><a href="joueurs.html" class="active">Joueurs</a><a href="stats.html">Stats</a></nav>
+</div></header>
+
+<section class="hero">
+  <div class="eyebrow">Annuaire · Saison 2025-2026</div>
+  <h1>Les <em>joueurs</em></h1>
+  <div class="sub">Cherche un joueur pour voir sa fiche complète (classement, perfs, par compétition).</div>
+</section>
+
+<div class="controls">
+  <div class="search"><input id="q" type="search" placeholder="Chercher un joueur…" autocomplete="off"></div>
+  <button class="sortbtn" id="sort">Tri : classement</button>
+  <span class="count" id="count"></span>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+let PLAYERS=[], sortMode=0;
+const SORTS=[
+  {label:'classement', fn:(a,b)=>(b.mensuel||0)-(a.mensuel||0)},
+  {label:'nom', fn:(a,b)=>(a.nom+a.prenom).localeCompare(b.nom+b.prenom)},
+  {label:'parties', fn:(a,b)=>(b.parties||0)-(a.parties||0)},
+];
+const nrm=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+function render(){
+  const q=nrm(document.getElementById('q').value.trim());
+  let list=PLAYERS.filter(p=>!q || nrm(p.nom+' '+p.prenom).includes(q) || nrm(p.prenom+' '+p.nom).includes(q));
+  list.sort(SORTS[sortMode].fn);
+  document.getElementById('count').textContent=list.length+' joueur'+(list.length>1?'s':'');
+  const g=document.getElementById('grid');
+  if(!list.length){ g.innerHTML='<div class="empty">Aucun joueur trouvé.</div>'; return; }
+  g.innerHTML=list.map(p=>`
+    <a class="pcard" href="joueur.html?lic=${p.lic}">
+      <div class="rk">${p.mensuel||'—'}<span class="u">mensuel</span></div>
+      <div class="pinfo">
+        <div class="pname">${p.nom} <span class="pre">${p.prenom}</span></div>
+        <div class="pmeta">${p.parties||0} partie${p.parties>1?'s':''} cette saison</div>
+      </div>
+      <span class="chev">›</span>
+    </a>`).join('');
+}
+document.getElementById('q').addEventListener('input',render);
+document.getElementById('sort').addEventListener('click',()=>{ sortMode=(sortMode+1)%SORTS.length; document.getElementById('sort').textContent='Tri : '+SORTS[sortMode].label; render(); });
+fetch('data/players_index.json',{cache:'no-cache'}).then(r=>r.json()).then(d=>{PLAYERS=d; render();})
+  .catch(e=>{document.getElementById('grid').innerHTML='<div class="empty">Index indisponible.</div>';});
+</script>
+</div></body></html>
