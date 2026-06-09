@@ -25,6 +25,7 @@ jobs:
         env:
           FFTT_ID: ${{ secrets.FFTT_ID }}
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
+          FFTT_TOP: '100'        # pour l'instant : les 100 mieux classés (0 = tout le club)
         run: python3 scripts/fftt_build.py
       - name: Commit si changement
         run: |
