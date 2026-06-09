@@ -36,5 +36,6 @@ jobs:
             echo "Aucun changement dans les données."
           else
             git commit -m "data: mise à jour auto $(date -u +%Y-%m-%d)"
-            git push
+            git pull --rebase origin main || true
+            git push || (git pull --rebase origin main && git push)
           fi
