@@ -56,17 +56,30 @@ def roster(club):
     return out
 MOIS=['Sept','Oct','Nov','Déc','Janv','Fév','Mars','Avr','Mai','Juin','Juil']
 MB=[(2025,9),(2025,10),(2025,11),(2025,12),(2026,1),(2026,2),(2026,3),(2026,4),(2026,5),(2026,6),(2026,7)]
+EXACT = os.environ.get('FFTT_FAST','0') != '1'   # exact = reconstruire le mensuel adversaire (défaut). FFTT_FAST=1 -> hybride léger
+OPPC={}   # cache adversaire: licence -> (initm, [(date,pointres)])
+def opp_mensuel_at(lic, date):
+    if not lic: return None
+    if lic not in OPPC:
+        lb=get(f"xml_licence_b.php?licence={lic}"); im=re.search(r'<initm>([-\d.]+)',lb)
+        pm=get(f"xml_partie_mysql.php?licence={lic}")
+        OPPC[lic]=(float(im.group(1)) if im else None,
+                   [(d,float(p)) for p,d in re.findall(r'<pointres>([-\d.]+)</pointres>.*?<date>(.*?)</date>',pm,re.S)])
+    im,hh=OPPC[lic]
+    if im is None: return None
+    cut=monthstart(date); return im+sum(pr for d,pr in hh if dn(d)<cut)
 def build_player(lic, nom, prenom):
     lb=get(f"xml_licence_b.php?licence={lic}")
     initm=float(tag(lb,'initm') or 0) or None
     point=tag(lb,'point'); pointm=tag(lb,'pointm')
     # historique points (validé) pour mensuel + jointure pointres par idpartie
     pmysql=get(f"xml_partie_mysql.php?licence={lic}")
-    hist=[]; pts_by_id={}
+    hist=[]; pts_by_id={}; advlic_by_id={}
     for b in re.findall(r'<partie>(.*?)</partie>', pmysql, re.S):
-        d=tag(b,'date'); pr=tag(b,'pointres'); idp=tag(b,'idpartie')
+        d=tag(b,'date'); pr=tag(b,'pointres'); idp=tag(b,'idpartie'); al=tag(b,'advlic')
         if d and pr: hist.append((d,float(pr)))
         if idp and pr: pts_by_id[idp]=float(pr)
+        if idp and al: advlic_by_id[idp]=al
     def mensuel_at(date):
         if initm is None: return None
         cut=monthstart(date); return initm+sum(pr for dd,pr in hist if dn(dd)<cut)
@@ -79,7 +92,12 @@ def build_player(lic, nom, prenom):
         try: ocls=int(re.sub(r'\D','',ocls) or 0)
         except: ocls=0
         my=mensuel_at(date) or (initm or 0)
-        pts = pts_by_id.get(idp); pts = pts if pts is not None else grille(my,ocls,won,coef)
+        # niveau adversaire : exact = mensuel au moment du match (via licence des matchs homologués) ; sinon classement courant
+        olvl=None
+        if EXACT: olvl=opp_mensuel_at(advlic_by_id.get(idp), date)
+        if olvl is None: olvl=ocls
+        olvl=round(olvl)
+        pts = pts_by_id.get(idp); pts = pts if pts is not None else grille(my,olvl,won,coef)
         tot_pts+=pts
         key,label=categorize(epr)
         c=comps.setdefault(key,{'key':key,'label':label,'V':0,'D':0,'pg':0.0,'pl':0.0,'perf':0,'cperf':0,'matches':[]})
@@ -87,12 +105,12 @@ def build_player(lic, nom, prenom):
         else: D+=1; c['D']+=1
         if pts>0: c['pg']+=pts
         else: c['pl']+=pts
-        gap=round(ocls-my)  # >0 = adversaire mieux classé
-        if won and gap>0: perfs+=1; c['perf']+=1; 
+        gap=round(olvl-my)  # >0 = adversaire mieux classé (au moment du match)
+        if won and gap>0: perfs+=1; c['perf']+=1
         if (not won) and gap<0: cperfs+=1; c['cperf']+=1
-        if won and (best is None or gap>best['delta']): best={'delta':gap,'opp':opp,'opp_cls':ocls,'my':round(my),'date':date,'comp':label}
-        if (not won) and (worst is None or (-gap)>worst['delta']): worst={'delta':-gap,'opp':opp,'opp_cls':ocls,'my':round(my),'date':date,'comp':label}
-        c['matches'].append({'date':date,'opp':opp,'opp_cls':ocls,'won':won,'pts':round(pts,2)})
+        if won and (best is None or gap>best['delta']): best={'delta':gap,'opp':opp,'opp_cls':olvl,'my':round(my),'date':date,'comp':label}
+        if (not won) and (worst is None or (-gap)>worst['delta']): worst={'delta':-gap,'opp':opp,'opp_cls':olvl,'my':round(my),'date':date,'comp':label}
+        c['matches'].append({'date':date,'opp':opp,'opp_cls':olvl,'won':won,'pts':round(pts,2)})
     for c in comps.values():
         c['pg']=round(c['pg'],1); c['pl']=round(c['pl'],1); c['solde']=round(c['pg']+c['pl'],1)
         n=c['V']+c['D']; c['winpct']=round(100*c['V']/n) if n else 0
