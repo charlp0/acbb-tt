@@ -54,6 +54,17 @@ def roster(club):
         for m in re.finditer(r'<licence>(\d+)</licence>.*?<nom>(.*?)</nom>.*?<prenom>(.*?)</prenom>', get(f"{endp}?club={club}"), re.S):
             out.setdefault(m.group(1), (m.group(2).strip(), m.group(3).strip()))
     return out
+def ranked_roster(club, n):
+    # trie par classement (points) via xml_liste_joueur_o, renvoie les n meilleurs : [(lic,nom,prenom,points)]
+    pl={}
+    for blk in re.findall(r'<joueur>(.*?)</joueur>', get(f"xml_liste_joueur_o.php?club={club}"), re.S):
+        lic=tag(blk,'licence')
+        if not lic: continue
+        try: pts=int(re.sub(r'\D','', tag(blk,'points')) or 0)
+        except: pts=0
+        nom=tag(blk,'nom'); prenom=tag(blk,'prenom')
+        if lic not in pl or pts>pl[lic][2]: pl[lic]=(nom,prenom,pts)
+    return [(lic,v[0],v[1],v[2]) for lic,v in sorted(pl.items(), key=lambda kv:-kv[1][2])[:n]]
 MOIS=['Sept','Oct','Nov','Déc','Janv','Fév','Mars','Avr','Mai','Juin','Juil']
 MB=[(2025,9),(2025,10),(2025,11),(2025,12),(2026,1),(2026,2),(2026,3),(2026,4),(2026,5),(2026,6),(2026,7)]
 EXACT = os.environ.get('FFTT_FAST','0') != '1'   # exact = reconstruire le mensuel adversaire (défaut). FFTT_FAST=1 -> hybride léger
@@ -135,19 +146,24 @@ def build_player(lic, nom, prenom):
 def main():
     if not APPID or not MDP: sys.exit("FFTT_ID / FFTT_PWD manquants (env vars)")
     args=sys.argv[1:]
-    ros=roster(CLUB)
-    lics = args if args else list(ros.keys())
+    TOP=int(os.environ.get('FFTT_TOP','100') or 0)   # 0 = tout le club ; sinon les N mieux classés
+    if args:
+        ros=roster(CLUB); targets=[(l, *ros.get(l,('?',''))) for l in args]
+    elif TOP>0:
+        targets=[(l,n,p) for (l,n,p,pts) in ranked_roster(CLUB, TOP)]
+        print(f"Top {TOP} joueurs par classement sélectionnés.")
+    else:
+        ros=roster(CLUB); targets=[(l,n,p) for l,(n,p) in ros.items()]
     os.makedirs('data/players', exist_ok=True); index=[]
-    for i,lic in enumerate(lics):
-        nom,prenom = ros.get(lic, ('?',''))
+    for i,(lic,nom,prenom) in enumerate(targets):
         try:
             prof=build_player(lic,nom,prenom)
             json.dump(prof, open(f"data/players/{lic}.json","w"), ensure_ascii=False)
             index.append({'lic':lic,'nom':nom,'prenom':prenom,
                           'mensuel':prof['classement']['mensuel'],'parties':prof['saison']['parties']})
-            print(f"[{i+1}/{len(lics)}] {lic} {nom} {prenom} — {prof['saison']['parties']}p {prof['saison']['V']}V/{prof['saison']['D']}D, {len(prof['competitions'])} compét.")
+            print(f"[{i+1}/{len(targets)}] {lic} {nom} {prenom} — {prof['saison']['parties']}p {prof['saison']['V']}V/{prof['saison']['D']}D, {len(prof['competitions'])} compét.")
         except Exception as e:
-            print(f"[{i+1}/{len(lics)}] {lic} ERREUR: {e}")
+            print(f"[{i+1}/{len(targets)}] {lic} ERREUR: {e}")
         time.sleep(0.2)
     json.dump(index, open("data/players_index.json","w"), ensure_ascii=False)
     print(f"OK — {len(index)} profils générés.")
