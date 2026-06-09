@@ -130,6 +130,27 @@
   .xp-tag.start .v{color:var(--dim)}
   .xp-tag.off .v{color:var(--orange)}
   .xp-tag.fut .v{color:var(--ink)}
+  /* ===== COURBE MENSUELLE ===== */
+  .xpchart{position:relative;height:200px;margin:14px 2px 4px;overflow:visible}
+  @media(max-width:560px){.xpchart{height:158px}}
+  .xpc-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .xpc-area{opacity:0;transition:opacity 1s ease .3s}
+  .xpc-line{fill:none;stroke:var(--orange);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:0;transition:opacity .8s ease;filter:drop-shadow(0 0 5px rgba(242,106,27,0.45))}
+  .xpc-line.dash{stroke-dasharray:4 4;filter:none}
+  .xpchart.ready .xpc-area{opacity:1}
+  .xpchart.ready .xpc-line{opacity:1}
+  .xpchart.ready .xpc-line.dash{opacity:.55}
+  .xpc-dot{position:absolute;width:11px;height:11px;border-radius:50%;background:var(--orange);transform:translate(-50%,-50%) scale(0);transition:transform .35s cubic-bezier(.2,1.4,.4,1);box-shadow:0 0 0 3px var(--bg)}
+  .xpchart.ready .xpc-dot{transform:translate(-50%,-50%) scale(1)}
+  .xpc-dot.start{background:var(--dim)}
+  .xpc-dot.off{background:var(--orange);width:14px;height:14px;box-shadow:0 0 0 3px var(--bg),0 0 14px rgba(242,106,27,0.85)}
+  .xpc-dot.fut{background:var(--bg);border:2.5px solid var(--orange);box-shadow:0 0 0 3px var(--bg)}
+  .xpc-val{position:absolute;transform:translate(-50%,-150%);font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:800;color:var(--ink);white-space:nowrap;opacity:0;transition:opacity .5s ease .7s}
+  .xpchart.ready .xpc-val{opacity:1}
+  .xpc-val .lab{display:block;font-size:8px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.3px;margin-top:1px;text-align:center}
+  .xpc-val.start{color:var(--dim)} .xpc-val.off{color:var(--orange)} .xpc-val.fut{color:var(--ink)}
+  .xpc-m{position:absolute;bottom:0;transform:translateX(-50%);font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:600;color:var(--dim)}
+  @media(max-width:560px){.xpc-m{font-size:8px}.xpc-val{font-size:11px}}
 
   /* ===== MODE SELECTOR ===== */
   .modes{display:flex;gap:7px;padding:18px;overflow-x:auto;scrollbar-width:none}
@@ -323,11 +344,7 @@
     <div class="xp-title">Progression <span>saison</span></div>
     <div class="xp-delta"><span>+135 officiel</span><span class="soft">+151 à venir</span></div>
   </div>
-  <div class="xp-track" id="xpTrack">
-    <div class="xp-fill" id="xpFill"></div>
-    <div class="xp-halo" id="xpHalo"></div>
-    <!-- markers injected -->
-  </div>
+  <div class="xpchart" id="xpChart"><!-- courbe injectée --></div>
 </section>
 
 <!-- MODE SELECTOR -->
@@ -604,25 +621,36 @@ function buildView(v, i){
 const viewsRoot = document.getElementById('views');
 viewsRoot.innerHTML = VIEWS.map(buildView).join('');
 
-/* ============ XP BAR (main, season) ============ */
-// scale: 880 → 1060
-function xpPos(val){ const lo=880, hi=1060; return Math.max(0,Math.min(100,(val-lo)/(hi-lo)*100)); }
-const xpMarks = [
-  { k:"Début saison", v:896, cls:"start", tier:1, d:"Sept. 2025" },
-  { k:"Officiel", v:1031, cls:"off", tier:1, d:"Juin 2026" },
-  { k:"À venir", v:1047, cls:"fut", tier:2, d:"Juil. 2026" },
+/* ============ COURBE MENSUELLE (saison) ============ */
+const XP_MONTHS = [
+  {m:'Sept', v:896, lab:'Début'}, {m:'Oct', v:896}, {m:'Nov', v:934}, {m:'Déc', v:972},
+  {m:'Janv', v:972}, {m:'Fév', v:959}, {m:'Mars', v:963}, {m:'Avr', v:1033},
+  {m:'Mai', v:1031}, {m:'Juin', v:1031, off:true, lab:'Officiel'}, {m:'Juil', v:1047, fut:true, lab:'À venir'}
 ];
-(function buildXP(){
-  const track = document.getElementById('xpTrack');
-  xpMarks.forEach((m) => {
-    const pos = xpPos(m.v);
-    const el = document.createElement('div');
-    el.className = `xp-mark ${m.cls}`;
-    el.style.left = pos+'%';
-    el.innerHTML = `<div class="xp-dot"></div>
-      <div class="xp-tag ${m.cls} bot${m.tier===2?' tier2':''}"><span class="v">${m.v}</span><span class="k">${m.k}</span>${m.d?`<span class="d">${m.d}</span>`:''}</div>`;
-    track.appendChild(el);
+(function buildXPChart(){
+  const lo=880, hi=1060, n=XP_MONTHS.length;
+  const xP = i => 5 + (n===1?0:i/(n-1)*90);
+  const yP = v => 24 + (1-(v-lo)/(hi-lo))*54;   // zone de tracé 24%..78%
+  const pts = XP_MONTHS.map((d,i)=>({...d, x:xP(i), y:yP(d.v)}));
+  const solid = pts.slice(0, n-1);
+  const lineSolid = 'M'+solid.map(p=>`${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' L');
+  const dash = `M${pts[n-2].x.toFixed(2)},${pts[n-2].y.toFixed(2)} L${pts[n-1].x.toFixed(2)},${pts[n-1].y.toFixed(2)}`;
+  const area = lineSolid + ` L${solid[n-2].x.toFixed(2)},90 L${solid[0].x.toFixed(2)},90 Z`;
+  let svg = `<svg class="xpc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <defs><linearGradient id="xpgrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="rgba(242,106,27,0.30)"/><stop offset="1" stop-color="rgba(242,106,27,0)"/></linearGradient></defs>
+    <path class="xpc-area" d="${area}" fill="url(#xpgrad)"/>
+    <path class="xpc-line" d="${lineSolid}"/>
+    <path class="xpc-line dash" d="${dash}"/></svg>`;
+  let ov = '';
+  pts.forEach((p,i)=>{
+    const cls = p.fut?'fut':(p.off?'off':(i===0?'start':'mid'));
+    ov += `<span class="xpc-dot ${cls}" style="left:${p.x}%;top:${p.y}%"></span>`;
+    if (i===0 || p.off || p.fut || i===5)
+      ov += `<span class="xpc-val ${cls}" style="left:${p.x}%;top:${p.y}%">${p.v}${p.lab?`<span class="lab">${p.lab}</span>`:''}</span>`;
+    ov += `<span class="xpc-m" style="left:${p.x}%">${p.m}</span>`;
   });
+  document.getElementById('xpChart').innerHTML = svg + ov;
 })();
 
 /* ============ ANIMATIONS ============ */
@@ -718,13 +746,11 @@ function init(){
     badge.classList.toggle('neg', val < 0);
   }
   document.querySelectorAll('.rank-val,.m-v').forEach(countUp);
-  const fill = document.getElementById('xpFill');
-  setTimeout(()=>{
-    fill.style.width = xpPos(1031)+'%';
-    fill.classList.add('lit');
-    document.getElementById('xpHalo').style.width = xpPos(1047)+'%';
+  const chart = document.getElementById('xpChart');
+  if (chart) setTimeout(()=>{
+    chart.querySelectorAll('.xpc-dot').forEach((d,i)=>{ d.style.transitionDelay = (0.5 + i*0.06)+'s'; });
+    chart.classList.add('ready');
   }, 400);
-  setTimeout(()=>{ fill.classList.remove('lit'); }, 2400);
   animateView(0);
 }
 setTimeout(init, 60);
