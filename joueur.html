@@ -134,23 +134,21 @@
   .xpchart{position:relative;height:200px;margin:14px 2px 4px;overflow:visible}
   @media(max-width:560px){.xpchart{height:158px}}
   .xpc-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-  .xpc-area{opacity:0;transition:opacity 1s ease .3s}
-  .xpc-line{fill:none;stroke:var(--orange);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:0;transition:opacity .8s ease;filter:drop-shadow(0 0 5px rgba(242,106,27,0.45))}
-  .xpc-line.dash{stroke-dasharray:4 4;filter:none}
-  .xpchart.ready .xpc-area{opacity:1}
-  .xpchart.ready .xpc-line{opacity:1}
-  .xpchart.ready .xpc-line.dash{opacity:.55}
-  .xpc-dot{position:absolute;width:11px;height:11px;border-radius:50%;background:var(--orange);transform:translate(-50%,-50%) scale(0);transition:transform .35s cubic-bezier(.2,1.4,.4,1);box-shadow:0 0 0 3px var(--bg)}
+  .xpc-area{fill:url(#xpgrad)}
+  .xpc-line{fill:none;stroke:var(--orange);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 5px rgba(242,106,27,0.45))}
+  .xpc-line.dash{stroke-dasharray:4 4;opacity:.55;filter:none}
+  .xpc-dot{position:absolute;width:11px;height:11px;border-radius:50%;background:var(--orange);transform:translate(-50%,-50%) scale(0);transition:transform .3s cubic-bezier(.2,1.4,.4,1);box-shadow:0 0 0 3px var(--bg)}
   .xpchart.ready .xpc-dot{transform:translate(-50%,-50%) scale(1)}
   .xpc-dot.start{background:var(--dim)}
   .xpc-dot.off{background:var(--orange);width:14px;height:14px;box-shadow:0 0 0 3px var(--bg),0 0 14px rgba(242,106,27,0.85)}
   .xpc-dot.fut{background:var(--bg);border:2.5px solid var(--orange);box-shadow:0 0 0 3px var(--bg)}
-  .xpc-val{position:absolute;transform:translate(-50%,-150%);font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:800;color:var(--ink);white-space:nowrap;opacity:0;transition:opacity .5s ease .7s}
+  .xpc-val{position:absolute;transform:translate(-50%,-150%);font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;color:var(--dim);white-space:nowrap;opacity:0;transition:opacity .35s ease}
   .xpchart.ready .xpc-val{opacity:1}
+  .xpc-val.start,.xpc-val.off,.xpc-val.fut{font-size:14px;font-weight:800}
   .xpc-val .lab{display:block;font-size:8px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.3px;margin-top:1px;text-align:center}
   .xpc-val.start{color:var(--dim)} .xpc-val.off{color:var(--orange)} .xpc-val.fut{color:var(--ink)}
   .xpc-m{position:absolute;bottom:0;transform:translateX(-50%);font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:600;color:var(--dim)}
-  @media(max-width:560px){.xpc-m{font-size:8px}.xpc-val{font-size:11px}}
+  @media(max-width:560px){.xpc-m{font-size:8px}.xpc-val{font-size:9px}.xpc-val.start,.xpc-val.off,.xpc-val.fut{font-size:11px}}
 
   /* ===== MODE SELECTOR ===== */
   .modes{display:flex;gap:7px;padding:18px;overflow-x:auto;scrollbar-width:none}
@@ -636,18 +634,28 @@ const XP_MONTHS = [
   const lineSolid = 'M'+solid.map(p=>`${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' L');
   const dash = `M${pts[n-2].x.toFixed(2)},${pts[n-2].y.toFixed(2)} L${pts[n-1].x.toFixed(2)},${pts[n-1].y.toFixed(2)}`;
   const area = lineSolid + ` L${solid[n-2].x.toFixed(2)},90 L${solid[0].x.toFixed(2)},90 Z`;
+  const DUR = 1.8; // durée tracé (s) — doit matcher l'animation SMIL
+  const delay = x => ((x-5)/90*DUR).toFixed(2); // 0 au 1er point → DUR au dernier
   let svg = `<svg class="xpc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-    <defs><linearGradient id="xpgrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="rgba(242,106,27,0.30)"/><stop offset="1" stop-color="rgba(242,106,27,0)"/></linearGradient></defs>
-    <path class="xpc-area" d="${area}" fill="url(#xpgrad)"/>
-    <path class="xpc-line" d="${lineSolid}"/>
-    <path class="xpc-line dash" d="${dash}"/></svg>`;
+    <defs>
+      <linearGradient id="xpgrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="rgba(242,106,27,0.30)"/><stop offset="1" stop-color="rgba(242,106,27,0)"/></linearGradient>
+      <clipPath id="xpReveal"><rect x="0" y="0" width="0" height="100">
+        <animate id="xpAnim" attributeName="width" begin="indefinite" dur="${DUR}s" fill="freeze"
+          calcMode="spline" keyTimes="0;1" values="0;100" keySplines="0.25 0.1 0.25 1"/>
+      </rect></clipPath>
+    </defs>
+    <g clip-path="url(#xpReveal)">
+      <path class="xpc-area" d="${area}" fill="url(#xpgrad)"/>
+      <path class="xpc-line" d="${lineSolid}"/>
+      <path class="xpc-line dash" d="${dash}"/>
+    </g></svg>`;
   let ov = '';
   pts.forEach((p,i)=>{
     const cls = p.fut?'fut':(p.off?'off':(i===0?'start':'mid'));
-    ov += `<span class="xpc-dot ${cls}" style="left:${p.x}%;top:${p.y}%"></span>`;
-    if (i===0 || p.off || p.fut || i===5)
-      ov += `<span class="xpc-val ${cls}" style="left:${p.x}%;top:${p.y}%">${p.v}${p.lab?`<span class="lab">${p.lab}</span>`:''}</span>`;
+    const d = delay(p.x);
+    ov += `<span class="xpc-dot ${cls}" style="left:${p.x}%;top:${p.y}%;transition-delay:${d}s"></span>`;
+    ov += `<span class="xpc-val ${cls}" style="left:${p.x}%;top:${p.y}%;transition-delay:${d}s">${p.v}${p.lab?`<span class="lab">${p.lab}</span>`:''}</span>`;
     ov += `<span class="xpc-m" style="left:${p.x}%">${p.m}</span>`;
   });
   document.getElementById('xpChart').innerHTML = svg + ov;
@@ -748,8 +756,9 @@ function init(){
   document.querySelectorAll('.rank-val,.m-v').forEach(countUp);
   const chart = document.getElementById('xpChart');
   if (chart) setTimeout(()=>{
-    chart.querySelectorAll('.xpc-dot').forEach((d,i)=>{ d.style.transitionDelay = (0.5 + i*0.06)+'s'; });
-    chart.classList.add('ready');
+    chart.classList.add('ready');               // déclenche l'apparition des points/chiffres (délais inline par point)
+    const anim = document.getElementById('xpAnim');
+    if (anim && anim.beginElement) { try { anim.beginElement(); } catch(e){} }  // tracé progressif de la courbe
   }, 400);
   animateView(0);
 }
