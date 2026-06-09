@@ -658,10 +658,11 @@ function buildXPChart(){
   const xP = i => 5 + (n===1?0:i/(n-1)*90);
   const yP = v => 24 + (1-(v-lo)/(hi-lo))*54;   // zone de tracé 24%..78%
   const pts = XP_MONTHS.map((d,i)=>({...d, x:xP(i), y:yP(d.v)}));
-  const solid = pts.slice(0, n-1);
+  const hasFut = n>0 && XP_MONTHS[n-1].fut;            // pointillé seulement s'il y a un point "à venir"
+  const solid = hasFut ? pts.slice(0, n-1) : pts;       // sinon, toute la courbe est pleine
   const lineSolid = 'M'+solid.map(p=>`${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' L');
-  const dash = `M${pts[n-2].x.toFixed(2)},${pts[n-2].y.toFixed(2)} L${pts[n-1].x.toFixed(2)},${pts[n-1].y.toFixed(2)}`;
-  const area = lineSolid + ` L${solid[n-2].x.toFixed(2)},90 L${solid[0].x.toFixed(2)},90 Z`;
+  const dash = hasFut ? `M${pts[n-2].x.toFixed(2)},${pts[n-2].y.toFixed(2)} L${pts[n-1].x.toFixed(2)},${pts[n-1].y.toFixed(2)}` : '';
+  const area = lineSolid + ` L${solid[solid.length-1].x.toFixed(2)},90 L${solid[0].x.toFixed(2)},90 Z`;
   const DUR = 1.8; // durée tracé (s) — doit matcher l'animation SMIL
   const delay = x => ((x-5)/90*DUR).toFixed(2); // 0 au 1er point → DUR au dernier
   let svg = `<svg class="xpc-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -848,9 +849,12 @@ function setC(id,val){const el=document.getElementById(id);if(el){el.dataset.cou
 function fillHero(){const c=PROFILE.classement;
   document.getElementById('idName').innerHTML=(PROFILE.prenom||'')+'<br>'+(PROFILE.nom||'');
   setC('rankNow',c.mensuel); setC('rkStart',c.debut); setC('rkFrozen',c.officiel); setC('rkFut',c.avenir);
+  const fut=(c.avenir!=null);
+  const futCell=document.getElementById('rkFut'); if(futCell&&futCell.parentElement) futCell.parentElement.style.display=fut?'':'none';  // masque "à venir" si absent
+  const rm=document.querySelector('.rank-meta'); if(rm) rm.style.gridTemplateColumns=fut?'':'1fr 1fr';
   const dOff=(c.mensuel||0)-(c.debut||0), dAv=((c.avenir!=null?c.avenir:c.mensuel)||0)-(c.debut||0);
   const rp=document.getElementById('rankProg'); if(rp)rp.textContent=fmtPts(dOff);
-  const xd=document.querySelector('.xp-delta'); if(xd)xd.innerHTML='<span>'+fmtPts(dOff)+' officiel</span><span class="soft">'+fmtPts(dAv)+' à venir</span>';
+  const xd=document.querySelector('.xp-delta'); if(xd)xd.innerHTML='<span>'+fmtPts(dOff)+' officiel</span>'+(fut?'<span class="soft">'+fmtPts(dAv)+' à venir</span>':'');
   document.title='ACBB TT — '+(PROFILE.prenom||'')+' '+(PROFILE.nom||'');
 }
 function renderModes(){

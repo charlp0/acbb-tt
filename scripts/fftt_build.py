@@ -158,10 +158,11 @@ def build_player(lic, nom, prenom, team_detail=None):
         cut=monthstart(date); return initm+sum(pr for dd,pr in hist if dn(dd)<cut)
     # toutes les parties (validé + non validé) avec nom d'épreuve
     allp=get(f"xml_partie.php?numlic={lic}")
-    comps={}; tot_pts=0.0; perfs=0; cperfs=0; V=D=0; best=None; worst=None
+    comps={}; tot_pts=0.0; nonval_pts=0.0; perfs=0; cperfs=0; V=D=0; best=None; worst=None
     for b in re.findall(r'<partie>(.*?)</partie>', allp, re.S):
         date=tag(b,'date'); opp=tag(b,'nom'); ocls=tag(b,'classement'); epr=tag(b,'epreuve')
         won = tag(b,'victoire')=='V'; coef=float(tag(b,'coefchamp') or 1); idp=tag(b,'idpartie')
+        if ' - ' in ocls: ocls=ocls.split(' - ')[-1]   # joueurs nationaux : "N95 - 2846" -> points = 2846
         try: ocls=int(re.sub(r'\D','',ocls) or 0)
         except: ocls=0
         my=mensuel_at(date) or (initm or 0)
@@ -170,8 +171,10 @@ def build_player(lic, nom, prenom, team_detail=None):
         if EXACT: olvl=opp_mensuel_at(advlic_by_id.get(idp), date)
         if olvl is None: olvl=ocls
         olvl=round(olvl)
-        pts = pts_by_id.get(idp); pts = pts if pts is not None else grille(my,olvl,won,coef)
+        homol = idp in pts_by_id
+        pts = pts_by_id[idp] if homol else grille(my,olvl,won,coef)
         tot_pts+=pts
+        if not homol: nonval_pts+=pts   # points des matchs pas encore homologués (pour le "à venir")
         key,label=categorize(epr)
         c=comps.setdefault(key,{'key':key,'label':label,'V':0,'D':0,'pg':0.0,'pl':0.0,'perf':0,'cperf':0,'best':None,'worst':None,'matches':[]})
         if won: V+=1; c['V']+=1
@@ -203,14 +206,15 @@ def build_player(lic, nom, prenom, team_detail=None):
                 'closest':({'score':f"{d['closest'][0]+2}-{d['closest'][0]}",'opp':d['closest'][1]} if d['closest'] else None),
                 'splits':[{'team':k,'w':v[0],'t':v[1]} for k,v in sorted(d['team'].items())],
             }
-    # à venir = projection officielle FFTT (apointm), bien plus fiable que la re-somme estimée
-    avenir = round(float(apointm)) if apointm else (round(float(pointm)) if pointm else None)
+    # "à venir" retiré pour l'instant (pas calculable de façon fiable via l'API ; chantier ultérieur)
+    avenir = None
     timeline=[]
     if initm is not None:
-        for (lab,(yy,mm)) in zip(MOIS,MB):
+        for (lab,(yy,mm)) in list(zip(MOIS,MB))[:-1]:   # Sept..Juin (escalier mensuel)
             cut=yy*10000+mm*100+1
             timeline.append({'m':lab,'v':round(initm+sum(pr for dd,pr in hist if dn(dd)<cut),1)})
-        if timeline: timeline[-1]={'m':'Juil','v':avenir,'avenir':True}
+        # dernier point = mensuel officiel actuel (exact), pas de projection
+        if pointm: timeline.append({'m':'Actuel','v':round(float(pointm)),'off':True})
     tot=V+D
     return {
         'lic':lic,'nom':nom,'prenom':prenom,'club':CLUB,
