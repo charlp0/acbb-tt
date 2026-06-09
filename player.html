@@ -351,30 +351,41 @@
     <div class="pcard"><div class="pc-lbl">Perfs / Contre-perfs</div><div class="pc-big green">12<span style="font-size:15px;color:var(--dim)"> perfs</span></div><div class="pc-sub">battu 12 adversaires mieux classés · 7 contre-perfs</div></div>
     <div class="pcard feat"><div class="pc-lbl">★ Meilleure perf</div><div class="pc-big green">+258</div><div class="pc-sub">battu <b>GABARD Jean-Gilles</b> · Critérium · <b>15/03</b><br>mensuel 1221 vs 963</div></div>
     <div class="pcard bad"><div class="pc-lbl">Plus gros contre</div><div class="pc-big red">−203</div><div class="pc-sub">perdu vs <b>BICHOT Vincent</b> · Championnat · <b>20/03</b><br>mensuel 760 vs 963</div></div>
-    <div class="pcard" style="grid-column:1/-1;display:grid;grid-template-columns:1fr;gap:0;padding:0;border:none;background:none">
-      <div style="display:grid;grid-template-columns:1fr;gap:10px" class="compwrap">
+    <div style="grid-column:1/-1;display:grid;grid-template-columns:1fr;gap:10px" class="compwrap">
         <div class="pcard"><div class="pc-lbl">Championnat par équipes</div>
           <div class="pc-big">14<span style="font-size:15px;color:var(--dim)">/21</span><span class="pct">67%</span></div>
-          <div class="teamline" style="margin-top:8px"><span class="t" style="font-size:11px">Perfs (battu + fort)</span><span class="r" style="color:#86EFAC">3</span></div>
-          <div class="teamline"><span class="t" style="font-size:11px">Contre-perfs (perdu - fort)</span><span class="r" style="color:#FCA5A5">5</span></div>
-          <div class="teamline"><span class="t" style="font-size:11px">Points gagnés</span><span class="r" style="color:#86EFAC">+54</span></div>
-          <div class="teamline"><span class="t" style="font-size:11px">Points perdus</span><span class="r" style="color:#FCA5A5">−43,5</span></div>
-          <div class="teamline"><span class="t" style="font-size:11px;font-weight:800">Solde</span><span class="r" style="color:#86EFAC;font-weight:800">+10,5</span></div>
+          <div style="margin-top:10px">
+            <div class="ptrow head"><span>Points</span><span>Officiel</span><span>À venir</span></div>
+            <div class="ptrow"><span>Gagnés</span><span class="g">+26,5</span><span class="g">+43,0</span></div>
+            <div class="ptrow"><span>Perdus</span><span class="l">−43,5</span><span class="l">−43,5</span></div>
+            <div class="ptrow tot"><span>Solde</span><span class="l">−17,0</span><span class="l">−0,5</span></div>
+          </div>
+          <div class="pc-sub" style="margin-top:10px"><b>3</b> perfs · <b>5</b> contre-perfs</div>
         </div>
         <div class="pcard"><div class="pc-lbl">Individuel · Critérium fédéral</div>
           <div class="pc-big">18<span style="font-size:15px;color:var(--dim)">/31</span><span class="pct">58%</span></div>
-          <div class="teamline" style="margin-top:8px"><span class="t" style="font-size:11px">Perfs (battu + fort)</span><span class="r" style="color:#86EFAC">9</span></div>
-          <div class="teamline"><span class="t" style="font-size:11px">Contre-perfs (perdu - fort)</span><span class="r" style="color:#FCA5A5">2</span></div>
-          <div class="teamline"><span class="t" style="font-size:11px">Points gagnés</span><span class="r" style="color:#86EFAC">+202,5</span></div>
-          <div class="teamline"><span class="t" style="font-size:11px">Points perdus</span><span class="r" style="color:#FCA5A5">−45,8</span></div>
-          <div class="teamline"><span class="t" style="font-size:11px;font-weight:800">Solde</span><span class="r" style="color:#86EFAC;font-weight:800">+156,7</span></div>
+          <div style="margin-top:10px">
+            <div class="ptrow head"><span>Points</span><span>Officiel</span><span>À venir</span></div>
+            <div class="ptrow"><span>Gagnés</span><span class="g">+202,5</span><span class="g">+202,5</span></div>
+            <div class="ptrow"><span>Perdus</span><span class="l">−45,8</span><span class="l">−45,8</span></div>
+            <div class="ptrow tot"><span>Solde</span><span class="g">+156,8</span><span class="g">+156,8</span></div>
+          </div>
+          <div class="pc-sub" style="margin-top:10px"><b>9</b> perfs · <b>2</b> contre-perfs · <span style="color:var(--dim)">aucun match récent</span></div>
         </div>
-      </div>
     </div>
   </div>
   <p style="font-size:11px;color:var(--dim);font-style:italic;margin-top:14px">52 parties du 10/10/2025 au 05/06/2026, toutes compétitions (championnat par équipes + critérium fédéral / individuel). Perfs et contre-perfs en classement mensuel au moment du match. Points par compétition calculés selon la grille officielle FFTT, derniers matchs (J5-J7) inclus.<br>Repères classement : <b>896</b> = 1er mensuel de septembre · <b>1031</b> = mensuel officiel actuel (+135) · <b>1047</b> = mensuel « à venir », derniers matchs intégrés (+151). Maquette — fiche de démonstration.</p>
 </section>
-<style>@media(min-width:760px){.compwrap{grid-template-columns:1fr 1fr !important}}</style>
+<style>
+@media(min-width:760px){.compwrap{grid-template-columns:1fr 1fr !important}}
+.ptrow{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:12px}
+.ptrow span:first-child{font-family:"Space Grotesk",sans-serif;color:var(--ink-2)}
+.ptrow span:nth-child(2),.ptrow span:nth-child(3){text-align:right;min-width:60px}
+.ptrow.head{border-bottom:1px solid var(--line-2);font-size:9px;text-transform:uppercase;letter-spacing:0.6px}
+.ptrow.head span{color:var(--dim)!important;font-family:"JetBrains Mono",monospace}
+.ptrow.tot{border-bottom:none;font-weight:800}
+.ptrow .g{color:#86EFAC}.ptrow .l{color:#FCA5A5}
+</style>
 
 <script>
 (function(){
