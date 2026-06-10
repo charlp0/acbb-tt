@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: '0 10 * * 1,3'    # lundi & mercredi ~12h Paris (UTC, ±1h selon DST)
   workflow_dispatch:           # déclenchement manuel (bouton "Run workflow" / gh workflow run)
+    inputs:
+      full:
+        description: 'Rebuild complet (1 = tout reconstruire, ignore le cache)'
+        default: '0'
 
 permissions:
   contents: write
@@ -35,6 +39,7 @@ jobs:
           FFTT_ID: ${{ secrets.FFTT_ID }}
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
           FFTT_TOP: '0'          # 0 = tout le club ayant joué ≥1 match cette saison
+          FFTT_FULL: ${{ github.event.inputs.full || '0' }}   # 1 = rebuild complet (manuel)
         run: python3 scripts/fftt_build.py
       - name: Commit si changement
         run: |
