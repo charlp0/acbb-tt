@@ -141,7 +141,7 @@ def build_team_detail(club=CLUB):
                     if iwon and lp>=8 and (d['closest'] is None or lp>d['closest'][0]):
                         d['closest']=(lp, (jb if acbb_ja else ja).strip())
     return det
-def build_player(lic, nom, prenom, team_detail=None):
+def build_player(lic, nom, prenom, team_detail=None, allp=None):
     lb=get(f"xml_licence_b.php?licence={lic}")
     initm=float(tag(lb,'initm') or 0) or None
     point=tag(lb,'point'); pointm=tag(lb,'pointm'); apointm=tag(lb,'apointm')
@@ -162,7 +162,7 @@ def build_player(lic, nom, prenom, team_detail=None):
         if initm is None: return None
         cut=monthstart(date); return initm+sum(pr for dd,pr in hist if dn(dd)<cut)
     # toutes les parties (validé + non validé) avec nom d'épreuve
-    allp=get(f"xml_partie.php?numlic={lic}")
+    if allp is None: allp=get(f"xml_partie.php?numlic={lic}")
     comps={}; tot_pts=0.0; nonval_pts=0.0; perfs=0; cperfs=0; V=D=0; best=None; worst=None
     for b in re.findall(r'<partie>(.*?)</partie>', allp, re.S):
         date=tag(b,'date'); opp=tag(b,'nom'); ocls=tag(b,'classement'); epr=tag(b,'epreuve')
@@ -234,10 +234,39 @@ def build_player(lic, nom, prenom, team_detail=None):
                   'perfs':perfs,'contre_perfs':cperfs,'best':best,'worst':worst},
         'competitions':sorted([c for c in comps.values() if c['key']!='autre'], key=lambda c:-(c['V']+c['D'])),
     }
+STATE_PATH='data/_state.json'; OPP_PATH='data/_oppcache.json'
+def match_sig(allp):
+    # signature des matchs d'un joueur (id + date + résultat) -> détecte un nouveau match sans tout recalculer
+    items=sorted((tag(b,'idpartie') or '', tag(b,'date') or '', tag(b,'victoire') or '')
+                 for b in re.findall(r'<partie>(.*?)</partie>', allp, re.S))
+    return hashlib.sha1(repr(items).encode()).hexdigest()
+def load_oppcache(month):
+    try:
+        oc=json.load(open(OPP_PATH))
+        if oc.get('month')==month:
+            for k,v in oc.get('data',{}).items(): OPPC[k]=(v[0],[tuple(x) for x in v[1]])
+            return len(OPPC)
+    except Exception: pass
+    return 0
+def save_oppcache(month):
+    data={k:[im,[list(x) for x in hh]] for k,(im,hh) in OPPC.items()}
+    json.dump({'month':month,'data':data}, open(OPP_PATH,'w'), ensure_ascii=False)
+
 def main():
     if not APPID or not MDP: sys.exit("FFTT_ID / FFTT_PWD manquants (env vars)")
     args=sys.argv[1:]
     TOP=int(os.environ.get('FFTT_TOP','100') or 0)   # 0 = tout le club ; sinon les N mieux classés AYANT joué ≥1 match
+    MONTH=os.environ.get('FFTT_MONTH') or datetime.date.today().strftime('%Y%m')
+    FULL=os.environ.get('FFTT_FULL','0')=='1'         # 1 = tout reconstruire (ignore le cache)
+    # état précédent : on ne réutilise que si même mois (les classements mensuels FFTT changent au 1er du mois)
+    prev={}
+    try:
+        st=json.load(open(STATE_PATH))
+        if not FULL and st.get('month')==MONTH: prev=st.get('sig',{})
+    except Exception: pass
+    nb_opp = load_oppcache(MONTH) if not FULL else 0
+    mode = "COMPLET (FFTT_FULL)" if FULL else ("INCRÉMENTAL" if prev else f"COMPLET (1er run du mois {MONTH})")
+    print(f"Mode : {mode} — cache adverse : {nb_opp} joueurs préchargés")
     if args:
         ros=roster(CLUB); candidates=[(l, *ros.get(l,('?','')), 0) for l in args]; need=len(candidates)
     else:
@@ -246,21 +275,32 @@ def main():
     print("Collecte du détail championnat (chp_renc)…")
     team_detail=build_team_detail(CLUB)
     print(f"  {len(team_detail)} joueurs ACBB avec détail championnat.")
-    os.makedirs('data/players', exist_ok=True); index=[]; kept=0; skipped=0
+    os.makedirs('data/players', exist_ok=True); index=[]; kept=0; skipped=0; rebuilt=0; reused=0; new_sig={}
     for (lic,nom,prenom,pts) in candidates:
         if kept>=need: break
         try:
-            prof=build_player(lic,nom,prenom,team_detail)
-            if not args and prof['saison']['parties']==0:   # exclure ceux qui n'ont pas joué (pros, inactifs)
-                skipped+=1; continue
-            json.dump(prof, open(f"data/players/{lic}.json","w"), ensure_ascii=False)
+            allp=get(f"xml_partie.php?numlic={lic}")   # appel léger : sert à la signature ET au build si besoin
+            sig=match_sig(allp); new_sig[lic]=sig
+            fpath=f"data/players/{lic}.json"
+            unchanged = (not FULL) and (not args) and prev.get(lic)==sig and os.path.exists(fpath)
+            if unchanged:
+                prof=json.load(open(fpath)); reused+=1
+            else:
+                prof=build_player(lic,nom,prenom,team_detail,allp=allp); rebuilt+=1
+                if not args and prof['saison']['parties']==0:   # exclure ceux qui n'ont pas joué (pros, inactifs)
+                    skipped+=1; continue
+                json.dump(prof, open(fpath,"w"), ensure_ascii=False)
             index.append({'lic':lic,'nom':nom,'prenom':prenom,
                           'mensuel':prof['classement']['mensuel'],'parties':prof['saison']['parties']})
             kept+=1
-            print(f"[{kept}/{need}] {lic} {nom} {prenom} — {prof['saison']['parties']}p {prof['saison']['V']}V/{prof['saison']['D']}D, {len(prof['competitions'])} compét.")
+            flag='=' if unchanged else '↻'
+            print(f"[{kept}/{need}] {flag} {lic} {nom} {prenom} — {prof['saison']['parties']}p {prof['saison']['V']}V/{prof['saison']['D']}D")
         except Exception as e:
             print(f"  {lic} ERREUR: {e}")
-        time.sleep(0.2)
+        time.sleep(0.15)
     json.dump(index, open("data/players_index.json","w"), ensure_ascii=False)
-    print(f"OK — {kept} profils générés ({skipped} sans match, ignorés).")
+    if not args:   # on ne met à jour l'état/cache que sur un run complet du club
+        json.dump({'month':MONTH,'sig':new_sig}, open(STATE_PATH,'w'), ensure_ascii=False)
+        save_oppcache(MONTH)
+    print(f"OK — {kept} profils ({reused} réutilisés, {rebuilt} reconstruits, {skipped} sans match ignorés).")
 if __name__=='__main__': main()
