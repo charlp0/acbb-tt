@@ -247,7 +247,7 @@ STATE_PATH='data/_state.json'; OPP_PATH='data/_oppcache.json'
 
 # Infos statiques des équipes (division + position) pour data/teams.json
 TEAMINFO=[
-  ('M2','N2','Nationale 2','M','1/8'),('M3','R2','Régional 2','M','2/8'),
+  ('M2','N2','Nationale 2','M','1/8'),('M3','R2','Régional 2','M','1/8'),  # M3 1ère : départage Art.14 (confrontation directe gagnée 23-19 vs Rambouillet)
   ('M4','R3','Régional 3','M','3/8'),('M5','R3','Régional 3','M','1/8'),
   ('M6','PR','Pré-Régional','M','8/8'),('M7','PR','Pré-Régional','M','8/8'),
   ('M8','PR','Pré-Régional','M','4/8'),('M9','PR','Pré-Régional','M','2/8'),
