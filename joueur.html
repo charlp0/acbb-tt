@@ -655,7 +655,7 @@ function buildXPChart(){
   if(!n){ document.getElementById('xpChart').innerHTML=''; return; }
   const vals=XP_MONTHS.map(p=>p.v); let lo=Math.min(...vals), hi=Math.max(...vals);  // échelle adaptative au joueur
   const pad=Math.max(20,(hi-lo)*0.3); lo-=pad; hi+=pad; if(hi-lo<80){const mid=(hi+lo)/2; lo=mid-50; hi=mid+50;}
-  const xP = i => 5 + (n===1?0:i/(n-1)*90);
+  const xP = i => n===1 ? 50 : 5 + i/(n-1)*90;
   const yP = v => 24 + (1-(v-lo)/(hi-lo))*54;   // zone de tracé 24%..78%
   const pts = XP_MONTHS.map((d,i)=>({...d, x:xP(i), y:yP(d.v)}));
   const hasFut = n>0 && XP_MONTHS[n-1].fut;            // pointillé seulement s'il y a un point "à venir"
@@ -798,9 +798,13 @@ const COMP_META={equipe:{label:'Ch. Équipe',sub:'Championnat par équipe'},crit
 let PROFILE=null;
 const clampPct=x=>Math.max(0,Math.min(100,Math.round(x)));
 const fmtPts=x=>{const v=Math.round(x*10)/10;return (v>0?'+':'')+String(v).replace('.',',');};
+// écart de classement signé (l'adversaire est X points au-dessus/en-dessous de moi)
+const fmtGap=x=>{const v=Math.round(x);return (v>0?'+':v<0?'−':'±')+Math.abs(v);};
 function compHighlights(c){const hi=[];
-  if(c.best)hi.push({kind:'win',tag:'Meilleure perf',delta:'+'+c.best.delta,opp:c.best.opp,cls:'mensuel '+c.best.opp_cls+' vs '+c.best.my,meta:c.best.date});
-  if(c.worst)hi.push({kind:'lose',tag:'Plus gros contre',delta:'−'+c.worst.delta,opp:c.worst.opp,cls:'mensuel '+c.worst.opp_cls+' vs '+c.worst.my,meta:c.worst.date});
+  if(c.best){const d=c.best.delta;  // d = opp_cls - my : >0 = battu plus fort (vraie perf)
+    hi.push({kind:'win',tag:d>0?'★ Meilleure perf':'Meilleure victoire',delta:fmtGap(d),opp:c.best.opp,cls:'mensuel '+c.best.opp_cls+' vs '+c.best.my,meta:c.best.date});}
+  if(c.worst){const d=-c.worst.delta;  // d = opp_cls - my : <0 = perdu contre plus faible (contre-perf)
+    hi.push({kind:'lose',tag:d<0?'Plus gros contre':'Défaite la + lourde',delta:fmtGap(d),opp:c.worst.opp,cls:'mensuel '+c.worst.opp_cls+' vs '+c.worst.my,meta:c.worst.date});}
   return hi;}
 function compView(c){
   const n=c.V+c.D,wp=c.winpct;
@@ -826,17 +830,17 @@ function compView(c){
   }
   return v;
 }
-function saisonView(p){const s=p.saison,c=p.classement,av=(c.avenir!=null?c.avenir:c.mensuel),delta=av-c.debut,deltaOff=c.mensuel-c.debut;
+function saisonView(p){const s=p.saison,c=p.classement,hasBase=c.debut!=null,av=(c.avenir!=null?c.avenir:c.mensuel),delta=hasBase?(av-c.debut):null,deltaOff=hasBase?(c.mensuel-c.debut):null;
   return {key:'saison',label:'Saison Complète',sub:'Toutes compét.',
     rings:[{label:'Victoires',pct:s.winpct,sub:s.V+'V / '+s.D+'D',foot:'sur '+s.parties+' parties',color:'win'},
            {label:'Perfs',pct:(s.perfs+s.contre_perfs)?clampPct(s.perfs/(s.perfs+s.contre_perfs)*100):0,sub:s.perfs+'P · '+s.contre_perfs+'C',foot:'écart mensuel',color:'acc'},
-           {label:'Progression',pct:clampPct(50+delta/2),sub:fmtPts(delta)+' pts',foot:'sur la saison',color:'gold'}],
+           {label:'Progression',pct:hasBase?clampPct(50+delta/2):50,sub:hasBase?fmtPts(delta)+' pts':'—',foot:hasBase?'sur la saison':'pas d\'historique',color:'gold'}],
     tiles:[{v:String(s.parties),l:'Parties jouées',x:"<span class='o'>"+s.V+'V — '+s.D+'D</span>',cls:''},
            {v:String(s.perfs),l:'Performances',x:"<span class='o'>battu + fort</span>",cls:'up'},
            {v:String(s.contre_perfs),l:'Contre-perfs',x:"<span class='o'>perdu vs - fort</span>",cls:'down'},
-           {v:fmtPts(delta),l:'Progression',x:"<span class='o'>officiel "+fmtPts(deltaOff)+'</span>',cls:'up'}],
-    highlights:[...(s.best?[{kind:'win',tag:'★ Meilleure perf',delta:'+'+s.best.delta,opp:s.best.opp,cls:'mensuel '+s.best.opp_cls+' vs '+s.best.my,meta:s.best.comp+' · '+s.best.date}]:[]),
-                ...(s.worst?[{kind:'lose',tag:'Plus gros contre',delta:'−'+s.worst.delta,opp:s.worst.opp,cls:'mensuel '+s.worst.opp_cls+' vs '+s.worst.my,meta:s.worst.comp+' · '+s.worst.date}]:[])],
+           {v:hasBase?fmtPts(delta):'—',l:'Progression',x:hasBase?("<span class='o'>officiel "+fmtPts(deltaOff)+'</span>'):"<span class='o'>pas d'historique</span>",cls:'up'}],
+    highlights:[...(s.best?[{kind:'win',tag:(s.best.delta>0?'★ Meilleure perf':'Meilleure victoire'),delta:fmtGap(s.best.delta),opp:s.best.opp,cls:'mensuel '+s.best.opp_cls+' vs '+s.best.my,meta:s.best.comp+' · '+s.best.date}]:[]),
+                ...(s.worst?[{kind:'lose',tag:(-s.worst.delta<0?'Plus gros contre':'Défaite la + lourde'),delta:fmtGap(-s.worst.delta),opp:s.worst.opp,cls:'mensuel '+s.worst.opp_cls+' vs '+s.worst.my,meta:s.worst.comp+' · '+s.worst.date}]:[])],
     bars:{title:'Répartition par compétition',rows:p.competitions.map(c=>({name:(COMP_META[c.key]||{label:c.label}).label,sub:'',w:c.V,l:c.D}))}};
 }
 function adapt(p){PROFILE=p;
@@ -852,9 +856,10 @@ function fillHero(){const c=PROFILE.classement;
   const fut=(c.avenir!=null);
   const futCell=document.getElementById('rkFut'); if(futCell&&futCell.parentElement) futCell.parentElement.style.display=fut?'':'none';  // masque "à venir" si absent
   const rm=document.querySelector('.rank-meta'); if(rm) rm.style.gridTemplateColumns=fut?'':'1fr 1fr';
-  const dOff=(c.mensuel||0)-(c.debut||0), dAv=((c.avenir!=null?c.avenir:c.mensuel)||0)-(c.debut||0);
-  const rp=document.getElementById('rankProg'); if(rp)rp.textContent=fmtPts(dOff);
-  const xd=document.querySelector('.xp-delta'); if(xd)xd.innerHTML='<span>'+fmtPts(dOff)+' officiel</span>'+(fut?'<span class="soft">'+fmtPts(dAv)+' à venir</span>':'');
+  const hasBase=(c.debut!=null);
+  const dOff=hasBase?((c.mensuel||0)-c.debut):null, dAv=hasBase?(((c.avenir!=null?c.avenir:c.mensuel)||0)-c.debut):null;
+  const rp=document.getElementById('rankProg'); if(rp)rp.textContent=hasBase?fmtPts(dOff):'—';
+  const xd=document.querySelector('.xp-delta'); if(xd)xd.innerHTML=hasBase?('<span>'+fmtPts(dOff)+' officiel</span>'+(fut?'<span class="soft">'+fmtPts(dAv)+' à venir</span>':'')):'<span class="soft">Pas d\'historique cette saison</span>';
   document.title='ACBB TT — '+(PROFILE.prenom||'')+' '+(PROFILE.nom||'');
 }
 function renderModes(){
