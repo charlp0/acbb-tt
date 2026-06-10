@@ -73,6 +73,7 @@ MOIS=['Sept','Oct','Nov','Déc','Janv','Fév','Mars','Avr','Mai','Juin','Juil']
 MB=[(2025,9),(2025,10),(2025,11),(2025,12),(2026,1),(2026,2),(2026,3),(2026,4),(2026,5),(2026,6),(2026,7)]
 EXACT = os.environ.get('FFTT_FAST','0') != '1'   # exact = reconstruire le mensuel adversaire (défaut). FFTT_FAST=1 -> hybride léger
 OPPC={}   # cache adversaire: licence -> (initm, [(date,pointres)])
+PAIR2TEAM={}  # (nrm joueur ACBB)|(nrm adversaire) -> clé d'équipe (M2..F3), pour rattacher chaque match simple à son équipe
 def opp_mensuel_at(lic, date):
     if not lic: return None
     if lic not in OPPC:
@@ -130,6 +131,8 @@ def build_team_detail(club=CLUB):
                 if nrm(ja) in ACBB: acbb_ja=True; me=ja
                 elif nrm(jb) in ACBB: acbb_ja=False; me=jb
                 else: continue
+                opp_name = (jb if acbb_ja else ja).strip()
+                if opp_name: PAIR2TEAM[nrm(me)+'|'+nrm(opp_name)] = tkey   # rattache (joueur ACBB, adversaire) -> équipe
                 sets=[int(t) for t in detail.split() if re.match(r'^-?\d+$',t)]
                 ws=sum(1 for v in sets if (v>0)==acbb_ja); ls=len(sets)-ws   # manches (signe detail = côté A)
                 won = (ws>ls) if sets else ((sa if acbb_ja else sb) not in ('','-'))
@@ -164,6 +167,8 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
     # toutes les parties (validé + non validé) avec nom d'épreuve
     if allp is None: allp=get(f"xml_partie.php?numlic={lic}")
     comps={}; tot_pts=0.0; nonval_pts=0.0; perfs=0; cperfs=0; V=D=0; best=None; worst=None
+    pteams=list((((team_detail or {}).get(nrm(nom+prenom)) or {}).get('team',{})).keys())  # équipe(s) ACBB du joueur
+    team_levels=[]   # par match simple de championnat : {t:équipe, my:mensuel ACBB, opp:mensuel adverse}
     for b in re.findall(r'<partie>(.*?)</partie>', allp, re.S):
         date=tag(b,'date'); opp=tag(b,'nom'); ocls=tag(b,'classement'); epr=tag(b,'epreuve')
         won = tag(b,'victoire')=='V'; coef=float(tag(b,'coefchamp') or 1); idp=tag(b,'idpartie')
@@ -181,6 +186,9 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
         tot_pts+=pts
         if not homol: nonval_pts+=pts   # points des matchs pas encore homologués (pour le "à venir")
         key,label=categorize(epr)
+        if key=='equipe' and ' et ' not in opp:   # match simple de championnat -> niveau par équipe
+            tk = pteams[0] if len(pteams)==1 else PAIR2TEAM.get(nrm(nom+prenom)+'|'+nrm(opp))
+            if tk: team_levels.append({'t':tk,'my':round(my),'opp':olvl})
         c=comps.setdefault(key,{'key':key,'label':label,'V':0,'D':0,'pg':0.0,'pl':0.0,'perf':0,'cperf':0,'best':None,'worst':None,'matches':[]})
         if won: V+=1; c['V']+=1
         else: D+=1; c['D']+=1
@@ -233,8 +241,43 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
         'saison':{'V':V,'D':D,'parties':tot,'winpct':round(100*V/tot) if tot else 0,
                   'perfs':perfs,'contre_perfs':cperfs,'best':best,'worst':worst},
         'competitions':sorted([c for c in comps.values() if c['key']!='autre'], key=lambda c:-(c['V']+c['D'])),
+        'team_levels':team_levels,
     }
 STATE_PATH='data/_state.json'; OPP_PATH='data/_oppcache.json'
+
+# Infos statiques des équipes (division + position) pour data/teams.json
+TEAMINFO=[
+  ('M2','N2','Nationale 2','M','1/8'),('M3','R2','Régional 2','M','2/8'),
+  ('M4','R3','Régional 3','M','3/8'),('M5','R3','Régional 3','M','1/8'),
+  ('M6','PR','Pré-Régional','M','8/8'),('M7','PR','Pré-Régional','M','8/8'),
+  ('M8','PR','Pré-Régional','M','4/8'),('M9','PR','Pré-Régional','M','2/8'),
+  ('M10','D1','Départemental 1','M','5/8'),('M11','D1','Départemental 1','M','5/8'),
+  ('M12','D2','Départemental 2','M','5/8'),('M13','D2','Départemental 2','M','2/8'),
+  ('M14','D2','Départemental 2','M','4/8'),('M15','D2','Départemental 2','M','5/8'),
+  ('M16','D2','Départemental 2','M','3/7'),('M17','D2','Départemental 2','M','6/7'),
+  ('F1','PN','Pré-Nationale','F','2/8'),('F2','R1','Régional 1','F','4/8'),
+  ('F3','PR','Pré-Régional','F','6/7'),
+]
+def build_teams_json(profiles):
+    """Agrège, par équipe puis par division, le mensuel réel ACBB vs adverse au moment des matchs."""
+    acc={}   # tkey -> {'acbb':[...], 'opp':[...]}
+    for p in profiles:
+        for tl in (p.get('team_levels') or []):
+            a=acc.setdefault(tl['t'], {'acbb':[],'opp':[]})
+            if isinstance(tl.get('my'),(int,float)) and tl['my']>0: a['acbb'].append(tl['my'])
+            if isinstance(tl.get('opp'),(int,float)) and tl['opp']>0: a['opp'].append(tl['opp'])
+    avg=lambda l: round(sum(l)/len(l)) if l else None
+    teams=[]; divacc={}
+    for (k,short,label,genre,pos) in TEAMINFO:
+        a=acc.get(k,{'acbb':[],'opp':[]})
+        teams.append({'key':k,'short':short,'label':label,'genre':genre,'pos':pos,
+                      'acbb':avg(a['acbb']),'opp':avg(a['opp']),'n':len(a['acbb'])})
+        dk=(genre,label,short)
+        d=divacc.setdefault(dk,{'acbb':[],'opp':[]})
+        d['acbb']+=a['acbb']; d['opp']+=a['opp']
+    divisions=[{'short':s,'label':lab,'genre':g,'acbb':avg(v['acbb']),'opp':avg(v['opp']),'n':len(v['acbb'])}
+               for (g,lab,s),v in divacc.items()]
+    return {'teams':teams,'divisions':divisions}
 def match_sig(allp):
     # signature des matchs d'un joueur (id + date + résultat) -> détecte un nouveau match sans tout recalculer
     items=sorted((tag(b,'idpartie') or '', tag(b,'date') or '', tag(b,'victoire') or '')
@@ -275,7 +318,7 @@ def main():
     print("Collecte du détail championnat (chp_renc)…")
     team_detail=build_team_detail(CLUB)
     print(f"  {len(team_detail)} joueurs ACBB avec détail championnat.")
-    os.makedirs('data/players', exist_ok=True); index=[]; kept=0; skipped=0; rebuilt=0; reused=0; new_sig={}
+    os.makedirs('data/players', exist_ok=True); index=[]; profiles=[]; kept=0; skipped=0; rebuilt=0; reused=0; new_sig={}
     for (lic,nom,prenom,pts) in candidates:
         if kept>=need: break
         try:
@@ -292,14 +335,18 @@ def main():
                 json.dump(prof, open(fpath,"w"), ensure_ascii=False)
             index.append({'lic':lic,'nom':nom,'prenom':prenom,
                           'mensuel':prof['classement']['mensuel'],'parties':prof['saison']['parties']})
-            kept+=1
+            profiles.append(prof); kept+=1
             flag='=' if unchanged else '↻'
             print(f"[{kept}/{need}] {flag} {lic} {nom} {prenom} — {prof['saison']['parties']}p {prof['saison']['V']}V/{prof['saison']['D']}D")
         except Exception as e:
             print(f"  {lic} ERREUR: {e}")
         time.sleep(0.15)
     json.dump(index, open("data/players_index.json","w"), ensure_ascii=False)
-    if not args:   # on ne met à jour l'état/cache que sur un run complet du club
+    if not args:   # on ne met à jour l'état/cache/teams que sur un run complet du club
+        tj=build_teams_json(profiles)
+        json.dump(tj, open("data/teams.json","w"), ensure_ascii=False)
+        n2=next((t for t in tj['teams'] if t['key']=='M2'), {})
+        print(f"  teams.json : ACBB N2 mensuel={n2.get('acbb')} (attendu ~2236), adv={n2.get('opp')}, n={n2.get('n')}")
         json.dump({'built':datetime.date.today().isoformat(),'sig':new_sig}, open(STATE_PATH,'w'), ensure_ascii=False)
         save_oppcache()
     print(f"OK — {kept} profils ({reused} réutilisés, {rebuilt} reconstruits, {skipped} sans match ignorés).")
