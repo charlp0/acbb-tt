@@ -240,32 +240,32 @@ def match_sig(allp):
     items=sorted((tag(b,'idpartie') or '', tag(b,'date') or '', tag(b,'victoire') or '')
                  for b in re.findall(r'<partie>(.*?)</partie>', allp, re.S))
     return hashlib.sha1(repr(items).encode()).hexdigest()
-def load_oppcache(month):
+def load_oppcache():
+    # le passé est figé : les classements adverses reconstruits ne changent jamais -> cache persistant
     try:
         oc=json.load(open(OPP_PATH))
-        if oc.get('month')==month:
-            for k,v in oc.get('data',{}).items(): OPPC[k]=(v[0],[tuple(x) for x in v[1]])
-            return len(OPPC)
+        for k,v in oc.get('data',{}).items(): OPPC[k]=(v[0],[tuple(x) for x in v[1]])
+        return len(OPPC)
     except Exception: pass
     return 0
-def save_oppcache(month):
+def save_oppcache():
     data={k:[im,[list(x) for x in hh]] for k,(im,hh) in OPPC.items()}
-    json.dump({'month':month,'data':data}, open(OPP_PATH,'w'), ensure_ascii=False)
+    json.dump({'data':data}, open(OPP_PATH,'w'), ensure_ascii=False)
 
 def main():
     if not APPID or not MDP: sys.exit("FFTT_ID / FFTT_PWD manquants (env vars)")
     args=sys.argv[1:]
     TOP=int(os.environ.get('FFTT_TOP','100') or 0)   # 0 = tout le club ; sinon les N mieux classés AYANT joué ≥1 match
-    MONTH=os.environ.get('FFTT_MONTH') or datetime.date.today().strftime('%Y%m')
     FULL=os.environ.get('FFTT_FULL','0')=='1'         # 1 = tout reconstruire (ignore le cache)
-    # état précédent : on ne réutilise que si même mois (les classements mensuels FFTT changent au 1er du mois)
+    # Le passé étant figé, on ne recalcule un joueur que s'il a joué un NOUVEAU match
+    # (signature des matchs). Pas de rebuild forcé au changement de mois.
     prev={}
     try:
         st=json.load(open(STATE_PATH))
-        if not FULL and st.get('month')==MONTH: prev=st.get('sig',{})
+        if not FULL: prev=st.get('sig',{})
     except Exception: pass
-    nb_opp = load_oppcache(MONTH) if not FULL else 0
-    mode = "COMPLET (FFTT_FULL)" if FULL else ("INCRÉMENTAL" if prev else f"COMPLET (1er run du mois {MONTH})")
+    nb_opp = load_oppcache() if not FULL else 0
+    mode = "COMPLET (FFTT_FULL)" if FULL else ("INCRÉMENTAL" if prev else "COMPLET (amorçage, pas de cache)")
     print(f"Mode : {mode} — cache adverse : {nb_opp} joueurs préchargés")
     if args:
         ros=roster(CLUB); candidates=[(l, *ros.get(l,('?','')), 0) for l in args]; need=len(candidates)
@@ -300,7 +300,7 @@ def main():
         time.sleep(0.15)
     json.dump(index, open("data/players_index.json","w"), ensure_ascii=False)
     if not args:   # on ne met à jour l'état/cache que sur un run complet du club
-        json.dump({'month':MONTH,'sig':new_sig}, open(STATE_PATH,'w'), ensure_ascii=False)
-        save_oppcache(MONTH)
+        json.dump({'built':datetime.date.today().isoformat(),'sig':new_sig}, open(STATE_PATH,'w'), ensure_ascii=False)
+        save_oppcache()
     print(f"OK — {kept} profils ({reused} réutilisés, {rebuilt} reconstruits, {skipped} sans match ignorés).")
 if __name__=='__main__': main()
