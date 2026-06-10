@@ -145,6 +145,11 @@ def build_player(lic, nom, prenom, team_detail=None):
     lb=get(f"xml_licence_b.php?licence={lic}")
     initm=float(tag(lb,'initm') or 0) or None
     point=tag(lb,'point'); pointm=tag(lb,'pointm'); apointm=tag(lb,'apointm')
+    offpts = int(point) if (point and point.isdigit()) else None
+    # niveau de référence quand l'API ne donne pas de mensuel (ex: licencié récent, pas d'historique) :
+    # mensuel > début saison > officiel figé > 0. Évite un "my=0" qui fausse toutes les perfs.
+    base_level = (float(pointm) if pointm else None)
+    if base_level is None: base_level = initm if initm is not None else (float(offpts) if offpts is not None else 0)
     # historique points (validé) pour mensuel + jointure pointres par idpartie
     pmysql=get(f"xml_partie_mysql.php?licence={lic}")
     hist=[]; pts_by_id={}; advlic_by_id={}
@@ -165,7 +170,7 @@ def build_player(lic, nom, prenom, team_detail=None):
         if ' - ' in ocls: ocls=ocls.split(' - ')[-1]   # joueurs nationaux : "N95 - 2846" -> points = 2846
         try: ocls=int(re.sub(r'\D','',ocls) or 0)
         except: ocls=0
-        my=mensuel_at(date) or (initm or 0)
+        my=mensuel_at(date) or base_level
         # niveau adversaire : exact = mensuel au moment du match (via licence des matchs homologués) ; sinon classement courant
         olvl=None
         if EXACT: olvl=opp_mensuel_at(advlic_by_id.get(idp), date)
@@ -215,11 +220,14 @@ def build_player(lic, nom, prenom, team_detail=None):
             timeline.append({'m':lab,'v':round(initm+sum(pr for dd,pr in hist if dn(dd)<cut),1)})
         # dernier point = mensuel officiel actuel (exact), pas de projection
         if pointm: timeline.append({'m':'Actuel','v':round(float(pointm)),'off':True})
+    elif base_level:
+        # pas d'historique mensuel : au moins un point "Actuel" pour ne pas avoir une courbe vide
+        timeline.append({'m':'Actuel','v':round(base_level),'off':True})
     tot=V+D
     return {
         'lic':lic,'nom':nom,'prenom':prenom,'club':CLUB,
         'classement':{'officiel':int(point) if point.isdigit() else point,
-                      'mensuel':round(float(pointm)) if pointm else None,
+                      'mensuel':round(float(pointm)) if pointm else (offpts if offpts is not None else None),
                       'debut':round(initm) if initm else None,'avenir':avenir},
         'timeline':timeline,
         'saison':{'V':V,'D':D,'parties':tot,'winpct':round(100*V/tot) if tot else 0,

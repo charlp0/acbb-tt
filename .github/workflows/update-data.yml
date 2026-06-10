@@ -25,7 +25,7 @@ jobs:
         env:
           FFTT_ID: ${{ secrets.FFTT_ID }}
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
-          FFTT_TOP: '100'        # pour l'instant : les 100 mieux classés (0 = tout le club)
+          FFTT_TOP: '0'          # 0 = tout le club ayant joué ≥1 match cette saison
         run: python3 scripts/fftt_build.py
       - name: Commit si changement
         run: |
