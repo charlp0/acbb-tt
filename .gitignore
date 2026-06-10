@@ -1,0 +1,4 @@
+
+# Cache incrémental du robot FFTT (stocké dans le cache GitHub Actions, pas dans git)
+data/_state.json
+data/_oppcache.json

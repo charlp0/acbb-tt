@@ -21,6 +21,15 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install requests
+      - name: Restaurer le cache incrémental (état + adversaires)
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/_state.json
+            data/_oppcache.json
+          key: fftt-cache-${{ github.run_id }}    # toujours unique -> sauvegarde à chaque run
+          restore-keys: |
+            fftt-cache-                            # restaure le cache le plus récent
       - name: Génération des profils joueurs
         env:
           FFTT_ID: ${{ secrets.FFTT_ID }}
