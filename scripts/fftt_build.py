@@ -307,7 +307,7 @@ def main():
         st=json.load(open(STATE_PATH))
         if not FULL: prev=st.get('sig',{})
     except Exception: pass
-    nb_opp = load_oppcache() if not FULL else 0
+    nb_opp = load_oppcache()   # le cache adverse (passé figé) est toujours valide, même en mode full
     mode = "COMPLET (FFTT_FULL)" if FULL else ("INCRÉMENTAL" if prev else "COMPLET (amorçage, pas de cache)")
     print(f"Mode : {mode} — cache adverse : {nb_opp} joueurs préchargés")
     if args:
