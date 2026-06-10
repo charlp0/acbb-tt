@@ -98,4 +98,6 @@ document.getElementById('sort').addEventListener('click',()=>{ sortMode=(sortMod
 fetch('data/players_index.json',{cache:'no-cache'}).then(r=>r.json()).then(d=>{PLAYERS=d; render();})
   .catch(e=>{document.getElementById('grid').innerHTML='<div class="empty">Index indisponible.</div>';});
 </script>
-</div></body></html>
+</div>
+<script src="report.js" defer></script>
+</body></html>
