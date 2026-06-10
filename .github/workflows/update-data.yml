@@ -50,6 +50,8 @@ jobs:
             echo "Aucun changement dans les données."
           else
             git commit -m "data: mise à jour auto $(date -u +%Y-%m-%d)"
-            git pull --rebase origin main || true
-            git push || (git pull --rebase origin main && git push)
+            # les données générées font foi : en cas de divergence, on garde notre version (-X ours)
+            git fetch origin main
+            git merge -s recursive -X ours origin/main -m "merge auto (priorité données robot)" || true
+            git push || (git fetch origin main && git merge -s recursive -X ours origin/main -m "merge auto" && git push)
           fi

@@ -209,7 +209,7 @@
   .adv-diff.down{color:var(--lose-lt);background:rgba(242,99,86,0.14)}
   .adv-diff.eq{color:var(--dim);background:var(--panel-2)}
   .adv-bars{display:flex;flex-direction:column;gap:7px}
-  .adv-bar{display:grid;grid-template-columns:54px 1fr 44px;gap:9px;align-items:center}
+  .adv-bar{display:grid;grid-template-columns:74px 1fr 46px;gap:9px;align-items:center}
   .adv-bar .bl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:0.4px;font-weight:700}
   .adv-bar .bt{height:9px;border-radius:99px;background:var(--panel-2);overflow:hidden;position:relative}
   .adv-bar .bf{height:100%;border-radius:99px}
@@ -279,7 +279,7 @@
 </section>
 
 <section id="view-adverse" class="tabview" hidden>
-  <div class="adv-intro">Niveau des joueurs ACBB alignés en championnat : <b>mensuel</b> (classement au moment de chaque match) vs <b>officiel</b>, et l'écart (progression). Par division puis par équipe.</div>
+  <div class="adv-intro">Niveau réel rencontré en championnat : classement <b>mensuel</b> (au moment de chaque match) des <b>adversaires</b> vs des joueurs <b>ACBB</b> alignés. Par division puis par équipe.</div>
   <div id="advDivisions" class="adv-block"></div>
   <div id="advTeams" class="adv-block"></div>
 </section>
@@ -1261,88 +1261,55 @@ window.DATA = DATA;
   renderAll();
 
   /* ===== Onglet "Niveau des équipes" =====
-     Mensuel = classement reconstruit au moment de chaque match (escalier mensuel FFTT),
-     moyenné sur les présences ACBB ; Officiel = classement officiel figé ; écart = progression.
-     Valeurs calculées par le robot (phase 2). */
-  const LEVELS = {
-    divisions: {
-      M: [
-        {badge:'N2', name:'Nationale 2',     mensuel:2236, officiel:2226, n:65},
-        {badge:'R2', name:'Régional 2',      mensuel:1615, officiel:1563, n:84},
-        {badge:'R3', name:'Régional 3',      mensuel:1365, officiel:1340, n:146},
-        {badge:'PR', name:'Pré-Régional',    mensuel:1221, officiel:1198, n:333},
-        {badge:'D1', name:'Départemental 1', mensuel:983,  officiel:959,  n:161},
-        {badge:'D2', name:'Départemental 2', mensuel:653,  officiel:636,  n:454},
-      ],
-      F: [
-        {badge:'PN', name:'Pré-Nationale',   mensuel:1066, officiel:1002, n:84},
-        {badge:'R1', name:'Régional 1',      mensuel:821,  officiel:808,  n:81},
-        {badge:'PR', name:'Pré-Régional',    mensuel:619,  officiel:615,  n:72},
-      ]
-    },
-    teams: {
-      M: [
-        {badge:'N2', name:'Équipe 2',  pos:'1/8', mensuel:2236, officiel:2226, n:65},
-        {badge:'R2', name:'Équipe 3',  pos:'2/8', mensuel:1615, officiel:1563, n:84},
-        {badge:'R3', name:'Équipe 4',  pos:'3/8', mensuel:1421, officiel:1375, n:75},
-        {badge:'R3', name:'Équipe 5',  pos:'1/8', mensuel:1306, officiel:1302, n:71},
-        {badge:'PR', name:'Équipe 6',  pos:'8/8', mensuel:1301, officiel:1255, n:84},
-        {badge:'PR', name:'Équipe 7',  pos:'8/8', mensuel:1221, officiel:1198, n:84},
-        {badge:'PR', name:'Équipe 8',  pos:'4/8', mensuel:1183, officiel:1161, n:84},
-        {badge:'PR', name:'Équipe 9',  pos:'2/8', mensuel:1178, officiel:1177, n:81},
-        {badge:'D1', name:'Équipe 10', pos:'5/8', mensuel:971,  officiel:946,  n:81},
-        {badge:'D1', name:'Équipe 11', pos:'5/8', mensuel:996,  officiel:973,  n:80},
-        {badge:'D2', name:'Équipe 12', pos:'5/8', mensuel:689,  officiel:655,  n:72},
-        {badge:'D2', name:'Équipe 13', pos:'2/8', mensuel:611,  officiel:603,  n:79},
-        {badge:'D2', name:'Équipe 14', pos:'4/8', mensuel:690,  officiel:679,  n:84},
-        {badge:'D2', name:'Équipe 15', pos:'5/8', mensuel:652,  officiel:628,  n:84},
-        {badge:'D2', name:'Équipe 16', pos:'3/7', mensuel:602,  officiel:588,  n:67},
-        {badge:'D2', name:'Équipe 17', pos:'6/7', mensuel:672,  officiel:656,  n:68},
-      ],
-      F: [
-        {badge:'PN', name:'Équipe Féminine 1', pos:'2/8', mensuel:1066, officiel:1002, n:84},
-        {badge:'R1', name:'Équipe Féminine 2', pos:'4/8', mensuel:821,  officiel:808,  n:81},
-        {badge:'PR', name:'Équipe Féminine 3', pos:'6/7', mensuel:619,  officiel:615,  n:72},
-      ]
-    }
-  };
-  // échelle commune (toutes les barres comparables d'une équipe/division à l'autre)
-  const GMAX = 2300;
+     Comparaison du classement MENSUEL réel (reconstruit au moment de chaque match),
+     adversaires rencontrés vs joueurs ACBB alignés. Données : data/teams.json (robot). */
+  let GMAX = 2400;  // échelle commune des barres (recalculée selon les données)
 
-  function lvlRow(r){
-    const ec = r.mensuel - r.officiel;
-    const ecCls = ec>0?'up':(ec<0?'down':'eq');
-    const ecTxt = (ec>0?'+':(ec<0?'−':'±'))+Math.abs(ec)+' pts';
+  function teamName(k){ return k[0]==='F' ? 'Équipe Féminine '+k.slice(1) : 'Équipe '+k.slice(1); }
+
+  function lvlRow(r, name){
+    const a = (typeof r.acbb==='number')?r.acbb:null, o = (typeof r.opp==='number')?r.opp:null;
+    let diff = '<span class="adv-diff eq">—</span>';
+    if(a!=null && o!=null){
+      const d = a - o;  // >0 = ACBB joue plus fort que ses adversaires
+      const cls = d>0?'up':(d<0?'down':'eq');
+      diff = `<span class="adv-diff ${cls}">${d>0?'+':(d<0?'−':'±')}${Math.abs(d)} pts</span>`;
+    }
     const bar = (label, v, cls) => `
       <div class="adv-bar ${cls}">
         <span class="bl">${label}</span>
-        <div class="bt"><div class="bf" style="width:${Math.round(v/GMAX*100)}%"></div></div>
-        <span class="bv">${v}</span>
+        <div class="bt"><div class="bf" style="width:${v!=null?Math.round(v/GMAX*100):0}%"></div></div>
+        <span class="bv">${v!=null?v:'—'}</span>
       </div>`;
-    const meta = (r.pos?`${r.pos} · `:'')+`${r.n} présences`;
+    const meta = `Classement mensuel${r.pos?` · ${r.pos}`:''} · ${r.n} matchs`;
     return `
       <div class="adv-row">
         <div class="adv-row-top">
-          <span class="adv-badge">${r.badge}</span>
-          <span class="adv-name">${r.name}</span>
-          <span class="adv-diff ${ecCls}">${ecTxt}</span>
+          <span class="adv-badge">${r.short||r.badge}</span>
+          <span class="adv-name">${name}</span>
+          ${diff}
         </div>
         <div class="adv-bars">
-          ${bar('Mensuel', r.mensuel, 'acbb')}
-          ${bar('Officiel', r.officiel, 'opp')}
+          ${bar('Adversaires', o, 'opp')}
+          ${bar('ACBB', a, 'acbb')}
         </div>
         <div class="adv-meta">${meta}</div>
       </div>`;
   }
 
-  function renderAdverse(){
-    const section = (rows) =>
-      '<div class="adv-genre">Championnat Masculin</div>' + rows.M.map(lvlRow).join('') +
-      '<div class="adv-genre">Championnat Féminin</div>' + rows.F.map(lvlRow).join('');
+  async function renderAdverse(){
+    let DATA;
+    try{ DATA = await (await fetch('data/teams.json',{cache:'no-cache'})).json(); }
+    catch(e){ document.getElementById('advDivisions').innerHTML='<div class="adv-intro">Données indisponibles.</div>'; return; }
+    const all = [].concat(DATA.teams||[], DATA.divisions||[]);
+    GMAX = Math.max(2000, ...all.flatMap(r=>[r.acbb||0, r.opp||0])) * 1.05;
+    const byGenre = (arr, name) =>
+      '<div class="adv-genre">Championnat Masculin</div>' + arr.filter(r=>r.genre==='M').map(r=>lvlRow(r,name(r))).join('') +
+      '<div class="adv-genre">Championnat Féminin</div>' + arr.filter(r=>r.genre==='F').map(r=>lvlRow(r,name(r))).join('');
     document.getElementById('advDivisions').innerHTML =
-      '<div class="adv-h">Par division</div>' + section(LEVELS.divisions);
+      '<div class="adv-h">Par division</div>' + byGenre(DATA.divisions||[], r=>r.label);
     document.getElementById('advTeams').innerHTML =
-      '<div class="adv-h">Par équipe</div>' + section(LEVELS.teams);
+      '<div class="adv-h">Par équipe</div>' + byGenre(DATA.teams||[], r=>teamName(r.key));
   }
 
   /* ===== Bascule d'onglets ===== */
