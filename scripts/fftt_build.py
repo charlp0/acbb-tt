@@ -167,7 +167,6 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
     # toutes les parties (validé + non validé) avec nom d'épreuve
     if allp is None: allp=get(f"xml_partie.php?numlic={lic}")
     comps={}; tot_pts=0.0; nonval_pts=0.0; perfs=0; cperfs=0; V=D=0; best=None; worst=None
-    pteams=list((((team_detail or {}).get(nrm(nom+prenom)) or {}).get('team',{})).keys())  # équipe(s) ACBB du joueur
     team_levels=[]   # par match simple de championnat : {t:équipe, my:mensuel ACBB, opp:mensuel adverse}
     for b in re.findall(r'<partie>(.*?)</partie>', allp, re.S):
         date=tag(b,'date'); opp=tag(b,'nom'); ocls=tag(b,'classement'); epr=tag(b,'epreuve')
@@ -187,7 +186,9 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
         if not homol: nonval_pts+=pts   # points des matchs pas encore homologués (pour le "à venir")
         key,label=categorize(epr)
         if key=='equipe' and ' et ' not in opp:   # match simple de championnat -> niveau par équipe
-            tk = pteams[0] if len(pteams)==1 else PAIR2TEAM.get(nrm(nom+prenom)+'|'+nrm(opp))
+            # PAIR2TEAM uniquement (paires issues des feuilles de rencontre PHASE 2) :
+            # un raccourci "équipe unique du joueur" taggerait aussi ses matchs de phase 1.
+            tk = PAIR2TEAM.get(nrm(nom+prenom)+'|'+nrm(opp))
             if tk: team_levels.append({'t':tk,'my':round(my),'opp':olvl})
         c=comps.setdefault(key,{'key':key,'label':label,'V':0,'D':0,'pg':0.0,'pl':0.0,'perf':0,'cperf':0,'best':None,'worst':None,'matches':[]})
         if won: V+=1; c['V']+=1
@@ -341,6 +342,13 @@ def main():
         except Exception as e:
             print(f"  {lic} ERREUR: {e}")
         time.sleep(0.15)
+    # garde-fou : si l'API a flanché (collecte très incomplète), on n'écrase RIEN —
+    # le run échoue, les données en prod restent intactes.
+    if not args:
+        try: prev_n=len(json.load(open("data/players_index.json")))
+        except Exception: prev_n=0
+        if prev_n>=20 and kept < prev_n*0.8:
+            sys.exit(f"ABORT: collecte incomplète ({kept} profils vs {prev_n} précédents) — aucune écriture, run en échec.")
     json.dump(index, open("data/players_index.json","w"), ensure_ascii=False)
     if not args:   # on ne met à jour l'état/cache/teams que sur un run complet du club
         tj=build_teams_json(profiles)
