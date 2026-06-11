@@ -347,6 +347,8 @@ def main():
         json.dump(tj, open("data/teams.json","w"), ensure_ascii=False)
         n2=next((t for t in tj['teams'] if t['key']=='M2'), {})
         print(f"  teams.json : ACBB N2 mensuel={n2.get('acbb')} (attendu ~2236), adv={n2.get('opp')}, n={n2.get('n')}")
+        # horodatage de la dernière mise à jour (UTC ISO) -> affiché formaté côté client (heure de Paris)
+        json.dump({'built':datetime.datetime.now(datetime.timezone.utc).isoformat()}, open("data/meta.json","w"), ensure_ascii=False)
         json.dump({'built':datetime.date.today().isoformat(),'sig':new_sig}, open(STATE_PATH,'w'), ensure_ascii=False)
         save_oppcache()
     print(f"OK — {kept} profils ({reused} réutilisés, {rebuilt} reconstruits, {skipped} sans match ignorés).")
