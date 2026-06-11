@@ -106,8 +106,11 @@
         okBox=ov.querySelector('.rep-ok'), errBox=ov.querySelector('.rep-err'),
         btn=ov.querySelector('.rep-btn'), pageInput=ov.querySelector('[name=page]');
 
-    function open(){ pageInput.value=ctx(); ov.classList.add('open'); document.body.style.overflow='hidden'; }
-    function close(){ ov.classList.remove('open'); document.body.style.overflow=''; }
+    var lastFocus=null;
+    function open(){ lastFocus=document.activeElement; pageInput.value=ctx(); ov.classList.add('open'); document.body.style.overflow='hidden';
+      var first=ov.querySelector('[name=message]'); if(first) setTimeout(function(){ first.focus(); }, 60); }
+    function close(){ ov.classList.remove('open'); document.body.style.overflow='';
+      if(lastFocus && lastFocus.focus) lastFocus.focus(); }
     bar.addEventListener('click', open);
     var fl=foot.querySelector('.rep-foot-link'); if(fl) fl.addEventListener('click', open);
     ov.querySelector('.rep-x').addEventListener('click', close);
@@ -125,7 +128,7 @@
       fetch(ENDPOINT,{method:'POST',body:data,headers:{'Accept':'application/json'}})
         .then(function(r){ if(!r.ok) throw new Error('http'); return r.json().catch(function(){return {};}); })
         .then(function(){ form.style.display='none'; okBox.style.display='block'; setTimeout(close,2600); })
-        .catch(function(){ errBox.textContent='Oups, envoi impossible. Réessaie ou écris à charles@mwm.io.'; errBox.style.display='block'; })
+        .catch(function(){ errBox.textContent='Oups, envoi impossible. Réessaie dans un instant.'; errBox.style.display='block'; })
         .finally(function(){ btn.disabled=false; btn.textContent='Envoyer le signalement'; });
     });
   }

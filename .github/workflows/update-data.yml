@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: fftt-data
@@ -55,3 +56,13 @@ jobs:
             git merge -s recursive -X ours origin/main -m "merge auto (priorité données robot)" || true
             git push || (git fetch origin main && git merge -s recursive -X ours origin/main -m "merge auto" && git push)
           fi
+      - name: Alerte si échec (issue GitHub)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "🤖 Échec mise à jour données FFTT — $(date -u +%d/%m/%Y)" \
+            --body "Le run a échoué : https://github.com/$GITHUB_REPOSITORY/actions/runs/${{ github.run_id }}
+
+          Les données en prod n'ont pas été modifiées (garde-fou). Relancer manuellement : onglet Actions → Run workflow." || true
