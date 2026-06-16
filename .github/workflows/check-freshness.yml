@@ -1,0 +1,41 @@
+name: Vérif fraîcheur des données
+
+# Garde-fou : si AUCUN run de mise à jour n'a réussi depuis >4 jours
+# (ex. tous les créneaux cron sautés), ouvre une issue d'alerte.
+# Tourne tous les jours à 2 heures (les crons GitHub étant parfois sautés/retardés).
+on:
+  schedule:
+    - cron: '0 9 * * *'
+    - cron: '0 19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Âge des données + alerte si périmé
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SEUIL_JOURS: '4'
+        run: |
+          BUILT=$(python3 -c "import json;print(json.load(open('data/meta.json'))['built'][:10])")
+          AGE=$(( ( $(date -u +%s) - $(date -u -d "$BUILT" +%s) ) / 86400 ))
+          echo "Dernière mise à jour : $BUILT — soit $AGE jour(s)."
+          if [ "$AGE" -le "$SEUIL_JOURS" ]; then
+            echo "Données fraîches, rien à signaler."; exit 0
+          fi
+          # évite les doublons d'issue
+          OUVERTES=$(gh issue list -R "$GITHUB_REPOSITORY" --state open --search "Données périmées in:title" --json number -q 'length')
+          if [ "$OUVERTES" != "0" ]; then
+            echo "Issue d'alerte déjà ouverte, on ne duplique pas."; exit 0
+          fi
+          gh issue create -R "$GITHUB_REPOSITORY" \
+            --title "⚠️ Données périmées — $AGE jours sans mise à jour" \
+            --body "Dernière mise à jour des données : **$BUILT** ($AGE jours).
+
+          Le robot n'a pas réussi à se mettre à jour (créneaux cron sautés ?). Relancer manuellement : onglet **Actions → Mise à jour données FFTT → Run workflow**." || true
