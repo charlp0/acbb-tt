@@ -301,6 +301,15 @@ def main():
     args=sys.argv[1:]
     TOP=int(os.environ.get('FFTT_TOP','100') or 0)   # 0 = tout le club ; sinon les N mieux classés AYANT joué ≥1 match
     FULL=os.environ.get('FFTT_FULL','0')=='1'         # 1 = tout reconstruire (ignore le cache)
+    # Créneaux multiples (runs programmés) : si déjà mis à jour aujourd'hui, on ne refait rien (0 appel API).
+    # Un déclenchement manuel force toujours la mise à jour (FFTT_SKIP_IF_FRESH=0).
+    if not args and not FULL and os.environ.get('FFTT_SKIP_IF_FRESH')=='1':
+        try:
+            built=json.load(open("data/meta.json")).get('built','')[:10]
+            today_utc=datetime.datetime.now(datetime.timezone.utc).date().isoformat()
+            if built==today_utc:
+                print(f"Déjà à jour aujourd'hui ({built}) — run ignoré."); return
+        except Exception: pass
     # Le passé étant figé, on ne recalcule un joueur que s'il a joué un NOUVEAU match
     # (signature des matchs). Pas de rebuild forcé au changement de mois.
     prev={}
