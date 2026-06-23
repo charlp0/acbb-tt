@@ -1,11 +1,11 @@
 name: Mise à jour données FFTT
 
 on:
-  schedule:                    # lun + mer, 4 créneaux (les crons GitHub sont souvent retardés/sautés)
-    - cron: '0 8 * * 1,3'      # le 1er qui passe met à jour ; les suivants voient "déjà fait aujourd'hui" et ne font rien
-    - cron: '0 12 * * 1,3'
-    - cron: '0 16 * * 1,3'
-    - cron: '0 20 * * 1,3'
+  schedule:                    # tous les jours, 4 créneaux (les crons GitHub sont souvent retardés/sautés)
+    - cron: '0 6 * * *'        # ~8h Paris  — le 1er run réussi du jour met à jour ; les suivants voient "déjà fait aujourd'hui" et s'arrêtent (FFTT_SKIP_IF_FRESH)
+    - cron: '0 11 * * *'       # ~13h Paris
+    - cron: '0 17 * * *'       # ~19h Paris — capte les tournois du week-end le dimanche soir
+    - cron: '0 21 * * *'       # ~23h Paris — filet de sécurité (résultats homologués tard)
   workflow_dispatch:           # déclenchement manuel (bouton "Run workflow" / gh workflow run)
     inputs:
       full:
