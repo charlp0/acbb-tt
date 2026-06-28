@@ -281,9 +281,34 @@
       <a href="accueil.html" class="nav-link">Accueil</a>
       <a href="joueurs.html" class="nav-link">Joueurs</a>
       <a href="stats.html" class="nav-link">Stats Ch. Équipe</a>
+      <a href="scoring.html" class="nav-link active">Sportive</a>
     </nav>
   </div>
 </header>
+<div id="gate" style="position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px">
+  <div style="max-width:340px;width:100%;text-align:center">
+    <div style="font-family:'Saira Condensed',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:34px;letter-spacing:0.5px;margin-bottom:6px">Espace <span style="color:var(--orange)">Sportive</span></div>
+    <p style="color:var(--dim);font-size:13px;margin-bottom:18px">Outil interne de composition — accès réservé.</p>
+    <input id="gpw" type="password" placeholder="Mot de passe" autocomplete="off"
+      style="width:100%;background:var(--panel-2);border:1px solid var(--line-2);border-radius:99px;color:var(--ink);font-size:15px;font-family:inherit;padding:12px 18px;outline:none;text-align:center">
+    <button id="gbtn" style="margin-top:12px;width:100%;background:var(--orange);border:none;border-radius:99px;color:#0B0B0D;font-size:14px;font-weight:700;font-family:inherit;padding:12px;cursor:pointer">Entrer</button>
+    <p id="gerr" style="color:var(--lose);font-size:12px;margin-top:10px;height:14px"></p>
+    <a href="accueil.html" style="color:var(--dim);font-size:12px;text-decoration:none">← Retour au site</a>
+  </div>
+</div>
+<script>
+(function(){
+  var g=document.getElementById('gate');
+  function ok(){ g.style.display='none'; try{sessionStorage.setItem('acbb_sportive','1')}catch(e){} }
+  try{ if(sessionStorage.getItem('acbb_sportive')==='1'){ ok(); return; } }catch(e){}
+  document.documentElement.style.overflow='hidden';
+  function unlock(){ document.documentElement.style.overflow=''; ok(); }
+  function tryPw(){ if(document.getElementById('gpw').value.trim()==='Minh'){ unlock(); } else { document.getElementById('gerr').textContent='Mot de passe incorrect'; } }
+  document.getElementById('gbtn').addEventListener('click',tryPw);
+  document.getElementById('gpw').addEventListener('keydown',function(e){ if(e.key==='Enter') tryPw(); });
+  document.getElementById('gpw').focus();
+})();
+</script>
 <div class="hero">
   <div class="eyebrow">Outil interne · Préparation des équipes</div>
   <h1 class="hero-title">Scoring<br><em>composition.</em></h1>
