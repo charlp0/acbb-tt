@@ -51,16 +51,19 @@ def main():
         lic=str(p.get('lic') or p.get('licence') or '')
         if not lic.isdigit(): continue
         h=histo(lic); time.sleep(0.1)
-        win=h[-WINDOW:]
+        men=p.get('mensuel')
+        win=[{'l':e['lab'],'pt':e['pt']} for e in h[-WINDOW:]]
+        # dernier point = MENSUEL ACTUEL de la saison (pas l'officiel figé de la phase en cours,
+        # qui ne reflète pas les matchs joués depuis le début de la phase)
+        if win and isinstance(men,(int,float)):
+            win[-1]={'l':'Mensuel actuel','pt':round(men)}
         ys=[e['pt'] for e in win]
+        if not isinstance(men,(int,float)): men=ys[-1] if ys else 500
         b=slope(ys)
         # tendance = variation ajustée (pente) sur la fenêtre : pente × (n-1) phases
         tend=round(b*(len(ys)-1)) if b is not None else 0
-        men=p.get('mensuel')
-        if not isinstance(men,(int,float)): men=ys[-1] if ys else 500
         out.append({'nom':p.get('nom',''),'pre':p.get('prenom',''),'men':round(men),
-                    'tend':tend,'spp':round(b,1) if b is not None else None,
-                    'h':[{'l':e['lab'],'pt':e['pt']} for e in win]})
+                    'tend':tend,'spp':round(b,1) if b is not None else None,'h':win})
         if (i+1)%50==0: print(f"  {i+1}/{len(players)} traités")
     out.sort(key=lambda r:r['nom'])
     payload={'built':datetime.datetime.now(datetime.timezone.utc).isoformat(),'window':WINDOW,'players':out}
