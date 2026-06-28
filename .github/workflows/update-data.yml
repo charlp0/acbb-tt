@@ -52,6 +52,12 @@ jobs:
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
           FFTT_SKIP_IF_FRESH: ${{ github.event_name == 'schedule' && '1' || '0' }}
         run: python3 scripts/fftt_site.py
+      - name: Génération du scoring compo (scoring.json — progression 4 phases)
+        env:
+          FFTT_ID: ${{ secrets.FFTT_ID }}
+          FFTT_PWD: ${{ secrets.FFTT_PWD }}
+          FFTT_SKIP_IF_FRESH: ${{ github.event_name == 'schedule' && '1' || '0' }}
+        run: python3 scripts/fftt_scoring.py
       - name: Commit si changement
         run: |
           git config user.name "acbb-data-bot"
