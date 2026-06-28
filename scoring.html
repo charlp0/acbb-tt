@@ -312,7 +312,7 @@
 <div class="hero">
   <div class="eyebrow">Outil interne · Préparation des équipes</div>
   <h1 class="hero-title">Scoring<br><em>composition.</em></h1>
-  <p class="hero-sub"><b>Score = mensuel actuel + k × tendance</b> (plafonnée à ±150). La <b>tendance</b> est la <b>pente de régression linéaire du classement officiel sur les 4 dernières phases</b> (≈ progression sur 2 ans, lissée). Le poids <b>k=0,6</b> par défaut est ajustable au curseur.</p>
+  <p class="hero-sub"><b>Score = mensuel actuel + k × tendance</b> (plafonnée à ±250). La <b>tendance</b> est la <b>pente de régression linéaire du classement officiel sur les 4 dernières phases</b> (≈ progression sur 2 ans, lissée). Le poids <b>k=0,6</b> par défaut est ajustable au curseur.</p>
 </div>
 <section class="section">
   <div class="section-h">Classement scoring</div>
@@ -332,7 +332,7 @@
 <script>
 const D=(window.__SCORING&&window.__SCORING.players)||[];
 const tb=document.getElementById('tb'), q=document.getElementById('q'), ks=document.getElementById('k'), kv=document.getElementById('kv');
-const clamp=(v)=>Math.max(-150,Math.min(150,v));
+const clamp=(v)=>Math.max(-250,Math.min(250,v));
 function traj(t){return t>=30?'<span class="up">↗</span>':(t<=-30?'<span class="down">↘</span>':'<span class="flat">→</span>');}
 function render(){
   const k=parseFloat(ks.value); kv.textContent=k.toFixed(1);
