@@ -313,7 +313,7 @@
 <div class="hero">
   <div class="eyebrow">Outil interne · Préparation des équipes</div>
   <h1 class="hero-title">Scoring<br><em>composition.</em></h1>
-  <p class="hero-sub"><b>Score = mensuel actuel + k × tendance</b> (plafonnée à ±250). La <b>tendance</b> est la <b>pente de régression linéaire du classement officiel sur les 4 dernières phases</b> (≈ progression sur 2 ans, lissée). Le poids <b>k=0,6</b> par défaut est ajustable au curseur.</p>
+  <p class="hero-sub"><b>Score = mensuel actuel + k × tendance</b> (plafond réglable, ±250 par défaut). La <b>tendance</b> est la <b>pente de régression linéaire du classement officiel sur les 4 dernières phases</b> (≈ progression sur 2 ans, lissée). Le poids <b>k=0,6</b> par défaut est ajustable au curseur.</p>
 </div>
 <section class="section">
   <div class="section-h">Classement scoring</div>
@@ -322,6 +322,11 @@
       <label>Poids de la tendance (k)</label>
       <div class="krow"><input type="range" id="k" min="0" max="1" step="0.1" value="0.6"><span class="kval" id="kv">0.6</span></div>
       <div class="hint">0 = mensuel pur · 0,6 = équilibré · &gt;0,7 = forme sur-pondérée</div>
+    </div>
+    <div class="kbox">
+      <label>Plafond de la tendance (±)</label>
+      <div class="krow"><input type="range" id="cap" min="0" max="500" step="50" value="250"><span class="kval" id="capv">250</span></div>
+      <div class="hint">borne l'effet de la tendance · 0 = ignorée · 500 = quasi non bornée</div>
     </div>
     <input class="sc-search" id="q" placeholder="Chercher un joueur…">
   </div>
@@ -332,11 +337,12 @@
 <script src="data/scoring.js"></script>
 <script>
 const D=(window.__SCORING&&window.__SCORING.players)||[];
-const tb=document.getElementById('tb'), q=document.getElementById('q'), ks=document.getElementById('k'), kv=document.getElementById('kv');
-const clamp=(v)=>Math.max(-250,Math.min(250,v));
+const tb=document.getElementById('tb'), q=document.getElementById('q'), ks=document.getElementById('k'), kv=document.getElementById('kv'), cs=document.getElementById('cap'), cv=document.getElementById('capv');
 function traj(t){return t>=30?'<span class="up">↗</span>':(t<=-30?'<span class="down">↘</span>':'<span class="flat">→</span>');}
 function render(){
   const k=parseFloat(ks.value); kv.textContent=k.toFixed(1);
+  const cap=parseFloat(cs.value); cv.textContent=cap;
+  const clamp=(v)=>Math.max(-cap,Math.min(cap,v));
   const s=(q.value||'').trim().toUpperCase();
   const rows=D.map(p=>({...p,score:Math.round(p.men+k*clamp(p.tend))}))
               .filter(p=>!s||((p.pre+' '+p.nom).toUpperCase().includes(s)))
@@ -347,6 +353,6 @@ function render(){
     return '<tr><td class="rk">'+(i+1)+'</td><td class="nm">'+p.pre+' '+p.nom+'</td><td class="num">'+p.men+'</td><td class="num '+tc+'" title="'+hist+'">'+ts+'</td><td class="score">'+p.score+'</td><td>'+traj(p.tend)+'</td></tr>';
   }).join('');
 }
-ks.addEventListener('input',render); q.addEventListener('input',render); render();
+ks.addEventListener('input',render); cs.addEventListener('input',render); q.addEventListener('input',render); render();
 </script>
 </body></html>
