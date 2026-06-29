@@ -171,7 +171,8 @@
   .bt .w{color:var(--win-lt)} .bt .d{color:var(--lose-lt)} .bt .s{color:var(--dimmer);font-weight:400;font-size:18px}
   .bt-streak .bt-v,.bt-time .bt-v{color:var(--ink)}
   .bt-comp .bt-v{font-size:20px;color:var(--ink)}
-  .bt-big .bt-v{font-size:15px;line-height:1.18;white-space:normal;color:var(--ink)}
+  .bt-big .bt-v{font-size:27px;color:var(--win-lt)}
+  .bt-big .bt-name{font-size:9px;color:var(--dim);font-family:"JetBrains Mono",monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .bt-pct .bt-v{color:var(--gold)}
 
   /* ===== MODE SELECTOR ===== */
@@ -380,7 +381,7 @@
       <span class="bt-l">Plus grosse perf</span>
       <div class="bt-v" id="bBig">—</div>
       <span class="bt-sub" id="bBigSub"></span>
-      <span class="bt-sub" id="bBigComp" style="color:var(--orange)"></span>
+      <span class="bt-name" id="bBigComp"></span>
     </div>
     <div class="bt bt-time">
       <span class="bt-l">Temps de jeu</span>
@@ -929,8 +930,10 @@ function fillBento(){const c=PROFILE.classement,s=PROFILE.saison||{},x=PROFILE._
   const pe=document.getElementById('bPct'); if(pe&&pe.parentElement){const pc=s.winpct||0; pe.parentElement.style.color=pc<50?'var(--lose-lt)':(pc>=75?'#22C55E':(pc>=65?'#3DD68C':(pc>=58?'#5FE0A0':'#86EFAC')));}
   document.getElementById('bPerf').textContent=(s.perfs||0)+' perfs · '+(s.contre_perfs||0)+' c-perfs';
   setC('bStreak',x.streak||0);
-  const bg=document.getElementById('bBig'), bgs=document.getElementById('bBigSub'), bgc=document.getElementById('bBigComp');
-  if(x.big){bg.textContent=x.big.opp||'—'; if(bgs)bgs.textContent='classé '+x.big.opp_cls+(x.big.date?' · '+x.big.date.slice(0,5):''); if(bgc)bgc.textContent=x.big.comp||'';}
+  const be=s.best, bg=document.getElementById('bBig'), bgs=document.getElementById('bBigSub'), bgc=document.getElementById('bBigComp');
+  if(be){const dp=be.delta; bg.textContent=(dp>0?'+':'')+dp+' pts'; bg.style.color=dp>0?'var(--win-lt)':'var(--ink)';
+    if(bgs)bgs.textContent='vs un classé '+be.opp_cls;
+    if(bgc)bgc.textContent=(be.opp||'')+(be.comp?' · '+be.comp:'');}
   else{bg.textContent='—'; if(bgs)bgs.textContent=''; if(bgc)bgc.textContent='';}
   const h=Math.floor((x.mins||0)/60), mn=Math.round((x.mins||0)%60);
   document.getElementById('bTime').textContent=h+'h'+(mn<10?'0':'')+mn;
