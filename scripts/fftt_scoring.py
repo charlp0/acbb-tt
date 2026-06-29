@@ -62,7 +62,7 @@ def main():
         b=slope(ys)
         # tendance = variation ajustée (pente) sur la fenêtre : pente × (n-1) phases
         tend=round(b*(len(ys)-1)) if b is not None else 0
-        out.append({'nom':p.get('nom',''),'pre':p.get('prenom',''),'men':round(men),
+        out.append({'lic':lic,'nom':p.get('nom',''),'pre':p.get('prenom',''),'men':round(men),
                     'tend':tend,'spp':round(b,1) if b is not None else None,'h':win})
         if (i+1)%50==0: print(f"  {i+1}/{len(players)} traités")
     out.sort(key=lambda r:r['nom'])

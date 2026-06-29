@@ -150,6 +150,29 @@
   .xpc-m{position:absolute;bottom:0;transform:translateX(-50%);font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:600;color:var(--dim)}
   @media(max-width:560px){.xpc-m{font-size:8px}.xpc-val{font-size:9px}.xpc-val.start,.xpc-val.off,.xpc-val.fut{font-size:11px}}
 
+  /* ===== BENTO RÉCAP ===== */
+  .recap{padding:16px 18px 4px}
+  .rsec-h{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:8px;margin-bottom:13px}
+  .rsec-h::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
+  .bento{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media(max-width:760px){.bento{grid-template-columns:repeat(2,1fr)}}
+  .bt{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 15px;display:flex;flex-direction:column;gap:6px;min-height:98px;justify-content:space-between;position:relative;overflow:hidden}
+  .bt-l{font-size:9px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:6px}
+  .bt-l i{font-style:normal}
+  .bt-v{font-family:"JetBrains Mono",monospace;font-weight:800;letter-spacing:-0.5px;line-height:1;font-size:27px}
+  .bt-sub{font-size:10px;color:var(--dim);font-family:"JetBrains Mono",monospace;letter-spacing:0.2px}
+  .bt-rank{background:linear-gradient(160deg,var(--orange-soft),var(--card) 68%)}
+  .bt-rank .bt-v{font-size:34px}
+  .bt-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .bt-badge{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--win-soft);color:var(--win-lt)}
+  .bt-badge.neg{background:var(--orange-soft);color:var(--orange)}
+  .bt-trend .bt-v.up{color:var(--win-lt)}
+  .bt-trend .bt-v.down{color:var(--lose-lt)}
+  .bt .w{color:var(--win-lt)} .bt .d{color:var(--lose-lt)} .bt .s{color:var(--dimmer);font-weight:400;font-size:18px}
+  .bt-streak .bt-v,.bt-time .bt-v{color:var(--ink)}
+  .bt-comp .bt-v,.bt-big .bt-v{font-size:20px;color:var(--ink)}
+  .bt-pct .bt-v{color:var(--gold)}
+
   /* ===== MODE SELECTOR ===== */
   .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px;padding:18px}
   .mode{min-width:0;text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--card);
@@ -310,35 +333,64 @@
 
 <!-- IDENTITY -->
 <section class="hero">
-  <div class="hero-grid">
-    <div>
-      <div class="id-eyebrow">Fiche joueur · Saison 2025-2026</div>
-      <h1 class="id-name" id="idName">Charles<br>Perrot</h1>
-    </div>
-    <div class="rank-card">
-      <div class="rank-top">
-        <div class="rank-now">
-          <span class="rank-lbl">Classement mensuel officiel</span>
-          <span class="rank-val" id="rankNow" data-count="1031">0</span>
-        </div>
-        <span class="rank-badge pos" id="rankBadge"><span id="rankProg">+135</span></span>
-      </div>
-      <div class="rank-meta">
-        <div><div class="m-v" id="rkStart" data-count="896">0</div><div class="m-l">Début saison</div></div>
-        <div><div class="m-v soft" id="rkFrozen" data-count="953">0</div><div class="m-l">Officiel figé</div></div>
-        <div><div class="m-v up" id="rkFut" data-count="1047">0</div><div class="m-l">À venir</div></div>
-      </div>
-    </div>
-  </div>
+  <div class="id-eyebrow">Fiche joueur · Saison 2025-2026</div>
+  <h1 class="id-name" id="idName">Charles<br>Perrot</h1>
 </section>
 
-<!-- XP BAR -->
+<!-- COURBE (graphe en haut) -->
 <section class="xp">
   <div class="xp-head">
     <div class="xp-title">Progression <span>saison</span></div>
     <div class="xp-delta"><span>+135 officiel</span><span class="soft">+151 à venir</span></div>
   </div>
   <div class="xpchart" id="xpChart"><!-- courbe injectée --></div>
+</section>
+
+<!-- BENTO RÉCAP -->
+<section class="recap">
+  <div class="rsec-h">Récap saison</div>
+  <div class="bento">
+    <div class="bt bt-rank">
+      <span class="bt-l">Classement mensuel</span>
+      <div class="bt-v"><span class="cu" id="bRank" data-count="0">0</span></div>
+      <div class="bt-meta"><span class="bt-badge" id="bBadge">—</span><span class="bt-sub" id="bBase"></span></div>
+    </div>
+    <div class="bt bt-trend">
+      <span class="bt-l">Tendance 4 phases</span>
+      <div class="bt-v" id="bTrend">—</div>
+      <span class="bt-sub" id="bTrendSub"></span>
+    </div>
+    <div class="bt">
+      <span class="bt-l">Bilan saison</span>
+      <div class="bt-v" id="bVD">—</div>
+      <span class="bt-sub" id="bPar"></span>
+    </div>
+    <div class="bt bt-pct">
+      <span class="bt-l">% victoires</span>
+      <div class="bt-v"><span class="cu" id="bPct" data-count="0">0</span>%</div>
+      <span class="bt-sub" id="bPerf"></span>
+    </div>
+    <div class="bt bt-streak">
+      <span class="bt-l">Plus longue série</span>
+      <div class="bt-v"><span class="cu" id="bStreak" data-count="0">0</span></div>
+      <span class="bt-sub">victoires d'affilée</span>
+    </div>
+    <div class="bt bt-big">
+      <span class="bt-l">Plus grosse perf</span>
+      <div class="bt-v" id="bBig">—</div>
+      <span class="bt-sub" id="bBigSub"></span>
+    </div>
+    <div class="bt bt-time">
+      <span class="bt-l">Temps de jeu</span>
+      <div class="bt-v" id="bTime">—</div>
+      <span class="bt-sub">estimé</span>
+    </div>
+    <div class="bt bt-comp">
+      <span class="bt-l">Meilleure compèt</span>
+      <div class="bt-v" id="bComp">—</div>
+      <span class="bt-sub" id="bCompSub"></span>
+    </div>
+  </div>
 </section>
 
 <!-- MODE SELECTOR -->
@@ -774,15 +826,7 @@ modes.forEach(m => m.addEventListener('click', () => {
 
 /* ============ INIT ============ */
 function init(){
-  // rank badge: green if positive progression, orange if negative
-  const prog = document.getElementById('rankProg');
-  const badge = document.getElementById('rankBadge');
-  if (prog && badge){
-    const val = parseFloat(String(prog.textContent).replace(/[^\-0-9.]/g,''));
-    badge.classList.toggle('pos', val >= 0);
-    badge.classList.toggle('neg', val < 0);
-  }
-  document.querySelectorAll('.rank-val,.m-v').forEach(countUp);
+  document.querySelectorAll('.rank-val,.m-v,.cu').forEach(countUp);
   const chart = document.getElementById('xpChart');
   if (chart) setTimeout(()=>{
     chart.classList.add('ready');               // déclenche l'apparition des points/chiffres (délais inline par point)
@@ -848,19 +892,48 @@ function adapt(p){PROFILE=p;
   XP_MONTHS=tl.map((t,i)=>{const o={m:t.m,v:t.v};if(i===0)o.lab='Début';if(t.avenir){o.fut=true;o.lab='À venir';}return o;});
   for(let i=XP_MONTHS.length-1;i>=0;i--){if(!XP_MONTHS[i].fut){XP_MONTHS[i].off=true;XP_MONTHS[i].lab='Officiel';break;}}
   VIEWS=[saisonView(p),...p.competitions.map(compView)];
+  PROFILE._x=computeExtra(p);
 }
 function setC(id,val){const el=document.getElementById(id);if(el){el.dataset.count=(val==null?0:val);el.textContent='0';}}
 function fillHero(){const c=PROFILE.classement;
   document.getElementById('idName').innerHTML=(PROFILE.prenom||'')+'<br>'+(PROFILE.nom||'');
-  setC('rankNow',c.mensuel); setC('rkStart',c.debut); setC('rkFrozen',c.officiel); setC('rkFut',c.avenir);
-  const fut=(c.avenir!=null);
-  const futCell=document.getElementById('rkFut'); if(futCell&&futCell.parentElement) futCell.parentElement.style.display=fut?'':'none';  // masque "à venir" si absent
-  const rm=document.querySelector('.rank-meta'); if(rm) rm.style.gridTemplateColumns=fut?'':'1fr 1fr';
-  const hasBase=(c.debut!=null);
+  const fut=(c.avenir!=null), hasBase=(c.debut!=null);
   const dOff=hasBase?((c.mensuel||0)-c.debut):null, dAv=hasBase?(((c.avenir!=null?c.avenir:c.mensuel)||0)-c.debut):null;
-  const rp=document.getElementById('rankProg'); if(rp)rp.textContent=hasBase?fmtPts(dOff):'—';
   const xd=document.querySelector('.xp-delta'); if(xd)xd.innerHTML=hasBase?('<span>'+fmtPts(dOff)+' officiel</span>'+(fut?'<span class="soft">'+fmtPts(dAv)+' à venir</span>':'')):'<span class="soft">Pas d\'historique cette saison</span>';
   document.title='ACBB TT — '+(PROFILE.prenom||'')+' '+(PROFILE.nom||'');
+}
+function computeExtra(p){
+  const ms=[]; (p.competitions||[]).forEach(c=>(c.matches||[]).forEach(m=>ms.push(m)));
+  const dk=s=>{const a=(s||'').split('/');return a.length===3?(+a[2])*10000+(+a[1])*100+(+a[0]):0;};
+  ms.sort((a,b)=>dk(a.date)-dk(b.date));
+  let best=0,cur=0; ms.forEach(m=>{if(m.won){cur++;if(cur>best)best=cur;}else cur=0;});
+  let big=null; ms.forEach(m=>{if(m.won&&(!big||(m.opp_cls||0)>(big.opp_cls||0)))big=m;});
+  const mins=(p.saison&&p.saison.parties||0)*21;   // estimation ~21 min/partie simple
+  let bc=null; (p.competitions||[]).forEach(c=>{if(!bc||(c.solde||0)>(bc.solde||0))bc=c;});
+  return {streak:best, big:big, mins:mins, bestComp:bc};
+}
+function fillBento(){const c=PROFILE.classement,s=PROFILE.saison||{},x=PROFILE._x||{};
+  setC('bRank',c.mensuel);
+  const hasBase=(c.debut!=null), d=hasBase?((c.mensuel||0)-c.debut):null;
+  const bd=document.getElementById('bBadge'); if(bd){bd.textContent=hasBase?fmtPts(d)+' saison':'nouveau'; bd.classList.toggle('neg',hasBase&&d<0);}
+  const bb=document.getElementById('bBase'); if(bb)bb.textContent=(c.debut!=null?'début '+c.debut:'')+(c.officiel!=null?' · figé '+c.officiel:'');
+  const t=(window.__SCORING_BY_LIC||{})[PROFILE.lic];
+  const tv=document.getElementById('bTrend'), ts=document.getElementById('bTrendSub');
+  if(t&&t.tend!=null){const up=t.tend>0,dn=t.tend<0; tv.textContent=(up?'+':'')+t.tend+(up?' ↗':(dn?' ↘':' →')); tv.classList.toggle('up',up); tv.classList.toggle('down',dn); if(ts)ts.textContent=(t.spp!=null?'pente '+(t.spp>0?'+':'')+t.spp+'/phase':'');}
+  else{tv.textContent='—'; if(ts)ts.textContent='historique indispo';}
+  document.getElementById('bVD').innerHTML='<span class="w">'+(s.V||0)+'</span><span class="s">V </span><span class="d">'+(s.D||0)+'</span><span class="s">D</span>';
+  document.getElementById('bPar').textContent=(s.parties||0)+' parties';
+  setC('bPct',s.winpct);
+  document.getElementById('bPerf').textContent=(s.perfs||0)+' perfs · '+(s.contre_perfs||0)+' c-perfs';
+  setC('bStreak',x.streak||0);
+  const bg=document.getElementById('bBig'), bgs=document.getElementById('bBigSub');
+  if(x.big){bg.textContent='battu '+x.big.opp_cls; if(bgs)bgs.textContent='vs '+String(x.big.opp||'').split(' ')[0]+(x.big.date?' · '+x.big.date.slice(0,5):'');}
+  else{bg.textContent='—'; if(bgs)bgs.textContent='';}
+  const h=Math.floor((x.mins||0)/60), mn=Math.round((x.mins||0)%60);
+  document.getElementById('bTime').textContent=h+'h'+(mn<10?'0':'')+mn;
+  const bcEl=document.getElementById('bComp'), bcs=document.getElementById('bCompSub');
+  if(x.bestComp){bcEl.textContent=fmtPts(x.bestComp.solde)+' pts'; if(bcs)bcs.textContent=x.bestComp.label;}
+  else{bcEl.textContent='—'; if(bcs)bcs.textContent='';}
 }
 function renderModes(){
   document.getElementById('modes').innerHTML=VIEWS.map((v,i)=>
@@ -882,7 +955,9 @@ async function boot(){
     document.getElementById('idName').innerHTML='Joueur<br>introuvable';
     console.error(e); return;
   }
+  try{const sr=await fetch('data/scoring.json',{cache:'no-cache'});if(sr.ok){const sj=await sr.json();window.__SCORING_BY_LIC={};(sj.players||[]).forEach(pl=>{window.__SCORING_BY_LIC[pl.lic]=pl;});}}catch(e){}
   fillHero();
+  fillBento();
   renderModes();
   viewsRoot.innerHTML=VIEWS.map(buildView).join('');
   buildXPChart();
