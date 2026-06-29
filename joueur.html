@@ -162,15 +162,16 @@
   .bt-v{font-family:"JetBrains Mono",monospace;font-weight:800;letter-spacing:-0.5px;line-height:1;font-size:27px}
   .bt-sub{font-size:10px;color:var(--dim);font-family:"JetBrains Mono",monospace;letter-spacing:0.2px}
   .bt-rank{background:linear-gradient(160deg,var(--orange-soft),var(--card) 68%)}
-  .bt-rank .bt-v{font-size:34px}
-  .bt-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .bt-badge{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--win-soft);color:var(--win-lt)}
-  .bt-badge.neg{background:var(--orange-soft);color:var(--orange)}
+  .bt-rank-row{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap}
+  .bt-rank-row .cu{font-size:36px}
+  .bt-delta{font-family:"JetBrains Mono",monospace;font-size:24px;font-weight:800;letter-spacing:-0.5px;color:var(--win-lt)}
+  .bt-delta.neg{color:var(--lose-lt)}
   .bt-trend .bt-v.up{color:var(--win-lt)}
   .bt-trend .bt-v.down{color:var(--lose-lt)}
   .bt .w{color:var(--win-lt)} .bt .d{color:var(--lose-lt)} .bt .s{color:var(--dimmer);font-weight:400;font-size:18px}
   .bt-streak .bt-v,.bt-time .bt-v{color:var(--ink)}
-  .bt-comp .bt-v,.bt-big .bt-v{font-size:20px;color:var(--ink)}
+  .bt-comp .bt-v{font-size:20px;color:var(--ink)}
+  .bt-big .bt-v{font-size:15px;line-height:1.18;white-space:normal;color:var(--ink)}
   .bt-pct .bt-v{color:var(--gold)}
 
   /* ===== MODE SELECTOR ===== */
@@ -352,8 +353,8 @@
   <div class="bento">
     <div class="bt bt-rank">
       <span class="bt-l">Classement mensuel</span>
-      <div class="bt-v"><span class="cu" id="bRank" data-count="0">0</span></div>
-      <div class="bt-meta"><span class="bt-badge" id="bBadge">—</span><span class="bt-sub" id="bBase"></span></div>
+      <div class="bt-rank-row"><span class="cu" id="bRank" data-count="0">0</span><span class="bt-delta" id="bBadge">—</span></div>
+      <span class="bt-sub" id="bBase"></span>
     </div>
     <div class="bt bt-trend">
       <span class="bt-l">Tendance 4 phases</span>
@@ -379,6 +380,7 @@
       <span class="bt-l">Plus grosse perf</span>
       <div class="bt-v" id="bBig">—</div>
       <span class="bt-sub" id="bBigSub"></span>
+      <span class="bt-sub" id="bBigComp" style="color:var(--orange)"></span>
     </div>
     <div class="bt bt-time">
       <span class="bt-l">Temps de jeu</span>
@@ -903,7 +905,7 @@ function fillHero(){const c=PROFILE.classement;
   document.title='ACBB TT — '+(PROFILE.prenom||'')+' '+(PROFILE.nom||'');
 }
 function computeExtra(p){
-  const ms=[]; (p.competitions||[]).forEach(c=>(c.matches||[]).forEach(m=>ms.push(m)));
+  const ms=[]; (p.competitions||[]).forEach(c=>(c.matches||[]).forEach(m=>ms.push(Object.assign({comp:c.label},m))));
   const dk=s=>{const a=(s||'').split('/');return a.length===3?(+a[2])*10000+(+a[1])*100+(+a[0]):0;};
   ms.sort((a,b)=>dk(a.date)-dk(b.date));
   let best=0,cur=0; ms.forEach(m=>{if(m.won){cur++;if(cur>best)best=cur;}else cur=0;});
@@ -915,7 +917,7 @@ function computeExtra(p){
 function fillBento(){const c=PROFILE.classement,s=PROFILE.saison||{},x=PROFILE._x||{};
   setC('bRank',c.mensuel);
   const hasBase=(c.debut!=null), d=hasBase?((c.mensuel||0)-c.debut):null;
-  const bd=document.getElementById('bBadge'); if(bd){bd.textContent=hasBase?fmtPts(d)+' saison':'nouveau'; bd.classList.toggle('neg',hasBase&&d<0);}
+  const bd=document.getElementById('bBadge'); if(bd){bd.textContent=hasBase?((d>0?'+':'')+d):'nouv.'; bd.classList.toggle('neg',hasBase&&d<0);}
   const bb=document.getElementById('bBase'); if(bb)bb.textContent=(c.debut!=null?'début '+c.debut:'')+(c.officiel!=null?' · figé '+c.officiel:'');
   const t=(window.__SCORING_BY_LIC||{})[PROFILE.lic];
   const tv=document.getElementById('bTrend'), ts=document.getElementById('bTrendSub');
@@ -924,11 +926,12 @@ function fillBento(){const c=PROFILE.classement,s=PROFILE.saison||{},x=PROFILE._
   document.getElementById('bVD').innerHTML='<span class="w">'+(s.V||0)+'</span><span class="s">V </span><span class="d">'+(s.D||0)+'</span><span class="s">D</span>';
   document.getElementById('bPar').textContent=(s.parties||0)+' parties';
   setC('bPct',s.winpct);
+  const pe=document.getElementById('bPct'); if(pe&&pe.parentElement){const pc=s.winpct||0; pe.parentElement.style.color=pc<50?'var(--lose-lt)':(pc>=75?'#22C55E':(pc>=65?'#3DD68C':(pc>=58?'#5FE0A0':'#86EFAC')));}
   document.getElementById('bPerf').textContent=(s.perfs||0)+' perfs · '+(s.contre_perfs||0)+' c-perfs';
   setC('bStreak',x.streak||0);
-  const bg=document.getElementById('bBig'), bgs=document.getElementById('bBigSub');
-  if(x.big){bg.textContent='battu '+x.big.opp_cls; if(bgs)bgs.textContent='vs '+String(x.big.opp||'').split(' ')[0]+(x.big.date?' · '+x.big.date.slice(0,5):'');}
-  else{bg.textContent='—'; if(bgs)bgs.textContent='';}
+  const bg=document.getElementById('bBig'), bgs=document.getElementById('bBigSub'), bgc=document.getElementById('bBigComp');
+  if(x.big){bg.textContent=x.big.opp||'—'; if(bgs)bgs.textContent='classé '+x.big.opp_cls+(x.big.date?' · '+x.big.date.slice(0,5):''); if(bgc)bgc.textContent=x.big.comp||'';}
+  else{bg.textContent='—'; if(bgs)bgs.textContent=''; if(bgc)bgc.textContent='';}
   const h=Math.floor((x.mins||0)/60), mn=Math.round((x.mins||0)%60);
   document.getElementById('bTime').textContent=h+'h'+(mn<10?'0':'')+mn;
   const bcEl=document.getElementById('bComp'), bcs=document.getElementById('bCompSub');
