@@ -207,6 +207,13 @@
   .shareCard .sc-plbl{font-family:"JetBrains Mono",monospace;font-size:7.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(246,245,243,.4);margin:14px 0 6px;text-align:center}
   .shareCard .sc-partners{background:#fff;border-radius:12px;padding:9px 12px}
   .shareCard .sc-partners img{width:100%;display:block}
+  #shareOverlay{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.86);display:flex;align-items:center;justify-content:center;padding:20px}
+  #shareOverlay .so-box{position:relative;display:flex;flex-direction:column;align-items:center;gap:13px;max-width:100%}
+  #shareImg{max-width:min(330px,80vw);max-height:62vh;border-radius:16px;box-shadow:0 14px 50px rgba(0,0,0,.6);background:var(--card)}
+  .so-hint{font-size:11px;color:var(--dim);font-family:"JetBrains Mono",monospace;text-align:center}
+  .so-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .so-btn2{font-family:"Space Grotesk",sans-serif;font-size:13px;font-weight:700;color:var(--ink);background:var(--panel);border:1px solid var(--line-2);border-radius:99px;padding:11px 18px;cursor:pointer}
+  .so-close{position:absolute;top:-46px;right:0;width:38px;height:38px;border-radius:50%;background:var(--panel);border:1px solid var(--line-2);color:var(--ink);font-size:15px;cursor:pointer}
 
   /* ===== MODE SELECTOR ===== */
   .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px;padding:18px}
@@ -1004,7 +1011,11 @@ async function boot(){
   buildXPChart();
   init();
   const sb=document.getElementById('shareBtn'); if(sb) sb.addEventListener('click',shareSeason);
-  setTimeout(buildShareImage,1200);   // pré-génère l'image -> partage natif instantané au clic (geste iOS préservé)
+  const sdo=document.getElementById('shareDo'); if(sdo) sdo.addEventListener('click',()=>{ if(!nativeShare()) downloadShare(); });
+  const sdl=document.getElementById('shareDl'); if(sdl) sdl.addEventListener('click',downloadShare);
+  const scl=document.getElementById('shareClose'); if(scl) scl.addEventListener('click',()=>{document.getElementById('shareOverlay').style.display='none';});
+  const ovl=document.getElementById('shareOverlay'); if(ovl) ovl.addEventListener('click',e=>{ if(e.target===ovl) ovl.style.display='none'; });
+  setTimeout(()=>preBuildShareImage(0),1000);   // pré-génère l'image (attend html2canvas) -> partage natif 1 tap si possible
 }
 function miniCurve(vals){
   vals=(vals||[]).filter(v=>typeof v==='number');
@@ -1034,32 +1045,39 @@ function fillShareCard(){
   const bc=x.bestComp, sco=document.getElementById('scComp'), scs=document.getElementById('scCompSub');
   if(bc){sco.textContent=(bc.solde>0?'+':'')+bc.solde+' pts'; if(scs)scs.textContent=bc.label;} else {sco.textContent='—'; if(scs)scs.textContent='';}
 }
-let _shareFile=null, _shareBuilding=false;
+let _shareFile=null, _shareUrl=null, _shareBuilding=false;
+const h2cReady=()=>typeof html2canvas!=='undefined';
 async function buildShareImage(){
   const node=document.getElementById('shareCard');
-  if(_shareBuilding||typeof html2canvas==='undefined'||!node) return;
+  if(_shareFile||_shareBuilding||!node||!h2cReady()) return _shareFile;
   _shareBuilding=true;
   try{
     if(document.fonts&&document.fonts.ready){try{await document.fonts.ready;}catch(e){}}
     const canvas=await html2canvas(node,{backgroundColor:'#0B0B0D',scale:2,useCORS:true,logging:false});
-    await new Promise(res=>canvas.toBlob(b=>{ if(b)_shareFile=new File([b],'mon-recap-acbb.png',{type:'image/png'}); res(); },'image/png'));
+    await new Promise(res=>canvas.toBlob(b=>{ if(b){_shareFile=new File([b],'mon-recap-acbb.png',{type:'image/png'}); _shareUrl=URL.createObjectURL(b);} res(); },'image/png'));
   }catch(e){console.error('shareImg',e);}
   _shareBuilding=false;
+  return _shareFile;
 }
-function downloadFile(blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mon-recap-acbb.png';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);}
-function shareSeason(){
-  const btn=document.getElementById('shareBtn');
-  // image déjà prête : partage natif appelé DANS le geste (indispensable iOS), sinon téléchargement
-  if(_shareFile){
-    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[_shareFile]})){
-      navigator.share({files:[_shareFile],title:'Mon récap ACBB TT',text:'Mon récap de la saison 🏓'}).catch(()=>{});
-    }else{ downloadFile(_shareFile); }
-    return;
+function preBuildShareImage(n){ if(_shareFile)return; if(h2cReady()){buildShareImage();return;} if((n||0)<14) setTimeout(()=>preBuildShareImage((n||0)+1),500); }
+function nativeShare(){
+  if(_shareFile&&navigator.share&&navigator.canShare&&navigator.canShare({files:[_shareFile]})){
+    navigator.share({files:[_shareFile],title:'Mon récap ACBB TT',text:'Mon récap de la saison 🏓'}).catch(()=>{}); return true;
   }
-  // pas encore prête : on génère puis on télécharge (le partage natif nécessitera un 2e clic)
-  if(typeof html2canvas==='undefined'){alert('Un instant, ça finit de charger… réessaie.');return;}
-  const old=btn.textContent; btn.textContent='Génération…'; btn.disabled=true;
-  buildShareImage().then(()=>{ btn.textContent=old; btn.disabled=false; if(_shareFile) downloadFile(_shareFile); else alert('Génération de l\'image impossible.'); });
+  return false;
+}
+function downloadShare(){ if(!_shareUrl)return; const a=document.createElement('a');a.href=_shareUrl;a.download='mon-recap-acbb.png';document.body.appendChild(a);a.click();a.remove(); }
+function openShareOverlay(){
+  const ov=document.getElementById('shareOverlay'), img=document.getElementById('shareImg');
+  if(!ov) return;
+  ov.style.display='flex';
+  if(_shareUrl){ img.src=_shareUrl; }
+  else { img.removeAttribute('src'); buildShareImage().then(()=>{ if(_shareUrl) img.src=_shareUrl; }); }
+}
+function shareSeason(){
+  // 1 tap : partage natif si prêt (geste préservé). Sinon : popup qui affiche l'image (toujours visible).
+  if(nativeShare()) return;
+  openShareOverlay();
 }
 boot();
 
@@ -1087,6 +1105,17 @@ boot();
   </div>
   <div class="sc-plbl" id="scPlbl">Avec le soutien de nos partenaires</div>
   <div class="sc-partners" id="scPartners"><img src="partenaires.png" alt="Partenaires" onerror="document.getElementById('scPartners').style.display='none';document.getElementById('scPlbl').style.display='none'"></div>
+</div>
+<div id="shareOverlay" style="display:none">
+  <div class="so-box">
+    <button id="shareClose" class="so-close" type="button" aria-label="Fermer">✕</button>
+    <img id="shareImg" alt="Mon récap ACBB">
+    <div class="so-hint">Appui long sur l'image pour l'enregistrer</div>
+    <div class="so-actions">
+      <button id="shareDo" class="share-btn" type="button">📤 Partager</button>
+      <button id="shareDl" class="so-btn2" type="button">⤓ Enregistrer</button>
+    </div>
+  </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="report.js" defer></script>
