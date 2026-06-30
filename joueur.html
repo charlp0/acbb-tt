@@ -162,10 +162,8 @@
   .bt-v{font-family:"JetBrains Mono",monospace;font-weight:800;letter-spacing:-0.5px;line-height:1;font-size:27px}
   .bt-sub{font-size:10px;color:var(--dim);font-family:"JetBrains Mono",monospace;letter-spacing:0.2px}
   .bt-rank{background:linear-gradient(160deg,var(--orange-soft),var(--card) 68%)}
-  .bt-rank-row{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap}
-  .bt-rank-row .cu{font-size:36px}
-  .bt-delta{font-family:"JetBrains Mono",monospace;font-size:24px;font-weight:800;letter-spacing:-0.5px;color:var(--win-lt)}
-  .bt-delta.neg{color:var(--lose-lt)}
+  .bt-rank .bt-v{font-size:34px}
+  .bt-trend .bt-v{font-size:30px}
   .bt-trend .bt-v.up{color:var(--win-lt)}
   .bt-trend .bt-v.down{color:var(--lose-lt)}
   .bt .w{color:var(--win-lt)} .bt .d{color:var(--lose-lt)} .bt .s{color:var(--dimmer);font-weight:400;font-size:18px}
@@ -395,11 +393,11 @@
   <div class="bento">
     <div class="bt bt-rank">
       <span class="bt-l">Classement mensuel</span>
-      <div class="bt-rank-row"><span class="cu" id="bRank" data-count="0">0</span><span class="bt-delta" id="bBadge">—</span></div>
+      <div class="bt-v"><span class="cu" id="bRank" data-count="0">0</span></div>
       <span class="bt-sub" id="bBase"></span>
     </div>
     <div class="bt bt-trend">
-      <span class="bt-l">Tendance 4 phases</span>
+      <span class="bt-l">Progression saison</span>
       <div class="bt-v" id="bTrend">—</div>
       <span class="bt-sub" id="bTrendSub"></span>
     </div>
@@ -952,19 +950,18 @@ function computeExtra(p){
   ms.sort((a,b)=>dk(a.date)-dk(b.date));
   let best=0,cur=0; ms.forEach(m=>{if(m.won){cur++;if(cur>best)best=cur;}else cur=0;});
   let big=null; ms.forEach(m=>{if(m.won&&(!big||(m.opp_cls||0)>(big.opp_cls||0)))big=m;});
-  const mins=(p.saison&&p.saison.parties||0)*21;   // estimation ~21 min/partie simple
+  const mins=(p.saison&&p.saison.parties||0)*25;   // estimation ~25 min/partie simple
   let bc=null; (p.competitions||[]).forEach(c=>{if(!bc||(c.solde||0)>(bc.solde||0))bc=c;});
   return {streak:best, big:big, mins:mins, bestComp:bc};
 }
 function fillBento(){const c=PROFILE.classement,s=PROFILE.saison||{},x=PROFILE._x||{};
   setC('bRank',c.mensuel);
   const hasBase=(c.debut!=null), d=hasBase?((c.mensuel||0)-c.debut):null;
-  const bd=document.getElementById('bBadge'); if(bd){bd.textContent=hasBase?((d>0?'+':'')+d):'nouv.'; bd.classList.toggle('neg',hasBase&&d<0);}
   const bb=document.getElementById('bBase'); if(bb)bb.textContent=(c.debut!=null?'début '+c.debut:'')+(c.officiel!=null?' · figé '+c.officiel:'');
-  const t=(window.__SCORING_BY_LIC||{})[PROFILE.lic];
+  // 2e case : progression sur la saison (mensuel - début) en gros + flèche
   const tv=document.getElementById('bTrend'), ts=document.getElementById('bTrendSub');
-  if(t&&t.tend!=null){const up=t.tend>0,dn=t.tend<0; tv.textContent=(up?'+':'')+t.tend+(up?' ↗':(dn?' ↘':' →')); tv.classList.toggle('up',up); tv.classList.toggle('down',dn); if(ts)ts.textContent=(t.spp!=null?'pente '+(t.spp>0?'+':'')+t.spp+'/phase':'');}
-  else{tv.textContent='—'; if(ts)ts.textContent='historique indispo';}
+  if(hasBase){const up=d>0,dn=d<0; tv.textContent=(up?'+':'')+d+(up?' ↗':(dn?' ↘':' →')); tv.classList.toggle('up',up); tv.classList.toggle('down',dn); if(ts)ts.textContent='depuis le début ('+c.debut+')';}
+  else{tv.textContent='—'; if(ts)ts.textContent='pas d\'historique';}
   document.getElementById('bVD').innerHTML='<span class="w">'+(s.V||0)+'</span><span class="s">V </span><span class="d">'+(s.D||0)+'</span><span class="s">D</span>';
   document.getElementById('bPar').textContent=(s.parties||0)+' parties';
   setC('bPct',s.winpct);
@@ -1033,8 +1030,8 @@ function fillShareCard(){
   const d=(c.debut!=null)?((c.mensuel||0)-c.debut):null;
   document.getElementById('scDelta').textContent=(d!=null?((d>0?'+':'')+d+' pts'):'');
   document.getElementById('scChart').innerHTML=miniCurve((typeof XP_MONTHS!=='undefined'?XP_MONTHS:[]).map(m=>m.v));
-  document.getElementById('scRank').innerHTML=(c.mensuel!=null?c.mensuel:'—')+(d!=null?' <span>'+(d>0?'+':'')+d+'</span>':'');
-  const tr=document.getElementById('scTrend'); tr.textContent=(t.tend!=null?((t.tend>0?'+':'')+t.tend+(t.tend>0?' ↗':(t.tend<0?' ↘':''))):'—'); tr.style.color=(t.tend>0?'#86EFAC':(t.tend<0?'#FCA5A5':'#fff'));
+  document.getElementById('scRank').textContent=(c.mensuel!=null?c.mensuel:'—');
+  const tr=document.getElementById('scTrend'); tr.textContent=(d!=null?((d>0?'+':'')+d+(d>0?' ↗':(d<0?' ↘':' →'))):'—'); tr.style.color=(d>0?'#86EFAC':(d<0?'#FCA5A5':'#fff'));
   document.getElementById('scVD').innerHTML='<span style="color:#86EFAC">'+(s.V||0)+'</span><span style="color:rgba(246,245,243,.4);font-size:14px">V</span> <span style="color:#FCA5A5">'+(s.D||0)+'</span><span style="color:rgba(246,245,243,.4);font-size:14px">D</span>';
   document.getElementById('scPct').textContent=(s.winpct||0)+'%';
   document.getElementById('scStreak').innerHTML=(x.streak||0)+' <span style="font-size:11px;color:rgba(246,245,243,.5)">V</span>';
@@ -1095,7 +1092,7 @@ boot();
   </div>
   <div class="sc-grid">
     <div class="sc-st"><div class="l">Classement mensuel</div><div class="v" id="scRank">—</div></div>
-    <div class="sc-st"><div class="l">Tendance 4 phases</div><div class="v" id="scTrend">—</div></div>
+    <div class="sc-st"><div class="l">Progression saison</div><div class="v" id="scTrend">—</div></div>
     <div class="sc-st"><div class="l">Bilan saison</div><div class="v" id="scVD">—</div></div>
     <div class="sc-st"><div class="l">% victoires</div><div class="v" id="scPct" style="color:#5FE0A0">—</div></div>
     <div class="sc-st"><div class="l">Plus longue série</div><div class="v" id="scStreak" style="color:#fff">—</div></div>
