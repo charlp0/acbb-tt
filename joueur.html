@@ -1029,6 +1029,10 @@ function fillShareCard(){
   document.getElementById('scStreak').innerHTML=(x.streak||0)+' <span style="font-size:11px;color:rgba(246,245,243,.5)">V</span>';
   const pf=document.getElementById('scPerf'), pfs=document.getElementById('scPerfSub');
   if(be){pf.textContent=(be.delta>0?'+':'')+be.delta; if(pfs)pfs.textContent='vs un classé '+be.opp_cls;} else {pf.textContent='—'; if(pfs)pfs.textContent='';}
+  const h=Math.floor((x.mins||0)/60), mn=Math.round((x.mins||0)%60);
+  document.getElementById('scTime').textContent=h+'h'+(mn<10?'0':'')+mn;
+  const bc=x.bestComp, sco=document.getElementById('scComp'), scs=document.getElementById('scCompSub');
+  if(bc){sco.textContent=(bc.solde>0?'+':'')+bc.solde+' pts'; if(scs)scs.textContent=bc.label;} else {sco.textContent='—'; if(scs)scs.textContent='';}
 }
 let _shareFile=null, _shareBuilding=false;
 async function buildShareImage(){
@@ -1078,8 +1082,9 @@ boot();
     <div class="sc-st"><div class="l">% victoires</div><div class="v" id="scPct" style="color:#5FE0A0">—</div></div>
     <div class="sc-st"><div class="l">Plus longue série</div><div class="v" id="scStreak" style="color:#fff">—</div></div>
     <div class="sc-st"><div class="l">Plus grosse perf</div><div class="v" id="scPerf" style="color:#86EFAC;font-size:18px">—</div><div class="s" id="scPerfSub"></div></div>
+    <div class="sc-st"><div class="l">Temps de jeu</div><div class="v" id="scTime" style="color:#fff">—</div><div class="s">estimé</div></div>
+    <div class="sc-st"><div class="l">Meilleure compèt</div><div class="v" id="scComp" style="color:#fff;font-size:16px">—</div><div class="s" id="scCompSub"></div></div>
   </div>
-  <div class="sc-ft"><div class="u">charlp0.github.io/acbb-tt</div><div class="cta">Fais ton récap →</div></div>
   <div class="sc-plbl" id="scPlbl">Avec le soutien de nos partenaires</div>
   <div class="sc-partners" id="scPartners"><img src="partenaires.png" alt="Partenaires" onerror="document.getElementById('scPartners').style.display='none';document.getElementById('scPlbl').style.display='none'"></div>
 </div>
