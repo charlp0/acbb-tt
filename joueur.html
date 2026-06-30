@@ -370,7 +370,7 @@
 <section class="hero">
   <div class="id-eyebrow">Fiche joueur · Saison 2025-2026</div>
   <h1 class="id-name" id="idName">Charles<br>Perrot</h1>
-  <button id="shareBtn" class="share-btn" type="button">📤 Partager ma saison</button>
+  <button id="shareBtn" class="share-btn" type="button">📤 Partager mon récap</button>
 </section>
 
 <!-- COURBE (graphe en haut) -->
@@ -1039,7 +1039,7 @@ async function shareSeason(){
     await new Promise(res=>canvas.toBlob(async(blob)=>{
       const file=new File([blob],'ma-saison-acbb.png',{type:'image/png'});
       if(navigator.canShare&&navigator.canShare({files:[file]})){
-        try{await navigator.share({files:[file],title:'Ma saison ACBB TT',text:'Mon récap de la saison 🏓'});}catch(e){}
+        try{await navigator.share({files:[file],title:'Mon récap ACBB TT',text:'Mon récap de la saison 🏓'});}catch(e){}
       }else{
         const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ma-saison-acbb.png'; document.body.appendChild(a); a.click(); a.remove();
       }
