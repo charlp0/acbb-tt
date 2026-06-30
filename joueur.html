@@ -181,7 +181,7 @@
   .shareCard{position:fixed;left:-10000px;top:0;width:380px;background:#0B0B0D;border:1px solid rgba(242,106,27,.35);border-radius:22px;padding:24px 22px 20px;font-family:"Space Grotesk",sans-serif;color:#F6F5F3}
   .shareCard .sc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
   .shareCard .sc-lg{display:flex;align-items:center;gap:10px}
-  .shareCard .sc-lgm{width:36px;height:36px;border-radius:9px;background:#fff;color:#0B0B0D;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;font-size:15px;line-height:.78}
+  .shareCard .sc-logo{width:42px;height:42px;border-radius:9px;background:#fff;padding:3px;object-fit:contain;display:block}
   .shareCard .sc-lgt b{font-size:13px;font-weight:700;display:block}
   .shareCard .sc-lgt span{font-size:8px;color:rgba(246,245,243,.55);font-family:"JetBrains Mono",monospace;letter-spacing:.4px;text-transform:uppercase}
   .shareCard .sc-yr{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;color:var(--orange);letter-spacing:1px;text-transform:uppercase;text-align:right;line-height:1.5}
@@ -204,6 +204,9 @@
   .shareCard .sc-ft{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)}
   .shareCard .sc-ft .u{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(246,245,243,.55);letter-spacing:.3px}
   .shareCard .sc-ft .cta{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;color:#0B0B0D;background:var(--orange);padding:6px 11px;border-radius:99px;text-transform:uppercase;letter-spacing:.4px}
+  .shareCard .sc-plbl{font-family:"JetBrains Mono",monospace;font-size:7.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(246,245,243,.4);margin:14px 0 6px;text-align:center}
+  .shareCard .sc-partners{background:#fff;border-radius:12px;padding:9px 12px}
+  .shareCard .sc-partners img{width:100%;display:block}
 
   /* ===== MODE SELECTOR ===== */
   .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px;padding:18px}
@@ -1050,7 +1053,7 @@ boot();
 </script>
 <div class="shareCard" id="shareCard" aria-hidden="true">
   <div class="sc-hd">
-    <div class="sc-lg"><div class="sc-lgm">AC<br>BB</div><div class="sc-lgt"><b>ACBB TT</b><span>Tennis de table</span></div></div>
+    <div class="sc-lg"><img class="sc-logo" src="logo.png" alt="ACBB"><div class="sc-lgt"><b>ACBB TT</b><span>Tennis de table</span></div></div>
     <div class="sc-yr">Ma saison<br>2025-2026</div>
   </div>
   <div class="sc-name" id="scName">—</div>
@@ -1068,6 +1071,8 @@ boot();
     <div class="sc-st"><div class="l">Plus grosse perf</div><div class="v" id="scPerf" style="color:#86EFAC;font-size:18px">—</div><div class="s" id="scPerfSub"></div></div>
   </div>
   <div class="sc-ft"><div class="u">charlp0.github.io/acbb-tt</div><div class="cta">Fais ton récap →</div></div>
+  <div class="sc-plbl" id="scPlbl">Avec le soutien de nos partenaires</div>
+  <div class="sc-partners" id="scPartners"><img src="partenaires.png" alt="Partenaires" onerror="document.getElementById('scPartners').style.display='none';document.getElementById('scPlbl').style.display='none'"></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="report.js" defer></script>
