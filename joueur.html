@@ -175,6 +175,36 @@
   .bt-big .bt-name{font-size:9px;color:var(--dim);font-family:"JetBrains Mono",monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .bt-pct .bt-v{color:var(--gold)}
 
+  /* ===== PARTAGE ===== */
+  .share-btn{margin-top:14px;display:inline-flex;align-items:center;gap:7px;font-family:"Space Grotesk",sans-serif;font-size:13px;font-weight:700;color:#0B0B0D;background:var(--orange);border:none;border-radius:99px;padding:11px 18px;cursor:pointer;transition:transform .12s,filter .12s}
+  .share-btn:hover{filter:brightness(1.06)} .share-btn:active{transform:scale(0.97)} .share-btn:disabled{opacity:.6;cursor:default}
+  .shareCard{position:fixed;left:-10000px;top:0;width:380px;background:#0B0B0D;border:1px solid rgba(242,106,27,.35);border-radius:22px;padding:24px 22px 20px;font-family:"Space Grotesk",sans-serif;color:#F6F5F3}
+  .shareCard .sc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .shareCard .sc-lg{display:flex;align-items:center;gap:10px}
+  .shareCard .sc-lgm{width:36px;height:36px;border-radius:9px;background:#fff;color:#0B0B0D;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;font-size:15px;line-height:.78}
+  .shareCard .sc-lgt b{font-size:13px;font-weight:700;display:block}
+  .shareCard .sc-lgt span{font-size:8px;color:rgba(246,245,243,.55);font-family:"JetBrains Mono",monospace;letter-spacing:.4px;text-transform:uppercase}
+  .shareCard .sc-yr{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;color:var(--orange);letter-spacing:1px;text-transform:uppercase;text-align:right;line-height:1.5}
+  .shareCard .sc-name{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:44px;line-height:.86;margin:6px 0 3px}
+  .shareCard .sc-sub{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(246,245,243,.55);letter-spacing:.4px;text-transform:uppercase;margin-bottom:15px}
+  .shareCard .sc-curveBox{background:#141416;border:1px solid rgba(255,255,255,.08);border-radius:15px;padding:13px 13px 8px;margin-bottom:12px}
+  .shareCard .sc-cT{display:flex;justify-content:space-between;align-items:baseline}
+  .shareCard .sc-cT .t{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:15px}
+  .shareCard .sc-cT .t span{color:var(--orange)}
+  .shareCard .sc-cT .d{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:800;color:#86EFAC}
+  .shareCard .sc-chart{height:78px;margin-top:5px}
+  .shareCard .sc-chart svg{width:100%;height:100%;display:block;overflow:visible}
+  .shareCard .sc-xl{fill:none;stroke:var(--orange);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+  .shareCard .sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .shareCard .sc-st{background:#141416;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px}
+  .shareCard .sc-st .l{font-size:8px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:rgba(246,245,243,.55)}
+  .shareCard .sc-st .v{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:22px;letter-spacing:-.5px;line-height:1.1;margin-top:4px}
+  .shareCard .sc-st .v span{font-size:14px;color:#86EFAC}
+  .shareCard .sc-st .s{font-size:9px;color:rgba(246,245,243,.5);font-family:"JetBrains Mono",monospace;margin-top:1px}
+  .shareCard .sc-ft{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)}
+  .shareCard .sc-ft .u{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(246,245,243,.55);letter-spacing:.3px}
+  .shareCard .sc-ft .cta{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;color:#0B0B0D;background:var(--orange);padding:6px 11px;border-radius:99px;text-transform:uppercase;letter-spacing:.4px}
+
   /* ===== MODE SELECTOR ===== */
   .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px;padding:18px}
   .mode{min-width:0;text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--card);
@@ -337,6 +367,7 @@
 <section class="hero">
   <div class="id-eyebrow">Fiche joueur · Saison 2025-2026</div>
   <h1 class="id-name" id="idName">Charles<br>Perrot</h1>
+  <button id="shareBtn" class="share-btn" type="button">📤 Partager ma saison</button>
 </section>
 
 <!-- COURBE (graphe en haut) -->
@@ -964,14 +995,81 @@ async function boot(){
   try{const sr=await fetch('data/scoring.json',{cache:'no-cache'});if(sr.ok){const sj=await sr.json();window.__SCORING_BY_LIC={};(sj.players||[]).forEach(pl=>{window.__SCORING_BY_LIC[pl.lic]=pl;});}}catch(e){}
   fillHero();
   fillBento();
+  fillShareCard();
   renderModes();
   viewsRoot.innerHTML=VIEWS.map(buildView).join('');
   buildXPChart();
   init();
+  const sb=document.getElementById('shareBtn'); if(sb) sb.addEventListener('click',shareSeason);
+}
+function miniCurve(vals){
+  vals=(vals||[]).filter(v=>typeof v==='number');
+  if(vals.length<2) return '';
+  const n=vals.length, mn=Math.min.apply(0,vals), mx=Math.max.apply(0,vals), rng=(mx-mn)||1, W=300,T=6,B=66;
+  const X=i=>(i/(n-1)*W).toFixed(1), Y=v=>(B-(v-mn)/rng*(B-T)).toFixed(1);
+  const pts=vals.map((v,i)=>X(i)+','+Y(v)).join(' '), last=vals[n-1];
+  return '<svg viewBox="0 0 300 74" preserveAspectRatio="none"><defs><linearGradient id="scg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="rgba(242,106,27,.32)"/><stop offset="1" stop-color="rgba(242,106,27,0)"/></linearGradient></defs><path d="M'+pts+' L300,66 L0,66 Z" fill="url(#scg)"/><path class="sc-xl" d="M'+pts+'"/><circle cx="'+X(n-1)+'" cy="'+Y(last)+'" r="3.5" fill="#F26A1B"/></svg>';
+}
+function fillShareCard(){
+  if(!PROFILE) return;
+  const c=PROFILE.classement,s=PROFILE.saison||{},x=PROFILE._x||{},t=(window.__SCORING_BY_LIC||{})[PROFILE.lic]||{},be=s.best;
+  document.getElementById('scName').innerHTML=(PROFILE.prenom||'')+'<br>'+(PROFILE.nom||'');
+  document.getElementById('scSub').textContent=(s.parties||0)+' matchs joués · ACBB Tennis de table';
+  const d=(c.debut!=null)?((c.mensuel||0)-c.debut):null;
+  document.getElementById('scDelta').textContent=(d!=null?((d>0?'+':'')+d+' pts'):'');
+  document.getElementById('scChart').innerHTML=miniCurve((typeof XP_MONTHS!=='undefined'?XP_MONTHS:[]).map(m=>m.v));
+  document.getElementById('scRank').innerHTML=(c.mensuel!=null?c.mensuel:'—')+(d!=null?' <span>'+(d>0?'+':'')+d+'</span>':'');
+  const tr=document.getElementById('scTrend'); tr.textContent=(t.tend!=null?((t.tend>0?'+':'')+t.tend+(t.tend>0?' ↗':(t.tend<0?' ↘':''))):'—'); tr.style.color=(t.tend>0?'#86EFAC':(t.tend<0?'#FCA5A5':'#fff'));
+  document.getElementById('scVD').innerHTML='<span style="color:#86EFAC">'+(s.V||0)+'</span><span style="color:rgba(246,245,243,.4);font-size:14px">V</span> <span style="color:#FCA5A5">'+(s.D||0)+'</span><span style="color:rgba(246,245,243,.4);font-size:14px">D</span>';
+  document.getElementById('scPct').textContent=(s.winpct||0)+'%';
+  document.getElementById('scStreak').innerHTML=(x.streak||0)+' <span style="font-size:11px;color:rgba(246,245,243,.5)">V</span>';
+  const pf=document.getElementById('scPerf'), pfs=document.getElementById('scPerfSub');
+  if(be){pf.textContent=(be.delta>0?'+':'')+be.delta; if(pfs)pfs.textContent='vs un classé '+be.opp_cls;} else {pf.textContent='—'; if(pfs)pfs.textContent='';}
+}
+async function shareSeason(){
+  const btn=document.getElementById('shareBtn'), node=document.getElementById('shareCard');
+  if(typeof html2canvas==='undefined'){alert('Un instant, ça finit de charger…');return;}
+  const old=btn.textContent; btn.textContent='Génération…'; btn.disabled=true;
+  try{
+    if(document.fonts&&document.fonts.ready){try{await document.fonts.ready;}catch(e){}}
+    const canvas=await html2canvas(node,{backgroundColor:'#0B0B0D',scale:2,useCORS:true,logging:false});
+    await new Promise(res=>canvas.toBlob(async(blob)=>{
+      const file=new File([blob],'ma-saison-acbb.png',{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        try{await navigator.share({files:[file],title:'Ma saison ACBB TT',text:'Mon récap de la saison 🏓'});}catch(e){}
+      }else{
+        const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ma-saison-acbb.png'; document.body.appendChild(a); a.click(); a.remove();
+      }
+      res();
+    },'image/png'));
+  }catch(e){console.error(e);alert('Oups, génération de l\'image impossible.');}
+  btn.textContent=old; btn.disabled=false;
 }
 boot();
 
 </script>
+<div class="shareCard" id="shareCard" aria-hidden="true">
+  <div class="sc-hd">
+    <div class="sc-lg"><div class="sc-lgm">AC<br>BB</div><div class="sc-lgt"><b>ACBB TT</b><span>Tennis de table</span></div></div>
+    <div class="sc-yr">Ma saison<br>2025-2026</div>
+  </div>
+  <div class="sc-name" id="scName">—</div>
+  <div class="sc-sub" id="scSub"></div>
+  <div class="sc-curveBox">
+    <div class="sc-cT"><div class="t">Progression <span>saison</span></div><div class="d" id="scDelta"></div></div>
+    <div class="sc-chart" id="scChart"></div>
+  </div>
+  <div class="sc-grid">
+    <div class="sc-st"><div class="l">Classement mensuel</div><div class="v" id="scRank">—</div></div>
+    <div class="sc-st"><div class="l">Tendance 4 phases</div><div class="v" id="scTrend">—</div></div>
+    <div class="sc-st"><div class="l">Bilan saison</div><div class="v" id="scVD">—</div></div>
+    <div class="sc-st"><div class="l">% victoires</div><div class="v" id="scPct" style="color:#5FE0A0">—</div></div>
+    <div class="sc-st"><div class="l">Plus longue série</div><div class="v" id="scStreak" style="color:#fff">—</div></div>
+    <div class="sc-st"><div class="l">Plus grosse perf</div><div class="v" id="scPerf" style="color:#86EFAC;font-size:18px">—</div><div class="s" id="scPerfSub"></div></div>
+  </div>
+  <div class="sc-ft"><div class="u">charlp0.github.io/acbb-tt</div><div class="cta">Fais ton récap →</div></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="report.js" defer></script>
 <script data-goatcounter="https://acbb-tt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
