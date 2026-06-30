@@ -1004,6 +1004,7 @@ async function boot(){
   buildXPChart();
   init();
   const sb=document.getElementById('shareBtn'); if(sb) sb.addEventListener('click',shareSeason);
+  setTimeout(buildShareImage,1200);   // pré-génère l'image -> partage natif instantané au clic (geste iOS préservé)
 }
 function miniCurve(vals){
   vals=(vals||[]).filter(v=>typeof v==='number');
@@ -1029,24 +1030,32 @@ function fillShareCard(){
   const pf=document.getElementById('scPerf'), pfs=document.getElementById('scPerfSub');
   if(be){pf.textContent=(be.delta>0?'+':'')+be.delta; if(pfs)pfs.textContent='vs un classé '+be.opp_cls;} else {pf.textContent='—'; if(pfs)pfs.textContent='';}
 }
-async function shareSeason(){
-  const btn=document.getElementById('shareBtn'), node=document.getElementById('shareCard');
-  if(typeof html2canvas==='undefined'){alert('Un instant, ça finit de charger…');return;}
-  const old=btn.textContent; btn.textContent='Génération…'; btn.disabled=true;
+let _shareFile=null, _shareBuilding=false;
+async function buildShareImage(){
+  const node=document.getElementById('shareCard');
+  if(_shareBuilding||typeof html2canvas==='undefined'||!node) return;
+  _shareBuilding=true;
   try{
     if(document.fonts&&document.fonts.ready){try{await document.fonts.ready;}catch(e){}}
     const canvas=await html2canvas(node,{backgroundColor:'#0B0B0D',scale:2,useCORS:true,logging:false});
-    await new Promise(res=>canvas.toBlob(async(blob)=>{
-      const file=new File([blob],'ma-saison-acbb.png',{type:'image/png'});
-      if(navigator.canShare&&navigator.canShare({files:[file]})){
-        try{await navigator.share({files:[file],title:'Mon récap ACBB TT',text:'Mon récap de la saison 🏓'});}catch(e){}
-      }else{
-        const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ma-saison-acbb.png'; document.body.appendChild(a); a.click(); a.remove();
-      }
-      res();
-    },'image/png'));
-  }catch(e){console.error(e);alert('Oups, génération de l\'image impossible.');}
-  btn.textContent=old; btn.disabled=false;
+    await new Promise(res=>canvas.toBlob(b=>{ if(b)_shareFile=new File([b],'mon-recap-acbb.png',{type:'image/png'}); res(); },'image/png'));
+  }catch(e){console.error('shareImg',e);}
+  _shareBuilding=false;
+}
+function downloadFile(blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mon-recap-acbb.png';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);}
+function shareSeason(){
+  const btn=document.getElementById('shareBtn');
+  // image déjà prête : partage natif appelé DANS le geste (indispensable iOS), sinon téléchargement
+  if(_shareFile){
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[_shareFile]})){
+      navigator.share({files:[_shareFile],title:'Mon récap ACBB TT',text:'Mon récap de la saison 🏓'}).catch(()=>{});
+    }else{ downloadFile(_shareFile); }
+    return;
+  }
+  // pas encore prête : on génère puis on télécharge (le partage natif nécessitera un 2e clic)
+  if(typeof html2canvas==='undefined'){alert('Un instant, ça finit de charger… réessaie.');return;}
+  const old=btn.textContent; btn.textContent='Génération…'; btn.disabled=true;
+  buildShareImage().then(()=>{ btn.textContent=old; btn.disabled=false; if(_shareFile) downloadFile(_shareFile); else alert('Génération de l\'image impossible.'); });
 }
 boot();
 
