@@ -205,8 +205,8 @@
   .shareCard .sc-ft .u{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(246,245,243,.55);letter-spacing:.3px}
   .shareCard .sc-ft .cta{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;color:#0B0B0D;background:var(--orange);padding:6px 11px;border-radius:99px;text-transform:uppercase;letter-spacing:.4px}
   .shareCard .sc-plbl{font-family:"JetBrains Mono",monospace;font-size:7.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(246,245,243,.4);margin:14px 0 6px;text-align:center}
-  .shareCard .sc-partners{background:#fff;border-radius:12px;padding:9px 12px}
-  .shareCard .sc-partners img{width:100%;display:block}
+  .shareCard .sc-partners{border-radius:10px;overflow:hidden}
+  .shareCard .sc-partners img{width:100%;display:block;border-radius:10px}
   #shareOverlay{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.86);display:flex;align-items:center;justify-content:center;padding:20px}
   #shareOverlay .so-box{position:relative;display:flex;flex-direction:column;align-items:center;gap:13px;max-width:100%}
   #shareImg{max-width:min(330px,80vw);max-height:62vh;border-radius:16px;box-shadow:0 14px 50px rgba(0,0,0,.6);background:var(--card)}
@@ -1104,7 +1104,7 @@ boot();
     <div class="sc-st"><div class="l">Meilleure compèt</div><div class="v" id="scComp" style="color:#fff;font-size:16px">—</div><div class="s" id="scCompSub"></div></div>
   </div>
   <div class="sc-plbl" id="scPlbl">Avec le soutien de nos partenaires</div>
-  <div class="sc-partners" id="scPartners"><img src="partenaires.png" alt="Partenaires" onerror="document.getElementById('scPartners').style.display='none';document.getElementById('scPlbl').style.display='none'"></div>
+  <div class="sc-partners" id="scPartners"><img src="bande-noire.png" alt="Partenaires" onerror="document.getElementById('scPartners').style.display='none';document.getElementById('scPlbl').style.display='none'"></div>
 </div>
 <div id="shareOverlay" style="display:none">
   <div class="so-box">
