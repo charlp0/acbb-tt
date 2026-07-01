@@ -65,6 +65,23 @@ def main():
         out.append({'lic':lic,'nom':p.get('nom',''),'pre':p.get('prenom',''),'men':round(men),
                     'tend':tend,'spp':round(b,1) if b is not None else None,'h':win})
         if (i+1)%50==0: print(f"  {i+1}/{len(players)} traités")
+    # --- Mutations 2026/2027 (recrues) ---
+    def mensuel_of(lic):
+        lb=fb.get('xml_licence_b.php?licence='+lic); m=re.search(r'<pointm>([-\d.]+)',lb)
+        return round(float(m.group(1))) if m else None
+    MUT_LOOKUP=[('COHEN MELKA','Eytan','9258246'),('VERDIER','Mahé','9253816'),('SERGENT','Enzo','9540663'),
+                ('INTINS','Arthur','9248896'),('STEMLER','Grégoire','9254353'),('INTINS','David','5412783'),('DELORY','Virgile','9241720')]
+    MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('ARGUS','Daniel',1600),('PORTOKALLIS','Antonis',1500),('BENCHAT','Maris',2520)]
+    for nom,pre,lic in MUT_LOOKUP:
+        h=histo(lic); time.sleep(0.1); men=mensuel_of(lic)
+        win=[{'l':e['lab'],'pt':e['pt']} for e in h[-WINDOW:]]
+        if win and isinstance(men,(int,float)): win[-1]={'l':'Mensuel actuel','pt':round(men)}
+        ys=[e['pt'] for e in win]; b=slope(ys)
+        out.append({'lic':lic,'nom':nom,'pre':pre,'men':round(men) if isinstance(men,(int,float)) else (ys[-1] if ys else 500),
+                    'tend':round(b*(len(ys)-1)) if b is not None else 0,'spp':round(b,1) if b is not None else None,'h':win,'mut':'2026/2027'})
+    for nom,pre,men in MUT_HARD:
+        out.append({'lic':None,'nom':nom,'pre':pre,'men':men,'tend':None,'spp':None,'h':[],'mut':'2026/2027'})
+    print(f"  + {len(MUT_LOOKUP)+len(MUT_HARD)} mutations 2026/2027 ajoutées")
     out.sort(key=lambda r:r['nom'])
     payload={'built':datetime.datetime.now(datetime.timezone.utc).isoformat(),'window':WINDOW,'players':out}
     json.dump(payload, open("data/scoring.json","w"), ensure_ascii=False)
