@@ -70,8 +70,9 @@ def main():
         lb=fb.get('xml_licence_b.php?licence='+lic); m=re.search(r'<pointm>([-\d.]+)',lb)
         return round(float(m.group(1))) if m else None
     MUT_LOOKUP=[('COHEN MELKA','Eytan','9258246'),('VERDIER','Mahé','9253816'),('SERGENT','Enzo','9540663'),
-                ('INTINS','Arthur','9248896'),('STEMLER','Grégoire','9254353'),('INTINS','David','5412783'),('DELORY','Virgile','9241720')]
-    MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('ARGUS','Daniel',1600),('PORTOKALLIS','Antonis',1500),('BENCHAT','Maris',2520)]
+                ('INTINS','Arthur','9248896'),('STEMLER','Grégoire','9254353'),('INTINS','David','5412783'),
+                ('DELORY','Virgile','9241720'),('BENCHAT','Marius','1421042')]
+    MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('ARGUS','Daniel',1600),('PORTOKALLIS','Antonis',1500)]
     for nom,pre,lic in MUT_LOOKUP:
         h=histo(lic); time.sleep(0.1); men=mensuel_of(lic)
         win=[{'l':e['lab'],'pt':e['pt']} for e in h[-WINDOW:]]
