@@ -253,6 +253,7 @@
   .sc th:nth-child(2),.sc td:nth-child(2){text-align:left}
   .sc th:first-child,.sc td.rk{text-align:center}
   .sc .rk{font-family:"JetBrains Mono",monospace;color:var(--dim);min-width:40px;padding-left:8px;padding-right:8px}
+  .mut-badge{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:800;letter-spacing:0.3px;text-transform:uppercase;color:var(--orange);background:rgba(242,106,27,0.14);border:1px solid rgba(242,106,27,0.45);border-radius:99px;padding:1px 6px;margin-left:7px;vertical-align:middle;white-space:nowrap}
   .sc .nm{font-weight:700;letter-spacing:-0.2px}
   .sc .num{font-family:"JetBrains Mono",monospace;font-weight:700}
   .sc .score{font-family:"JetBrains Mono",monospace;font-weight:800;color:var(--orange);font-size:14px}
@@ -344,13 +345,16 @@ function render(){
   const cap=parseFloat(cs.value); cv.textContent=cap;
   const clamp=(v)=>Math.max(-cap,Math.min(cap,v));
   const s=(q.value||'').trim().toUpperCase();
-  const rows=D.map(p=>({...p,score:Math.round(p.men+k*clamp(p.tend))}))
+  const rows=D.map(p=>({...p,score:Math.round(p.men+k*clamp(p.tend||0))}))
               .filter(p=>!s||((p.pre+' '+p.nom).toUpperCase().includes(s)))
               .sort((a,b)=>b.score-a.score);
   tb.innerHTML=rows.map((p,i)=>{
-    const tc=p.tend>0?'up':(p.tend<0?'down':'flat'); const ts=(p.tend>0?'+':'')+p.tend;
+    const hasT=p.tend!=null;
+    const tc=!hasT?'flat':(p.tend>0?'up':(p.tend<0?'down':'flat')); const ts=hasT?((p.tend>0?'+':'')+p.tend):'—';
     const hist=(p.h||[]).map(x=>x.l+': '+x.pt).join(' · ')+(p.spp!=null?'  —  pente '+(p.spp>0?'+':'')+p.spp+'/phase':'');
-    return '<tr><td class="rk">'+(i+1)+'</td><td class="nm">'+p.pre+' '+p.nom+'</td><td class="num">'+p.men+'</td><td class="num '+tc+'" title="'+hist+'">'+ts+'</td><td class="score">'+p.score+'</td><td>'+traj(p.tend)+'</td></tr>';
+    const badge=p.mut?' <span class="mut-badge">Mutation '+p.mut+'</span>':'';
+    const trj=hasT?traj(p.tend):'<span class="flat">·</span>';
+    return '<tr><td class="rk">'+(i+1)+'</td><td class="nm">'+p.pre+' '+p.nom+badge+'</td><td class="num">'+p.men+'</td><td class="num '+tc+'" title="'+hist+'">'+ts+'</td><td class="score">'+p.score+'</td><td>'+trj+'</td></tr>';
   }).join('');
 }
 ks.addEventListener('input',render); cs.addEventListener('input',render); q.addEventListener('input',render); render();
