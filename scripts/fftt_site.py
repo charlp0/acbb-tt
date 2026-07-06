@@ -153,6 +153,11 @@ def main():
         STAND[key]=build_standings(key,cx,d1,org); time.sleep(0.2)
         nj=sum(len(t['journees']) for t in DATA[key]['teams'])
         print(f"  {key} : {len(DATA[key]['teams'])} équipes, {nj} journées, {len(STAND[key])} au classement")
+    # garde-fou anti-effacement : bascule de saison / API vide -> ne pas écraser le récap existant
+    try: prev=len(json.load(open("data/site.json")).get('DATA',{}))
+    except Exception: prev=0
+    if prev>=5 and len(DATA) < prev*0.8:
+        import sys; sys.exit(f"ABORT: {len(DATA)} équipes collectées vs {prev} précédentes — API probablement en bascule de saison, aucune écriture.")
     out={'built':datetime.datetime.now(datetime.timezone.utc).isoformat(),'DATA':DATA,'STANDINGS':STAND}
     json.dump(out, open("data/site.json","w"), ensure_ascii=False)
     # site.js : chargé en <script> AVANT le script de page -> DATA/STANDINGS dispo en synchrone (pas de réécriture async)
