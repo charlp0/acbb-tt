@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>ACBB TT — Stats Ch. Équipe</title>
+<title>ACBB TT — Bilan Ch. Équipe 2025/2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -221,18 +221,206 @@
   .adv-meta{margin-top:9px;font-size:10px;color:var(--dim);font-family:"JetBrains Mono",monospace;letter-spacing:0.3px}
   .adv-genre{font-family:"Saira Condensed",system-ui,sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;
     letter-spacing:0.6px;font-size:12px;color:var(--orange);margin:14px 4px 7px}
+
+  /* ===== SECTIONS PORTÉES DE LA HOME ===== */
+
+  .section{padding:24px 20px;border-top:1px solid var(--line)}
+  .section:first-of-type{border-top:none}
+  .section-h{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+  .section-h::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
+
+  /* SECTION 1 — BILAN — monumental counters */
+  .bilan{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  @media (min-width:600px){.bilan{grid-template-columns:repeat(3,1fr)}}
+  @media (min-width:900px){.bilan{grid-template-columns:repeat(4,1fr)}}
+  /* ===== CERCLES "coup d'œil" ===== */
+  .club-rings{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:520px){.club-rings{gap:7px}}
+  .cring{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 10px 15px;display:flex;flex-direction:column;align-items:center;gap:9px;position:relative;overflow:hidden}
+  .cring::after{content:"";position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;opacity:.5}
+  .cring.win::after{background:radial-gradient(circle,rgba(61,214,140,0.16) 0%,transparent 70%)}
+  .cring.acc::after{background:radial-gradient(circle,rgba(242,106,27,0.16) 0%,transparent 70%)}
+  .cring.gold::after{background:radial-gradient(circle,rgba(250,204,21,0.14) 0%,transparent 70%)}
+  .cring-wrap{position:relative;width:118px;height:118px}
+  @media(max-width:520px){.cring-wrap{width:90px;height:90px}}
+  .cring-wrap svg{transform:rotate(-90deg)}
+  .cring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+  .cring-pct{font-family:"Saira Condensed",sans-serif;font-weight:800;font-style:italic;font-size:34px;line-height:0.85;letter-spacing:0.3px}
+  @media(max-width:520px){.cring-pct{font-size:26px}}
+  .cring-pct .u{font-size:15px;color:var(--dim)}
+  .cring-sub{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--dim);letter-spacing:0.2px;white-space:nowrap}
+  .cring-label{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-2);font-weight:700;text-align:center;line-height:1.2}
+  .cring-foot{font-size:9.5px;color:var(--dim);font-family:"JetBrains Mono",monospace;text-align:center}
+  .bilan-cell{padding:22px 20px 20px;background:var(--paper);position:relative;min-height:140px;display:flex;flex-direction:column;justify-content:flex-end}
+  .bilan-cell.featured{background:var(--panel-2);border-top:2px solid var(--acbb)}
+  .bilan-cell.featured .lbl{color:rgba(255,255,255,0.5)}
+  .bilan-v{font-family:"JetBrains Mono",monospace;font-size:42px;font-weight:600;line-height:0.95;letter-spacing:-1.5px}
+  .bilan-v .unit{font-size:18px;color:var(--dim);font-weight:500;margin-left:3px}
+  .bilan-cell.featured .bilan-v .unit{color:rgba(255,255,255,0.5)}
+  .bilan-vnd{display:flex;align-items:baseline;gap:4px;font-family:"JetBrains Mono",monospace;font-size:34px;font-weight:600;letter-spacing:-1px;line-height:1}
+  .bilan-vnd .v{color:#86EFAC}
+  .bilan-vnd .n{color:var(--warn)}
+  .bilan-vnd .l{color:#FCA5A5}
+  .bilan-vnd .sep{color:var(--dimmer);font-weight:400;font-size:24px}
+  .bilan-cell.featured .bilan-vnd .v{color:#86EFAC}
+  .bilan-cell.featured .bilan-vnd .l{color:#FCA5A5}
+  .lbl{font-size:9.5px;color:var(--dim);text-transform:uppercase;letter-spacing:0.7px;font-weight:700;margin-top:10px}
+
+  /* SECTION 2 — CARTE D'ÉTAT */
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;font-size:10.5px;color:var(--ink-2)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .legend i.promo{background:var(--win)}
+  .legend i.safe{background:var(--warn)}
+  .legend i.watch{background:var(--alert)}
+  .legend i.danger{background:var(--lose)}
+
+  .teams-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  @media (min-width:500px){.teams-grid{grid-template-columns:repeat(4,1fr)}}
+  @media (min-width:760px){.teams-grid{grid-template-columns:repeat(5,1fr)}}
+  @media (min-width:1000px){.teams-grid{grid-template-columns:repeat(6,1fr)}}
+  .team-card{
+    text-decoration:none;color:var(--ink);
+    background:var(--paper);border:1px solid var(--line);border-radius:12px;
+    padding:14px 12px 12px;display:flex;flex-direction:column;gap:6px;
+    position:relative;overflow:hidden;
+    transition:transform .15s,border-color .15s;
+  }
+  .team-card:hover{transform:translateY(-1px);border-color:var(--line-2)}
+  .team-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--line-2)}
+  .team-card.promo::before{background:var(--win)}
+  .team-card.safe::before{background:var(--warn)}
+  .team-card.watch::before{background:var(--alert)}
+  .team-card.danger::before{background:var(--lose)}
+  .tc-row{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+  .tc-team{font-family:"JetBrains Mono",monospace;font-size:18px;font-weight:700;letter-spacing:-0.5px;line-height:1}
+  .tc-level{font-size:8.5px;color:var(--dim);font-family:"JetBrains Mono",monospace;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;text-align:right;line-height:1.2}
+  .tc-pos{font-family:"JetBrains Mono",monospace;font-size:22px;font-weight:700;letter-spacing:-0.5px;line-height:1}
+  .tc-pos .tot{color:var(--dim);font-size:13px;font-weight:500}
+  .tc-pts{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim);font-weight:600;letter-spacing:0.2px}
+  .tc-status{font-size:8.5px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;padding:2px 7px;border-radius:4px;align-self:flex-start;margin-top:3px;white-space:nowrap}
+  .team-card.promo .tc-status{background:var(--win-bg);color:#86EFAC}
+  .team-card.safe .tc-status{background:var(--warn-bg);color:var(--warn-deep,var(--warn))}
+  .team-card.watch .tc-status{background:var(--alert-bg);color:#FB923C}
+  .team-card.danger .tc-status{background:var(--lose-bg);color:#FCA5A5}
+
+  /* SECTION 3 — TOP PERFORMERS */
+  .tops{display:grid;grid-template-columns:1fr;gap:14px}
+  @media (min-width:900px){.tops{grid-template-columns:1fr 1fr}}
+  .top-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .top-head{padding:14px 16px 12px;display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .top-t{font-size:13px;font-weight:700;letter-spacing:-0.2px}
+  .top-t em{font-family:"Saira Condensed",system-ui,sans-serif;font-style:italic;font-weight:400;color:var(--acbb)}
+  .top-sub{font-size:10px;color:var(--dim);font-family:"JetBrains Mono",monospace;letter-spacing:0.3px;text-transform:uppercase}
+  a.top-row{text-decoration:none;color:inherit;transition:background .15s}
+  a.top-row:hover{background:rgba(242,106,27,0.06)}
+  .top-row{
+    display:grid;grid-template-columns:auto 1fr auto auto auto;gap:10px;align-items:center;
+    padding:11px 16px;border-bottom:1px solid var(--line);font-size:13px;
+  }
+  .top-row:last-child{border-bottom:none}
+  .top-rk{font-family:"Saira Condensed",system-ui,sans-serif;font-size:20px;line-height:1;color:var(--dimmer);min-width:22px}
+  .top-row.r1 .top-rk{color:var(--draw)}
+  .top-row.r2 .top-rk{color:var(--ink-2)}
+  .top-row.r3 .top-rk{color:var(--lose)}
+  .top-nm{font-weight:700;letter-spacing:-0.2px;line-height:1.2;font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--ink)}
+  .top-nm .sub{display:block;font-size:10px;color:var(--dim);font-family:"JetBrains Mono",monospace;margin-top:2px;letter-spacing:0.2px}
+  .top-pts{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);font-weight:600}
+  .top-vic{font-family:"JetBrains Mono",monospace;font-size:16px;font-weight:800;letter-spacing:-0.3px}
+  .top-pct{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;padding:3px 8px;border-radius:5px;letter-spacing:-0.2px;background:var(--panel-2);color:var(--ink)}
+  .top-pct.hi{background:var(--win-bg);color:#86EFAC}
+  .top-pct.mid{background:var(--draw-bg);color:var(--draw)}
+
+  /* SECTION 4 — ÉVOLUTION */
+  .evo{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;align-items:end;overflow:hidden}
+  .evo-bar{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .evo-stack{
+    width:100%;max-width:80px;border-radius:10px 10px 6px 6px;overflow:hidden;
+    display:flex;flex-direction:column;
+    background:var(--panel);border:1px solid var(--line);min-height:60px;
+  }
+  .evo-stack .s{display:block;width:100%;transition:height .6s cubic-bezier(.2,.7,.3,1)}
+  .evo-stack .s.w{background:var(--win)}
+  .evo-stack .s.d{background:var(--warn)}
+  .evo-stack .s.l{background:var(--lose)}
+  .evo-stack .s.empty{background:var(--panel-2);flex:1}
+  .evo-lbl{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;color:var(--ink);letter-spacing:0.3px}
+  .evo-stats{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim);letter-spacing:0.2px;display:flex;flex-direction:column;align-items:center;gap:1px}
+  .evo-stats .vnd{display:flex;gap:3px}
+  .evo-stats .v{color:#86EFAC;font-weight:700}
+  .evo-stats .d{color:var(--warn)}
+  .evo-stats .l{color:#FCA5A5;font-weight:700}
+  .evo-future .evo-stack{opacity:0.45;background:repeating-linear-gradient(45deg,var(--panel) 0,var(--panel) 6px,var(--panel-2) 6px,var(--panel-2) 12px)}
+  .evo-future .evo-lbl{color:var(--dim)}
+
+  /* SECTION 5 — RECORDS */
+  .records{display:grid;grid-template-columns:1fr;gap:10px}
+  @media (min-width:700px){.records{grid-template-columns:repeat(3,1fr)}}
+  .record{
+    background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;
+    display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;
+  }
+  .record.win{background:linear-gradient(180deg,var(--win-bg) 0%,var(--paper) 80%);border-color:rgba(52,211,153,0.35)}
+  .record.lose{background:linear-gradient(180deg,var(--lose-bg) 0%,var(--paper) 80%);border-color:rgba(248,113,113,0.35)}
+  .record.mvp{background:linear-gradient(180deg,var(--draw-bg) 0%,var(--paper) 80%);border-color:rgba(251,191,36,0.35)}
+  .rec-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .rec-tag{font-size:9px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;padding:3px 8px;border-radius:5px;color:#fff}
+  .record.win .rec-tag{background:var(--win)}
+  .record.lose .rec-tag{background:var(--lose)}
+  .record.mvp .rec-tag{background:var(--draw)}
+  .rec-meta{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim);font-weight:600;letter-spacing:0.2px;text-transform:uppercase}
+  .rec-score{font-family:"JetBrains Mono",monospace;font-size:34px;font-weight:700;line-height:1;letter-spacing:-1px;color:var(--ink)}
+  .rec-score .sep{color:var(--dimmer);font-weight:400}
+  .rec-vs{font-size:13px;font-weight:600;letter-spacing:-0.2px;line-height:1.3}
+  .rec-vs em{font-family:"Saira Condensed",system-ui,sans-serif;font-style:italic;font-weight:400;color:var(--acbb)}
+  .rec-team-chip{display:inline-flex;align-items:center;gap:5px;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;background:var(--paper);border:1px solid var(--line);padding:3px 8px;border-radius:99px}
+
+  /* ===== TEAM QUICK SELECTOR (shared with equipe) ===== */
+  /* ===== ARCHITECTURE ARCHIVE (design handoff 26/27) ===== */
+  html{scroll-behavior:smooth}
+  .shortcuts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;padding:4px 16px 8px;max-width:1120px;margin:0 auto}
+  .sc-card{display:flex;flex-direction:column;gap:4px;background:#141416;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:13px 15px;text-decoration:none;color:inherit;transition:border-color .15s}
+  .sc-card:hover{border-color:rgba(242,106,27,0.6)}
+  .sc-card .n{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;color:var(--orange)}
+  .sc-card b{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:17px;letter-spacing:0.3px}
+  .sc-card .m{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:rgba(232,232,234,0.45)}
+  .asec{scroll-margin-top:80px;padding:0 16px;max-width:1120px;margin:0 auto}
+  .ahead{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid rgba(255,255,255,0.08);padding:44px 0 12px;margin-bottom:18px}
+  .anum{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:clamp(26px,4vw,36px);color:rgba(232,232,234,0.18);line-height:1}
+  .atitle{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:clamp(24px,4.5vw,34px);line-height:1;letter-spacing:0.5px;flex:1}
+  .atitle em{color:var(--orange);font-style:italic}
+  .atop{font-family:"JetBrains Mono",monospace;font-size:11px;color:rgba(232,232,234,0.45);text-decoration:none;white-space:nowrap}
+  .atop:hover{color:var(--orange)}
+  .asep{width:120px;height:1px;margin:52px auto;background:linear-gradient(90deg,transparent,rgba(242,106,27,0.5),transparent)}
+  #backTop{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:14px;background:#1E1E22;border:1px solid rgba(255,255,255,0.16);color:var(--orange);font-size:18px;cursor:pointer;display:none;z-index:60}
+  #backTop.show{display:block}
+  /* tableau joueurs (design : choix tableau) */
+  .ptable-card{background:#141416;border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden}
+  .ptable-scroll{max-height:480px;overflow:auto}
+  .ptable{width:100%;min-width:640px;border-collapse:collapse;font-size:12.5px}
+  .ptable th{position:sticky;top:0;background:#1E1E22;z-index:2;font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:rgba(232,232,234,0.55);padding:10px 14px;text-align:left;white-space:nowrap}
+  .ptable td{padding:10px 14px;border-top:1px solid rgba(255,255,255,0.05);white-space:nowrap}
+  .ptable tbody tr:hover{background:rgba(255,255,255,0.03)}
+  .ptable .pnm{font-weight:700;letter-spacing:-0.2px}
+  .ptable .num{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+  .ptable .v{color:#3DD68C}
+  .ptable .teamch{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;background:#1E1E22;border:1px solid rgba(255,255,255,0.12);border-radius:7px;padding:1px 6px;margin-right:4px}
+  .pctbar{display:flex;align-items:center;gap:8px;min-width:130px}
+  .pctbar .tr{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,0.08);overflow:hidden}
+  .pctbar .fl{height:100%;border-radius:99px;background:#3DD68C}
+  .pctbar .val{font-family:"JetBrains Mono",monospace;font-size:11.5px;min-width:34px;text-align:right}
 </style>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
 <meta name="description" content="Stats du championnat par équipe ACBB : classement des joueurs et niveau adverse par division et par équipe.">
-<meta property="og:title" content="ACBB Tennis de Table — Stats Ch. Équipe">
+<meta property="og:title" content="ACBB Tennis de Table — Bilan Ch. Équipe 2025/2026">
 <meta property="og:description" content="Classement des joueurs ACBB et niveau adverse par division et par équipe.">
 <meta property="og:image" content="https://charlp0.github.io/acbb-tt/logo.png">
 <meta property="og:url" content="https://charlp0.github.io/acbb-tt/stats.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ACBB Tennis de Table">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ACBB Tennis de Table — Stats Ch. Équipe">
+<meta name="twitter:title" content="ACBB Tennis de Table — Bilan Ch. Équipe 2025/2026">
 <meta name="twitter:description" content="Classement des joueurs ACBB et niveau adverse par division et par équipe.">
 <meta name="twitter:image" content="https://charlp0.github.io/acbb-tt/logo.png">
 <script data-goatcounter="https://acbb-tt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
@@ -245,30 +433,54 @@
       <img class="brand-img" src="logo.png" alt="ACBB">
       <div class="brand-text">
         <div class="brand-name">ACBB TT</div>
-        <div class="brand-sub">Phase 2 · J7</div>
+        <div class="brand-sub">Bilan 25/26</div>
       </div>
     </a>
     <nav class="nav">
       <a href="accueil.html" class="nav-link">Accueil</a>
       <a href="joueurs.html" class="nav-link">Joueurs</a>
-      <a href="stats.html" class="nav-link active">Stats Ch. Équipe</a>
+      <a href="stats.html" class="nav-link active">Ch. Équipe 25/26</a>
       <a href="scoring.html" class="nav-link">Sportive</a>
     </nav>
   </div>
 </header>
 
 <div class="hero">
-  <div class="hero-eyebrow">Championnat par équipe · Phase 2</div>
-  <h1 class="hero-title">Stats <em>Ch. Équipe</em></h1>
+  <div class="hero-eyebrow" id="top">Archive · Championnat par équipes · Saison 2025-2026</div>
+  <h1 class="hero-title">Bilan <em>25/26.</em></h1>
   <div class="hero-meta" id="meta"></div>
 </div>
 
-<div class="tabbar" role="tablist" aria-label="Sections des statistiques">
-  <button class="tab active" data-tab="joueurs" role="tab" aria-selected="true" aria-controls="view-joueurs">Résultats joueurs</button>
-  <button class="tab" data-tab="adverse" role="tab" aria-selected="false" aria-controls="view-adverse">Niveau des équipes</button>
+<div class="shortcuts">
+  <a class="sc-card" href="#equipes"><span class="n">01</span><b>Les équipes</b><span class="m">19 équipes · statuts</span></a>
+  <a class="sc-card" href="#bilan-s"><span class="n">02</span><b>Bilan phase 2</b><span class="m">compteurs · coup d'œil</span></a>
+  <a class="sc-card" href="#joueurs-s"><span class="n">03</span><b>Résultats joueurs</b><span class="m">recherche · tris</span></a>
+  <a class="sc-card" href="#niveau"><span class="n">04</span><b>Niveau des équipes</b><span class="m">ACBB vs adversaires</span></a>
+  <a class="sc-card" href="#records-s"><span class="n">05</span><b>Records &amp; évolution</b><span class="m">tops · MVP · J1→J7</span></a>
 </div>
 
-<section id="view-joueurs" class="tabview active" role="tabpanel">
+<section class="asec" id="equipes">
+  <div class="ahead"><span class="anum">01</span><h2 class="atitle">Les <em>équipes</em></h2><a class="atop" href="#top">↑ Sommaire</a></div>
+  <div class="legend">
+    <span><i class="promo"></i>Top 2 — promotion / haut</span>
+    <span><i class="safe"></i>3-5 — maintien tranquille</span>
+    <span><i class="watch"></i>6 — à surveiller</span>
+    <span><i class="danger"></i>7-8 — zone descente</span>
+  </div>
+  <div class="teams-grid" id="teamsGrid"></div>
+</section>
+<div class="asep"></div>
+
+<section class="asec" id="bilan-s">
+  <div class="ahead"><span class="anum">02</span><h2 class="atitle">Bilan <em>phase 2</em></h2><a class="atop" href="#top">↑ Sommaire</a></div>
+  <div class="bilan" id="bilan"></div>
+  <div style="height:22px"></div>
+  <div class="club-rings" id="clubRings"></div>
+</section>
+<div class="asep"></div>
+
+<section class="asec" id="joueurs-s">
+  <div class="ahead"><span class="anum">03</span><h2 class="atitle">Résultats <em>joueurs</em></h2><a class="atop" href="#top">↑ Sommaire</a></div>
   <div class="controls">
     <div class="search-row">
       <input class="search-input" id="search" type="text" placeholder="Chercher un joueur…" autocomplete="off">
@@ -277,13 +489,37 @@
     <div class="filters" id="filters"></div>
   </div>
   <main class="list" id="list"></main>
+  <div style="height:26px"></div>
+  <div id="bestPlayers"></div>
 </section>
 
-<section id="view-adverse" class="tabview" role="tabpanel" hidden>
+<div class="asep"></div>
+<section class="asec" id="niveau">
+  <div class="ahead"><span class="anum">04</span><h2 class="atitle">Niveau des <em>équipes</em></h2><a class="atop" href="#top">↑ Sommaire</a></div>
   <div class="adv-intro">Niveau réel rencontré en championnat : classement <b>mensuel</b> (au moment de chaque match) des <b>adversaires</b> vs des joueurs <b>ACBB</b> alignés. Par division puis par équipe.</div>
   <div id="advDivisions" class="adv-block"></div>
   <div id="advTeams" class="adv-block"></div>
 </section>
+<div class="asep"></div>
+<section class="asec" id="records-s">
+  <div class="ahead"><span class="anum">05</span><h2 class="atitle">Records &amp; <em>évolution</em></h2><a class="atop" href="#top">↑ Sommaire</a></div>
+  <div class="tops">
+    <div class="top-card">
+      <div class="top-head"><div class="top-t">Meilleur <em>% victoires</em></div><div class="top-sub">ratio V / matchs joués</div></div>
+      <div id="topPct"></div>
+    </div>
+    <div class="top-card">
+      <div class="top-head"><div class="top-t">Meilleur <em>différentiel</em></div><div class="top-sub">goal-average personnel</div></div>
+      <div id="topVol"></div>
+    </div>
+  </div>
+  <div style="height:26px"></div>
+  <div class="evo" id="evo"></div>
+  <div style="height:26px"></div>
+  <div class="records" id="records"></div>
+</section>
+<button id="backTop" aria-label="Retour en haut">↑</button>
+
 
 <script src="data/site.js"></script>
 <script>
@@ -574,13 +810,40 @@ window.DATA = DATA;
     return { vic, played, max: played * matchMax, pct: played ? Math.round(vic / (played * matchMax) * 100) : 0 };
   }
 
+  // Niveau MENSUEL moyen des adversaires au moment du match (API FFTT SmartPing, escalier mensuel)
+  function oppAvgForTeam(poolKey){
+    const M={F1:1066,F2:821,F3:619,M2:2236,M3:1615,M4:1421,M5:1306,M6:1301,M7:1221,M8:1183,M9:1178,M10:971,M11:996,M12:689,M13:611,M14:690,M15:652,M16:602,M17:672};
+    return M[poolKey] || null;
+  }
+
+  // Agrège les joueurs ACBB sur un sous-ensemble de poules (pour split Masculin/Féminin)
+  function aggregateClubPlayersByPools(pools){
+    const stats={};
+    pools.forEach(k=>{
+      const acbb=getAcbbTeam(k); if(!acbb) return;
+      (acbb.journees||[]).forEach(j=>{
+        (j.players||[]).forEach(p=>{
+          if(!p.nom||p.nom==='Joueur absent') return;
+          const key=(p.nom+'|'+(p.prenom||'')).replace(/-/g,' ').replace(/\s+/g,' ').trim().toUpperCase();
+          if(!stats[key]) stats[key]={nom:p.nom,prenom:p.prenom||'',cls:p.cls,vic:0,played:0,teamCounts:{}};
+          stats[key].vic+=(p.vic||0); stats[key].played+=1; stats[key].cls=p.cls;
+          stats[key].teamCounts[k]=(stats[key].teamCounts[k]||0)+1;
+        });
+      });
+    });
+    return Object.values(stats).map(s=>({nom:s.nom,prenom:s.prenom,cls:s.cls,vic:s.vic,played:s.played,
+      teams:Object.keys(s.teamCounts).sort((a,b)=>((LEVEL_META[a]&&LEVEL_META[a].tier)??99)-((LEVEL_META[b]&&LEVEL_META[b].tier)??99)||a.localeCompare(b)),
+      parties:s.played*3,
+      winRate:s.played?Math.round(s.vic/(s.played*3)*100):0}));
+  }
+
   root.ACBB_UTILS = {
     TEAM_KEYS, LEVEL_META,
     getAcbbTeam, isNat2, enrichJournee, aggregatePlayers,
     buildCalendar, poolAverages, teamSummary, findAcbbStanding,
     shortDate, clsDisplay, firstName, shortName, shortOpp,
-    getOpponentLineup, lineupAvgCls,
-    aggregateAllClubPlayers, playerWinRateInTeam,
+    getOpponentLineup, lineupAvgCls, oppAvgForTeam,
+    aggregateAllClubPlayers, playerWinRateInTeam, aggregateClubPlayersByPools,
   };
   // ====== CLUB-WIDE STATS ======
 
@@ -776,55 +1039,21 @@ window.DATA = DATA;
     const list = document.getElementById('list');
     if (!rows.length) { list.innerHTML = '<div class="empty">Aucun joueur</div>'; return; }
 
-    list.innerHTML = rows.map((p, i) => {
-      const pct = p.winRate;
-      const pctCls = pct >= 60 ? 'hi' : (pct >= 35 ? 'mid' : 'lo');
-      let rkCls = '';
-      if (activeSort === 'pct' || activeSort === 'vic') {
-        if (i === 0) rkCls = 'top1';
-        else if (i === 1) rkCls = 'top2';
-        else if (i === 2) rkCls = 'top3';
-      }
-      const teamTags = p.teams.map(k => {
-        const meta = U.LEVEL_META[k];
-        const isF = k[0] === 'F';
-        const count = p.teamCounts[k];
-        return `<span class="team-tag${isF?' f':''}">
-          <strong>${k}</strong>
-          <span class="lvl">${meta?meta.short:''}</span>
-          <span class="n">${count}j</span>
-        </span>`;
-      }).join('');
-
-      return `
-        <div class="player-card ${rkCls} anim-in">
-          <div class="pc-top">
-            <div class="pc-info">
-              <div class="pc-name">${U.firstName(p)} ${p.nom}</div>
-              <div class="pc-sub">
-                <span>cl. ${U.clsDisplay(p.cls)}</span>
-                <span class="dot"></span>
-                <span>${p.played} présence${p.played>1?'s':''}</span>
-                <span class="dot"></span>
-                <span>${p.teams.length} équipe${p.teams.length>1?'s':''}</span>
-              </div>
-            </div>
-            <div class="pc-stats">
-              <div class="pc-stat-v">${p.vic}<span class="s">V</span></div>
-              <div class="pc-stat-pct ${pctCls}">${pct}%</div>
-            </div>
-          </div>
-          <div class="pc-bar"><i class="gauge" style="width:0%" data-w="${pct}%"></i></div>
-          <div class="pc-teams">${teamTags}</div>
-        </div>
-      `;
+    // Tableau scrollable (design 26/27) : en-tête sticky, scroll horizontal sur mobile
+    const body = rows.map(p => {
+      const teamTags = p.teams.map(k => `<span class="teamch">${k}<span style="color:rgba(232,232,234,0.4)"> ${p.teamCounts[k]}j</span></span>`).join('');
+      return `<tr>
+        <td class="pnm">${U.firstName(p)} ${p.nom}</td>
+        <td class="num">${U.clsDisplay(p.cls)}</td>
+        <td>${teamTags}</td>
+        <td class="num">${p.played}</td>
+        <td class="num v">${p.vic}</td>
+        <td><div class="pctbar"><div class="tr"><div class="fl" style="width:${Math.max(0,Math.min(100,p.winRate))}%"></div></div><span class="val">${p.winRate}%</span></div></td>
+      </tr>`;
     }).join('');
-
-    requestAnimationFrame(() => {
-      list.querySelectorAll('.gauge').forEach(g => {
-        setTimeout(() => { g.style.width = g.dataset.w; }, 60);
-      });
-    });
+    list.innerHTML = `<div class="ptable-card anim-in"><div class="ptable-scroll"><table class="ptable">
+      <thead><tr><th>Joueur</th><th>Cl.</th><th>Équipes</th><th>Prés.</th><th>V</th><th>% victoires</th></tr></thead>
+      <tbody>${body}</tbody></table></div></div>`;
   }
 
   renderAll();
@@ -881,18 +1110,250 @@ window.DATA = DATA;
       '<div class="adv-h">Par équipe</div>' + byGenre(DATA.teams||[], r=>teamName(r.key));
   }
 
-  /* ===== Bascule d'onglets ===== */
-  let advRendered = false;
-  document.querySelectorAll('.tab').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tab = btn.dataset.tab;
-      document.querySelectorAll('.tab').forEach(b => { b.classList.toggle('active', b===btn); b.setAttribute('aria-selected', b===btn ? 'true' : 'false'); });
-      document.getElementById('view-joueurs').hidden = (tab !== 'joueurs');
-      document.getElementById('view-adverse').hidden = (tab !== 'adverse');
-      if(tab === 'adverse' && !advRendered){ renderAdverse(); advRendered = true; }
-      window.scrollTo({top:0, behavior:'smooth'});
+  renderAdverse();
+})();
+</script>
+<script>
+(function(){
+  const U = window.ACBB_UTILS;
+  if (!U) { console.error('ACBB_UTILS not loaded'); return; }
+
+  // === SECTION 1 — Bilan ===
+  function renderBilan(){
+    const s = U.aggregateClubStats();
+    const html = `
+      <div class="bilan-cell">
+        <div class="bilan-v">${s.matches}</div>
+        <div class="lbl">Rencontres jouées</div>
+      </div>
+      <div class="bilan-cell featured">
+        <div class="bilan-vnd"><span class="v">${s.wins}</span><span class="sep">·</span><span class="n">${s.draws}</span><span class="sep">·</span><span class="l">${s.losses}</span></div>
+        <div class="lbl">V · N · D</div>
+      </div>
+      <div class="bilan-cell">
+        <div class="bilan-v">${s.winPct}<span class="unit">%</span></div>
+        <div class="lbl">% victoires club</div>
+      </div>
+      <div class="bilan-cell">
+        <div class="bilan-v">${s.players}</div>
+        <div class="lbl">Joueurs alignés</div>
+      </div>
+    `;
+    document.getElementById('bilan').innerHTML = html;
+  }
+
+  // === SECTION 2 — Carte d'état ===
+  function renderTeamsGrid(){
+    const html = U.TEAM_KEYS.map(k => {
+      const meta = U.LEVEL_META[k];
+      const ps = U.statusByPosition(k);
+      const pool = window.DATA[k];
+      const statusLabel = {
+        promo: 'Top',
+        safe: 'Sûr',
+        watch: 'À voir',
+        danger: 'Danger',
+      }[ps.status] || '—';
+      return `<a class="team-card ${ps.status} anim-in" href="equipe.html?team=${k}">
+        <div class="tc-row">
+          <span class="tc-team">${k}</span>
+          <span class="tc-level">${meta.short}<br>${meta.label.replace('Départemental','Dép.').replace('Régional','Rég.')}</span>
+        </div>
+        <div style="font-size:8px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--dim);margin-top:10px;margin-bottom:1px">Classement final</div>
+        <div class="tc-pos">${ps.pos||'—'}<span class="tot">/${ps.total||'—'}</span></div>
+        <div class="tc-pts">${ps.pts||0} pts · ${ps.V||0}V/${ps.N||0}N/${ps.D||0}D</div>
+        <div style="font-size:9px;color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.2px;margin-top:3px">${(()=>{const oa=U.oppAvgForTeam(k);return oa? 'Adv. moy. '+oa : '';})()}</div>
+        <span class="tc-status">${statusLabel}</span>
+      </a>`;
+    }).join('');
+    document.getElementById('teamsGrid').innerHTML = html;
+  }
+
+  // === SECTION 3 — Top performers équipes ===
+  function renderTops(){
+    const teams = U.TEAM_KEYS.map(k => {
+      const sum = U.teamSummary(k);
+      const ps = U.statusByPosition(k);
+      const meta = U.LEVEL_META[k];
+      const pct = sum.played ? Math.round(sum.wins / sum.played * 100) : 0;
+      return { key: k, ...sum, pct, pos: ps.pos, total: ps.total, label: meta && meta.label };
+    }).filter(t => t.played > 0);
+
+    const byPct = teams.slice().sort((a,b) => b.pct - a.pct || b.diff - a.diff).slice(0, 5);
+    const byDiff = teams.slice().sort((a,b) => b.diff - a.diff || b.pct - a.pct).slice(0, 5);
+
+    function teamRow(t, i, kind){
+      const rkCls = i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
+      const pctCls = t.pct >= 75 ? 'hi' : (t.pct >= 50 ? 'mid' : '');
+      const diffSign = t.diff > 0 ? '+' : '';
+      const main = kind === 'pct'
+        ? `<span class="top-vic">${t.wins}V</span><span class="top-pct ${pctCls}">${t.pct}%</span>`
+        : `<span class="top-vic" style="color:${t.diff>=0?'#86EFAC':'#FCA5A5'}">${diffSign}${t.diff}</span><span class="top-pct ${pctCls}">${t.pct}%</span>`;
+      return `<a class="top-row ${rkCls}" href="equipe.html?team=${t.key}" style="text-decoration:none;color:inherit">
+        <span class="top-rk">${String(i+1).padStart(2,'0')}</span>
+        <div class="top-nm">${t.key}<span class="sub">${t.label} · ${t.pos||'—'}ᵉ / ${t.total||'—'}</span></div>
+        <span class="top-pts">${t.played}j</span>
+        ${main}
+      </a>`;
+    }
+
+    document.getElementById('topPct').innerHTML = byPct.map((t,i) => teamRow(t, i, 'pct')).join('');
+    document.getElementById('topVol').innerHTML = byDiff.map((t,i) => teamRow(t, i, 'diff')).join('');
+  }
+
+  // === SECTION 4 — Évolution ===
+  function renderEvolution(){
+    const data = U.evolutionByJournee();
+    // Find the max bucket total for scaling, min 1
+    const max = Math.max(1, ...Object.values(data).map(b => b.total));
+    const html = Object.keys(data).map(j => {
+      const b = data[j];
+      const future = b.total === 0;
+      const totalH = Math.max(28, Math.round(b.total / max * 140));
+      const wH = b.total ? (b.w/b.total*100).toFixed(1) : 0;
+      const dH = b.total ? (b.d/b.total*100).toFixed(1) : 0;
+      const lH = b.total ? (b.l/b.total*100).toFixed(1) : 0;
+      return `<div class="evo-bar ${future?'evo-future':''}">
+        <div class="evo-stats">
+          <div class="vnd">
+            ${b.total?`<span class="v">${b.w}</span><span style="color:var(--dimmer)">·</span><span class="d">${b.d}</span><span style="color:var(--dimmer)">·</span><span class="l">${b.l}</span>`:'<span style="color:var(--dim)">—</span>'}
+          </div>
+        </div>
+        <div class="evo-stack" style="height:${totalH}px">
+          ${future ? '<span class="s empty"></span>' :
+            `<span class="s w" style="height:${wH}%"></span>
+             <span class="s d" style="height:${dH}%"></span>
+             <span class="s l" style="height:${lH}%"></span>`}
+        </div>
+        <div class="evo-lbl">J${j}</div>
+      </div>`;
+    }).join('');
+    document.getElementById('evo').innerHTML = html;
+  }
+
+  // === SECTION 5 — Records ===
+  function renderRecords(){
+    const r = U.recordsOfPhase();
+    const cards = [];
+    if (r.bestWin){
+      cards.push(`<a class="record win anim-in" href="equipe.html?team=${r.bestWin.team}" style="text-decoration:none;color:inherit">
+        <div class="rec-h"><span class="rec-tag">🏆 Plus grosse victoire</span><span class="rec-meta">${U.shortDate(r.bestWin.date)} · J${r.bestWin.journee}</span></div>
+        <div class="rec-score">${r.bestWin.score}<span class="sep">–</span>${r.bestWin.opp}</div>
+        <div class="rec-vs"><span class="rec-team-chip">${r.bestWin.team}</span> <em>vs</em> ${U.shortOpp(r.bestWin.opponent)}<br><span style="color:#86EFAC;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700">Marge +${r.bestWin.margin}</span></div>
+      </a>`);
+    }
+    if (r.worstLoss){
+      cards.push(`<a class="record lose anim-in" href="equipe.html?team=${r.worstLoss.team}" style="text-decoration:none;color:inherit">
+        <div class="rec-h"><span class="rec-tag">💔 Plus grosse défaite</span><span class="rec-meta">${U.shortDate(r.worstLoss.date)} · J${r.worstLoss.journee}</span></div>
+        <div class="rec-score">${r.worstLoss.score}<span class="sep">–</span>${r.worstLoss.opp}</div>
+        <div class="rec-vs"><span class="rec-team-chip">${r.worstLoss.team}</span> <em>vs</em> ${U.shortOpp(r.worstLoss.opponent)}<br><span style="color:#FCA5A5;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700">Marge ${r.worstLoss.margin}</span></div>
+      </a>`);
+    }
+    if (r.mvp){
+      cards.push(`<a class="record mvp anim-in" href="equipe.html?team=${r.mvp.primaryTeam||''}" style="text-decoration:none;color:inherit">
+        <div class="rec-h"><span class="rec-tag">🔥 MVP toutes équipes</span><span class="rec-meta">J1 → J7 cumulé</span></div>
+        <div class="rec-score">${r.mvp.vic}<span class="unit" style="font-size:18px;color:var(--dim);font-weight:500;margin-left:3px">V</span> <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--draw);font-weight:600;margin-left:8px">${r.mvp.winRate}%</span></div>
+        <div class="rec-vs">${U.firstName(r.mvp)} <strong>${r.mvp.nom}</strong><br><span style="color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:11px">cl. ${U.clsDisplay(r.mvp.cls)} · ${r.mvp.played} présences · ${(r.mvp.teams||[]).join(', ')}</span></div>
+      </a>`);
+    }
+    document.getElementById('records').innerHTML = cards.join('');
+  }
+
+  function renderBestPlayers(){
+    const MP = U.TEAM_KEYS.filter(k=>k.charAt(0)==='M');
+    const FP = ['F1','F2','F3'];
+    function row(r,i,metric){
+      const big = metric==='vic' ? (r.vic+'<span style=\'font-size:10px;color:var(--dim)\'>V</span>') : (r.winRate+'<span style=\'font-size:10px;color:var(--dim)\'>%</span>');
+      const sub = metric==='vic' ? (r.winRate+'% · '+r.parties+' parties') : (r.vic+'/'+r.parties+' parties');
+      return '<li style=\'list-style:none;display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--paper,#141416);border-bottom:1px solid var(--line,rgba(255,255,255,.08))\'>'
+        + '<span style=\'font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;color:var(--dim);width:18px\'>'+(i+1)+'</span>'
+        + '<span style=\'flex:1;min-width:0\'><span style=\'font-weight:700;font-size:13px;letter-spacing:-0.2px\'>'+U.firstName(r)+' '+r.nom+'</span>'
+        + '<br><span style=\'font-size:10px;color:var(--dim);font-family:JetBrains Mono,monospace\'>cl. '+U.clsDisplay(r.cls)+' · '+r.teams.join(", ")+'</span></span>'
+        + '<span style=\'text-align:right;line-height:1.1\'><span style=\'font-family:JetBrains Mono,monospace;font-size:18px;font-weight:700\'>'+big+'</span>'
+        + '<br><span style=\'font-size:9px;color:var(--dim);font-family:JetBrains Mono,monospace\'>'+sub+'</span></span></li>';
+    }
+    function panel(title, pools){
+      const rows = U.aggregateClubPlayersByPools(pools);
+      const byVic = rows.slice().sort((a,b)=>b.vic-a.vic||b.winRate-a.winRate).slice(0,5);
+      const byPct = rows.filter(r=>r.parties>=15).sort((a,b)=>b.winRate-a.winRate||b.vic-a.vic).slice(0,5);
+      const list = (arr,metric)=> '<ul style=\'margin:0;padding:0;border:1px solid var(--line,rgba(255,255,255,.08));border-radius:10px;overflow:hidden\'>'+arr.map((r,i)=>row(r,i,metric)).join('')+'</ul>';
+      return '<div style=\'flex:1;min-width:280px\'>'
+        + '<div style=\'font-size:13px;font-weight:800;letter-spacing:-0.2px;margin-bottom:12px;color:var(--orange,#F26A1B)\'>'+title+'</div>'
+        + '<div style=\'font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:6px\'>Top victoires</div>'+list(byVic,'vic')
+        + '<div style=\'font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin:14px 0 6px\'>Top % de victoires <span style=\'font-weight:500;text-transform:none;letter-spacing:0\'>(min. 15 parties)</span></div>'+list(byPct,'pct')
+        + '</div>';
+    }
+    document.getElementById('bestPlayers').innerHTML =
+      '<div style=\'display:flex;gap:24px;flex-wrap:wrap\'>'+panel('Championnat Masculin',MP)+panel('Championnat Féminin',FP)+'</div>';
+  }
+
+  // === Cercles "coup d'œil" ===
+  const ringColor = c => ({win:'#3DD68C',acc:'#F26A1B',gold:'#FACC15'}[c]||'#F26A1B');
+  function ringSVG(color){
+    const r=50, c=2*Math.PI*r;
+    return `<svg width="100%" height="100%" viewBox="0 0 116 116">
+      <circle cx="58" cy="58" r="${r}" fill="none" stroke="var(--panel)" stroke-width="10"/>
+      <circle class="cring-prog" cx="58" cy="58" r="${r}" fill="none" stroke="${ringColor(color)}" stroke-width="10"
+        stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c}" data-c="${c}"
+        style="filter:drop-shadow(0 0 6px ${ringColor(color)}80)"/>
+    </svg>`;
+  }
+  function clubRingData(){
+    const s = U.aggregateClubStats();
+    let played=0, safe=0, positive=0;
+    U.TEAM_KEYS.forEach(k => {
+      const ps = U.statusByPosition(k);
+      const sum = U.teamSummary(k);
+      if (sum.played>0){
+        played++;
+        if (ps.status==='promo' || ps.status==='safe') safe++;
+        if (sum.wins >= sum.losses) positive++;
+      }
     });
-  });
+    return [
+      { label:"Victoires club", color:"win", pct:s.winPct, sub:`${s.wins}V / ${s.losses}D`, foot:`sur ${s.matches} rencontres` },
+      { label:"Équipes en zone sûre", color:"acc", pct:played?Math.round(safe/played*100):0, sub:`${safe} / ${played}`, foot:"maintien ou mieux" },
+      { label:"Bilan positif", color:"gold", pct:played?Math.round(positive/played*100):0, sub:`${positive} / ${played}`, foot:"V ≥ D sur la phase" },
+    ];
+  }
+  function renderClubRings(){
+    const data = clubRingData();
+    document.getElementById('clubRings').innerHTML = data.map(r => `
+      <div class="cring ${r.color}">
+        <div class="cring-wrap">${ringSVG(r.color)}
+          <div class="cring-center">
+            <div class="cring-pct" style="color:${ringColor(r.color)}"><span class="curing" data-count="${r.pct}">0</span><span class="u">%</span></div>
+            <div class="cring-sub">${r.sub}</div>
+          </div>
+        </div>
+        <div class="cring-label">${r.label}</div>
+        <div class="cring-foot">${r.foot}</div>
+      </div>`).join('');
+    document.querySelectorAll('#clubRings .cring-prog').forEach((c,i) => { c.dataset.pct = data[i].pct; });
+    document.querySelectorAll('#clubRings .curing').forEach(el=>{
+      const target=parseFloat(el.dataset.count)||0, steps=30; let n=0;
+      const iv=setInterval(()=>{ n++; const p=Math.min(1,n/steps); el.textContent=Math.round(target*(1-Math.pow(1-p,3))); if(p>=1){clearInterval(iv);el.textContent=target;} },1000/30);
+    });
+    document.querySelectorAll('#clubRings .cring-prog').forEach(c=>{
+      const circ=parseFloat(c.dataset.c), pct=parseFloat(c.dataset.pct)||0; c.style.strokeDashoffset=circ;
+      setTimeout(()=>{ c.style.transition='stroke-dashoffset 1.3s cubic-bezier(.2,.7,.3,1)'; c.style.strokeDashoffset=circ*(1-pct/100); },80);
+    });
+  }
+
+  renderBestPlayers();
+  renderBilan();
+  renderClubRings();
+  renderTeamsGrid();
+  renderTops();
+  renderEvolution();
+  renderRecords();
+
+  // === Quick team selector (links to equipe.html?team=) ===
+
+
+  const bt=document.getElementById('backTop');
+  if(bt){window.addEventListener('scroll',()=>bt.classList.toggle('show',window.scrollY>600),{passive:true});
+    bt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));}
 })();
 </script>
 <script src="report.js" defer></script>
