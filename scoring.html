@@ -437,7 +437,11 @@ function render(){
     return '<tr><td class="rk">'+(i+1)+'</td><td class="nm">'+p.pre+' '+p.nom+badge+'</td><td class="tags-cell">'+tagChips(pkey(p))+'</td><td class="num">'+p.men+'</td><td class="num" title="championnat par équipe phase 2 : '+(p.eq2?p.eq2.v+'V/'+(p.eq2.n-p.eq2.v)+'D':'aucun match')+'">'+e2+'</td><td class="num '+tc+'" title="'+hist+'">'+ts+'</td><td class="score">'+p.score+'</td><td>'+trj+'</td></tr>';
   }).join('');
 }
-ks.addEventListener('input',render); cs.addEventListener('input',render); q.addEventListener('input',render); render();
+// paramètres mémorisés sur l'appareil (poids k + plafond)
+try{const sp=JSON.parse(localStorage.getItem('acbb_sc_params')||'null');
+  if(sp){ if(sp.k!=null) ks.value=sp.k; if(sp.cap!=null) cs.value=sp.cap; }}catch(e){}
+function saveParams(){try{localStorage.setItem('acbb_sc_params',JSON.stringify({k:ks.value,cap:cs.value}));}catch(e){}}
+ks.addEventListener('input',()=>{saveParams();render();}); cs.addEventListener('input',()=>{saveParams();render();}); q.addEventListener('input',render); render();
 
 /* équipes 26/27 dans le sélecteur */
 (function(){const e=document.getElementById('tmE');
