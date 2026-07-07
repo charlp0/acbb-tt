@@ -267,8 +267,8 @@
   .tags-cell{white-space:nowrap}
   .tg{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;border-radius:7px;padding:2px 7px;margin-right:4px;border:1px solid var(--line-2);background:var(--panel-2);color:var(--ink-2)}
   .tg.d{border-color:rgba(242,106,27,0.5);color:var(--orange);background:rgba(242,106,27,0.10)}
-  .tg.rT{border-color:rgba(61,214,140,0.5);color:#86EFAC;background:rgba(61,214,140,0.10)}
-  .tg.rR{border-color:rgba(250,204,21,0.5);color:var(--gold,#FACC15);background:rgba(250,204,21,0.10)}
+  .tg.rT{background:#3DD68C;border-color:#3DD68C;color:#0B0B0D;font-weight:800}
+  .tg.rR{background:#FACC15;border-color:#FACC15;color:#0B0B0D;font-weight:800}
   .tagbtn{display:inline-block;font-size:11px;padding:2px 8px;border-radius:7px;background:var(--panel);border:1px solid var(--line-2);color:var(--dim);cursor:pointer}
   .tagbtn:hover{border-color:var(--orange);color:var(--orange)}
   .savebar{display:none;align-items:center;gap:10px;margin:10px 0 0;width:100%}
@@ -406,6 +406,8 @@ const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'
 function draftSave(){try{localStorage.setItem('acbb_tags_draft',JSON.stringify({keys:[...DIRTY],tags:Object.fromEntries([...DIRTY].map(k=>[k,TAGS[k]||null]))}));}catch(e){}}
 function draftLoad(){try{const d=JSON.parse(localStorage.getItem('acbb_tags_draft')||'null');if(!d)return;(d.keys||[]).forEach(k=>{DIRTY.add(k);if(d.tags[k])TAGS[k]=d.tags[k];else delete TAGS[k];});}catch(e){}}
 function tagStr(t){if(!t)return'';return [t.d,(t.r==='T'?'TIT':(t.r==='R'?'REMP':'')),t.e].filter(Boolean).join(' ');}
+function teamHue(e){const all=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3','F4'];
+  const i=all.indexOf(e); return i<0?24:Math.round(i*137.5)%360;}
 const TEAMDIV={M1:'Pro B',M2:'N1',M3:'R1',M4:'R2',M5:'R3',M6:'PR',M7:'PR',M8:'D1',M9:'D1',M10:'D1',M11:'D1',M12:'D2',M13:'D2',M14:'D2',M15:'D2',M16:'D2',M17:'D2'};
 const DIVC={
   'Pro B':'250,204,21',   // or
@@ -423,7 +425,8 @@ function tagChips(k){
   if(t&&t.d){const c=DIVC[t.d]||'242,106,27';
     h+='<span class="tg" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)">'+esc(t.d)+'</span>';}
   if(t&&t.r)h+='<span class="tg '+(t.r==='T'?'rT':'rR')+'">'+(t.r==='T'?'Tit.':'Remp.')+'</span>';
-  if(t&&t.e)h+='<span class="tg">'+esc(t.e)+'</span>';
+  if(t&&t.e){const th=teamHue(t.e);
+    h+='<span class="tg" style="color:hsl('+th+',75%,70%);border-color:hsla('+th+',75%,70%,.5);background:hsla('+th+',75%,70%,.13)">'+esc(t.e)+'</span>';}
   return h+'<button class="tagbtn" data-k="'+esc(k)+'" type="button" aria-label="Modifier les tags">✎</button>';
 }
 function updateSaveBar(){
@@ -439,7 +442,7 @@ function renderTeamsMini(){
     const tit=D.filter(p=>{const t=TAGS[pkey(p)];return t&&t.e===k&&t.r==='T';});
     const avg=tit.length?Math.round(tit.reduce((a,p)=>a+(p.men||0),0)/tit.length):null;
     return '<div class="tm-card">'
-      +'<div class="tm-top"><span class="tm-name">'+k+'</span>'
+      +'<div class="tm-top"><span class="tm-name" style="color:hsl('+teamHue(k)+',75%,72%)">'+k+'</span>'
       +'<span class="tm-div" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)">'+div+'</span></div>'
       +'<div class="tm-avg">'+(avg!=null?avg+'<span class="u">moy.</span>':'<span style="color:var(--dimmer)">—</span>')+'</div>'
       +'<div class="tm-sub">'+(tit.length?tit.length+' titulaire'+(tit.length>1?'s':''):'aucun titulaire tagué')+'</div>'
