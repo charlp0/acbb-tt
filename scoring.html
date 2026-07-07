@@ -262,6 +262,7 @@
   .tm-div{font-family:"JetBrains Mono",monospace;font-size:8.5px;font-weight:800;border-radius:7px;padding:2px 6px;border:1px solid}
   .tm-avg{font-family:"JetBrains Mono",monospace;font-size:16px;font-weight:700;letter-spacing:-0.4px}
   .tm-avg .u{font-size:8.5px;color:var(--dim);font-weight:600;margin-left:3px}
+  .tm-avg .vs{font-size:9.5px;color:var(--dim);font-weight:600;margin-left:7px}
   .tm-sub{font-size:8.5px;color:var(--dim);font-family:"JetBrains Mono",monospace}
   .tm-players{display:flex;flex-direction:column;gap:2px;margin-top:2px}
   .tm-p{font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -438,6 +439,14 @@ function updateSaveBar(){
   document.getElementById('saveTags').textContent='💾 Enregistrer les tags ('+DIRTY.size+')';
 }
 
+let DIVOPP={};
+fetch('data/teams.json',{cache:'no-cache'}).then(r=>r.json()).then(j=>{
+  const acc={};
+  (j.teams||[]).forEach(t=>{ if(t.genre!=='M'||!t.opp||!t.n)return;
+    (acc[t.short]=acc[t.short]||{s:0,n:0}); acc[t.short].s+=t.opp*t.n; acc[t.short].n+=t.n; });
+  Object.keys(acc).forEach(k=>DIVOPP[k]=Math.round(acc[k].s/acc[k].n));
+  render();
+}).catch(()=>{});
 function renderTeamsMini(){
   const el=document.getElementById('teamsMini'); if(!el)return;
   el.innerHTML=Object.keys(TEAMDIV).map(k=>{
@@ -450,7 +459,8 @@ function renderTeamsMini(){
     return '<div class="tm-card">'
       +'<div class="tm-top"><span class="tm-name" style="color:hsl('+teamHue(k)+',75%,72%)">'+k+'</span>'
       +'<span class="tm-div" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)">'+div+'</span></div>'
-      +'<div class="tm-avg">'+(avg!=null?avg+'<span class="u">moy.</span>':'<span style="color:var(--dimmer)">—</span>')+'</div>'
+      +'<div class="tm-avg">'+(avg!=null?avg+'<span class="u">moy.</span>':'<span style="color:var(--dimmer)">—</span>')
+      +(DIVOPP[div]?'<span class="vs" title="niveau mensuel moyen des adversaires rencontrés en '+div+' (phase 2 2025/26)">vs '+DIVOPP[div]+'</span>':'')+'</div>'
       +names
       +'</div>';
   }).join('');
