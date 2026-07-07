@@ -254,6 +254,31 @@
   .sc th:first-child,.sc td.rk{text-align:center}
   .sc .rk{font-family:"JetBrains Mono",monospace;color:var(--dim);min-width:40px;padding-left:8px;padding-right:8px}
   .mut-badge{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:800;letter-spacing:0.3px;text-transform:uppercase;color:var(--orange);background:rgba(242,106,27,0.14);border:1px solid rgba(242,106,27,0.45);border-radius:99px;padding:1px 6px;margin-left:7px;vertical-align:middle;white-space:nowrap}
+  /* ===== TAGS COMPO 26/27 ===== */
+  .tags-cell{white-space:nowrap}
+  .tg{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;border-radius:7px;padding:2px 7px;margin-right:4px;border:1px solid var(--line-2);background:var(--panel-2);color:var(--ink-2)}
+  .tg.d{border-color:rgba(242,106,27,0.5);color:var(--orange);background:rgba(242,106,27,0.10)}
+  .tg.rT{border-color:rgba(61,214,140,0.5);color:#86EFAC;background:rgba(61,214,140,0.10)}
+  .tg.rR{border-color:rgba(250,204,21,0.5);color:var(--gold,#FACC15);background:rgba(250,204,21,0.10)}
+  .tagbtn{display:inline-block;font-size:11px;padding:2px 8px;border-radius:7px;background:var(--panel);border:1px solid var(--line-2);color:var(--dim);cursor:pointer}
+  .tagbtn:hover{border-color:var(--orange);color:var(--orange)}
+  .savebar{display:none;align-items:center;gap:10px;margin:10px 0 0;width:100%}
+  .savebar.show{display:flex}
+  .savebar button{font-family:inherit;font-size:12px;font-weight:800;padding:10px 16px;border-radius:99px;border:none;background:var(--orange);color:#0B0B0D;cursor:pointer}
+  .savebar .st{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim)}
+  #tagModal,#tokPanel{position:fixed;inset:0;z-index:2500;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:18px}
+  #tagModal.open,#tokPanel.open{display:flex}
+  .tmbox{width:100%;max-width:400px;background:var(--paper);border:1px solid var(--line-2);border-radius:16px;padding:20px}
+  .tmbox h3{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:22px;margin-bottom:2px}
+  .tmbox .who{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim);margin-bottom:16px}
+  .tmbox label{display:block;font-size:10px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;color:var(--dim);margin:12px 0 5px}
+  .tmbox select,.tmbox input[type=password],.tmbox input[type=text]{width:100%;background:var(--panel-2);border:1px solid var(--line-2);border-radius:10px;color:var(--ink);font-size:14px;font-family:inherit;padding:10px 12px;outline:none}
+  .tmbox select:focus,.tmbox input:focus{border-color:var(--orange)}
+  .tmrow{display:flex;gap:9px;margin-top:18px}
+  .tmrow button{flex:1;font-family:inherit;font-size:13px;font-weight:800;padding:11px;border-radius:99px;cursor:pointer;border:1px solid var(--line-2);background:var(--panel);color:var(--ink)}
+  .tmrow button.ok{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+  .tmbox .note{font-size:11px;color:var(--dim);line-height:1.5;margin-top:10px}
+  .tmbox .note a{color:var(--orange)}
   .sc .nm{font-weight:700;letter-spacing:-0.2px}
   .sc .num{font-family:"JetBrains Mono",monospace;font-weight:700}
   .sc .score{font-family:"JetBrains Mono",monospace;font-weight:800;color:var(--orange);font-size:14px}
@@ -329,24 +354,76 @@
       <div class="krow"><input type="range" id="cap" min="0" max="500" step="50" value="250"><span class="kval" id="capv">250</span></div>
       <div class="hint">borne l'effet de la tendance · 0 = ignorée · 500 = quasi non bornée</div>
     </div>
-    <input class="sc-search" id="q" placeholder="Chercher un joueur…">
+    <input class="sc-search" id="q" placeholder="Chercher un joueur… (nom ou tag : R1, M3, Tit…)">
+    <div class="savebar" id="saveBar">
+      <button id="saveTags" type="button">💾 Enregistrer les tags</button>
+      <span class="st" id="saveSt"></span>
+    </div>
   </div>
-  <div class="sc-wrap"><table class="sc"><thead><tr><th>#</th><th>Joueur</th><th>Mensuel</th><th>Ch.&nbsp;équipe&nbsp;Ph2</th><th>Tendance 4&nbsp;phases</th><th>Score</th><th>Traj.</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <div class="sc-wrap"><table class="sc"><thead><tr><th>#</th><th>Joueur</th><th>Compo&nbsp;26/27</th><th>Mensuel</th><th>Ch.&nbsp;équipe&nbsp;Ph2</th><th>Tendance 4&nbsp;phases</th><th>Score</th><th>Traj.</th></tr></thead><tbody id="tb"></tbody></table></div>
   <p style="font-size:11px;color:var(--dim);font-style:italic;margin-top:12px">Mensuel = classement mensuel FFTT actuel. Tendance = pente de régression sur les 4 dernières phases du classement officiel (survole pour voir le détail). Trajectoire : ↗ progression (≥+30), ↘ baisse (≤−30). Données API FFTT. Page non listée (accès direct uniquement).</p>
 </section>
+</div>
+<div id="tagModal">
+  <div class="tmbox">
+    <h3>Compo <span style="color:var(--orange)">26/27</span></h3>
+    <div class="who" id="tmWho">—</div>
+    <label>Division</label>
+    <select id="tmD"><option value="">—</option><option>N1</option><option>N2</option><option>PN</option><option>R1</option><option>R2</option><option>R3</option><option>PR</option><option>D1</option><option>D2</option></select>
+    <label>Rôle</label>
+    <select id="tmR"><option value="">—</option><option value="T">Titulaire</option><option value="R">Remplaçant</option></select>
+    <label>Équipe</label>
+    <select id="tmE"><option value="">—</option></select>
+    <div class="tmrow"><button type="button" id="tmCancel">Annuler</button><button type="button" class="ok" id="tmOk">Appliquer</button></div>
+  </div>
+</div>
+<div id="tokPanel">
+  <div class="tmbox">
+    <h3>Connexion <span style="color:var(--orange)">GitHub</span></h3>
+    <div class="who">Nécessaire une seule fois sur cet appareil pour enregistrer les tags (partagés avec toute la sportive).</div>
+    <label>Token GitHub (fine-grained)</label>
+    <input type="password" id="tokInput" placeholder="github_pat_…" autocomplete="off">
+    <div class="note">Créer le token : <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings → Fine-grained tokens</a> · Repository : <b>charlp0/acbb-tt</b> uniquement · Permission : <b>Contents → Read and write</b>. Le token reste dans TON navigateur.</div>
+    <div class="tmrow"><button type="button" id="tokCancel">Annuler</button><button type="button" class="ok" id="tokOk">Connecter</button></div>
+  </div>
 </div>
 <script src="data/scoring.js"></script>
 <script>
 const D=(window.__SCORING&&window.__SCORING.players)||[];
 const tb=document.getElementById('tb'), q=document.getElementById('q'), ks=document.getElementById('k'), kv=document.getElementById('kv'), cs=document.getElementById('cap'), cv=document.getElementById('capv');
 function traj(t){return t>=30?'<span class="up">↗</span>':(t<=-30?'<span class="down">↘</span>':'<span class="flat">→</span>');}
+
+/* ===== TAGS COMPO 26/27 (partagés via data/tags.json, commit GitHub) ===== */
+const REPO='charlp0/acbb-tt', TAGS_API='https://api.github.com/repos/'+REPO+'/contents/data/tags.json';
+let TAGS={}, DIRTY=new Set(), CURKEY=null;
+const pkey=p=>String(p.lic||((p.nom||'')+'|'+(p.pre||'')));
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+function b64e(s){return btoa(unescape(encodeURIComponent(s)));}
+function b64d(s){return decodeURIComponent(escape(atob(String(s).replace(/\n/g,''))));}
+function draftSave(){try{localStorage.setItem('acbb_tags_draft',JSON.stringify({keys:[...DIRTY],tags:Object.fromEntries([...DIRTY].map(k=>[k,TAGS[k]||null]))}));}catch(e){}}
+function draftLoad(){try{const d=JSON.parse(localStorage.getItem('acbb_tags_draft')||'null');if(!d)return;(d.keys||[]).forEach(k=>{DIRTY.add(k);if(d.tags[k])TAGS[k]=d.tags[k];else delete TAGS[k];});}catch(e){}}
+function tagStr(t){if(!t)return'';return [t.d,(t.r==='T'?'TIT':(t.r==='R'?'REMP':'')),t.e].filter(Boolean).join(' ');}
+function tagChips(k){
+  const t=TAGS[k];
+  let h='';
+  if(t&&t.d)h+='<span class="tg d">'+esc(t.d)+'</span>';
+  if(t&&t.r)h+='<span class="tg '+(t.r==='T'?'rT':'rR')+'">'+(t.r==='T'?'Tit.':'Remp.')+'</span>';
+  if(t&&t.e)h+='<span class="tg">'+esc(t.e)+'</span>';
+  return h+'<button class="tagbtn" data-k="'+esc(k)+'" type="button" aria-label="Modifier les tags">✎</button>';
+}
+function updateSaveBar(){
+  const bar=document.getElementById('saveBar');
+  bar.classList.toggle('show',DIRTY.size>0);
+  document.getElementById('saveTags').textContent='💾 Enregistrer les tags ('+DIRTY.size+')';
+}
+
 function render(){
   const k=parseFloat(ks.value); kv.textContent=k.toFixed(1);
   const cap=parseFloat(cs.value); cv.textContent=cap;
   const clamp=(v)=>Math.max(-cap,Math.min(cap,v));
   const s=(q.value||'').trim().toUpperCase();
   const rows=D.map(p=>({...p,score:Math.round(p.men+k*clamp(p.tend||0))}))
-              .filter(p=>!s||((p.pre+' '+p.nom).toUpperCase().includes(s)))
+              .filter(p=>!s||((p.pre+' '+p.nom+' '+tagStr(TAGS[pkey(p)])).toUpperCase().includes(s)))
               .sort((a,b)=>b.score-a.score);
   tb.innerHTML=rows.map((p,i)=>{
     const hasT=p.tend!=null;
@@ -355,9 +432,76 @@ function render(){
     const badge=p.mut?' <span class="mut-badge">Mutation '+p.mut+'</span>':'';
     const trj=hasT?traj(p.tend):'<span class="flat">·</span>';
     const e2=p.eq2?('<span class="'+(p.eq2.pct>=50?'up':'down')+'">'+p.eq2.pct+'%</span> <span style="color:var(--dim)">· '+p.eq2.n+'m</span>'):'<span class="flat">—</span>';
-    return '<tr><td class="rk">'+(i+1)+'</td><td class="nm">'+p.pre+' '+p.nom+badge+'</td><td class="num">'+p.men+'</td><td class="num" title="championnat par équipe phase 2 : '+(p.eq2?p.eq2.v+'V/'+(p.eq2.n-p.eq2.v)+'D':'aucun match')+'">'+e2+'</td><td class="num '+tc+'" title="'+hist+'">'+ts+'</td><td class="score">'+p.score+'</td><td>'+trj+'</td></tr>';
+    return '<tr><td class="rk">'+(i+1)+'</td><td class="nm">'+p.pre+' '+p.nom+badge+'</td><td class="tags-cell">'+tagChips(pkey(p))+'</td><td class="num">'+p.men+'</td><td class="num" title="championnat par équipe phase 2 : '+(p.eq2?p.eq2.v+'V/'+(p.eq2.n-p.eq2.v)+'D':'aucun match')+'">'+e2+'</td><td class="num '+tc+'" title="'+hist+'">'+ts+'</td><td class="score">'+p.score+'</td><td>'+trj+'</td></tr>';
   }).join('');
 }
 ks.addEventListener('input',render); cs.addEventListener('input',render); q.addEventListener('input',render); render();
+
+/* équipes 26/27 dans le sélecteur */
+(function(){const e=document.getElementById('tmE');
+  ['F1','F2','F3','F4'].concat(Array.from({length:18},(_,i)=>'M'+(i+1))).forEach(t=>{const o=document.createElement('option');o.textContent=t;e.appendChild(o);});})();
+
+/* modal édition */
+tb.addEventListener('click',ev=>{
+  const b=ev.target.closest('.tagbtn'); if(!b)return;
+  CURKEY=b.dataset.k;
+  const p=D.find(x=>pkey(x)===CURKEY), t=TAGS[CURKEY]||{};
+  document.getElementById('tmWho').textContent=p?(p.pre+' '+p.nom+(p.mut?' · mutation':'')):CURKEY;
+  document.getElementById('tmD').value=t.d||''; document.getElementById('tmR').value=t.r||''; document.getElementById('tmE').value=t.e||'';
+  document.getElementById('tagModal').classList.add('open');
+});
+document.getElementById('tmCancel').addEventListener('click',()=>document.getElementById('tagModal').classList.remove('open'));
+document.getElementById('tagModal').addEventListener('click',e=>{if(e.target.id==='tagModal')e.target.classList.remove('open');});
+document.getElementById('tmOk').addEventListener('click',()=>{
+  const d=document.getElementById('tmD').value, r=document.getElementById('tmR').value, e=document.getElementById('tmE').value;
+  if(d||r||e) TAGS[CURKEY]={...(d&&{d}),...(r&&{r}),...(e&&{e})}; else delete TAGS[CURKEY];
+  DIRTY.add(CURKEY); draftSave(); updateSaveBar(); render();
+  document.getElementById('tagModal').classList.remove('open');
+});
+
+/* token GitHub */
+function openTok(){document.getElementById('tokPanel').classList.add('open');document.getElementById('tokInput').focus();}
+document.getElementById('tokCancel').addEventListener('click',()=>document.getElementById('tokPanel').classList.remove('open'));
+document.getElementById('tokOk').addEventListener('click',()=>{
+  const v=document.getElementById('tokInput').value.trim();
+  if(!v){return;}
+  localStorage.setItem('acbb_gh_token',v);
+  document.getElementById('tokPanel').classList.remove('open');
+  saveTags();
+});
+
+/* sauvegarde : merge des clés modifiées puis commit */
+async function saveTags(){
+  const tok=localStorage.getItem('acbb_gh_token');
+  if(!tok){openTok();return;}
+  const st=document.getElementById('saveSt'), btn=document.getElementById('saveTags');
+  btn.disabled=true; st.textContent='enregistrement…';
+  try{
+    const hd={'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json'};
+    let sha=null, remote={updated:null,tags:{}};
+    const g=await fetch(TAGS_API+'?ref=main',{headers:hd});
+    if(g.status===401||g.status===403){localStorage.removeItem('acbb_gh_token');st.textContent='';btn.disabled=false;alert('Token invalide ou expiré — reconnecte-toi.');openTok();return;}
+    if(g.ok){const j=await g.json(); sha=j.sha; try{remote=JSON.parse(b64d(j.content));}catch(e){}}
+    if(!remote||typeof remote!=='object'||!remote.tags)remote={updated:null,tags:{}};
+    DIRTY.forEach(k=>{ if(TAGS[k]) remote.tags[k]=TAGS[k]; else delete remote.tags[k]; });
+    remote.updated=new Date().toISOString();
+    const body={message:'tags: maj compo 26/27 (Sportive)',content:b64e(JSON.stringify(remote)),branch:'main'};
+    if(sha)body.sha=sha;
+    const put=await fetch(TAGS_API,{method:'PUT',headers:{...hd,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!put.ok){const t=await put.text();throw new Error('HTTP '+put.status+' '+t.slice(0,120));}
+    TAGS=remote.tags; DIRTY.clear(); try{localStorage.removeItem('acbb_tags_draft');}catch(e){}
+    updateSaveBar(); render();
+    st.textContent='✓ Enregistré à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('saveBar').classList.add('show'); setTimeout(()=>{if(!DIRTY.size)document.getElementById('saveBar').classList.remove('show');},4000);
+  }catch(e){ st.textContent=''; alert('Échec de l\'enregistrement : '+e.message); }
+  btn.disabled=false;
+}
+document.getElementById('saveTags').addEventListener('click',saveTags);
+
+/* chargement initial des tags partagés + brouillon local */
+fetch('data/tags.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(j=>{
+  if(j&&j.tags)TAGS=j.tags;
+  draftLoad(); updateSaveBar(); render();
+}).catch(()=>{draftLoad();updateSaveBar();render();});
 </script>
 </body></html>
