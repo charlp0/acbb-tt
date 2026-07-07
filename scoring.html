@@ -387,7 +387,7 @@ function traj(t){return t>=30?'<span class="up">↗</span>':(t<=-30?'<span class
 /* Supabase (clé publishable = publique par design ; RLS = lecture + insertion uniquement sur tags_log) */
 const SB_URL='https://vhhmageufrcenruywawg.supabase.co';
 const SB_KEY='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay';
-const SB_HD={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
+const SB_HD={'apikey':SB_KEY};   // clé publishable (publique) — l'en-tête apikey suffit
 let TAGS={}, DIRTY=new Set(), CURKEY=null;
 const pkey=p=>String(p.lic||((p.nom||'')+'|'+(p.pre||'')));
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
