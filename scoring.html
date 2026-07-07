@@ -355,6 +355,7 @@
       <div class="hint">borne l'effet de la tendance · 0 = ignorée · 500 = quasi non bornée</div>
     </div>
     <input class="sc-search" id="q" placeholder="Chercher un joueur… (nom ou tag : R1, M3, Tit…)">
+    <span id="prmSync" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);white-space:nowrap"></span>
     <div class="savebar" id="saveBar">
       <button id="saveTags" type="button">💾 Enregistrer les tags</button>
       <span class="st" id="saveSt"></span>
@@ -437,11 +438,26 @@ function render(){
     return '<tr><td class="rk">'+(i+1)+'</td><td class="nm">'+p.pre+' '+p.nom+badge+'</td><td class="tags-cell">'+tagChips(pkey(p))+'</td><td class="num">'+p.men+'</td><td class="num" title="championnat par équipe phase 2 : '+(p.eq2?p.eq2.v+'V/'+(p.eq2.n-p.eq2.v)+'D':'aucun match')+'">'+e2+'</td><td class="num '+tc+'" title="'+hist+'">'+ts+'</td><td class="score">'+p.score+'</td><td>'+trj+'</td></tr>';
   }).join('');
 }
-// paramètres mémorisés sur l'appareil (poids k + plafond)
+// paramètres : cache local immédiat + version PARTAGÉE sur Supabase (clé _params du journal)
 try{const sp=JSON.parse(localStorage.getItem('acbb_sc_params')||'null');
   if(sp){ if(sp.k!=null) ks.value=sp.k; if(sp.cap!=null) cs.value=sp.cap; }}catch(e){}
 function saveParams(){try{localStorage.setItem('acbb_sc_params',JSON.stringify({k:ks.value,cap:cs.value}));}catch(e){}}
-ks.addEventListener('input',()=>{saveParams();render();}); cs.addEventListener('input',()=>{saveParams();render();}); q.addEventListener('input',render); render();
+function applyParams(p){ if(!p)return; if(p.k!=null)ks.value=p.k; if(p.cap!=null)cs.value=p.cap; saveParams(); }
+let _prmT=null;
+function schedParams(){ clearTimeout(_prmT); _prmT=setTimeout(pushParams,2500); }
+async function pushParams(){
+  try{
+    let remote={};
+    const g=await fetch(SB_URL+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:SB_HD});
+    if(g.ok){const a=await g.json(); if(a.length&&a[0].tags)remote=a[0].tags;}
+    remote._params={k:ks.value,cap:cs.value};
+    const put=await fetch(SB_URL+'/rest/v1/tags_log',{method:'POST',headers:{...SB_HD,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({tags:remote,author:(localStorage.getItem('acbb_tag_author')||'anonyme')+' · réglages'})});
+    const el=document.getElementById('prmSync');
+    if(el)el.textContent=put.ok?('réglages partagés ✓ '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})):'réglages non partagés (hors-ligne)';
+  }catch(e){const el=document.getElementById('prmSync'); if(el)el.textContent='réglages non partagés (hors-ligne)';}
+}
+ks.addEventListener('input',()=>{saveParams();schedParams();render();}); cs.addEventListener('input',()=>{saveParams();schedParams();render();}); q.addEventListener('input',render); render();
 
 /* équipes 26/27 dans le sélecteur */
 (function(){const e=document.getElementById('tmE');
@@ -475,11 +491,12 @@ async function saveTags(){
     const g=await fetch(SB_URL+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:SB_HD});
     if(g.ok){const a=await g.json(); if(a.length&&a[0].tags)remote=a[0].tags;}
     DIRTY.forEach(k=>{ if(TAGS[k]) remote[k]=TAGS[k]; else delete remote[k]; });
+    remote._params={k:ks.value,cap:cs.value};
     let author=localStorage.getItem('acbb_tag_author');
     if(!author){author=(prompt('Ton prénom (pour l\'historique des compos) :')||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
     const put=await fetch(SB_URL+'/rest/v1/tags_log',{method:'POST',headers:{...SB_HD,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({tags:remote,author:author})});
     if(!put.ok){const t=await put.text();throw new Error('HTTP '+put.status+' '+t.slice(0,140));}
-    TAGS=remote; DIRTY.clear(); try{localStorage.removeItem('acbb_tags_draft');}catch(e){}
+    TAGS={...remote}; delete TAGS._params; DIRTY.clear(); try{localStorage.removeItem('acbb_tags_draft');}catch(e){}
     updateSaveBar(); render();
     st.textContent='✓ Enregistré à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     document.getElementById('saveBar').classList.add('show'); setTimeout(()=>{if(!DIRTY.size)document.getElementById('saveBar').classList.remove('show');},4000);
@@ -497,6 +514,7 @@ document.getElementById('saveTags').addEventListener('click',saveTags);
   }catch(e){
     try{const r=await fetch('data/tags.json',{cache:'no-cache'});const j=await r.json();if(j&&j.tags)TAGS=j.tags;}catch(_){ }
   }
+  if(TAGS._params){ applyParams(TAGS._params); delete TAGS._params; }
   draftLoad(); updateSaveBar(); render();
 })();
 </script>
