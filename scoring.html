@@ -263,6 +263,9 @@
   .tm-avg{font-family:"JetBrains Mono",monospace;font-size:16px;font-weight:700;letter-spacing:-0.4px}
   .tm-avg .u{font-size:8.5px;color:var(--dim);font-weight:600;margin-left:3px}
   .tm-sub{font-size:8.5px;color:var(--dim);font-family:"JetBrains Mono",monospace}
+  .tm-players{display:flex;flex-direction:column;gap:2px;margin-top:2px}
+  .tm-p{font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tm-p .pt{color:var(--dimmer)}
   /* ===== TAGS COMPO 26/27 ===== */
   .tags-cell{white-space:nowrap}
   .tg{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;border-radius:7px;padding:2px 7px;margin-right:4px;border:1px solid var(--line-2);background:var(--panel-2);color:var(--ink-2)}
@@ -439,13 +442,16 @@ function renderTeamsMini(){
   const el=document.getElementById('teamsMini'); if(!el)return;
   el.innerHTML=Object.keys(TEAMDIV).map(k=>{
     const div=TEAMDIV[k], c=DIVC[div]||'242,106,27';
-    const tit=D.filter(p=>{const t=TAGS[pkey(p)];return t&&t.e===k&&t.r==='T';});
+    const tit=D.filter(p=>{const t=TAGS[pkey(p)];return t&&t.e===k&&t.r==='T';}).sort((a,b)=>(b.men||0)-(a.men||0));
     const avg=tit.length?Math.round(tit.reduce((a,p)=>a+(p.men||0),0)/tit.length):null;
+    const names=tit.length
+      ?'<div class="tm-players">'+tit.map(p=>'<div class="tm-p">'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+' <span class="pt">'+p.men+'</span></div>').join('')+'</div>'
+      :'<div class="tm-sub">aucun titulaire tagué</div>';
     return '<div class="tm-card">'
       +'<div class="tm-top"><span class="tm-name" style="color:hsl('+teamHue(k)+',75%,72%)">'+k+'</span>'
       +'<span class="tm-div" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)">'+div+'</span></div>'
       +'<div class="tm-avg">'+(avg!=null?avg+'<span class="u">moy.</span>':'<span style="color:var(--dimmer)">—</span>')+'</div>'
-      +'<div class="tm-sub">'+(tit.length?tit.length+' titulaire'+(tit.length>1?'s':''):'aucun titulaire tagué')+'</div>'
+      +names
       +'</div>';
   }).join('');
 }
