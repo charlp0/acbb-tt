@@ -49,17 +49,38 @@ def main():
     try: OFF27=json.load(open('data/officiel2627.json')).get('officiel',{})
     except Exception: OFF27={}
     DEPARTS={('SATO','Lautaro'),('LOUET','Sebastien'),('LANGLOIS','Xavier')}   # quittent le club été 2026 — retirés de la Sportive uniquement
+    # paires (joueur ACBB | adversaire) des journées MASCULINES phase 2, depuis site.json
+    MPAIRS=set()
+    try:
+        _site=json.load(open('data/site.json'))['DATA']
+        for _k,_pool in _site.items():
+            if not _k.startswith('M'): continue
+            _teams={t['name']:t for t in _pool['teams']}
+            _acbb=[t for t in _pool['teams'] if t.get('acbb')]
+            if not _acbb: continue
+            for _j in _acbb[0]['journees']:
+                _ot=_teams.get(_j.get('opponent'))
+                _oj=[x for x in (_ot['journees'] if _ot else []) if x['journee']==_j['journee']]
+                _opps=[fb.nrm((o.get('nom') or '')+(o.get('prenom') or '')) for o in (_oj[0]['players'] if _oj else [])]
+                for _p in _j['players']:
+                    if not _p.get('nom') or _p['nom']=='Joueur absent': continue
+                    _pk=fb.nrm(_p['nom']+(_p.get('prenom') or ''))
+                    for _o in _opps:
+                        if _o: MPAIRS.add(_pk+'|'+_o)
+    except Exception as e: print('  (MPAIRS indisponible:',e,')')
     def eq2stats(lic):
-        """V/D en championnat par équipe PHASE 2 (janv->juin 2026), depuis le profil local."""
+        """V/D en championnat par équipe MASCULIN phase 2 (simples), via paires joueur|adversaire."""
         try: prof=json.load(open('data/players/'+lic+'.json'))
         except Exception: return None
+        me=fb.nrm((prof.get('nom') or '')+(prof.get('prenom') or ''))
         for comp in prof.get('competitions',[]):
             if comp.get('key')=='equipe':
                 v=d=0
                 for m in comp.get('matches',[]):
-                    if (m.get('date') or '').endswith('/2026'):
-                        if m.get('won'): v+=1
-                        else: d+=1
+                    if not (m.get('date') or '').endswith('/2026'): continue
+                    if (me+'|'+fb.nrm(m.get('opp') or '')) not in MPAIRS: continue
+                    if m.get('won'): v+=1
+                    else: d+=1
                 n=v+d
                 return {'n':n,'v':v,'pct':round(100*v/n)} if n else None
         return None
