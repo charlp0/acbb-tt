@@ -266,6 +266,29 @@
     .nav-cta{padding:7px 10px;font-size:10.5px}
     .brand-img{width:32px;height:32px}
   }
+
+  /* ===== PRÉPARATION 26/27 (design handoff) ===== */
+  .cards2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:6px 12px 4px}
+  .calsec{margin:56px 12px 30px}
+  .cal-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+  .cal-title{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:clamp(30px,5.5vw,44px);line-height:1;letter-spacing:0.5px;margin-top:8px}
+  .cal-title em{color:var(--orange,#F26A1B);font-style:italic}
+  .cal-meta{font-family:"JetBrains Mono",monospace;font-size:12px;color:rgba(232,232,234,0.45)}
+  .cal-card{background:#141416;border:1px solid rgba(255,255,255,0.08);border-radius:18px;overflow:hidden}
+  .cal-grid{display:grid;grid-template-columns:52px repeat(2,1fr)}
+  .cal-hd{background:#1E1E22;border-bottom:1px solid rgba(255,255,255,0.16)}
+  .cal-hd .cal-c{padding:12px 8px}
+  .cal-hd .d{display:block;font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:15px}
+  .cal-hd .sub{display:block;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:rgba(232,232,234,0.45);margin-top:2px}
+  .cal-c{text-align:center}
+  .cal-row .cal-c{padding:11px 8px;border-bottom:1px solid rgba(255,255,255,0.05)}
+  .cal-row.alt{background:rgba(255,255,255,0.02)}
+  .cal-row.next{background:rgba(242,106,27,0.07)}
+  .cal-row .dt{font-family:"JetBrains Mono",monospace;font-size:clamp(13px,3.4vw,15px);align-self:center}
+  .jbadge{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:700;color:var(--orange,#F26A1B);background:rgba(242,106,27,0.14);border-radius:8px;padding:4px 8px}
+  .jbadge.inv{color:#0B0B0D;background:var(--orange,#F26A1B)}
+  .cal-note{display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:12px;color:rgba(232,232,234,0.45);margin-top:12px}
+  .cal-note i{width:6px;height:6px;border-radius:50%;background:#FACC15}
 </style>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
@@ -292,36 +315,24 @@
       <img class="brand-img" src="logo.png" alt="ACBB">
       <div class="brand-text">
         <div class="brand-name">ACBB TT</div>
-        <div class="brand-sub">Phase 2 · J7</div>
+        <div class="brand-sub">Saison 26/27</div>
       </div>
     </a>
     <nav class="nav">
       <a href="accueil.html" class="nav-link active">Accueil</a>
       <a href="joueurs.html" class="nav-link">Joueurs</a>
-      <a href="stats.html" class="nav-link">Stats Ch. Équipe</a>
+      <a href="stats.html" class="nav-link">Ch. Équipe 25/26</a>
       <a href="scoring.html" class="nav-link">Sportive</a>
     </nav>
   </div>
 </header>
 
-<nav class="selector">
-  <div class="selector-grid" id="quickSelector"></div>
-</nav>
 </div>
 
-<a href="joueurs.html" style="display:flex;margin:14px 12px 4px;border:1px solid rgba(242,106,27,0.4);background:linear-gradient(180deg,rgba(242,106,27,0.14) 0%,var(--paper,#141416) 70%);border-radius:14px;padding:16px 18px;align-items:center;gap:14px;flex-wrap:wrap;text-decoration:none;color:inherit">
-  <div style="font-size:30px;line-height:1">🏓</div>
-  <div style="flex:1;min-width:220px">
-    <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--orange,#F26A1B);margin-bottom:4px">Nouveau · Ton récap de la saison</div>
-    <div style="font-size:14px;font-weight:700;letter-spacing:-0.2px;line-height:1.35">Chaque joueur a désormais sa <b>fiche récap complète</b> : classement &amp; progression, performances, plus longue série, temps de jeu et bien plus. Retrouve la tienne dans l'onglet <b>Joueurs</b>.</div>
-  </div>
-  <span style="white-space:nowrap;background:var(--orange,#F26A1B);color:#0B0B0D;font-weight:800;font-size:13px;padding:10px 16px;border-radius:99px">Voir ma fiche →</span>
-</a>
-
 <div class="hero">
-  <div class="eyebrow">Bilan · Saison 2025-2026</div>
+  <div class="eyebrow">Préparation · Saison 2026-2027</div>
   <h1 class="hero-title">Ensemble,<br><em>visons plus haut.</em></h1>
-  <p class="hero-sub">Récap de la phase 2 : résultats, classements finaux, montées &amp; descentes et meilleurs joueurs du club. Cliquez une équipe pour ouvrir son détail (calendrier, journées).</p>
+  <p class="hero-sub">La nouvelle saison se prépare. Retrouve le bilan complet de la saison écoulée dans l'onglet <a href="stats.html" style="color:var(--orange,#F26A1B);text-decoration:none;font-weight:700">Ch. Équipe 25/26</a>, et ci-dessous le calendrier de la phase 1.</p>
   <p id="majHome" style="margin-top:10px;font-size:10px;color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.3px">Dernière mise à jour : —</p>
   <script>
     fetch('data/meta.json',{cache:'no-cache'}).then(r=>r.json()).then(m=>{
@@ -333,775 +344,53 @@
   </script>
 </div>
 
-<div style="margin:0 12px 4px;border:1px solid rgba(52,211,153,0.35);background:linear-gradient(180deg,rgba(52,211,153,0.12) 0%,var(--paper,#141416) 70%);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+<div class="cards2">
+<a href="joueurs.html" style="display:flex;margin:0;border:1px solid rgba(242,106,27,0.4);background:linear-gradient(180deg,rgba(242,106,27,0.14) 0%,var(--paper,#141416) 70%);border-radius:14px;padding:16px 18px;align-items:center;gap:14px;flex-wrap:wrap;text-decoration:none;color:inherit">
+  <div style="font-size:30px;line-height:1">🏓</div>
+  <div style="flex:1;min-width:220px">
+    <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--orange,#F26A1B);margin-bottom:4px">Nouveau · Ton récap de la saison</div>
+    <div style="font-size:14px;font-weight:700;letter-spacing:-0.2px;line-height:1.35">Chaque joueur a désormais sa <b>fiche récap complète</b> : classement &amp; progression, performances, plus longue série, temps de jeu et bien plus. Retrouve la tienne dans l'onglet <b>Joueurs</b>.</div>
+  </div>
+  <span style="white-space:nowrap;background:var(--orange,#F26A1B);color:#0B0B0D;font-weight:800;font-size:13px;padding:10px 16px;border-radius:99px">Voir ma fiche →</span>
+</a>
+<div style="margin:0;border:1px solid rgba(52,211,153,0.35);background:linear-gradient(180deg,rgba(52,211,153,0.12) 0%,var(--paper,#141416) 70%);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
   <div style="font-size:30px;line-height:1">🏆</div>
   <div style="flex:1;min-width:220px">
     <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#86EFAC;margin-bottom:4px">Félicitations</div>
     <div style="font-size:14px;font-weight:700;letter-spacing:-0.2px;line-height:1.35">Bravo à la <a href="equipe.html?team=M2" style="color:var(--orange,#F26A1B);text-decoration:none">M2</a> (1ère de N2), à la <a href="equipe.html?team=M3" style="color:var(--orange,#F26A1B);text-decoration:none">M3</a> (1ère de R2) et à la <a href="equipe.html?team=M5" style="color:var(--orange,#F26A1B);text-decoration:none">M5</a> (1ère de R3) — les trois équipes <b>montent en division supérieure</b> ! 🎉</div>
   </div>
 </div>
+</div>
 
-<section class="section">
-  <div class="section-h">Bilan Phase 2</div>
-  <div class="bilan" id="bilan"></div>
-</section>
-
-<section class="section">
-  <div class="section-h">Le club en un coup d'œil</div>
-  <div class="club-rings" id="clubRings"></div>
-</section>
-
-<section class="section">
-  <div class="section-h">Carte d'état sportif</div>
-  <div class="legend">
-    <span><i class="promo"></i>Top 2 — promotion / haut</span>
-    <span><i class="safe"></i>3-5 — maintien tranquille</span>
-    <span><i class="watch"></i>6 — à surveiller</span>
-    <span><i class="danger"></i>7-8 — zone descente</span>
-  </div>
-  <div class="teams-grid" id="teamsGrid"></div>
-</section>
-
-<section class="section">
-  <div class="section-h">Top performers équipes</div>
-  <div class="tops">
-    <div class="top-card">
-      <div class="top-head">
-        <div class="top-t">Meilleur <em>% victoires</em></div>
-        <div class="top-sub">ratio V / matchs joués</div>
-      </div>
-      <div id="topPct"></div>
+<section class="calsec">
+  <div class="cal-head">
+    <div>
+      <div class="eyebrow">Nouveau</div>
+      <h2 class="cal-title">Calendrier · <em>Phase 1</em> · 2026/2027</h2>
     </div>
-    <div class="top-card">
-      <div class="top-head">
-        <div class="top-t">Meilleur <em>différentiel</em></div>
-        <div class="top-sub">goal-average personnel</div>
-      </div>
-      <div id="topVol"></div>
-    </div>
+    <div class="cal-meta">7 journées · sept → déc 2026</div>
   </div>
+  <div class="cal-card">
+    <div class="cal-grid cal-hd">
+      <div class="cal-c">Nº</div>
+      <div class="cal-c"><span class="d">Vendredi</span><span class="sub">M D2 / D1 / PR</span></div>
+      <div class="cal-c"><span class="d">Samedi</span><span class="sub">F PR, R1, PN</span><span class="sub">M R3 / R2 / R1 / N1</span></div>
+    </div>
+    <div class="cal-grid cal-row next"><div class="cal-c"><span class="jbadge inv">J1</span></div><div class="cal-c dt">18/09</div><div class="cal-c dt">19/09</div></div>
+    <div class="cal-grid cal-row"><div class="cal-c"><span class="jbadge">J2</span></div><div class="cal-c dt">02/10</div><div class="cal-c dt">03/10</div></div>
+    <div class="cal-grid cal-row alt"><div class="cal-c"><span class="jbadge">J3</span></div><div class="cal-c dt">16/10</div><div class="cal-c dt">17/10</div></div>
+    <div class="cal-grid cal-row"><div class="cal-c"><span class="jbadge">J4</span></div><div class="cal-c dt">06/11</div><div class="cal-c dt">07/11</div></div>
+    <div class="cal-grid cal-row alt"><div class="cal-c"><span class="jbadge">J5</span></div><div class="cal-c dt">20/11</div><div class="cal-c dt">21/11</div></div>
+    <div class="cal-grid cal-row"><div class="cal-c"><span class="jbadge">J6</span></div><div class="cal-c dt">04/12</div><div class="cal-c dt">05/12</div></div>
+    <div class="cal-grid cal-row alt"><div class="cal-c"><span class="jbadge">J7</span></div><div class="cal-c dt">11/12</div><div class="cal-c dt">12/12</div></div>
+  </div>
+  <div class="cal-note"><i></i>Clôture des engagements : 08/07/2026</div>
 </section>
 
-<section class="section">
-  <div class="section-h">Meilleurs joueurs</div>
-  <div id="bestPlayers"></div>
-</section>
 
-<section class="section">
-  <div class="section-h">Évolution J1 → J7</div>
-  <div class="evo" id="evo"></div>
-</section>
-
-<section class="section">
-  <div class="section-h">Records de la phase</div>
-  <div class="records" id="records"></div>
-</section>
 
 </div>
 
-<script src="data/site.js"></script>
-<script>
-/* === DATA (replace this block with live data) === */
-// Auto-extracted from uploads/index.html
-    const STANDINGS = window.__SITE.STANDINGS;
-
-const DATA = window.__SITE.DATA;
-
-window.STANDINGS = STANDINGS;
-window.DATA = DATA;
-
-</script>
-<script>
-/* === Shared utils === */
-// Shared helpers for ACBB TT redesigns
-// All variations import this to derive stats from the raw DATA object.
-
-(function (root) {
-  const TEAM_KEYS = ['F1','F2','F3','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17'];
-
-  // Mapping from team key → level meta for selector grouping
-  const LEVEL_META = {
-    'M2':  { short: 'N2', label: 'Nationale 2', tier: 0 },
-    'F1':  { short: 'PN', label: 'Pré-Nationale', tier: 1 },
-    'M3':  { short: 'R2', label: 'Régional 2', tier: 2 },
-    'M4':  { short: 'R3', label: 'Régional 3', tier: 2 },
-    'M5':  { short: 'R3', label: 'Régional 3', tier: 2 },
-    'F2':  { short: 'R1', label: 'Régional 1', tier: 2 },
-    'F3':  { short: 'PR', label: 'Pré-Régional', tier: 3 },
-    'M6':  { short: 'PR', label: 'Pré-Régional', tier: 3 },
-    'M7':  { short: 'PR', label: 'Pré-Régional', tier: 3 },
-    'M8':  { short: 'PR', label: 'Pré-Régional', tier: 3 },
-    'M9':  { short: 'PR', label: 'Pré-Régional', tier: 3 },
-    'M10': { short: 'D1', label: 'Départemental 1', tier: 4 },
-    'M11': { short: 'D1', label: 'Départemental 1', tier: 4 },
-    'M12': { short: 'D2', label: 'Départemental 2', tier: 5 },
-    'M13': { short: 'D2', label: 'Départemental 2', tier: 5 },
-    'M14': { short: 'D2', label: 'Départemental 2', tier: 5 },
-    'M15': { short: 'D2', label: 'Départemental 2', tier: 5 },
-    'M16': { short: 'D2', label: 'Départemental 2', tier: 5 },
-    'M17': { short: 'D2', label: 'Départemental 2', tier: 5 },
-  };
-
-  function getAcbbTeam(poolKey) {
-    const pool = root.DATA[poolKey];
-    if (!pool) return null;
-    return pool.teams.find(t => t.acbb);
-  }
-
-  // Is a team key (e.g. "M2") a Nationale 2 team (uses 8-1 victory scoring vs 25-17 point scoring)
-  function isNat2(poolKey) {
-    return poolKey === 'M2';
-  }
-
-  // Take a journée from the ACBB team; return enriched info
-  function enrichJournee(j, isN2) {
-    const won = j.match_score > j.opp_score;
-    const drawn = j.match_score === j.opp_score;
-    const lost = j.match_score < j.opp_score;
-    const result = won ? 'W' : (lost ? 'L' : 'D');
-    // MVP = player with most victories
-    const ranked = [...j.players].sort((a,b) => b.vic - a.vic);
-    const mvp = ranked[0];
-    const totalVic = j.players.reduce((s,p)=>s+p.vic,0);
-    return { ...j, won, drawn, lost, result, mvp, totalVic };
-  }
-
-  // Aggregated player stats across all journées for ACBB team
-  function aggregatePlayers(acbbTeam) {
-    const stats = {};
-    acbbTeam.journees.forEach(j => {
-      j.players.forEach(p => {
-        if (!p.nom || p.nom === 'Joueur absent') return;
-        const key = p.nom + '|' + p.prenom;
-        if (!stats[key]) stats[key] = {
-          nom: p.nom, prenom: p.prenom, cls: p.cls, vic: 0, played: 0
-        };
-        stats[key].vic += p.vic;
-        stats[key].played += 1;
-        stats[key].cls = p.cls; // latest
-      });
-    });
-    return Object.values(stats).sort((a,b) => b.vic - a.vic);
-  }
-
-  // Build calendar with results merged in
-  function buildCalendar(acbbTeam, isN2) {
-    const cal = acbbTeam.calendar || {};
-    const journeesByNum = {};
-    (acbbTeam.journees || []).forEach(j => { journeesByNum[j.journee] = j; });
-    const out = [];
-    for (let i = 1; i <= 7; i++) {
-      const slot = cal[i] || journeesByNum[i] || null;
-      const j = journeesByNum[i];
-      const opponent = (slot && slot.opponent) || (j && j.opponent) || '—';
-      const domext = (slot && slot.domext) || (j && j.domext) || '—';
-      const played = !!j && (j.match_score != null);
-      let result = null;
-      if (played) {
-        if (j.match_score > j.opp_score) result = 'W';
-        else if (j.match_score < j.opp_score) result = 'L';
-        else result = 'D';
-      }
-      out.push({
-        journee: i,
-        opponent,
-        domext,
-        date: j && j.date,
-        played,
-        result,
-        match_score: j && j.match_score,
-        opp_score: j && j.opp_score,
-        raw: j || null,
-      });
-    }
-    return out;
-  }
-
-  // Pool average classement for ACBB players + opponents (rough avg)
-  function poolAverages(poolKey) {
-    const pool = root.DATA[poolKey];
-    if (!pool) return { acbb: '—', opp: '—' };
-    const acbb = pool.teams.find(t => t.acbb);
-    function avgCls(team) {
-      if (!team) return null;
-      const allCls = [];
-      (team.journees || []).forEach(j => j.players.forEach(p => {
-        if (!p.nom || p.nom === 'Joueur absent') return;
-        const c = typeof p.cls === 'number' ? p.cls : 500;
-        allCls.push(c);
-      }));
-      if (!allCls.length) return null;
-      return Math.round(allCls.reduce((s,v)=>s+v,0) / allCls.length);
-    }
-    const acbbAvg = avgCls(acbb);
-    const oppCls = [];
-    pool.teams.filter(t => !t.acbb).forEach(t => {
-      const a = avgCls(t);
-      if (a) oppCls.push(a);
-    });
-    const oppAvg = oppCls.length ? Math.round(oppCls.reduce((s,v)=>s+v,0)/oppCls.length) : null;
-    return { acbb: acbbAvg || '—', opp: oppAvg || '—' };
-  }
-
-  // Stats summary for ACBB team header
-  function teamSummary(poolKey) {
-    const pool = root.DATA[poolKey];
-    const acbb = pool && pool.teams.find(t => t.acbb);
-    if (!acbb) return { played: 0, wins:0, losses:0, draws:0, ptsFor:0, ptsAg:0 };
-    let wins=0, losses=0, draws=0, pf=0, pa=0;
-    (acbb.journees || []).forEach(j => {
-      if (j.match_score == null) return;
-      pf += j.match_score;
-      pa += j.opp_score;
-      if (j.match_score > j.opp_score) wins++;
-      else if (j.match_score < j.opp_score) losses++;
-      else draws++;
-    });
-    return {
-      played: wins+losses+draws,
-      wins, losses, draws,
-      ptsFor: pf, ptsAg: pa,
-      diff: pf - pa,
-    };
-  }
-
-  // Find ACBB row in standings
-  function findAcbbStanding(poolKey) {
-    const st = root.STANDINGS[poolKey];
-    if (!st) return null;
-    // Match "BOULOGNE BILLAN" prefix
-    return st.find(r => /BOULOGNE BILLAN|BOULOGNE BILLANCOURT/i.test(r.name)) || null;
-  }
-
-  // French short date
-  function shortDate(s) {
-    if (!s) return '—';
-    return s.replace(/\s?\d{4}$/, ''); // strip year
-  }
-
-  // Display classement (numeric or string like "N241")
-  function clsDisplay(c) {
-    if (c == null) return '—';
-    if (typeof c === 'string') {
-      if (c === 'x' || c === '?' || c === '') return '—';
-      return c;
-    }
-    return String(c);
-  }
-
-  function firstName(p) {
-    if (!p) return '—';
-    return p.prenom || p.nom;
-  }
-  function shortName(p) {
-    return (firstName(p)[0] || '') + '. ' + (p.nom || '');
-  }
-
-  // Strip "BOULOGNE BILLANCOURT" prefix from opponent display
-  function shortOpp(name) {
-    if (!name) return '—';
-    return name
-      .replace(/^BOULOGNE BILLAN(COURT)?(\s+AC)?\s*/i, 'ACBB ')
-      .replace(/\s+\(\d+\)$/, '')
-      .trim();
-  }
-
-  // Lookup opponent's lineup for a given journée number (the opponent team also has
-  // its own `journees` entry — find theirs matching the same J number).
-  function getOpponentLineup(poolKey, journeeNum, opponentName) {
-    const pool = root.DATA[poolKey];
-    if (!pool || !opponentName) return null;
-    const opp = pool.teams.find(t => !t.acbb && (t.name === opponentName || t.name.toUpperCase() === opponentName.toUpperCase()));
-    if (!opp) return null;
-    const j = (opp.journees || []).find(x => x.journee === journeeNum);
-    if (!j) return { team: opp, journee: null };
-    return { team: opp, journee: j };
-  }
-
-  // Average classement for a lineup (numeric only, ignoring "N###" or absent players)
-  function lineupAvgCls(players) {
-    if (!players || !players.length) return null;
-    const nums = players
-      .filter(p => p.nom && p.nom !== 'Joueur absent')
-      .map(p => {
-        if (typeof p.cls === 'number') return p.cls;
-        // "N241" etc — treat numeric prefix as ~1700+ ; rough heuristic
-        if (typeof p.cls === 'string' && /^N\d+/i.test(p.cls)) return 1700;
-        return null;
-      })
-      .filter(v => v != null);
-    if (!nums.length) return null;
-    return Math.round(nums.reduce((s,v)=>s+v,0) / nums.length);
-  }
-
-  // Aggregate all ACBB players across ALL teams (whole club) for the phase.
-  // Returns rows with { nom, prenom, cls, vic, played, teams: ['M2','M3'...] }.
-  function aggregateAllClubPlayers() {
-    const stats = {};
-    TEAM_KEYS.forEach(k => {
-      const acbb = getAcbbTeam(k);
-      if (!acbb) return;
-      (acbb.journees || []).forEach(j => {
-        (j.players || []).forEach(p => {
-          if (!p.nom || p.nom === 'Joueur absent') return;
-          const key = (p.nom + '|' + (p.prenom || '')).replace(/-/g,' ').replace(/\s+/g,' ').trim().toUpperCase();
-          if (!stats[key]) stats[key] = {
-            nom: p.nom, prenom: p.prenom || '', cls: p.cls, vic: 0, played: 0, teamCounts: {}
-          };
-          stats[key].vic += (p.vic || 0);
-          stats[key].played += 1;
-          stats[key].cls = p.cls; // most recent record
-          stats[key].teamCounts[k] = (stats[key].teamCounts[k] || 0) + 1;
-        });
-      });
-    });
-    return Object.values(stats).map(s => ({
-      ...s,
-      teams: Object.keys(s.teamCounts).sort((a,b) => {
-        // by tier then by name
-        const ta = (LEVEL_META[a] && LEVEL_META[a].tier) ?? 99;
-        const tb = (LEVEL_META[b] && LEVEL_META[b].tier) ?? 99;
-        return ta - tb || a.localeCompare(b);
-      }),
-      // Wins per match × 100 (max 3 wins per match in a normal 8x4 format; nat2 max 2)
-      // Use vic / (played * 3) as best-of estimate; cap at 100.
-      winRate: s.played ? Math.min(100, Math.round(s.vic / (s.played * 3) * 100)) : 0,
-    }));
-  }
-
-  // Win % for a single player across the journées they played for a given team key
-  // (max wins per match assumed to be 3 in normal format, 2 in Nationale 2)
-  function playerWinRateInTeam(player, teamKey) {
-    const acbb = getAcbbTeam(teamKey);
-    if (!acbb) return { vic: 0, played: 0, max: 0, pct: 0 };
-    const n2 = isNat2(teamKey);
-    const matchMax = n2 ? 2 : 3;
-    let vic = 0, played = 0;
-    (acbb.journees || []).forEach(j => {
-      (j.players || []).forEach(p => {
-        if (p.nom === player.nom && (p.prenom || '') === (player.prenom || '')) {
-          vic += (p.vic || 0);
-          played += 1;
-        }
-      });
-    });
-    return { vic, played, max: played * matchMax, pct: played ? Math.round(vic / (played * matchMax) * 100) : 0 };
-  }
-
-  // Niveau MENSUEL moyen des adversaires au moment du match (API FFTT SmartPing, escalier mensuel)
-  function oppAvgForTeam(poolKey){
-    const M={F1:1066,F2:821,F3:619,M2:2236,M3:1615,M4:1421,M5:1306,M6:1301,M7:1221,M8:1183,M9:1178,M10:971,M11:996,M12:689,M13:611,M14:690,M15:652,M16:602,M17:672};
-    return M[poolKey] || null;
-  }
-
-  // Agrège les joueurs ACBB sur un sous-ensemble de poules (pour split Masculin/Féminin)
-  function aggregateClubPlayersByPools(pools){
-    const stats={};
-    pools.forEach(k=>{
-      const acbb=getAcbbTeam(k); if(!acbb) return;
-      (acbb.journees||[]).forEach(j=>{
-        (j.players||[]).forEach(p=>{
-          if(!p.nom||p.nom==='Joueur absent') return;
-          const key=(p.nom+'|'+(p.prenom||'')).replace(/-/g,' ').replace(/\s+/g,' ').trim().toUpperCase();
-          if(!stats[key]) stats[key]={nom:p.nom,prenom:p.prenom||'',cls:p.cls,vic:0,played:0,teamCounts:{}};
-          stats[key].vic+=(p.vic||0); stats[key].played+=1; stats[key].cls=p.cls;
-          stats[key].teamCounts[k]=(stats[key].teamCounts[k]||0)+1;
-        });
-      });
-    });
-    return Object.values(stats).map(s=>({nom:s.nom,prenom:s.prenom,cls:s.cls,vic:s.vic,played:s.played,
-      teams:Object.keys(s.teamCounts).sort((a,b)=>((LEVEL_META[a]&&LEVEL_META[a].tier)??99)-((LEVEL_META[b]&&LEVEL_META[b].tier)??99)||a.localeCompare(b)),
-      parties:s.played*3,
-      winRate:s.played?Math.round(s.vic/(s.played*3)*100):0}));
-  }
-
-  root.ACBB_UTILS = {
-    TEAM_KEYS, LEVEL_META,
-    getAcbbTeam, isNat2, enrichJournee, aggregatePlayers,
-    buildCalendar, poolAverages, teamSummary, findAcbbStanding,
-    shortDate, clsDisplay, firstName, shortName, shortOpp,
-    getOpponentLineup, lineupAvgCls, oppAvgForTeam,
-    aggregateAllClubPlayers, playerWinRateInTeam, aggregateClubPlayersByPools,
-  };
-  // ====== CLUB-WIDE STATS ======
-
-  // Aggregate club-wide V/N/D, points, GA over the phase
-  function aggregateClubStats() {
-    let wins = 0, draws = 0, losses = 0, ptsFor = 0, ptsAg = 0, matches = 0;
-    TEAM_KEYS.forEach(k => {
-      const acbb = getAcbbTeam(k);
-      if (!acbb) return;
-      (acbb.journees || []).forEach(j => {
-        if (j.match_score == null) return;
-        matches++;
-        ptsFor += j.match_score;
-        ptsAg += j.opp_score;
-        if (j.match_score > j.opp_score) wins++;
-        else if (j.match_score < j.opp_score) losses++;
-        else draws++;
-      });
-    });
-    const all = aggregateAllClubPlayers();
-    return {
-      matches, wins, draws, losses,
-      ptsFor, ptsAg, ga: ptsFor - ptsAg,
-      winPct: matches ? Math.round(wins / matches * 100) : 0,
-      players: all.length,
-    };
-  }
-
-  // Status by position in standings: 1-2 promo, 3-5 safe, 6 watch, 7-8 danger
-  function statusByPosition(poolKey) {
-    const acbb = findAcbbStanding(poolKey);
-    const st = root.STANDINGS[poolKey];
-    if (!acbb || !st) return { pos: null, total: 0, status: 'unknown' };
-    const total = st.length;
-    const pos = acbb.pos;
-    let status;
-    if (pos <= 2) status = 'promo';      // green
-    else if (pos <= 5) status = 'safe';  // yellow soft
-    else if (pos === 6) status = 'watch'; // orange
-    else status = 'danger';              // coral
-    return { pos, total, status, pts: acbb.pts, V: acbb.V, N: acbb.N, D: acbb.D, diff: acbb.diff };
-  }
-
-  // Top players by win rate (min N matches played)
-  function topByWinRate(n, minPlayed) {
-    const all = aggregateAllClubPlayers().filter(p => p.played >= (minPlayed||3));
-    return all.slice().sort((a,b) => b.winRate - a.winRate || b.vic - a.vic).slice(0, n||5);
-  }
-
-  // Top players by absolute volume of victories
-  function topByVolume(n) {
-    return aggregateAllClubPlayers().sort((a,b) => b.vic - a.vic || b.winRate - a.winRate).slice(0, n||5);
-  }
-
-  // Find primary team for a player (the team with most appearances)
-  function primaryTeam(player) {
-    const teams = player.teams || [];
-    if (!teams.length) return null;
-    const counts = player.teamCounts || {};
-    return teams.slice().sort((a,b) => (counts[b]||0) - (counts[a]||0))[0];
-  }
-
-  // V/N/D per journée across the whole club
-  function evolutionByJournee() {
-    const result = {};
-    for (let j = 1; j <= 7; j++) result[j] = { w: 0, d: 0, l: 0, total: 0 };
-    TEAM_KEYS.forEach(k => {
-      const acbb = getAcbbTeam(k);
-      if (!acbb) return;
-      (acbb.journees || []).forEach(j => {
-        if (j.match_score == null) return;
-        const bucket = result[j.journee];
-        if (!bucket) return;
-        bucket.total++;
-        if (j.match_score > j.opp_score) bucket.w++;
-        else if (j.match_score < j.opp_score) bucket.l++;
-        else bucket.d++;
-      });
-    });
-    return result;
-  }
-
-  // Records of the phase: biggest win, biggest loss, MVP (highest cumulative V over phase)
-  function recordsOfPhase() {
-    let bestWin = null, worstLoss = null;
-    TEAM_KEYS.forEach(k => {
-      const acbb = getAcbbTeam(k);
-      if (!acbb) return;
-      (acbb.journees || []).forEach(j => {
-        if (j.match_score == null) return;
-        const margin = j.match_score - j.opp_score;
-        if (margin > 0 && (!bestWin || margin > bestWin.margin)) {
-          bestWin = { team: k, journee: j.journee, date: j.date, score: j.match_score, opp: j.opp_score, opponent: j.opponent, margin };
-        }
-        if (margin < 0 && (!worstLoss || margin < worstLoss.margin)) {
-          worstLoss = { team: k, journee: j.journee, date: j.date, score: j.match_score, opp: j.opp_score, opponent: j.opponent, margin };
-        }
-      });
-    });
-    // MVP = highest win rate, tie-broken by most cumulative V (i.e. 100% with most matches)
-    const allPlayers = aggregateAllClubPlayers();
-    const mvpPlayer = allPlayers.slice().sort((a,b) => b.winRate - a.winRate || b.vic - a.vic || b.played - a.played)[0] || null;
-    const mvp = mvpPlayer ? {
-      nom: mvpPlayer.nom, prenom: mvpPlayer.prenom, cls: mvpPlayer.cls,
-      vic: mvpPlayer.vic, played: mvpPlayer.played, winRate: mvpPlayer.winRate,
-      teams: mvpPlayer.teams, primaryTeam: primaryTeam(mvpPlayer),
-    } : null;
-    return { bestWin, worstLoss, mvp };
-  }
-
-  root.ACBB_UTILS = Object.assign(root.ACBB_UTILS, {
-    aggregateClubStats, statusByPosition, topByWinRate, topByVolume,
-    primaryTeam, evolutionByJournee, recordsOfPhase,
-  });
-})(window);
-
-</script>
-<script>
-(function(){
-  const U = window.ACBB_UTILS;
-  if (!U) { console.error('ACBB_UTILS not loaded'); return; }
-
-  // === SECTION 1 — Bilan ===
-  function renderBilan(){
-    const s = U.aggregateClubStats();
-    const html = `
-      <div class="bilan-cell">
-        <div class="bilan-v">${s.matches}</div>
-        <div class="lbl">Rencontres jouées</div>
-      </div>
-      <div class="bilan-cell featured">
-        <div class="bilan-vnd"><span class="v">${s.wins}</span><span class="sep">·</span><span class="n">${s.draws}</span><span class="sep">·</span><span class="l">${s.losses}</span></div>
-        <div class="lbl">V · N · D</div>
-      </div>
-      <div class="bilan-cell">
-        <div class="bilan-v">${s.winPct}<span class="unit">%</span></div>
-        <div class="lbl">% victoires club</div>
-      </div>
-      <div class="bilan-cell">
-        <div class="bilan-v">${s.players}</div>
-        <div class="lbl">Joueurs alignés</div>
-      </div>
-    `;
-    document.getElementById('bilan').innerHTML = html;
-  }
-
-  // === SECTION 2 — Carte d'état ===
-  function renderTeamsGrid(){
-    const html = U.TEAM_KEYS.map(k => {
-      const meta = U.LEVEL_META[k];
-      const ps = U.statusByPosition(k);
-      const pool = window.DATA[k];
-      const statusLabel = {
-        promo: 'Top',
-        safe: 'Sûr',
-        watch: 'À voir',
-        danger: 'Danger',
-      }[ps.status] || '—';
-      return `<a class="team-card ${ps.status} anim-in" href="equipe.html?team=${k}">
-        <div class="tc-row">
-          <span class="tc-team">${k}</span>
-          <span class="tc-level">${meta.short}<br>${meta.label.replace('Départemental','Dép.').replace('Régional','Rég.')}</span>
-        </div>
-        <div style="font-size:8px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--dim);margin-top:10px;margin-bottom:1px">Classement final</div>
-        <div class="tc-pos">${ps.pos||'—'}<span class="tot">/${ps.total||'—'}</span></div>
-        <div class="tc-pts">${ps.pts||0} pts · ${ps.V||0}V/${ps.N||0}N/${ps.D||0}D</div>
-        <div style="font-size:9px;color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.2px;margin-top:3px">${(()=>{const oa=U.oppAvgForTeam(k);return oa? 'Adv. moy. '+oa : '';})()}</div>
-        <span class="tc-status">${statusLabel}</span>
-      </a>`;
-    }).join('');
-    document.getElementById('teamsGrid').innerHTML = html;
-  }
-
-  // === SECTION 3 — Top performers équipes ===
-  function renderTops(){
-    const teams = U.TEAM_KEYS.map(k => {
-      const sum = U.teamSummary(k);
-      const ps = U.statusByPosition(k);
-      const meta = U.LEVEL_META[k];
-      const pct = sum.played ? Math.round(sum.wins / sum.played * 100) : 0;
-      return { key: k, ...sum, pct, pos: ps.pos, total: ps.total, label: meta && meta.label };
-    }).filter(t => t.played > 0);
-
-    const byPct = teams.slice().sort((a,b) => b.pct - a.pct || b.diff - a.diff).slice(0, 5);
-    const byDiff = teams.slice().sort((a,b) => b.diff - a.diff || b.pct - a.pct).slice(0, 5);
-
-    function teamRow(t, i, kind){
-      const rkCls = i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
-      const pctCls = t.pct >= 75 ? 'hi' : (t.pct >= 50 ? 'mid' : '');
-      const diffSign = t.diff > 0 ? '+' : '';
-      const main = kind === 'pct'
-        ? `<span class="top-vic">${t.wins}V</span><span class="top-pct ${pctCls}">${t.pct}%</span>`
-        : `<span class="top-vic" style="color:${t.diff>=0?'#86EFAC':'#FCA5A5'}">${diffSign}${t.diff}</span><span class="top-pct ${pctCls}">${t.pct}%</span>`;
-      return `<a class="top-row ${rkCls}" href="equipe.html?team=${t.key}" style="text-decoration:none;color:inherit">
-        <span class="top-rk">${String(i+1).padStart(2,'0')}</span>
-        <div class="top-nm">${t.key}<span class="sub">${t.label} · ${t.pos||'—'}ᵉ / ${t.total||'—'}</span></div>
-        <span class="top-pts">${t.played}j</span>
-        ${main}
-      </a>`;
-    }
-
-    document.getElementById('topPct').innerHTML = byPct.map((t,i) => teamRow(t, i, 'pct')).join('');
-    document.getElementById('topVol').innerHTML = byDiff.map((t,i) => teamRow(t, i, 'diff')).join('');
-  }
-
-  // === SECTION 4 — Évolution ===
-  function renderEvolution(){
-    const data = U.evolutionByJournee();
-    // Find the max bucket total for scaling, min 1
-    const max = Math.max(1, ...Object.values(data).map(b => b.total));
-    const html = Object.keys(data).map(j => {
-      const b = data[j];
-      const future = b.total === 0;
-      const totalH = Math.max(28, Math.round(b.total / max * 140));
-      const wH = b.total ? (b.w/b.total*100).toFixed(1) : 0;
-      const dH = b.total ? (b.d/b.total*100).toFixed(1) : 0;
-      const lH = b.total ? (b.l/b.total*100).toFixed(1) : 0;
-      return `<div class="evo-bar ${future?'evo-future':''}">
-        <div class="evo-stats">
-          <div class="vnd">
-            ${b.total?`<span class="v">${b.w}</span><span style="color:var(--dimmer)">·</span><span class="d">${b.d}</span><span style="color:var(--dimmer)">·</span><span class="l">${b.l}</span>`:'<span style="color:var(--dim)">—</span>'}
-          </div>
-        </div>
-        <div class="evo-stack" style="height:${totalH}px">
-          ${future ? '<span class="s empty"></span>' :
-            `<span class="s w" style="height:${wH}%"></span>
-             <span class="s d" style="height:${dH}%"></span>
-             <span class="s l" style="height:${lH}%"></span>`}
-        </div>
-        <div class="evo-lbl">J${j}</div>
-      </div>`;
-    }).join('');
-    document.getElementById('evo').innerHTML = html;
-  }
-
-  // === SECTION 5 — Records ===
-  function renderRecords(){
-    const r = U.recordsOfPhase();
-    const cards = [];
-    if (r.bestWin){
-      cards.push(`<a class="record win anim-in" href="equipe.html?team=${r.bestWin.team}" style="text-decoration:none;color:inherit">
-        <div class="rec-h"><span class="rec-tag">🏆 Plus grosse victoire</span><span class="rec-meta">${U.shortDate(r.bestWin.date)} · J${r.bestWin.journee}</span></div>
-        <div class="rec-score">${r.bestWin.score}<span class="sep">–</span>${r.bestWin.opp}</div>
-        <div class="rec-vs"><span class="rec-team-chip">${r.bestWin.team}</span> <em>vs</em> ${U.shortOpp(r.bestWin.opponent)}<br><span style="color:#86EFAC;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700">Marge +${r.bestWin.margin}</span></div>
-      </a>`);
-    }
-    if (r.worstLoss){
-      cards.push(`<a class="record lose anim-in" href="equipe.html?team=${r.worstLoss.team}" style="text-decoration:none;color:inherit">
-        <div class="rec-h"><span class="rec-tag">💔 Plus grosse défaite</span><span class="rec-meta">${U.shortDate(r.worstLoss.date)} · J${r.worstLoss.journee}</span></div>
-        <div class="rec-score">${r.worstLoss.score}<span class="sep">–</span>${r.worstLoss.opp}</div>
-        <div class="rec-vs"><span class="rec-team-chip">${r.worstLoss.team}</span> <em>vs</em> ${U.shortOpp(r.worstLoss.opponent)}<br><span style="color:#FCA5A5;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700">Marge ${r.worstLoss.margin}</span></div>
-      </a>`);
-    }
-    if (r.mvp){
-      cards.push(`<a class="record mvp anim-in" href="equipe.html?team=${r.mvp.primaryTeam||''}" style="text-decoration:none;color:inherit">
-        <div class="rec-h"><span class="rec-tag">🔥 MVP toutes équipes</span><span class="rec-meta">J1 → J7 cumulé</span></div>
-        <div class="rec-score">${r.mvp.vic}<span class="unit" style="font-size:18px;color:var(--dim);font-weight:500;margin-left:3px">V</span> <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--draw);font-weight:600;margin-left:8px">${r.mvp.winRate}%</span></div>
-        <div class="rec-vs">${U.firstName(r.mvp)} <strong>${r.mvp.nom}</strong><br><span style="color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:11px">cl. ${U.clsDisplay(r.mvp.cls)} · ${r.mvp.played} présences · ${(r.mvp.teams||[]).join(', ')}</span></div>
-      </a>`);
-    }
-    document.getElementById('records').innerHTML = cards.join('');
-  }
-
-  function renderBestPlayers(){
-    const MP = U.TEAM_KEYS.filter(k=>k.charAt(0)==='M');
-    const FP = ['F1','F2','F3'];
-    function row(r,i,metric){
-      const big = metric==='vic' ? (r.vic+'<span style=\'font-size:10px;color:var(--dim)\'>V</span>') : (r.winRate+'<span style=\'font-size:10px;color:var(--dim)\'>%</span>');
-      const sub = metric==='vic' ? (r.winRate+'% · '+r.parties+' parties') : (r.vic+'/'+r.parties+' parties');
-      return '<li style=\'list-style:none;display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--paper,#141416);border-bottom:1px solid var(--line,rgba(255,255,255,.08))\'>'
-        + '<span style=\'font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;color:var(--dim);width:18px\'>'+(i+1)+'</span>'
-        + '<span style=\'flex:1;min-width:0\'><span style=\'font-weight:700;font-size:13px;letter-spacing:-0.2px\'>'+U.firstName(r)+' '+r.nom+'</span>'
-        + '<br><span style=\'font-size:10px;color:var(--dim);font-family:JetBrains Mono,monospace\'>cl. '+U.clsDisplay(r.cls)+' · '+r.teams.join(", ")+'</span></span>'
-        + '<span style=\'text-align:right;line-height:1.1\'><span style=\'font-family:JetBrains Mono,monospace;font-size:18px;font-weight:700\'>'+big+'</span>'
-        + '<br><span style=\'font-size:9px;color:var(--dim);font-family:JetBrains Mono,monospace\'>'+sub+'</span></span></li>';
-    }
-    function panel(title, pools){
-      const rows = U.aggregateClubPlayersByPools(pools);
-      const byVic = rows.slice().sort((a,b)=>b.vic-a.vic||b.winRate-a.winRate).slice(0,5);
-      const byPct = rows.filter(r=>r.parties>=15).sort((a,b)=>b.winRate-a.winRate||b.vic-a.vic).slice(0,5);
-      const list = (arr,metric)=> '<ul style=\'margin:0;padding:0;border:1px solid var(--line,rgba(255,255,255,.08));border-radius:10px;overflow:hidden\'>'+arr.map((r,i)=>row(r,i,metric)).join('')+'</ul>';
-      return '<div style=\'flex:1;min-width:280px\'>'
-        + '<div style=\'font-size:13px;font-weight:800;letter-spacing:-0.2px;margin-bottom:12px;color:var(--orange,#F26A1B)\'>'+title+'</div>'
-        + '<div style=\'font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:6px\'>Top victoires</div>'+list(byVic,'vic')
-        + '<div style=\'font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin:14px 0 6px\'>Top % de victoires <span style=\'font-weight:500;text-transform:none;letter-spacing:0\'>(min. 15 parties)</span></div>'+list(byPct,'pct')
-        + '</div>';
-    }
-    document.getElementById('bestPlayers').innerHTML =
-      '<div style=\'display:flex;gap:24px;flex-wrap:wrap\'>'+panel('Championnat Masculin',MP)+panel('Championnat Féminin',FP)+'</div>';
-  }
-
-  // === Cercles "coup d'œil" ===
-  const ringColor = c => ({win:'#3DD68C',acc:'#F26A1B',gold:'#FACC15'}[c]||'#F26A1B');
-  function ringSVG(color){
-    const r=50, c=2*Math.PI*r;
-    return `<svg width="100%" height="100%" viewBox="0 0 116 116">
-      <circle cx="58" cy="58" r="${r}" fill="none" stroke="var(--panel)" stroke-width="10"/>
-      <circle class="cring-prog" cx="58" cy="58" r="${r}" fill="none" stroke="${ringColor(color)}" stroke-width="10"
-        stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c}" data-c="${c}"
-        style="filter:drop-shadow(0 0 6px ${ringColor(color)}80)"/>
-    </svg>`;
-  }
-  function clubRingData(){
-    const s = U.aggregateClubStats();
-    let played=0, safe=0, positive=0;
-    U.TEAM_KEYS.forEach(k => {
-      const ps = U.statusByPosition(k);
-      const sum = U.teamSummary(k);
-      if (sum.played>0){
-        played++;
-        if (ps.status==='promo' || ps.status==='safe') safe++;
-        if (sum.wins >= sum.losses) positive++;
-      }
-    });
-    return [
-      { label:"Victoires club", color:"win", pct:s.winPct, sub:`${s.wins}V / ${s.losses}D`, foot:`sur ${s.matches} rencontres` },
-      { label:"Équipes en zone sûre", color:"acc", pct:played?Math.round(safe/played*100):0, sub:`${safe} / ${played}`, foot:"maintien ou mieux" },
-      { label:"Bilan positif", color:"gold", pct:played?Math.round(positive/played*100):0, sub:`${positive} / ${played}`, foot:"V ≥ D sur la phase" },
-    ];
-  }
-  function renderClubRings(){
-    const data = clubRingData();
-    document.getElementById('clubRings').innerHTML = data.map(r => `
-      <div class="cring ${r.color}">
-        <div class="cring-wrap">${ringSVG(r.color)}
-          <div class="cring-center">
-            <div class="cring-pct" style="color:${ringColor(r.color)}"><span class="curing" data-count="${r.pct}">0</span><span class="u">%</span></div>
-            <div class="cring-sub">${r.sub}</div>
-          </div>
-        </div>
-        <div class="cring-label">${r.label}</div>
-        <div class="cring-foot">${r.foot}</div>
-      </div>`).join('');
-    document.querySelectorAll('#clubRings .cring-prog').forEach((c,i) => { c.dataset.pct = data[i].pct; });
-    document.querySelectorAll('#clubRings .curing').forEach(el=>{
-      const target=parseFloat(el.dataset.count)||0, steps=30; let n=0;
-      const iv=setInterval(()=>{ n++; const p=Math.min(1,n/steps); el.textContent=Math.round(target*(1-Math.pow(1-p,3))); if(p>=1){clearInterval(iv);el.textContent=target;} },1000/30);
-    });
-    document.querySelectorAll('#clubRings .cring-prog').forEach(c=>{
-      const circ=parseFloat(c.dataset.c), pct=parseFloat(c.dataset.pct)||0; c.style.strokeDashoffset=circ;
-      setTimeout(()=>{ c.style.transition='stroke-dashoffset 1.3s cubic-bezier(.2,.7,.3,1)'; c.style.strokeDashoffset=circ*(1-pct/100); },80);
-    });
-  }
-
-  renderBestPlayers();
-  renderBilan();
-  renderClubRings();
-  renderTeamsGrid();
-  renderTops();
-  renderEvolution();
-  renderRecords();
-
-  // === Quick team selector (links to equipe.html?team=) ===
-  function renderQuickSelector(){
-    const root = document.getElementById('quickSelector');
-    if (!root) return;
-    root.innerHTML = U.TEAM_KEYS.map(k => {
-      const acbb = U.getAcbbTeam(k);
-      const meta = U.LEVEL_META[k];
-      const isF = k[0] === 'F';
-      const form = (acbb && acbb.journees || [])
-        .filter(j => j.match_score != null)
-        .map(j => j.match_score > j.opp_score ? 'w' : (j.match_score < j.opp_score ? 'l' : 'd'));
-      const wins = form.filter(r=>r==='w').length;
-      const losses = form.filter(r=>r==='l').length;
-      let dotCls = '';
-      if (wins && !losses) dotCls = 'w';
-      else if (losses && !wins) dotCls = 'l';
-      else if (wins && losses) dotCls = 'm';
-      return `<a class="pill${isF?' f':''}" href="equipe.html?team=${k}">
-        <span class="lvl">${meta.short}</span>
-        ${dotCls?`<span class="dot ${dotCls}"></span>`:''}
-        <span>${k}</span>
-        <span class="form">${form.map(r=>`<i class="${r}"></i>`).join('')}</span>
-      </a>`;
-    }).join('');
-  }
-  renderQuickSelector();
-})();
-</script>
 <script src="report.js" defer></script>
 </body>
 </html>
