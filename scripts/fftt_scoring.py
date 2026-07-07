@@ -46,10 +46,26 @@ def main():
         except Exception: pass
     idx=json.load(open('data/players_index.json'))
     players=idx if isinstance(idx,list) else idx.get('players',[])
+    DEPARTS={('SATO','Lautaro'),('LOUET','Sebastien'),('LANGLOIS','Xavier')}   # quittent le club été 2026 — retirés de la Sportive uniquement
+    def eq2stats(lic):
+        """V/D en championnat par équipe PHASE 2 (janv->juin 2026), depuis le profil local."""
+        try: prof=json.load(open('data/players/'+lic+'.json'))
+        except Exception: return None
+        for comp in prof.get('competitions',[]):
+            if comp.get('key')=='equipe':
+                v=d=0
+                for m in comp.get('matches',[]):
+                    if (m.get('date') or '').endswith('/2026'):
+                        if m.get('won'): v+=1
+                        else: d+=1
+                n=v+d
+                return {'n':n,'v':v,'pct':round(100*v/n)} if n else None
+        return None
     out=[]
     for i,p in enumerate(players):
         lic=str(p.get('lic') or p.get('licence') or '')
         if not lic.isdigit(): continue
+        if (p.get('nom'),p.get('prenom')) in DEPARTS: continue
         h=histo(lic); time.sleep(0.1)
         men=p.get('mensuel')
         win=[{'l':e['lab'],'pt':e['pt']} for e in h[-WINDOW:]]
@@ -63,7 +79,7 @@ def main():
         # tendance = variation ajustée (pente) sur la fenêtre : pente × (n-1) phases
         tend=round(b*(len(ys)-1)) if b is not None else 0
         out.append({'lic':lic,'nom':p.get('nom',''),'pre':p.get('prenom',''),'men':round(men),
-                    'tend':tend,'spp':round(b,1) if b is not None else None,'h':win})
+                    'tend':tend,'spp':round(b,1) if b is not None else None,'h':win,'eq2':eq2stats(lic)})
         if (i+1)%50==0: print(f"  {i+1}/{len(players)} traités")
     # --- Mutations 2026/2027 (recrues) ---
     def mensuel_of(lic):
