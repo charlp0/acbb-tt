@@ -1,0 +1,21 @@
+name: Ping Supabase (anti-pause)
+
+# Les projets Supabase gratuits sont mis en pause après ~1 semaine sans requête.
+# Ce ping hebdomadaire garde le projet des tags (Sportive) éveillé.
+# La clé publishable est publique par design (RLS: lecture/insertion only sur tags_log).
+on:
+  schedule:
+    - cron: '0 7 * * 1'   # lundi ~9h Paris
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping REST tags_log
+        run: |
+          curl -sf \
+            -H "apikey: sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay" \
+            -H "Authorization: Bearer sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay" \
+            "https://vhhmageufrcenruywawg.supabase.co/rest/v1/tags_log?select=id&limit=1" >/dev/null \
+            && echo "pong ✓" || { echo "⚠️ projet injoignable (pausé ?)"; exit 1; }

@@ -266,8 +266,8 @@
   .savebar.show{display:flex}
   .savebar button{font-family:inherit;font-size:12px;font-weight:800;padding:10px 16px;border-radius:99px;border:none;background:var(--orange);color:#0B0B0D;cursor:pointer}
   .savebar .st{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim)}
-  #tagModal,#tokPanel{position:fixed;inset:0;z-index:2500;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:18px}
-  #tagModal.open,#tokPanel.open{display:flex}
+  #tagModal{position:fixed;inset:0;z-index:2500;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:18px}
+  #tagModal.open{display:flex}
   .tmbox{width:100%;max-width:400px;background:var(--paper);border:1px solid var(--line-2);border-radius:16px;padding:20px}
   .tmbox h3{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:22px;margin-bottom:2px}
   .tmbox .who{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim);margin-bottom:16px}
@@ -377,16 +377,6 @@
     <div class="tmrow"><button type="button" id="tmCancel">Annuler</button><button type="button" class="ok" id="tmOk">Appliquer</button></div>
   </div>
 </div>
-<div id="tokPanel">
-  <div class="tmbox">
-    <h3>Connexion <span style="color:var(--orange)">GitHub</span></h3>
-    <div class="who">Nécessaire une seule fois sur cet appareil pour enregistrer les tags (partagés avec toute la sportive).</div>
-    <label>Token GitHub (fine-grained)</label>
-    <input type="password" id="tokInput" placeholder="github_pat_…" autocomplete="off">
-    <div class="note">Créer le token : <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings → Fine-grained tokens</a> · Repository : <b>charlp0/acbb-tt</b> uniquement · Permission : <b>Contents → Read and write</b>. Le token reste dans TON navigateur.</div>
-    <div class="tmrow"><button type="button" id="tokCancel">Annuler</button><button type="button" class="ok" id="tokOk">Connecter</button></div>
-  </div>
-</div>
 <script src="data/scoring.js"></script>
 <script>
 const D=(window.__SCORING&&window.__SCORING.players)||[];
@@ -394,12 +384,13 @@ const tb=document.getElementById('tb'), q=document.getElementById('q'), ks=docum
 function traj(t){return t>=30?'<span class="up">↗</span>':(t<=-30?'<span class="down">↘</span>':'<span class="flat">→</span>');}
 
 /* ===== TAGS COMPO 26/27 (partagés via data/tags.json, commit GitHub) ===== */
-const REPO='charlp0/acbb-tt', TAGS_API='https://api.github.com/repos/'+REPO+'/contents/data/tags.json';
+/* Supabase (clé publishable = publique par design ; RLS = lecture + insertion uniquement sur tags_log) */
+const SB_URL='https://vhhmageufrcenruywawg.supabase.co';
+const SB_KEY='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay';
+const SB_HD={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
 let TAGS={}, DIRTY=new Set(), CURKEY=null;
 const pkey=p=>String(p.lic||((p.nom||'')+'|'+(p.pre||'')));
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-function b64e(s){return btoa(unescape(encodeURIComponent(s)));}
-function b64d(s){return decodeURIComponent(escape(atob(String(s).replace(/\n/g,''))));}
 function draftSave(){try{localStorage.setItem('acbb_tags_draft',JSON.stringify({keys:[...DIRTY],tags:Object.fromEntries([...DIRTY].map(k=>[k,TAGS[k]||null]))}));}catch(e){}}
 function draftLoad(){try{const d=JSON.parse(localStorage.getItem('acbb_tags_draft')||'null');if(!d)return;(d.keys||[]).forEach(k=>{DIRTY.add(k);if(d.tags[k])TAGS[k]=d.tags[k];else delete TAGS[k];});}catch(e){}}
 function tagStr(t){if(!t)return'';return [t.d,(t.r==='T'?'TIT':(t.r==='R'?'REMP':'')),t.e].filter(Boolean).join(' ');}
@@ -459,37 +450,21 @@ document.getElementById('tmOk').addEventListener('click',()=>{
   document.getElementById('tagModal').classList.remove('open');
 });
 
-/* token GitHub */
-function openTok(){document.getElementById('tokPanel').classList.add('open');document.getElementById('tokInput').focus();}
-document.getElementById('tokCancel').addEventListener('click',()=>document.getElementById('tokPanel').classList.remove('open'));
-document.getElementById('tokOk').addEventListener('click',()=>{
-  const v=document.getElementById('tokInput').value.trim();
-  if(!v){return;}
-  localStorage.setItem('acbb_gh_token',v);
-  document.getElementById('tokPanel').classList.remove('open');
-  saveTags();
-});
-
-/* sauvegarde : merge des clés modifiées puis commit */
+/* sauvegarde : merge des clés modifiées puis insertion (journal — l'historique des compos est conservé) */
 async function saveTags(){
-  const tok=localStorage.getItem('acbb_gh_token');
-  if(!tok){openTok();return;}
   const st=document.getElementById('saveSt'), btn=document.getElementById('saveTags');
   btn.disabled=true; st.textContent='enregistrement…';
   try{
-    const hd={'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json'};
-    let sha=null, remote={updated:null,tags:{}};
-    const g=await fetch(TAGS_API+'?ref=main',{headers:hd});
-    if(g.status===401||g.status===403){localStorage.removeItem('acbb_gh_token');st.textContent='';btn.disabled=false;alert('Token invalide ou expiré — reconnecte-toi.');openTok();return;}
-    if(g.ok){const j=await g.json(); sha=j.sha; try{remote=JSON.parse(b64d(j.content));}catch(e){}}
-    if(!remote||typeof remote!=='object'||!remote.tags)remote={updated:null,tags:{}};
-    DIRTY.forEach(k=>{ if(TAGS[k]) remote.tags[k]=TAGS[k]; else delete remote.tags[k]; });
-    remote.updated=new Date().toISOString();
-    const body={message:'tags: maj compo 26/27 (Sportive)',content:b64e(JSON.stringify(remote)),branch:'main'};
-    if(sha)body.sha=sha;
-    const put=await fetch(TAGS_API,{method:'PUT',headers:{...hd,'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(!put.ok){const t=await put.text();throw new Error('HTTP '+put.status+' '+t.slice(0,120));}
-    TAGS=remote.tags; DIRTY.clear(); try{localStorage.removeItem('acbb_tags_draft');}catch(e){}
+    // merge avec la dernière version partagée (évite d'écraser l'autre éditeur)
+    let remote={};
+    const g=await fetch(SB_URL+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:SB_HD});
+    if(g.ok){const a=await g.json(); if(a.length&&a[0].tags)remote=a[0].tags;}
+    DIRTY.forEach(k=>{ if(TAGS[k]) remote[k]=TAGS[k]; else delete remote[k]; });
+    let author=localStorage.getItem('acbb_tag_author');
+    if(!author){author=(prompt('Ton prénom (pour l\'historique des compos) :')||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
+    const put=await fetch(SB_URL+'/rest/v1/tags_log',{method:'POST',headers:{...SB_HD,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({tags:remote,author:author})});
+    if(!put.ok){const t=await put.text();throw new Error('HTTP '+put.status+' '+t.slice(0,140));}
+    TAGS=remote; DIRTY.clear(); try{localStorage.removeItem('acbb_tags_draft');}catch(e){}
     updateSaveBar(); render();
     st.textContent='✓ Enregistré à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     document.getElementById('saveBar').classList.add('show'); setTimeout(()=>{if(!DIRTY.size)document.getElementById('saveBar').classList.remove('show');},4000);
@@ -498,10 +473,16 @@ async function saveTags(){
 }
 document.getElementById('saveTags').addEventListener('click',saveTags);
 
-/* chargement initial des tags partagés + brouillon local */
-fetch('data/tags.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(j=>{
-  if(j&&j.tags)TAGS=j.tags;
+/* chargement initial : Supabase (dernière version), repli data/tags.json */
+(async function(){
+  try{
+    const g=await fetch(SB_URL+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:SB_HD});
+    if(!g.ok)throw 0;
+    const a=await g.json(); if(a.length&&a[0].tags)TAGS=a[0].tags;
+  }catch(e){
+    try{const r=await fetch('data/tags.json',{cache:'no-cache'});const j=await r.json();if(j&&j.tags)TAGS=j.tags;}catch(_){ }
+  }
   draftLoad(); updateSaveBar(); render();
-}).catch(()=>{draftLoad();updateSaveBar();render();});
+})();
 </script>
 </body></html>
