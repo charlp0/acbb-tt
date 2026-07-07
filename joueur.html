@@ -395,6 +395,7 @@
       <span class="bt-l">Classement mensuel</span>
       <div class="bt-v"><span class="cu" id="bRank" data-count="0">0</span></div>
       <span class="bt-sub" id="bBase"></span>
+      <span class="bt-sub" id="bOff27" style="display:none;color:var(--orange);font-weight:700"></span>
     </div>
     <div class="bt bt-trend">
       <span class="bt-l">Progression saison</span>
@@ -958,6 +959,8 @@ function fillBento(){const c=PROFILE.classement,s=PROFILE.saison||{},x=PROFILE._
   setC('bRank',c.mensuel);
   const hasBase=(c.debut!=null), d=hasBase?((c.mensuel||0)-c.debut):null;
   const bb=document.getElementById('bBase'); if(bb)bb.textContent=(c.debut!=null?'début '+c.debut:'')+(c.officiel!=null?' · figé '+c.officiel:'');
+  const o27=(window.__OFF2627||{})[PROFILE.lic];
+  const bo=document.getElementById('bOff27'); if(bo&&o27){bo.textContent='Officiel 2026/2027 : '+o27; bo.style.display='';}
   // 2e case : progression sur la saison (mensuel - début) en gros + flèche
   const tv=document.getElementById('bTrend'), ts=document.getElementById('bTrendSub');
   if(hasBase){const up=d>0,dn=d<0; tv.textContent=(up?'+':'')+d+(up?' ↗':(dn?' ↘':' →')); tv.classList.toggle('up',up); tv.classList.toggle('down',dn); if(ts)ts.textContent='depuis le début ('+c.debut+')';}
@@ -1000,6 +1003,7 @@ async function boot(){
     console.error(e); return;
   }
   try{const sr=await fetch('data/scoring.json',{cache:'no-cache'});if(sr.ok){const sj=await sr.json();window.__SCORING_BY_LIC={};(sj.players||[]).forEach(pl=>{window.__SCORING_BY_LIC[pl.lic]=pl;});}}catch(e){}
+  try{const orr=await fetch('data/officiel2627.json',{cache:'no-cache'});if(orr.ok){window.__OFF2627=(await orr.json()).officiel||{};}}catch(e){}
   fillHero();
   fillBento();
   fillShareCard();
