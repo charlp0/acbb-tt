@@ -331,7 +331,7 @@
     </div>
     <input class="sc-search" id="q" placeholder="Chercher un joueur…">
   </div>
-  <div class="sc-wrap"><table class="sc"><thead><tr><th>#</th><th>Joueur</th><th>Mensuel</th><th>Tendance 4&nbsp;phases</th><th>Score</th><th>Traj.</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <div class="sc-wrap"><table class="sc"><thead><tr><th>#</th><th>Joueur</th><th>Mensuel</th><th>Ch.&nbsp;équipe&nbsp;Ph2</th><th>Tendance 4&nbsp;phases</th><th>Score</th><th>Traj.</th></tr></thead><tbody id="tb"></tbody></table></div>
   <p style="font-size:11px;color:var(--dim);font-style:italic;margin-top:12px">Mensuel = classement mensuel FFTT actuel. Tendance = pente de régression sur les 4 dernières phases du classement officiel (survole pour voir le détail). Trajectoire : ↗ progression (≥+30), ↘ baisse (≤−30). Données API FFTT. Page non listée (accès direct uniquement).</p>
 </section>
 </div>
@@ -354,7 +354,8 @@ function render(){
     const hist=(p.h||[]).map(x=>x.l+': '+x.pt).join(' · ')+(p.spp!=null?'  —  pente '+(p.spp>0?'+':'')+p.spp+'/phase':'');
     const badge=p.mut?' <span class="mut-badge">Mutation '+p.mut+'</span>':'';
     const trj=hasT?traj(p.tend):'<span class="flat">·</span>';
-    return '<tr><td class="rk">'+(i+1)+'</td><td class="nm">'+p.pre+' '+p.nom+badge+'</td><td class="num">'+p.men+'</td><td class="num '+tc+'" title="'+hist+'">'+ts+'</td><td class="score">'+p.score+'</td><td>'+trj+'</td></tr>';
+    const e2=p.eq2?('<span class="'+(p.eq2.pct>=50?'up':'down')+'">'+p.eq2.pct+'%</span> <span style="color:var(--dim)">· '+p.eq2.n+'m</span>'):'<span class="flat">—</span>';
+    return '<tr><td class="rk">'+(i+1)+'</td><td class="nm">'+p.pre+' '+p.nom+badge+'</td><td class="num">'+p.men+'</td><td class="num" title="championnat par équipe phase 2 : '+(p.eq2?p.eq2.v+'V/'+(p.eq2.n-p.eq2.v)+'D':'aucun match')+'">'+e2+'</td><td class="num '+tc+'" title="'+hist+'">'+ts+'</td><td class="score">'+p.score+'</td><td>'+trj+'</td></tr>';
   }).join('');
 }
 ks.addEventListener('input',render); cs.addEventListener('input',render); q.addEventListener('input',render); render();
