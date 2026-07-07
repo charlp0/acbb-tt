@@ -4,9 +4,11 @@ name: Vérif fraîcheur des données
 # (ex. tous les créneaux cron sautés), ouvre une issue d'alerte.
 # Tourne tous les jours à 2 heures (les crons GitHub étant parfois sautés/retardés).
 on:
-  schedule:
-    - cron: '0 9 * * *'
-    - cron: '0 19 * * *'
+  # ⏸️ PAUSE INTERSAISON (juil. → sept. 2026) : données figées volontairement (récap saison
+  # écoulée), l'alerte "données anciennes" serait du bruit. Réactiver à la reprise.
+  # schedule:
+  #   - cron: '0 9 * * *'
+  #   - cron: '0 19 * * *'
   workflow_dispatch:
 
 permissions:
