@@ -46,6 +46,8 @@ def main():
         except Exception: pass
     idx=json.load(open('data/players_index.json'))
     players=idx if isinstance(idx,list) else idx.get('players',[])
+    try: OFF27=json.load(open('data/officiel2627.json')).get('officiel',{})
+    except Exception: OFF27={}
     DEPARTS={('SATO','Lautaro'),('LOUET','Sebastien'),('LANGLOIS','Xavier')}   # quittent le club été 2026 — retirés de la Sportive uniquement
     def eq2stats(lic):
         """V/D en championnat par équipe PHASE 2 (janv->juin 2026), depuis le profil local."""
@@ -67,12 +69,11 @@ def main():
         if not lic.isdigit(): continue
         if (p.get('nom'),p.get('prenom')) in DEPARTS: continue
         h=histo(lic); time.sleep(0.1)
-        men=p.get('mensuel')
+        men=OFF27.get(lic, p.get('mensuel'))   # intersaison : base = officiel 2026/2027
         win=[{'l':e['lab'],'pt':e['pt']} for e in h[-WINDOW:]]
-        # dernier point = MENSUEL ACTUEL de la saison (pas l'officiel figé de la phase en cours,
-        # qui ne reflète pas les matchs joués depuis le début de la phase)
+        # dernier point = OFFICIEL 2026/2027 (nouvelle saison publiée début juillet)
         if win and isinstance(men,(int,float)):
-            win[-1]={'l':'Mensuel actuel','pt':round(men)}
+            win[-1]={'l':'Officiel 26/27','pt':round(men)}
         ys=[e['pt'] for e in win]
         if not isinstance(men,(int,float)): men=ys[-1] if ys else 500
         b=slope(ys)
@@ -83,16 +84,16 @@ def main():
         if (i+1)%50==0: print(f"  {i+1}/{len(players)} traités")
     # --- Mutations 2026/2027 (recrues) ---
     def mensuel_of(lic):
-        lb=fb.get('xml_licence_b.php?licence='+lic); m=re.search(r'<pointm>([-\d.]+)',lb)
-        return round(float(m.group(1))) if m else None
+        lb=fb.get('xml_licence_b.php?licence='+lic); m=re.search(r'<point>(\d+)</point>',lb)
+        return int(m.group(1)) if m else None   # officiel courant (base 26/27)
     MUT_LOOKUP=[('COHEN MELKA','Eytan','9258246'),('VERDIER','Mahé','9253816'),('SERGENT','Enzo','9540663'),
                 ('INTINS','Arthur','9248896'),('STEMLER','Grégoire','9254353'),('INTINS','David','5412783'),
-                ('DELORY','Virgile','9241720'),('BENCHAT','Marius','1421042')]
+                ('DELORY','Virgile','9241720'),('BENCHAT','Marius','1421042'),('BOUDJADJA','Nassim','9265298')]
     MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('ARGUS','Daniel',1600),('PORTOKALLIS','Antonis',1500)]
     for nom,pre,lic in MUT_LOOKUP:
         h=histo(lic); time.sleep(0.1); men=mensuel_of(lic)
         win=[{'l':e['lab'],'pt':e['pt']} for e in h[-WINDOW:]]
-        if win and isinstance(men,(int,float)): win[-1]={'l':'Mensuel actuel','pt':round(men)}
+        if win and isinstance(men,(int,float)): win[-1]={'l':'Officiel 26/27','pt':round(men)}
         ys=[e['pt'] for e in win]; b=slope(ys)
         out.append({'lic':lic,'nom':nom,'pre':pre,'men':round(men) if isinstance(men,(int,float)) else (ys[-1] if ys else 500),
                     'tend':round(b*(len(ys)-1)) if b is not None else 0,'spp':round(b,1) if b is not None else None,'h':win,'mut':'2026/2027'})

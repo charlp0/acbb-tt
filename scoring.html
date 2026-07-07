@@ -339,7 +339,7 @@
 <div class="hero">
   <div class="eyebrow">Outil interne · Préparation des équipes</div>
   <h1 class="hero-title">Scoring<br><em>composition.</em></h1>
-  <p class="hero-sub"><b>Score = mensuel actuel + k × tendance</b> (plafond réglable, ±250 par défaut). La <b>tendance</b> est la <b>pente de régression linéaire du classement officiel sur les 4 dernières phases</b> (≈ progression sur 2 ans, lissée). Le poids <b>k=0,6</b> par défaut est ajustable au curseur.</p>
+  <p class="hero-sub"><b>Score = officiel 2026/2027 + k × tendance</b> (plafond réglable, ±250 par défaut). La <b>tendance</b> est la <b>pente de régression linéaire du classement officiel sur les 4 dernières phases</b> (≈ progression sur 2 ans, lissée). Le poids <b>k=0,6</b> par défaut est ajustable au curseur.</p>
 </div>
 <section class="section">
   <div class="section-h">Classement scoring</div>
@@ -347,7 +347,7 @@
     <div class="kbox">
       <label>Poids de la tendance (k)</label>
       <div class="krow"><input type="range" id="k" min="0" max="1" step="0.1" value="0.6"><span class="kval" id="kv">0.6</span></div>
-      <div class="hint">0 = mensuel pur · 0,6 = équilibré · &gt;0,7 = forme sur-pondérée</div>
+      <div class="hint">0 = officiel pur · 0,6 = équilibré · &gt;0,7 = forme sur-pondérée</div>
     </div>
     <div class="kbox">
       <label>Plafond de la tendance (±)</label>
@@ -360,8 +360,8 @@
       <span class="st" id="saveSt"></span>
     </div>
   </div>
-  <div class="sc-wrap"><table class="sc"><thead><tr><th>#</th><th>Joueur</th><th>Compo&nbsp;26/27</th><th>Mensuel</th><th>Ch.&nbsp;équipe&nbsp;Ph2</th><th>Tendance 4&nbsp;phases</th><th>Score</th><th>Traj.</th></tr></thead><tbody id="tb"></tbody></table></div>
-  <p style="font-size:11px;color:var(--dim);font-style:italic;margin-top:12px">Mensuel = classement mensuel FFTT actuel. Tendance = pente de régression sur les 4 dernières phases du classement officiel (survole pour voir le détail). Trajectoire : ↗ progression (≥+30), ↘ baisse (≤−30). Données API FFTT. Page non listée (accès direct uniquement).</p>
+  <div class="sc-wrap"><table class="sc"><thead><tr><th>#</th><th>Joueur</th><th>Compo&nbsp;26/27</th><th>Officiel&nbsp;26/27</th><th>Ch.&nbsp;équipe&nbsp;Ph2</th><th>Tendance 4&nbsp;phases</th><th>Score</th><th>Traj.</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <p style="font-size:11px;color:var(--dim);font-style:italic;margin-top:12px">Base = classement officiel 2026/2027 (publié début juillet). Tendance = pente de régression sur les 4 dernières phases du classement officiel (survole pour voir le détail). Trajectoire : ↗ progression (≥+30), ↘ baisse (≤−30). Données API FFTT. Page non listée (accès direct uniquement).</p>
 </section>
 </div>
 <div id="tagModal">
@@ -369,7 +369,7 @@
     <h3>Compo <span style="color:var(--orange)">26/27</span></h3>
     <div class="who" id="tmWho">—</div>
     <label>Division</label>
-    <select id="tmD"><option value="">—</option><option>N1</option><option>N2</option><option>PN</option><option>R1</option><option>R2</option><option>R3</option><option>PR</option><option>D1</option><option>D2</option></select>
+    <select id="tmD"><option value="">—</option><option>Pro B</option><option>N1</option><option>N2</option><option>PN</option><option>R1</option><option>R2</option><option>R3</option><option>R1-R3</option><option>PR</option><option>D1</option><option>D2</option></select>
     <label>Rôle</label>
     <select id="tmR"><option value="">—</option><option value="T">Titulaire</option><option value="R">Remplaçant</option></select>
     <label>Équipe</label>
