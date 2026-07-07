@@ -394,10 +394,21 @@ const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'
 function draftSave(){try{localStorage.setItem('acbb_tags_draft',JSON.stringify({keys:[...DIRTY],tags:Object.fromEntries([...DIRTY].map(k=>[k,TAGS[k]||null]))}));}catch(e){}}
 function draftLoad(){try{const d=JSON.parse(localStorage.getItem('acbb_tags_draft')||'null');if(!d)return;(d.keys||[]).forEach(k=>{DIRTY.add(k);if(d.tags[k])TAGS[k]=d.tags[k];else delete TAGS[k];});}catch(e){}}
 function tagStr(t){if(!t)return'';return [t.d,(t.r==='T'?'TIT':(t.r==='R'?'REMP':'')),t.e].filter(Boolean).join(' ');}
+const DIVC={
+  'Pro B':'250,204,21',   // or
+  'N1':'242,106,27',      // orange
+  'N2':'251,146,60',      // orange clair
+  'PN':'244,114,182',     // rose
+  'R1':'61,214,140','R2':'61,214,140','R3':'61,214,140','R1-R3':'61,214,140',   // vert
+  'PR':'96,165,250',      // bleu
+  'D1':'167,139,250',     // violet
+  'D2':'148,163,184'      // gris-bleu
+};
 function tagChips(k){
   const t=TAGS[k];
   let h='';
-  if(t&&t.d)h+='<span class="tg d">'+esc(t.d)+'</span>';
+  if(t&&t.d){const c=DIVC[t.d]||'242,106,27';
+    h+='<span class="tg" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)">'+esc(t.d)+'</span>';}
   if(t&&t.r)h+='<span class="tg '+(t.r==='T'?'rT':'rR')+'">'+(t.r==='T'?'Tit.':'Remp.')+'</span>';
   if(t&&t.e)h+='<span class="tg">'+esc(t.e)+'</span>';
   return h+'<button class="tagbtn" data-k="'+esc(k)+'" type="button" aria-label="Modifier les tags">✎</button>';
