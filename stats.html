@@ -106,7 +106,7 @@
   }
   .chip.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   .chip .ct{margin-left:5px;color:var(--dim);font-weight:500}
-  .chip.active .ct{color:rgba(255,255,255,0.55)}
+  .chip.active .ct{color:rgba(20,20,22,0.55)}
 
   /* Player list */
   .list{padding:8px 12px 0}
@@ -409,6 +409,27 @@
   .pctbar .tr{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,0.08);overflow:hidden}
   .pctbar .fl{height:100%;border-radius:99px;background:#3DD68C}
   .pctbar .val{font-family:"JetBrains Mono",monospace;font-size:11.5px;min-width:34px;text-align:right}
+
+  /* ===== tableau joueurs : mobile sans défilement horizontal ===== */
+  @media(max-width:640px){
+    .ptable{min-width:0;width:100%}
+    .ptable thead{display:none}
+    .ptable,.ptable tbody{display:block}
+    .ptable tr{display:grid;grid-template-columns:auto auto auto 1fr 116px;grid-template-areas:"nm nm nm nm pct" "cl pr v . pct" "tm tm tm tm pct";gap:3px 10px;padding:11px 14px;border-top:1px solid rgba(255,255,255,0.06)}
+    .ptable tr:first-child{border-top:0}
+    .ptable td{display:block;padding:0;border:0;white-space:normal}
+    .ptable td:nth-child(1){grid-area:nm;font-size:13.5px}
+    .ptable td:nth-child(2){grid-area:cl}
+    .ptable td:nth-child(3){grid-area:tm;margin-top:2px}
+    .ptable td:nth-child(4){grid-area:pr}
+    .ptable td:nth-child(5){grid-area:v}
+    .ptable td:nth-child(6){grid-area:pct;align-self:center}
+    .ptable td:nth-child(2)::before{content:"cl. ";color:rgba(232,232,234,0.45);font-size:9.5px}
+    .ptable td:nth-child(4)::before{content:"prés. ";color:rgba(232,232,234,0.45);font-size:9.5px}
+    .ptable td:nth-child(5)::after{content:" V";color:rgba(232,232,234,0.45);font-size:9.5px}
+    .ptable .teamch{margin-bottom:3px}
+    .pctbar{min-width:0}
+  }
 </style>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
