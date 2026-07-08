@@ -48,7 +48,7 @@ def main():
     players=idx if isinstance(idx,list) else idx.get('players',[])
     try: OFF27=json.load(open('data/officiel2627.json')).get('officiel',{})
     except Exception: OFF27={}
-    DEPARTS={('SATO','Lautaro'),('LOUET','Sebastien'),('LANGLOIS','Xavier')}   # quittent le club été 2026 — retirés de la Sportive uniquement
+    DEPARTS={('SATO','Lautaro'),('LOUET','Sebastien'),('LANGLOIS','Xavier'),('CRENN-ALDEA','Julien')}   # quittent le club été 2026 — retirés de la Sportive uniquement
     # paires (joueur ACBB | adversaire) des journées MASCULINES phase 2, depuis site.json
     MPAIRS=set()
     try:
