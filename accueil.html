@@ -304,7 +304,9 @@
   .d-row input{background:#1E1E22;border:1px solid rgba(255,255,255,0.16);border-radius:10px;color:#F6F5F3;font-size:14px;font-family:inherit;padding:11px 13px;outline:none;min-width:0}
   .d-row input:focus{border-color:var(--orange,#F26A1B)}
   .d-found{display:none;margin-top:10px;font-size:12px;color:#86EFAC;font-family:"JetBrains Mono",monospace}
-  .d-lbl{font-size:10px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:rgba(232,232,234,0.5);margin:16px 0 8px}
+  .d-lbl{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:#F6F5F3;margin:18px 0 10px;letter-spacing:-0.1px}
+  .d-lbl::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange,#F26A1B);flex-shrink:0}
+  .d-lbl em{color:var(--orange,#F26A1B);font-style:normal;font-weight:800}
   .d-days{display:grid;grid-template-columns:repeat(auto-fit,minmax(74px,1fr));gap:7px}
   .d-day{cursor:pointer;text-align:center;background:#1E1E22;border:1px solid rgba(255,255,255,0.14);border-radius:11px;padding:9px 4px;user-select:none;transition:all .12s}
   .d-day .j{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:800}
@@ -436,7 +438,7 @@
       <input id="dLic" placeholder="N° de licence" inputmode="numeric" autocomplete="off">
     </div>
     <div class="d-found" id="dFound"></div>
-    <div class="d-lbl">Disponibilité théorique — coche les journées où tu peux jouer</div>
+    <div class="d-lbl">Disponibilité théorique — coche les journées où tu pourras <em>normalement</em> jouer</div>
     <div class="d-days" id="dDays"></div>
     <div class="d-foot">
       <div class="d-sum"><b id="dSum">0</b> dispo(s) sur 7</div>
