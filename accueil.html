@@ -289,6 +289,36 @@
   .jbadge.inv{color:#0B0B0D;background:var(--orange,#F26A1B)}
   .cal-note{display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:12px;color:rgba(232,232,234,0.45);margin-top:12px}
   .cal-note i{width:6px;height:6px;border-radius:50%;background:#FACC15}
+
+  /* ===== ENCART DISPONIBILITÉS PHASE 1 ===== */
+  .dsec{margin:34px 12px 30px}
+  .d-badge{display:inline-flex;align-items:center;gap:6px;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;color:#FACC15;background:rgba(250,204,21,0.10);border:1px solid rgba(250,204,21,0.4);border-radius:99px;padding:4px 10px;margin-top:8px}
+  .d-ringwrap{display:flex;align-items:center;gap:10px}
+  .d-ringwrap svg{width:64px;height:64px;transform:rotate(-90deg)}
+  .d-ringwrap .bgc{fill:none;stroke:rgba(255,255,255,0.09);stroke-width:7}
+  .d-ringwrap .fgc{fill:none;stroke:var(--orange,#F26A1B);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.2,.7,.3,1)}
+  .d-ringtxt .p{font-family:"JetBrains Mono",monospace;font-size:20px;font-weight:800;line-height:1}
+  .d-ringtxt .l{font-size:9px;color:rgba(232,232,234,0.5);font-family:"JetBrains Mono",monospace;margin-top:3px}
+  .d-card{background:#141416;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:18px}
+  .d-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .d-row input{background:#1E1E22;border:1px solid rgba(255,255,255,0.16);border-radius:10px;color:#F6F5F3;font-size:14px;font-family:inherit;padding:11px 13px;outline:none;min-width:0}
+  .d-row input:focus{border-color:var(--orange,#F26A1B)}
+  .d-found{display:none;margin-top:10px;font-size:12px;color:#86EFAC;font-family:"JetBrains Mono",monospace}
+  .d-lbl{font-size:10px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:rgba(232,232,234,0.5);margin:16px 0 8px}
+  .d-days{display:grid;grid-template-columns:repeat(auto-fit,minmax(74px,1fr));gap:7px}
+  .d-day{cursor:pointer;text-align:center;background:#1E1E22;border:1px solid rgba(255,255,255,0.14);border-radius:11px;padding:9px 4px;user-select:none;transition:all .12s}
+  .d-day .j{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:800}
+  .d-day .dt{font-family:"JetBrains Mono",monospace;font-size:8.5px;color:rgba(232,232,234,0.45);margin-top:3px}
+  .d-day.on{background:rgba(61,214,140,0.14);border-color:rgba(61,214,140,0.6)}
+  .d-day.on .j{color:#86EFAC}
+  .d-day.on::after{content:"✓";display:block;font-size:9px;color:#3DD68C;margin-top:2px}
+  .d-day:not(.on)::after{content:"—";display:block;font-size:9px;color:rgba(232,232,234,0.3);margin-top:2px}
+  .d-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px}
+  .d-sum{font-family:"JetBrains Mono",monospace;font-size:13px;color:rgba(232,232,234,0.7)}
+  .d-sum b{color:#F6F5F3;font-size:17px}
+  .d-btn{font-family:inherit;font-size:14px;font-weight:800;padding:12px 22px;border-radius:99px;border:none;background:var(--orange,#F26A1B);color:#0B0B0D;cursor:pointer}
+  .d-btn:disabled{opacity:.45;cursor:default}
+  .d-status{margin-top:10px;font-size:12px;font-family:"JetBrains Mono",monospace;color:rgba(232,232,234,0.6);min-height:16px}
 </style>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
@@ -387,10 +417,115 @@
   <div class="cal-note"><i></i>Clôture des engagements : 08/07/2026</div>
 </section>
 
+<section class="dsec" id="dispoSec">
+  <div class="cal-head">
+    <div>
+      <div class="eyebrow">Disponibilités · Phase 1</div>
+      <h2 class="cal-title">Ta <em>dispo.</em></h2>
+      <div class="d-badge">⏳ à remplir avant le 31 août 2026</div>
+    </div>
+    <div class="d-ringwrap">
+      <svg viewBox="0 0 72 72"><circle class="bgc" cx="36" cy="36" r="30"/><circle class="fgc" id="dRing" cx="36" cy="36" r="30" stroke-dasharray="188.5" stroke-dashoffset="188.5"/></svg>
+      <div class="d-ringtxt"><div class="p" id="dPct">—</div><div class="l" id="dCnt">complétion club</div></div>
+    </div>
+  </div>
+  <div class="d-card">
+    <div class="d-row">
+      <input id="dPrenom" placeholder="Prénom" autocomplete="given-name">
+      <input id="dNom" placeholder="Nom" autocomplete="family-name">
+      <input id="dLic" placeholder="N° de licence" inputmode="numeric" autocomplete="off">
+    </div>
+    <div class="d-found" id="dFound"></div>
+    <div class="d-lbl">Disponibilité théorique — coche les journées où tu peux jouer</div>
+    <div class="d-days" id="dDays"></div>
+    <div class="d-foot">
+      <div class="d-sum"><b id="dSum">0</b> dispo(s) sur 7</div>
+      <button class="d-btn" id="dSave" type="button">Enregistrer ma dispo</button>
+    </div>
+    <div class="d-status" id="dStatus"></div>
+  </div>
+</section>
+
+
 
 
 </div>
 
+<script>
+(function(){
+  var SB='https://vhhmageufrcenruywawg.supabase.co', KEY='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay';
+  var HD={'apikey':KEY};
+  var JOURS=[['J1','18-19/09'],['J2','02-03/10'],['J3','16-17/10'],['J4','06-07/11'],['J5','20-21/11'],['J6','04-05/12'],['J7','11-12/12']];
+  var days=document.getElementById('dDays'), sum=document.getElementById('dSum'), st=document.getElementById('dStatus');
+  var fP=document.getElementById('dPrenom'), fN=document.getElementById('dNom'), fL=document.getElementById('dLic');
+  var found=document.getElementById('dFound'), btn=document.getElementById('dSave');
+  days.innerHTML=JOURS.map(function(j,i){return '<div class="d-day" data-i="'+i+'"><div class="j">'+j[0]+'</div><div class="dt">'+j[1]+'</div></div>';}).join('');
+  function upd(){ sum.textContent=document.querySelectorAll('.d-day.on').length; draft(); }
+  days.addEventListener('click',function(e){var d=e.target.closest('.d-day'); if(!d)return; d.classList.toggle('on'); upd();});
+  function state(){ var o={}; document.querySelectorAll('.d-day').forEach(function(d,i){o['j'+(i+1)]=d.classList.contains('on');}); return o; }
+  function setState(o){ document.querySelectorAll('.d-day').forEach(function(d,i){d.classList.toggle('on',!!(o&&o['j'+(i+1)]));}); sum.textContent=document.querySelectorAll('.d-day.on').length; }
+  function draft(){ try{localStorage.setItem('acbb_dispo_draft',JSON.stringify({p:fP.value,n:fN.value,l:fL.value,d:state()}));}catch(e){} }
+  [fP,fN,fL].forEach(function(x){x.addEventListener('input',draft);});
+  try{ var dr=JSON.parse(localStorage.getItem('acbb_dispo_draft')||'null');
+    if(dr){ fP.value=dr.p||''; fN.value=dr.n||''; fL.value=dr.l||''; setState(dr.d); } }catch(e){}
+  /* récupération du vote existant par licence */
+  var lastLookup='';
+  function lookup(){
+    var lic=fL.value.trim();
+    if(!/^[0-9]{4,}$/.test(lic)||lic===lastLookup) return;
+    lastLookup=lic;
+    fetch(SB+'/rest/v1/dispos_log?licence=eq.'+encodeURIComponent(lic)+'&select=prenom,nom,dispos,n,created_at&order=id.desc&limit=1',{headers:HD})
+      .then(function(r){return r.ok?r.json():[];}).then(function(a){
+        if(!a.length){found.style.display='none';return;}
+        var v=a[0];
+        if(v.prenom)fP.value=v.prenom; if(v.nom)fN.value=v.nom; setState(v.dispos||{}); draft();
+        var d=new Date(v.created_at);
+        found.textContent='✓ Dispo déjà enregistrée le '+d.toLocaleDateString('fr-FR')+' ('+(v.n!=null?v.n:'?')+'/7) — tu peux la modifier puis ré-enregistrer.';
+        found.style.display='block';
+      }).catch(function(){});
+  }
+  fL.addEventListener('blur',lookup); fL.addEventListener('input',function(){ if(fL.value.trim().length>=6) lookup(); });
+  /* complétion club */
+  function ring(){
+    Promise.all([
+      fetch(SB+'/rest/v1/dispos_log?select=licence',{headers:HD}).then(function(r){return r.ok?r.json():null;}),
+      fetch('data/players_index.json',{cache:'no-cache'}).then(function(r){return r.json();}).catch(function(){return null;})
+    ]).then(function(res){
+      var rows=res[0], idx=res[1];
+      if(!rows){ document.getElementById('dPct').textContent='—'; return; }
+      var uniq={}; rows.forEach(function(r){ if(r.licence&&!/^TEST/i.test(r.licence)) uniq[r.licence]=1; });
+      var n=Object.keys(uniq).length, total=(idx&&idx.length)||230;
+      var pct=Math.min(100,Math.round(100*n/total));
+      document.getElementById('dPct').textContent=pct+'%';
+      document.getElementById('dCnt').textContent=n+' / '+total+' joueurs';
+      var C=188.5; document.getElementById('dRing').style.strokeDashoffset=(C*(1-pct/100)).toFixed(1);
+    }).catch(function(){});
+  }
+  /* enregistrement */
+  btn.addEventListener('click',function(){
+    var p=fP.value.trim(), n=fN.value.trim(), lic=fL.value.trim();
+    if(!p||!n){ st.textContent='⚠️ Prénom et nom obligatoires.'; return; }
+    if(!/^[0-9]{4,}$/.test(lic)){ st.textContent='⚠️ Numéro de licence invalide (chiffres uniquement).'; return; }
+    var d=state(), cnt=Object.values(d).filter(Boolean).length;
+    btn.disabled=true; st.textContent='enregistrement…';
+    fetch(SB+'/rest/v1/dispos_log',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({licence:lic,prenom:p,nom:n,dispos:d,n:cnt})})
+      .then(function(r){
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        st.textContent='✓ Merci '+p+' ! Dispo enregistrée ('+cnt+'/7). Tu peux revenir la modifier à tout moment.';
+        try{localStorage.removeItem('acbb_dispo_draft');}catch(e){}
+        lastLookup=''; ring();
+      })
+      .catch(function(e){ st.textContent='❌ Échec de l\'enregistrement — réessaie dans un instant (ta saisie est conservée).'; })
+      .then(function(){ btn.disabled=false; });
+  });
+  /* mode dégradé si la table n'existe pas encore */
+  fetch(SB+'/rest/v1/dispos_log?select=id&limit=1',{headers:HD}).then(function(r){
+    if(!r.ok){ btn.disabled=true; st.textContent='Ouverture du formulaire très bientôt…'; }
+    else ring();
+  }).catch(function(){ btn.disabled=true; st.textContent='Ouverture du formulaire très bientôt…'; });
+})();
+</script>
 <script src="report.js" defer></script>
 </body>
 </html>
