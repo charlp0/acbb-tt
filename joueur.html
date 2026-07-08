@@ -394,7 +394,6 @@
     <div class="bt bt-rank">
       <span class="bt-l" id="bRankLbl">Classement officiel 26/27</span>
       <div class="bt-v"><span class="cu" id="bRank" data-count="0">0</span></div>
-      <span class="bt-sub" id="bBase"></span>
     </div>
     <div class="bt bt-trend">
       <span class="bt-l">Progression saison</span>
@@ -939,8 +938,10 @@ function adapt(p){PROFILE=p;
 function setC(id,val){const el=document.getElementById(id);if(el){el.dataset.count=(val==null?0:val);el.textContent='0';}}
 function fillHero(){const c=PROFILE.classement;
   document.getElementById('idName').innerHTML=(PROFILE.prenom||'')+'<br>'+(PROFILE.nom||'');
+  const o27h=(window.__OFF2627||{})[PROFILE.lic];
   const fut=(c.avenir!=null), hasBase=(c.debut!=null);
-  const dOff=hasBase?((c.mensuel||0)-c.debut):null, dAv=hasBase?(((c.avenir!=null?c.avenir:c.mensuel)||0)-c.debut):null;
+  const cur=(o27h!=null?o27h:c.mensuel);
+  const dOff=hasBase?((cur||0)-c.debut):null, dAv=hasBase?(((c.avenir!=null?c.avenir:cur)||0)-c.debut):null;
   const xd=document.querySelector('.xp-delta'); if(xd)xd.innerHTML=hasBase?('<span>'+fmtPts(dOff)+' officiel</span>'+(fut?'<span class="soft">'+fmtPts(dAv)+' à venir</span>':'')):'<span class="soft">Pas d\'historique cette saison</span>';
   document.title='ACBB TT — '+(PROFILE.prenom||'')+' '+(PROFILE.nom||'');
 }
@@ -958,8 +959,8 @@ function fillBento(){const c=PROFILE.classement,s=PROFILE.saison||{},x=PROFILE._
   const o27=(window.__OFF2627||{})[PROFILE.lic];
   setC('bRank', o27!=null?o27:c.mensuel);
   const lbl=document.getElementById('bRankLbl'); if(lbl&&o27==null)lbl.textContent='Classement mensuel';
-  const hasBase=(c.debut!=null), d=hasBase?((c.mensuel||0)-c.debut):null;
-  const bb=document.getElementById('bBase'); if(bb)bb.textContent='saison 25/26 : mensuel '+(c.mensuel!=null?c.mensuel:'—')+(c.debut!=null?' · début '+c.debut:'');
+  const cur=(o27!=null?o27:c.mensuel);
+  const hasBase=(c.debut!=null), d=hasBase?((cur||0)-c.debut):null;
   // 2e case : progression sur la saison (mensuel - début) en gros + flèche
   const tv=document.getElementById('bTrend'), ts=document.getElementById('bTrendSub');
   if(hasBase){const up=d>0,dn=d<0; tv.textContent=(up?'+':'')+d+(up?' ↗':(dn?' ↘':' →')); tv.classList.toggle('up',up); tv.classList.toggle('down',dn); if(ts)ts.textContent='depuis le début ('+c.debut+')';}
@@ -1003,6 +1004,9 @@ async function boot(){
   }
   try{const sr=await fetch('data/scoring.json',{cache:'no-cache'});if(sr.ok){const sj=await sr.json();window.__SCORING_BY_LIC={};(sj.players||[]).forEach(pl=>{window.__SCORING_BY_LIC[pl.lic]=pl;});}}catch(e){}
   try{const orr=await fetch('data/officiel2627.json',{cache:'no-cache'});if(orr.ok){window.__OFF2627=(await orr.json()).officiel||{};}}catch(e){}
+  // courbe : le point final devient l'officiel 2026/2027
+  const _o27=(window.__OFF2627||{})[PROFILE.lic];
+  if(_o27!=null&&XP_MONTHS.length){const L=XP_MONTHS[XP_MONTHS.length-1];L.v=_o27;L.lab='Officiel 26/27';}
   fillHero();
   fillBento();
   fillShareCard();
@@ -1028,12 +1032,12 @@ function miniCurve(vals){
 function fillShareCard(){
   if(!PROFILE) return;
   const c=PROFILE.classement,s=PROFILE.saison||{},x=PROFILE._x||{},t=(window.__SCORING_BY_LIC||{})[PROFILE.lic]||{},be=s.best;
+  const so27=(window.__OFF2627||{})[PROFILE.lic];
   document.getElementById('scName').innerHTML=(PROFILE.prenom||'')+'<br>'+(PROFILE.nom||'');
   document.getElementById('scSub').textContent=(s.parties||0)+' matchs joués · ACBB Tennis de table';
-  const d=(c.debut!=null)?((c.mensuel||0)-c.debut):null;
+  const d=(c.debut!=null)?(((so27!=null?so27:c.mensuel)||0)-c.debut):null;
   document.getElementById('scDelta').textContent=(d!=null?((d>0?'+':'')+d+' pts'):'');
   document.getElementById('scChart').innerHTML=miniCurve((typeof XP_MONTHS!=='undefined'?XP_MONTHS:[]).map(m=>m.v));
-  const so27=(window.__OFF2627||{})[PROFILE.lic];
   document.getElementById('scRank').textContent=(so27!=null?so27:(c.mensuel!=null?c.mensuel:'—'));
   const tr=document.getElementById('scTrend'); tr.textContent=(d!=null?((d>0?'+':'')+d+(d>0?' ↗':(d<0?' ↘':' →'))):'—'); tr.style.color=(d>0?'#86EFAC':(d<0?'#FCA5A5':'#fff'));
   document.getElementById('scVD').innerHTML='<span style="color:#86EFAC">'+(s.V||0)+'</span><span style="color:rgba(246,245,243,.4);font-size:14px">V</span> <span style="color:#FCA5A5">'+(s.D||0)+'</span><span style="color:rgba(246,245,243,.4);font-size:14px">D</span>';
