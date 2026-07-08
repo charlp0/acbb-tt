@@ -392,10 +392,9 @@
   <div class="rsec-h">Récap saison</div>
   <div class="bento">
     <div class="bt bt-rank">
-      <span class="bt-l">Classement mensuel</span>
+      <span class="bt-l" id="bRankLbl">Classement officiel 26/27</span>
       <div class="bt-v"><span class="cu" id="bRank" data-count="0">0</span></div>
       <span class="bt-sub" id="bBase"></span>
-      <span class="bt-sub" id="bOff27" style="display:none;color:var(--orange);font-weight:700"></span>
     </div>
     <div class="bt bt-trend">
       <span class="bt-l">Progression saison</span>
@@ -956,11 +955,11 @@ function computeExtra(p){
   return {streak:best, big:big, mins:mins, bestComp:bc};
 }
 function fillBento(){const c=PROFILE.classement,s=PROFILE.saison||{},x=PROFILE._x||{};
-  setC('bRank',c.mensuel);
-  const hasBase=(c.debut!=null), d=hasBase?((c.mensuel||0)-c.debut):null;
-  const bb=document.getElementById('bBase'); if(bb)bb.textContent=(c.debut!=null?'début '+c.debut:'')+(c.officiel!=null?' · figé '+c.officiel:'');
   const o27=(window.__OFF2627||{})[PROFILE.lic];
-  const bo=document.getElementById('bOff27'); if(bo&&o27){bo.textContent='Officiel 2026/2027 : '+o27; bo.style.display='';}
+  setC('bRank', o27!=null?o27:c.mensuel);
+  const lbl=document.getElementById('bRankLbl'); if(lbl&&o27==null)lbl.textContent='Classement mensuel';
+  const hasBase=(c.debut!=null), d=hasBase?((c.mensuel||0)-c.debut):null;
+  const bb=document.getElementById('bBase'); if(bb)bb.textContent='saison 25/26 : mensuel '+(c.mensuel!=null?c.mensuel:'—')+(c.debut!=null?' · début '+c.debut:'');
   // 2e case : progression sur la saison (mensuel - début) en gros + flèche
   const tv=document.getElementById('bTrend'), ts=document.getElementById('bTrendSub');
   if(hasBase){const up=d>0,dn=d<0; tv.textContent=(up?'+':'')+d+(up?' ↗':(dn?' ↘':' →')); tv.classList.toggle('up',up); tv.classList.toggle('down',dn); if(ts)ts.textContent='depuis le début ('+c.debut+')';}
@@ -1034,7 +1033,8 @@ function fillShareCard(){
   const d=(c.debut!=null)?((c.mensuel||0)-c.debut):null;
   document.getElementById('scDelta').textContent=(d!=null?((d>0?'+':'')+d+' pts'):'');
   document.getElementById('scChart').innerHTML=miniCurve((typeof XP_MONTHS!=='undefined'?XP_MONTHS:[]).map(m=>m.v));
-  document.getElementById('scRank').textContent=(c.mensuel!=null?c.mensuel:'—');
+  const so27=(window.__OFF2627||{})[PROFILE.lic];
+  document.getElementById('scRank').textContent=(so27!=null?so27:(c.mensuel!=null?c.mensuel:'—'));
   const tr=document.getElementById('scTrend'); tr.textContent=(d!=null?((d>0?'+':'')+d+(d>0?' ↗':(d<0?' ↘':' →'))):'—'); tr.style.color=(d>0?'#86EFAC':(d<0?'#FCA5A5':'#fff'));
   document.getElementById('scVD').innerHTML='<span style="color:#86EFAC">'+(s.V||0)+'</span><span style="color:rgba(246,245,243,.4);font-size:14px">V</span> <span style="color:#FCA5A5">'+(s.D||0)+'</span><span style="color:rgba(246,245,243,.4);font-size:14px">D</span>';
   document.getElementById('scPct').textContent=(s.winpct||0)+'%';
@@ -1095,7 +1095,7 @@ boot();
     <div class="sc-chart" id="scChart"></div>
   </div>
   <div class="sc-grid">
-    <div class="sc-st"><div class="l">Classement mensuel</div><div class="v" id="scRank">—</div></div>
+    <div class="sc-st"><div class="l">Classement officiel 26/27</div><div class="v" id="scRank">—</div></div>
     <div class="sc-st"><div class="l">Progression saison</div><div class="v" id="scTrend">—</div></div>
     <div class="sc-st"><div class="l">Bilan saison</div><div class="v" id="scVD">—</div></div>
     <div class="sc-st"><div class="l">% victoires</div><div class="v" id="scPct" style="color:#5FE0A0">—</div></div>
