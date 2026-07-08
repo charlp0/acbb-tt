@@ -493,7 +493,7 @@
     ]).then(function(res){
       var rows=res[0], idx=res[1];
       if(!rows){ document.getElementById('dPct').textContent='—'; return; }
-      var uniq={}; rows.forEach(function(r){ if(r.licence&&!/^TEST/i.test(r.licence)) uniq[r.licence]=1; });
+      var uniq={}; rows.forEach(function(r){ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)) uniq[r.licence]=1; });
       var n=Object.keys(uniq).length, total=(idx&&idx.length)||230;
       var pct=Math.min(100,Math.round(100*n/total));
       document.getElementById('dPct').textContent=pct+'%';
