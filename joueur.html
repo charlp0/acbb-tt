@@ -8,6 +8,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800;1,900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<meta property="og:title" content="ACBB Tennis de Table — Récap joueur 2025/2026">
+<meta property="og:description" content="Classement, progression, performances et récap complet de la saison. Trouve ta fiche et partage ton récap !">
+<meta property="og:image" content="https://charlp0.github.io/acbb-tt/logo.png">
+<meta property="og:url" content="https://charlp0.github.io/acbb-tt/joueur.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ACBB Tennis de Table">
+<meta name="twitter:card" content="summary">
 <style>
   :root{
     --bg:#0B0B0D;
@@ -373,7 +382,7 @@
 
 <!-- IDENTITY -->
 <section class="hero">
-  <div class="id-eyebrow">Fiche joueur · Saison 2025-2026</div>
+  <div class="id-eyebrow">Fiche joueur · Récap 25/26 · Officiel 26/27</div>
   <h1 class="id-name" id="idName">Charles<br>Perrot</h1>
   <button id="shareBtn" class="share-btn" type="button">📤 Partager mon récap</button>
 </section>
@@ -1065,9 +1074,17 @@ async function buildShareImage(){
   return _shareFile;
 }
 function preBuildShareImage(n){ if(_shareFile)return; if(h2cReady()){buildShareImage();return;} if((n||0)<14) setTimeout(()=>preBuildShareImage((n||0)+1),500); }
+function shareText(){
+  var off=(window.__OFF2627||{})[PROFILE&&PROFILE.lic];
+  var deb=PROFILE&&PROFILE.classement?PROFILE.classement.debut:null;
+  var d=(off!=null&&deb!=null)?(off-deb):null;
+  return 'Mon récap ACBB TT 2025/26 🏓 '+((PROFILE&&PROFILE.prenom)||'')+' '+((PROFILE&&PROFILE.nom)||'')
+    +(off!=null?' — officiel 26/27 : '+off:'')+(d!=null?' ('+(d>0?'+':'')+d+' sur la saison !)':'')
+    +' — Fais ton récap 👉 https://charlp0.github.io/acbb-tt/joueurs.html';
+}
 function nativeShare(){
   if(_shareFile&&navigator.share&&navigator.canShare&&navigator.canShare({files:[_shareFile]})){
-    navigator.share({files:[_shareFile],title:'Mon récap ACBB TT',text:'Mon récap de la saison 🏓'}).catch(()=>{}); return true;
+    navigator.share({files:[_shareFile],title:'Mon récap ACBB TT',text:shareText(),url:'https://charlp0.github.io/acbb-tt/joueurs.html'}).catch(()=>{}); return true;
   }
   return false;
 }
