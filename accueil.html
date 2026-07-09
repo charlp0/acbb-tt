@@ -424,7 +424,7 @@
     <div>
       <div class="eyebrow">Disponibilités · Phase 1</div>
       <h2 class="cal-title">Ta <em>dispo.</em></h2>
-      <div class="d-badge">⏳ à remplir avant le 31 août 2026</div>
+      <div class="d-badge" id="dDeadline">⏳ à remplir avant le 31 août 2026</div>
     </div>
     <div class="d-ringwrap">
       <svg viewBox="0 0 72 72"><circle class="bgc" cx="36" cy="36" r="30"/><circle class="fgc" id="dRing" cx="36" cy="36" r="30" stroke-dasharray="188.5" stroke-dashoffset="188.5"/></svg>
@@ -433,9 +433,9 @@
   </div>
   <div class="d-card">
     <div class="d-row">
-      <input id="dPrenom" placeholder="Prénom" autocomplete="given-name">
-      <input id="dNom" placeholder="Nom" autocomplete="family-name">
-      <input id="dLic" placeholder="N° de licence" inputmode="numeric" autocomplete="off">
+      <input id="dPrenom" placeholder="Prénom" aria-label="Prénom" autocomplete="given-name">
+      <input id="dNom" placeholder="Nom" aria-label="Nom" autocomplete="family-name">
+      <input id="dLic" placeholder="N° de licence" aria-label="Numéro de licence" inputmode="numeric" autocomplete="off">
     </div>
     <div class="d-found" id="dFound"></div>
     <div class="d-lbl">Disponibilité théorique — coche les journées où tu pourras <em>normalement</em> jouer</div>
@@ -461,9 +461,10 @@
   var days=document.getElementById('dDays'), sum=document.getElementById('dSum'), st=document.getElementById('dStatus');
   var fP=document.getElementById('dPrenom'), fN=document.getElementById('dNom'), fL=document.getElementById('dLic');
   var found=document.getElementById('dFound'), btn=document.getElementById('dSave');
-  days.innerHTML=JOURS.map(function(j,i){return '<div class="d-day" data-i="'+i+'"><div class="j">'+j[0]+'</div><div class="dt">'+j[1]+'</div></div>';}).join('');
+  days.innerHTML=JOURS.map(function(j,i){return '<div class="d-day" role="button" tabindex="0" aria-pressed="false" aria-label="Journée '+(i+1)+' ('+j[1]+')" data-i="'+i+'"><div class="j">'+j[0]+'</div><div class="dt">'+j[1]+'</div></div>';}).join('');
+  days.addEventListener('keydown',function(e){var d=e.target.closest('.d-day'); if(d&&(e.key===' '||e.key==='Enter')){e.preventDefault();d.click();}});
   function upd(){ sum.textContent=document.querySelectorAll('.d-day.on').length; draft(); }
-  days.addEventListener('click',function(e){var d=e.target.closest('.d-day'); if(!d)return; d.classList.toggle('on'); upd();});
+  days.addEventListener('click',function(e){var d=e.target.closest('.d-day'); if(!d)return; d.classList.toggle('on'); d.setAttribute('aria-pressed',d.classList.contains('on')?'true':'false'); upd();});
   function state(){ var o={}; document.querySelectorAll('.d-day').forEach(function(d,i){o['j'+(i+1)]=d.classList.contains('on');}); return o; }
   function setState(o){ document.querySelectorAll('.d-day').forEach(function(d,i){d.classList.toggle('on',!!(o&&o['j'+(i+1)]));}); sum.textContent=document.querySelectorAll('.d-day.on').length; }
   function draft(){ try{localStorage.setItem('acbb_dispo_draft',JSON.stringify({p:fP.value,n:fN.value,l:fL.value,d:state()}));}catch(e){} }
@@ -491,12 +492,12 @@
   function ring(){
     Promise.all([
       fetch(SB+'/rest/v1/dispos_log?select=licence',{headers:HD}).then(function(r){return r.ok?r.json():null;}),
-      fetch('data/players_index.json',{cache:'no-cache'}).then(function(r){return r.json();}).catch(function(){return null;})
+      fetch('data/scoring.json',{cache:'no-cache'}).then(function(r){return r.json();}).catch(function(){return null;})
     ]).then(function(res){
       var rows=res[0], idx=res[1];
       if(!rows){ document.getElementById('dPct').textContent='—'; return; }
       var uniq={}; rows.forEach(function(r){ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)) uniq[r.licence]=1; });
-      var n=Object.keys(uniq).length, total=(idx&&idx.length)||230;
+      var n=Object.keys(uniq).length, total=(idx&&idx.players&&idx.players.length)||240;
       var pct=Math.min(100,Math.round(100*n/total));
       document.getElementById('dPct').textContent=pct+'%';
       document.getElementById('dCnt').textContent=n+' / '+total+' joueurs';
@@ -521,10 +522,18 @@
       .catch(function(e){ st.textContent='❌ Échec de l\'enregistrement — réessaie dans un instant (ta saisie est conservée).'; })
       .then(function(){ btn.disabled=false; });
   });
+  /* clôture automatique au 31 août 2026 */
+  var CLOS=Date.now()>new Date('2026-08-31T23:59:59+02:00').getTime();
+  if(CLOS){
+    var dl=document.getElementById('dDeadline');
+    if(dl){dl.textContent='⏰ Déclarations closes depuis le 31 août 2026'; dl.style.color='#FCA5A5'; dl.style.borderColor='rgba(242,99,86,0.4)'; dl.style.background='rgba(242,99,86,0.10)';}
+    btn.disabled=true; st.textContent='Les déclarations sont closes — contacte la sportive pour toute modification.';
+  }
   /* mode dégradé si la table n'existe pas encore */
   fetch(SB+'/rest/v1/dispos_log?select=id&limit=1',{headers:HD}).then(function(r){
     if(!r.ok){ btn.disabled=true; st.textContent='Ouverture du formulaire très bientôt…'; }
     else ring();
+    if(CLOS) btn.disabled=true;
   }).catch(function(){ btn.disabled=true; st.textContent='Ouverture du formulaire très bientôt…'; });
 })();
 </script>
