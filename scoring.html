@@ -4,6 +4,8 @@
 <title>ACBB TT — Scoring equipes (interne)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,600;0,700;0,800;1,700&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0B0B0D">
 <style>
   :root{
     --bg:#0B0B0D;
@@ -254,6 +256,10 @@
   .sc th:first-child,.sc td.rk{text-align:center}
   .sc .rk{font-family:"JetBrains Mono",monospace;color:var(--dim);min-width:40px;padding-left:8px;padding-right:8px}
   .mut-badge{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:800;letter-spacing:0.3px;text-transform:uppercase;color:var(--orange);background:rgba(242,106,27,0.14);border:1px solid rgba(242,106,27,0.45);border-radius:99px;padding:1px 6px;margin-left:7px;vertical-align:middle;white-space:nowrap}
+  /* ===== SOUS-NAV ESPACE SPORTIVE ===== */
+  .subnav{display:flex;gap:7px;padding:14px 20px 0}
+  .subnav a{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:9px 14px;border-radius:99px;background:var(--paper);border:1px solid var(--line-2);color:var(--ink-2);text-decoration:none}
+  .subnav a.active{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
   /* ===== MINI TABLEAU ÉQUIPES 26/27 ===== */
   .teams-mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:8px;margin-bottom:26px}
   .tm-card{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:10px 11px;display:flex;flex-direction:column;gap:5px}
@@ -349,6 +355,10 @@
   document.getElementById('gpw').focus();
 })();
 </script>
+<nav class="subnav">
+  <a href="scoring.html" class="active">🎯 Scoring &amp; compos</a>
+  <a href="suivi-dispos.html">📊 Suivi des dispos</a>
+</nav>
 <div class="hero">
   <div class="eyebrow">Outil interne · Préparation des équipes</div>
   <h1 class="hero-title">Scoring<br><em>composition.</em></h1>
