@@ -32,3 +32,12 @@ Sauvegarde des **résultats + compositions** de toutes les poules des divisions 
 - `pts` = classement **officiel** de la saison (constant). Le mensuel-au-match n'est pas archivé (non nécessaire pour la projection).
 - Pour anticiper l'an prochain : récupérer le **classement alors-actuel** des joueurs via l'API (toujours dispo en direct) = leur niveau de fin 2025-26.
 - Généré par `scripts/fftt_archive.py`.
+
+## ⚠️ Périmètre — limite découverte le 10/07/2026
+Les divisions archivées sont **celles où l'ACBB avait une équipe** (déduites de
+`xml_equipe` du club). **R1 Messieurs et PN Messieurs IDF n'ont PAS été archivées**
+(aucune équipe ACBB en 25/26). Tentative de rattrapage le 10/07/2026 par scan des
+`cx_poule` directs (workflow `archive-scan.yml`) : **l'API ne sert plus la saison
+2025/2026, même par ID absolu** → données définitivement irrécupérables.
+Leçon pour 2026/2027 : archiver AUSSI les divisions adjacentes (montée/descente,
+ex. PN M et D1 tous départements IDF) tant que la saison est encore servie.
