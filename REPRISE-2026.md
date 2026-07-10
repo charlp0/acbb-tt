@@ -71,3 +71,11 @@ PY
 ## Rappels sécurité
 - Identifiants FFTT UNIQUEMENT en secrets GitHub (`FFTT_ID`/`FFTT_PWD`).
 - La clé Supabase `sb_publishable_` est publique par design (RLS select+insert).
+
+## Archivage 2026/2027 (leçon du 10/07/2026)
+- [ ] Lancer `fftt_archive.py` pour la saison 26/27 en incluant AUSSI les
+      divisions adjacentes (montée/descente : PN Messieurs, N3 si pertinent,
+      D1 des départements voisins) — en 25/26 seules les divisions avec une
+      équipe ACBB avaient été archivées, et R1M/PN M sont irrécupérables
+      (l'API coupe la saison passée dès la bascule, même par cx_poule direct).
+- [ ] Idéalement : archiver en FIN DE PHASE (janvier + juin), pas après la bascule.
