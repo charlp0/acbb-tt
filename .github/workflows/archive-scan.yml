@@ -1,0 +1,53 @@
+name: Archive — rattrapage scan cx_poule 25/26
+
+# One-shot : tente de récupérer les poules 2025/2026 manquantes (R1/PN Messieurs IDF)
+# en interrogeant xml_result_equ par ID cx_poule direct (blocs séquentiels :
+# R2M ph2 = 1142533-1142540, donc R1M/PNM juste en dessous).
+# Sondes intégrées : abandon propre si l'API exige D1 ou ne sert plus 25/26.
+
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: 'Phase (1 ou 2)'
+        default: '2'
+      cx_start:
+        description: 'Début de plage cx_poule'
+        default: '1142490'
+      cx_end:
+        description: 'Fin de plage cx_poule'
+        default: '1142532'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fftt-data
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Scan des cx_poule
+        env:
+          FFTT_ID: ${{ secrets.FFTT_ID }}
+          FFTT_PWD: ${{ secrets.FFTT_PWD }}
+        run: python3 scripts/fftt_archive.py scan "${{ github.event.inputs.phase }}" "${{ github.event.inputs.cx_start }}" "${{ github.event.inputs.cx_end }}"
+      - name: Commit si changement
+        run: |
+          git config user.name "acbb-data-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/archive/
+          if git diff --staged --quiet; then
+            echo "Rien récupéré."
+          else
+            git commit -m "archive: rattrapage scan cx ${{ github.event.inputs.cx_start }}-${{ github.event.inputs.cx_end }} (phase ${{ github.event.inputs.phase }})"
+            git pull --rebase origin main || true
+            git push
+          fi

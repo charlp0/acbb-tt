@@ -56,7 +56,42 @@ def archive_poule(div, d1, org, cx, num, phase):
     return {'division':div,'organisme':org,'phase':phase,'poule':num,'cx_poule':cx,
             'classement':clt,'rencontres':rencs}
 
+def scan(phase, cx_start, cx_end):
+    """Rattrapage : archive toute poule 2025/26 qui répond encore par cx_poule direct
+    (l'API ne liste plus la saison passée via xml_equipe, mais les IDs absolus
+    peuvent rester servis). Le libellé de division est inconnu ici -> dossier
+    L08SCAN, à trier/renommer manuellement d'après les équipes.
+    Usage : fftt_archive.py scan <phase 1|2> <cx_start> <cx_end>"""
+    # Sonde A : D1 est-il optionnel ? (poule courante 26/27 avec puis sans D1)
+    eq=fb.get(f"xml_equipe.php?numclu={fb.CLUB}&type=A")
+    m=re.search(r'<liendivision><!\[CDATA\[(.*?)\]\]>',eq)
+    if m:
+        p=dict(x.split('=') for x in html.unescape(m.group(1)).split('&'))
+        with_d1=archive_poule('probe',p.get('D1',''),p.get('organisme_pere','16'),int(p['cx_poule']),None,phase)
+        no_d1=archive_poule('probe','',p.get('organisme_pere','16'),int(p['cx_poule']),None,phase)
+        print(f"Sonde A (cx {p['cx_poule']} 26/27) : avec D1 -> {'OK' if with_d1 else 'KO'}, sans D1 -> {'OK' if no_d1 else 'KO'}")
+        if with_d1 and not no_d1:
+            print("D1 est OBLIGATOIRE et inconnu pour 25/26. Abandon."); return
+    # Sonde B : la saison passée répond-elle encore ? (poule 25/26 déjà archivée)
+    probe_cx={'1':1141541,'2':1142533}[str(phase)]
+    old=archive_poule('probe','','16',probe_cx,None,phase)
+    if not old:
+        print(f"Sonde B KO (cx {probe_cx}) : l'API ne sert plus la saison 2025/2026. Abandon."); return
+    print(f"Sonde B OK (cx {probe_cx} : {len(old['rencontres'])} rencontres) — scan {cx_start}..{cx_end}")
+    ddir=f"data/archive/2025-2026/phase-{phase}/L08SCAN"; os.makedirs(ddir,exist_ok=True)
+    found=0
+    for cx in range(cx_start,cx_end+1):
+        res=archive_poule(f'SCAN cx {cx}','','16',cx,None,phase); time.sleep(0.3)
+        if not res: continue
+        found+=1
+        eqs=[c['equipe'] for c in res['classement']]
+        print(f"  cx {cx} : {len(res['rencontres'])} rencontres — {', '.join(eqs[:4])}…")
+        json.dump(res, open(f"{ddir}/poule-{cx}.json","w"), ensure_ascii=False)
+    print(f"OK — {found} poule(s) récupérée(s) dans {ddir}")
+
 def main():
+    if len(sys.argv)>1 and sys.argv[1]=='scan':
+        scan(sys.argv[2], int(sys.argv[3]), int(sys.argv[4])); return
     phase=sys.argv[1] if len(sys.argv)>1 else '2'
     orgf=sys.argv[2] if len(sys.argv)>2 else 'all'
     eq=fb.get(f"xml_equipe.php?numclu={fb.CLUB}&type=A")
