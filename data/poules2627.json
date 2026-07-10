@@ -1,0 +1,547 @@
+{
+ "source": "Poules Phase 1 V.26-07-09 (Ligue IDF)",
+ "dates": [
+  "19/09/2026",
+  "03/10/2026",
+  "17/10/2026",
+  "07/11/2026",
+  "21/11/2026",
+  "05/12/2026",
+  "12/12/2026"
+ ],
+ "poules": [
+  {
+   "division": "Régionale 1 Dames",
+   "poule": 2,
+   "acbb": "F2",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "ESP REUILLY 2",
+     "dept": "75",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 2,
+     "name": "ATT XV 1",
+     "dept": "75",
+     "acbb": false,
+     "s25": {
+      "avg": 742,
+      "div": "R1 Dames p3",
+      "rank": 5,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 3,
+     "name": "IVRY US TT 1",
+     "dept": "94",
+     "acbb": false,
+     "s25": {
+      "avg": 820,
+      "div": "R1 Dames p2",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 4,
+     "name": "SAINT MAUR VGA US 2",
+     "dept": "94",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 5,
+     "name": "BRETIGNY CS 1",
+     "dept": "91",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 6,
+     "name": "PALAISEAU US 2",
+     "dept": "91",
+     "acbb": false,
+     "s25": {
+      "avg": 727,
+      "div": "R1 Dames p3",
+      "rank": 6,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "BOULOGNE BILLANCOURT AC 2",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 786,
+      "div": "R1 Dames p3",
+      "rank": 4,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 8,
+     "name": "SQY PING 2",
+     "dept": "78",
+     "acbb": false,
+     "s25": {
+      "avg": 941,
+      "div": "PN Dames p2",
+      "rank": 8,
+      "nm": 7
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "opp": 2,
+     "dom": false
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "opp": 1,
+     "dom": true
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "opp": 8,
+     "dom": false
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "opp": 6,
+     "dom": false
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "opp": 5,
+     "dom": true
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "opp": 4,
+     "dom": false
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "opp": 3,
+     "dom": true
+    }
+   ]
+  },
+  {
+   "division": "Régionale 1 Messieurs",
+   "poule": 4,
+   "acbb": "M3",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "COMBS SENART TT 2",
+     "dept": "77",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 2,
+     "name": "LEVALLOIS SPORT 6",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1656,
+      "div": "R2 M p6",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 3,
+     "name": "BOULOGNE BILLANCOURT AC 3",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 1437,
+      "div": "R2 M p4",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 4,
+     "name": "JOSASSIEN TT 1",
+     "dept": "78",
+     "acbb": false,
+     "s25": {
+      "avg": 1628,
+      "div": "R2 M p8",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "MEUDON AS 1",
+     "dept": "92",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 6,
+     "name": "CHATILLON TTM 2",
+     "dept": "92",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 7,
+     "name": "NOISY LE GRAND 3",
+     "dept": "93",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 8,
+     "name": "BEAUCHAMP CTT 1",
+     "dept": "95",
+     "acbb": false,
+     "s25": null
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "opp": 6,
+     "dom": true
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "opp": 5,
+     "dom": false
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "opp": 4,
+     "dom": true
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "opp": 8,
+     "dom": true
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "opp": 2,
+     "dom": false
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "opp": 1,
+     "dom": true
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "opp": 7,
+     "dom": false
+    }
+   ]
+  },
+  {
+   "division": "Régionale 2 Messieurs",
+   "poule": 3,
+   "acbb": "M4",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "MENUCOURT 1",
+     "dept": "95",
+     "acbb": false,
+     "s25": {
+      "avg": 1503,
+      "div": "R2 M p1",
+      "rank": 6,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 2,
+     "name": "LAGNY SMTT 1",
+     "dept": "77",
+     "acbb": false,
+     "s25": {
+      "avg": 1400,
+      "div": "R3 M p16",
+      "rank": 5,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 3,
+     "name": "BOULOGNE BILLANCOURT AC 4",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 1395,
+      "div": "R3 M p11",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 4,
+     "name": "CHESNAY 78 AS 4",
+     "dept": "78",
+     "acbb": false,
+     "s25": {
+      "avg": 1605,
+      "div": "R2 M p3",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "THIAIS AS TT 3",
+     "dept": "94",
+     "acbb": false,
+     "s25": {
+      "avg": 1625,
+      "div": "R2 M p1",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 6,
+     "name": "VERSAILLES SCTT 3",
+     "dept": "78",
+     "acbb": false,
+     "s25": {
+      "avg": 1536,
+      "div": "R2 M p8",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "MONTMAGNY-GROSLAY 1",
+     "dept": "95",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 8,
+     "name": "PARIS IX ATT 2",
+     "dept": "75",
+     "acbb": false,
+     "s25": {
+      "avg": 1610,
+      "div": "R2 M p2",
+      "rank": 5,
+      "nm": 7
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "opp": 6,
+     "dom": true
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "opp": 5,
+     "dom": false
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "opp": 4,
+     "dom": true
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "opp": 8,
+     "dom": true
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "opp": 2,
+     "dom": false
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "opp": 1,
+     "dom": true
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "opp": 7,
+     "dom": false
+    }
+   ]
+  },
+  {
+   "division": "Régionale 3 Messieurs",
+   "poule": 1,
+   "acbb": "M5",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "COMBS SENART TT 3",
+     "dept": "77",
+     "acbb": false,
+     "s25": {
+      "avg": 1465,
+      "div": "R3 M p13",
+      "rank": 5,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 2,
+     "name": "ATT XV 1",
+     "dept": "75",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 3,
+     "name": "VITRY ES 1",
+     "dept": "94",
+     "acbb": false,
+     "s25": {
+      "avg": 1364,
+      "div": "R3 M p13",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 4,
+     "name": "PING PARIS 14 1",
+     "dept": "75",
+     "acbb": false,
+     "s25": {
+      "avg": 1410,
+      "div": "R3 M p1",
+      "rank": 6,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "ADAMOIS TT 1",
+     "dept": "95",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 6,
+     "name": "PONTAULT UMS TT 5",
+     "dept": "77",
+     "acbb": false,
+     "s25": {
+      "avg": 1333,
+      "div": "R3 M p7",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "BOULOGNE BILLANCOURT AC 5",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 1405,
+      "div": "R3 M p4",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 8,
+     "name": "STAINS ES-PIERREFITTE AS 1",
+     "dept": "93",
+     "acbb": false,
+     "s25": {
+      "avg": 1371,
+      "div": "R2 M p5",
+      "rank": 6,
+      "nm": 7
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "opp": 2,
+     "dom": false
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "opp": 1,
+     "dom": true
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "opp": 8,
+     "dom": false
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "opp": 6,
+     "dom": false
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "opp": 5,
+     "dom": true
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "opp": 4,
+     "dom": false
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "opp": 3,
+     "dom": true
+    }
+   ]
+  }
+ ]
+}
