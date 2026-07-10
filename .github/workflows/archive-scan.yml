@@ -17,6 +17,9 @@ on:
       cx_end:
         description: 'Fin de plage cx_poule'
         default: '1142532'
+      d1s:
+        description: 'D1 candidats (séparés par des virgules)'
+        default: '199050,199049'
 
 permissions:
   contents: write
@@ -38,7 +41,7 @@ jobs:
         env:
           FFTT_ID: ${{ secrets.FFTT_ID }}
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
-        run: python3 scripts/fftt_archive.py scan "${{ github.event.inputs.phase }}" "${{ github.event.inputs.cx_start }}" "${{ github.event.inputs.cx_end }}"
+        run: python3 scripts/fftt_archive.py scan "${{ github.event.inputs.phase }}" "${{ github.event.inputs.cx_start }}" "${{ github.event.inputs.cx_end }}" "${{ github.event.inputs.d1s }}"
       - name: Commit si changement
         run: |
           git config user.name "acbb-data-bot"
