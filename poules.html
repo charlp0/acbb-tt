@@ -109,7 +109,7 @@
 <div class="hero">
   <div class="eyebrow">Espace sportive · Poules régionales · Phase 1 2026/2027</div>
   <h1>Nos <em>poules.</em></h1>
-  <div class="meta">Source : « Poules Phase 1 V.26-07-09 » (Ligue IDF) — uniquement les poules avec une équipe ACBB.</div>
+  <div class="meta" id="srcMeta">Uniquement les poules avec une équipe ACBB.</div>
 </div>
 
 <section class="sec" id="poules"><div class="meta">chargement…</div></section>
@@ -196,6 +196,7 @@
         +'</div>';
     });
     document.getElementById('poules').innerHTML=html;
+    if(data.source)document.getElementById('srcMeta').textContent='Source : \u00ab '+data.source+' \u00bb — uniquement les poules avec une équipe ACBB.';
     document.getElementById('foot').hidden=false;
   }
 })();

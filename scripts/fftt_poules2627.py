@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Poules régionales phase 1 2026/2027 avec équipe ACBB.
-Source poules : PDF officiel Ligue IDF "2026-2027 - CdF - Poules Phase 1 V.26-07-09"
+Source poules : PDF officiel Ligue IDF "2026-2027 - CdF - Poules Phase 1 V.26-07-10"
+(V.26-07-10 : en R3M p1, VINCENNOIS TT 2 remplace ADAMOIS TT 1 — seul changement ACBB vs V.26-07-09)
 (saisi manuellement — vérifié 4/4 poules ACBB : R1D p2, R1M p4, R2M p3, R3M p1).
 Niveau moyen 25/26 : compos phase 2 archivées (data/archive/2025-2026/phase-2/).
 ⚠️ Le champ `division` des fichiers d'archive est buggé (toujours "Poule 4") —
@@ -83,7 +84,7 @@ POULES = [
     dict(division='Régionale 3 Messieurs', poule=1, acbb='M5', genre='M', pos=7, teams=[
         (1, 'COMBS SENART TT', 3, '77'), (2, 'ATT XV', 1, '75'),
         (3, 'VITRY ES', 1, '94'), (4, 'PING PARIS 14', 1, '75'),
-        (5, 'ADAMOIS TT', 1, '95'), (6, 'PONTAULT UMS TT', 5, '77'),
+        (5, 'VINCENNOIS TT', 2, '94'), (6, 'PONTAULT UMS TT', 5, '77'),
         (7, 'BOULOGNE BILLANCOURT AC', 5, '92'), (8, 'STAINS ES-PIERREFITTE AS', 1, '93')]),
 ]
 
@@ -97,7 +98,7 @@ GRID = [
 DATES = ['19/09/2026', '03/10/2026', '17/10/2026', '07/11/2026',
          '21/11/2026', '05/12/2026', '12/12/2026']
 
-out = {'source': 'Poules Phase 1 V.26-07-09 (Ligue IDF)', 'dates': DATES, 'poules': []}
+out = {'source': 'Poules Phase 1 V.26-07-10 (Ligue IDF)', 'dates': DATES, 'poules': []}
 for P in POULES:
     teams = []
     for pos, club, num, dep in P['teams']:
