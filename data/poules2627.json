@@ -1,5 +1,5 @@
 {
- "source": "Poules Phase 1 V.26-07-09 (Ligue IDF)",
+ "source": "Poules Phase 1 V.26-07-10 (Ligue IDF)",
  "dates": [
   "19/09/2026",
   "03/10/2026",
@@ -456,10 +456,15 @@
     },
     {
      "pos": 5,
-     "name": "ADAMOIS TT 1",
-     "dept": "95",
+     "name": "VINCENNOIS TT 2",
+     "dept": "94",
      "acbb": false,
-     "s25": null
+     "s25": {
+      "avg": 1241,
+      "div": "R3 M p14",
+      "rank": 3,
+      "nm": 7
+     }
     },
     {
      "pos": 6,
