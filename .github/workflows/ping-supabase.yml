@@ -1,20 +1,44 @@
-name: Ping Supabase (anti-pause)
+name: Backup Supabase (+ anti-pause)
 
-# Les projets Supabase gratuits sont mis en pause après ~1 semaine sans requête.
-# Ce ping hebdomadaire garde le projet des tags (Sportive) éveillé.
-# La clé publishable est publique par design (RLS: lecture/insertion only sur tags_log).
+# 1) Sauvegarde quotidienne des tables Supabase (tags_log + dispos_log) en JSON
+#    versionné dans le repo (data/backup-supabase/) — commit uniquement si changement.
+# 2) La requête sert aussi de ping anti-pause (projets gratuits pausés après ~1 sem
+#    sans trafic).
+# La clé publishable est publique par design (RLS : select/insert only).
+# Restauration : ré-insérer la dernière ligne de chaque table (journaux append-only,
+# la dernière ligne = état courant).
 on:
   schedule:
-    - cron: '0 7 * * 1'   # lundi ~9h Paris
+    - cron: '0 6 * * *'   # tous les jours ~8h Paris
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  ping:
+  backup:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping REST tags_log
+      - uses: actions/checkout@v4
+      - name: Export des tables
         run: |
-          curl -sf \
-            -H "apikey: sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay" \
-            "https://vhhmageufrcenruywawg.supabase.co/rest/v1/tags_log?select=id&limit=1" >/dev/null \
-            && echo "pong ✓" || { echo "⚠️ projet injoignable (pausé ?)"; exit 1; }
+          mkdir -p data/backup-supabase
+          for t in tags_log dispos_log; do
+            curl -sf \
+              -H "apikey: sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay" \
+              "https://vhhmageufrcenruywawg.supabase.co/rest/v1/$t?select=*&order=id.asc" \
+              -o "/tmp/$t.json" || { echo "⚠️ projet injoignable (pausé ?)"; exit 1; }
+            python3 -c "import json;d=json.load(open('/tmp/$t.json'));json.dump(d,open('data/backup-supabase/$t.json','w'),ensure_ascii=False,indent=1);print('$t :',len(d),'lignes')"
+          done
+      - name: Commit si changement
+        run: |
+          git config user.name "acbb-data-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/backup-supabase/
+          if git diff --staged --quiet; then
+            echo "Backup inchangé."
+          else
+            git commit -m "backup supabase: $(date -u +%Y-%m-%d)"
+            git pull --rebase origin main || true
+            git push
+          fi
