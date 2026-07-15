@@ -442,6 +442,8 @@ function tagChips(k){
   if(t&&t.r)h+='<span class="tg '+(t.r==='T'?'rT':'rR')+'">'+(t.r==='T'?'Tit.':'Remp.')+'</span>';
   if(t&&t.e){const th=teamHue(t.e);
     h+='<span class="tg" style="color:hsl('+th+',75%,70%);border-color:hsla('+th+',75%,70%,.5);background:hsla('+th+',75%,70%,.13)">'+esc(t.e)+'</span>';}
+  if(t&&t.e2){const th2=teamHue(t.e2);
+    h+='<span class="tg" style="color:hsl('+th2+',75%,70%);border-color:hsla('+th2+',75%,70%,.5);background:hsla('+th2+',75%,70%,.13)" title="double affectation (exception)">+ '+(t.r2==='T'?'Tit.':'Remp.')+' '+esc(t.e2)+'</span>';}
   return h+'<button class="tagbtn" data-k="'+esc(k)+'" type="button" aria-label="Modifier les tags">✎</button>';
 }
 function updateSaveBar(){
@@ -533,7 +535,8 @@ document.getElementById('tmCancel').addEventListener('click',()=>document.getEle
 document.getElementById('tagModal').addEventListener('click',e=>{if(e.target.id==='tagModal')e.target.classList.remove('open');});
 document.getElementById('tmOk').addEventListener('click',()=>{
   const d=document.getElementById('tmD').value, r=document.getElementById('tmR').value, e=document.getElementById('tmE').value;
-  if(d||r||e) TAGS[CURKEY]={...(d&&{d}),...(r&&{r}),...(e&&{e})}; else delete TAGS[CURKEY];
+  const x=TAGS[CURKEY]||{}; // préserver la double affectation (e2/r2, posée hors modal)
+  if(d||r||e||x.e2) TAGS[CURKEY]={...(d&&{d}),...(r&&{r}),...(e&&{e}),...(x.e2&&{e2:x.e2,r2:x.r2||'R'})}; else delete TAGS[CURKEY];
   DIRTY.add(CURKEY); draftSave(); updateSaveBar(); render();
   document.getElementById('tagModal').classList.remove('open');
 });
@@ -561,6 +564,11 @@ async function saveTags(){
   btn.disabled=false;
 }
 document.getElementById('saveTags').addEventListener('click',saveTags);
+document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tags
+  if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&!e.altKey&&e.key.toLowerCase()==='s'){
+    e.preventDefault(); if(DIRTY.size) saveTags();
+  }
+});
 
 /* chargement initial : Supabase (dernière version), repli data/tags.json */
 (async function(){

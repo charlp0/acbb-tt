@@ -188,8 +188,9 @@
     /* équipes -> titulaires (+remplaçants) */
     var teams={};
     players.forEach(function(p){
-      var t=tags[pkey(p)]; if(!t||!t.e)return;
-      (teams[t.e]=teams[t.e]||{T:[],R:[]})[t.r==='T'?'T':'R'].push(p);
+      var t=tags[pkey(p)]; if(!t)return;
+      if(t.e)(teams[t.e]=teams[t.e]||{T:[],R:[]})[t.r==='T'?'T':'R'].push(p);
+      if(t.e2)(teams[t.e2]=teams[t.e2]||{T:[],R:[]})[t.r2==='T'?'T':'R'].push(p); /* double affectation */
     });
 
     /* matrice */
