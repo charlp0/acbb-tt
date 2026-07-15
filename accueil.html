@@ -169,6 +169,12 @@
   .d-day.on .j{color:#86EFAC}
   .d-day.on::after{content:"✓";display:block;font-size:9px;color:#3DD68C;margin-top:2px}
   .d-day:not(.on)::after{content:"—";display:block;font-size:9px;color:rgba(232,232,234,0.3);margin-top:2px}
+  /* pulsation d'invitation au chargement (montre que les cases sont cliquables) */
+  @keyframes dpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06);border-color:var(--orange,#F26A1B);box-shadow:0 0 0 3px rgba(242,106,27,0.12)}}
+  .d-role,.d-day{animation:dpulse .55s ease 1 both}
+  .d-role:nth-child(1){animation-delay:.5s}.d-role:nth-child(2){animation-delay:.65s}.d-role:nth-child(3){animation-delay:.8s}.d-role:nth-child(4){animation-delay:.95s}
+  .d-day:nth-child(1){animation-delay:1.3s}.d-day:nth-child(2){animation-delay:1.42s}.d-day:nth-child(3){animation-delay:1.54s}.d-day:nth-child(4){animation-delay:1.66s}.d-day:nth-child(5){animation-delay:1.78s}.d-day:nth-child(6){animation-delay:1.9s}.d-day:nth-child(7){animation-delay:2.02s}
+  @media(prefers-reduced-motion:reduce){.d-role,.d-day{animation:none}}
   .d-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px}
   .d-sum{font-family:"JetBrains Mono",monospace;font-size:13px;color:rgba(232,232,234,0.7)}
   .d-sum b{color:#F6F5F3;font-size:17px}
@@ -295,7 +301,7 @@
     <div class="d-lbl">En phase 1 2026/2027, pour le championnat par équipes <em>masculin</em>, je souhaite être <span style="font-weight:500;color:rgba(246,245,243,0.55)">(plusieurs choix possibles)</span> :</div>
     <div class="d-roles" id="dRoles"></div>
     <div class="d-compo">Les compositions d'équipes seront établies par la commission sportive, sur la base du <b>classement</b>, de la <b>progression</b>, de l'<b>assiduité</b> — au moins un entraînement en soirée par semaine — et des <b>objectifs sportifs du club</b>.</div>
-    <div class="d-lbl">Disponibilité théorique — coche les journées où tu pourras <em>normalement</em> jouer</div>
+    <div class="d-lbl">Disponibilité théorique — <em>touche les cases</em> pour cocher les journées où tu pourras normalement jouer</div>
     <div class="d-note">🔄 Modifiable à tout moment : reviens sur cette page, ressaisis ton n° de licence — tes réponses se rechargent, ajuste puis ré-enregistre.</div>
     <div class="d-days" id="dDays"></div>
     <div class="d-foot">
