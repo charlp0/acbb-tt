@@ -44,6 +44,10 @@ def grille(my,opp,won,coef):
 # ---- catégorisation par nom d'épreuve ----
 def categorize(epr):
     e=epr.lower()
+    # séparation M/F du championnat par équipes (demande sportive 16/07/2026).
+    # ⚠️ à vérifier à la reprise : libellé exact de l'épreuve féminine dans xml_partie
+    if 'quipe' in e and ('fem' in e or 'dame' in e):
+        return ('equipe_f','Championnat par équipe · Féminin')
     if 'quipe' in e: return ('equipe','Championnat par équipe')
     if 'crit' in e: return ('criterium','Critérium fédéral')
     if 'championnat de paris' in e or 'paris idf' in e: return ('paris','Championnat de Paris')

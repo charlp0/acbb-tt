@@ -890,7 +890,12 @@ function init(){
 
 
 /* ============ ADAPTATEUR JSON -> VUES + BOOT ============ */
-const COMP_META={equipe:{label:'Ch. Équipe',sub:'Championnat par équipe'},criterium:{label:'Critérium',sub:'Individuel'},paris:{label:'Ch. Paris',sub:'Championnat de Paris'},tournoi:{label:'Tournois',sub:''},coupe:{label:'Coupe',sub:'par équipes'},autre:{label:'Autres',sub:''}};
+const COMP_META={equipe:{label:'Ch. Équipe',sub:'Championnat par équipe'},equipe_f:{label:'Ch. Équipe F',sub:'Championnat par équipe · Féminin'},criterium:{label:'Critérium',sub:'Individuel'},paris:{label:'Ch. Paris',sub:'Championnat de Paris'},tournoi:{label:'Tournois',sub:''},coupe:{label:'Coupe',sub:'par équipes'},autre:{label:'Autres',sub:''}};
+// joueuse avec les deux championnats : préciser M sur l'onglet équipe
+function compMeta(c){const m=Object.assign({},COMP_META[c.key]||{label:c.label,sub:''});
+  if(c.key==='equipe'&&PROFILE&&(PROFILE.competitions||[]).some(x=>x.key==='equipe_f')){m.label='Ch. Équipe M';m.sub='Championnat par équipe · Masculin';}
+  if(c.key==='equipe'&&/Féminin/.test(c.label||'')){m.label='Ch. Équipe F';m.sub='Championnat par équipe · Féminin';}
+  return m;}
 let PROFILE=null;
 const clampPct=x=>Math.max(0,Math.min(100,Math.round(x)));
 const fmtPts=x=>{const v=Math.round(x*10)/10;return (v>0?'+':'')+String(v).replace('.',',');};
@@ -904,7 +909,7 @@ function compHighlights(c){const hi=[];
   return hi;}
 function compView(c){
   const n=c.V+c.D,wp=c.winpct;
-  const meta=COMP_META[c.key]||{label:c.label,sub:''};
+  const meta=compMeta(c);
   const v={key:c.key,label:meta.label,sub:meta.sub,
     rings:[{label:'Victoires',pct:wp,sub:c.V+'V / '+c.D+'D',foot:n+' parties',color:'win'},
            {label:'Perfs',pct:(c.perf+c.cperf)?clampPct(c.perf/(c.perf+c.cperf)*100):0,sub:c.perf+'P · '+c.cperf+'C',foot:'écart mensuel',color:'acc'},
@@ -937,7 +942,7 @@ function saisonView(p){const s=p.saison,c=p.classement,hasBase=c.debut!=null,av=
            {v:hasBase?fmtPts(delta):'—',l:'Progression',x:hasBase?("<span class='o'>officiel "+fmtPts(deltaOff)+'</span>'):"<span class='o'>pas d'historique</span>",cls:'up'}],
     highlights:[...(s.best?[{kind:'win',tag:(s.best.delta>0?'★ Meilleure perf':'Meilleure victoire'),delta:fmtGap(s.best.delta),opp:s.best.opp,cls:'mensuel '+s.best.opp_cls+' vs '+s.best.my,meta:s.best.comp+' · '+s.best.date}]:[]),
                 ...(s.worst?[{kind:'lose',tag:(-s.worst.delta<0?'Plus gros contre':'Défaite la + lourde'),delta:fmtGap(-s.worst.delta),opp:s.worst.opp,cls:'mensuel '+s.worst.opp_cls+' vs '+s.worst.my,meta:s.worst.comp+' · '+s.worst.date}]:[])],
-    bars:{title:'Répartition par compétition',rows:p.competitions.map(c=>({name:(COMP_META[c.key]||{label:c.label}).label,sub:'',w:c.V,l:c.D}))}};
+    bars:{title:'Répartition par compétition',rows:p.competitions.map(c=>({name:compMeta(c).label,sub:'',w:c.V,l:c.D}))}};
 }
 function adapt(p){PROFILE=p;
   const tl=p.timeline||[];
