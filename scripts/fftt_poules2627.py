@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 Poules régionales phase 1 2026/2027 avec équipe ACBB.
-Source poules : PDF officiel Ligue IDF "2026-2027 - CdF - Poules Phase 1 V.26-07-10"
+Sources poules :
+- PDF Ligue IDF "2026-2027 - CdF - Poules Phase 1 V.26-07-10" (poules regionales)
+- PDF CD92 "POULES CHPT EQUIPES PHASE 1_26_27_v 13 07 2026" (departemental,
+  attribution verifiee par coordonnees pdfplumber : F3=PRD p2, M7=PR p3,
+  M6=PR p4, M10/M11/M8/M9=D1 p1-4, M15/M17/M12/M13/M16/M14=D2 p1-6)
 (V.26-07-10 : en R3M p1, VINCENNOIS TT 2 remplace ADAMOIS TT 1 — seul changement ACBB vs V.26-07-09)
 (saisi manuellement — vérifié 4/4 poules ACBB : R1D p2, R1M p4, R2M p3, R3M p1).
 Niveau moyen 25/26 : compos phase 2 archivées (data/archive/2025-2026/phase-2/).
@@ -17,6 +21,8 @@ def nrm(s):
     s = unicodedata.normalize('NFD', s).encode('ascii', 'ignore').decode().upper()
     s = re.sub(r'\bST\b', 'SAINT', s)
     s = re.sub(r'[^A-Z0-9 ]', ' ', s)
+    s = re.sub(r'\bT T\b', 'TT', s)
+    s = re.sub(r'\bE P\b', 'EP', s)
     return re.sub(r'\s+', ' ', s).strip()
 
 DIVLBL = {
@@ -86,6 +92,72 @@ POULES = [
         (3, 'VITRY ES', 1, '94'), (4, 'PING PARIS 14', 1, '75'),
         (5, 'VINCENNOIS TT', 2, '94'), (6, 'PONTAULT UMS TT', 5, '77'),
         (7, 'BOULOGNE BILLANCOURT AC', 5, '92'), (8, 'STAINS ES-PIERREFITTE AS', 1, '93')]),
+    # ---- Départemental 92 (PDF CD92 v13/07/2026) — dép='92' partout
+    dict(division='Pré-Régionale Dames (92)', poule=2, acbb='F3', genre='F', pos=7, cal='sam', teams=[
+        (1, 'CSM CLAMART', 1, '92'), (2, 'RUEIL ATHLETIC', 3, '92'),
+        (3, 'TTMC CHATILLON', 2, '92'), (4, 'COURBEVOIE STT', 5, '92'),
+        (5, 'ES NANTERRE', 1, '92'), (7, 'BOULOGNE BILLAN', 3, '92'),
+        (8, 'SCEAUX TT', 1, '92')]),
+    dict(division='Pré-Régionale Messieurs (92)', poule=3, acbb='M7', genre='M', pos=5, teams=[
+        (1, 'BOIS COLOMBES S', 5, '92'), (2, 'CLAMART CSM', 4, '92'),
+        (3, 'TTMC CHATILLON', 5, '92'), (4, 'CS CLICHY TT', 1, '92'),
+        (5, 'BOULOGNE BILLAN', 7, '92'), (6, 'LEVALLOIS SPORT', 11, '92'),
+        (7, 'NEUILLY ASPN', 5, '92'), (8, 'ISSEENNE E P', 4, '92')]),
+    dict(division='Pré-Régionale Messieurs (92)', poule=4, acbb='M6', genre='M', pos=1, teams=[
+        (1, 'BOULOGNE BILLAN', 6, '92'), (2, 'ASNIERES TT', 4, '92'),
+        (3, 'TTMC CHATILLON', 6, '92'), (4, 'COURBEVOIE STT', 9, '92'),
+        (5, 'SM MONTROUGE', 1, '92'), (6, 'USM MALAKOFF', 4, '92'),
+        (7, 'RUEIL ATHLETIC', 6, '92'), (8, 'SCEAUX TT', 2, '92')]),
+    dict(division='D1 Messieurs (92)', poule=1, acbb='M10', genre='M', pos=6, teams=[
+        (1, 'MEUDON AS', 4, '92'), (2, 'PLESSIS ROBINS.', 4, '92'),
+        (3, 'TTMC CHATILLON', 8, '92'), (4, 'NANTERRE ES', 2, '92'),
+        (5, 'SM MONTROUGE', 2, '92'), (6, 'BOULOGNE BILLAN', 10, '92'),
+        (7, 'STADE DE VANVES', 1, '92'), (8, 'ISSEENNE E P', 7, '92')]),
+    dict(division='D1 Messieurs (92)', poule=2, acbb='M11', genre='M', pos=7, teams=[
+        (1, 'PUTEAUX TT CSM', 3, '92'), (2, 'ASNIERES TT', 5, '92'),
+        (3, 'RUEIL ATHLETIC', 11, '92'), (4, 'ISSEENNE E P', 6, '92'),
+        (5, 'MEUDON AS', 3, '92'), (6, 'PLESSIS ROBINS.', 3, '92'),
+        (7, 'BOULOGNE BILLAN', 11, '92'), (8, 'BOURG LA REINE', 2, '92')]),
+    dict(division='D1 Messieurs (92)', poule=3, acbb='M8', genre='M', pos=5, teams=[
+        (1, 'BOIS COLOMBES S', 7, '92'), (2, 'PLESSIS ROBINS.', 2, '92'),
+        (3, 'AS FONTENAY TT', 1, '92'), (4, 'CHATENAY ASVTT', 4, '92'),
+        (5, 'BOULOGNE BILLAN', 8, '92'), (6, 'LEVALLOIS SPORT', 13, '92'),
+        (7, 'RUEIL ATHLETIC', 10, '92'), (8, 'SCEAUX TT', 3, '92')]),
+    dict(division='D1 Messieurs (92)', poule=4, acbb='M9', genre='M', pos=2, teams=[
+        (1, 'BOIS COLOMBES S', 6, '92'), (2, 'BOULOGNE BILLAN', 9, '92'),
+        (3, 'TTMC CHATILLON', 7, '92'), (4, 'CHATENAY ASVTT', 5, '92'),
+        (5, 'SM MONTROUGE', 3, '92'), (6, 'LEVALLOIS SPORT', 14, '92'),
+        (7, 'RUEIL ATHLETIC', 8, '92'), (8, 'NANTERRE ES', 3, '92')]),
+    dict(division='D2 Messieurs (92)', poule=1, acbb='M15', genre='M', pos=1, teams=[
+        (1, 'BOULOGNE BILLAN', 15, '92'), (2, 'USM MALAKOFF', 6, '92'),
+        (3, 'RUEIL ATHLETIC', 13, '92'), (4, 'COURBEVOIE STT', 13, '92'),
+        (5, 'ANTONY SPORT TT', 5, '92'), (6, 'PLESSIS ROBINS.', 5, '92'),
+        (7, 'NEUILLY ASPN', 11, '92')]),
+    dict(division='D2 Messieurs (92)', poule=2, acbb='M17', genre='M', pos=2, teams=[
+        (1, 'MEUDON AS', 6, '92'), (2, 'BOULOGNE BILLAN', 17, '92'),
+        (3, 'COLOMBIENNE ES', 4, '92'), (4, 'COURBEVOIE STT', 15, '92'),
+        (5, 'BOIS COLOMBES S', 8, '92'), (6, 'CLAMART CSM', 8, '92'),
+        (7, 'RUEIL ATHLETIC', 16, '92')]),
+    dict(division='D2 Messieurs (92)', poule=3, acbb='M12', genre='M', pos=3, teams=[
+        (1, 'ANTONY SPORT TT', 6, '92'), (2, 'VILLENEUVE LA G', 1, '92'),
+        (3, 'BOULOGNE BILLAN', 12, '92'), (4, 'BOURG LA REINE', 3, '92'),
+        (5, 'ASNIERES TT', 9, '92'), (6, 'PLESSIS ROBINS.', 7, '92'),
+        (7, 'STADE DE VANVES', 2, '92')]),
+    dict(division='D2 Messieurs (92)', poule=4, acbb='M13', genre='M', pos=6, teams=[
+        (1, 'SM MONTROUGE', 4, '92'), (2, 'USM MALAKOFF', 5, '92'),
+        (3, 'VOLTIGEURS', 5, '92'), (4, 'CS CLICHY TT', 5, '92'),
+        (5, 'BOIS COLOMBES S', 10, '92'), (6, 'BOULOGNE BILLAN', 13, '92'),
+        (7, 'AS FONTENAY TT', 3, '92')]),
+    dict(division='D2 Messieurs (92)', poule=5, acbb='M16', genre='M', pos=3, teams=[
+        (1, 'ANTONY SPORT TT', 8, '92'), (2, 'LEVALLOIS SPORT', 16, '92'),
+        (3, 'BOULOGNE BILLAN', 16, '92'), (4, 'CHATENAY ASVTT', 6, '92'),
+        (5, 'PUTEAUX TT CSM', 5, '92'), (6, 'CLAMART CSM', 7, '92'),
+        (7, 'LA GARENNE COLO', 4, '92')]),
+    dict(division='D2 Messieurs (92)', poule=6, acbb='M14', genre='M', pos=3, teams=[
+        (1, 'ASNIERES TT', 10, '92'), (2, 'VILLENEUVE LA G', 2, '92'),
+        (3, 'BOULOGNE BILLAN', 14, '92'), (4, 'COURBEVOIE STT', 14, '92'),
+        (5, 'PUTEAUX TT CSM', 4, '92'), (6, 'VOLTIGEURS', 2, '92'),
+        (7, 'RUEIL ATHLETIC', 14, '92')]),
 ]
 
 # Grille des rencontres (identique aux 4 divisions, receveur en premier)
@@ -96,10 +168,14 @@ GRID = [
     [(1,2),(7,3),(6,4),(8,5)],
 ]
 DATES = ['19/09/2026', '03/10/2026', '17/10/2026', '07/11/2026',
-         '21/11/2026', '05/12/2026', '12/12/2026']
+         '21/11/2026', '05/12/2026', '12/12/2026']          # samedis (régional + dames)
+DATES_VEN = ['18/09/2026', '02/10/2026', '16/10/2026', '06/11/2026',
+             '20/11/2026', '04/12/2026', '11/12/2026']      # vendredis (départemental M)
 
-out = {'source': 'Poules Phase 1 V.26-07-10 (Ligue IDF)', 'dates': DATES, 'poules': []}
+out = {'source': 'Ligue IDF V.26-07-10 + CD92 v13/07/2026', 'dates': DATES, 'poules': []}
 for P in POULES:
+    dept92 = '(92)' in P['division']
+    dates = DATES if (not dept92 or P.get('cal') == 'sam') else DATES_VEN
     teams = []
     for pos, club, num, dep in P['teams']:
         hit = find(P['genre'], club, num)
@@ -107,17 +183,19 @@ for P in POULES:
         teams.append({'pos': pos, 'name': f'{club} {num}', 'dept': dep, 'acbb': acbb,
                       's25': ({'avg': hit['avg'], 'div': hit['div'], 'rank': hit['rank'],
                                'nm': hit['nm']} if hit else None)})
+    filled = {t['pos'] for t in teams}
     cal = []
     for ji, matches in enumerate(GRID):
         for a, b in matches:
             if P['pos'] in (a, b):
                 opp = b if a == P['pos'] else a
-                cal.append({'j': ji + 1, 'date': DATES[ji], 'opp': opp,
-                            'dom': a == P['pos']})
+                cal.append({'j': ji + 1, 'date': dates[ji], 'opp': opp,
+                            'dom': a == P['pos'], 'exempt': opp not in filled})
     out['poules'].append({'division': P['division'], 'poule': P['poule'],
                           'acbb': P['acbb'], 'teams': teams, 'cal': cal})
 
 dst = os.path.join(ROOT, 'data/poules2627.json')
 json.dump(out, open(dst, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 known = sum(1 for p in out['poules'] for t in p['teams'] if t['s25'])
-print(f"OK -> {dst} · {known}/32 équipes avec niveau 25/26")
+tot = sum(len(p['teams']) for p in out['poules'])
+print(f"OK -> {dst} · {known}/{tot} équipes avec niveau 25/26 · {len(out['poules'])} poules")

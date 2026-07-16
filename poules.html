@@ -109,7 +109,7 @@
 <div class="hero">
   <div class="eyebrow">Espace sportive · Poules régionales · Phase 1 2026/2027</div>
   <h1>Nos <em>poules.</em></h1>
-  <div class="meta" id="srcMeta">Uniquement les poules avec une équipe ACBB.</div>
+  <div class="meta" id="srcMeta">Régional + départemental 92 — uniquement les poules avec une équipe ACBB. Départemental M le vendredi, Dames et régional le samedi.</div>
 </div>
 
 <section class="sec" id="poules"><div class="meta">chargement…</div></section>
@@ -181,6 +181,10 @@
       var byPos={}; P.teams.forEach(function(t){byPos[t.pos]=t;});
       var cal=P.cal.map(function(c){
         var o=byPos[c.opp]||{};
+        if(c.exempt||!o.name)
+          return '<div class="cal-j" style="opacity:.55"><div class="jt">J'+c.j+'<span class="dt">'+esc(c.date.slice(0,5))+'</span></div>'
+            +'<span class="lieu" style="background:rgba(255,255,255,0.07);color:var(--dim)">EXEMPT</span>'
+            +'<div class="opp" style="color:var(--dimmer)">repos</div></div>';
         return '<div class="cal-j"><div class="jt">J'+c.j+'<span class="dt">'+esc(c.date.slice(0,5))+'</span></div>'
           +'<span class="lieu '+(c.dom?'dom':'ext')+'">'+(c.dom?'DOM':'EXT')+'</span>'
           +'<div class="opp">'+esc(o.name||'?')+(o.s25?' <span style="color:var(--dimmer);font-family:JetBrains Mono,monospace;font-size:10px">('+o.s25.avg+')</span>':'')+'</div></div>';

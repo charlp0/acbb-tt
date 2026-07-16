@@ -1,5 +1,5 @@
 {
- "source": "Poules Phase 1 V.26-07-10 (Ligue IDF)",
+ "source": "Ligue IDF V.26-07-10 + CD92 v13/07/2026",
  "dates": [
   "19/09/2026",
   "03/10/2026",
@@ -102,43 +102,50 @@
      "j": 1,
      "date": "19/09/2026",
      "opp": 2,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 2,
      "date": "03/10/2026",
      "opp": 1,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 3,
      "date": "17/10/2026",
      "opp": 8,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 4,
      "date": "07/11/2026",
      "opp": 6,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 5,
      "date": "21/11/2026",
      "opp": 5,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 6,
      "date": "05/12/2026",
      "opp": 4,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 7,
      "date": "12/12/2026",
      "opp": 3,
-     "dom": true
+     "dom": true,
+     "exempt": false
     }
    ]
   },
@@ -224,43 +231,50 @@
      "j": 1,
      "date": "19/09/2026",
      "opp": 6,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 2,
      "date": "03/10/2026",
      "opp": 5,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 3,
      "date": "17/10/2026",
      "opp": 4,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 4,
      "date": "07/11/2026",
      "opp": 8,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 5,
      "date": "21/11/2026",
      "opp": 2,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 6,
      "date": "05/12/2026",
      "opp": 1,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 7,
      "date": "12/12/2026",
      "opp": 7,
-     "dom": false
+     "dom": false,
+     "exempt": false
     }
    ]
   },
@@ -366,43 +380,50 @@
      "j": 1,
      "date": "19/09/2026",
      "opp": 6,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 2,
      "date": "03/10/2026",
      "opp": 5,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 3,
      "date": "17/10/2026",
      "opp": 4,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 4,
      "date": "07/11/2026",
      "opp": 8,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 5,
      "date": "21/11/2026",
      "opp": 2,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 6,
      "date": "05/12/2026",
      "opp": 1,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 7,
      "date": "12/12/2026",
      "opp": 7,
-     "dom": false
+     "dom": false,
+     "exempt": false
     }
    ]
   },
@@ -508,43 +529,1963 @@
      "j": 1,
      "date": "19/09/2026",
      "opp": 2,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 2,
      "date": "03/10/2026",
      "opp": 1,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 3,
      "date": "17/10/2026",
      "opp": 8,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 4,
      "date": "07/11/2026",
      "opp": 6,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 5,
      "date": "21/11/2026",
      "opp": 5,
-     "dom": true
+     "dom": true,
+     "exempt": false
     },
     {
      "j": 6,
      "date": "05/12/2026",
      "opp": 4,
-     "dom": false
+     "dom": false,
+     "exempt": false
     },
     {
      "j": 7,
      "date": "12/12/2026",
      "opp": 3,
-     "dom": true
+     "dom": true,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "Pré-Régionale Dames (92)",
+   "poule": 2,
+   "acbb": "F3",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "CSM CLAMART 1",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 627,
+      "div": "PR Dames (92) p1",
+      "rank": 4,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 2,
+     "name": "RUEIL ATHLETIC 3",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 604,
+      "div": "PR Dames (92) p1",
+      "rank": 3,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 3,
+     "name": "TTMC CHATILLON 2",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 626,
+      "div": "PR Dames (92) p2",
+      "rank": 2,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 4,
+     "name": "COURBEVOIE STT 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 553,
+      "div": "PR Dames (92) p2",
+      "rank": 5,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 5,
+     "name": "ES NANTERRE 1",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 571,
+      "div": "PR Dames (92) p1",
+      "rank": 7,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 7,
+     "name": "BOULOGNE BILLAN 3",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 576,
+      "div": "PR Dames (92) p1",
+      "rank": 6,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 8,
+     "name": "SCEAUX TT 1",
+     "dept": "92",
+     "acbb": false,
+     "s25": null
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "opp": 2,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "opp": 1,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "opp": 8,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "opp": 6,
+     "dom": false,
+     "exempt": true
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "opp": 5,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "opp": 4,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "opp": 3,
+     "dom": true,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "Pré-Régionale Messieurs (92)",
+   "poule": 3,
+   "acbb": "M7",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "BOIS COLOMBES S 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1305,
+      "div": "PR (92) p4",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 2,
+     "name": "CLAMART CSM 4",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1233,
+      "div": "PR (92) p3",
+      "rank": 4,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 3,
+     "name": "TTMC CHATILLON 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1120,
+      "div": "PR (92) p2",
+      "rank": 6,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 4,
+     "name": "CS CLICHY TT 1",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1174,
+      "div": "PR (92) p4",
+      "rank": 2,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "BOULOGNE BILLAN 7",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 1113,
+      "div": "PR (92) p2",
+      "rank": 8,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 6,
+     "name": "LEVALLOIS SPORT 11",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1103,
+      "div": "D1 (92) p3",
+      "rank": 6,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "NEUILLY ASPN 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1203,
+      "div": "PR (92) p3",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 8,
+     "name": "ISSEENNE E P 4",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 961,
+      "div": "D1 (92) p2",
+      "rank": 1,
+      "nm": 7
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 4,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 3,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 2,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 1,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 7,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 6,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 8,
+     "dom": false,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "Pré-Régionale Messieurs (92)",
+   "poule": 4,
+   "acbb": "M6",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "BOULOGNE BILLAN 6",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 1105,
+      "div": "PR (92) p3",
+      "rank": 8,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 2,
+     "name": "ASNIERES TT 4",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1094,
+      "div": "PR (92) p1",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 3,
+     "name": "TTMC CHATILLON 6",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1214,
+      "div": "PR (92) p3",
+      "rank": 6,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 4,
+     "name": "COURBEVOIE STT 9",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1122,
+      "div": "PR (92) p2",
+      "rank": 4,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "SM MONTROUGE 1",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 919,
+      "div": "D1 (92) p2",
+      "rank": 5,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 6,
+     "name": "USM MALAKOFF 4",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 987,
+      "div": "D1 (92) p5",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "RUEIL ATHLETIC 6",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1307,
+      "div": "PR (92) p3",
+      "rank": 2,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 8,
+     "name": "SCEAUX TT 2",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1112,
+      "div": "PR (92) p4",
+      "rank": 5,
+      "nm": 7
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 8,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 7,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 6,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 5,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 4,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 3,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 2,
+     "dom": true,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "D1 Messieurs (92)",
+   "poule": 1,
+   "acbb": "M10",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "MEUDON AS 4",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 842,
+      "div": "D2 (92) p4",
+      "rank": 1,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 2,
+     "name": "PLESSIS ROBINS. 4",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 924,
+      "div": "D1 (92) p3",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 3,
+     "name": "TTMC CHATILLON 8",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 854,
+      "div": "D1 (92) p4",
+      "rank": 7,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 4,
+     "name": "NANTERRE ES 2",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1161,
+      "div": "PR (92) p1",
+      "rank": 8,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "SM MONTROUGE 2",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 866,
+      "div": "D1 (92) p1",
+      "rank": 5,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 6,
+     "name": "BOULOGNE BILLAN 10",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 901,
+      "div": "D1 (92) p3",
+      "rank": 5,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "STADE DE VANVES 1",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 777,
+      "div": "D1 (92) p2",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 8,
+     "name": "ISSEENNE E P 7",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 725,
+      "div": "D2 (92) p9",
+      "rank": 2,
+      "nm": 6
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 3,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 2,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 1,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 7,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 8,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 5,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 4,
+     "dom": true,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "D1 Messieurs (92)",
+   "poule": 2,
+   "acbb": "M11",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "PUTEAUX TT CSM 3",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 688,
+      "div": "D2 (92) p3",
+      "rank": 1,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 2,
+     "name": "ASNIERES TT 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1188,
+      "div": "PR (92) p4",
+      "rank": 8,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 3,
+     "name": "RUEIL ATHLETIC 11",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 825,
+      "div": "D2 (92) p2",
+      "rank": 1,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 4,
+     "name": "ISSEENNE E P 6",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1075,
+      "div": "D1 (92) p6",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "MEUDON AS 3",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 931,
+      "div": "D1 (92) p6",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 6,
+     "name": "PLESSIS ROBINS. 3",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 943,
+      "div": "D1 (92) p2",
+      "rank": 7,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "BOULOGNE BILLAN 11",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 1004,
+      "div": "D1 (92) p4",
+      "rank": 5,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 8,
+     "name": "BOURG LA REINE 2",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 861,
+      "div": "D1 (92) p6",
+      "rank": 5,
+      "nm": 7
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 2,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 1,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 8,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 6,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 5,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 4,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 3,
+     "dom": true,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "D1 Messieurs (92)",
+   "poule": 3,
+   "acbb": "M8",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "BOIS COLOMBES S 7",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 841,
+      "div": "D1 (92) p6",
+      "rank": 7,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 2,
+     "name": "PLESSIS ROBINS. 2",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1034,
+      "div": "D1 (92) p6",
+      "rank": 2,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 3,
+     "name": "AS FONTENAY TT 1",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 576,
+      "div": "D2 (92) p7",
+      "rank": 1,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 4,
+     "name": "CHATENAY ASVTT 4",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 972,
+      "div": "D1 (92) p5",
+      "rank": 6,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "BOULOGNE BILLAN 8",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 1161,
+      "div": "PR (92) p4",
+      "rank": 4,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 6,
+     "name": "LEVALLOIS SPORT 13",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 868,
+      "div": "D1 (92) p6",
+      "rank": 6,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "RUEIL ATHLETIC 10",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 721,
+      "div": "D2 (92) p1",
+      "rank": 1,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 8,
+     "name": "SCEAUX TT 3",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 944,
+      "div": "D1 (92) p4",
+      "rank": 4,
+      "nm": 7
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 4,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 3,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 2,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 1,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 7,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 6,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 8,
+     "dom": false,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "D1 Messieurs (92)",
+   "poule": 4,
+   "acbb": "M9",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "BOIS COLOMBES S 6",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 815,
+      "div": "D1 (92) p2",
+      "rank": 4,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 2,
+     "name": "BOULOGNE BILLAN 9",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 1315,
+      "div": "PR (92) p1",
+      "rank": 2,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 3,
+     "name": "TTMC CHATILLON 7",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 934,
+      "div": "D1 (92) p5",
+      "rank": 4,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 4,
+     "name": "CHATENAY ASVTT 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 655,
+      "div": "D2 (92) p11",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "SM MONTROUGE 3",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 1154,
+      "div": "D1 (92) p3",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 6,
+     "name": "LEVALLOIS SPORT 14",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 884,
+      "div": "D1 (92) p1",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "RUEIL ATHLETIC 8",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 996,
+      "div": "D1 (92) p4",
+      "rank": 2,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 8,
+     "name": "NANTERRE ES 3",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 689,
+      "div": "D2 (92) p10",
+      "rank": 1,
+      "nm": 7
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 7,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 6,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 5,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 4,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 3,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 8,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 1,
+     "dom": false,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "D2 Messieurs (92)",
+   "poule": 1,
+   "acbb": "M15",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "BOULOGNE BILLAN 15",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 636,
+      "div": "D2 (92) p10",
+      "rank": 5,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 2,
+     "name": "USM MALAKOFF 6",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 524,
+      "div": "D2 (92) p10",
+      "rank": 7,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 3,
+     "name": "RUEIL ATHLETIC 13",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 728,
+      "div": "D2 (92) p9",
+      "rank": 3,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 4,
+     "name": "COURBEVOIE STT 13",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 714,
+      "div": "D2 (92) p4",
+      "rank": 3,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 5,
+     "name": "ANTONY SPORT TT 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 888,
+      "div": "D1 (92) p5",
+      "rank": 7,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 6,
+     "name": "PLESSIS ROBINS. 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 513,
+      "div": "D2 (92) p2",
+      "rank": 7,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 7,
+     "name": "NEUILLY ASPN 11",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 626,
+      "div": "D2 (92) p11",
+      "rank": 5,
+      "nm": 7
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 8,
+     "dom": true,
+     "exempt": true
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 7,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 6,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 5,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 4,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 3,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 2,
+     "dom": true,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "D2 Messieurs (92)",
+   "poule": 2,
+   "acbb": "M17",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "MEUDON AS 6",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 723,
+      "div": "D2 (92) p8",
+      "rank": 1,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 2,
+     "name": "BOULOGNE BILLAN 17",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 609,
+      "div": "D2 (92) p4",
+      "rank": 6,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 3,
+     "name": "COLOMBIENNE ES 4",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 618,
+      "div": "D2 (92) p8",
+      "rank": 4,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 4,
+     "name": "COURBEVOIE STT 15",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 600,
+      "div": "D2 (92) p11",
+      "rank": 7,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "BOIS COLOMBES S 8",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 856,
+      "div": "D1 (92) p5",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 6,
+     "name": "CLAMART CSM 8",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 652,
+      "div": "D2 (92) p1",
+      "rank": 5,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 7,
+     "name": "RUEIL ATHLETIC 16",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 625,
+      "div": "D2 (92) p7",
+      "rank": 3,
+      "nm": 6
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 7,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 6,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 5,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 4,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 3,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 8,
+     "dom": true,
+     "exempt": true
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 1,
+     "dom": false,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "D2 Messieurs (92)",
+   "poule": 3,
+   "acbb": "M12",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "ANTONY SPORT TT 6",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 724,
+      "div": "D2 (92) p12",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 2,
+     "name": "VILLENEUVE LA G 1",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 563,
+      "div": "D2 (92) p5",
+      "rank": 7,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 3,
+     "name": "BOULOGNE BILLAN 12",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 762,
+      "div": "D2 (92) p8",
+      "rank": 5,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 4,
+     "name": "BOURG LA REINE 3",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 788,
+      "div": "D1 (92) p1",
+      "rank": 7,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "ASNIERES TT 9",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 577,
+      "div": "D2 (92) p3",
+      "rank": 5,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 6,
+     "name": "PLESSIS ROBINS. 7",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 725,
+      "div": "D2 (92) p10",
+      "rank": 2,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "STADE DE VANVES 2",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 574,
+      "div": "D2 (92) p1",
+      "rank": 7,
+      "nm": 6
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 6,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 5,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 4,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 8,
+     "dom": true,
+     "exempt": true
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 2,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 1,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 7,
+     "dom": false,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "D2 Messieurs (92)",
+   "poule": 4,
+   "acbb": "M13",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "SM MONTROUGE 4",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 576,
+      "div": "D2 (92) p7",
+      "rank": 5,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 2,
+     "name": "USM MALAKOFF 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 814,
+      "div": "D1 (92) p3",
+      "rank": 7,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 3,
+     "name": "VOLTIGEURS 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 678,
+      "div": "D2 (92) p12",
+      "rank": 7,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 4,
+     "name": "CS CLICHY TT 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 575,
+      "div": "D2 (92) p2",
+      "rank": 4,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 5,
+     "name": "BOIS COLOMBES S 10",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 615,
+      "div": "D2 (92) p8",
+      "rank": 7,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 6,
+     "name": "BOULOGNE BILLAN 13",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 625,
+      "div": "D2 (92) p11",
+      "rank": 2,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "AS FONTENAY TT 3",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 800,
+      "div": "D2 (92) p12",
+      "rank": 1,
+      "nm": 7
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 3,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 2,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 1,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 7,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 8,
+     "dom": false,
+     "exempt": true
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 5,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 4,
+     "dom": true,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "D2 Messieurs (92)",
+   "poule": 5,
+   "acbb": "M16",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "ANTONY SPORT TT 8",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 561,
+      "div": "D2 (92) p9",
+      "rank": 6,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 2,
+     "name": "LEVALLOIS SPORT 16",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 615,
+      "div": "D2 (92) p5",
+      "rank": 4,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 3,
+     "name": "BOULOGNE BILLAN 16",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 560,
+      "div": "D2 (92) p5",
+      "rank": 3,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 4,
+     "name": "CHATENAY ASVTT 6",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 615,
+      "div": "D2 (92) p7",
+      "rank": 2,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 5,
+     "name": "PUTEAUX TT CSM 5",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 558,
+      "div": "D2 (92) p2",
+      "rank": 5,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 6,
+     "name": "CLAMART CSM 7",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 881,
+      "div": "D1 (92) p1",
+      "rank": 2,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "LA GARENNE COLO 4",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 518,
+      "div": "D2 (92) p4",
+      "rank": 7,
+      "nm": 5
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 6,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 5,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 4,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 8,
+     "dom": true,
+     "exempt": true
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 2,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 1,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 7,
+     "dom": false,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "D2 Messieurs (92)",
+   "poule": 6,
+   "acbb": "M14",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "ASNIERES TT 10",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 591,
+      "div": "D2 (92) p5",
+      "rank": 6,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 2,
+     "name": "VILLENEUVE LA G 2",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 559,
+      "div": "D2 (92) p7",
+      "rank": 7,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 3,
+     "name": "BOULOGNE BILLAN 14",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 654,
+      "div": "D2 (92) p12",
+      "rank": 4,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 4,
+     "name": "COURBEVOIE STT 14",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 609,
+      "div": "D2 (92) p8",
+      "rank": 3,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 5,
+     "name": "PUTEAUX TT CSM 4",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 738,
+      "div": "D2 (92) p1",
+      "rank": 2,
+      "nm": 6
+     }
+    },
+    {
+     "pos": 6,
+     "name": "VOLTIGEURS 2",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 814,
+      "div": "D1 (92) p6",
+      "rank": 8,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "RUEIL ATHLETIC 14",
+     "dept": "92",
+     "acbb": false,
+     "s25": {
+      "avg": 700,
+      "div": "D2 (92) p12",
+      "rank": 5,
+      "nm": 7
+     }
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "opp": 6,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "opp": 5,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "opp": 4,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "opp": 8,
+     "dom": true,
+     "exempt": true
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "opp": 2,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "opp": 1,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "opp": 7,
+     "dom": false,
+     "exempt": false
     }
    ]
   }
