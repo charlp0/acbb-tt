@@ -12,8 +12,8 @@
 <link rel="apple-touch-icon" href="logo.png">
 <meta property="og:title" content="ACBB Tennis de Table — Récap joueur 2025/2026">
 <meta property="og:description" content="Classement, progression, performances et récap complet de la saison. Trouve ta fiche et partage ton récap !">
-<meta property="og:image" content="https://charlp0.github.io/acbb-tt/logo.png">
-<meta property="og:url" content="https://charlp0.github.io/acbb-tt/joueur.html">
+<meta property="og:image" content="https://team.acbb-tt.fr/logo.png">
+<meta property="og:url" content="https://team.acbb-tt.fr/joueur.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ACBB Tennis de Table">
 <meta name="twitter:card" content="summary">
@@ -1082,11 +1082,11 @@ function shareText(){
   var d=(off!=null&&deb!=null)?(off-deb):null;
   return 'Mon récap ACBB TT 2025/26 🏓 '+((PROFILE&&PROFILE.prenom)||'')+' '+((PROFILE&&PROFILE.nom)||'')
     +(off!=null?' — officiel 26/27 : '+off:'')+(d!=null?' ('+(d>0?'+':'')+d+' sur la saison !)':'')
-    +' — Fais ton récap 👉 https://charlp0.github.io/acbb-tt/joueurs.html';
+    +' — Fais ton récap 👉 https://team.acbb-tt.fr/joueurs.html';
 }
 function nativeShare(){
   if(_shareFile&&navigator.share&&navigator.canShare&&navigator.canShare({files:[_shareFile]})){
-    navigator.share({files:[_shareFile],title:'Mon récap ACBB TT',text:shareText(),url:'https://charlp0.github.io/acbb-tt/joueurs.html'}).catch(()=>{}); return true;
+    navigator.share({files:[_shareFile],title:'Mon récap ACBB TT',text:shareText(),url:'https://team.acbb-tt.fr/joueurs.html'}).catch(()=>{}); return true;
   }
   return false;
 }
