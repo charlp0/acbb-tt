@@ -110,7 +110,7 @@ def main():
     MUT_LOOKUP=[('COHEN MELKA','Eytan','9258246'),('VERDIER','Mahé','9253816'),('SERGENT','Enzo','9540663'),
                 ('INTINS','Arthur','9248896'),('STEMLER','Grégoire','9254353'),('INTINS','David','5412783'),
                 ('DELORY','Virgile','9241720'),('BENCHAT','Marius','1421042'),('BOUDJADJA','Nassim','9265298')]
-    MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('ARGUS','Daniel',1600),('PORTOKALLIS','Antonis',1500),('BOTELLA','Milo',950)]   # BOTELLA : pas encore sur FFTT, 950 fixé par Charles (15/07/2026)
+    MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('ARGUT','Daniel',1600),('PORTOKALLIS','Antonis',1500),('BOTELLA','Milo',950)]   # BOTELLA : pas encore sur FFTT, 950 fixé par Charles (15/07/2026)
     for nom,pre,lic in MUT_LOOKUP:
         h=histo(lic); time.sleep(0.1); men=mensuel_of(lic)
         win=[{'l':e['lab'],'pt':e['pt']} for e in h[-WINDOW:]]
