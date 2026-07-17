@@ -890,7 +890,7 @@ function init(){
 
 
 /* ============ ADAPTATEUR JSON -> VUES + BOOT ============ */
-const COMP_META={equipe:{label:'Ch. Équipe',sub:'Championnat par équipe'},equipe_f:{label:'Ch. Équipe F',sub:'Championnat par équipe · Féminin'},criterium:{label:'Critérium',sub:'Individuel'},paris:{label:'Ch. Paris',sub:'Championnat de Paris'},tournoi:{label:'Tournois',sub:''},coupe:{label:'Coupe',sub:'par équipes'},autre:{label:'Autres',sub:''}};
+const COMP_META={equipe:{label:'Ch. Équipe',sub:'Championnat par équipe'},equipe_f:{label:'Ch. Équipe F',sub:'Championnat par équipe · Féminin'},veterans:{label:'Vétérans',sub:'Championnat vétérans'},challenge:{label:'Challenge',sub:'Challenge de clubs'},criterium:{label:'Critérium',sub:'Individuel'},paris:{label:'Ch. Paris',sub:'Championnat de Paris'},tournoi:{label:'Tournois',sub:''},coupe:{label:'Coupe',sub:'par équipes'},autre:{label:'Autres',sub:''}};
 // joueuse avec les deux championnats : préciser M sur l'onglet équipe
 function compMeta(c){const m=Object.assign({},COMP_META[c.key]||{label:c.label,sub:''});
   if(c.key==='equipe'&&PROFILE&&(PROFILE.competitions||[]).some(x=>x.key==='equipe_f')){m.label='Ch. Équipe M';m.sub='Championnat par équipe · Masculin';}
