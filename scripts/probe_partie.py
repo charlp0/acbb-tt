@@ -1,20 +1,31 @@
 # -*- coding: utf-8 -*-
-"""Sonde one-shot : xml_partie / xml_partie_mysql servent-ils encore 2025/26 ?
-Test sur la licence de Virginie Le Bourg (9260920). Usage CI (FFTT_ID/FFTT_PWD)."""
-import re, importlib.util
+"""Sonde 2 : correspondance codechamp -> catégorie de compétition.
+Croise les parties mysql (codechamp) avec les catégories déjà connues des fiches."""
+import json, re, unicodedata, importlib.util, collections
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
-LIC = '9260920'
-for ep, param in (('xml_partie.php', 'numlic'), ('xml_partie_mysql.php', 'licence')):
-    try:
-        r = fb.get(f"{ep}?{param}={LIC}")
-        parties = re.findall(r'<partie>(.*?)</partie>', r, re.S)
-        dates = sorted(set(re.findall(r'<date>(.*?)</date>', r)))
-        eprs = sorted(set(re.findall(r'<epreuve>(.*?)</epreuve>', r)))
-        print(f"== {ep} : {len(parties)} parties")
-        print(f"   dates : {dates[:3]} ... {dates[-3:] if len(dates)>3 else ''}")
-        print(f"   epreuves : {eprs}")
-        if parties: print(f"   exemple brut : {parties[0][:400]}")
-        if len(parties)>1: print(f"   exemple 2   : {parties[-1][:400]}")
-    except Exception as e:
-        print(f"== {ep} : ERREUR {e}")
+def nrm(s):
+    s = unicodedata.normalize('NFD', s or '').encode('ascii', 'ignore').decode().upper()
+    return re.sub(r'[^A-Z]', '', s)
+def tg(b, t):
+    m = re.search('<'+t+'>(.*?)</'+t+'>', b, re.S); return m.group(1).strip() if m else ''
+# échantillon varié : Virginie (vétérans+challenge+équipes M/F), Rostin (jeune),
+# Perrot (critérium+paris), Lescaudron (tout), Savan (gros volume)
+LICS = ['9260920', '9261240', '7824630', '7523006', '9256836']
+mat = collections.Counter(); ex = {}
+for lic in LICS:
+    try: prof = json.load(open(f'data/players/{lic}.json'))
+    except Exception: continue
+    cat = {}
+    for c in prof.get('competitions', []):
+        for m in c['matches']:
+            cat[(m['date'], nrm(m['opp']))] = c['key']
+    r = fb.get(f"xml_partie_mysql.php?licence={lic}")
+    for b in re.findall(r'<partie>(.*?)</partie>', r, re.S):
+        code = tg(b, 'codechamp'); date = tg(b, 'date'); adv = tg(b, 'advnompre')
+        k = cat.get((date, nrm(adv)), '?')
+        mat[(code, k)] += 1
+        if (code, k) not in ex: ex[(code, k)] = f"{date} vs {adv}"
+print("code | catégorie fiche | n | exemple")
+for (code, k), n in sorted(mat.items()):
+    print(f"  {code:>4} | {k:<10} | {n:>3} | {ex[(code,k)]}")
