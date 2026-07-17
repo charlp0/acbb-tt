@@ -11,6 +11,403 @@
  ],
  "poules": [
   {
+   "division": "Pro B Messieurs",
+   "poule": null,
+   "acbb": "M1",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "LILLE METROPOLE TT",
+     "dept": "59",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 2,
+     "name": "PROVILLE ASL",
+     "dept": "59",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 3,
+     "name": "CAEN TTC",
+     "dept": "14",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 4,
+     "name": "PONTOISE-CERGY AS",
+     "dept": "95",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 5,
+     "name": "AMIENS STT",
+     "dept": "80",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 6,
+     "name": "FREJUS ASML",
+     "dept": "83",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 7,
+     "name": "COURBEVOIE SPORT TT",
+     "dept": "92",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 8,
+     "name": "LE HAVRE ATT",
+     "dept": "76",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 9,
+     "name": "BOULOGNE-BILLANCOURT AC",
+     "dept": "92",
+     "acbb": true,
+     "s25": null
+    },
+    {
+     "pos": 10,
+     "name": "PAYS COMPIEGNOIS TT",
+     "dept": "60",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 11,
+     "name": "NANTES TT",
+     "dept": "44",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 12,
+     "name": "MIRAMAS AS TT",
+     "dept": "13",
+     "acbb": false,
+     "s25": null
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "sept.",
+     "oppName": "PONTOISE-CERGY AS",
+     "dom": false
+    },
+    {
+     "j": 2,
+     "date": "sept.",
+     "oppName": "CAEN TTC",
+     "dom": true
+    },
+    {
+     "j": 3,
+     "date": "oct.",
+     "oppName": "PROVILLE ASL",
+     "dom": false
+    },
+    {
+     "j": 4,
+     "date": "oct.",
+     "oppName": "LILLE METROPOLE TT",
+     "dom": true
+    },
+    {
+     "j": 5,
+     "date": "nov.",
+     "oppName": "NANTES TT",
+     "dom": false
+    },
+    {
+     "j": 6,
+     "date": "nov.",
+     "oppName": "PAYS COMPIEGNOIS TT",
+     "dom": true
+    },
+    {
+     "j": 7,
+     "date": "nov.",
+     "oppName": "MIRAMAS AS TT",
+     "dom": false
+    },
+    {
+     "j": 8,
+     "date": "nov.",
+     "oppName": "LE HAVRE ATT",
+     "dom": false
+    },
+    {
+     "j": 9,
+     "date": "dec.",
+     "oppName": "COURBEVOIE SPORT TT",
+     "dom": true
+    },
+    {
+     "j": 10,
+     "date": "dec.",
+     "oppName": "FREJUS ASML",
+     "dom": false
+    },
+    {
+     "j": 11,
+     "date": "dec.",
+     "oppName": "AMIENS STT",
+     "dom": true
+    }
+   ]
+  },
+  {
+   "division": "Nationale 1 Messieurs",
+   "poule": 2,
+   "acbb": "M2",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "NICE CAVIGAL 1",
+     "dept": "06",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 2,
+     "name": "DOUAI TT 1",
+     "dept": "59",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 3,
+     "name": "BOULOGNE BILLANCOURT AC 2",
+     "dept": "92",
+     "acbb": true,
+     "s25": null
+    },
+    {
+     "pos": 4,
+     "name": "ISTRES TT 1",
+     "dept": "13",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 5,
+     "name": "BORDEAUX CAM 1",
+     "dept": "33",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 6,
+     "name": "SAINT QUENTIN TT 1",
+     "dept": "02",
+     "acbb": false,
+     "s25": {
+      "avg": 1079,
+      "div": "R3 M p8",
+      "rank": 6,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 7,
+     "name": "4S TOURS 2",
+     "dept": "37",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 8,
+     "name": "AVION TT 1",
+     "dept": "62",
+     "acbb": false,
+     "s25": null
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "opp": 6,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "opp": 5,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "opp": 4,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "opp": 8,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "opp": 2,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "opp": 1,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "opp": 7,
+     "dom": false,
+     "exempt": false
+    }
+   ]
+  },
+  {
+   "division": "Nationale 2 Dames",
+   "poule": 3,
+   "acbb": "F1",
+   "teams": [
+    {
+     "pos": 1,
+     "name": "MAIZIERES LES METZ 2",
+     "dept": "57",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 2,
+     "name": "AL GRAND QUEVILLY / GRAVIGNY TT 2",
+     "dept": "76",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 3,
+     "name": "AC PLERIN 1",
+     "dept": "22",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 4,
+     "name": "SAINT MAUR VGA 1",
+     "dept": "94",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 5,
+     "name": "VALENCIENNES USTT 1",
+     "dept": "59",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 6,
+     "name": "BOIS-GUILLAUME / HONGUEMAR-LANDIN 1",
+     "dept": "76",
+     "acbb": false,
+     "s25": null
+    },
+    {
+     "pos": 7,
+     "name": "BOULOGNE BILLANCOURT AC / MARLY 1",
+     "dept": "92",
+     "acbb": true,
+     "s25": {
+      "avg": 1061,
+      "div": "PN Dames p2",
+      "rank": 2,
+      "nm": 7
+     }
+    },
+    {
+     "pos": 8,
+     "name": "LILLE METROPOLE TT 1",
+     "dept": "59",
+     "acbb": false,
+     "s25": null
+    }
+   ],
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "opp": 2,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "opp": 1,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "opp": 8,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "opp": 6,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "opp": 5,
+     "dom": true,
+     "exempt": false
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "opp": 4,
+     "dom": false,
+     "exempt": false
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "opp": 3,
+     "dom": true,
+     "exempt": false
+    }
+   ]
+  },
+  {
    "division": "Régionale 1 Dames",
    "poule": 2,
    "acbb": "F2",

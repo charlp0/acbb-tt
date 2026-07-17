@@ -191,6 +191,10 @@
 
       var byPos={}; P.teams.forEach(function(t){byPos[t.pos]=t;});
       var cal=P.cal.map(function(c){
+        if(c.oppName)
+          return '<div class="cal-j"><div class="jt">J'+c.j+'<span class="dt">'+esc(c.date)+'</span></div>'
+            +'<span class="lieu '+(c.dom?'dom':'ext')+'">'+(c.dom?'DOM':'EXT')+'</span>'
+            +'<div class="opp">'+esc(c.oppName)+'</div></div>';
         var o=byPos[c.opp]||{};
         if(c.exempt||!o.name)
           return '<div class="cal-j" style="opacity:.55"><div class="jt">J'+c.j+'<span class="dt">'+esc(c.date.slice(0,5))+'</span></div>'
@@ -202,7 +206,7 @@
       }).join('');
 
       html+='<div class="pcard">'
-        +'<div class="p-head"><div class="p-title">'+esc(P.division)+'<small>Poule '+P.poule+'</small></div>'
+        +'<div class="p-head"><div class="p-title">'+esc(P.division)+(P.poule!=null?'<small>Poule '+P.poule+'</small>':'<small>championnat unique · aller J1-J11</small>')+'</div>'
         +'<span class="p-badge">ACBB → '+esc(P.acbb)+'</span></div>'
         +'<div class="pt-wrap"><table class="pt">'
         +'<thead><tr><th>#</th><th>Équipe</th><th>Dépt</th><th class="r">Niveau ph2 25/26</th><th>25/26 (div · clt)</th></tr></thead>'
