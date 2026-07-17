@@ -79,3 +79,11 @@ PY
       équipe ACBB avaient été archivées, et R1M/PN M sont irrécupérables
       (l'API coupe la saison passée dès la bascule, même par cx_poule direct).
 - [ ] Idéalement : archiver en FIN DE PHASE (janvier + juin), pas après la bascule.
+
+## Retours Virginie (17/07/2026) — reste à traiter à la reprise
+- [ ] Parties manquantes sur les fiches (ex. Virginie 66 vs 47 détaillées) :
+      les championnats VÉTÉRANS (dép/région/France) et le CHALLENGE DE CLUBS
+      ne remontent pas via xml_partie. Chercher l'endpoint ou l'épreuve
+      correspondante à la reprise ; en attendant afficher un total honnête.
+- [ ] Idée V2 : stats de DOUBLES PAR PARTENAIRE (les feuilles chp_renc ont
+      les paires ; la fédé réfléchit à un classement doubles).
