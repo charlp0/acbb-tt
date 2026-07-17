@@ -72,6 +72,31 @@ def find(genre, club, num):
 
 # ---- Poules ACBB (PDF V.26-07-09) — (pos, nom PDF, n° équipe, dépt)
 POULES = [
+    # ---- National (sources : captures Cyril 16/07 + PDF calendrier Pro B)
+    dict(division='Pro B Messieurs', poule=None, acbb='M1', genre='M', pos=None, teams=[
+        (1, 'LILLE METROPOLE TT', '', '59'), (2, 'PROVILLE ASL', '', '59'),
+        (3, 'CAEN TTC', '', '14'), (4, 'PONTOISE-CERGY AS', '', '95'),
+        (5, 'AMIENS STT', '', '80'), (6, 'FREJUS ASML', '', '83'),
+        (7, 'COURBEVOIE SPORT TT', '', '92'), (8, 'LE HAVRE ATT', '', '76'),
+        (9, 'BOULOGNE-BILLANCOURT AC', '', '92'), (10, 'PAYS COMPIEGNOIS TT', '', '60'),
+        (11, 'NANTES TT', '', '44'), (12, 'MIRAMAS AS TT', '', '13')],
+       # grille 12 équipes (ACBB=9), aller J1-J11 sept->dec, dates FFTT variables (mar/ven/dim)
+       fixtures=[(1,'sept.','PONTOISE-CERGY AS',False),(2,'sept.','CAEN TTC',True),
+                 (3,'oct.','PROVILLE ASL',False),(4,'oct.','LILLE METROPOLE TT',True),
+                 (5,'nov.','NANTES TT',False),(6,'nov.','PAYS COMPIEGNOIS TT',True),
+                 (7,'nov.','MIRAMAS AS TT',False),(8,'nov.','LE HAVRE ATT',False),
+                 (9,'dec.','COURBEVOIE SPORT TT',True),(10,'dec.','FREJUS ASML',False),
+                 (11,'dec.','AMIENS STT',True)]),
+    dict(division='Nationale 1 Messieurs', poule=2, acbb='M2', genre='M', pos=3, teams=[
+        (1, 'NICE CAVIGAL', 1, '06'), (2, 'DOUAI TT', 1, '59'),
+        (3, 'BOULOGNE BILLANCOURT AC', 2, '92'), (4, 'ISTRES TT', 1, '13'),
+        (5, 'BORDEAUX CAM', 1, '33'), (6, 'SAINT QUENTIN TT', 1, '02'),
+        (7, '4S TOURS', 2, '37'), (8, 'AVION TT', 1, '62')]),
+    dict(division='Nationale 2 Dames', poule=3, acbb='F1', genre='F', pos=7, teams=[
+        (1, 'MAIZIERES LES METZ', 2, '57'), (2, 'AL GRAND QUEVILLY / GRAVIGNY TT', 2, '76'),
+        (3, 'AC PLERIN', 1, '22'), (4, 'SAINT MAUR VGA', 1, '94'),
+        (5, 'VALENCIENNES USTT', 1, '59'), (6, 'BOIS-GUILLAUME / HONGUEMAR-LANDIN', 1, '76'),
+        (7, 'BOULOGNE BILLANCOURT AC / MARLY', 1, '92'), (8, 'LILLE METROPOLE TT', 1, '59')]),
     dict(division='Régionale 1 Dames', poule=2, acbb='F2', genre='F', pos=7, teams=[
         (1, 'ESP REUILLY', 2, '75'), (2, 'ATT XV', 1, '75'),
         (3, 'IVRY US TT', 1, '94'), (4, 'SAINT MAUR VGA US', 2, '94'),
@@ -180,17 +205,21 @@ for P in POULES:
     for pos, club, num, dep in P['teams']:
         hit = find(P['genre'], club, num)
         acbb = club.startswith('BOULOGNE')
-        teams.append({'pos': pos, 'name': f'{club} {num}', 'dept': dep, 'acbb': acbb,
+        teams.append({'pos': pos, 'name': (f'{club} {num}' if num != '' else club), 'dept': dep, 'acbb': acbb,
                       's25': ({'avg': hit['avg'], 'div': hit['div'], 'rank': hit['rank'],
                                'nm': hit['nm']} if hit else None)})
     filled = {t['pos'] for t in teams}
     cal = []
-    for ji, matches in enumerate(GRID):
-        for a, b in matches:
-            if P['pos'] in (a, b):
-                opp = b if a == P['pos'] else a
-                cal.append({'j': ji + 1, 'date': dates[ji], 'opp': opp,
-                            'dom': a == P['pos'], 'exempt': opp not in filled})
+    if P.get('fixtures'):
+        for j, dl, opp_name, dom in P['fixtures']:
+            cal.append({'j': j, 'date': dl, 'oppName': opp_name, 'dom': dom})
+    elif P['pos'] is not None:
+        for ji, matches in enumerate(GRID):
+            for a, b in matches:
+                if P['pos'] in (a, b):
+                    opp = b if a == P['pos'] else a
+                    cal.append({'j': ji + 1, 'date': dates[ji], 'opp': opp,
+                                'dom': a == P['pos'], 'exempt': opp not in filled})
     out['poules'].append({'division': P['division'], 'poule': P['poule'],
                           'acbb': P['acbb'], 'teams': teams, 'cal': cal})
 
