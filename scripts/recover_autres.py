@@ -49,12 +49,20 @@ for pi in idx:
         r = fb.get(f"xml_partie_mysql.php?licence={lic}")
     except Exception as e:
         print(f"!! {lic} : {e}"); continue
+    import difflib
     missing = []
     for b in re.findall(r'<partie>(.*?)</partie>', r, re.S):
         date = tg(b,'date'); adv = tg(b,'advnompre')
         k = (date, nrm(adv))
         if have.get(k, 0) > 0:
             have[k] -= 1; continue
+        # tolérance encodage mysql (accents cassés) : match flou même date
+        fz = None
+        for (d2, n2), cnt in have.items():
+            if cnt > 0 and d2 == date and difflib.SequenceMatcher(None, n2, k[1]).ratio() >= 0.85:
+                fz = (d2, n2); break
+        if fz:
+            have[fz] -= 1; continue
         cla = tg(b,'advclaof')
         try: ocls = int(cla) * 100 if cla and int(cla) < 200 else int(cla or 0)
         except Exception: ocls = 0
