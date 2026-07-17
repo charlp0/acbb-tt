@@ -39,8 +39,10 @@
   .grid{display:grid;grid-template-columns:1fr;gap:8px;padding:14px 16px}
   @media(min-width:560px){.grid{grid-template-columns:1fr 1fr}}
   @media(min-width:900px){.grid{grid-template-columns:1fr 1fr 1fr}}
-  a.pcard{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-decoration:none;color:var(--ink);transition:transform .12s,border-color .12s}
+  .pcard{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-decoration:none;color:var(--ink);transition:transform .12s,border-color .12s}
   a.pcard:hover{transform:translateY(-1px);border-color:var(--orange);background:linear-gradient(160deg,var(--orange-soft) 0%,var(--card) 70%)}
+  .pcard.mut{cursor:default;border-style:dashed;border-color:rgba(61,214,140,0.35)}
+  .newb{display:inline-block;font-size:9px;font-weight:800;letter-spacing:0.5px;color:var(--win-lt);background:rgba(61,214,140,0.12);border:1px solid rgba(61,214,140,0.4);border-radius:99px;padding:2px 8px}
   .rk{font-family:"JetBrains Mono",monospace;font-size:20px;font-weight:800;color:var(--orange);min-width:54px;text-align:center;line-height:1}
   .rk .u{font-size:9px;color:var(--dim);display:block;font-weight:600;margin-top:2px;letter-spacing:0.3px}
   .pinfo{flex:1;min-width:0}
@@ -86,7 +88,17 @@ function render(){
   document.getElementById('count').textContent=list.length+' joueur'+(list.length>1?'s':'');
   const g=document.getElementById('grid');
   if(!list.length){ g.innerHTML='<div class="empty">Aucun joueur trouvé.</div>'; return; }
-  g.innerHTML=list.map(p=>`
+  g.innerHTML=list.map(p=>{
+    if(p.mut) // recrue 26/27 : pas encore de fiche -> carte non cliquable
+      return `
+    <div class="pcard mut">
+      <div class="rk">${off(p)||'—'}<span class="u">officiel 26/27</span></div>
+      <div class="pinfo">
+        <div class="pname">${p.nom} <span class="pre">${p.prenom}</span></div>
+        <div class="pmeta"><span class="newb">NOUVEAU · mutation 26/27</span></div>
+      </div>
+    </div>`;
+    return `
     <a class="pcard" href="joueur.html?lic=${p.lic}">
       <div class="rk">${off(p)||'—'}<span class="u">officiel 26/27</span></div>
       <div class="pinfo">
@@ -94,15 +106,25 @@ function render(){
         <div class="pmeta">${p.parties||0} partie${p.parties>1?'s':''} cette saison</div>
       </div>
       <span class="chev">›</span>
-    </a>`).join('');
+    </a>`;}).join('');
 }
 document.getElementById('q').addEventListener('input',render);
 document.getElementById('sort').addEventListener('click',()=>{ sortMode=(sortMode+1)%SORTS.length; document.getElementById('sort').textContent='Tri : '+SORTS[sortMode].label; render(); });
 Promise.all([
   fetch('data/players_index.json',{cache:'no-cache'}).then(r=>r.json()),
-  fetch('data/officiel2627.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null)
-]).then(([d,o])=>{PLAYERS=d; if(o&&o.officiel)OFF=o.officiel; render();})
-  .catch(e=>{document.getElementById('grid').innerHTML='<div class="empty">Index indisponible.</div>';});
+  fetch('data/officiel2627.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null),
+  fetch('data/scoring.json',{cache:'no-cache'}).then(r=>r.json())
+]).then(([d,o,sc])=>{
+  if(o&&o.officiel)OFF=o.officiel;
+  // effectif 26/27 = scoring.json (sans les départs, avec les mutations)
+  const byLic={}; d.forEach(p=>{ if(p.lic) byLic[String(p.lic)]=p; });
+  PLAYERS=(sc.players||[]).map(p=>{
+    const ix=p.lic?byLic[String(p.lic)]:null;
+    return {lic:p.lic, nom:p.nom, prenom:p.pre, mensuel:p.men, mut:!!p.mut,
+            parties:ix?ix.parties:0};
+  });
+  render();
+}).catch(e=>{document.getElementById('grid').innerHTML='<div class="empty">Index indisponible.</div>';});
 </script>
 </div>
 <script src="report.js" defer></script>
