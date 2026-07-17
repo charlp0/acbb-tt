@@ -116,6 +116,21 @@
 
   /* ===== PRÉPARATION 26/27 (design handoff) ===== */
   .cards2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:6px 12px 4px}
+  /* CTA dispos en tête + bouton flottant */
+  .dispo-cta{grid-column:1/-1;display:flex;align-items:center;gap:14px;flex-wrap:wrap;text-decoration:none;color:#0B0B0D;
+    background:linear-gradient(135deg,#F26A1B 0%,#FB923C 100%);border-radius:14px;padding:16px 18px;box-shadow:0 6px 24px rgba(242,106,27,0.28)}
+  .dispo-cta .ico{font-size:30px;line-height:1}
+  .dispo-cta .txt{flex:1;min-width:200px}
+  .dispo-cta .k{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;opacity:0.75;margin-bottom:4px}
+  .dispo-cta .t{font-size:15px;font-weight:800;letter-spacing:-0.2px;line-height:1.3}
+  .dispo-cta .go{white-space:nowrap;background:#0B0B0D;color:#fff;font-weight:800;font-size:13px;padding:10px 16px;border-radius:99px}
+  #fabDispo{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:80;display:inline-flex;align-items:center;gap:8px;
+    background:#F26A1B;color:#0B0B0D;font-weight:800;font-size:13.5px;padding:12px 20px;border-radius:99px;border:none;cursor:pointer;
+    box-shadow:0 8px 28px rgba(242,106,27,0.45);text-decoration:none;transition:opacity .3s,transform .3s;animation:fabpulse 2.4s ease-in-out infinite}
+  #fabDispo.hide{opacity:0;transform:translateX(-50%) translateY(20px);pointer-events:none}
+  @keyframes fabpulse{0%,100%{box-shadow:0 8px 28px rgba(242,106,27,0.45)}50%{box-shadow:0 8px 28px rgba(242,106,27,0.75)}}
+  @media(prefers-reduced-motion:reduce){#fabDispo{animation:none}}
+  #dispoSec{scroll-margin-top:70px}
   .calsec{margin:56px 12px 30px}
   .cal-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px}
   .cal-title{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:clamp(30px,5.5vw,44px);line-height:1;letter-spacing:0.5px;margin-top:8px}
@@ -237,6 +252,14 @@
 </div>
 
 <div class="cards2">
+<a href="#dispoSec" class="dispo-cta" id="ctaDispo">
+  <div class="ico">📋</div>
+  <div class="txt">
+    <div class="k">Action requise · avant le 31 août</div>
+    <div class="t">Déclare tes disponibilités pour la phase 1 — ça prend 30 secondes et ça aide la sportive à composer les équipes.</div>
+  </div>
+  <span class="go">Déclarer mes dispos ↓</span>
+</a>
 <a href="joueurs.html" style="display:flex;margin:0;border:1px solid rgba(242,106,27,0.4);background:linear-gradient(180deg,rgba(242,106,27,0.14) 0%,var(--paper,#141416) 70%);border-radius:14px;padding:16px 18px;align-items:center;gap:14px;flex-wrap:wrap;text-decoration:none;color:inherit">
   <div style="font-size:30px;line-height:1">🏓</div>
   <div style="flex:1;min-width:220px">
@@ -408,6 +431,23 @@
     else ring();
     if(CLOS) btn.disabled=true;
   }).catch(function(){ btn.disabled=true; st.textContent='Ouverture du formulaire très bientôt…'; });
+})();
+</script>
+<a href="#dispoSec" id="fabDispo">📋 Mes dispos phase 1 →</a>
+<script>
+(function(){
+  var fab=document.getElementById('fabDispo'), sec=document.getElementById('dispoSec');
+  if(!sec)return;
+  // défilement : scrollIntoView (fluidité via scroll-behavior CSS, offset via scroll-margin)
+  function toDispo(e){ e.preventDefault(); sec.scrollIntoView({block:'start'}); history.replaceState(null,'','#dispoSec'); }
+  [fab, document.getElementById('ctaDispo')].forEach(function(el){ if(el) el.addEventListener('click',toDispo); });
+  // masquer le bouton flottant dès que la section dispo entre dans l'écran
+  if(fab){
+    function upd(){ fab.classList.toggle('hide', sec.getBoundingClientRect().top < window.innerHeight - 60); }
+    window.addEventListener('scroll',upd,{passive:true});
+    window.addEventListener('resize',upd);
+    upd();
+  }
 })();
 </script>
 <script src="report.js" defer></script>
