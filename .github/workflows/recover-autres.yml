@@ -1,0 +1,27 @@
+name: Récupération parties manquantes 25/26 (one-shot)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: fftt-data
+  cancel-in-progress: false
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install requests
+      - name: Récupération via xml_partie_mysql
+        env:
+          FFTT_ID: ${{ secrets.FFTT_ID }}
+          FFTT_PWD: ${{ secrets.FFTT_PWD }}
+        run: python3 scripts/recover_autres.py
+      - name: Commit
+        run: |
+          git config user.name "acbb-data-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/players/
+          git diff --staged --quiet && echo "rien" || (git commit -m "data: parties 25/26 récupérées via xml_partie_mysql (vétérans, challenge…)" && git pull --rebase origin main && git push)
