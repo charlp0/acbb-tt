@@ -14,5 +14,7 @@ for ep, param in (('xml_partie.php', 'numlic'), ('xml_partie_mysql.php', 'licenc
         print(f"== {ep} : {len(parties)} parties")
         print(f"   dates : {dates[:3]} ... {dates[-3:] if len(dates)>3 else ''}")
         print(f"   epreuves : {eprs}")
+        if parties: print(f"   exemple brut : {parties[0][:400]}")
+        if len(parties)>1: print(f"   exemple 2   : {parties[-1][:400]}")
     except Exception as e:
         print(f"== {ep} : ERREUR {e}")
