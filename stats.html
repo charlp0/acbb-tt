@@ -422,13 +422,13 @@
     .ptable td{display:block;padding:0;border:0;white-space:normal}
     .ptable td:nth-child(1){grid-area:nm;font-size:13.5px}
     .ptable td:nth-child(2){grid-area:cl}
-    .ptable td:nth-child(3){grid-area:tm;margin-top:2px}
-    .ptable td:nth-child(4){grid-area:pr}
-    .ptable td:nth-child(5){grid-area:v}
-    .ptable td:nth-child(6){grid-area:pct;align-self:center}
+    .ptable td:nth-child(6){grid-area:tm;margin-top:2px}
+    .ptable td:nth-child(3){grid-area:pr}
+    .ptable td:nth-child(4){grid-area:v}
+    .ptable td:nth-child(5){grid-area:pct;align-self:center}
     .ptable td:nth-child(2)::before{content:"cl. ";color:rgba(232,232,234,0.45);font-size:9.5px}
-    .ptable td:nth-child(4)::before{content:"prés. ";color:rgba(232,232,234,0.45);font-size:9.5px}
-    .ptable td:nth-child(5)::after{content:" V";color:rgba(232,232,234,0.45);font-size:9.5px}
+    .ptable td:nth-child(3)::before{content:"prés. ";color:rgba(232,232,234,0.45);font-size:9.5px}
+    .ptable td:nth-child(4)::after{content:" V";color:rgba(232,232,234,0.45);font-size:9.5px}
     .ptable .teamch{margin-bottom:3px}
     .pctbar{min-width:0}
   }
@@ -1068,14 +1068,14 @@ window.DATA = DATA;
       return `<tr>
         <td class="pnm">${U.firstName(p)} ${p.nom}</td>
         <td class="num">${U.clsDisplay(p.cls)}</td>
-        <td>${teamTags}</td>
         <td class="num">${p.played}</td>
         <td class="num v">${p.vic}</td>
         <td><div class="pctbar"><div class="tr"><div class="fl" style="width:${Math.max(0,Math.min(100,p.winRate))}%"></div></div><span class="val">${p.winRate}%</span></div></td>
+        <td>${teamTags}</td>
       </tr>`;
     }).join('');
     list.innerHTML = `<div class="ptable-card anim-in"><div class="ptable-scroll"><table class="ptable">
-      <thead><tr><th>Joueur</th><th>Cl.</th><th>Équipes</th><th>Prés.</th><th>V</th><th>% victoires</th></tr></thead>
+      <thead><tr><th>Joueur</th><th>Cl.</th><th>Prés.</th><th>V</th><th>% victoires</th><th>Équipes</th></tr></thead>
       <tbody>${body}</tbody></table></div></div>`;
   }
 

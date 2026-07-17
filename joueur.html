@@ -674,7 +674,7 @@ function buildView(v, i){
 
   // SPLITS (par équipe)
   if (v.splits){
-    h += `<div class="sec-h">Bilan par équipe</div><div class="splits">`;
+    h += `<div class="sec-h">Bilan par équipe · phases 1+2</div><div class="splits">`;
     v.splits.forEach(s => {
       const pct = Math.round(s.w/s.t*100);
       h += `<div class="split">
@@ -920,13 +920,15 @@ function compView(c){
            {v:fmtPts(c.solde),l:'Solde',x:'',cls:c.solde>=0?'up':'down'}],
     highlights:compHighlights(c)};
   if(c.detail){const d=c.detail;
-    v.rings=[{label:'Victoires',pct:wp,sub:c.V+'V / '+c.D+'D',foot:n+' simples',color:'win'},
-             {label:'Manches',pct:d.manches_pct,sub:d.manches_w+' / '+d.manches_t,foot:'gagnées',color:'acc'},
-             {label:'5 manches',pct:d.five?clampPct(d.five_w/d.five*100):0,sub:d.five_w+' / '+d.five,foot:'matchs décisifs',color:'gold'}];
-    v.tiles=[{v:c.V+'–'+c.D,l:'Bilan simples',x:"<span class='o'>"+wp+'%</span>',cls:''},
-             {v:fmtPts(c.solde),l:'Solde points',x:'',cls:c.solde>=0?'up':'down'},
-             {v:d.doubles_w+'/'+d.doubles_t,l:'Doubles gagnés',x:'',cls:'acc'},
-             {v:d.closest?d.closest.score:'—',l:'Set le + serré',x:d.closest?("<span class='o'>vs "+d.closest.opp+'</span>'):'',cls:'gold'}];
+    if(d.manches_t!=null){ // manches/doubles : issus des feuilles de PHASE 2 uniquement
+      v.rings=[{label:'Victoires',pct:wp,sub:c.V+'V / '+c.D+'D',foot:n+' simples',color:'win'},
+               {label:'Manches',pct:d.manches_pct,sub:d.manches_w+' / '+d.manches_t,foot:'gagnées · ph. 2',color:'acc'},
+               {label:'5 manches',pct:d.five?clampPct(d.five_w/d.five*100):0,sub:d.five_w+' / '+d.five,foot:'matchs décisifs · ph. 2',color:'gold'}];
+      v.tiles=[{v:c.V+'–'+c.D,l:'Bilan simples',x:"<span class='o'>"+wp+'%</span>',cls:''},
+               {v:fmtPts(c.solde),l:'Solde points',x:'',cls:c.solde>=0?'up':'down'},
+               {v:d.doubles_w+'/'+d.doubles_t,l:'Doubles gagnés / joués',x:"<span class='o'>phase 2</span>",cls:'acc'},
+               {v:d.closest?d.closest.score:'—',l:'Set le + serré',x:d.closest?("<span class='o'>vs "+d.closest.opp+'</span>'):'',cls:'gold'}];
+    }
     if(d.splits&&d.splits.length)v.splits=d.splits.map(s=>({team:s.team,lv:'',w:s.w,t:s.t}));
   }
   return v;
