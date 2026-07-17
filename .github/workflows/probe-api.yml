@@ -1,0 +1,18 @@
+name: Sonde API FFTT (one-shot)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install requests
+      - name: Sonde parties 25/26
+        env:
+          FFTT_ID: ${{ secrets.FFTT_ID }}
+          FFTT_PWD: ${{ secrets.FFTT_PWD }}
+        run: python3 scripts/probe_partie.py
