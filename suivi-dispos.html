@@ -160,7 +160,23 @@
     document.getElementById('gpw').addEventListener('keydown',function(e){if(e.key==='Enter')tryPw();});
     document.getElementById('gpw').focus();
   }
-  function tryPw(){ if(document.getElementById('gpw').value.trim()==='Minh'){unlock();} else document.getElementById('gerr').textContent='Mot de passe incorrect'; }
+  var GH='359d888f0c14b4835cec5d55404ab307115c4841f77e226ccd592bb943ccdabb'; // SHA-256 du mot de passe
+  async function tryPw(){
+    var err=document.getElementById('gerr'), inp=document.getElementById('gpw');
+    try{ // verrouillage progressif : 5 échecs -> 60 s
+      var L=JSON.parse(localStorage.getItem('acbb_gate_l')||'{"n":0,"t":0}');
+      if(L.n>=5 && Date.now()-L.t<60000){ err.textContent='Trop d\'essais — réessaie dans 1 min'; return; }
+      if(Date.now()-L.t>=60000) L.n=0;
+    }catch(e){ var L={n:0,t:0}; }
+    var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(inp.value.trim()));
+    var h=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+    if(h===GH){ try{localStorage.removeItem('acbb_gate_l');}catch(e){} unlock(); return; }
+    L.n++; L.t=Date.now(); try{localStorage.setItem('acbb_gate_l',JSON.stringify(L));}catch(e){}
+    err.textContent='Mot de passe incorrect';
+    // journalise l'échec (l'IP est ajoutée côté Supabase, pas ici) — silencieux si la table n'existe pas
+    try{ fetch(SB+'/rest/v1/gate_log',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({page:location.pathname,ua:navigator.userAgent.slice(0,120)})}).catch(function(){}); }catch(e){}
+  }
 
 
   function boot(){
