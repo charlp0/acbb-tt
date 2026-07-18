@@ -241,12 +241,21 @@
   <p class="hero-sub">La nouvelle saison se prépare. Retrouve le bilan complet de la saison écoulée dans l'onglet <a href="stats.html" style="color:var(--orange,#F26A1B);text-decoration:none;font-weight:700">Ch. Équipe 25/26</a>, et ci-dessous le calendrier de la phase 1.</p>
   <p id="majHome" style="margin-top:10px;font-size:10px;color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.3px">Dernière mise à jour : —</p>
   <script>
-    fetch('data/meta.json',{cache:'no-cache'}).then(r=>r.json()).then(m=>{
-      const d=new Date(m.built);
-      const date=d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Paris'});
-      const time=d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Paris'}).replace(':','h');
-      document.getElementById('majHome').textContent='Dernière mise à jour : '+date+' à '+time;
-    }).catch(()=>{});
+    (function(){
+      function show(iso){
+        var d=new Date(iso);
+        var date=d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Paris'});
+        var time=d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Paris'}).replace(':','h');
+        document.getElementById('majHome').textContent='Dernière mise à jour : '+date+' à '+time;
+      }
+      // source principale : date du dernier commit du dépôt (toujours à jour)
+      fetch('https://api.github.com/repos/charlp0/acbb-tt/commits?per_page=1',{cache:'no-cache'})
+        .then(function(r){return r.ok?r.json():Promise.reject();})
+        .then(function(a){ if(a&&a[0]) show(a[0].commit.committer.date); else throw 0; })
+        .catch(function(){ // repli : meta.json (écrit par le robot)
+          fetch('data/meta.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(m){show(m.built);}).catch(function(){});
+        });
+    })();
   </script>
 </div>
 
