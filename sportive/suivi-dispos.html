@@ -1,0 +1,279 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>ACBB TT — Suivi des dispos (interne)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="../logo.png">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#0B0B0D">
+<style>
+  :root{--bg:#0B0B0D;--paper:#141416;--panel:#1E1E22;--panel-2:#26262B;--line:rgba(255,255,255,0.08);--line-2:rgba(255,255,255,0.16);
+    --ink:#F6F5F3;--ink-2:#D4D3CF;--dim:rgba(246,245,243,0.60);--dimmer:rgba(246,245,243,0.48);--orange:#F26A1B;
+    --win:#3DD68C;--win-lt:#86EFAC;--lose:#F26356;--lose-lt:#FCA5A5;--gold:#FACC15}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;font-size:14px;line-height:1.4}
+  body{min-height:100vh;padding-bottom:50px}
+  .wrap{max-width:1180px;margin:0 auto}
+  ::-webkit-scrollbar{display:none}
+  .header{position:sticky;top:0;z-index:50;padding:10px 16px;background:rgba(11,11,13,0.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .header-row{display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:1180px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+  .brand img{width:34px;height:34px;border-radius:8px;background:#fff;padding:2px;border:1px solid var(--line-2)}
+  .brand b{font-size:12px;font-weight:700;display:block}
+  .brand span{font-size:8.5px;color:var(--dim);font-family:"JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:0.3px}
+  .nav{display:flex;gap:3px}
+  .nav a{padding:7px 11px;border-radius:99px;font-size:11px;font-weight:600;color:var(--ink-2);text-decoration:none;border:1px solid transparent}
+  .nav a.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+  /* sous-nav espace sportive */
+  .subnav{display:flex;gap:7px;padding:14px 16px 0;max-width:1180px;margin:0 auto}
+  .subnav a{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:9px 14px;border-radius:99px;background:var(--paper);border:1px solid var(--line-2);color:var(--ink-2);text-decoration:none}
+  .subnav a.active{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+  .hero{padding:22px 16px 8px}
+  .eyebrow{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:6px}
+  .eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
+  h1{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:clamp(38px,8vw,56px);line-height:1;margin:10px 0 6px;letter-spacing:0.5px}
+  h1 em{color:var(--orange);font-style:italic}
+  .meta{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--dim)}
+  .sec{padding:20px 16px 4px}
+  .sec-h{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .sec-h::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
+  /* matrice */
+  .mx-wrap{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow-x:auto}
+  table.mx{width:100%;min-width:520px;border-collapse:collapse;font-family:"JetBrains Mono",monospace;font-size:12px}
+  .mx th{background:var(--panel);font-size:9.5px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:var(--dim);padding:10px 8px;text-align:center;white-space:nowrap}
+  .mx th:first-child{text-align:left;padding-left:14px}
+  .mx td{padding:9px 8px;text-align:center;border-top:1px solid rgba(255,255,255,0.05)}
+  .mx td:first-child{text-align:left;padding-left:14px;white-space:nowrap}
+  .mx .tn{font-weight:800;font-size:13px}
+  .mx .ts{font-size:9px;color:var(--dim);display:block;margin-top:2px;font-family:"JetBrains Mono",monospace}
+  .cell{display:inline-block;min-width:30px;padding:4px 0;border-radius:8px;font-weight:800;font-size:12.5px}
+  .c-ok{background:rgba(61,214,140,0.15);color:var(--win-lt)}
+  .c-warn{background:rgba(250,204,21,0.14);color:var(--gold)}
+  .c-bad{background:rgba(242,99,86,0.16);color:var(--lose-lt)}
+  .c-zero{background:rgba(242,99,86,0.28);color:#fff}
+  .c-na{color:var(--dimmer)}
+  .legende{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:10.5px;color:var(--ink-2);font-family:"JetBrains Mono",monospace}
+  .legende i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  /* relance */
+  .rel{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .rel-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:13px 15px}
+  .rel-t{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:14px;margin-bottom:8px}
+  .rel-chip{display:inline-block;font-size:11px;background:var(--panel);border:1px solid var(--line-2);border-radius:99px;padding:3px 10px;margin:0 4px 5px 0}
+  .rel-chip.nolic{border-color:rgba(250,204,21,0.4);color:var(--gold)}
+  .ok-all{color:var(--win-lt);font-size:12px;font-family:"JetBrains Mono",monospace}
+  /* répondants */
+  .rp-wrap{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow-x:auto}
+  table.rp{width:100%;min-width:480px;border-collapse:collapse;font-size:12.5px}
+  .rp th{background:var(--panel);font-size:9.5px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:var(--dim);padding:9px 10px;text-align:left;white-space:nowrap}
+  .rp td{padding:8px 10px;border-top:1px solid rgba(255,255,255,0.05);white-space:nowrap}
+  .rp .num{font-family:"JetBrains Mono",monospace}
+  .dotj{display:inline-block;width:16px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px}
+  .dotj.y{color:var(--win)}
+  .dotj.n{color:var(--dimmer)}
+  .btn{font-family:inherit;font-size:12.5px;font-weight:800;padding:10px 18px;border-radius:99px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);cursor:pointer}
+  .btn:hover{border-color:var(--orange);color:var(--orange)}
+  .warnbox{background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.35);border-radius:12px;padding:11px 14px;font-size:12px;margin-top:12px}
+  #gate{position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+  .gate-box{max-width:340px;width:100%;text-align:center}
+  .gate-box h2{font-family:'Saira Condensed',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:34px;margin-bottom:6px}
+  .gate-box input{width:100%;background:var(--panel-2);border:1px solid var(--line-2);border-radius:99px;color:var(--ink);font-size:15px;font-family:inherit;padding:12px 18px;outline:none;text-align:center}
+  .gate-box button{margin-top:12px;width:100%;background:var(--orange);border:none;border-radius:99px;color:#0B0B0D;font-size:14px;font-weight:700;font-family:inherit;padding:12px;cursor:pointer}
+</style>
+</head><body>
+<header class="header"><div class="header-row">
+  <a class="brand" href="../accueil.html"><img src="../logo.png" alt="ACBB"><div><b>ACBB TT</b><span>Espace sportive</span></div></a>
+  <nav class="nav"><a href="../accueil.html">Accueil</a><a href="../joueurs.html">Joueurs</a><a href="../stats.html">Ch. Équipe 25/26</a><a href="index.html" class="active">Sportive</a></nav>
+</div></header>
+
+<div id="gate" style="display:none">
+  <div class="gate-box">
+    <h2>Espace <span style="color:var(--orange)">Sportive</span></h2>
+    <p style="color:var(--dim);font-size:13px;margin-bottom:18px">Outil interne — accès réservé.</p>
+    <input id="gpw" type="password" placeholder="Mot de passe" autocomplete="off">
+    <button id="gbtn" type="button">Entrer</button>
+    <p id="gerr" style="color:var(--lose);font-size:12px;margin-top:10px;height:14px"></p>
+    <a href="../accueil.html" style="color:var(--dim);font-size:12px;text-decoration:none">← Retour au site</a>
+  </div>
+</div>
+
+<div class="wrap">
+<nav class="subnav">
+  <a href="index.html">🎯 Scoring &amp; compos</a>
+  <a href="poules.html">🏆 Poules 26/27</a>
+  <a href="suivi-dispos.html" class="active">📊 Suivi des dispos</a>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">Espace sportive · Phase 1 2026/2027 · clôture 31 août</div>
+  <h1>Suivi <em>dispos.</em></h1>
+  <div class="meta" id="hMeta">chargement…</div>
+</div>
+
+<section class="sec">
+  <div class="sec-h">Titulaires disponibles par équipe et par journée</div>
+  <div class="mx-wrap"><table class="mx"><thead id="mxHead"></thead><tbody id="mxBody"></tbody></table></div>
+  <div class="legende">
+    <span><i style="background:rgba(61,214,140,0.6)"></i>≥ 4 dispos</span>
+    <span><i style="background:rgba(250,204,21,0.6)"></i>3 dispos</span>
+    <span><i style="background:rgba(242,99,86,0.6)"></i>1-2 dispos</span>
+    <span><i style="background:rgba(242,99,86,0.95)"></i>0 dispo</span>
+    <span style="color:var(--dimmer)">— : personne n'a répondu</span>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-h">À relancer — titulaires sans réponse</div>
+  <div class="rel" id="relance"></div>
+</section>
+
+<section class="sec">
+  <div class="sec-h">Toutes les réponses</div>
+  <div style="margin-bottom:10px"><button class="btn" id="csvBtn" type="button">⬇ Export CSV</button></div>
+  <div class="rp-wrap"><table class="rp">
+    <thead><tr><th>Joueur</th><th>Licence</th><th>Souhait</th><th>J1</th><th>J2</th><th>J3</th><th>J4</th><th>J5</th><th>J6</th><th>J7</th><th>Total</th><th>Le</th></tr></thead>
+    <tbody id="rpBody"></tbody>
+  </table></div>
+  <div class="warnbox" id="unknownBox" hidden></div>
+</section>
+</div>
+
+<script>
+(function(){
+  /* ===== données ===== */
+  var SB='https://vhhmageufrcenruywawg.supabase.co', KEY='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay';
+  var HD={'apikey':KEY};
+  var JOURS=['J1','J2','J3','J4','J5','J6','J7'];
+  var DATES=['18-19/09','02-03/10','16-17/10','06-07/11','20-21/11','04-05/12','11-12/12'];
+  var TEAMORDER=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3','F4'];
+  var TEAMDIV={M1:'Pro B',M2:'N1',M3:'R1',M4:'R2',M5:'R3',M6:'PR',M7:'PR',M8:'D1',M9:'D1',M10:'D1',M11:'D1',M12:'D2',M13:'D2',M14:'D2',M15:'D2',M16:'D2',M17:'D2'};
+  function teamHue(e){var i=TEAMORDER.indexOf(e);return i<0?24:Math.round(i*137.5)%360;}
+  var esc=function(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');};
+  /* ===== gate partagé avec la Sportive ===== */
+  var g=document.getElementById('gate');
+  function unlocked(){ try{return sessionStorage.getItem('acbb_sportive')==='1';}catch(e){return false;} }
+  function unlock(){ g.style.display='none'; try{sessionStorage.setItem('acbb_sportive','1');}catch(e){} boot(); }
+  if(unlocked()){ boot(); }
+  else{
+    g.style.display='flex';
+    document.getElementById('gbtn').addEventListener('click',tryPw);
+    document.getElementById('gpw').addEventListener('keydown',function(e){if(e.key==='Enter')tryPw();});
+    document.getElementById('gpw').focus();
+  }
+  var GH='359d888f0c14b4835cec5d55404ab307115c4841f77e226ccd592bb943ccdabb'; // SHA-256 du mot de passe
+  async function tryPw(){
+    var err=document.getElementById('gerr'), inp=document.getElementById('gpw');
+    try{ // verrouillage progressif : 5 échecs -> 60 s
+      var L=JSON.parse(localStorage.getItem('acbb_gate_l')||'{"n":0,"t":0}');
+      if(L.n>=5 && Date.now()-L.t<60000){ err.textContent='Trop d\'essais — réessaie dans 1 min'; return; }
+      if(Date.now()-L.t>=60000) L.n=0;
+    }catch(e){ var L={n:0,t:0}; }
+    var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(inp.value.trim()));
+    var h=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+    if(h===GH){ try{localStorage.removeItem('acbb_gate_l');}catch(e){} unlock(); return; }
+    L.n++; L.t=Date.now(); try{localStorage.setItem('acbb_gate_l',JSON.stringify(L));}catch(e){}
+    err.textContent='Mot de passe incorrect';
+    // journalise l'échec (l'IP est ajoutée côté Supabase, pas ici) — silencieux si la table n'existe pas
+    try{ fetch(SB+'/rest/v1/gate_log',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({page:location.pathname,ua:navigator.userAgent.slice(0,120)})}).catch(function(){}); }catch(e){}
+  }
+
+
+  function boot(){
+    Promise.all([
+      fetch(SB+'/rest/v1/dispos_log?select=licence,prenom,nom,dispos,n,created_at&order=id.asc',{headers:HD}).then(function(r){return r.ok?r.json():[];}),
+      fetch(SB+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:HD}).then(function(r){return r.ok?r.json():[];}),
+      fetch('../data/scoring.json',{cache:'no-cache'}).then(function(r){return r.json();})
+    ]).then(function(res){ render(res[0]||[], (res[1][0]&&res[1][0].tags)||{}, res[2].players||[]); })
+     .catch(function(e){ document.getElementById('hMeta').textContent='Erreur de chargement : '+e.message; });
+  }
+
+  function render(rows, tags, players){
+    delete tags._params;
+    /* dernier vote par licence */
+    var votes={};
+    rows.forEach(function(r){ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)) votes[String(r.licence)]=r; });
+    var byLic={}; players.forEach(function(p){ if(p.lic) byLic[String(p.lic)]=p; });
+    var pkey=function(p){return String(p.lic||(p.nom+'|'+p.pre));};
+
+    /* en-tête */
+    var nV=Object.keys(votes).length, total=players.length;
+    var last=null; Object.keys(votes).forEach(function(k){var d=new Date(votes[k].created_at); if(!last||d>last)last=d;});
+    document.getElementById('hMeta').textContent=nV+' répondant'+(nV>1?'s':'')+' / '+total+' joueurs ('+Math.round(100*nV/total)+' %)'+(last?' · dernière réponse le '+last.toLocaleDateString('fr-FR')+' à '+last.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):'');
+
+    /* équipes -> titulaires (+remplaçants) */
+    var teams={};
+    players.forEach(function(p){
+      var t=tags[pkey(p)]; if(!t)return;
+      if(t.e)(teams[t.e]=teams[t.e]||{T:[],R:[]})[t.r==='T'?'T':'R'].push(p);
+      if(t.e2)(teams[t.e2]=teams[t.e2]||{T:[],R:[]})[t.r2==='T'?'T':'R'].push(p); /* double affectation */
+    });
+
+    /* matrice */
+    var head='<tr><th>Équipe</th>'+JOURS.map(function(j,i){return '<th>'+j+'<span style="display:block;font-size:8px;font-weight:600;color:var(--dimmer)">'+DATES[i]+'</span></th>';}).join('')+'</tr>';
+    document.getElementById('mxHead').innerHTML=head;
+    var body='';
+    TEAMORDER.forEach(function(e){
+      var tm=teams[e]; if(!tm||!tm.T.length)return;
+      var resp=tm.T.filter(function(p){return votes[String(p.lic)];}).length;
+      var cells=JOURS.map(function(_,ji){
+        if(!resp) return '<td><span class="cell c-na">—</span></td>';
+        var dispo=tm.T.filter(function(p){var v=votes[String(p.lic)];return v&&v.dispos&&v.dispos['j'+(ji+1)];});
+        var extra=tm.R.filter(function(p){var v=votes[String(p.lic)];return v&&v.dispos&&v.dispos['j'+(ji+1)];});
+        var n=dispo.length;
+        var cls=n>=4?'c-ok':(n===3?'c-warn':(n>=1?'c-bad':'c-zero'));
+        var tip=(dispo.map(function(p){return p.pre+' '+p.nom;}).join(', ')||'aucun titulaire dispo')+(extra.length?' — remplaçants : '+extra.map(function(p){return p.pre+' '+p.nom;}).join(', '):'');
+        return '<td><span class="cell '+cls+'" title="'+esc(tip)+'">'+n+'</span></td>';
+      }).join('');
+      body+='<tr><td><span class="tn" style="color:hsl('+teamHue(e)+',75%,70%)">'+e+'</span><span class="ts">'+(TEAMDIV[e]||'')+' · '+tm.T.length+' tit. · '+resp+' rép.</span></td>'+cells+'</tr>';
+    });
+    document.getElementById('mxBody').innerHTML=body||'<tr><td style="padding:16px">Aucune équipe taguée pour l\'instant.</td></tr>';
+
+    /* relance */
+    var rel='';
+    TEAMORDER.forEach(function(e){
+      var tm=teams[e]; if(!tm||!tm.T.length)return;
+      var missing=tm.T.filter(function(p){return !votes[String(p.lic)];});
+      var chips=missing.map(function(p){
+        var nolic=!p.lic||!/^[0-9]+$/.test(String(p.lic));
+        return '<span class="rel-chip'+(nolic?' nolic':'')+'">'+esc(p.pre+' '+p.nom)+(nolic?' · sans licence FFTT':'')+'</span>';
+      }).join('');
+      rel+='<div class="rel-card"><div class="rel-t" style="color:hsl('+teamHue(e)+',75%,70%)">'+e+' <span style="color:var(--dim);font-size:10px">('+missing.length+'/'+tm.T.length+' manquants)</span></div>'
+        +(missing.length?chips:'<span class="ok-all">✓ tout le monde a répondu</span>')+'</div>';
+    });
+    document.getElementById('relance').innerHTML=rel||'<div class="rel-card">Aucune équipe taguée.</div>';
+
+    /* répondants */
+    var list=Object.keys(votes).map(function(k){return votes[k];})
+      .sort(function(a,b){return (b.n||0)-(a.n||0);});
+    document.getElementById('rpBody').innerHTML=list.map(function(v){
+      var p=byLic[String(v.licence)];
+      var nm=p?(p.pre+' '+p.nom):((v.prenom||'')+' '+(v.nom||''));
+      var dots=JOURS.map(function(_,i){var on=v.dispos&&v.dispos['j'+(i+1)];return '<td><span class="dotj '+(on?'y':'n')+'">'+(on?'✓':'—')+'</span></td>';}).join('');
+      var RL={T:'Tit.',R:'Remp.',N:'Ne pas jouer',REF:'Référent'};
+      var souhait=((v.dispos&&v.dispos.roles)||[]).map(function(x){return RL[x]||x;}).join(' + ');
+      return '<tr><td>'+esc(nm)+(p?'':' <span style="color:var(--gold);font-size:10px">⚠ licence inconnue</span>')+'</td><td class="num">'+esc(v.licence)+'</td>'
+        +'<td style="font-size:11px'+(souhait?'':';color:var(--dimmer)')+'">'+(esc(souhait)||'—')+'</td>'+dots
+        +'<td class="num"><b>'+(v.n!=null?v.n:'?')+'</b>/7</td><td class="num" style="color:var(--dim)">'+new Date(v.created_at).toLocaleDateString('fr-FR')+'</td></tr>';
+    }).join('')||'<tr><td colspan="12" style="padding:16px">Aucune réponse pour l\'instant.</td></tr>';
+
+    var unknown=list.filter(function(v){return !byLic[String(v.licence)];});
+    var ub=document.getElementById('unknownBox');
+    if(unknown.length){ ub.hidden=false; ub.textContent='⚠ '+unknown.length+' réponse(s) avec une licence inconnue de l\'effectif : '+unknown.map(function(v){return (v.prenom||'')+' '+(v.nom||'')+' ('+v.licence+')';}).join(', ')+' — vérifier la saisie.'; }
+
+    /* export CSV */
+    document.getElementById('csvBtn').onclick=function(){
+      var lines=['licence;prenom;nom;souhait;'+JOURS.join(';')+';total;date'];
+      list.forEach(function(v){
+        lines.push([v.licence,v.prenom||'',v.nom||'',((v.dispos&&v.dispos.roles)||[]).join('+')].concat(JOURS.map(function(_,i){return (v.dispos&&v.dispos['j'+(i+1)])?'1':'0';})).concat([v.n!=null?v.n:'',new Date(v.created_at).toLocaleDateString('fr-FR')]).join(';'));
+      });
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'}));
+      a.download='dispos-phase1-2026.csv'; document.body.appendChild(a); a.click(); a.remove();
+    };
+  }
+})();
+</script>
+<script src="../report.js" defer></script>
+<script data-goatcounter="https://acbb-tt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body></html>
