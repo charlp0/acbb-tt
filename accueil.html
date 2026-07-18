@@ -170,6 +170,7 @@
   .d-lbl::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--orange,#F26A1B)}
   .d-lbl em{color:var(--orange,#F26A1B);font-style:normal;font-weight:800}
   .d-note{font-size:11.5px;color:rgba(246,245,243,0.55);margin:-4px 0 12px;line-height:1.5}
+  .d-calnote{font-size:12px;font-weight:700;color:var(--win,#3DD68C);background:rgba(61,214,140,0.10);border:1px solid rgba(61,214,140,0.35);border-radius:10px;padding:8px 12px;margin:0 0 12px}
   .d-roles{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 14px}
   .d-role{cursor:pointer;user-select:none;font-size:13.5px;font-weight:700;padding:10px 16px;border-radius:99px;background:#1E1E22;border:1px solid rgba(255,255,255,0.16);color:#D4D3CF;transition:all .12s}
   .d-role.on{background:rgba(242,106,27,0.16);border-color:var(--orange,#F26A1B);color:#F6F5F3}
@@ -334,6 +335,7 @@
     <div class="d-compo">La composition des équipes sera établie par la commission sportive, en tenant compte de plusieurs critères : les <b>résultats de la saison 2025-2026</b> en championnat par équipes, l'<b>assiduité aux entraînements</b> (obligation de s'entraîner au moins une fois/semaine en soirée), les <b>disponibilités renseignées</b> ainsi que l'<b>avis des entraîneurs</b>.</div>
     <div class="d-lbl">Disponibilité théorique — <em>touche les cases</em> pour cocher les journées où tu pourras normalement jouer</div>
     <div class="d-note">🔄 Modifiable à tout moment : reviens sur cette page et ressaisis ton n° de licence (ou ton nom + prénom si tu n'as pas de licence) — tes réponses se rechargent, ajuste puis ré-enregistre.</div>
+    <div class="d-calnote" id="dCalNote" hidden></div>
     <div class="d-days" id="dDays"></div>
     <div class="d-foot">
       <div class="d-sum"><b id="dSum">0</b> dispo(s) sur 7</div>
@@ -355,8 +357,19 @@
   var JOURS=[['J1','18-19/09'],['J2','02-03/10'],['J3','16-17/10'],['J4','06-07/11'],['J5','20-21/11'],['J6','04-05/12'],['J7','11-12/12']];
   var days=document.getElementById('dDays'), sum=document.getElementById('dSum'), st=document.getElementById('dStatus');
   var fP=document.getElementById('dPrenom'), fN=document.getElementById('dNom'), fL=document.getElementById('dLic');
-  var found=document.getElementById('dFound'), btn=document.getElementById('dSave');
-  days.innerHTML=JOURS.map(function(j,i){return '<div class="d-day" role="button" tabindex="0" aria-pressed="false" aria-label="Journée '+(i+1)+' ('+j[1]+')" data-i="'+i+'"><div class="j">'+j[0]+'</div><div class="dt">'+j[1]+'</div></div>';}).join('');
+  var found=document.getElementById('dFound'), btn=document.getElementById('dSave'), calNote=document.getElementById('dCalNote');
+  // rendu des journées (préserve les cases déjà cochées, par index)
+  var CUR_JOURS=JOURS;
+  function buildDays(list){
+    var prev=[].slice.call(document.querySelectorAll('.d-day')).map(function(d){return d.classList.contains('on');});
+    CUR_JOURS=list;
+    days.innerHTML=list.map(function(j,i){
+      var t=j[2]?(' title="'+j[2].replace(/"/g,'&quot;')+'"'):'';
+      return '<div class="d-day'+(prev[i]?' on':'')+'" role="button" tabindex="0" aria-pressed="'+(prev[i]?'true':'false')+'" aria-label="Journée '+(i+1)+' ('+j[1]+')" data-i="'+i+'"'+t+'><div class="j">'+j[0]+'</div><div class="dt">'+j[1]+'</div></div>';
+    }).join('');
+    if(sum) sum.textContent=document.querySelectorAll('.d-day.on').length;
+  }
+  buildDays(JOURS);
   /* souhaits (choix multiples) */
   var ROLES=[['T','Titulaire'],['R','Remplaçant'],['N','Ne pas jouer'],['REF','Référent']];
   var rolesEl=document.getElementById('dRoles');
@@ -398,10 +411,65 @@
         found.style.display='block';
       }).catch(function(){});
   }
-  fL.addEventListener('blur',lookup); fL.addEventListener('input',function(){ if(fL.value.trim().length>=6) lookup(); });
+  fL.addEventListener('blur',function(){lookup();teamCal();}); fL.addEventListener('input',function(){ if(fL.value.trim().length>=6){lookup();} teamCal(); });
   // sans licence : retrouver la saisie précédente dès que nom + prénom sont remplis
-  fN.addEventListener('blur',function(){ if(!/^[0-9]{4,}$/.test(fL.value.trim())) lookup(); });
-  fP.addEventListener('blur',function(){ if(!/^[0-9]{4,}$/.test(fL.value.trim())) lookup(); });
+  fN.addEventListener('blur',function(){ if(!/^[0-9]{4,}$/.test(fL.value.trim())) lookup(); teamCal(); });
+  fP.addEventListener('blur',function(){ if(!/^[0-9]{4,}$/.test(fL.value.trim())) lookup(); teamCal(); });
+
+  /* ===== calendrier adapté par équipe (M2 : Nationale 1) =====
+     Quand la personne saisie est reconnue comme joueur d'une équipe à calendrier
+     spécifique, on remplace les journées génériques par celles de sa poule. */
+  var TEAMCALS={};   // 'M2' -> [['J1','19/09','vs …'],…]
+  var IDTEAM={};     // licence ou clé NOM|PRENOM normalisée -> 'M2'
+  var ADAPT={M2:'Nationale 1'};   // équipes dont on adapte le calendrier (extensible)
+  Promise.all([
+    fetch(SB+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:HD}).then(function(r){return r.ok?r.json():[];}).catch(function(){return [];}),
+    fetch('data/poules2627.json',{cache:'no-cache'}).then(function(r){return r.json();}).catch(function(){return null;}),
+    fetch('data/scoring.json',{cache:'no-cache'}).then(function(r){return r.json();}).catch(function(){return null;})
+  ]).then(function(res){
+    var tags=(res[0][0]&&res[0][0].tags)||{}; delete tags._params;
+    var pj=res[1], sc=res[2]; if(!pj||!sc) return;
+    var byKey={}; (sc.players||[]).forEach(function(p){ byKey[String(p.lic||(p.nom+'|'+p.pre))]=p; });
+    // calendriers des poules adaptées
+    (pj.poules||[]).forEach(function(P){
+      if(!ADAPT[P.acbb]) return;
+      var byPos={}; P.teams.forEach(function(t){byPos[t.pos]=t;});
+      TEAMCALS[P.acbb]=P.cal.map(function(c){
+        var o=byPos[c.opp]||{}, dd=(c.date||'').slice(0,5);
+        return ['J'+c.j, dd, (c.dom?'DOM':'EXT')+' · vs '+(o.name||'?')];
+      });
+    });
+    // identifiants -> équipe adaptée
+    Object.keys(tags).forEach(function(k){
+      var t=tags[k]; if(!t) return;
+      var e=ADAPT[t.e]?t.e:(ADAPT[t.e2]?t.e2:null); if(!e) return;
+      var p=byKey[k]||{};
+      if(p.lic) IDTEAM[String(p.lic)]=e;
+      if(p.nom&&p.pre) IDTEAM['N:'+nrmKey(p.nom)+nrmKey(p.pre)]=e;
+      else if(/\|/.test(k)){ var parts=k.split('|'); IDTEAM['N:'+nrmKey(parts[0])+nrmKey(parts[1])]=e; }
+    });
+    teamCal();
+  });
+  function detectTeam(){
+    var lic=fL.value.trim();
+    if(/^[0-9]{4,}$/.test(lic) && IDTEAM[lic]) return IDTEAM[lic];
+    var nk='N:'+nrmKey(fN.value)+nrmKey(fP.value);
+    return IDTEAM[nk]||null;
+  }
+  var curTeam=null;
+  function teamCal(){
+    var e=detectTeam();
+    if(e===curTeam) return;
+    curTeam=e;
+    if(e&&TEAMCALS[e]){
+      buildDays(TEAMCALS[e]);
+      calNote.hidden=false;
+      calNote.textContent='📅 Calendrier '+ADAPT[e]+' (équipe '+e+') — dates adaptées à ta poule';
+    }else{
+      buildDays(JOURS);
+      calNote.hidden=true;
+    }
+  }
   /* complétion club */
   function ring(){
     Promise.all([
