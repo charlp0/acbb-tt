@@ -1,0 +1,29 @@
+name: Alerte tentatives de mot de passe
+# Vérifie chaque matin le volume de tentatives échouées sur l'espace Sportive.
+# Seuil : > 20 échecs en 24 h -> issue GitHub (mail à Charles).
+on:
+  schedule:
+    - cron: '30 5 * * *'   # ~7h30 Paris
+  workflow_dispatch:
+permissions:
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compter les échecs des dernières 24 h
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SINCE=$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%S)
+          N=$(curl -s "https://vhhmageufrcenruywawg.supabase.co/rest/v1/gate_log?select=id&created_at=gte.$SINCE" \
+            -H "apikey: sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay" \
+            -H "Prefer: count=exact" -D- -o /dev/null | grep -i content-range | grep -o '/[0-9]*' | tr -d '/')
+          echo "échecs 24h : ${N:-0}"
+          if [ "${N:-0}" -gt 20 ]; then
+            IPS=$(curl -s "https://vhhmageufrcenruywawg.supabase.co/rest/v1/gate_log?select=ip&created_at=gte.$SINCE" \
+              -H "apikey: sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay" | python3 -c "import json,sys,collections;print(collections.Counter(r.get('ip') for r in json.load(sys.stdin)).most_common(5))")
+            gh issue create --repo "$GITHUB_REPOSITORY" \
+              --title "🔐 $N tentatives de mot de passe échouées en 24h (espace Sportive)" \
+              --body "Volume anormal détecté sur gate_log. Top IP : $IPS — vérifier et éventuellement changer le mot de passe." || true
+          fi
