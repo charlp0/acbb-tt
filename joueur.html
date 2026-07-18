@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>ACBB TT — Fiche joueur · Charles Perrot</title>
+<title>ACBB TT — Fiche joueur</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800;1,900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -962,6 +962,8 @@ function fillHero(){const c=PROFILE.classement;
   const dOff=hasBase?((cur||0)-c.debut):null, dAv=hasBase?(((c.avenir!=null?c.avenir:cur)||0)-c.debut):null;
   const xd=document.querySelector('.xp-delta'); if(xd)xd.innerHTML=hasBase?('<span>'+fmtPts(dOff)+' officiel</span>'+(fut?'<span class="soft">'+fmtPts(dAv)+' à venir</span>':'')):'<span class="soft">Pas d\'historique cette saison</span>';
   document.title='ACBB TT — '+(PROFILE.prenom||'')+' '+(PROFILE.nom||'');
+  // GoatCounter en mode manuel : compter avec le vrai nom du joueur (sinon titre par défaut)
+  (function send(){ if(window.goatcounter&&window.goatcounter.count){ window.goatcounter.count({path:location.pathname+location.search,title:document.title}); } else setTimeout(send,200); })();
 }
 function computeExtra(p){
   const ms=[]; (p.competitions||[]).forEach(c=>(c.matches||[]).forEach(m=>ms.push(Object.assign({comp:c.label},m))));
@@ -1150,6 +1152,7 @@ boot();
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="report.js" defer></script>
+<script>window.goatcounter={no_onload:true};</script>
 <script data-goatcounter="https://acbb-tt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
