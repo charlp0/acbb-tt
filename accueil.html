@@ -326,14 +326,14 @@
     <div class="d-row">
       <input id="dPrenom" placeholder="Prénom" aria-label="Prénom" autocomplete="given-name">
       <input id="dNom" placeholder="Nom" aria-label="Nom" autocomplete="family-name">
-      <input id="dLic" placeholder="N° de licence" aria-label="Numéro de licence" inputmode="numeric" autocomplete="off">
+      <input id="dLic" placeholder="N° de licence (facultatif)" aria-label="Numéro de licence (facultatif)" inputmode="numeric" autocomplete="off">
     </div>
     <div class="d-found" id="dFound"></div>
     <div class="d-lbl">En phase 1 2026/2027, pour le championnat par équipes <em>masculin</em>, je souhaite être <span style="font-weight:500;color:rgba(246,245,243,0.55)">(plusieurs choix possibles)</span> :</div>
     <div class="d-roles" id="dRoles"></div>
     <div class="d-compo">La composition des équipes sera établie par la commission sportive, en tenant compte de plusieurs critères : les <b>résultats de la saison 2025-2026</b> en championnat par équipes, l'<b>assiduité aux entraînements</b> (obligation de s'entraîner au moins une fois/semaine en soirée), les <b>disponibilités renseignées</b> ainsi que l'<b>avis des entraîneurs</b>.</div>
     <div class="d-lbl">Disponibilité théorique — <em>touche les cases</em> pour cocher les journées où tu pourras normalement jouer</div>
-    <div class="d-note">🔄 Modifiable à tout moment : reviens sur cette page, ressaisis ton n° de licence — tes réponses se rechargent, ajuste puis ré-enregistre.</div>
+    <div class="d-note">🔄 Modifiable à tout moment : reviens sur cette page et ressaisis ton n° de licence (ou ton nom + prénom si tu n'as pas de licence) — tes réponses se rechargent, ajuste puis ré-enregistre.</div>
     <div class="d-days" id="dDays"></div>
     <div class="d-foot">
       <div class="d-sum"><b id="dSum">0</b> dispo(s) sur 7</div>
@@ -375,12 +375,20 @@
   try{ var dr=JSON.parse(localStorage.getItem('acbb_dispo_draft')||'null');
     if(dr){ fP.value=dr.p||''; fN.value=dr.n||''; fL.value=dr.l||''; setState(dr.d); setRoles(dr.r); } }catch(e){}
   /* récupération du vote existant par licence */
+  // clé d'identification : n° de licence si fourni, sinon "SN-NOM-PRENOM" (sans numéro)
+  var nrmKey=function(s){return (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');};
+  function keyFor(){
+    var lic=fL.value.trim();
+    if(/^[0-9]{4,}$/.test(lic)) return lic;
+    var n=nrmKey(fN.value), p=nrmKey(fP.value);
+    return (n&&p)?('SN-'+n+'-'+p):null;
+  }
   var lastLookup='';
   function lookup(){
-    var lic=fL.value.trim();
-    if(!/^[0-9]{4,}$/.test(lic)||lic===lastLookup) return;
-    lastLookup=lic;
-    fetch(SB+'/rest/v1/dispos_log?licence=eq.'+encodeURIComponent(lic)+'&select=prenom,nom,dispos,n,created_at&order=id.desc&limit=1',{headers:HD})
+    var k=keyFor();
+    if(!k||k===lastLookup) return;
+    lastLookup=k;
+    fetch(SB+'/rest/v1/dispos_log?licence=eq.'+encodeURIComponent(k)+'&select=prenom,nom,dispos,n,created_at&order=id.desc&limit=1',{headers:HD})
       .then(function(r){return r.ok?r.json():[];}).then(function(a){
         if(!a.length){found.style.display='none';return;}
         var v=a[0];
@@ -391,6 +399,9 @@
       }).catch(function(){});
   }
   fL.addEventListener('blur',lookup); fL.addEventListener('input',function(){ if(fL.value.trim().length>=6) lookup(); });
+  // sans licence : retrouver la saisie précédente dès que nom + prénom sont remplis
+  fN.addEventListener('blur',function(){ if(!/^[0-9]{4,}$/.test(fL.value.trim())) lookup(); });
+  fP.addEventListener('blur',function(){ if(!/^[0-9]{4,}$/.test(fL.value.trim())) lookup(); });
   /* complétion club */
   function ring(){
     Promise.all([
@@ -411,12 +422,14 @@
   btn.addEventListener('click',function(){
     var p=fP.value.trim(), n=fN.value.trim(), lic=fL.value.trim();
     if(!p||!n){ st.textContent='⚠️ Prénom et nom obligatoires.'; return; }
-    if(!/^[0-9]{4,}$/.test(lic)){ st.textContent='⚠️ Numéro de licence invalide (chiffres uniquement).'; return; }
+    if(lic && !/^[0-9]{4,}$/.test(lic)){ st.textContent='⚠️ Numéro de licence invalide (chiffres uniquement, ou laisse vide).'; return; }
+    var key=keyFor();
+    if(!key){ st.textContent='⚠️ Renseigne ton nom et prénom.'; return; }
     var d=state(), cnt=Object.values(d).filter(Boolean).length, roles=rolesState();
     if(roles.length) d.roles=roles;   // porté dans le jsonb, hors comptage des journées
     btn.disabled=true; st.textContent='enregistrement…';
     fetch(SB+'/rest/v1/dispos_log',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body:JSON.stringify({licence:lic,prenom:p,nom:n,dispos:d,n:cnt})})
+      body:JSON.stringify({licence:key,prenom:p,nom:n,dispos:d,n:cnt})})
       .then(function(r){
         if(!r.ok) throw new Error('HTTP '+r.status);
         st.textContent='✓ Merci '+p+' ! Dispo enregistrée ('+cnt+'/7). Tu peux revenir la modifier à tout moment.';

@@ -246,18 +246,22 @@
     /* répondants */
     var list=Object.keys(votes).map(function(k){return votes[k];})
       .sort(function(a,b){return (b.n||0)-(a.n||0);});
+    var noLic=function(v){return /^SN-/.test(String(v.licence||''));};  // déclaration sans licence
     document.getElementById('rpBody').innerHTML=list.map(function(v){
       var p=byLic[String(v.licence)];
       var nm=p?(p.pre+' '+p.nom):((v.prenom||'')+' '+(v.nom||''));
       var dots=JOURS.map(function(_,i){var on=v.dispos&&v.dispos['j'+(i+1)];return '<td><span class="dotj '+(on?'y':'n')+'">'+(on?'✓':'—')+'</span></td>';}).join('');
       var RL={T:'Tit.',R:'Remp.',N:'Ne pas jouer',REF:'Référent'};
       var souhait=((v.dispos&&v.dispos.roles)||[]).map(function(x){return RL[x]||x;}).join(' + ');
-      return '<tr><td>'+esc(nm)+(p?'':' <span style="color:var(--gold);font-size:10px">⚠ licence inconnue</span>')+'</td><td class="num">'+esc(v.licence)+'</td>'
+      var tag=p?'':(noLic(v)?' <span style="color:var(--dim);font-size:10px">sans licence</span>':' <span style="color:var(--gold);font-size:10px">⚠ licence inconnue</span>');
+      var licShow=noLic(v)?'—':esc(v.licence);
+      return '<tr><td>'+esc(nm)+tag+'</td><td class="num">'+licShow+'</td>'
         +'<td style="font-size:11px'+(souhait?'':';color:var(--dimmer)')+'">'+(esc(souhait)||'—')+'</td>'+dots
         +'<td class="num"><b>'+(v.n!=null?v.n:'?')+'</b>/7</td><td class="num" style="color:var(--dim)">'+new Date(v.created_at).toLocaleDateString('fr-FR')+'</td></tr>';
     }).join('')||'<tr><td colspan="12" style="padding:16px">Aucune réponse pour l\'instant.</td></tr>';
 
-    var unknown=list.filter(function(v){return !byLic[String(v.licence)];});
+    // "inconnu" = ni dans l'effectif, ni une déclaration sans licence assumée
+    var unknown=list.filter(function(v){return !byLic[String(v.licence)] && !noLic(v);});
     var ub=document.getElementById('unknownBox');
     if(unknown.length){ ub.hidden=false; ub.textContent='⚠ '+unknown.length+' réponse(s) avec une licence inconnue de l\'effectif : '+unknown.map(function(v){return (v.prenom||'')+' '+(v.nom||'')+' ('+v.licence+')';}).join(', ')+' — vérifier la saisie.'; }
 
