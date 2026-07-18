@@ -195,6 +195,9 @@
     rows.forEach(function(r){ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)) votes[String(r.licence)]=r; });
     var byLic={}; players.forEach(function(p){ if(p.lic) byLic[String(p.lic)]=p; });
     var pkey=function(p){return String(p.lic||(p.nom+'|'+p.pre));};
+    // vote d'un joueur : par licence, sinon par clé "sans licence" SN-NOM-PRENOM (même règle que le formulaire)
+    var nrmK=function(s){return (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');};
+    var voteFor=function(p){ return votes[String(p.lic)] || (p.lic?null:votes['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)]); };
 
     /* en-tête */
     var nV=Object.keys(votes).length, total=players.length;
@@ -215,11 +218,11 @@
     var body='';
     TEAMORDER.forEach(function(e){
       var tm=teams[e]; if(!tm||!tm.T.length)return;
-      var resp=tm.T.filter(function(p){return votes[String(p.lic)];}).length;
+      var resp=tm.T.filter(function(p){return voteFor(p);}).length;
       var cells=JOURS.map(function(_,ji){
         if(!resp) return '<td><span class="cell c-na">—</span></td>';
-        var dispo=tm.T.filter(function(p){var v=votes[String(p.lic)];return v&&v.dispos&&v.dispos['j'+(ji+1)];});
-        var extra=tm.R.filter(function(p){var v=votes[String(p.lic)];return v&&v.dispos&&v.dispos['j'+(ji+1)];});
+        var dispo=tm.T.filter(function(p){var v=voteFor(p);return v&&v.dispos&&v.dispos['j'+(ji+1)];});
+        var extra=tm.R.filter(function(p){var v=voteFor(p);return v&&v.dispos&&v.dispos['j'+(ji+1)];});
         var n=dispo.length;
         var cls=n>=4?'c-ok':(n===3?'c-warn':(n>=1?'c-bad':'c-zero'));
         var tip=(dispo.map(function(p){return p.pre+' '+p.nom;}).join(', ')||'aucun titulaire dispo')+(extra.length?' — remplaçants : '+extra.map(function(p){return p.pre+' '+p.nom;}).join(', '):'');
@@ -233,7 +236,7 @@
     var rel='';
     TEAMORDER.forEach(function(e){
       var tm=teams[e]; if(!tm||!tm.T.length)return;
-      var missing=tm.T.filter(function(p){return !votes[String(p.lic)];});
+      var missing=tm.T.filter(function(p){return !voteFor(p);});
       var chips=missing.map(function(p){
         var nolic=!p.lic||!/^[0-9]+$/.test(String(p.lic));
         return '<span class="rel-chip'+(nolic?' nolic':'')+'">'+esc(p.pre+' '+p.nom)+(nolic?' · sans licence FFTT':'')+'</span>';
