@@ -110,21 +110,24 @@ function render(){
 }
 document.getElementById('q').addEventListener('input',render);
 document.getElementById('sort').addEventListener('click',()=>{ sortMode=(sortMode+1)%SORTS.length; document.getElementById('sort').textContent='Tri : '+SORTS[sortMode].label; render(); });
-Promise.all([
-  fetch('data/players_index.json',{cache:'no-cache'}).then(r=>r.json()),
-  fetch('data/officiel2627.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null),
-  fetch('data/scoring.json',{cache:'no-cache'}).then(r=>r.json())
-]).then(([d,o,sc])=>{
-  if(o&&o.officiel)OFF=o.officiel;
-  // effectif 26/27 = scoring.json (sans les départs, avec les mutations)
-  const byLic={}; d.forEach(p=>{ if(p.lic) byLic[String(p.lic)]=p; });
-  PLAYERS=(sc.players||[]).map(p=>{
-    const ix=p.lic?byLic[String(p.lic)]:null;
-    return {lic:p.lic, nom:p.nom, prenom:p.pre, mensuel:p.men, mut:!!p.mut,
-            parties:ix?ix.parties:0};
-  });
-  render();
-}).catch(e=>{document.getElementById('grid').innerHTML='<div class="empty">Index indisponible.</div>';});
+function loadAnnuaire(){
+  document.getElementById('grid').innerHTML='<div class="empty">Chargement…</div>';
+  // scoring.json = source ESSENTIELLE de l'effectif ; les 2 autres sont optionnels (dégradation propre)
+  var pIndex=fetch('data/players_index.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]);
+  var pOff=fetch('data/officiel2627.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
+  fetch('data/scoring.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw 0;return r.json();})
+    .then(sc=>Promise.all([pIndex,pOff]).then(([d,o])=>{
+      if(o&&o.officiel)OFF=o.officiel;
+      const byLic={}; (d||[]).forEach(p=>{ if(p.lic) byLic[String(p.lic)]=p; });
+      PLAYERS=(sc.players||[]).map(p=>{
+        const ix=p.lic?byLic[String(p.lic)]:null;
+        return {lic:p.lic, nom:p.nom, prenom:p.pre, mensuel:p.men, mut:!!p.mut, parties:ix?ix.parties:0};
+      });
+      render();
+    }))
+    .catch(()=>{ document.getElementById('grid').innerHTML='<div class="empty">Liste momentanément indisponible. <button class="sortbtn" type="button" onclick="loadAnnuaire()" style="margin-left:8px">Réessayer</button></div>'; });
+}
+loadAnnuaire();
 </script>
 </div>
 <script src="report.js" defer></script>
