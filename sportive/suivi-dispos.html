@@ -193,11 +193,13 @@
     /* dernier vote par licence */
     var votes={};
     rows.forEach(function(r){ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)) votes[String(r.licence)]=r; });
-    var byLic={}; players.forEach(function(p){ if(p.lic) byLic[String(p.lic)]=p; });
-    var pkey=function(p){return String(p.lic||(p.nom+'|'+p.pre));};
-    // vote d'un joueur : par licence, sinon par clé "sans licence" SN-NOM-PRENOM (même règle que le formulaire)
     var nrmK=function(s){return (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');};
-    var voteFor=function(p){ return votes[String(p.lic)] || (p.lic?null:votes['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)]); };
+    var byLic={}, bySN={};
+    players.forEach(function(p){ if(p.lic) byLic[String(p.lic)]=p; bySN['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)]=p; });
+    var pkey=function(p){return String(p.lic||(p.nom+'|'+p.pre));};
+    // vote d'un joueur : par licence, sinon par clé "sans licence" SN-NOM-PRENOM
+    // (matche AUSSI les licenciés qui ont voté sans mettre leur licence)
+    var voteFor=function(p){ return votes[String(p.lic)] || votes['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)]; };
 
     /* en-tête */
     var nV=Object.keys(votes).length, total=players.length;
@@ -249,22 +251,26 @@
     /* répondants */
     var list=Object.keys(votes).map(function(k){return votes[k];})
       .sort(function(a,b){return (b.n||0)-(a.n||0);});
-    var noLic=function(v){return /^SN-/.test(String(v.licence||''));};  // déclaration sans licence
+    var isSN=function(v){return /^SN-/.test(String(v.licence||''));};
     document.getElementById('rpBody').innerHTML=list.map(function(v){
-      var p=byLic[String(v.licence)];
+      // licence directe, sinon (vote SN) on retrouve le licencié par son nom
+      var p=byLic[String(v.licence)] || (isSN(v)?bySN[String(v.licence)]:null);
+      var hasLic=!!(p&&p.lic), known=!!p;
       var nm=p?(p.pre+' '+p.nom):((v.prenom||'')+' '+(v.nom||''));
       var dots=JOURS.map(function(_,i){var on=v.dispos&&v.dispos['j'+(i+1)];return '<td><span class="dotj '+(on?'y':'n')+'">'+(on?'✓':'—')+'</span></td>';}).join('');
       var RL={T:'Tit.',R:'Remp.',N:'Ne pas jouer',REF:'Référent'};
       var souhait=((v.dispos&&v.dispos.roles)||[]).map(function(x){return RL[x]||x;}).join(' + ');
-      var tag=p?'':(noLic(v)?' <span style="color:var(--dim);font-size:10px">sans licence</span>':' <span style="color:var(--gold);font-size:10px">⚠ licence inconnue</span>');
-      var licShow=noLic(v)?'—':esc(v.licence);
+      var tag=hasLic
+        ?(isSN(v)?' <span style="color:var(--win-lt);font-size:10px" title="licence retrouvée via le nom">licence auto</span>':'')
+        :((!known && !isSN(v))?' <span style="color:var(--gold);font-size:10px">⚠ licence inconnue</span>':' <span style="color:var(--dim);font-size:10px">sans licence</span>');
+      var licShow=hasLic?esc(String(p.lic)):(isSN(v)?'—':esc(v.licence));
       return '<tr><td>'+esc(nm)+tag+'</td><td class="num">'+licShow+'</td>'
         +'<td style="font-size:11px'+(souhait?'':';color:var(--dimmer)')+'">'+(esc(souhait)||'—')+'</td>'+dots
         +'<td class="num"><b>'+(v.n!=null?v.n:'?')+'</b>/7</td><td class="num" style="color:var(--dim)">'+new Date(v.created_at).toLocaleDateString('fr-FR')+'</td></tr>';
     }).join('')||'<tr><td colspan="12" style="padding:16px">Aucune réponse pour l\'instant.</td></tr>';
 
-    // "inconnu" = ni dans l'effectif, ni une déclaration sans licence assumée
-    var unknown=list.filter(function(v){return !byLic[String(v.licence)] && !noLic(v);});
+    // "inconnu" = ni dans l'effectif (licence ou nom), ni une déclaration SN valable
+    var unknown=list.filter(function(v){return !byLic[String(v.licence)] && !isSN(v);});
     var ub=document.getElementById('unknownBox');
     if(unknown.length){ ub.hidden=false; ub.textContent='⚠ '+unknown.length+' réponse(s) avec une licence inconnue de l\'effectif : '+unknown.map(function(v){return (v.prenom||'')+' '+(v.nom||'')+' ('+v.licence+')';}).join(', ')+' — vérifier la saisie.'; }
 
