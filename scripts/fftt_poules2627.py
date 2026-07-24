@@ -2,7 +2,7 @@
 """
 Poules régionales phase 1 2026/2027 avec équipe ACBB.
 Sources poules :
-- PDF Ligue IDF "2026-2027 - CdF - Poules Phase 1 V.26-07-10" (poules regionales)
+- PDF Ligue IDF "Poules Phase 1 V.26-07-23" (poules regionales ; échanges R1 p4 Meudon<->Combs Senart 2, R3 p1 Combs Senart 3->Paris US 2)
 - PDF CD92 "POULES CHPT EQUIPES PHASE 1_26_27_v 13 07 2026" (departemental,
   attribution verifiee par coordonnees pdfplumber : F3=PRD p2, M7=PR p3,
   M6=PR p4, M10/M11/M8/M9=D1 p1-4, M15/M17/M12/M13/M16/M14=D2 p1-6)
@@ -103,9 +103,9 @@ POULES = [
         (5, 'BRETIGNY CS', 1, '91'), (6, 'PALAISEAU US', 2, '91'),
         (7, 'BOULOGNE BILLANCOURT AC', 2, '92'), (8, 'SQY PING', 2, '78')]),
     dict(division='Régionale 1 Messieurs', poule=4, acbb='M3', genre='M', pos=3, teams=[
-        (1, 'COMBS SENART TT', 2, '77'), (2, 'LEVALLOIS SPORT', 6, '92'),
+        (1, 'MEUDON AS', 1, '92'), (2, 'LEVALLOIS SPORT', 6, '92'),
         (3, 'BOULOGNE BILLANCOURT AC', 3, '92'), (4, 'JOSASSIEN TT', 1, '78'),
-        (5, 'MEUDON AS', 1, '92'), (6, 'CHATILLON TTM', 2, '92'),
+        (5, 'COMBS SENART TT', 2, '77'), (6, 'CHATILLON TTM', 2, '92'),
         (7, 'NOISY LE GRAND', 3, '93'), (8, 'BEAUCHAMP CTT', 1, '95')]),
     dict(division='Régionale 2 Messieurs', poule=3, acbb='M4', genre='M', pos=3, teams=[
         (1, 'MENUCOURT', 1, '95'), (2, 'LAGNY SMTT', 1, '77'),
@@ -113,7 +113,7 @@ POULES = [
         (5, 'THIAIS AS TT', 3, '94'), (6, 'VERSAILLES SCTT', 3, '78'),
         (7, 'MONTMAGNY-GROSLAY', 1, '95'), (8, 'PARIS IX ATT', 2, '75')]),
     dict(division='Régionale 3 Messieurs', poule=1, acbb='M5', genre='M', pos=7, teams=[
-        (1, 'COMBS SENART TT', 3, '77'), (2, 'ATT XV', 1, '75'),
+        (1, 'PARIS US', 2, '75'), (2, 'ATT XV', 1, '75'),
         (3, 'VITRY ES', 1, '94'), (4, 'PING PARIS 14', 1, '75'),
         (5, 'VINCENNOIS TT', 2, '94'), (6, 'PONTAULT UMS TT', 5, '77'),
         (7, 'BOULOGNE BILLANCOURT AC', 5, '92'), (8, 'STAINS ES-PIERREFITTE AS', 1, '93')]),
@@ -197,7 +197,7 @@ DATES = ['19/09/2026', '03/10/2026', '17/10/2026', '07/11/2026',
 DATES_VEN = ['18/09/2026', '02/10/2026', '16/10/2026', '06/11/2026',
              '20/11/2026', '04/12/2026', '11/12/2026']      # vendredis (départemental M)
 
-out = {'source': 'Ligue IDF V.26-07-10 + CD92 v13/07/2026', 'dates': DATES, 'poules': []}
+out = {'source': 'Ligue IDF V.26-07-23 + CD92 v13/07/2026', 'dates': DATES, 'poules': []}
 for P in POULES:
     dept92 = '(92)' in P['division']
     dates = DATES if (not dept92 or P.get('cal') == 'sam') else DATES_VEN

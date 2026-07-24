@@ -1,5 +1,5 @@
 {
- "source": "Ligue IDF V.26-07-10 + CD92 v13/07/2026",
+ "source": "Ligue IDF V.26-07-23 + CD92 v13/07/2026",
  "dates": [
   "19/09/2026",
   "03/10/2026",
@@ -553,8 +553,8 @@
    "teams": [
     {
      "pos": 1,
-     "name": "COMBS SENART TT 2",
-     "dept": "77",
+     "name": "MEUDON AS 1",
+     "dept": "92",
      "acbb": false,
      "s25": null
     },
@@ -596,8 +596,8 @@
     },
     {
      "pos": 5,
-     "name": "MEUDON AS 1",
-     "dept": "92",
+     "name": "COMBS SENART TT 2",
+     "dept": "77",
      "acbb": false,
      "s25": null
     },
@@ -831,15 +831,10 @@
    "teams": [
     {
      "pos": 1,
-     "name": "COMBS SENART TT 3",
-     "dept": "77",
+     "name": "PARIS US 2",
+     "dept": "75",
      "acbb": false,
-     "s25": {
-      "avg": 1465,
-      "div": "R3 M p13",
-      "rank": 5,
-      "nm": 7
-     }
+     "s25": null
     },
     {
      "pos": 2,
