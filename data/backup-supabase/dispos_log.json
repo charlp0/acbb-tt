@@ -537,5 +537,27 @@
   },
   "n": 7,
   "ip": "88.188.1.178"
+ },
+ {
+  "id": 53,
+  "created_at": "2026-07-24T05:41:44.67825+00:00",
+  "licence": "9254370",
+  "prenom": "Jean-Serge",
+  "nom": "Boiteau",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T",
+    "REF"
+   ]
+  },
+  "n": 7,
+  "ip": "92.151.7.36"
  }
 ]
