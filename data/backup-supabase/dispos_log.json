@@ -559,5 +559,26 @@
   },
   "n": 7,
   "ip": "92.151.7.36"
+ },
+ {
+  "id": 54,
+  "created_at": "2026-07-24T22:04:16.144087+00:00",
+  "licence": "6221074",
+  "prenom": "Sébastien",
+  "nom": "Piquet",
+  "dispos": {
+   "j1": false,
+   "j2": true,
+   "j3": true,
+   "j4": false,
+   "j5": true,
+   "j6": true,
+   "j7": false,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 4,
+  "ip": "78.199.67.131"
  }
 ]
