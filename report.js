@@ -4,6 +4,26 @@
 (function(){
   "use strict";
   var ENDPOINT = "https://formspree.io/f/xjgdopjr";
+  // Copie chaque signalement dans Supabase (append-only, insert seul, lecture réservée service_role).
+  var SB_URL = "https://vhhmageufrcenruywawg.supabase.co";
+  var SB_KEY = "sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay";
+  function logSupa(form){
+    try{
+      fetch(SB_URL+"/rest/v1/signalements_log",{
+        method:"POST",
+        headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY,
+                 "Content-Type":"application/json","Prefer":"return=minimal"},
+        body:JSON.stringify({
+          page:(form.page&&form.page.value||"").slice(0,500),
+          type:(form.type&&form.type.value||"").slice(0,120),
+          message:(form.message&&form.message.value||"").slice(0,4000),
+          email:(form.email&&form.email.value||"").slice(0,200),
+          url:location.href, title:(document.title||"").slice(0,300),
+          ua:(navigator.userAgent||"").slice(0,300)
+        })
+      }).catch(function(){});
+    }catch(e){}
+  }
 
   var css = `
   .rep-bar{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;
@@ -123,6 +143,7 @@
       if(!form.message.value.trim()){ errBox.textContent='Merci de décrire le problème.'; errBox.style.display='block'; return; }
       if(ENDPOINT.indexOf('REMPLACER')>=0){ errBox.textContent='Formulaire pas encore configuré (endpoint manquant).'; errBox.style.display='block'; return; }
       btn.disabled=true; btn.textContent='Envoi…';
+      logSupa(form);
       var data=new FormData(form);
       data.append('_subject','Signalement ACBB TT');
       fetch(ENDPOINT,{method:'POST',body:data,headers:{'Accept':'application/json'}})
