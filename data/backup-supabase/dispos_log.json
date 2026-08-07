@@ -622,5 +622,537 @@
   },
   "n": 7,
   "ip": "77.136.66.246"
+ },
+ {
+  "id": 57,
+  "created_at": "2026-08-06T09:18:42.642783+00:00",
+  "licence": "9264613",
+  "prenom": "Romain",
+  "nom": "Lizambard",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": false,
+   "j5": true,
+   "j6": true,
+   "j7": false,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 5,
+  "ip": "88.168.87.176"
+ },
+ {
+  "id": 58,
+  "created_at": "2026-08-06T09:22:59.73928+00:00",
+  "licence": "7511193",
+  "prenom": "Christophe",
+  "nom": "Buchet",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "92.184.136.95"
+ },
+ {
+  "id": 59,
+  "created_at": "2026-08-06T09:23:10.32105+00:00",
+  "licence": "7511193",
+  "prenom": "Christophe",
+  "nom": "Buchet",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "92.184.136.95"
+ },
+ {
+  "id": 60,
+  "created_at": "2026-08-06T09:23:11.336882+00:00",
+  "licence": "7511193",
+  "prenom": "Christophe",
+  "nom": "Buchet",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "92.184.136.95"
+ },
+ {
+  "id": 61,
+  "created_at": "2026-08-06T09:23:12.816433+00:00",
+  "licence": "7511193",
+  "prenom": "Christophe",
+  "nom": "Buchet",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "92.184.136.95"
+ },
+ {
+  "id": 62,
+  "created_at": "2026-08-06T09:24:55.920899+00:00",
+  "licence": "9252820",
+  "prenom": "Ayoub",
+  "nom": "Batti",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": false,
+   "j6": false,
+   "j7": false,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 4,
+  "ip": "78.240.88.111"
+ },
+ {
+  "id": 63,
+  "created_at": "2026-08-06T09:25:55.653608+00:00",
+  "licence": "SN-ZERBIB-OLIVIER",
+  "prenom": "Olivier",
+  "nom": "Zerbib",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "176.190.208.52"
+ },
+ {
+  "id": 64,
+  "created_at": "2026-08-06T09:27:12.330994+00:00",
+  "licence": "SN-CINOTTI-PIERRE",
+  "prenom": "Pierre",
+  "nom": "Cinotti",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": false,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 6,
+  "ip": "92.92.127.71"
+ },
+ {
+  "id": 65,
+  "created_at": "2026-08-06T09:27:38.350813+00:00",
+  "licence": "9215542",
+  "prenom": "ADRIEN",
+  "nom": "MANDELMILECH",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T",
+    "REF"
+   ]
+  },
+  "n": 7,
+  "ip": "89.80.146.211"
+ },
+ {
+  "id": 66,
+  "created_at": "2026-08-06T09:43:23.737861+00:00",
+  "licence": "8610681",
+  "prenom": "Valentin",
+  "nom": "Dumaine",
+  "dispos": {
+   "j1": false,
+   "j2": false,
+   "j3": false,
+   "j4": false,
+   "j5": false,
+   "j6": false,
+   "j7": false,
+   "roles": [
+    "R"
+   ]
+  },
+  "n": 0,
+  "ip": "92.184.98.111"
+ },
+ {
+  "id": 67,
+  "created_at": "2026-08-06T10:10:35.743003+00:00",
+  "licence": "7528733",
+  "prenom": "Max",
+  "nom": "LI",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "176.185.245.104"
+ },
+ {
+  "id": 68,
+  "created_at": "2026-08-06T10:14:52.785958+00:00",
+  "licence": "9250050",
+  "prenom": "Anastasios",
+  "nom": "AGRIOPOULOS",
+  "dispos": {
+   "j1": false,
+   "j2": false,
+   "j3": false,
+   "j4": false,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T",
+    "R"
+   ]
+  },
+  "n": 3,
+  "ip": "92.153.252.77"
+ },
+ {
+  "id": 69,
+  "created_at": "2026-08-06T10:19:10.448843+00:00",
+  "licence": "9247334",
+  "prenom": "Vuthny",
+  "nom": "SAVAN",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "79.95.127.213"
+ },
+ {
+  "id": 70,
+  "created_at": "2026-08-06T10:23:06.031459+00:00",
+  "licence": "9257190",
+  "prenom": "Antoine",
+  "nom": "ALLEGRE GUILLAUME",
+  "dispos": {
+   "j1": true,
+   "j2": false,
+   "j3": true,
+   "j4": true,
+   "j5": false,
+   "j6": true,
+   "j7": false,
+   "roles": [
+    "T",
+    "R"
+   ]
+  },
+  "n": 4,
+  "ip": "83.193.106.87"
+ },
+ {
+  "id": 71,
+  "created_at": "2026-08-06T10:24:11.107109+00:00",
+  "licence": "9257191",
+  "prenom": "Baptiste",
+  "nom": "ALLEGRE GUILLAUME",
+  "dispos": {
+   "j1": true,
+   "j2": false,
+   "j3": true,
+   "j4": true,
+   "j5": false,
+   "j6": true,
+   "j7": false,
+   "roles": [
+    "T",
+    "R"
+   ]
+  },
+  "n": 4,
+  "ip": "83.193.106.87"
+ },
+ {
+  "id": 72,
+  "created_at": "2026-08-06T10:25:13.020447+00:00",
+  "licence": "9257191",
+  "prenom": "Baptiste",
+  "nom": "ALLEGRE GUILLAUME",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T",
+    "R"
+   ]
+  },
+  "n": 7,
+  "ip": "83.193.106.87"
+ },
+ {
+  "id": 73,
+  "created_at": "2026-08-06T10:25:28.032136+00:00",
+  "licence": "9257190",
+  "prenom": "Antoine",
+  "nom": "ALLEGRE GUILLAUME",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T",
+    "R"
+   ]
+  },
+  "n": 7,
+  "ip": "83.193.106.87"
+ },
+ {
+  "id": 74,
+  "created_at": "2026-08-06T10:35:18.656907+00:00",
+  "licence": "SN-GAUTIER-OLIVIER",
+  "prenom": "Olivier",
+  "nom": "Gautier",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T",
+    "REF"
+   ]
+  },
+  "n": 7,
+  "ip": "118.189.149.247"
+ },
+ {
+  "id": 75,
+  "created_at": "2026-08-06T10:58:51.749048+00:00",
+  "licence": "SN-SEBASTIEN-COUCHOURON",
+  "prenom": "Couchouron",
+  "nom": "Sébastien",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "82.225.30.195"
+ },
+ {
+  "id": 76,
+  "created_at": "2026-08-06T11:23:16.891746+00:00",
+  "licence": "748713",
+  "prenom": "Thomas",
+  "nom": "Martinod",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": false,
+   "j4": false,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 5,
+  "ip": "62.67.204.16"
+ },
+ {
+  "id": 77,
+  "created_at": "2026-08-06T11:53:44.364342+00:00",
+  "licence": "7824630",
+  "prenom": "Charles",
+  "nom": "Perrot",
+  "dispos": {
+   "j1": false,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": false,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 5,
+  "ip": "176.145.64.38"
+ },
+ {
+  "id": 78,
+  "created_at": "2026-08-06T12:35:10.958267+00:00",
+  "licence": "9257190",
+  "prenom": "Antoine",
+  "nom": "ALLEGRE GUILLAUME",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "83.193.106.87"
+ },
+ {
+  "id": 79,
+  "created_at": "2026-08-06T12:36:09.994777+00:00",
+  "licence": "9257191",
+  "prenom": "Baptiste",
+  "nom": "ALLEGRE GUILLAUME",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "83.193.106.87"
+ },
+ {
+  "id": 80,
+  "created_at": "2026-08-06T16:01:48.691847+00:00",
+  "licence": "7838141",
+  "prenom": "Medhi",
+  "nom": "Belkadi",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "82.125.205.246"
+ },
+ {
+  "id": 81,
+  "created_at": "2026-08-06T21:15:13.663143+00:00",
+  "licence": "9234489",
+  "prenom": "Stéphane",
+  "nom": "Des Mazery",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": false,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 6,
+  "ip": "78.240.154.219"
  }
 ]
