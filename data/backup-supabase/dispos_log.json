@@ -1280,5 +1280,68 @@
   },
   "n": 7,
   "ip": "176.140.195.23"
+ },
+ {
+  "id": 88,
+  "created_at": "2026-08-10T14:48:01.47633+00:00",
+  "licence": "9248896",
+  "prenom": "Arthur",
+  "nom": "Intins",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "104.28.85.83"
+ },
+ {
+  "id": 89,
+  "created_at": "2026-08-10T18:14:38.57937+00:00",
+  "licence": "9261324",
+  "prenom": "Guillaume",
+  "nom": "Latimier",
+  "dispos": {
+   "j1": true,
+   "j2": false,
+   "j3": true,
+   "j4": true,
+   "j5": false,
+   "j6": true,
+   "j7": false,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 4,
+  "ip": "172.226.208.23"
+ },
+ {
+  "id": 90,
+  "created_at": "2026-08-11T06:02:25.680682+00:00",
+  "licence": "SN-CHOMAT-RAPHAEL",
+  "prenom": "Raphael",
+  "nom": "Chomat",
+  "dispos": {
+   "j1": false,
+   "j2": false,
+   "j3": false,
+   "j4": false,
+   "j5": false,
+   "j6": false,
+   "j7": false,
+   "roles": [
+    "N"
+   ]
+  },
+  "n": 0,
+  "ip": "90.73.6.214"
  }
 ]
