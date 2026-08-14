@@ -190,23 +190,36 @@
 
   function render(rows, tags, players){
     delete tags._params;
-    /* dernier vote par licence + première création + nb de votes (rows triés id.asc) */
+    var nrmK=function(s){return (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');};
+    var byLic={}, bySN={};
+    players.forEach(function(p){
+      if(p.lic) byLic[String(p.lic)]=p;
+      var a=nrmK(p.nom), b=nrmK(p.pre);
+      bySN['SN-'+a+'-'+b]=p;
+      bySN['SN-'+b+'-'+a]=p;              // tolère l'inversion nom/prénom dans le formulaire
+    });
+    var pkey=function(p){return String(p.lic||(p.nom+'|'+p.pre));};
+    // clé canonique d'un vote = la licence dès qu'on peut la retrouver
+    // (licence saisie, OU retrouvée par le nom même sans licence / nom-prénom inversés),
+    // sinon la clé brute -> évite les doublons (une fois avec licence, une fois sans).
+    var canon=function(r){
+      var raw=String(r.licence||'');
+      if(/^SN-/.test(raw)){ var m=bySN[raw]; return (m&&m.lic)?String(m.lic):raw; }
+      return raw;
+    };
+
+    /* dernier vote + première création + nb de votes, par PERSONNE (rows triés id.asc) */
     var votes={}, firstAt={}, cnt={};
     rows.forEach(function(r){
       if(r.licence&&!/^(TEST|0000)/i.test(r.licence)){
-        var k=String(r.licence);
+        var k=canon(r);
         votes[k]=r;                              // le plus récent gagne
         if(!firstAt[k]) firstAt[k]=r.created_at; // le tout premier
         cnt[k]=(cnt[k]||0)+1;
       }
     });
-    var nrmK=function(s){return (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');};
-    var byLic={}, bySN={};
-    players.forEach(function(p){ if(p.lic) byLic[String(p.lic)]=p; bySN['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)]=p; });
-    var pkey=function(p){return String(p.lic||(p.nom+'|'+p.pre));};
-    // vote d'un joueur : par licence, sinon par clé "sans licence" SN-NOM-PRENOM
-    // (matche AUSSI les licenciés qui ont voté sans mettre leur licence)
-    var voteFor=function(p){ return votes[String(p.lic)] || votes['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)]; };
+    // vote d'un joueur : par licence, sinon par clé SN (les 2 ordres nom/prénom)
+    var voteFor=function(p){ return votes[String(p.lic)] || votes['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)] || votes['SN-'+nrmK(p.pre)+'-'+nrmK(p.nom)]; };
 
     /* en-tête */
     var nV=Object.keys(votes).length, total=players.length;
@@ -255,25 +268,24 @@
     });
     document.getElementById('relance').innerHTML=rel||'<div class="rel-card">Aucune équipe taguée.</div>';
 
-    /* répondants */
-    var list=Object.keys(votes).map(function(k){return votes[k];})
-      .sort(function(a,b){return new Date(firstAt[String(a.licence)]) - new Date(firstAt[String(b.licence)]);});
-    var isSN=function(v){return /^SN-/.test(String(v.licence||''));};
-    document.getElementById('rpBody').innerHTML=list.map(function(v){
-      // licence directe, sinon (vote SN) on retrouve le licencié par son nom
-      var p=byLic[String(v.licence)] || (isSN(v)?bySN[String(v.licence)]:null);
-      var hasLic=!!(p&&p.lic), known=!!p;
+    /* répondants (une ligne par personne, triés par 1re création) */
+    var list=Object.keys(votes).map(function(k){return {k:k, v:votes[k]};})
+      .sort(function(a,b){return new Date(firstAt[a.k]) - new Date(firstAt[b.k]);});
+    document.getElementById('rpBody').innerHTML=list.map(function(it){
+      var k=it.k, v=it.v;
+      var p=byLic[k] || bySN[k] || null;                  // k = licence (num.) ou clé SN non retrouvée
+      var hasLic=!!(p&&p.lic), isSNkey=/^SN-/.test(k);
+      var votedNoLic=/^SN-/.test(String(v.licence||''));  // le dernier vote était sans licence
       var nm=p?(p.pre+' '+p.nom):((v.prenom||'')+' '+(v.nom||''));
       var dots=JOURS.map(function(_,i){var on=v.dispos&&v.dispos['j'+(i+1)];return '<td><span class="dotj '+(on?'y':'n')+'">'+(on?'✓':'—')+'</span></td>';}).join('');
       var RL={T:'Tit.',R:'Remp.',N:'Ne pas jouer',REF:'Référent'};
       var souhait=((v.dispos&&v.dispos.roles)||[]).map(function(x){return RL[x]||x;}).join(' + ');
       var tag=hasLic
-        ?(isSN(v)?' <span style="color:var(--win-lt);font-size:10px" title="licence retrouvée via le nom">licence auto</span>':'')
-        :((!known && !isSN(v))?' <span style="color:var(--gold);font-size:10px">⚠ licence inconnue</span>':' <span style="color:var(--dim);font-size:10px">sans licence</span>');
-      var licShow=hasLic?esc(String(p.lic)):(isSN(v)?'—':esc(v.licence));
-      var kk=String(v.licence);
-      var createdD=firstAt[kk]?new Date(firstAt[kk]).toLocaleDateString('fr-FR'):'—';
-      var updatedD=(cnt[kk]>1)?new Date(v.created_at).toLocaleDateString('fr-FR'):'';
+        ?(votedNoLic?' <span style="color:var(--win-lt);font-size:10px" title="licence retrouvée via le nom">licence auto</span>':'')
+        :(isSNkey?' <span style="color:var(--dim);font-size:10px">sans licence</span>':' <span style="color:var(--gold);font-size:10px">⚠ licence inconnue</span>');
+      var licShow=hasLic?esc(String(p.lic)):(isSNkey?'—':esc(k));
+      var createdD=firstAt[k]?new Date(firstAt[k]).toLocaleDateString('fr-FR'):'—';
+      var updatedD=(cnt[k]>1)?new Date(v.created_at).toLocaleDateString('fr-FR'):'';
       return '<tr><td>'+esc(nm)+tag+'</td><td class="num">'+licShow+'</td>'
         +'<td style="font-size:11px'+(souhait?'':';color:var(--dimmer)')+'">'+(esc(souhait)||'—')+'</td>'+dots
         +'<td class="num"><b>'+(v.n!=null?v.n:'?')+'</b>/7</td>'
@@ -281,19 +293,21 @@
         +'<td class="num" style="color:'+(updatedD?'var(--win-lt)':'var(--dimmer)')+'">'+(updatedD||'—')+'</td></tr>';
     }).join('')||'<tr><td colspan="13" style="padding:16px">Aucune réponse pour l\'instant.</td></tr>';
 
-    // "inconnu" = ni dans l'effectif (licence ou nom), ni une déclaration SN valable
-    var unknown=list.filter(function(v){return !byLic[String(v.licence)] && !isSN(v);});
+    // "inconnu" = clé licence numérique absente de l'effectif
+    var unknown=Object.keys(votes).filter(function(k){return /^[0-9]+$/.test(k) && !byLic[k];}).map(function(k){return votes[k];});
     var ub=document.getElementById('unknownBox');
     if(unknown.length){ ub.hidden=false; ub.textContent='⚠ '+unknown.length+' réponse(s) avec une licence inconnue de l\'effectif : '+unknown.map(function(v){return (v.prenom||'')+' '+(v.nom||'')+' ('+v.licence+')';}).join(', ')+' — vérifier la saisie.'; }
 
     /* export CSV */
     document.getElementById('csvBtn').onclick=function(){
       var lines=['licence;prenom;nom;souhait;'+JOURS.join(';')+';total;cree_le;maj_le'];
-      list.forEach(function(v){
-        var kk=String(v.licence);
-        var cD=firstAt[kk]?new Date(firstAt[kk]).toLocaleDateString('fr-FR'):'';
-        var uD=(cnt[kk]>1)?new Date(v.created_at).toLocaleDateString('fr-FR'):'';
-        lines.push([v.licence,v.prenom||'',v.nom||'',((v.dispos&&v.dispos.roles)||[]).join('+')].concat(JOURS.map(function(_,i){return (v.dispos&&v.dispos['j'+(i+1)])?'1':'0';})).concat([v.n!=null?v.n:'',cD,uD]).join(';'));
+      list.forEach(function(it){
+        var v=it.v, k=it.k, p=byLic[k]||bySN[k]||null;
+        var lic=(p&&p.lic)?p.lic:(/^[0-9]+$/.test(k)?k:'');
+        var pre=p?p.pre:(v.prenom||''), nom=p?p.nom:(v.nom||'');
+        var cD=firstAt[k]?new Date(firstAt[k]).toLocaleDateString('fr-FR'):'';
+        var uD=(cnt[k]>1)?new Date(v.created_at).toLocaleDateString('fr-FR'):'';
+        lines.push([lic,pre,nom,((v.dispos&&v.dispos.roles)||[]).join('+')].concat(JOURS.map(function(_,i){return (v.dispos&&v.dispos['j'+(i+1)])?'1':'0';})).concat([v.n!=null?v.n:'',cD,uD]).join(';'));
       });
       var a=document.createElement('a');
       a.href=URL.createObjectURL(new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'}));
