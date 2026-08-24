@@ -273,6 +273,9 @@
   .tm-players{display:flex;flex-direction:column;gap:2px;margin-top:2px}
   .tm-p{font-size:9.5px;font-family:"JetBrains Mono",monospace;color:var(--ink-2);display:flex;align-items:baseline;gap:4px}
   .tm-p .nmn{flex:1;min-width:0;white-space:normal;overflow-wrap:break-word;line-height:1.35}
+  .tm-p .nmn.dsp-g{color:#4ADE80;font-weight:600}
+  .tm-p .nmn.dsp-o{color:#FBBF24}
+  .tm-p .nmn.dsp-r{color:#F87171}
   .tm-p .pt{color:var(--dimmer);white-space:nowrap}
   .tm-p .pc{font-weight:800;min-width:30px;text-align:right;white-space:nowrap}
   .tm-p .pc.hi{color:#4ADE80}
@@ -410,6 +413,12 @@
     </div>
   </div>
   <div class="section-h">Équipes 2026/2027 — niveau moyen des titulaires (tags)</div>
+  <div class="legend" id="dispoLegend" style="margin-top:-4px">
+    <span style="color:var(--dim)">Couleur du nom = dispo Phase 1 :</span>
+    <span><i style="background:#4ADE80"></i> Titulaire dispo (≥3 journées)</span>
+    <span><i style="background:#FBBF24"></i> Pas de réponse</span>
+    <span><i style="background:#F87171"></i> Non dispo / remplaçant / peu dispo</span>
+  </div>
   <div class="teams-mini" id="teamsMini"></div>
   <div class="section-h">Classement scoring</div>
   <div class="sc-wrap"><table class="sc"><thead><tr><th>#</th><th>Joueur</th><th>Compo&nbsp;26/27</th><th>Officiel&nbsp;26/27</th><th>Ch.&nbsp;équipe&nbsp;M&nbsp;Ph2</th><th>Tendance 4&nbsp;phases</th><th>Score</th><th>Traj.</th></tr></thead><tbody id="tb"></tbody></table></div>
@@ -477,6 +486,24 @@ function updateSaveBar(){
   document.getElementById('saveTags').textContent='💾 Enregistrer les tags ('+DIRTY.size+')';
 }
 
+/* ---- dispos Phase 1 : couleur des noms (g=titulaire dispo, o=pas de réponse, r=non dispo/remplaçant/peu dispo) ---- */
+let VOTES={}, DISPO_READY=false;
+const nrmK=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const BYSN={};
+D.forEach(p=>{ const a=nrmK(p.nom),b=nrmK(p.pre); BYSN['SN-'+a+'-'+b]=p; BYSN['SN-'+b+'-'+a]=p; });
+const canonV=r=>{ const raw=String(r.licence||''); if(/^SN-/.test(raw)){const m=BYSN[raw];return (m&&m.lic)?String(m.lic):raw;} return raw; };
+const voteForP=p=>VOTES[String(p.lic)]||VOTES['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)]||VOTES['SN-'+nrmK(p.pre)+'-'+nrmK(p.nom)];
+function dispoStatus(p){
+  const v=voteForP(p); if(!v) return 'o';            // pas de réponse
+  const roles=(v.dispos&&v.dispos.roles)||[]; const n=v.n!=null?v.n:0;
+  if(roles.indexOf('N')>=0) return 'r';              // "ne pas jouer"
+  if(roles.indexOf('T')<0) return 'r';              // remplaçant/référent seul
+  return n>=3?'g':'r';                               // titulaire : ≥3 journées = vert, sinon rouge (alerte)
+}
+fetch(SB_URL+'/rest/v1/dispos_log?select=licence,nom,prenom,dispos,n&order=id.asc',{headers:SB_HD})
+  .then(r=>r.ok?r.json():[]).then(rows=>{ rows.forEach(r=>{ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)) VOTES[canonV(r)]=r; }); DISPO_READY=true; renderTeamsMini(); })
+  .catch(()=>{});
+
 let DIVOPP={};
 fetch('../data/teams.json',{cache:'no-cache'}).then(r=>r.json()).then(j=>{
   const acc={};
@@ -499,7 +526,9 @@ function renderTeamsMini(){
           const pcCls=pct==null?'na':(pct>=50?'hi':(pct>=30?'mid':'lo'));
           const pcTxt=pct==null?'—':pct+'%';
           const pcTitle=e2&&e2.n?e2.v+'V/'+(e2.n-e2.v)+'D en ph2 25/26 (ch. équipe M, simples)':'aucun match ch. équipe M en ph2 25/26';
-          return '<div class="tm-p"><span class="nmn">'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
+          const dsc=DISPO_READY?(' dsp-'+dispoStatus(p)):'';
+          const dTit=DISPO_READY?({g:'a répondu titulaire, dispo',o:'n\'a pas répondu',r:'non dispo / remplaçant / peu de dispos'})[dispoStatus(p)]:'';
+          return '<div class="tm-p"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
         }).join('')+'</div>'
       :'<div class="tm-sub">aucun titulaire tagué</div>';
     return '<div class="tm-card">'
