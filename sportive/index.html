@@ -493,7 +493,11 @@ const BYSN={};
 D.forEach(p=>{ const a=nrmK(p.nom),b=nrmK(p.pre); BYSN['SN-'+a+'-'+b]=p; BYSN['SN-'+b+'-'+a]=p; });
 const canonV=r=>{ const raw=String(r.licence||''); if(/^SN-/.test(raw)){const m=BYSN[raw];return (m&&m.lic)?String(m.lic):raw;} return raw; };
 const voteForP=p=>VOTES[String(p.lic)]||VOTES['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)]||VOTES['SN-'+nrmK(p.pre)+'-'+nrmK(p.nom)];
+/* overrides manuels (blessés / indispos) : forcent le rouge quel que soit le vote. Clé = NOM|PRENOM normalisés */
+const fkey=p=>nrmK(p.nom)+'|'+nrmK(p.pre);
+const FORCE_STATUS={ 'ARGUT|DANIEL':'blessé — indisponible pour le moment' };
 function dispoStatus(p){
+  if(FORCE_STATUS[fkey(p)]) return 'r';              // override manuel (blessure, etc.)
   const v=voteForP(p); if(!v) return 'o';            // pas de réponse
   const roles=(v.dispos&&v.dispos.roles)||[]; const n=v.n!=null?v.n:0;
   if(roles.indexOf('N')>=0) return 'r';              // "ne pas jouer"
@@ -526,8 +530,9 @@ function renderTeamsMini(){
           const pcCls=pct==null?'na':(pct>=50?'hi':(pct>=30?'mid':'lo'));
           const pcTxt=pct==null?'—':pct+'%';
           const pcTitle=e2&&e2.n?e2.v+'V/'+(e2.n-e2.v)+'D en ph2 25/26 (ch. équipe M, simples)':'aucun match ch. équipe M en ph2 25/26';
-          const dsc=DISPO_READY?(' dsp-'+dispoStatus(p)):'';
-          const dTit=DISPO_READY?({g:'a répondu titulaire, dispo',o:'n\'a pas répondu',r:'non dispo / remplaçant / peu de dispos'})[dispoStatus(p)]:'';
+          const dst=DISPO_READY?dispoStatus(p):'';
+          const dsc=dst?(' dsp-'+dst):'';
+          const dTit=dst?(FORCE_STATUS[fkey(p)]||{g:'a répondu titulaire, dispo',o:'n\'a pas répondu',r:'non dispo / remplaçant / peu de dispos'}[dst]):'';
           return '<div class="tm-p"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
         }).join('')+'</div>'
       :'<div class="tm-sub">aucun titulaire tagué</div>';
