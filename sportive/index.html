@@ -273,6 +273,7 @@
   .tm-players{display:flex;flex-direction:column;gap:2px;margin-top:2px}
   .tm-p{font-size:9.5px;font-family:"JetBrains Mono",monospace;color:var(--ink-2);display:flex;align-items:baseline;gap:4px}
   .tm-p .nmn{flex:1;min-width:0;white-space:normal;overflow-wrap:break-word;line-height:1.35}
+  .tm-p .ref-r{color:#60A5FA;font-weight:800;margin-left:3px;font-size:9px;vertical-align:top}
   .tm-p .nmn.dsp-g{color:#4ADE80;font-weight:600}
   .tm-p .nmn.dsp-o{color:#FBBF24}
   .tm-p .nmn.dsp-r{color:#F87171}
@@ -418,6 +419,7 @@
     <span><i style="background:#4ADE80"></i> Titulaire dispo (≥3 journées)</span>
     <span><i style="background:#FBBF24"></i> Pas de réponse</span>
     <span><i style="background:#F87171"></i> Non dispo / remplaçant / peu dispo</span>
+    <span><b style="color:#60A5FA;font-weight:800">R</b> = s'est proposé référent</span>
   </div>
   <div class="teams-mini" id="teamsMini"></div>
   <div class="section-h">Classement scoring</div>
@@ -532,8 +534,10 @@ function renderTeamsMini(){
           const pcTitle=e2&&e2.n?e2.v+'V/'+(e2.n-e2.v)+'D en ph2 25/26 (ch. équipe M, simples)':'aucun match ch. équipe M en ph2 25/26';
           const dst=DISPO_READY?dispoStatus(p):'';
           const dsc=dst?(' dsp-'+dst):'';
+          const _vr=voteForP(p);
+          const refB=(_vr&&_vr.dispos&&(_vr.dispos.roles||[]).indexOf('REF')>=0)?' <span class="ref-r" title="s\'est proposé Référent">R</span>':'';
           const dTit=dst?(FORCE_STATUS[fkey(p)]||{g:'a répondu titulaire, dispo',o:'n\'a pas répondu',r:'non dispo / remplaçant / peu de dispos'}[dst]):'';
-          return '<div class="tm-p"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
+          return '<div class="tm-p"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
         }).join('')+'</div>'
       :'<div class="tm-sub">aucun titulaire tagué</div>';
     return '<div class="tm-card">'
