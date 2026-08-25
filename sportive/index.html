@@ -422,6 +422,8 @@
     <span><b style="color:#60A5FA;font-weight:800">R</b> = s'est proposé référent</span>
   </div>
   <div class="teams-mini" id="teamsMini"></div>
+  <div class="section-h">Pools de remplacement par division</div>
+  <div class="teams-mini" id="poolsMini"></div>
   <div class="section-h">Classement scoring</div>
   <div class="sc-wrap"><table class="sc"><thead><tr><th>#</th><th>Joueur</th><th>Compo&nbsp;26/27</th><th>Officiel&nbsp;26/27</th><th>Ch.&nbsp;équipe&nbsp;M&nbsp;Ph2</th><th>Tendance 4&nbsp;phases</th><th>Score</th><th>Traj.</th></tr></thead><tbody id="tb"></tbody></table></div>
   <p style="font-size:11px;color:var(--dim);font-style:italic;margin-top:12px">Base = classement officiel 2026/2027 (publié début juillet). Tendance = pente de régression sur les 4 dernières phases du classement officiel (survole pour voir le détail). Trajectoire : ↗ progression (≥+30), ↘ baisse (≤−30). Données API FFTT. Page non listée (accès direct uniquement).</p>
@@ -548,6 +550,36 @@ function renderTeamsMini(){
       +(top4!=null&&tit.length>4?'<div class="tm-top4" title="moyenne des 4 meilleurs titulaires">'+top4+'<span class="u">TOP4</span></div>':'')
       +names
       +'</div>';
+  }).join('');
+  renderPools();
+}
+/* Pools de remplacement : joueurs taggés remplaçant (r=R) SANS équipe précise, groupés par division (t.d) */
+function renderPools(){
+  const el=document.getElementById('poolsMini'); if(!el)return;
+  const pools={};
+  D.forEach(p=>{ const t=TAGS[pkey(p)]; if(t&&t.r==='R'&&!t.e&&t.d){ (pools[t.d]=pools[t.d]||[]).push(p); } });
+  const ORDER=['N1','R1-R3','R1','R2','R3','PR','D1','D2'];
+  const BASE=['R1-R3','PR','D1','D2'];                       // toujours affichées (même vides)
+  let divs=[...new Set([...BASE,...Object.keys(pools)])];
+  divs.sort((a,b)=>{const ia=ORDER.indexOf(a),ib=ORDER.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib);});
+  el.innerHTML=divs.map(dv=>{
+    const c=DIVC[dv]||'242,106,27';
+    const list=(pools[dv]||[]).sort((a,b)=>(b.men||0)-(a.men||0));
+    const body=list.length
+      ?'<div class="tm-players">'+list.map(p=>{
+          const e2=p.eq2, pct=(e2&&e2.n)?Math.round(100*e2.v/e2.n):null;
+          const pcCls=pct==null?'na':(pct>=50?'hi':(pct>=30?'mid':'lo')); const pcTxt=pct==null?'—':pct+'%';
+          const dst=DISPO_READY?dispoStatus(p):''; const dsc=dst?(' dsp-'+dst):'';
+          const dTit=dst?(FORCE_STATUS[fkey(p)]||{g:'a répondu titulaire, dispo',o:'n\'a pas répondu',r:'non dispo / remplaçant / peu de dispos'}[dst]):'';
+          const _vr=voteForP(p);
+          const refB=(_vr&&_vr.dispos&&(_vr.dispos.roles||[]).indexOf('REF')>=0)?' <span class="ref-r" title="s\'est proposé référent">R</span>':'';
+          return '<div class="tm-p"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'">'+pcTxt+'</span></div>';
+        }).join('')+'</div>'
+      :'<div class="tm-sub" style="color:var(--dimmer);font-style:italic">personne pour l\'instant</div>';
+    return '<div class="tm-card">'
+      +'<div class="tm-top"><span class="tm-name" style="color:rgb('+c+')">Pool '+esc(dv)+'</span>'
+      +'<span class="tm-div" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)">'+list.length+' remp.</span></div>'
+      +body+'</div>';
   }).join('');
 }
 function render(){
