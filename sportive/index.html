@@ -499,7 +499,15 @@ const canonV=r=>{ const raw=String(r.licence||''); if(/^SN-/.test(raw)){const m=
 const voteForP=p=>VOTES[String(p.lic)]||VOTES['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)]||VOTES['SN-'+nrmK(p.pre)+'-'+nrmK(p.nom)];
 /* overrides manuels (blessés / indispos) : forcent le rouge quel que soit le vote. Clé = NOM|PRENOM normalisés */
 const fkey=p=>nrmK(p.nom)+'|'+nrmK(p.pre);
-const FORCE_STATUS={ 'ARGUT|DANIEL':'blessé — indisponible pour le moment' };
+const FORCE_STATUS={
+  'ARGUT|DANIEL':'blessé — indisponible pour le moment',
+  'LEBOURG|VIRGINIE':'indisponible pour le moment',
+  'MERIC|MARION':'remplaçant de division (voir cartes pools)',
+  'ADMI|JOHARA':'remplaçant de division (voir cartes pools)',
+  'SUEDE|SAMUEL':'remplaçant de division (voir cartes pools)'
+};
+/* joueurs listés AUSSI dans une carte pool, tout en gardant leur équipe (clé NOM|PRENOM -> division) */
+const POOL_ADD={ 'MERIC|MARION':'PR', 'ADMI|JOHARA':'D2', 'SUEDE|SAMUEL':'PR' };
 function dispoStatus(p){
   if(FORCE_STATUS[fkey(p)]) return 'r';              // override manuel (blessure, etc.)
   const v=voteForP(p); if(!v) return 'o';            // pas de réponse
@@ -558,6 +566,8 @@ function renderPools(){
   const el=document.getElementById('poolsMini'); if(!el)return;
   const pools={};
   D.forEach(p=>{ const t=TAGS[pkey(p)]; if(t&&t.r==='R'&&!t.e&&t.d){ (pools[t.d]=pools[t.d]||[]).push(p); } });
+  // overlay manuel : joueurs qui gardent leur équipe mais figurent aussi dans un pool
+  D.forEach(p=>{ const dv=POOL_ADD[fkey(p)]; if(dv){ (pools[dv]=pools[dv]||[]); if(pools[dv].indexOf(p)<0) pools[dv].push(p); } });
   const ORDER=['N1','R1-R3','R1','R2','R3','PR','D1','D2'];
   const BASE=['R1-R3','PR','D1','D2'];                       // toujours affichées (même vides)
   let divs=[...new Set([...BASE,...Object.keys(pools)])];
@@ -573,7 +583,8 @@ function renderPools(){
           const dTit=dst?(FORCE_STATUS[fkey(p)]||{g:'a répondu titulaire, dispo',o:'n\'a pas répondu',r:'non dispo / remplaçant / peu de dispos'}[dst]):'';
           const _vr=voteForP(p);
           const refB=(_vr&&_vr.dispos&&(_vr.dispos.roles||[]).indexOf('REF')>=0)?' <span class="ref-r" title="s\'est proposé référent">R</span>':'';
-          return '<div class="tm-p"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'">'+pcTxt+'</span></div>';
+          const nJ=(_vr&&_vr.n!=null)?' <span style="color:var(--dim);font-weight:400" title="journées de dispo déclarées">('+_vr.n+'/7J)</span>':'';
+          return '<div class="tm-p"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+nJ+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'">'+pcTxt+'</span></div>';
         }).join('')+'</div>'
       :'<div class="tm-sub" style="color:var(--dimmer);font-style:italic">personne pour l\'instant</div>';
     return '<div class="tm-card">'
