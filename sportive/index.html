@@ -507,7 +507,7 @@ const FORCE_STATUS={
   'SUEDE|SAMUEL':'remplaçant de division (voir cartes pools)'
 };
 /* joueurs listés AUSSI dans une carte pool, tout en gardant leur équipe (clé NOM|PRENOM -> division) */
-const POOL_ADD={ 'MERIC|MARION':'PR', 'ADMI|JOHARA':'D2', 'SUEDE|SAMUEL':'PR' };
+const POOL_ADD={ 'MERIC|MARION':'PR', 'ADMI|JOHARA':'D2', 'SUEDE|SAMUEL':'PR', 'LENNON|CLEMENCE':'D1' };
 function dispoStatus(p){
   if(FORCE_STATUS[fkey(p)]) return 'r';              // override manuel (blessure, etc.)
   const v=voteForP(p); if(!v) return 'o';            // pas de réponse
