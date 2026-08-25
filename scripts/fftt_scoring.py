@@ -46,6 +46,7 @@ def main():
         except Exception: pass
     idx=json.load(open('data/players_index.json'))
     players=idx if isinstance(idx,list) else idx.get('players',[])
+    players=[p for p in players if p.get('lic') not in getattr(fb,'EXCLUDE_LIC',set())]   # retire les partis du club
     try: OFF27=json.load(open('data/officiel2627.json')).get('officiel',{})
     except Exception: OFF27={}
     DEPARTS={('SATO','Lautaro'),('LOUET','Sebastien'),('LANGLOIS','Xavier'),('CRENN-ALDEA','Julien')}   # quittent le club été 2026 — retirés de la Sportive uniquement

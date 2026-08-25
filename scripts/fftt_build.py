@@ -6,6 +6,8 @@ Usage : python3 fftt_build.py [licence1 licence2 ...]   (sans arg = tout le club
 """
 import os, sys, json, re, html, time, hashlib, hmac, datetime, random, string, unicodedata
 APPID=os.environ.get('FFTT_ID'); MDP=os.environ.get('FFTT_PWD'); CLUB="08920049"
+# Joueurs partis du club à exclure du roster (annuaire + scoring), même si la FFTT les liste encore.
+EXCLUDE_LIC={'9236792'}  # Mehdi DOUSS (départ 08/2026)
 BASE="http://www.fftt.com/mobile/pxml/"
 serie=''.join(random.choices(string.ascii_uppercase+string.digits,k=15)); cle=hashlib.md5((MDP or '').encode()).hexdigest()
 def auth():
@@ -362,6 +364,7 @@ def main():
         except Exception: prev_n=0
         if prev_n>=20 and kept < prev_n*0.8:
             sys.exit(f"ABORT: collecte incomplète ({kept} profils vs {prev_n} précédents) — aucune écriture, run en échec.")
+    index=[p for p in index if p.get('lic') not in EXCLUDE_LIC]   # retire les partis du club
     json.dump(index, open("data/players_index.json","w"), ensure_ascii=False)
     if not args:   # on ne met à jour l'état/cache/teams que sur un run complet du club
         tj=build_teams_json(profiles)
