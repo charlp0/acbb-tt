@@ -1907,5 +1907,246 @@
   },
   "n": 7,
   "ip": "78.241.201.77"
+ },
+ {
+  "id": 144,
+  "created_at": "2026-08-24T06:52:49.125929+00:00",
+  "licence": "7520384",
+  "prenom": "Muriel",
+  "nom": "Avedissian",
+  "dispos": {
+   "j1": false,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true
+  },
+  "n": 6,
+  "ip": "88.170.49.62"
+ },
+ {
+  "id": 145,
+  "created_at": "2026-08-24T06:55:17.221317+00:00",
+  "licence": "7520384",
+  "prenom": "Muriel",
+  "nom": "Avedissian",
+  "dispos": {
+   "j1": false,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true
+  },
+  "n": 6,
+  "ip": "88.170.49.62"
+ },
+ {
+  "id": 146,
+  "created_at": "2026-08-24T08:50:49.82823+00:00",
+  "licence": "9259617",
+  "prenom": "Marc",
+  "nom": "BAUBY",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "104.28.30.18"
+ },
+ {
+  "id": 147,
+  "created_at": "2026-08-24T09:01:00.991776+00:00",
+  "licence": "SN-SCHULLER-ERIC",
+  "prenom": "Eric",
+  "nom": "SCHULLER",
+  "dispos": {
+   "j1": false,
+   "j2": false,
+   "j3": false,
+   "j4": false,
+   "j5": false,
+   "j6": false,
+   "j7": false
+  },
+  "n": 0,
+  "ip": "178.174.110.27"
+ },
+ {
+  "id": 148,
+  "created_at": "2026-08-24T09:01:27.800591+00:00",
+  "licence": "SN-SCHULLER-ERIC",
+  "prenom": "Eric",
+  "nom": "SCHULLER",
+  "dispos": {
+   "j1": false,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true
+  },
+  "n": 6,
+  "ip": "178.174.110.27"
+ },
+ {
+  "id": 149,
+  "created_at": "2026-08-24T09:02:05.835189+00:00",
+  "licence": "SN-SCHULLER-ERIC",
+  "prenom": "Eric",
+  "nom": "SCHULLER",
+  "dispos": {
+   "j1": false,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 6,
+  "ip": "178.174.110.27"
+ },
+ {
+  "id": 150,
+  "created_at": "2026-08-24T10:43:16.704194+00:00",
+  "licence": "287740",
+  "prenom": "Guillaume",
+  "nom": "Grandjean",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "92.184.136.173"
+ },
+ {
+  "id": 151,
+  "created_at": "2026-08-24T11:02:23.680997+00:00",
+  "licence": "6311654",
+  "prenom": "Antoine",
+  "nom": "Sucher",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "93.23.16.90"
+ },
+ {
+  "id": 152,
+  "created_at": "2026-08-24T13:46:00.045458+00:00",
+  "licence": "9245168",
+  "prenom": "Samuel",
+  "nom": "Suede",
+  "dispos": {
+   "j1": false,
+   "j2": false,
+   "j3": false,
+   "j4": false,
+   "j5": false,
+   "j6": false,
+   "j7": false,
+   "roles": [
+    "R",
+    "N"
+   ]
+  },
+  "n": 0,
+  "ip": "104.28.34.42"
+ },
+ {
+  "id": 153,
+  "created_at": "2026-08-24T21:38:29.604596+00:00",
+  "licence": "SN-AUCLERC-ARMAND",
+  "prenom": "ARMAND",
+  "nom": "AUCLERC",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": false,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 6,
+  "ip": "88.185.195.24"
+ },
+ {
+  "id": 154,
+  "created_at": "2026-08-24T21:39:39.650386+00:00",
+  "licence": "9262783",
+  "prenom": "ARMAND",
+  "nom": "AUCLERC",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": false,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 6,
+  "ip": "88.185.195.24"
+ },
+ {
+  "id": 155,
+  "created_at": "2026-08-25T00:03:11.050069+00:00",
+  "licence": "9230121",
+  "prenom": "Patrick",
+  "nom": "Habert",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "80.15.118.4"
  }
 ]
