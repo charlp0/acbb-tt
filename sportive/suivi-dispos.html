@@ -123,7 +123,7 @@
 </section>
 
 <section class="sec">
-  <div class="sec-h">À relancer — titulaires sans réponse</div>
+  <div class="sec-h">À relancer — titulaires sans réponse<span id="relCount" style="margin-left:8px;color:var(--lose);font-weight:800"></span></div>
   <div class="rel" id="relance"></div>
 </section>
 
@@ -255,10 +255,11 @@
     document.getElementById('mxBody').innerHTML=body||'<tr><td style="padding:16px">Aucune équipe taguée pour l\'instant.</td></tr>';
 
     /* relance */
-    var rel='';
+    var rel='', missSet={};
     TEAMORDER.forEach(function(e){
       var tm=teams[e]; if(!tm||!tm.T.length)return;
       var missing=tm.T.filter(function(p){return !voteFor(p);});
+      missing.forEach(function(p){ missSet[pkey(p)]=1; });   // total unique (dédoublonne les doubles affectations)
       var chips=missing.map(function(p){
         var nolic=!p.lic||!/^[0-9]+$/.test(String(p.lic));
         return '<span class="rel-chip'+(nolic?' nolic':'')+'">'+esc(p.pre+' '+p.nom)+(nolic?' · sans licence FFTT':'')+'</span>';
@@ -267,6 +268,8 @@
         +(missing.length?chips:'<span class="ok-all">✓ tout le monde a répondu</span>')+'</div>';
     });
     document.getElementById('relance').innerHTML=rel||'<div class="rel-card">Aucune équipe taguée.</div>';
+    var relTotal=Object.keys(missSet).length;
+    document.getElementById('relCount').textContent=relTotal?'· '+relTotal+' joueur'+(relTotal>1?'s':''):'· ✓ tous ont répondu';
 
     /* répondants (une ligne par personne, triés par 1re création) */
     var list=Object.keys(votes).map(function(k){return {k:k, v:votes[k]};})
