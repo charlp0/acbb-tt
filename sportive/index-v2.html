@@ -415,7 +415,7 @@
       <span class="st" id="saveSt"></span>
     </div>
   </div>
-  <div style="margin:2px 0 16px;padding:11px 15px;border:1px solid var(--orange);border-radius:11px;background:rgba(242,106,27,.10);display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-style:italic;text-transform:uppercase;color:var(--orange);font-size:19px;line-height:1">V2 · Scénario</span><span style="font-size:12px;color:var(--dim)">Composition de travail — <b>non enregistrée</b>. Glisse-dépose un joueur d'une carte à l'autre pour tester. La V1 reste la compo officielle.</span><a href="index.html" style="margin-left:auto;font-size:12px;color:var(--orange);text-decoration:none;font-weight:600">← Revenir à la V1</a></div><div class="section-h">Équipes 2026/2027 — niveau moyen des titulaires (tags)</div>
+  <div style="margin:2px 0 16px;padding:11px 15px;border:1px solid var(--orange);border-radius:11px;background:rgba(242,106,27,.10);display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-style:italic;text-transform:uppercase;color:var(--orange);font-size:19px;line-height:1">V2 · Scénario</span><span style="font-size:12px;color:var(--dim)">Bac à sable partagé : glisse-dépose les joueurs, puis <b>💾 Enregistrer le scénario</b> pour le partager. La V1 reste la compo officielle (jamais modifiée ici).</span><a href="index.html" style="margin-left:auto;font-size:12px;color:var(--orange);text-decoration:none;font-weight:600">← Revenir à la V1</a></div><div class="section-h">Équipes 2026/2027 — niveau moyen des titulaires (tags)</div>
   <div class="legend" id="dispoLegend" style="margin-top:-4px">
     <span style="color:var(--dim)">Couleur du nom = dispo Phase 1 :</span>
     <span><i style="background:#4ADE80"></i> Titulaire dispo (≥4 journées)</span>
@@ -618,7 +618,7 @@ try{const sp=JSON.parse(localStorage.getItem('acbb_sc_params')||'null');
 function saveParams(){try{localStorage.setItem('acbb_sc_params',JSON.stringify({k:ks.value,cap:cs.value}));}catch(e){}}
 function applyParams(p){ if(!p)return; if(p.k!=null)ks.value=p.k; if(p.cap!=null)cs.value=p.cap; saveParams(); }
 let _prmT=null;
-function schedParams(){/* V2 : pas de partage */}
+function schedParams(){/* V2 : pas de partage des réglages */}
 async function pushParams(){
   try{
     let remote={};
@@ -678,44 +678,55 @@ async function saveTags(){
   }catch(e){ st.textContent=''; alert('Échec de l\'enregistrement : '+e.message); }
   btn.disabled=false;
 }
-document.getElementById('saveTags').addEventListener('click',function(){alert('Page V2 (scénario) — lecture seule. Les modifs ne sont pas enregistrées.');});
+document.getElementById('saveTags').addEventListener('click',function(){ if(window.__v2save)window.__v2save(); });
 document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tags
   if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&!e.altKey&&e.key.toLowerCase()==='s'){
-    e.preventDefault(); /* V2 */
+    e.preventDefault(); if(window.__v2save)window.__v2save();
   }
 });
 
-/* V2 — composition figée (scénario). Aucune lecture/écriture Supabase. */
-(function(){ TAGS=JSON.parse(JSON.stringify(V2_TAGS)); if(TAGS._params){delete TAGS._params;} updateSaveBar(); render(); })();
+/* V2 — scénario : charge le dernier scénario partagé (scenarios_log), repli tags figés */
+(async function(){
+  var base=V2_TAGS;
+  try{
+    const g=await fetch(SB_URL+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1',{headers:SB_HD});
+    if(g.ok){const a=await g.json(); if(a.length&&a[0].tags)base=a[0].tags;}
+  }catch(e){}
+  TAGS=JSON.parse(JSON.stringify(base)); delete TAGS._params;
+  window.__V2BASELINE=JSON.stringify(TAGS);
+  updateSaveBar(); render();
+  if(window.__v2refresh)window.__v2refresh();
+})();
 </script>
-<script src="../report.js" defer></script>
-<script data-goatcounter="https://acbb-tt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-
 <script>
-/* ===== V2 : drag & drop du scénario (desktop) ===== */
+/* ===== Drag & drop des joueurs (desktop) + panneau d'alertes =====
+   V1 : alimente le circuit d'enregistrement existant (DIRTY -> tags_log).
+   V2 (détectée par la présence de V2_TAGS) : enregistre dans scenarios_log, jamais dans tags_log. */
 (function(){
+  var IS_V2=(typeof V2_TAGS!=='undefined');
   var st=document.createElement('style');
-  st.textContent='.tm-p[draggable=\'true\']{cursor:grab}'
+  st.textContent='.tm-p[draggable="true"]{cursor:grab}'
    +'.tm-p.dragging{opacity:.35}'
    +'.tm-card.dropok{outline:2px dashed var(--orange);outline-offset:2px}'
-   +'#v2Panel{position:fixed;right:14px;bottom:14px;z-index:9998;width:300px;background:#17171B;'
+   +'#v2Panel{position:fixed;right:14px;bottom:14px;z-index:9998;width:302px;background:#17171B;'
    +'border:1px solid rgba(255,255,255,.18);border-radius:13px;padding:13px 15px;'
    +'font-family:"Space Grotesk",system-ui,sans-serif;font-size:12px;color:#F6F5F3;box-shadow:0 10px 30px rgba(0,0,0,.5)}'
    +'#v2Panel .ttl{font-weight:700;margin-bottom:6px}'
-   +'#v2Panel .btns{margin-top:10px;display:flex;gap:8px}'
-   +'#v2Panel button{flex:1;padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.22);'
-   +'background:#232328;color:#F6F5F3;font-family:inherit;font-size:11.5px;cursor:pointer}'
-   +'#v2Panel button:hover{border-color:var(--orange);color:var(--orange)}';
+   +'#v2Panel .btns{margin-top:10px;display:flex;gap:7px;flex-wrap:wrap}'
+   +'#v2Panel button{flex:1;min-width:86px;padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.22);'
+   +'background:#232328;color:#F6F5F3;font-family:inherit;font-size:11.5px;cursor:pointer;white-space:nowrap}'
+   +'#v2Panel button:hover{border-color:var(--orange);color:var(--orange)}'
+   +'#v2Panel button.sv{background:rgba(242,106,27,.16);border-color:rgba(242,106,27,.55);color:var(--orange);font-weight:700}';
   document.head.appendChild(st);
 
   var panel=document.createElement('div'); panel.id='v2Panel'; panel.style.display='none';
-  panel.innerHTML='<div class="ttl">🧪 Scénario — drag &amp; drop</div>'
+  panel.innerHTML='<div class="ttl">'+(IS_V2?'🧪 Scénario — drag &amp; drop':'🎯 Compo — drag &amp; drop')+'</div>'
    +'<div id="v2Last" style="color:var(--dim);min-height:14px"></div>'
    +'<div id="v2Alerts" style="margin-top:7px;display:flex;flex-direction:column;gap:3px;line-height:1.45"></div>'
    +'<div class="btns"><button id="v2Undo" type="button">↶ Annuler</button>'
-   +'<button id="v2Reset" type="button">↺ Réinitialiser</button></div>';
+   +(IS_V2?'<button id="v2Reset" type="button">↺ Réinitialiser</button>':'')
+   +'<button id="v2Save" class="sv" type="button">💾 Enregistrer</button></div>';
   document.body.appendChild(panel);
-  // n'afficher le panneau qu'une fois le mot de passe passé
   var gateT=setInterval(function(){
     var g=document.getElementById('gpw');
     if(!g||!g.offsetParent){ panel.style.display='block'; refresh(); clearInterval(gateT); }
@@ -744,18 +755,27 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
     document.getElementById('v2Alerts').innerHTML =
       li.length?li.map(function(x){return '<div>'+x+'</div>';}).join('')
       :'<div style="color:#4ADE80">✓ Effectifs conformes (6·6 PR / 6·6·5·5 D1)</div>';
+    var sv=document.getElementById('v2Save');
+    if(sv&&!IS_V2) sv.textContent='💾 Enregistrer'+(DIRTY.size?' ('+DIRTY.size+')':'');
+    if(sv&&IS_V2) sv.textContent='💾 Enregistrer le scénario';
   }
+  window.__v2refresh=refresh;
+  // garder le compteur du panneau en phase avec la barre d'enregistrement existante
+  var _usb=updateSaveBar; updateSaveBar=function(){ _usb(); try{refresh();}catch(e){} };
+
+  function snap(){ return {t:JSON.stringify(TAGS), d:[...DIRTY]}; }
   function move(k,team,pool){
     var p=D.find(function(x){return pkey(x)===k;}); if(!p)return;
-    hist.push(JSON.stringify(TAGS));
+    hist.push(snap());
     var dest;
     if(team){ TAGS[k]={d:TEAMDIV[team]||'',e:team,r:'T'}; dest=team; }
     else { TAGS[k]={d:pool,r:'R'}; dest='pool '+pool; }
+    if(!IS_V2){ DIRTY.add(k); draftSave(); updateSaveBar(); }
     render();
     var e=effectifs(); var extra=(e[dest]?(' — '+dest+' : '+e[dest].n+' tit., moy '+e[dest].moy):'');
     refresh((p.pre?p.pre[0]+'. ':'')+p.nom+' → '+dest+extra);
   }
-  window.__v2move=move; // hook de test
+  window.__v2move=move;
 
   var dragKey=null;
   document.addEventListener('dragstart',function(ev){
@@ -784,13 +804,36 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
     var k=dragKey; dragKey=null;
     move(k,card.dataset.team||null,card.dataset.pool||null);
   });
+
   document.getElementById('v2Undo').addEventListener('click',function(){
     if(!hist.length)return;
-    TAGS=JSON.parse(hist.pop()); render(); refresh('annulé ↶');
+    var s=hist.pop(); TAGS=JSON.parse(s.t);
+    if(!IS_V2){ DIRTY=new Set(s.d); draftSave(); updateSaveBar(); }
+    render(); refresh('annulé ↶');
   });
-  document.getElementById('v2Reset').addEventListener('click',function(){
-    TAGS=JSON.parse(JSON.stringify(V2_TAGS)); delete TAGS._params; hist=[]; render(); refresh('scénario réinitialisé ↺');
-  });
+  if(IS_V2){
+    document.getElementById('v2Reset').addEventListener('click',function(){
+      TAGS=JSON.parse(window.__V2BASELINE||JSON.stringify(V2_TAGS)); delete TAGS._params;
+      hist=[]; render(); refresh('scénario réinitialisé ↺');
+    });
+    function saveScenario(){
+      var author=localStorage.getItem('acbb_tag_author');
+      if(!author){author=(prompt("Ton prénom (pour l'historique) :")||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
+      fetch(SB_URL+'/rest/v1/scenarios_log',{method:'POST',
+        headers:{apikey:SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({tags:TAGS,author:author})})
+      .then(function(r){ if(!r.ok)throw 0;
+        window.__V2BASELINE=JSON.stringify(TAGS);
+        refresh('✓ scénario enregistré à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})); })
+      .catch(function(){ refresh('⚠ enregistrement impossible (table scenarios_log absente ?)'); });
+    }
+    window.__v2save=saveScenario;
+    document.getElementById('v2Save').addEventListener('click',saveScenario);
+  }else{
+    document.getElementById('v2Save').addEventListener('click',function(){ saveTags(); });
+  }
 })();
 </script>
+<script src="../report.js" defer></script>
+<script data-goatcounter="https://acbb-tt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>

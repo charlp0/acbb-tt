@@ -551,10 +551,10 @@ function renderTeamsMini(){
           const _vr=voteForP(p);
           const refB=(_vr&&_vr.dispos&&(_vr.dispos.roles||[]).indexOf('REF')>=0)?' <span class="ref-r" title="s\'est proposé Référent">R</span>':'';
           const dTit=dst?(FORCE_STATUS[fkey(p)]||DISPO_TIP[dst]):'';
-          return '<div class="tm-p"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
+          return '<div class="tm-p" draggable="true" data-k="'+esc(pkey(p))+'"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
         }).join('')+'</div>'
       :'<div class="tm-sub">aucun titulaire tagué</div>';
-    return '<div class="tm-card">'
+    return '<div class="tm-card" data-team="'+k+'">'
       +'<div class="tm-top"><span class="tm-name" style="color:hsl('+teamHue(k)+',75%,72%)">'+k+'</span>'
       +'<span class="tm-div" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)">'+div+'</span></div>'
       +'<div class="tm-avg">'+(avg!=null?avg+'<span class="u">moy.</span>':'<span style="color:var(--dimmer)">—</span>')
@@ -588,10 +588,10 @@ function renderPools(){
           const _vr=voteForP(p);
           const refB=(_vr&&_vr.dispos&&(_vr.dispos.roles||[]).indexOf('REF')>=0)?' <span class="ref-r" title="s\'est proposé référent">R</span>':'';
           const nJ=(_vr&&_vr.n!=null)?' <span style="color:var(--dim);font-weight:400" title="journées de dispo déclarées">('+_vr.n+'/7J)</span>':'';
-          return '<div class="tm-p"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+nJ+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'">'+pcTxt+'</span></div>';
+          return '<div class="tm-p" draggable="true" data-k="'+esc(pkey(p))+'"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+nJ+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'">'+pcTxt+'</span></div>';
         }).join('')+'</div>'
       :'<div class="tm-sub" style="color:var(--dimmer);font-style:italic">personne pour l\'instant</div>';
-    return '<div class="tm-card">'
+    return '<div class="tm-card" data-pool="'+esc(dv)+'">'
       +'<div class="tm-top"><span class="tm-name" style="color:rgb('+c+')">Pool '+esc(dv)+'</span>'
       +'<span class="tm-div" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)">'+list.length+' remp.</span></div>'
       +body+'</div>';
@@ -700,6 +700,142 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
   }
   if(TAGS._params){ applyParams(TAGS._params); delete TAGS._params; }
   draftLoad(); updateSaveBar(); render();
+})();
+</script>
+<script>
+/* ===== Drag & drop des joueurs (desktop) + panneau d'alertes =====
+   V1 : alimente le circuit d'enregistrement existant (DIRTY -> tags_log).
+   V2 (détectée par la présence de V2_TAGS) : enregistre dans scenarios_log, jamais dans tags_log. */
+(function(){
+  var IS_V2=(typeof V2_TAGS!=='undefined');
+  var st=document.createElement('style');
+  st.textContent='.tm-p[draggable="true"]{cursor:grab}'
+   +'.tm-p.dragging{opacity:.35}'
+   +'.tm-card.dropok{outline:2px dashed var(--orange);outline-offset:2px}'
+   +'#v2Panel{position:fixed;right:14px;bottom:14px;z-index:9998;width:302px;background:#17171B;'
+   +'border:1px solid rgba(255,255,255,.18);border-radius:13px;padding:13px 15px;'
+   +'font-family:"Space Grotesk",system-ui,sans-serif;font-size:12px;color:#F6F5F3;box-shadow:0 10px 30px rgba(0,0,0,.5)}'
+   +'#v2Panel .ttl{font-weight:700;margin-bottom:6px}'
+   +'#v2Panel .btns{margin-top:10px;display:flex;gap:7px;flex-wrap:wrap}'
+   +'#v2Panel button{flex:1;min-width:86px;padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.22);'
+   +'background:#232328;color:#F6F5F3;font-family:inherit;font-size:11.5px;cursor:pointer;white-space:nowrap}'
+   +'#v2Panel button:hover{border-color:var(--orange);color:var(--orange)}'
+   +'#v2Panel button.sv{background:rgba(242,106,27,.16);border-color:rgba(242,106,27,.55);color:var(--orange);font-weight:700}';
+  document.head.appendChild(st);
+
+  var panel=document.createElement('div'); panel.id='v2Panel'; panel.style.display='none';
+  panel.innerHTML='<div class="ttl">'+(IS_V2?'🧪 Scénario — drag &amp; drop':'🎯 Compo — drag &amp; drop')+'</div>'
+   +'<div id="v2Last" style="color:var(--dim);min-height:14px"></div>'
+   +'<div id="v2Alerts" style="margin-top:7px;display:flex;flex-direction:column;gap:3px;line-height:1.45"></div>'
+   +'<div class="btns"><button id="v2Undo" type="button">↶ Annuler</button>'
+   +(IS_V2?'<button id="v2Reset" type="button">↺ Réinitialiser</button>':'')
+   +'<button id="v2Save" class="sv" type="button">💾 Enregistrer</button></div>';
+  document.body.appendChild(panel);
+  var gateT=setInterval(function(){
+    var g=document.getElementById('gpw');
+    if(!g||!g.offsetParent){ panel.style.display='block'; refresh(); clearInterval(gateT); }
+  },700);
+
+  var hist=[];
+  var CIBLES={M6:6,M7:6,M8:6,M9:6,M10:5,M11:5};
+  function effectifs(){
+    var out={};
+    Object.keys(CIBLES).forEach(function(t){
+      var tit=D.filter(function(p){var g=TAGS[pkey(p)];return g&&g.e===t&&g.r==='T';});
+      var moy=tit.length?Math.round(tit.reduce(function(a,p){return a+(p.men||0);},0)/tit.length):0;
+      out[t]={n:tit.length,moy:moy};
+    });
+    return out;
+  }
+  function refresh(msg){
+    if(msg!==undefined)document.getElementById('v2Last').textContent=msg;
+    var e=effectifs(), li=[];
+    Object.keys(CIBLES).forEach(function(t){
+      var n=e[t].n, c=CIBLES[t];
+      if(n<4) li.push('🔴 '+t+' : '+n+' titulaires — injouable (< 4)');
+      else if(n<c) li.push('🟠 '+t+' : '+n+' tit. (cible '+c+')');
+      else if(n>c) li.push('🟠 '+t+' : '+n+' tit. (cible '+c+' — surplus)');
+    });
+    document.getElementById('v2Alerts').innerHTML =
+      li.length?li.map(function(x){return '<div>'+x+'</div>';}).join('')
+      :'<div style="color:#4ADE80">✓ Effectifs conformes (6·6 PR / 6·6·5·5 D1)</div>';
+    var sv=document.getElementById('v2Save');
+    if(sv&&!IS_V2) sv.textContent='💾 Enregistrer'+(DIRTY.size?' ('+DIRTY.size+')':'');
+    if(sv&&IS_V2) sv.textContent='💾 Enregistrer le scénario';
+  }
+  window.__v2refresh=refresh;
+  // garder le compteur du panneau en phase avec la barre d'enregistrement existante
+  var _usb=updateSaveBar; updateSaveBar=function(){ _usb(); try{refresh();}catch(e){} };
+
+  function snap(){ return {t:JSON.stringify(TAGS), d:[...DIRTY]}; }
+  function move(k,team,pool){
+    var p=D.find(function(x){return pkey(x)===k;}); if(!p)return;
+    hist.push(snap());
+    var dest;
+    if(team){ TAGS[k]={d:TEAMDIV[team]||'',e:team,r:'T'}; dest=team; }
+    else { TAGS[k]={d:pool,r:'R'}; dest='pool '+pool; }
+    if(!IS_V2){ DIRTY.add(k); draftSave(); updateSaveBar(); }
+    render();
+    var e=effectifs(); var extra=(e[dest]?(' — '+dest+' : '+e[dest].n+' tit., moy '+e[dest].moy):'');
+    refresh((p.pre?p.pre[0]+'. ':'')+p.nom+' → '+dest+extra);
+  }
+  window.__v2move=move;
+
+  var dragKey=null;
+  document.addEventListener('dragstart',function(ev){
+    var el=ev.target.closest?ev.target.closest('.tm-p[data-k]'):null; if(!el)return;
+    dragKey=el.dataset.k; el.classList.add('dragging');
+    ev.dataTransfer.effectAllowed='move';
+    try{ev.dataTransfer.setData('text/plain',dragKey);}catch(e){}
+  });
+  document.addEventListener('dragend',function(){
+    dragKey=null;
+    document.querySelectorAll('.tm-p.dragging').forEach(function(x){x.classList.remove('dragging');});
+    document.querySelectorAll('.tm-card.dropok').forEach(function(x){x.classList.remove('dropok');});
+  });
+  document.addEventListener('dragover',function(ev){
+    if(!dragKey)return;
+    var card=ev.target.closest?ev.target.closest('.tm-card[data-team],.tm-card[data-pool]'):null;
+    if(card){ev.preventDefault();ev.dataTransfer.dropEffect='move';card.classList.add('dropok');}
+  });
+  document.addEventListener('dragleave',function(ev){
+    var card=ev.target.closest?ev.target.closest('.tm-card'):null; if(card)card.classList.remove('dropok');
+  });
+  document.addEventListener('drop',function(ev){
+    var card=ev.target.closest?ev.target.closest('.tm-card[data-team],.tm-card[data-pool]'):null;
+    if(!card||!dragKey)return;
+    ev.preventDefault(); card.classList.remove('dropok');
+    var k=dragKey; dragKey=null;
+    move(k,card.dataset.team||null,card.dataset.pool||null);
+  });
+
+  document.getElementById('v2Undo').addEventListener('click',function(){
+    if(!hist.length)return;
+    var s=hist.pop(); TAGS=JSON.parse(s.t);
+    if(!IS_V2){ DIRTY=new Set(s.d); draftSave(); updateSaveBar(); }
+    render(); refresh('annulé ↶');
+  });
+  if(IS_V2){
+    document.getElementById('v2Reset').addEventListener('click',function(){
+      TAGS=JSON.parse(window.__V2BASELINE||JSON.stringify(V2_TAGS)); delete TAGS._params;
+      hist=[]; render(); refresh('scénario réinitialisé ↺');
+    });
+    function saveScenario(){
+      var author=localStorage.getItem('acbb_tag_author');
+      if(!author){author=(prompt("Ton prénom (pour l'historique) :")||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
+      fetch(SB_URL+'/rest/v1/scenarios_log',{method:'POST',
+        headers:{apikey:SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({tags:TAGS,author:author})})
+      .then(function(r){ if(!r.ok)throw 0;
+        window.__V2BASELINE=JSON.stringify(TAGS);
+        refresh('✓ scénario enregistré à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})); })
+      .catch(function(){ refresh('⚠ enregistrement impossible (table scenarios_log absente ?)'); });
+    }
+    window.__v2save=saveScenario;
+    document.getElementById('v2Save').addEventListener('click',saveScenario);
+  }else{
+    document.getElementById('v2Save').addEventListener('click',function(){ saveTags(); });
+  }
 })();
 </script>
 <script src="../report.js" defer></script>
