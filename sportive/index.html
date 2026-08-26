@@ -275,8 +275,9 @@
   .tm-p .nmn{flex:1;min-width:0;white-space:normal;overflow-wrap:break-word;line-height:1.35}
   .tm-p .ref-r{color:#60A5FA;font-weight:800;margin-left:3px;font-size:9px;vertical-align:top}
   .tm-p .nmn.dsp-g{color:#4ADE80;font-weight:600}
-  .tm-p .nmn.dsp-o{color:#FBBF24}
+  .tm-p .nmn.dsp-o{color:#FB923C}
   .tm-p .nmn.dsp-r{color:#F87171}
+  .tm-p .nmn.dsp-y{color:#FACC15}
   .tm-p .pt{color:var(--dimmer);white-space:nowrap}
   .tm-p .pc{font-weight:800;min-width:30px;text-align:right;white-space:nowrap}
   .tm-p .pc.hi{color:#4ADE80}
@@ -416,9 +417,10 @@
   <div class="section-h">Équipes 2026/2027 — niveau moyen des titulaires (tags)</div>
   <div class="legend" id="dispoLegend" style="margin-top:-4px">
     <span style="color:var(--dim)">Couleur du nom = dispo Phase 1 :</span>
-    <span><i style="background:#4ADE80"></i> Titulaire dispo (≥3 journées)</span>
-    <span><i style="background:#FBBF24"></i> Pas de réponse</span>
-    <span><i style="background:#F87171"></i> Non dispo / remplaçant / peu dispo</span>
+    <span><i style="background:#4ADE80"></i> Titulaire dispo (≥4 journées)</span>
+    <span><i style="background:#FB923C"></i> Remplaçant ou ≤3 journées</span>
+    <span><i style="background:#F87171"></i> Ne veut pas jouer / blessé</span>
+    <span><i style="background:#FACC15"></i> Pas de réponse</span>
     <span><b style="color:#60A5FA;font-weight:800">R</b> = s'est proposé référent</span>
   </div>
   <div class="teams-mini" id="teamsMini"></div>
@@ -499,23 +501,23 @@ const canonV=r=>{ const raw=String(r.licence||''); if(/^SN-/.test(raw)){const m=
 const voteForP=p=>VOTES[String(p.lic)]||VOTES['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)]||VOTES['SN-'+nrmK(p.pre)+'-'+nrmK(p.nom)];
 /* overrides manuels (blessés / indispos) : forcent le rouge quel que soit le vote. Clé = NOM|PRENOM normalisés */
 const fkey=p=>nrmK(p.nom)+'|'+nrmK(p.pre);
-const FORCE_STATUS={
+const FORCE_STATUS={   // rouge forcé manuellement (blessé / indispo)
   'ARGUT|DANIEL':'blessé — indisponible pour le moment',
-  'LEBOURG|VIRGINIE':'indisponible pour le moment',
-  'MERIC|MARION':'remplaçant de division (voir cartes pools)',
-  'ADMI|JOHARA':'remplaçant de division (voir cartes pools)',
-  'SUEDE|SAMUEL':'remplaçant de division (voir cartes pools)',
-  'FONTAINE|SEBASTIEN':'indisponible pour le moment'
+  'FONTAINE|SEBASTIEN':'indisponible pour le moment',
+  'MERIC|MARION':'placée en réserve (rouge manuel)',
+  'ADMI|JOHARA':'placée en réserve (rouge manuel)'
 };
 /* joueurs listés AUSSI dans une carte pool, tout en gardant leur équipe (clé NOM|PRENOM -> division) */
 const POOL_ADD={ 'MERIC|MARION':'PR', 'ADMI|JOHARA':'D2', 'SUEDE|SAMUEL':'PR', 'LENNON|CLEMENCE':'D1', 'LIZAMBARD|MILO':'D2', 'LEBOURG|VIRGINIE':'PR' };
+const DISPO_TIP={g:'titulaire dispo (≥4 journées)',o:'remplaçant ou 3 journées ou moins',r:'ne veut pas jouer / blessé',y:'n\'a pas répondu'};
+// g=vert, o=orange, r=rouge, y=jaune
 function dispoStatus(p){
-  if(FORCE_STATUS[fkey(p)]) return 'r';              // override manuel (blessure, etc.)
-  const v=voteForP(p); if(!v) return 'o';            // pas de réponse
+  if(FORCE_STATUS[fkey(p)]) return 'r';              // rouge manuel (blessé / indispo)
+  const v=voteForP(p); if(!v) return 'y';            // pas de réponse -> jaune
   const roles=(v.dispos&&v.dispos.roles)||[]; const n=v.n!=null?v.n:0;
-  if(roles.indexOf('N')>=0) return 'r';              // "ne pas jouer"
-  if(roles.indexOf('T')<0) return 'r';              // remplaçant/référent seul
-  return n>=3?'g':'r';                               // titulaire : ≥3 journées = vert, sinon rouge (alerte)
+  if(roles.indexOf('N')>=0) return 'r';              // "ne pas jouer" -> rouge
+  if(roles.indexOf('T')<0) return 'o';              // remplaçant/référent seul -> orange
+  return n>=4?'g':'o';                               // titulaire : ≥4 journées = vert, sinon (≤3) orange
 }
 fetch(SB_URL+'/rest/v1/dispos_log?select=licence,nom,prenom,dispos,n&order=id.asc',{headers:SB_HD})
   .then(r=>r.ok?r.json():[]).then(rows=>{ rows.forEach(r=>{ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)) VOTES[canonV(r)]=r; }); DISPO_READY=true; renderTeamsMini(); })
@@ -547,7 +549,7 @@ function renderTeamsMini(){
           const dsc=dst?(' dsp-'+dst):'';
           const _vr=voteForP(p);
           const refB=(_vr&&_vr.dispos&&(_vr.dispos.roles||[]).indexOf('REF')>=0)?' <span class="ref-r" title="s\'est proposé Référent">R</span>':'';
-          const dTit=dst?(FORCE_STATUS[fkey(p)]||{g:'a répondu titulaire, dispo',o:'n\'a pas répondu',r:'non dispo / remplaçant / peu de dispos'}[dst]):'';
+          const dTit=dst?(FORCE_STATUS[fkey(p)]||DISPO_TIP[dst]):'';
           return '<div class="tm-p"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
         }).join('')+'</div>'
       :'<div class="tm-sub">aucun titulaire tagué</div>';
@@ -581,7 +583,7 @@ function renderPools(){
           const e2=p.eq2, pct=(e2&&e2.n)?Math.round(100*e2.v/e2.n):null;
           const pcCls=pct==null?'na':(pct>=50?'hi':(pct>=30?'mid':'lo')); const pcTxt=pct==null?'—':pct+'%';
           const dst=DISPO_READY?dispoStatus(p):''; const dsc=dst?(' dsp-'+dst):'';
-          const dTit=dst?(FORCE_STATUS[fkey(p)]||{g:'a répondu titulaire, dispo',o:'n\'a pas répondu',r:'non dispo / remplaçant / peu de dispos'}[dst]):'';
+          const dTit=dst?(FORCE_STATUS[fkey(p)]||DISPO_TIP[dst]):'';
           const _vr=voteForP(p);
           const refB=(_vr&&_vr.dispos&&(_vr.dispos.roles||[]).indexOf('REF')>=0)?' <span class="ref-r" title="s\'est proposé référent">R</span>':'';
           const nJ=(_vr&&_vr.n!=null)?' <span style="color:var(--dim);font-weight:400" title="journées de dispo déclarées">('+_vr.n+'/7J)</span>':'';
