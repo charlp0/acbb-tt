@@ -16,7 +16,9 @@ def norm(cat):
     return c if JEUNE.match(c) else 'S'
 
 # corrections manuelles (cat absente ou fausse côté FFTT)
-OVERRIDES = {'9254353': 'S'}   # Grégoire STEMLER
+OVERRIDES = {'9254353': 'S',            # Grégoire STEMLER (cat absente côté FFTT)
+             'ARGUT|DANIEL': 'S',        # mutés sans licence : clé NOM|PRENOM normalisée
+             'BOTELLA|MILO': 'S'}
 
 idx = json.load(open('data/players_index.json'))
 # aussi les licenciés présents uniquement dans scoring.json (mutations avec licence)

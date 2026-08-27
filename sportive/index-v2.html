@@ -500,7 +500,7 @@ function updateSaveBar(){
 let VOTES={}, DISPO_READY=false;
 let AGECAT={};
 fetch('../data/categories.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(j=>{AGECAT=j||{}; renderTeamsMini();}).catch(()=>{});
-const ageBadge=p=>{const c=AGECAT[String(p.lic)]; return c?('<span class="agec'+(c==='S'?' s':'')+'" title="cat. d age">'+c+'</span>'):'';};
+const ageBadge=p=>{const c=AGECAT[String(p.lic)]||AGECAT[nrmK(p.nom)+'|'+nrmK(p.pre)]; return c?('<span class="agec'+(c==='S'?' s':'')+'" title="cat. d age">'+c+'</span>'):'';};
 const nrmK=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 const BYSN={};
 D.forEach(p=>{ const a=nrmK(p.nom),b=nrmK(p.pre); BYSN['SN-'+a+'-'+b]=p; BYSN['SN-'+b+'-'+a]=p; });
