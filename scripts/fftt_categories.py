@@ -15,6 +15,9 @@ def norm(cat):
     if not c: return None
     return c if JEUNE.match(c) else 'S'
 
+# corrections manuelles (cat absente ou fausse côté FFTT)
+OVERRIDES = {'9254353': 'S'}   # Grégoire STEMLER
+
 idx = json.load(open('data/players_index.json'))
 out = {}
 for i, p in enumerate(idx):
@@ -26,6 +29,7 @@ for i, p in enumerate(idx):
     if (i+1) % 40 == 0: print(f"  {i+1}/{len(idx)}")
     time.sleep(0.12)
 
+out.update(OVERRIDES)
 json.dump(out, open('data/categories.json', 'w'), ensure_ascii=False)
 from collections import Counter
 print(f"data/categories.json : {len(out)} joueurs — répartition {dict(Counter(out.values()))}")
