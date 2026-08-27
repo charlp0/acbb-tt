@@ -1168,7 +1168,10 @@
    "j4": false,
    "j5": true,
    "j6": true,
-   "j7": false
+   "j7": false,
+   "roles": [
+    "T"
+   ]
   },
   "n": 5,
   "ip": "80.215.72.52"
@@ -1422,7 +1425,10 @@
    "j4": true,
    "j5": true,
    "j6": true,
-   "j7": true
+   "j7": true,
+   "roles": [
+    "T"
+   ]
   },
   "n": 6,
   "ip": "185.99.26.79"
@@ -1939,7 +1945,10 @@
    "j4": true,
    "j5": true,
    "j6": true,
-   "j7": true
+   "j7": true,
+   "roles": [
+    "T"
+   ]
   },
   "n": 6,
   "ip": "88.170.49.62"
@@ -2521,7 +2530,10 @@
    "j4": true,
    "j5": true,
    "j6": true,
-   "j7": true
+   "j7": true,
+   "roles": [
+    "T"
+   ]
   },
   "n": 5,
   "ip": "89.92.249.7"
@@ -3001,7 +3013,10 @@
    "j4": true,
    "j5": true,
    "j6": true,
-   "j7": true
+   "j7": true,
+   "roles": [
+    "T"
+   ]
   },
   "n": 6,
   "ip": "37.70.213.27"
@@ -3019,7 +3034,10 @@
    "j4": true,
    "j5": true,
    "j6": true,
-   "j7": true
+   "j7": true,
+   "roles": [
+    "T"
+   ]
   },
   "n": 7,
   "ip": "176.190.208.81"
@@ -3150,5 +3168,236 @@
   },
   "n": 2,
   "ip": "37.67.194.81"
+ },
+ {
+  "id": 204,
+  "created_at": "2026-08-26T08:18:23.219284+00:00",
+  "licence": "7511420",
+  "prenom": "Guy",
+  "nom": "Benetiere",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": false,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 6,
+  "ip": "78.241.113.35"
+ },
+ {
+  "id": 205,
+  "created_at": "2026-08-26T10:11:45.948966+00:00",
+  "licence": "SN-LECORRE-ERWAN",
+  "prenom": "Erwan",
+  "nom": "LE CORRE",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "176.140.211.142"
+ },
+ {
+  "id": 206,
+  "created_at": "2026-08-26T10:12:03.355449+00:00",
+  "licence": "SN-LECORRE-ERWAN",
+  "prenom": "Erwan",
+  "nom": "LE CORRE",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "176.140.211.142"
+ },
+ {
+  "id": 207,
+  "created_at": "2026-08-26T19:09:19.102546+00:00",
+  "licence": "SN-LESCAUDRON-NOEMIE",
+  "prenom": "Noémie",
+  "nom": "Lescaudron",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "R"
+   ]
+  },
+  "n": 7,
+  "ip": "88.188.145.204"
+ },
+ {
+  "id": 208,
+  "created_at": "2026-08-26T19:16:58.258403+00:00",
+  "licence": "9250807",
+  "prenom": "Richard",
+  "nom": "Aubert",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "82.125.183.237"
+ },
+ {
+  "id": 209,
+  "created_at": "2026-08-26T21:24:54.866708+00:00",
+  "licence": "9234489",
+  "prenom": "Stéphane",
+  "nom": "Des Mazery",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "37.166.55.161"
+ },
+ {
+  "id": 210,
+  "created_at": "2026-08-27T07:18:43.744541+00:00",
+  "licence": "SN-PRUDENT-CHRISTIAN",
+  "prenom": "christian",
+  "nom": "prudent",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": false,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "R"
+   ]
+  },
+  "n": 6,
+  "ip": "176.191.75.119"
+ },
+ {
+  "id": 211,
+  "created_at": "2026-08-27T09:18:15.859775+00:00",
+  "licence": "SN-ARGUT-DANIEL",
+  "prenom": "Daniel",
+  "nom": "Argut",
+  "dispos": {
+   "j1": false,
+   "j2": false,
+   "j3": false,
+   "j4": false,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 3,
+  "ip": "31.14.71.94"
+ },
+ {
+  "id": 212,
+  "created_at": "2026-08-27T13:53:58.162584+00:00",
+  "licence": "9252820",
+  "prenom": "Ayoub",
+  "nom": "Batti",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "78.197.17.9"
+ },
+ {
+  "id": 213,
+  "created_at": "2026-08-27T13:54:42.718141+00:00",
+  "licence": "9252820",
+  "prenom": "Ayoub",
+  "nom": "Batti",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 7,
+  "ip": "78.197.17.9"
+ },
+ {
+  "id": 214,
+  "created_at": "2026-08-27T15:28:59.543059+00:00",
+  "licence": "9267050",
+  "prenom": "Marie-Laure",
+  "nom": "de Rolland",
+  "dispos": {
+   "j1": false,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 6,
+  "ip": "77.136.66.32"
  }
 ]
