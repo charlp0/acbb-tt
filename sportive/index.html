@@ -561,7 +561,7 @@ function renderTeamsMini(){
         }).join('')+'</div>'
       :'<div class="tm-sub">aucun titulaire tagué</div>';
     return '<div class="tm-card" data-team="'+k+'">'
-      +'<div class="tm-top"><span class="tm-name" style="color:hsl('+teamHue(k)+',75%,72%)">'+k+'<span class="tm-cnt" title="nombre de titulaires tagués">'+tit.length+' j</span></span>'
+      +'<div class="tm-top"><span class="tm-name" draggable="true" data-swap="'+k+'" title="glisse-moi sur une autre carte pour échanger les numéros d\'équipe" style="color:hsl('+teamHue(k)+',75%,72%);cursor:grab">'+k+'<span class="tm-cnt" title="nombre de titulaires tagués">'+tit.length+' j</span></span>'
       +'<span class="tm-div" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)">'+div+'</span></div>'
       +'<div class="tm-avg">'+(avg!=null?avg+'<span class="u">moy.</span>':'<span style="color:var(--dimmer)">—</span>')
       +(DIVOPP[div]?'<span class="vs" title="niveau mensuel moyen des adversaires rencontrés en '+div+' (phase 2 2025/26)">vs '+DIVOPP[div]+'</span>':'')+'</div>'
@@ -787,20 +787,37 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
   }
   window.__v2move=move;
 
-  var dragKey=null;
+  function doSwap(A,B){
+    hist.push(snap());
+    Object.keys(TAGS).forEach(function(k){
+      var t=TAGS[k]; if(!t||typeof t!=='object')return; var ch=false;
+      if(t.e===A){t.e=B; t.d=TEAMDIV[B]||t.d; ch=true;} else if(t.e===B){t.e=A; t.d=TEAMDIV[A]||t.d; ch=true;}
+      if(t.e2===A){t.e2=B; ch=true;} else if(t.e2===B){t.e2=A; ch=true;}
+      if(ch&&!IS_V2){DIRTY.add(k);}
+    });
+    if(!IS_V2){draftSave();updateSaveBar();}
+    render(); refresh('Équipes '+A+' ⇄ '+B+' (numéros échangés)');
+  }
+  window.__v2swap=doSwap;
+
+  var dragKey=null, swapTeam=null;
   document.addEventListener('dragstart',function(ev){
+    var tn=ev.target.closest?ev.target.closest('.tm-name[data-swap]'):null;
+    if(tn){ swapTeam=tn.dataset.swap; dragKey=null;
+      ev.dataTransfer.effectAllowed='move';
+      try{ev.dataTransfer.setData('text/plain','swap:'+swapTeam);}catch(e){} return; }
     var el=ev.target.closest?ev.target.closest('.tm-p[data-k]'):null; if(!el)return;
     dragKey=el.dataset.k; el.classList.add('dragging');
     ev.dataTransfer.effectAllowed='move';
     try{ev.dataTransfer.setData('text/plain',dragKey);}catch(e){}
   });
   document.addEventListener('dragend',function(){
-    dragKey=null;
+    dragKey=null; swapTeam=null;
     document.querySelectorAll('.tm-p.dragging').forEach(function(x){x.classList.remove('dragging');});
     document.querySelectorAll('.tm-card.dropok').forEach(function(x){x.classList.remove('dropok');});
   });
   document.addEventListener('dragover',function(ev){
-    if(!dragKey)return;
+    if(!dragKey&&!swapTeam)return;
     var card=ev.target.closest?ev.target.closest('.tm-card[data-team],.tm-card[data-pool]'):null;
     if(card){ev.preventDefault();ev.dataTransfer.dropEffect='move';card.classList.add('dropok');}
   });
@@ -809,7 +826,14 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
   });
   document.addEventListener('drop',function(ev){
     var card=ev.target.closest?ev.target.closest('.tm-card[data-team],.tm-card[data-pool]'):null;
-    if(!card||!dragKey)return;
+    if(!card)return;
+    if(swapTeam){
+      ev.preventDefault(); card.classList.remove('dropok');
+      var B=card.dataset.team, A=swapTeam; swapTeam=null;
+      if(B&&B!==A) doSwap(A,B);
+      return;
+    }
+    if(!dragKey)return;
     ev.preventDefault(); card.classList.remove('dropok');
     var k=dragKey; dragKey=null;
     move(k,card.dataset.team||null,card.dataset.pool||null);
