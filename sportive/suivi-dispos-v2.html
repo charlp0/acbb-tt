@@ -103,6 +103,7 @@
   <a href="poules.html">🏆 Poules 26/27</a>
   <a href="suivi-dispos.html">📊 Suivi officiel</a>
   <a href="suivi-dispos-v2.html" class="active">📊 Suivi · scénario V2</a>
+  <a href="suivi-dispos-v3.html" style="opacity:.55" title="Suivi basé sur le scénario V3">🧪 V3</a>
 </nav>
 
 <div class="hero">
@@ -183,7 +184,7 @@
   function boot(){
     Promise.all([
       fetch(SB+'/rest/v1/dispos_log?select=licence,prenom,nom,dispos,n,created_at&order=id.asc',{headers:HD}).then(function(r){return r.ok?r.json():[];}),
-      fetch(SB+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1',{headers:HD}).then(function(r){return r.ok?r.json():[];}),
+      fetch(SB+'/rest/v1/scenarios_log?select=tags&slot=eq.v2&order=id.desc&limit=1',{headers:HD}).then(function(r){return r.ok?r.json():fetch(SB+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1',{headers:HD}).then(function(r2){return r2.ok?r2.json():[];});}),
       fetch('../data/scoring.json',{cache:'no-cache'}).then(function(r){return r.json();})
     ]).then(function(res){ render(res[0]||[], (res[1][0]&&res[1][0].tags)||{}, res[2].players||[]); })
      .catch(function(e){ document.getElementById('hMeta').textContent='Erreur de chargement : '+e.message; });

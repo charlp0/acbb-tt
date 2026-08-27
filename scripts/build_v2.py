@@ -21,7 +21,7 @@ def rep(a, b, label, count=1):
 s = re.sub(r'<title>.*?</title>', '<title>Compo V2 — Scénario</title>', s, count=1)
 rep('<a href="index.html" class="active">🎯 Scoring &amp; compos</a>',
     '<a href="index.html">🎯 Scoring &amp; compos</a>', 'nav v1')
-rep('<a href="index-v2.html" style="opacity:.55" title="Scénario de composition alternatif (lecture seule)">🧪 V2</a>',
+rep('<a href="index-v2.html" style="opacity:.55" title="Scénario de composition A">🧪 V2</a>',
     '<a href="index-v2.html" class="active">🧪 V2 · scénario</a>', 'nav v2')
 
 # --- bandeau scénario ---
@@ -71,15 +71,15 @@ boot_old = """/* chargement initial : Supabase (dernière version), repli data/t
   if(TAGS._params){ applyParams(TAGS._params); delete TAGS._params; }
   draftLoad(); updateSaveBar(); render();
 })();"""
-boot_new = """/* V2 — scénario : charge le dernier scénario partagé (scenarios_log), repli tags figés */
+boot_new = """/* V2 — scénario (slot v2) : dernier scénario partagé, replis successifs */
 (async function(){
   var base=V2_TAGS;
-  try{
-    const g=await fetch(SB_URL+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1',{headers:SB_HD});
-    if(g.ok){const a=await g.json(); if(a.length&&a[0].tags)base=a[0].tags;}
-  }catch(e){}
+  async function gets(u){try{const g=await fetch(u,{headers:SB_HD});if(g.ok){const a=await g.json();if(a.length&&a[0].tags)return a[0].tags;}}catch(e){}return null;}
+  var t=await gets(SB_URL+'/rest/v1/scenarios_log?select=tags&slot=eq.v2&order=id.desc&limit=1')
+      ||await gets(SB_URL+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1');
+  if(t)base=t;
   TAGS=JSON.parse(JSON.stringify(base)); delete TAGS._params;
-  window.__V2BASELINE=JSON.stringify(TAGS);
+  window.__V2BASELINE=JSON.stringify(TAGS); window.__V2SLOT='v2';
   updateSaveBar(); render();
   if(window.__v2refresh)window.__v2refresh();
 })();"""
@@ -110,8 +110,10 @@ rep2("""<a href="suivi-dispos.html" class="active">📊 Suivi des dispos</a>
   <a href="suivi-dispos-v2.html" style="opacity:.55" title="Suivi basé sur le scénario V2">🧪 V2</a>""",
      """<a href="suivi-dispos.html">📊 Suivi officiel</a>
   <a href="suivi-dispos-v2.html" class="active">📊 Suivi · scénario V2</a>""", 'nav suivi')
-rep2("fetch(SB+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:HD})",
-     "fetch(SB+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1',{headers:HD})", 'source tags')
+rep2("fetch(SB+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:HD}).then(function(r){return r.ok?r.json():[];})",
+     "fetch(SB+'/rest/v1/scenarios_log?select=tags&slot=eq.v2&order=id.desc&limit=1',{headers:HD})"
+     ".then(function(r){return r.ok?r.json():fetch(SB+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1',{headers:HD})"
+     ".then(function(r2){return r2.ok?r2.json():[];});})", 'source tags')
 rep2('<div class="meta" id="hMeta">chargement…</div>',
      '<div style="margin:8px 0 4px;padding:9px 13px;border:1px solid var(--orange);border-radius:10px;'
      'background:rgba(242,106,27,.10);font-size:12px;color:var(--dim)">'
@@ -121,3 +123,54 @@ rep2('<div class="meta" id="hMeta">chargement…</div>',
 
 open('sportive/suivi-dispos-v2.html', 'w').write(s2)
 print('suivi-dispos-v2.html généré —', len(s2), 'octets')
+
+
+# ================= pages V3 (dérivées des V2 générées) =================
+v3 = open('sportive/index-v2.html').read()
+def rp3(a, b, label, count=1):
+    global v3
+    n = v3.count(a)
+    if count and n != count:
+        sys.exit(f"ABORT v3 {label}: {n} occ, {count} attendue(s)")
+    v3 = v3.replace(a, b)
+rp3('<title>Compo V2 — Scénario</title>', '<title>Compo V3 — Scénario</title>', 'titre')
+rp3('<a href="index-v2.html" class="active">🧪 V2 · scénario</a>',
+    '<a href="index-v2.html">🧪 V2 · scénario</a>', 'nav v2')
+rp3('<a href="index-v3.html" style="opacity:.55" title="Scénario de composition B">🧪 V3</a>',
+    '<a href="index-v3.html" class="active">🧪 V3 · scénario</a>', 'nav v3')
+rp3('>V2 · Scénario</span>', '>V3 · Scénario</span>', 'banner label')
+rp3('<a href="suivi-dispos-v2.html">📊 Suivi des dispos (V2)</a>',
+    '<a href="suivi-dispos-v3.html">📊 Suivi des dispos (V3)</a>', 'nav suivi v3')
+rp3("""  var t=await gets(SB_URL+'/rest/v1/scenarios_log?select=tags&slot=eq.v2&order=id.desc&limit=1')
+      ||await gets(SB_URL+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1');""",
+    """  var t=await gets(SB_URL+'/rest/v1/scenarios_log?select=tags&slot=eq.v3&order=id.desc&limit=1')
+      ||await gets(SB_URL+'/rest/v1/scenarios_log?select=tags&slot=eq.v2&order=id.desc&limit=1')
+      ||await gets(SB_URL+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1');""", 'boot v3')
+rp3("window.__V2SLOT='v2';", "window.__V2SLOT='v3';", 'slot v3')
+open('sportive/index-v3.html', 'w').write(v3)
+print('index-v3.html généré —', len(v3), 'octets')
+
+sv3 = open('sportive/suivi-dispos-v2.html').read()
+def rs3(a, b, label, count=1):
+    global sv3
+    n = sv3.count(a)
+    if count and n != count:
+        sys.exit(f"ABORT sv3 {label}: {n} occ, {count} attendue(s)")
+    sv3 = sv3.replace(a, b)
+rs3('<title>ACBB TT — Suivi dispos · Scénario V2</title>', '<title>ACBB TT — Suivi dispos · Scénario V3</title>', 'titre')
+rs3('<a href="index-v2.html">🧪 V2 · scénario</a>', '<a href="index-v3.html">🧪 V3 · scénario</a>', 'nav idx')
+rs3('<a href="suivi-dispos-v2.html" class="active">📊 Suivi · scénario V2</a>',
+    '<a href="suivi-dispos-v2.html">📊 Suivi · V2</a>', 'nav sv2')
+rs3('<a href="suivi-dispos-v3.html" style="opacity:.55" title="Suivi basé sur le scénario V3">🧪 V3</a>',
+    '<a href="suivi-dispos-v3.html" class="active">📊 Suivi · scénario V3</a>', 'nav sv3')
+rs3('Basé sur le scénario V2</b>', 'Basé sur le scénario V3</b>', 'banner')
+rs3("slot=eq.v2&order=id.desc&limit=1',{headers:HD})"
+    ".then(function(r){return r.ok?r.json():fetch(SB+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1',{headers:HD})"
+    ".then(function(r2){return r2.ok?r2.json():[];});})",
+    "slot=eq.v3&order=id.desc&limit=1',{headers:HD})"
+    ".then(function(r){return r.ok?r.json():[];})"
+    ".then(function(a){return (a&&a.length)?a:fetch(SB+'/rest/v1/scenarios_log?select=tags&slot=eq.v2&order=id.desc&limit=1',{headers:HD})"
+    ".then(function(r){return r.ok?r.json():fetch(SB+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1',{headers:HD})"
+    ".then(function(r2){return r2.ok?r2.json():[];});});})", 'source v3')
+open('sportive/suivi-dispos-v3.html', 'w').write(sv3)
+print('suivi-dispos-v3.html généré —', len(sv3), 'octets')

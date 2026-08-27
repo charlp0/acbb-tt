@@ -393,6 +393,7 @@
   <a href="poules.html">🏆 Poules 26/27</a>
   <a href="suivi-dispos-v2.html">📊 Suivi des dispos (V2)</a>
   <a href="index-v2.html" class="active">🧪 V2 · scénario</a>
+  <a href="index-v3.html" style="opacity:.55" title="Scénario de composition B">🧪 V3</a>
 </nav>
 <div class="hero">
   <div class="eyebrow">Outil interne · Préparation des équipes</div>
@@ -691,15 +692,15 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
   }
 });
 
-/* V2 — scénario : charge le dernier scénario partagé (scenarios_log), repli tags figés */
+/* V2 — scénario (slot v2) : dernier scénario partagé, replis successifs */
 (async function(){
   var base=V2_TAGS;
-  try{
-    const g=await fetch(SB_URL+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1',{headers:SB_HD});
-    if(g.ok){const a=await g.json(); if(a.length&&a[0].tags)base=a[0].tags;}
-  }catch(e){}
+  async function gets(u){try{const g=await fetch(u,{headers:SB_HD});if(g.ok){const a=await g.json();if(a.length&&a[0].tags)return a[0].tags;}}catch(e){}return null;}
+  var t=await gets(SB_URL+'/rest/v1/scenarios_log?select=tags&slot=eq.v2&order=id.desc&limit=1')
+      ||await gets(SB_URL+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1');
+  if(t)base=t;
   TAGS=JSON.parse(JSON.stringify(base)); delete TAGS._params;
-  window.__V2BASELINE=JSON.stringify(TAGS);
+  window.__V2BASELINE=JSON.stringify(TAGS); window.__V2SLOT='v2';
   updateSaveBar(); render();
   if(window.__v2refresh)window.__v2refresh();
 })();
@@ -851,7 +852,7 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
       if(!author){author=(prompt("Ton prénom (pour l'historique) :")||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
       fetch(SB_URL+'/rest/v1/scenarios_log',{method:'POST',
         headers:{apikey:SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
-        body:JSON.stringify({tags:TAGS,author:author})})
+        body:JSON.stringify({tags:TAGS,author:author,slot:(window.__V2SLOT||'v2')})})
       .then(function(r){ if(!r.ok)throw 0;
         window.__V2BASELINE=JSON.stringify(TAGS);
         refresh('✓ scénario enregistré à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})); })
