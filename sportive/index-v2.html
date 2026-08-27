@@ -273,6 +273,8 @@
   .tm-players{display:flex;flex-direction:column;gap:2px;margin-top:2px}
   .tm-p{font-size:9.5px;font-family:"JetBrains Mono",monospace;color:var(--ink-2);display:flex;align-items:baseline;gap:4px}
   .tm-p .nmn{flex:1;min-width:0;white-space:normal;overflow-wrap:break-word;line-height:1.35}
+  .agec{display:inline-block;min-width:15px;text-align:center;font-size:8px;font-weight:800;border-radius:4px;padding:1px 3px;margin-right:4px;vertical-align:1px;background:rgba(96,165,250,.16);color:#60A5FA;border:1px solid rgba(96,165,250,.4)}
+  .agec.s{background:rgba(255,255,255,.06);color:var(--dimmer);border-color:rgba(255,255,255,.14)}
   .tm-p .ref-r{color:#60A5FA;font-weight:800;margin-left:3px;font-size:9px;vertical-align:top}
   .tm-p .nmn.dsp-g{color:#4ADE80;font-weight:600}
   .tm-p .nmn.dsp-o{color:#FB923C}
@@ -495,6 +497,9 @@ function updateSaveBar(){
 
 /* ---- dispos Phase 1 : couleur des noms (g=titulaire dispo, o=pas de réponse, r=non dispo/remplaçant/peu dispo) ---- */
 let VOTES={}, DISPO_READY=false;
+let AGECAT={};
+fetch('../data/categories.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(j=>{AGECAT=j||{}; renderTeamsMini();}).catch(()=>{});
+const ageBadge=p=>{const c=AGECAT[String(p.lic)]; return c?('<span class="agec'+(c==='S'?' s':'')+'" title="cat. d age">'+c+'</span>'):'';};
 const nrmK=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 const BYSN={};
 D.forEach(p=>{ const a=nrmK(p.nom),b=nrmK(p.pre); BYSN['SN-'+a+'-'+b]=p; BYSN['SN-'+b+'-'+a]=p; });
@@ -547,7 +552,7 @@ function renderTeamsMini(){
           const _vr=voteForP(p);
           const refB=(_vr&&_vr.dispos&&(_vr.dispos.roles||[]).indexOf('REF')>=0)?' <span class="ref-r" title="s\'est proposé Référent">R</span>':'';
           const dTit=dst?(FORCE_STATUS[fkey(p)]||DISPO_TIP[dst]):'';
-          return '<div class="tm-p" draggable="true" data-k="'+esc(pkey(p))+'"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
+          return '<div class="tm-p" draggable="true" data-k="'+esc(pkey(p))+'"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+ageBadge(p)+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
         }).join('')+'</div>'
       :'<div class="tm-sub">aucun titulaire tagué</div>';
     return '<div class="tm-card" data-team="'+k+'">'
@@ -584,7 +589,7 @@ function renderPools(){
           const _vr=voteForP(p);
           const refB=(_vr&&_vr.dispos&&(_vr.dispos.roles||[]).indexOf('REF')>=0)?' <span class="ref-r" title="s\'est proposé référent">R</span>':'';
           const nJ=(_vr&&_vr.n!=null)?' <span style="color:var(--dim);font-weight:400" title="journées de dispo déclarées">('+_vr.n+'/7J)</span>':'';
-          return '<div class="tm-p" draggable="true" data-k="'+esc(pkey(p))+'"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+nJ+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'">'+pcTxt+'</span></div>';
+          return '<div class="tm-p" draggable="true" data-k="'+esc(pkey(p))+'"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+ageBadge(p)+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+refB+nJ+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'">'+pcTxt+'</span></div>';
         }).join('')+'</div>'
       :'<div class="tm-sub" style="color:var(--dimmer);font-style:italic">personne pour l\'instant</div>';
     return '<div class="tm-card" data-pool="'+esc(dv)+'">'
