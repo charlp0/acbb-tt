@@ -85,5 +85,39 @@ boot_new = """/* V2 — scénario : charge le dernier scénario partagé (scenar
 })();"""
 rep(boot_old, boot_new, 'bootstrap')
 
+rep('<a href="suivi-dispos.html">📊 Suivi des dispos</a>',
+    '<a href="suivi-dispos-v2.html">📊 Suivi des dispos (V2)</a>', 'nav suivi->v2')
+
 open('sportive/index-v2.html', 'w').write(s)
 print('index-v2.html généré —', len(s), 'octets,', len(v2tags), 'tags de repli')
+
+
+# ================= suivi-dispos-v2.html =================
+s2 = open('sportive/suivi-dispos.html').read()
+
+def rep2(a, b, label, count=1):
+    global s2
+    n = s2.count(a)
+    if count and n != count:
+        sys.exit(f"ABORT suivi {label}: {n} occurrence(s), {count} attendue(s)")
+    s2 = s2.replace(a, b)
+
+rep2('<title>ACBB TT — Suivi des dispos (interne)</title>',
+     '<title>ACBB TT — Suivi dispos · Scénario V2</title>', 'titre')
+rep2("""<a href="index.html">🎯 Scoring &amp; compos</a>""",
+     """<a href="index-v2.html">🧪 V2 · scénario</a>""", 'nav scoring')
+rep2("""<a href="suivi-dispos.html" class="active">📊 Suivi des dispos</a>
+  <a href="suivi-dispos-v2.html" style="opacity:.55" title="Suivi basé sur le scénario V2">🧪 V2</a>""",
+     """<a href="suivi-dispos.html">📊 Suivi officiel</a>
+  <a href="suivi-dispos-v2.html" class="active">📊 Suivi · scénario V2</a>""", 'nav suivi')
+rep2("fetch(SB+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:HD})",
+     "fetch(SB+'/rest/v1/scenarios_log?select=tags&order=id.desc&limit=1',{headers:HD})", 'source tags')
+rep2('<div class="meta" id="hMeta">chargement…</div>',
+     '<div style="margin:8px 0 4px;padding:9px 13px;border:1px solid var(--orange);border-radius:10px;'
+     'background:rgba(242,106,27,.10);font-size:12px;color:var(--dim)">'
+     '<b style="color:var(--orange)">🧪 Basé sur le scénario V2</b> — matrice et relances calculées sur la '
+     'compo scénario (dernier enregistrement), pas la compo officielle.</div>'
+     '<div class="meta" id="hMeta">chargement…</div>', 'bandeau')
+
+open('sportive/suivi-dispos-v2.html', 'w').write(s2)
+print('suivi-dispos-v2.html généré —', len(s2), 'octets')
