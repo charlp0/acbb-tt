@@ -19,14 +19,17 @@ def norm(cat):
 OVERRIDES = {'9254353': 'S'}   # Grégoire STEMLER
 
 idx = json.load(open('data/players_index.json'))
+# aussi les licenciés présents uniquement dans scoring.json (mutations avec licence)
+sc = json.load(open('data/scoring.json'))['players']
+lics = {str(p.get('lic') or '') for p in idx} | {str(p.get('lic') or '') for p in sc}
+lics = sorted(l for l in lics if l.isdigit())
 out = {}
-for i, p in enumerate(idx):
-    lic = str(p.get('lic') or '')
+for i, lic in enumerate(lics):
     if not lic.isdigit(): continue
     xml = fb.get(f"xml_licence_b.php?licence={lic}")
     cat = norm(fb.tag(xml, 'cat'))
     if cat: out[lic] = cat
-    if (i+1) % 40 == 0: print(f"  {i+1}/{len(idx)}")
+    if (i+1) % 40 == 0: print(f"  {i+1}/{len(lics)}")
     time.sleep(0.12)
 
 out.update(OVERRIDES)
