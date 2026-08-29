@@ -470,19 +470,34 @@
       calNote.hidden=true;
     }
   }
-  /* complétion club */
+  /* complétion : réponses des joueurs attendus (tagués en équipe ou pool de remplacement) */
   function ring(){
     Promise.all([
       fetch(SB+'/rest/v1/dispos_log?select=licence',{headers:HD}).then(function(r){return r.ok?r.json():null;}),
-      fetch('data/scoring.json',{cache:'no-cache'}).then(function(r){return r.json();}).catch(function(){return null;})
+      fetch('data/scoring.json',{cache:'no-cache'}).then(function(r){return r.json();}).catch(function(){return null;}),
+      fetch(SB+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:HD}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
     ]).then(function(res){
-      var rows=res[0], idx=res[1];
+      var rows=res[0], idx=res[1], tg=(res[2]&&res[2][0]&&res[2][0].tags)||null;
       if(!rows){ document.getElementById('dPct').textContent='—'; return; }
-      var uniq={}; rows.forEach(function(r){ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)) uniq[r.licence]=1; });
-      var n=Object.keys(uniq).length, total=(idx&&idx.players&&idx.players.length)||240;
+      var players=(idx&&idx.players)||[];
+      var byLic={}, bySN={};
+      players.forEach(function(p){ if(p.lic)byLic[String(p.lic)]=p;
+        var a=nrmKey(p.nom), b=nrmKey(p.pre); bySN['SN-'+a+'-'+b]=p; bySN['SN-'+b+'-'+a]=p; });
+      var idOf=function(p){ return String(p.lic||(nrmKey(p.nom)+'|'+nrmKey(p.pre))); };
+      var resp={};
+      rows.forEach(function(r){ var raw=String(r.licence||''); if(!raw||/^(TEST|0000)/i.test(raw))return;
+        var p=/^SN-/.test(raw)?bySN[raw]:byLic[raw];
+        resp[p?idOf(p):raw]=1; });
+      var concerned={};
+      if(tg){ players.forEach(function(p){
+        var t=tg[String(p.lic)]||tg[p.nom+'|'+p.pre];
+        if(t&&(t.e||t.e2||(t.r==='R'&&t.d))) concerned[idOf(p)]=1; }); }
+      var ck=Object.keys(concerned), n, total, lbl;
+      if(tg&&ck.length>=10){ total=ck.length; n=ck.filter(function(k){return resp[k];}).length; lbl=' joueurs attendus'; }
+      else { n=Object.keys(resp).length; total=players.length||240; lbl=' joueurs'; }
       var pct=Math.min(100,Math.round(100*n/total));
       document.getElementById('dPct').textContent=pct+'%';
-      document.getElementById('dCnt').textContent=n+' / '+total+' joueurs';
+      document.getElementById('dCnt').textContent=n+' / '+total+lbl;
       var C=188.5; document.getElementById('dRing').style.strokeDashoffset=(C*(1-pct/100)).toFixed(1);
     }).catch(function(){});
   }
