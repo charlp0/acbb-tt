@@ -392,8 +392,6 @@
   <a href="index.html" class="active">🎯 Scoring &amp; compos</a>
   <a href="poules.html">🏆 Poules 26/27</a>
   <a href="suivi-dispos.html">📊 Suivi des dispos</a>
-  <a href="index-v2.html" style="opacity:.55" title="Scénario de composition A">🧪 V2</a>
-  <a href="index-v3.html" style="opacity:.55" title="Scénario de composition B">🧪 V3</a>
   <a href="contraintes.html">📋 Contraintes</a>
 </nav>
 <div class="hero">
@@ -517,7 +515,7 @@ const FORCE_STATUS={   // rouge forcé manuellement (blessé / indispo)
   'ADMI|JOHARA':'placée en réserve (rouge manuel)'
 };
 /* joueurs listés AUSSI dans une carte pool, tout en gardant leur équipe (clé NOM|PRENOM -> division) */
-const POOL_ADD={ 'MERIC|MARION':'PR', 'ADMI|JOHARA':'D2', 'SUEDE|SAMUEL':'PR', 'LENNON|CLEMENCE':'D1', 'LIZAMBARD|MILO':'D2', 'LEBOURG|VIRGINIE':'PR' };
+const POOL_ADD={};   // pools désormais portés par les vrais tags (bascule scénario V2 -> officiel, 27/08)
 const DISPO_TIP={g:'titulaire dispo (≥4 journées)',o:'remplaçant ou 3 journées ou moins',r:'ne veut pas jouer / blessé',y:'n\'a pas répondu'};
 // g=vert, o=orange, r=rouge, y=jaune
 function dispoStatus(p){
