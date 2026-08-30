@@ -1,0 +1,407 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>ACBB TT — Refonte sportive · Compos J2 (proto)</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap">
+  <style>
+    body { margin: 0; background: #0B0B0D; color: #F6F5F3; font-family: "Space Grotesk", system-ui, sans-serif; }
+    a { color: #F26A1B; } a:hover { color: #FF8A45; }
+  </style>
+
+</head><body style="margin:0;background:#0B0B0D">
+<div style="position: sticky; top: 0; z-index: 999; background: #F26A1B; color: #0B0B0D; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 800; text-align: center; padding: 6px 10px; letter-spacing: 0.4px">🧪 PROTOTYPE REFONTE SPORTIVE — données fictives · rien n'est enregistré · <a href="../index.html" style="color: #0B0B0D">proto public</a> · <a href="../../sportive/index.html" style="color: #0B0B0D">vraie sportive</a></div>
+<div style="display: flex; gap: 7px; padding: 12px 16px 0; max-width: 1440px; margin: 0 auto; flex-wrap: wrap"><a href="index.html" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 8px 13px; border-radius: 99px; background: #F26A1B; color: #0B0B0D; text-decoration: none">📅 Vue journée</a><a href="equipe.html" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 8px 13px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF; text-decoration: none">🧩 Fiche compo M6</a><a href="whatsapp.html" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 8px 13px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF; text-decoration: none">📸 Carte WhatsApp</a><a href="brulage.html" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 8px 13px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF; text-decoration: none">🔥 Registre brûlage</a></div>
+
+<div style="width: 100%; max-width: 1440px; margin: 0 auto; min-height: 1150px; background: #0B0B0D; display: flex; flex-direction: column">
+
+  <!-- header -->
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(11,11,13,0.9)">
+    <div style="display: flex; align-items: center; gap: 9px">
+      <div style="width: 34px; height: 34px; border-radius: 8px; background: #fff; border: 1px solid rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center; font-family: 'Saira Condensed', sans-serif; font-style: italic; font-weight: 800; color: #0B0B0D; font-size: 13px">AC</div>
+      <div>
+        <div style="font-size: 12px; font-weight: 700">ACBB TT</div>
+        <div style="font-size: 8.5px; color: rgba(246,245,243,0.6); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.3px">Espace sportive</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 3px">
+      <div style="padding: 7px 11px; border-radius: 99px; font-size: 11px; font-weight: 600; color: #D4D3CF">Accueil</div>
+      <div style="padding: 7px 11px; border-radius: 99px; font-size: 11px; font-weight: 600; color: #D4D3CF">Joueurs</div>
+      <div style="padding: 7px 11px; border-radius: 99px; font-size: 11px; font-weight: 600; color: #D4D3CF">Ch. Équipe 25/26</div>
+      <div style="padding: 7px 11px; border-radius: 99px; font-size: 11px; font-weight: 600; background: #F26A1B; color: #fff">Sportive</div>
+    </div>
+  </div>
+
+  <!-- subnav -->
+  <div style="display: flex; gap: 7px; padding: 14px 20px 0">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 9px 14px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF">🎯 Scoring &amp; compos</div>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 9px 14px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF">🏆 Poules 26/27</div>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 9px 14px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF">📊 Suivi des dispos</div>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 9px 14px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF">📋 Contraintes</div>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 9px 14px; border-radius: 99px; background: #F26A1B; border: 1px solid #F26A1B; color: #0B0B0D">📅 Compos journée</div>
+  </div>
+
+  <!-- hero + sélecteur de journée -->
+  <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 20px 20px 6px">
+    <div>
+      <div style="display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #F26A1B">
+        <span style="width: 5px; height: 5px; border-radius: 50%; background: #F26A1B"></span>
+        Espace sportive · Phase 1 · 2026/2027
+      </div>
+      <div style="font-family: 'Saira Condensed', sans-serif; font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 52px; line-height: 1; margin-top: 8px; letter-spacing: 0.5px">Compos <span style="color: #F26A1B">J2.</span></div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: rgba(246,245,243,0.6); margin-top: 6px">Vendredi 02 &amp; samedi 03 octobre 2026 · 6 équipes messieurs · clôture des compos jeudi 20h</div>
+    </div>
+    <!-- pills journées -->
+    <div style="display: flex; gap: 6px; padding-bottom: 8px">
+      <div style="text-align: center; padding: 8px 13px; border-radius: 12px; background: #141416; border: 1px solid rgba(61,214,140,0.45)">
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 13px; color: #86EFAC">J1 ✓</div>
+        <div style="font-size: 9px; color: rgba(246,245,243,0.48); font-family: 'JetBrains Mono', monospace">18/09</div>
+      </div>
+      <div style="text-align: center; padding: 8px 13px; border-radius: 12px; background: rgba(242,106,27,0.16); border: 1px solid #F26A1B">
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 13px; color: #F26A1B">J2</div>
+        <div style="font-size: 9px; color: #F26A1B; font-family: 'JetBrains Mono', monospace">02/10</div>
+      </div>
+      <div style="text-align: center; padding: 8px 13px; border-radius: 12px; background: #141416; border: 1px solid rgba(255,255,255,0.16)">
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 13px; color: #D4D3CF">J3</div>
+        <div style="font-size: 9px; color: rgba(246,245,243,0.48); font-family: 'JetBrains Mono', monospace">16/10</div>
+      </div>
+      <div style="text-align: center; padding: 8px 13px; border-radius: 12px; background: #141416; border: 1px solid rgba(255,255,255,0.16)">
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 13px; color: #D4D3CF">J4</div>
+        <div style="font-size: 9px; color: rgba(246,245,243,0.48); font-family: 'JetBrains Mono', monospace">06/11</div>
+      </div>
+      <div style="text-align: center; padding: 8px 13px; border-radius: 12px; background: #141416; border: 1px solid rgba(255,255,255,0.16)">
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 13px; color: #D4D3CF">J5</div>
+        <div style="font-size: 9px; color: rgba(246,245,243,0.48); font-family: 'JetBrains Mono', monospace">20/11</div>
+      </div>
+      <div style="text-align: center; padding: 8px 13px; border-radius: 12px; background: #141416; border: 1px solid rgba(255,255,255,0.16)">
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 13px; color: #D4D3CF">J6</div>
+        <div style="font-size: 9px; color: rgba(246,245,243,0.48); font-family: 'JetBrains Mono', monospace">04/12</div>
+      </div>
+      <div style="text-align: center; padding: 8px 13px; border-radius: 12px; background: #141416; border: 1px solid rgba(255,255,255,0.16)">
+        <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 13px; color: #D4D3CF">J7</div>
+        <div style="font-size: 9px; color: rgba(246,245,243,0.48); font-family: 'JetBrains Mono', monospace">11/12</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- barre d'état -->
+  <div style="display: flex; align-items: center; gap: 10px; padding: 10px 20px 16px">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 99px; background: rgba(61,214,140,0.13); border: 1px solid rgba(61,214,140,0.4); color: #86EFAC">2 envoyées</div>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 99px; background: rgba(250,204,21,0.1); border: 1px solid rgba(250,204,21,0.4); color: #FACC15">1 validée</div>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 99px; background: #1E1E22; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF">3 brouillons</div>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 99px; background: rgba(242,99,86,0.13); border: 1px solid rgba(242,99,86,0.45); color: #FCA5A5">⚠ 1 alerte règlement</div>
+    <div style="flex-grow: 1"></div>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 800; padding: 9px 16px; border-radius: 99px; background: #1E1E22; border: 1px solid rgba(255,255,255,0.16); color: #F6F5F3">📸 Exporter les 6 compos</div>
+  </div>
+
+  <!-- corps : cartes équipes + rail remplaçants -->
+  <div style="display: flex; gap: 16px; padding: 0 20px 24px; align-items: flex-start">
+
+    <!-- colonne équipes -->
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; flex-grow: 1">
+
+      <!-- M6 : la carte de référence -->
+      <div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 15px 16px; display: flex; flex-direction: column; gap: 11px">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; color: hsl(328,75%,72%)">M6</div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; padding: 2px 9px; border-radius: 99px; color: #60A5FA; border: 1px solid rgba(96,165,250,0.5); background: rgba(96,165,250,0.12)">PR</div>
+          <div style="flex-grow: 1"></div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: rgba(250,204,21,0.12); border: 1px solid rgba(250,204,21,0.45); color: #FACC15">VALIDÉE</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 8px 11px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14l-1.5-4.5a2 2 0 0 0-1.9-1.5H8.4a2 2 0 0 0-1.9 1.5L5 17z"></path><circle cx="7.5" cy="17.5" r="1.5"></circle><circle cx="16.5" cy="17.5" r="1.5"></circle></svg>
+          <div style="font-size: 12px; font-weight: 600">RUEIL ATHLETIC 6 <span style="color: rgba(246,245,243,0.48); font-weight: 400">· Extérieur · ven. 02/10 20h15</span></div>
+          <div style="flex-grow: 1"></div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #FCA5A5" title="moyenne adverse estimée">≈1307</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">G. Batot</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: rgba(246,245,243,0.48)">S</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1314</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">R. Aubert</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: rgba(246,245,243,0.48)">S</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1291</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">S. Chauvel</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: rgba(96,165,250,0.16); border: 1px solid rgba(96,165,250,0.4); color: #60A5FA">R</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1255</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">U. Limoges</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: rgba(246,245,243,0.48)">S</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1165</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(246,245,243,0.6)">moy <b style="color: #F6F5F3">1256</b></div>
+          <div style="flex-grow: 1; height: 7px; border-radius: 99px; background: #26262B; overflow: hidden; display: flex">
+            <div style="width: 38%; background: linear-gradient(90deg, #F26356, #FACC15); border-radius: 99px"></div>
+          </div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 800; color: #FACC15">38%</div>
+        </div>
+        <div style="font-size: 10.5px; color: rgba(246,245,243,0.48); font-family: 'JetBrains Mono', monospace">✓ règles OK · simulation basée sur la compo réelle de Rueil en J1</div>
+      </div>
+
+      <!-- M7 -->
+      <div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 15px 16px; display: flex; flex-direction: column; gap: 11px">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; color: hsl(105,75%,72%)">M7</div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; padding: 2px 9px; border-radius: 99px; color: #60A5FA; border: 1px solid rgba(96,165,250,0.5); background: rgba(96,165,250,0.12)">PR</div>
+          <div style="flex-grow: 1"></div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: rgba(61,214,140,0.12); border: 1px solid rgba(61,214,140,0.45); color: #86EFAC">ENVOYÉE ✓</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 8px 11px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#86EFAC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"></path><path d="M5 10v9h14v-9"></path></svg>
+          <div style="font-size: 12px; font-weight: 600">USM MALAKOFF 4 <span style="color: rgba(246,245,243,0.48); font-weight: 400">· Domicile · ven. 02/10 20h30</span></div>
+          <div style="flex-grow: 1"></div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #86EFAC">≈987</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">J. Boiteau</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: rgba(96,165,250,0.16); border: 1px solid rgba(96,165,250,0.4); color: #60A5FA">R</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1167</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">A. Batti</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: rgba(96,165,250,0.16); border: 1px solid rgba(96,165,250,0.4); color: #60A5FA">J1</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1103</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">H. Feret</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: rgba(96,165,250,0.16); border: 1px solid rgba(96,165,250,0.4); color: #60A5FA">C2</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1102</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #FACC15"></span>
+            <span style="font-size: 13px; font-weight: 600">J. Morel</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: rgba(246,245,243,0.48)">S</span>
+            <span style="font-size: 10px; color: #FACC15">à confirmer</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1282</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(246,245,243,0.6)">moy <b style="color: #F6F5F3">1164</b></div>
+          <div style="flex-grow: 1; height: 7px; border-radius: 99px; background: #26262B; overflow: hidden; display: flex">
+            <div style="width: 74%; background: linear-gradient(90deg, #FACC15, #3DD68C); border-radius: 99px"></div>
+          </div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 800; color: #86EFAC">74%</div>
+        </div>
+        <div style="font-size: 10.5px; color: rgba(246,245,243,0.48); font-family: 'JetBrains Mono', monospace">✓ règles OK · envoyée au référent le 29/09 à 18h42</div>
+      </div>
+
+      <!-- M8 : carte avec ALERTE règlement -->
+      <div style="background: #141416; border: 1px solid rgba(242,99,86,0.55); border-radius: 16px; padding: 15px 16px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 0 0 3px rgba(242,99,86,0.08)">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; color: hsl(243,75%,72%)">M8</div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; padding: 2px 9px; border-radius: 99px; color: #A78BFA; border: 1px solid rgba(167,139,250,0.5); background: rgba(167,139,250,0.12)">D1</div>
+          <div style="flex-grow: 1"></div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: #1E1E22; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF">BROUILLON</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 8px 11px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#86EFAC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"></path><path d="M5 10v9h14v-9"></path></svg>
+          <div style="font-size: 12px; font-weight: 600">COURBEVOIE STT 11 <span style="color: rgba(246,245,243,0.48); font-weight: 400">· Domicile · sam. 03/10 14h</span></div>
+          <div style="flex-grow: 1"></div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #86EFAC">≈1042</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">D. Intins</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1637</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: rgba(242,99,86,0.1); border: 1px solid rgba(242,99,86,0.5); border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">R. Thauvin</span>
+            <span style="font-size: 10px; color: #FCA5A5; font-weight: 600">↓ J1 en M6</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1319</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: rgba(242,99,86,0.1); border: 1px solid rgba(242,99,86,0.5); border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">A. de Cosnac</span>
+            <span style="font-size: 10px; color: #FCA5A5; font-weight: 600">↓ J1 en M7</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1198</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">C. Perrot</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1042</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 8px; background: rgba(242,99,86,0.12); border: 1px solid rgba(242,99,86,0.5); border-radius: 10px; padding: 9px 12px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px"><path d="M12 3l10 18H2L12 3z"></path><path d="M12 10v5"></path><circle cx="12" cy="18" r="0.5"></circle></svg>
+          <div style="font-size: 11.5px; line-height: 1.45; color: #FCA5A5"><b>Règle de la 2ᵉ journée (II.112.1)</b> — 2 joueurs ont disputé la J1 dans une équipe supérieure (max&nbsp;1 en formule 4 joueurs). Retirer Thauvin <i>ou</i> de Cosnac.</div>
+        </div>
+      </div>
+
+      <!-- M9 -->
+      <div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 15px 16px; display: flex; flex-direction: column; gap: 11px">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <div style="font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 17px; color: hsl(20,75%,72%)">M9</div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; padding: 2px 9px; border-radius: 99px; color: #A78BFA; border: 1px solid rgba(167,139,250,0.5); background: rgba(167,139,250,0.12)">D1</div>
+          <div style="flex-grow: 1"></div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: #1E1E22; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF">BROUILLON</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 8px 11px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14l-1.5-4.5a2 2 0 0 0-1.9-1.5H8.4a2 2 0 0 0-1.9 1.5L5 17z"></path><circle cx="7.5" cy="17.5" r="1.5"></circle><circle cx="16.5" cy="17.5" r="1.5"></circle></svg>
+          <div style="font-size: 12px; font-weight: 600">SM MONTROUGE 2 <span style="color: rgba(246,245,243,0.48); font-weight: 400">· Extérieur · sam. 03/10 14h</span></div>
+          <div style="flex-grow: 1"></div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D4D3CF">≈919</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">O. Gautier</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: rgba(96,165,250,0.16); border: 1px solid rgba(96,165,250,0.4); color: #60A5FA">R</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1080</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+            <span style="font-size: 13px; font-weight: 600">E. Cozien</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #D4D3CF">1057</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 11px">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #F87171"></span>
+            <span style="font-size: 13px; font-weight: 600; color: rgba(246,245,243,0.55); text-decoration: line-through">G. Peigné</span>
+            <span style="font-size: 10px; color: #FCA5A5">indispo J2</span>
+            <span style="flex-grow: 1"></span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: rgba(246,245,243,0.4)">1048</span>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; background: transparent; border: 1.5px dashed rgba(242,106,27,0.5); border-radius: 9px; padding: 8px 11px">
+            <span style="font-size: 11.5px; color: #F26A1B; font-weight: 600">＋ Glisser un joueur ou un remplaçant ici</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(246,245,243,0.6)">moy <b style="color: #F6F5F3">—</b></div>
+          <div style="flex-grow: 1; height: 7px; border-radius: 99px; background: #26262B"></div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 800; color: rgba(246,245,243,0.4)">3/4</div>
+        </div>
+        <div style="font-size: 10.5px; color: #FACC15; font-family: 'JetBrains Mono', monospace">⚠ compo incomplète — 1 place à pourvoir</div>
+      </div>
+    </div>
+
+    <!-- rail remplaçants -->
+    <div style="width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px">
+      <div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 14px 15px; display: flex; flex-direction: column; gap: 9px">
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase">
+          <span style="width: 5px; height: 5px; border-radius: 50%; background: #F26A1B"></span>
+          Remplaçants · dispo J2
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; color: #60A5FA; letter-spacing: 0.5px">POOL PR</div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 10px; border: 1px solid rgba(61,214,140,0.35)">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+          <span style="font-size: 12.5px; font-weight: 600">N. Lescaudron</span>
+          <span style="flex-grow: 1"></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D4D3CF">1150</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 10px; opacity: 0.55">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #FACC15"></span>
+          <span style="font-size: 12.5px; font-weight: 600">J. Morel</span>
+          <span style="font-size: 9.5px; color: #FACC15">pas répondu</span>
+          <span style="flex-grow: 1"></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D4D3CF">1282</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 10px; opacity: 0.4">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #F87171"></span>
+          <span style="font-size: 12.5px; font-weight: 600">M. Meric</span>
+          <span style="font-size: 9.5px; color: #FCA5A5">indispo</span>
+          <span style="flex-grow: 1"></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D4D3CF">1209</span>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; color: #A78BFA; letter-spacing: 0.5px; margin-top: 4px">POOL D1</div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 10px; border: 1px solid rgba(61,214,140,0.35)">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+          <span style="font-size: 12.5px; font-weight: 600">V. Delory</span>
+          <span style="flex-grow: 1"></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D4D3CF">1003</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 10px; border: 1px solid rgba(61,214,140,0.35)">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #4ADE80"></span>
+          <span style="font-size: 12.5px; font-weight: 600">C. Lennon</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: rgba(96,165,250,0.16); border: 1px solid rgba(96,165,250,0.4); color: #60A5FA">J1</span>
+          <span style="flex-grow: 1"></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D4D3CF">952</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #1E1E22; border-radius: 9px; padding: 7px 10px; opacity: 0.55">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #FACC15"></span>
+          <span style="font-size: 12.5px; font-weight: 600">S. Liorzou</span>
+          <span style="font-size: 9.5px; color: #FACC15">pas répondu</span>
+          <span style="flex-grow: 1"></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #D4D3CF">1200</span>
+        </div>
+        <div style="font-size: 10px; color: rgba(246,245,243,0.48); line-height: 1.5; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 8px">Glisse un remplaçant vers une carte d'équipe. Le vérificateur re-contrôle brûlage et règles à chaque dépôt.</div>
+      </div>
+
+      <div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 14px 15px; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase">
+          <span style="width: 5px; height: 5px; border-radius: 50%; background: #F26A1B"></span>
+          Vérificateur · J2
+        </div>
+        <div style="display: flex; align-items: center; gap: 7px; font-size: 11.5px"><span style="color: #86EFAC; font-family: 'JetBrains Mono', monospace">✓</span> 1 rencontre max / joueur</div>
+        <div style="display: flex; align-items: center; gap: 7px; font-size: 11.5px"><span style="color: #86EFAC; font-family: 'JetBrains Mono', monospace">✓</span> Brûlage (2 matchs → éq. sup.)</div>
+        <div style="display: flex; align-items: center; gap: 7px; font-size: 11.5px"><span style="color: #FCA5A5; font-family: 'JetBrains Mono', monospace">✗</span> <span style="color: #FCA5A5">Règle J2 — M8 (2 descentes)</span></div>
+        <div style="display: flex; align-items: center; gap: 7px; font-size: 11.5px"><span style="color: #86EFAC; font-family: 'JetBrains Mono', monospace">✓</span> Fratries Allegre ensemble</div>
+        <div style="display: flex; align-items: center; gap: 7px; font-size: 11.5px"><span style="color: #86EFAC; font-family: 'JetBrains Mono', monospace">✓</span> Mandelmilech ≠ Allegre</div>
+        <div style="display: flex; align-items: center; gap: 7px; font-size: 11.5px"><span style="color: #86EFAC; font-family: 'JetBrains Mono', monospace">✓</span> Emiliano à domicile</div>
+        <div style="display: flex; align-items: center; gap: 7px; font-size: 11.5px"><span style="color: #86EFAC; font-family: 'JetBrains Mono', monospace">✓</span> Étrangers ≤ 1 / équipe</div>
+        <div style="display: flex; align-items: center; gap: 7px; font-size: 11.5px"><span style="color: rgba(246,245,243,0.48); font-family: 'JetBrains Mono', monospace">–</span> <span style="color: rgba(246,245,243,0.48)">N1 ≥ 1800 pts (M2 : hors J2 92)</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="gate" style="display:none; position: fixed; inset: 0; z-index: 1000; background: #0B0B0D; align-items: center; justify-content: center; padding: 24px">
+  <div style="max-width: 340px; width: 100%; text-align: center; font-family: 'Space Grotesk', system-ui, sans-serif; color: #F6F5F3">
+    <h2 style="font-family: 'Saira Condensed', sans-serif; font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 34px; margin: 0 0 6px">Proto <span style="color: #F26A1B">Sportive</span></h2>
+    <p style="color: rgba(246,245,243,0.6); font-size: 13px; margin: 0 0 18px">Accès réservé — même mot de passe que l'espace sportive.</p>
+    <input id="gpw" type="password" placeholder="Mot de passe" autocomplete="off" style="width: 100%; background: #26262B; border: 1px solid rgba(255,255,255,0.16); border-radius: 99px; color: #F6F5F3; font-size: 15px; font-family: inherit; padding: 12px 18px; outline: none; text-align: center; box-sizing: border-box">
+    <button id="gbtn" type="button" style="margin-top: 12px; width: 100%; background: #F26A1B; border: none; border-radius: 99px; color: #0B0B0D; font-size: 14px; font-weight: 700; font-family: inherit; padding: 12px; cursor: pointer">Entrer</button>
+    <p id="gerr" style="color: #F26356; font-size: 12px; margin-top: 10px; height: 14px"></p>
+  </div>
+</div>
+<script>
+(function(){
+  var g=document.getElementById('gate');
+  function unlocked(){ try{return sessionStorage.getItem('acbb_sportive')==='1';}catch(e){return false;} }
+  function unlock(){ g.style.display='none'; try{sessionStorage.setItem('acbb_sportive','1');}catch(e){} }
+  if(!unlocked()){
+    g.style.display='flex';
+    document.getElementById('gbtn').addEventListener('click',tryPw);
+    document.getElementById('gpw').addEventListener('keydown',function(e){if(e.key==='Enter')tryPw();});
+  }
+  var GH='359d888f0c14b4835cec5d55404ab307115c4841f77e226ccd592bb943ccdabb';
+  async function tryPw(){
+    var err=document.getElementById('gerr'), inp=document.getElementById('gpw');
+    var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(inp.value.trim()));
+    var h=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+    if(h===GH){ unlock(); return; }
+    err.textContent='Mot de passe incorrect';
+  }
+})();
+</script>
+</body></html>

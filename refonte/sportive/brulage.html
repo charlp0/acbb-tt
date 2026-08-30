@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>ACBB TT — Refonte sportive · Registre brûlage (proto)</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap">
+  <style>
+    body { margin: 0; background: #0B0B0D; color: #F6F5F3; font-family: "Space Grotesk", system-ui, sans-serif; }
+    a { color: #F26A1B; } a:hover { color: #FF8A45; }
+    table { border-collapse: collapse; width: 100%; }
+    th { background: #1E1E22; font-family: "JetBrains Mono", monospace; font-size: 9.5px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(246,245,243,0.6); padding: 10px 10px; text-align: center; }
+    th.g { text-align: left; padding-left: 14px; }
+    td { padding: 9px 10px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); font-family: "JetBrains Mono", monospace; font-size: 11.5px; }
+    td.g { text-align: left; padding-left: 14px; font-family: "Space Grotesk", system-ui, sans-serif; font-size: 12.5px; font-weight: 600; }
+  </style>
+
+</head><body style="margin:0;background:#0B0B0D">
+<div style="position: sticky; top: 0; z-index: 999; background: #F26A1B; color: #0B0B0D; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 800; text-align: center; padding: 6px 10px; letter-spacing: 0.4px">🧪 PROTOTYPE REFONTE SPORTIVE — données fictives · rien n'est enregistré · <a href="../index.html" style="color: #0B0B0D">proto public</a> · <a href="../../sportive/index.html" style="color: #0B0B0D">vraie sportive</a></div>
+<div style="display: flex; gap: 7px; padding: 12px 16px 0; max-width: 1440px; margin: 0 auto; flex-wrap: wrap"><a href="index.html" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 8px 13px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF; text-decoration: none">📅 Vue journée</a><a href="equipe.html" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 8px 13px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF; text-decoration: none">🧩 Fiche compo M6</a><a href="whatsapp.html" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 8px 13px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF; text-decoration: none">📸 Carte WhatsApp</a><a href="brulage.html" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 8px 13px; border-radius: 99px; background: #F26A1B; color: #0B0B0D; text-decoration: none">🔥 Registre brûlage</a></div>
+
+<div style="width: 100%; max-width: 1180px; margin: 0 auto; min-height: 840px; background: #0B0B0D; padding: 18px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+
+  <div style="display: flex; align-items: flex-end; gap: 16px">
+    <div>
+      <div style="display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #F26A1B">
+        <span style="width: 5px; height: 5px; border-radius: 50%; background: #F26A1B"></span>
+        Espace sportive · registre réglementaire
+      </div>
+      <div style="font-family: 'Saira Condensed', sans-serif; font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 40px; line-height: 1; margin-top: 6px">Registre <span style="color: #F26A1B">brûlage.</span></div>
+    </div>
+    <div style="flex-grow: 1"></div>
+    <div style="display: flex; gap: 6px; padding-bottom: 4px">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; padding: 7px 13px; border-radius: 99px; background: #F26A1B; color: #0B0B0D">Tous</div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; padding: 7px 13px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF">PR</div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; padding: 7px 13px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF">D1</div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; padding: 7px 13px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF">D2</div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; padding: 7px 13px; border-radius: 99px; background: #141416; border: 1px solid rgba(255,255,255,0.16); color: #D4D3CF">⚠ à risque</div>
+    </div>
+  </div>
+
+  <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(246,245,243,0.6)">Participations lues automatiquement sur les feuilles FFTT après chaque journée · remise à zéro en fin de phase (II.112.1) · dernière synchro : sam. 03/10 23h10</div>
+
+  <div style="background: #141416; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden">
+    <table>
+      <thead>
+        <tr>
+          <th class="g">Joueur</th>
+          <th>Équipe</th>
+          <th>J1</th><th>J2</th><th>J3</th><th>J4</th><th>J5</th><th>J6</th><th>J7</th>
+          <th style="text-align: left; padding-left: 16px">Statut brûlage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="g">Ulrich Limoges</td>
+          <td style="color: hsl(105,75%,72%)">M7</td>
+          <td style="color: hsl(105,75%,72%)">M7</td>
+          <td style="color: hsl(328,75%,72%)">M6</td>
+          <td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="text-align: left; padding-left: 16px"><span style="font-size: 9.5px; font-weight: 800; padding: 3px 9px; border-radius: 99px; background: rgba(250,204,21,0.12); border: 1px solid rgba(250,204,21,0.45); color: #FACC15">1/2 en M7 · 1/2 en M6</span></td>
+        </tr>
+        <tr>
+          <td class="g">Sébastien Couchouron</td>
+          <td style="color: hsl(20,75%,72%)">M9</td>
+          <td style="color: hsl(20,75%,72%)">M9</td>
+          <td style="color: hsl(20,75%,72%)">M9</td>
+          <td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="text-align: left; padding-left: 16px"><span style="font-size: 9.5px; font-weight: 800; padding: 3px 9px; border-radius: 99px; background: rgba(242,99,86,0.13); border: 1px solid rgba(242,99,86,0.5); color: #FCA5A5">brûlé — plus de M10+</span></td>
+        </tr>
+        <tr>
+          <td class="g">Romane Thauvin</td>
+          <td style="color: hsl(243,75%,72%)">M8</td>
+          <td style="color: hsl(328,75%,72%)">M6</td>
+          <td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="text-align: left; padding-left: 16px"><span style="font-size: 9.5px; font-weight: 800; padding: 3px 9px; border-radius: 99px; background: rgba(250,204,21,0.12); border: 1px solid rgba(250,204,21,0.45); color: #FACC15">⚠ règle J2 si alignée en M8</span></td>
+        </tr>
+        <tr>
+          <td class="g">Olivier Gautier</td>
+          <td style="color: hsl(20,75%,72%)">M9</td>
+          <td style="color: hsl(20,75%,72%)">M9</td>
+          <td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="text-align: left; padding-left: 16px"><span style="font-size: 9.5px; font-weight: 800; padding: 3px 9px; border-radius: 99px; background: rgba(250,204,21,0.12); border: 1px solid rgba(250,204,21,0.45); color: #FACC15">1/2 en M9</span></td>
+        </tr>
+        <tr>
+          <td class="g">Virgile Delory <span style="font-size: 9px; color: #60A5FA; font-family: 'JetBrains Mono', monospace">POOL D1</span></td>
+          <td style="color: rgba(246,245,243,0.4)">pool</td>
+          <td style="color: hsl(157,75%,72%)">M10</td>
+          <td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="text-align: left; padding-left: 16px"><span style="font-size: 9.5px; font-weight: 800; padding: 3px 9px; border-radius: 99px; background: rgba(61,214,140,0.12); border: 1px solid rgba(61,214,140,0.45); color: #86EFAC">libre partout ≤ M10</span></td>
+        </tr>
+        <tr>
+          <td class="g">Charles Perrot</td>
+          <td style="color: hsl(243,75%,72%)">M8</td>
+          <td style="color: hsl(243,75%,72%)">M8</td>
+          <td style="color: rgba(246,245,243,0.4)">E<span style="font-size: 8px; color: rgba(246,245,243,0.35)">xempt</span></td>
+          <td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="text-align: left; padding-left: 16px"><span style="font-size: 9.5px; font-weight: 800; padding: 3px 9px; border-radius: 99px; background: rgba(242,99,86,0.13); border: 1px solid rgba(242,99,86,0.5); color: #FCA5A5">brûlé — plus de M9+</span></td>
+        </tr>
+        <tr>
+          <td class="g">Noémie Lescaudron <span style="font-size: 9px; color: #60A5FA; font-family: 'JetBrains Mono', monospace">POOL PR</span></td>
+          <td style="color: rgba(246,245,243,0.4)">pool</td>
+          <td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="color: hsl(328,75%,72%)">M6</td>
+          <td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="text-align: left; padding-left: 16px"><span style="font-size: 9.5px; font-weight: 800; padding: 3px 9px; border-radius: 99px; background: rgba(61,214,140,0.12); border: 1px solid rgba(61,214,140,0.45); color: #86EFAC">1/2 en M6 · brûlage F séparé</span></td>
+        </tr>
+        <tr>
+          <td class="g">Arthur Intins <span style="font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: rgba(96,165,250,0.16); border: 1px solid rgba(96,165,250,0.4); color: #60A5FA">C2</span></td>
+          <td style="color: hsl(243,75%,72%)">M8</td>
+          <td style="color: hsl(243,75%,72%)">M8</td>
+          <td style="color: hsl(243,75%,72%)">M8</td>
+          <td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td><td style="color: rgba(246,245,243,0.3)">·</td>
+          <td style="text-align: left; padding-left: 16px"><span style="font-size: 9.5px; font-weight: 800; padding: 3px 9px; border-radius: 99px; background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.45); color: #60A5FA">≥3 en M8 → qualifié si montée (II.112.4)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display: flex; gap: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #D4D3CF; flex-wrap: wrap">
+    <span><i style="display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: rgba(61,214,140,0.5); margin-right: 5px; vertical-align: -1px"></i>libre</span>
+    <span><i style="display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: rgba(250,204,21,0.55); margin-right: 5px; vertical-align: -1px"></i>1/2 — prochaine participation fige</span>
+    <span><i style="display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: rgba(242,99,86,0.55); margin-right: 5px; vertical-align: -1px"></i>brûlé pour les équipes de numéro supérieur</span>
+    <span><i style="display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: rgba(96,165,250,0.5); margin-right: 5px; vertical-align: -1px"></i>protection montée (II.112.4)</span>
+    <span style="color: rgba(246,245,243,0.4)">E = exempt/forfait : compte comme une participation (II.112.2)</span>
+  </div>
+</div>
+
+<div id="gate" style="display:none; position: fixed; inset: 0; z-index: 1000; background: #0B0B0D; align-items: center; justify-content: center; padding: 24px">
+  <div style="max-width: 340px; width: 100%; text-align: center; font-family: 'Space Grotesk', system-ui, sans-serif; color: #F6F5F3">
+    <h2 style="font-family: 'Saira Condensed', sans-serif; font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 34px; margin: 0 0 6px">Proto <span style="color: #F26A1B">Sportive</span></h2>
+    <p style="color: rgba(246,245,243,0.6); font-size: 13px; margin: 0 0 18px">Accès réservé — même mot de passe que l'espace sportive.</p>
+    <input id="gpw" type="password" placeholder="Mot de passe" autocomplete="off" style="width: 100%; background: #26262B; border: 1px solid rgba(255,255,255,0.16); border-radius: 99px; color: #F6F5F3; font-size: 15px; font-family: inherit; padding: 12px 18px; outline: none; text-align: center; box-sizing: border-box">
+    <button id="gbtn" type="button" style="margin-top: 12px; width: 100%; background: #F26A1B; border: none; border-radius: 99px; color: #0B0B0D; font-size: 14px; font-weight: 700; font-family: inherit; padding: 12px; cursor: pointer">Entrer</button>
+    <p id="gerr" style="color: #F26356; font-size: 12px; margin-top: 10px; height: 14px"></p>
+  </div>
+</div>
+<script>
+(function(){
+  var g=document.getElementById('gate');
+  function unlocked(){ try{return sessionStorage.getItem('acbb_sportive')==='1';}catch(e){return false;} }
+  function unlock(){ g.style.display='none'; try{sessionStorage.setItem('acbb_sportive','1');}catch(e){} }
+  if(!unlocked()){
+    g.style.display='flex';
+    document.getElementById('gbtn').addEventListener('click',tryPw);
+    document.getElementById('gpw').addEventListener('keydown',function(e){if(e.key==='Enter')tryPw();});
+  }
+  var GH='359d888f0c14b4835cec5d55404ab307115c4841f77e226ccd592bb943ccdabb';
+  async function tryPw(){
+    var err=document.getElementById('gerr'), inp=document.getElementById('gpw');
+    var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(inp.value.trim()));
+    var h=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+    if(h===GH){ unlock(); return; }
+    err.textContent='Mot de passe incorrect';
+  }
+})();
+</script>
+</body></html>
