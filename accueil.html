@@ -4,11 +4,16 @@
 <meta charset="UTF-8"><meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>ACBB TT — Accueil</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0B0B0D">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ACBB TT">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0B0B0D">
 <style>
   :root{
     --bg:#0B0B0D;
@@ -199,7 +204,6 @@
   .d-status{margin-top:10px;font-size:12px;font-family:"JetBrains Mono",monospace;color:rgba(232,232,234,0.6);min-height:16px}
 </style>
 <link rel="icon" type="image/png" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">
 <meta name="description" content="Récap perso 2025/26, classements officiels 2026/27 et déclaration des disponibilités pour la phase 1 — l’appli des joueurs du club ACBB Tennis de Table.">
 <meta property="og:title" content="ACBB Tennis de Table — L’appli du championnat par équipes">
 <meta property="og:description" content="Récap perso 2025/26, classements officiels 2026/27 et déclaration des disponibilités pour la phase 1 — l’appli des joueurs du club ACBB Tennis de Table.">
@@ -259,6 +263,53 @@
     })();
   </script>
 </div>
+
+<!-- Installer comme une app (masqué si déjà installé ou sur grand écran) -->
+<style>
+  #pwaCard{display:none;margin:0 16px 14px;max-width:1440px;background:linear-gradient(120deg,rgba(242,106,27,0.16),var(--paper,#141416) 70%);border:1px solid rgba(242,106,27,0.45);border-radius:16px;padding:13px 15px;align-items:center;gap:13px;flex-wrap:wrap}
+  #pwaCard.show{display:flex}
+  @media(min-width:900px){#pwaCard.show{display:none}}
+  #pwaCard img{width:46px;height:46px;border-radius:12px;background:#fff;border:1px solid rgba(255,255,255,0.16);flex-shrink:0}
+  #pwaBtn{font-family:'Saira Condensed',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:.5px;font-size:14px;padding:10px 18px;border-radius:99px;background:#F26A1B;color:#0B0B0D;border:none;cursor:pointer;white-space:nowrap}
+  #pwaHow{display:none;flex-basis:100%;background:var(--panel,#1E1E22);border-radius:12px;padding:11px 13px;font-size:12.5px;line-height:1.6;color:var(--ink-2,#D4D3CF)}
+  #pwaHow.show{display:block}
+  #pwaHow b{color:#F6F5F3}
+  .pwa-k{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 7px;border-radius:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16)}
+</style>
+<div id="pwaCard">
+  <img src="icon-192.png" alt="">
+  <div style="flex:1;min-width:200px">
+    <div style="font-family:'Saira Condensed',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:17px;line-height:1">Ajoute <span style="color:#F26A1B">ACBB TT</span> sur ton téléphone</div>
+    <div style="font-size:11.5px;color:var(--dim);margin-top:3px">Une icône sur ton écran d'accueil, comme une app : résultats, dispos, fiches — en un tap.</div>
+  </div>
+  <button id="pwaBtn" type="button">Ajouter à l'écran d'accueil</button>
+  <div id="pwaHow"></div>
+</div>
+<script>
+(function(){
+  var card=document.getElementById('pwaCard'), btn=document.getElementById('pwaBtn'), how=document.getElementById('pwaHow');
+  var standalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+  if(standalone)return;                                    // déjà installé : rien à afficher
+  var ua=navigator.userAgent, isIOS=/iPhone|iPad|iPod/i.test(ua)&&!window.MSStream, isAndroid=/Android/i.test(ua);
+  var deferred=null;
+  window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferred=e; card.classList.add('show'); });
+  if(isIOS||isAndroid)card.classList.add('show');
+  function iosHow(){
+    var safari=/Safari/i.test(ua)&&!/CriOS|FxiOS|EdgiOS/i.test(ua);
+    return '<b>Sur iPhone :</b> '+(safari?'':'ouvre cette page dans <b>Safari</b>, puis ')+'touche le bouton <b>Partager</b> <span class="pwa-k">&#x2191;</span> en bas de l\'écran, fais défiler et choisis <b>« Sur l\'écran d\'accueil »</b>, puis <b>Ajouter</b>. L\'icône ACBB apparaît avec tes apps.';
+  }
+  function androidHow(){
+    return '<b>Sur Android :</b> ouvre le menu <span class="pwa-k">&#8942;</span> de Chrome en haut à droite, puis <b>« Ajouter à l\'écran d\'accueil »</b> (ou <b>« Installer l\'application »</b>), et confirme.';
+  }
+  btn.addEventListener('click',function(){
+    if(deferred){ deferred.prompt(); deferred.userChoice.then(function(r){ if(r&&r.outcome==='accepted'){ card.classList.remove('show'); } deferred=null; }); return; }
+    how.innerHTML=isIOS?iosHow():(isAndroid?androidHow():'<b>Sur mobile :</b> ouvre ce site dans Safari (iPhone) ou Chrome (Android) puis utilise « Ajouter à l\'écran d\'accueil ».');
+    how.classList.toggle('show');
+  });
+  window.addEventListener('appinstalled',function(){ card.classList.remove('show'); });
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
+})();
+</script>
 
 <div class="cards2">
 <a href="#dispoSec" class="dispo-cta" id="ctaDispo">
