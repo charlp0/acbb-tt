@@ -3,12 +3,31 @@
   "short_name": "ACBB TT",
   "description": "Le site du club ACBB Tennis de Table : résultats, fiches joueurs, championnat par équipes.",
   "start_url": "accueil.html",
-  "scope": ".",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0B0B0D",
   "theme_color": "#0B0B0D",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
-  ]
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "id": "/accueil.html",
+  "lang": "fr",
+  "orientation": "portrait"
 }
