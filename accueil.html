@@ -296,7 +296,7 @@
   if(isIOS||isAndroid)card.classList.add('show');
   function iosHow(){
     var safari=/Safari/i.test(ua)&&!/CriOS|FxiOS|EdgiOS/i.test(ua);
-    return '<b>Sur iPhone :</b> '+(safari?'':'ouvre cette page dans <b>Safari</b>, puis ')+'touche le bouton <b>Partager</b> <span class="pwa-k">&#x2191;</span> en bas de l\'écran, fais défiler et choisis <b>« Sur l\'écran d\'accueil »</b>, puis <b>Ajouter</b>. L\'icône ACBB apparaît avec tes apps.';
+    return '<b>Sur iPhone :</b> '+(safari?'':'ouvre cette page dans <b>Safari</b>, puis ')+'touche le bouton <b>Partager</b> <span class="pwa-k">&#x2191;</span> dans la barre d\'adresse Safari (en bas de l\'écran, ou en haut selon ton réglage), fais défiler et choisis <b>« Sur l\'écran d\'accueil »</b>, puis <b>Ajouter</b>. L\'icône ACBB apparaît avec tes apps.';
   }
   function androidHow(){
     return '<b>Sur Android :</b> ouvre le menu <span class="pwa-k">&#8942;</span> de Chrome en haut à droite, puis <b>« Ajouter à l\'écran d\'accueil »</b> (ou <b>« Installer l\'application »</b>), et confirme.';
