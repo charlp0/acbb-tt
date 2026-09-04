@@ -431,6 +431,8 @@
   <div class="teams-mini" id="teamsMini"></div>
   <div class="section-h">Pools de remplacement par division</div>
   <div class="teams-mini" id="poolsMini"></div>
+  <div class="section-h" style="margin-top:22px">Équipes féminines 2026/2027 — compos Laura (hors suivi des dispos)</div>
+  <div class="teams-mini" id="femMini"></div>
   <div class="section-h">Classement scoring</div>
   <div class="sc-wrap"><table class="sc"><thead><tr><th>#</th><th>Joueur</th><th>Compo&nbsp;26/27</th><th>Officiel&nbsp;26/27</th><th>Ch.&nbsp;équipe&nbsp;M&nbsp;Ph2</th><th>Tendance 4&nbsp;phases</th><th>Score</th><th>Traj.</th></tr></thead><tbody id="tb"></tbody></table></div>
   <p style="font-size:11px;color:var(--dim);font-style:italic;margin-top:12px">Base = classement officiel 2026/2027 (publié début juillet). Tendance = pente de régression sur les 4 dernières phases du classement officiel (survole pour voir le détail). Trajectoire : ↗ progression (≥+30), ↘ baisse (≤−30). Données API FFTT. Page non listée (accès direct uniquement).</p>
@@ -597,6 +599,37 @@ function renderPools(){
     return '<div class="tm-card" data-pool="'+esc(dv)+'">'
       +'<div class="tm-top"><span class="tm-name" style="color:rgb('+c+')">Pool '+esc(dv)+'</span>'
       +'<span class="tm-div" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)">'+list.length+' remp.</span></div>'
+      +body+'</div>';
+  }).join('');
+  renderFem();
+}
+/* Équipes féminines (compos Laura Pfefer, mail du 03/09/2026) — bloc indépendant : pas de tags, pas de dispos */
+const FEM_COMPO={
+  F1:{div:'N2D',label:'Nationale 2 Dames',obj:'maintien',players:['7847253','9253701','7523006',{nom:'NEVES',pre:'Louna',ext:'Marly'}]},
+  F2:{div:'R1D',label:'Régionale 1 Dames',obj:'montée',players:['9247334','9259716','4110787','6950140','7510996']},
+  F3:{div:'PRD',label:'Pré-Régionale Dames',obj:'montée',players:['9256241','7529318','9257788','9267050','4930753','6110396','9261305','9266626','9236275','7520384']}
+};
+function renderFem(){
+  const el=document.getElementById('femMini'); if(!el)return;
+  const byLic={}; D.forEach(p=>{ if(p.lic) byLic[String(p.lic)]=p; });
+  const c='244,114,182';
+  el.innerHTML=Object.keys(FEM_COMPO).map(k=>{
+    const f=FEM_COMPO[k];
+    const rows=f.players.map(x=>typeof x==='string'?(byLic[x]||{nom:'?',pre:'',men:null,_miss:x}):Object.assign({men:null},x));
+    rows.sort((a,b)=>(b.men||0)-(a.men||0));
+    const known=rows.filter(p=>p.men!=null);
+    const avg=known.length?Math.round(known.reduce((a,p)=>a+p.men,0)/known.length):null;
+    const t4=known.slice(0,4), top4=t4.length?Math.round(t4.reduce((a,p)=>a+p.men,0)/t4.length):null;
+    const body='<div class="tm-players">'+rows.map(p=>
+      '<div class="tm-p"><span class="nmn">'+(p.lic?ageBadge(p):'')+esc((p.pre?p.pre[0]+'. ':'')+p.nom)
+      +(p.ext?' <span class="tm-cnt" title="joueuse de l\'entente ('+esc(p.ext)+')">'+esc(p.ext)+'</span>':'')
+      +'</span><span class="pt">'+(p.men!=null?p.men:'—')+'</span></div>').join('')+'</div>';
+    return '<div class="tm-card" data-fem="'+k+'">'
+      +'<div class="tm-top"><span class="tm-name" style="color:hsl('+teamHue(k)+',75%,72%)">'+k+'<span class="tm-cnt" title="nombre de joueuses">'+rows.length+' j</span></span>'
+      +'<span class="tm-div" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)" title="'+esc(f.label)+'">'+f.div+'</span></div>'
+      +'<div class="tm-avg">'+(avg!=null?avg+'<span class="u">moy.</span>':'<span style="color:var(--dimmer)">—</span>')
+      +'<span class="vs" title="objectif de la saison (Laura)">objectif '+esc(f.obj)+'</span></div>'
+      +(top4!=null&&known.length>4?'<div class="tm-top4" title="moyenne des 4 meilleures">'+top4+'<span class="u">TOP4</span></div>':'')
       +body+'</div>';
   }).join('');
 }
