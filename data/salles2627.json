@@ -1,0 +1,776 @@
+{
+ "maj": "03/09/2026",
+ "source": "CD92 poules phase 1 v03/09/2026 + N2D FFTT",
+ "salles": {
+  "M6": {
+   "division": "Pré-Regionale Messieurs",
+   "poule": 4,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": true,
+     "opp": "SCEAUX T.T. 2",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": false,
+     "opp": "RUEIL ATHLETIC 6",
+     "venue": "Complexe Omnisports Alain Mimoun 41, rue Voltaire 92500 RUEIL MALMAISON"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": true,
+     "opp": "MALAKOFF USM 4",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": false,
+     "opp": "SM MONTROUGE 1",
+     "venue": "Gymnase Maurice Genevoix 10 Rue d'Arcueil 92120 Montrouge"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": true,
+     "opp": "COURBEVOIE STT 9",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": false,
+     "opp": "TTMC CHATILLON 6",
+     "venue": "STADE MUNICIPAL Rue Roland GARROS Espace sportif Roland GARROS 92320 CHATILLON"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": true,
+     "opp": "ASNIERES TT 4",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    }
+   ]
+  },
+  "M7": {
+   "division": "Pré-Regionale Messieurs",
+   "poule": 3,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": false,
+     "opp": "CLICHY CS 1",
+     "venue": "GYMNASE HENRI BARBUSSE 111 rue Henri Barbusse 92110 CLICHY"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": true,
+     "opp": "TTMC CHATILLON 5",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": false,
+     "opp": "CLAMART CSM 4",
+     "venue": "GYMNASE CONDORCET 52 rue Condorcet 92140 CLAMART"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": true,
+     "opp": "BOIS COLOMBES S 5",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": false,
+     "opp": "NEUILLY ASPN 5",
+     "venue": "NEUILLY AS ST PIERRE Espace Koenig 23 boulevard du General Koenig 92200 NEUILLY SUR SEINE"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": true,
+     "opp": "LEVALLOIS SPORT 11",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": false,
+     "opp": "ISSEENNE E P 4",
+     "venue": "Gymnase Alain Mimoun (Salle Jacques Secretin) rue Rabelais Stade Alain Mimoun 92130 Issy-les-Moulineaux"
+    }
+   ]
+  },
+  "M8": {
+   "division": "D1 Messieurs",
+   "poule": 3,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": false,
+     "opp": "CHATENAY ASVTT 4",
+     "venue": "ASV CHATENAY-MALABRY 254 Av de la Division Leclerc Gymnase Jules Verne 92290 CHATENAY MALABRY"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": true,
+     "opp": "AS FONTENAY TT 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": false,
+     "opp": "PLESSIS ROBINS. 2",
+     "venue": "Gymnase Henri Wallon 23 bis Rue du Capt Georges Facq 92350 LE PLESSIS ROBINSON"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": true,
+     "opp": "BOIS COLOMBES S 7",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": false,
+     "opp": "RUEIL ATHLETIC 10",
+     "venue": "Complexe Omnisports Alain Mimoun 41, rue Voltaire 92500 RUEIL MALMAISON"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": true,
+     "opp": "LEVALLOIS SPORT 13",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": false,
+     "opp": "SCEAUX T.T. 3",
+     "venue": "Centre Sportif des Blagis 4-6, rue Leo Delibes 92330 SCEAUX"
+    }
+   ]
+  },
+  "M9": {
+   "division": "D1 Messieurs",
+   "poule": 4,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": true,
+     "opp": "RUEIL ATHLETIC 8",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": false,
+     "opp": "LEVALLOIS SPORT 14",
+     "venue": "Gymnase Eric SRECKI 152, rue Danton 92300 LEVALLOIS PERRET"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": true,
+     "opp": "SM MONTROUGE 3",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": false,
+     "opp": "CHATENAY ASVTT 5",
+     "venue": "ASV CHATENAY-MALABRY 254 Av de la Division Leclerc Gymnase Jules Verne 92290 CHATENAY MALABRY"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": true,
+     "opp": "TTMC CHATILLON 7",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": true,
+     "opp": "NANTERRE ES 3",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": false,
+     "opp": "BOIS COLOMBES S 6",
+     "venue": "Gymnase Charles Coste Av du Reverend Pere C Cloarec 92270 Bois-Colombes"
+    }
+   ]
+  },
+  "M10": {
+   "division": "D1 Messieurs",
+   "poule": 1,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": false,
+     "opp": "TTMC CHATILLON 8",
+     "venue": "STADE MUNICIPAL Rue Roland GARROS Espace sportif Roland GARROS 92320 CHATILLON"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": true,
+     "opp": "PLESSIS ROBINS. 4",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": false,
+     "opp": "MEUDON AS 4",
+     "venue": "GYMNASE MICHEL VIGNAUD 14 Av.de Lattre de Tassigny 92360 MEUDON LA FORET"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": true,
+     "opp": "STADE DE VANVES 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": false,
+     "opp": "ISSEENNE E P 7",
+     "venue": "Gymnase Alain Mimoun (Salle Jacques Secretin) rue Rabelais Stade Alain Mimoun 92130 Issy-les-Moulineaux"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": false,
+     "opp": "SM MONTROUGE 2",
+     "venue": "Gymnase Maurice Genevoix 10 Rue d'Arcueil 92120 Montrouge"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": true,
+     "opp": "NANTERRE ES 2",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    }
+   ]
+  },
+  "M11": {
+   "division": "D1 Messieurs",
+   "poule": 2,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": false,
+     "opp": "ASNIERES TT 5",
+     "venue": "GYMNASE des Bruyeres 30 Avenue de la Lauziere 92600 ASNIERES SUR SEINE"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": true,
+     "opp": "PUTEAUX TT CSM 3",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": false,
+     "opp": "BOURG LA REINE 2",
+     "venue": "GYMNASE CARNOT 14 bd Carnot digicode grille : 1692 92340 BOURG LA REINE"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": false,
+     "opp": "PLESSIS ROBINS. 3",
+     "venue": "Gymnase Henri Wallon 23 bis Rue du Capt Georges Facq 92350 LE PLESSIS ROBINSON"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": true,
+     "opp": "MEUDON AS 3",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": false,
+     "opp": "ISSEENNE E P 6",
+     "venue": "Gymnase Alain Mimoun (Salle Jacques Secretin) rue Rabelais Stade Alain Mimoun 92130 Issy-les-Moulineaux"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": true,
+     "opp": "RUEIL ATHLETIC 11",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    }
+   ]
+  },
+  "M12": {
+   "division": "D2 Messieurs",
+   "poule": 3,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": true,
+     "opp": "PLESSIS ROBINS. 7",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": false,
+     "opp": "ASNIERES TT 9",
+     "venue": "GYMNASE des Bruyeres 30 Avenue de la Lauziere 92600 ASNIERES SUR SEINE"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": true,
+     "opp": "BOURG LA REINE 3",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": true,
+     "opp": "Exempt",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": false,
+     "opp": "VILLENEUVE LA G 1",
+     "venue": "CENTRE SPORTIF PHILIPPE CATTIAU 26 avenue Georges Pompidou (suivre direction Piscine) 92390 VILLENEUVE LA"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": true,
+     "opp": "ANTONY SPORT TT 6",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": false,
+     "opp": "STADE DE VANVES 2",
+     "venue": "GYMNASE Maurice Magne 10 rue Danton 92170 VANVES"
+    }
+   ]
+  },
+  "M13": {
+   "division": "D2 Messieurs",
+   "poule": 4,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": false,
+     "opp": "VOLTIGEURS 5",
+     "venue": "VOLTIGEURS DE BILLANCOURT 11, rue de Clamart 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": true,
+     "opp": "MALAKOFF USM 5",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": false,
+     "opp": "SM MONTROUGE 4",
+     "venue": "Gymnase Maurice Genevoix 10 Rue d'Arcueil 92120 Montrouge"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": true,
+     "opp": "AS FONTENAY TT 3",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": false,
+     "opp": "Exempt",
+     "venue": "?"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": false,
+     "opp": "BOIS COLOMBES S 10",
+     "venue": "COMPLEXE SPORTIF ALBERT SMIRLIAN 11 Avenue Renee 92270 BOIS COLOMBES"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": true,
+     "opp": "CS Clichy TT 5",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    }
+   ]
+  },
+  "M14": {
+   "division": "D2 Messieurs",
+   "poule": 6,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": true,
+     "opp": "VOLTIGEURS 2",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": false,
+     "opp": "PUTEAUX TT CSM 4",
+     "venue": "GYMNASE MARECHAL LECLERC 4 cours du Marechal Leclerc 92800 PUTEAUX"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": true,
+     "opp": "Courbevoie STT 14",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": true,
+     "opp": "Exempt",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": false,
+     "opp": "VILLENEUVE LA G 2",
+     "venue": "CENTRE SPORTIF PHILIPPE CATTIAU 26 avenue Georges Pompidou (suivre direction Piscine) 92390 VILLENEUVE LA"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": true,
+     "opp": "ASNIERES TT 10",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": false,
+     "opp": "RUEIL ATHLETIC (14)",
+     "venue": "Complexe Omnisports Alain Mimoun 41, rue Voltaire 92500 RUEIL MALMAISON"
+    }
+   ]
+  },
+  "M15": {
+   "division": "D2 Messieurs",
+   "poule": 1,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": true,
+     "opp": "Exempt",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": false,
+     "opp": "NEUILLY ASPN 11",
+     "venue": "NEUILLY AS ST PIERRE Espace Koenig 23 boulevard du General Koenig 92200 NEUILLY SUR SEINE"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": true,
+     "opp": "PLESSIS ROBINS. 5",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": false,
+     "opp": "ANTONY SPORT TT 5",
+     "venue": "COMPLEXE SPORTIF ERIC TABARLY Rue de l'Annapurna 92160 ANTONY"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": true,
+     "opp": "Courbevoie STT 13",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": false,
+     "opp": "RUEIL ATHLETIC 13",
+     "venue": "Complexe Omnisports Alain Mimoun 41, rue Voltaire 92500 RUEIL MALMAISON"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": true,
+     "opp": "MALAKOFF USM 6",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    }
+   ]
+  },
+  "M16": {
+   "division": "D2 Messieurs",
+   "poule": 5,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": true,
+     "opp": "CLAMART CSM 7",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": false,
+     "opp": "PUTEAUX TT CSM 5",
+     "venue": "GYMNASE MARECHAL LECLERC 4 cours du Marechal Leclerc 92800 PUTEAUX"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": true,
+     "opp": "CHATENAY ASVTT 6",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": true,
+     "opp": "Exempt",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": false,
+     "opp": "LEVALLOIS SPORT 16",
+     "venue": "Gymnase Eric SRECKI 152, rue Danton 92300 LEVALLOIS PERRET"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": true,
+     "opp": "ANTONY SPORT TT 8",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": false,
+     "opp": "LA GARENNE COLO 4",
+     "venue": "COMPLEXE SP. PIERRE DENIS 111 av. Ch. De Gaulle 92250 LA GARENNE COLOMBES"
+    }
+   ]
+  },
+  "M17": {
+   "division": "D2 Messieurs",
+   "poule": 2,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "18/09/2026",
+     "dom": true,
+     "opp": "RUEIL ATHLETIC 16",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 2,
+     "date": "02/10/2026",
+     "dom": false,
+     "opp": "CLAMART CSM 8",
+     "venue": "GYMNASE CONDORCET 52 rue Condorcet 92140 CLAMART"
+    },
+    {
+     "j": 3,
+     "date": "16/10/2026",
+     "dom": true,
+     "opp": "BOIS COLOMBES S 8",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 4,
+     "date": "06/11/2026",
+     "dom": false,
+     "opp": "Courbevoie STT 15",
+     "venue": "Espace Sportif Jean-Pierre RIVES 89 a 91 Boulevard de Verdun (face a la station Total) 92400 COURBEVOIE"
+    },
+    {
+     "j": 5,
+     "date": "20/11/2026",
+     "dom": true,
+     "opp": "COLOMBIENNE ES 4",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 6,
+     "date": "04/12/2026",
+     "dom": true,
+     "opp": "Exempt",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 7,
+     "date": "11/12/2026",
+     "dom": false,
+     "opp": "MEUDON AS 6",
+     "venue": "GYMNASE MICHEL VIGNAUD 14 Av.de Lattre de Tassigny 92360 MEUDON LA FORET"
+    }
+   ]
+  },
+  "F3": {
+   "division": "Pre-Regionale Dames",
+   "poule": 2,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "dom": false,
+     "opp": "RUEIL ATHLETIC 3",
+     "venue": "Complexe Omnisports Alain Mimoun 41, rue Voltaire 92500 RUEIL MALMAISON"
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "dom": true,
+     "opp": "CLAMART CSM 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "dom": false,
+     "opp": "SCEAUX T.T. 1",
+     "venue": "Centre Sportif des Blagis 4-6, rue Leo Delibes 92330 SCEAUX"
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "dom": false,
+     "opp": "BCS TT 3",
+     "venue": "Gymnase Charles Coste Av du Reverend Pere C Cloarec 92270 Bois-Colombes"
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "dom": true,
+     "opp": "NANTERRE ES (1)",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "dom": false,
+     "opp": "Courbevoie STT 5",
+     "venue": "Espace Sportif Jean-Pierre RIVES 89 a 91 Boulevard de Verdun (face a la station Total) 92400 COURBEVOIE"
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "dom": true,
+     "opp": "TTMC CHATILLON 2",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    }
+   ]
+  },
+  "F1": {
+   "division": "Nationale 2 Dames Phase 1",
+   "poule": 3,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "exempt": true
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "exempt": true
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "exempt": true
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "exempt": true
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "exempt": true
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "exempt": true
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "exempt": true
+    }
+   ]
+  }
+ }
+}
