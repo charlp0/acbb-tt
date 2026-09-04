@@ -280,6 +280,13 @@
   .tm-p .nmn.dsp-g{color:#4ADE80;font-weight:600}
   .tm-p .nmn.dsp-o{color:#FB923C}
   .tm-p .nmn.dsp-r{color:#F87171}
+  .fm-p{font-size:9.5px;font-family:"JetBrains Mono",monospace;color:var(--ink-2);display:flex;align-items:baseline;gap:4px;cursor:grab;padding:1px 2px;border-radius:5px}
+  .fm-p .nmn{flex:1;min-width:0;white-space:normal;overflow-wrap:break-word;line-height:1.35}
+  .fm-p.dragging{opacity:.4}
+  .fm-zone{border:1px dashed rgba(255,255,255,.10);border-radius:8px;padding:5px 6px 6px;margin-top:4px;display:flex;flex-direction:column;gap:2px;min-height:34px}
+  .fm-zone.dropok{border-color:var(--orange);background:rgba(242,106,27,.09)}
+  .fm-zt{font-size:8px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--dim);font-family:"JetBrains Mono",monospace;margin-bottom:2px}
+  .fm-zt span{opacity:.7;font-weight:600}
   .tm-p .nmn.dsp-y{color:#FACC15}
   .tm-p .pt{color:var(--dimmer);white-space:nowrap}
   .tm-p .pc{font-weight:800;min-width:30px;text-align:right;white-space:nowrap}
@@ -431,7 +438,8 @@
   <div class="teams-mini" id="teamsMini"></div>
   <div class="section-h">Pools de remplacement par division</div>
   <div class="teams-mini" id="poolsMini"></div>
-  <div class="section-h" style="margin-top:22px">Équipes féminines 2026/2027 — compos Laura (hors suivi des dispos)</div>
+  <div class="section-h" style="margin-top:22px">Équipes féminines 2026/2027 — compos Laura (hors suivi des dispos)<span id="femSt" style="margin-left:auto;font-size:10px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--dim)"></span></div>
+  <div class="tm-sub" style="margin:-10px 0 12px">Glisse une joueuse entre <b>Titulaires</b> et <b>Remplaçantes</b> ou vers une autre équipe : l'enregistrement est immédiat et partagé.</div>
   <div class="teams-mini" id="femMini"></div>
   <div class="section-h">Classement scoring</div>
   <div class="sc-wrap"><table class="sc"><thead><tr><th>#</th><th>Joueur</th><th>Compo&nbsp;26/27</th><th>Officiel&nbsp;26/27</th><th>Ch.&nbsp;équipe&nbsp;M&nbsp;Ph2</th><th>Tendance 4&nbsp;phases</th><th>Score</th><th>Traj.</th></tr></thead><tbody id="tb"></tbody></table></div>
@@ -607,36 +615,65 @@ function renderPools(){
   }).join('');
   renderFem();
 }
-/* Équipes féminines (compos Laura Pfefer, mail du 03/09/2026) — bloc indépendant : pas de tags, pas de dispos */
-const FEM_COMPO={
-  F1:{div:'N2D',label:'Nationale 2 Dames',obj:'maintien',players:['7847253','9253701','7523006',{nom:'NEVES',pre:'Louna',ext:'Marly'}]},
-  F2:{div:'R1D',label:'Régionale 1 Dames',obj:'montée',players:['9247334','9259716','4110787','6950140','7510996']},
-  F3:{div:'PRD',label:'Pré-Régionale Dames',obj:'montée',players:['9256241','7529318','9257788','9267050','4930753','6110396','9261305','9266626','9236275','7520384']}
-};
+/* ===== Équipes féminines — compos Laura (03/09/2026). Bloc indépendant des tags/dispos hommes.
+   État FEM[key]={e:'F1'|'F2'|'F3', r:'T'|'R'} ; persistance : scenarios_log slot 'fem' (dernière ligne = courante). ===== */
+const FEM_TEAMS={F1:{div:'N2D',label:'Nationale 2 Dames',obj:'maintien'},F2:{div:'R1D',label:'Régionale 1 Dames',obj:'montée'},F3:{div:'PRD',label:'Pré-Régionale Dames',obj:'montée'}};
+const FEM_EXT={'NEVES|LOUNA':{nom:'NEVES',pre:'Louna',men:1342,cat:'J2',ext:'Marly'}};   // joueuse de l'entente (Marly-le-Roi US), officiel 26/27
+const FEM_DEFAULT={F1:['7847253','9253701','7523006','NEVES|LOUNA'],F2:['9247334','9259716','4110787','6950140','7510996'],
+  F3:['9256241','7529318','9257788','9267050','4930753','6110396','9261305','9266626','9236275','7520384']};
+let FEM=null, FEM_ST='';
+function femPlayer(k){ if(FEM_EXT[k])return Object.assign({_k:k},FEM_EXT[k]); const p=D.find(x=>String(x.lic)===k); return p?Object.assign({_k:k},p):{_k:k,nom:'?',pre:'',men:null}; }
+function femDefault(){ const out={}; Object.keys(FEM_DEFAULT).forEach(t=>{ const ps=FEM_DEFAULT[t].map(femPlayer).sort((a,b)=>(b.men||0)-(a.men||0)); ps.forEach((p,i)=>{out[p._k]={e:t,r:i<4?'T':'R'};}); }); return out; }
 function renderFem(){
   const el=document.getElementById('femMini'); if(!el)return;
-  const byLic={}; D.forEach(p=>{ if(p.lic) byLic[String(p.lic)]=p; });
+  if(!FEM)FEM=femDefault();
   const c='244,114,182';
-  el.innerHTML=Object.keys(FEM_COMPO).map(k=>{
-    const f=FEM_COMPO[k];
-    const rows=f.players.map(x=>typeof x==='string'?(byLic[x]||{nom:'?',pre:'',men:null,_miss:x}):Object.assign({men:null},x));
-    rows.sort((a,b)=>(b.men||0)-(a.men||0));
-    const known=rows.filter(p=>p.men!=null);
-    const avg=known.length?Math.round(known.reduce((a,p)=>a+p.men,0)/known.length):null;
-    const t4=known.slice(0,4), top4=t4.length?Math.round(t4.reduce((a,p)=>a+p.men,0)/t4.length):null;
-    const body='<div class="tm-players">'+rows.map(p=>
-      '<div class="tm-p"><span class="nmn">'+(p.lic?ageBadge(p):'')+esc((p.pre?p.pre[0]+'. ':'')+p.nom)
-      +(p.ext?' <span class="tm-cnt" title="joueuse de l\'entente ('+esc(p.ext)+')">'+esc(p.ext)+'</span>':'')
-      +'</span><span class="pt">'+(p.men!=null?p.men:'—')+'</span></div>').join('')+'</div>';
+  el.innerHTML=Object.keys(FEM_TEAMS).map(k=>{
+    const f=FEM_TEAMS[k];
+    const all=Object.keys(FEM).filter(x=>FEM[x].e===k).map(femPlayer).sort((a,b)=>(b.men||0)-(a.men||0));
+    const tit=all.filter(p=>FEM[p._k].r==='T'), rem=all.filter(p=>FEM[p._k].r!=='T');
+    const kn=tit.filter(p=>p.men!=null), avg=kn.length?Math.round(kn.reduce((a,p)=>a+p.men,0)/kn.length):null;
+    const row=p=>'<div class="fm-p" draggable="true" data-fk="'+esc(p._k)+'"><span class="nmn">'+(p.cat?'<span class="agec'+(p.cat==='S'?' s':'')+'">'+p.cat+'</span>':(p.lic?ageBadge(p):''))+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+(p.ext?' <span class="tm-cnt" title="joueuse de l\'entente ('+esc(p.ext)+')">'+esc(p.ext)+'</span>':'')+'</span><span class="pt">'+(p.men!=null?p.men:'—')+'</span></div>';
+    const zone=(role,list,label)=>'<div class="fm-zone" data-fem-team="'+k+'" data-fem-role="'+role+'"><div class="fm-zt">'+label+' <span>'+list.length+'</span></div>'+(list.length?list.map(row).join(''):'<div class="tm-sub" style="font-style:italic;color:var(--dimmer)">glisse une joueuse ici</div>')+'</div>';
     return '<div class="tm-card" data-fem="'+k+'">'
-      +'<div class="tm-top"><span class="tm-name" style="color:hsl('+teamHue(k)+',75%,72%)">'+k+'<span class="tm-cnt" title="nombre de joueuses">'+rows.length+' j</span></span>'
+      +'<div class="tm-top"><span class="tm-name" style="color:hsl('+teamHue(k)+',75%,72%)">'+k+'<span class="tm-cnt" title="titulaires + remplaçantes">'+tit.length+'+'+rem.length+'</span></span>'
       +'<span class="tm-div" style="color:rgb('+c+');border-color:rgba('+c+',.5);background:rgba('+c+',.12)" title="'+esc(f.label)+'">'+f.div+'</span></div>'
-      +'<div class="tm-avg">'+(avg!=null?avg+'<span class="u">moy.</span>':'<span style="color:var(--dimmer)">—</span>')
-      +'<span class="vs" title="objectif de la saison (Laura)">objectif '+esc(f.obj)+'</span></div>'
-      +(top4!=null&&known.length>4?'<div class="tm-top4" title="moyenne des 4 meilleures">'+top4+'<span class="u">TOP4</span></div>':'')
-      +body+'</div>';
+      +'<div class="tm-avg">'+(avg!=null?avg+'<span class="u">moy. titulaires</span>':'<span style="color:var(--dimmer)">—</span>')+'<span class="vs" title="objectif de la saison (Laura)">objectif '+esc(f.obj)+'</span></div>'
+      +zone('T',tit,'Titulaires')+zone('R',rem,'Remplaçantes')+'</div>';
   }).join('');
+  const st=document.getElementById('femSt'); if(st)st.textContent=FEM_ST;
 }
+function femSave(){
+  let author=localStorage.getItem('acbb_tag_author'); if(!author){author=(prompt('Ton prénom (pour l\'historique des compos) :')||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
+  FEM_ST='enregistrement…'; renderFem();
+  fetch(SB_URL+'/rest/v1/scenarios_log',{method:'POST',headers:Object.assign({'Content-Type':'application/json','Prefer':'return=minimal'},SB_HD),body:JSON.stringify({tags:FEM,author:author+' · filles',slot:'fem'})})
+    .then(r=>{ FEM_ST=r.ok?('✓ compos filles enregistrées à '+new Date().toTimeString().slice(0,5)):'⚠ échec enregistrement ('+r.status+')'; renderFem(); })
+    .catch(()=>{ FEM_ST='⚠ échec enregistrement (réseau)'; renderFem(); });
+}
+(async function(){   // chargement de la dernière compo filles partagée
+  try{ const g=await fetch(SB_URL+'/rest/v1/scenarios_log?select=tags&slot=eq.fem&order=id.desc&limit=1',{headers:SB_HD}); if(g.ok){const a=await g.json(); if(a.length&&a[0].tags){FEM=a[0].tags;}} }catch(e){}
+  renderFem();
+})();
+/* D&D filles : entre titulaires/remplaçantes et entre équipes F1-F3 (type 'fem:' ignoré par le module hommes) */
+document.addEventListener('dragstart',function(ev){
+  const el=ev.target.closest?ev.target.closest('.fm-p[data-fk]'):null; if(!el)return;
+  ev.dataTransfer.effectAllowed='move'; try{ev.dataTransfer.setData('text/plain','fem:'+el.dataset.fk);}catch(e){}
+  window.__femDrag=el.dataset.fk; el.classList.add('dragging');
+});
+document.addEventListener('dragend',function(){ window.__femDrag=null; document.querySelectorAll('.fm-zone.dropok').forEach(z=>z.classList.remove('dropok')); document.querySelectorAll('.fm-p.dragging').forEach(x=>x.classList.remove('dragging')); });
+document.addEventListener('dragover',function(ev){
+  if(!window.__femDrag)return; const z=ev.target.closest?ev.target.closest('.fm-zone'):null;
+  document.querySelectorAll('.fm-zone.dropok').forEach(x=>{if(x!==z)x.classList.remove('dropok');});
+  if(z){ev.preventDefault();ev.dataTransfer.dropEffect='move';z.classList.add('dropok');}
+});
+document.addEventListener('drop',function(ev){
+  if(!window.__femDrag)return; const z=ev.target.closest?ev.target.closest('.fm-zone'):null; if(!z)return;
+  ev.preventDefault(); ev.stopPropagation();
+  const k=window.__femDrag; window.__femDrag=null;
+  const cur=FEM[k]||{}; const nt=z.dataset.femTeam, nr=z.dataset.femRole;
+  if(cur.e===nt&&cur.r===nr){renderFem();return;}
+  FEM[k]={e:nt,r:nr}; femSave();
+},true);
 function render(){
   renderTeamsMini();
   const k=parseFloat(ks.value); kv.textContent=k.toFixed(1);
@@ -851,6 +888,7 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
     document.querySelectorAll('.tm-card.dropok').forEach(function(x){x.classList.remove('dropok');});
   });
   document.addEventListener('dragover',function(ev){
+    if(window.__femDrag)return;
     if(!dragKey&&!swapTeam)return;
     var card=ev.target.closest?ev.target.closest('.tm-card[data-team],.tm-card[data-pool]'):null;
     if(card){ev.preventDefault();ev.dataTransfer.dropEffect='move';card.classList.add('dropok');}
@@ -859,6 +897,7 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
     var card=ev.target.closest?ev.target.closest('.tm-card'):null; if(card)card.classList.remove('dropok');
   });
   document.addEventListener('drop',function(ev){
+    if(window.__femDrag)return;   // drag d'une joueuse (bloc filles) : géré par son propre module
     var card=ev.target.closest?ev.target.closest('.tm-card[data-team],.tm-card[data-pool]'):null;
     if(!card)return;
     if(swapTeam){
