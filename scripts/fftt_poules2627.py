@@ -9,6 +9,9 @@ Sources poules :
 (V.26-07-10 : en R3M p1, VINCENNOIS TT 2 remplace ADAMOIS TT 1 — seul changement ACBB vs V.26-07-09)
 (saisi manuellement — vérifié 4/4 poules ACBB : R1D p2, R1M p4, R2M p3, R3M p1).
 Niveau moyen 25/26 : compos phase 2 archivées (data/archive/2025-2026/phase-2/).
+⚠️ ORIENTATION : dans l'archive, compo_a/compo_b ne suivent PAS toujours equa/equb (feuille inversée
+   dans ~30 % des rencontres) -> réattribuer par cohérence des effectifs avant toute moyenne par équipe
+   (voir correction du 08/09/2026, data/poules2627.json s25 recalculés). Les moyennes « toutes équipes » ne sont pas affectées.
 ⚠️ Le champ `division` des fichiers d'archive est buggé (toujours "Poule 4") —
    utiliser le dossier + champ `poule`.
 Sortie : data/poules2627.json. Usage : python3 scripts/fftt_poules2627.py
@@ -121,7 +124,7 @@ POULES = [
     dict(division='Pré-Régionale Dames (92)', poule=2, acbb='F3', genre='F', pos=7, cal='sam', teams=[
         (1, 'CSM CLAMART', 1, '92'), (2, 'RUEIL ATHLETIC', 3, '92'),
         (3, 'TTMC CHATILLON', 2, '92'), (4, 'COURBEVOIE STT', 5, '92'),
-        (5, 'ES NANTERRE', 1, '92'), (7, 'BOULOGNE BILLAN', 3, '92'),
+        (5, 'ES NANTERRE', 1, '92'), (6, 'BOIS COLOMBES S', 3, '92'), (7, 'BOULOGNE BILLAN', 3, '92'),
         (8, 'SCEAUX TT', 1, '92')]),
     dict(division='Pré-Régionale Messieurs (92)', poule=3, acbb='M7', genre='M', pos=5, teams=[
         (1, 'BOIS COLOMBES S', 5, '92'), (2, 'CLAMART CSM', 4, '92'),
