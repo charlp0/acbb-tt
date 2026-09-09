@@ -110,8 +110,8 @@ def main():
         return int(m.group(1)) if m else None   # officiel courant (base 26/27)
     MUT_LOOKUP=[('COHEN MELKA','Eytan','9258246'),('VERDIER','Mahé','9253816'),('SERGENT','Enzo','9540663'),
                 ('INTINS','Arthur','9248896'),('STEMLER','Grégoire','9254353'),('INTINS','David','5412783'),
-                ('DELORY','Virgile','9241720'),('BENCHAT','Marius','1421042'),('BOUDJADJA','Nassim','9265298')]
-    MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('ARGUT','Daniel',1600),('PORTOKALLIS','Antonis',1500),('BOTELLA','Milo',500)]   # BOTELLA : nouveau licencié, 500 (Charles, 08/09/2026)
+                ('DELORY','Virgile','9241720'),('BENCHAT','Marius','1421042'),('BOUDJADJA','Nassim','9265298'),('BOTELLA','Milo','9411975')]
+    MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('ARGUT','Daniel',1600),('PORTOKALLIS','Antonis',1500)]
     for nom,pre,lic in MUT_LOOKUP:
         h=histo(lic); time.sleep(0.1); men=mensuel_of(lic)
         win=[{'l':e['lab'],'pt':e['pt']} for e in h[-WINDOW:]]
