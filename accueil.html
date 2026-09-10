@@ -422,7 +422,7 @@
   }
   buildDays(JOURS);
   /* souhaits (choix multiples) */
-  var ROLES=[['T','Titulaire'],['R','Remplaçant'],['N','Ne pas jouer'],['REF','Référent']];
+  var ROLES=[['T','Titulaire'],['R','Remplaçant'],['N','Ne pas jouer'],['REF','Capitaine']];
   var rolesEl=document.getElementById('dRoles');
   rolesEl.innerHTML=ROLES.map(function(r){return '<div class="d-role" role="button" tabindex="0" aria-pressed="false" data-v="'+r[0]+'">'+r[1]+'</div>';}).join('');
   rolesEl.addEventListener('click',function(e){var c=e.target.closest('.d-role'); if(!c)return; c.classList.toggle('on'); c.setAttribute('aria-pressed',c.classList.contains('on')?'true':'false'); draft();});

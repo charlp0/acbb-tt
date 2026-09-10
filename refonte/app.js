@@ -1,7 +1,7 @@
 /* ACBB TT — Refonte 26/27 : couche de données commune (prototype fonctionnel).
    Sources réelles : data/poules2627.json (poules + calendriers FFTT), data/scoring.json (joueurs 26/27),
    data/categories.json, data/resultats2627.json (scores, rempli après chaque journée),
-   Supabase debriefs_log (débriefs référents). Aucune compo à venir n'est exposée ici. */
+   Supabase debriefs_log (débriefs capitaines). Aucune compo à venir n'est exposée ici. */
 (function(){
   var SB='https://vhhmageufrcenruywawg.supabase.co';
   var KEY='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay';
