@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="fr"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
-<title>ACBB TT — Refonte · Espace référent</title>
+<title>ACBB TT — Refonte · Espace capitaine</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap">
 <style>
   body{margin:0;background:#0B0B0D;color:#F6F5F3;font-family:"Space Grotesk",system-ui,sans-serif}
@@ -19,7 +19,7 @@
 <div id="chrome"></div>
 <div class="wrap">
   <div style="padding:16px 2px 4px">
-    <div style="display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#F26A1B"><span style="width:5px;height:5px;border-radius:50%;background:#F26A1B"></span>Espace référent · après-match</div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#F26A1B"><span style="width:5px;height:5px;border-radius:50%;background:#F26A1B"></span>Espace capitaine · après-match</div>
     <div style="font-family:'Saira Condensed',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:29px;line-height:1;margin-top:7px">Débrief <span style="color:#F26A1B">de journée.</span></div>
     <div class="mono" style="font-size:10.5px;color:rgba(246,245,243,0.6);margin-top:4px">Ton texte s'affiche sur la page d'accueil, carte de ton équipe. Modifiable : republier remplace.</div>
   </div>
@@ -74,7 +74,7 @@ document.getElementById('pub').addEventListener('click',function(){
   this.disabled=true; st.textContent='publication…';
   try{localStorage.setItem('acbb_ref_team',t);if(aut)localStorage.setItem('acbb_tag_author',aut);}catch(e){}
   fetch(App.SB+'/rest/v1/debriefs_log',{method:'POST',headers:{'apikey':App.KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
-    body:JSON.stringify({equipe:t,journee:j,auteur:aut||'référent',texte:txt})})
+    body:JSON.stringify({equipe:t,journee:j,auteur:aut||'capitaine',texte:txt})})
   .then(function(r){
     if(!r.ok)throw new Error(r.status===404?'table debriefs_log absente (à créer)':'HTTP '+r.status);
     st.innerHTML='✓ publié — visible sur <a href="index.html">la page d\'accueil</a>';

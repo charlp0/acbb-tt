@@ -275,7 +275,7 @@
 
     /* répondants — tableau triable + recherche + colonne équipe */
     var list=Object.keys(votes).map(function(k){return {k:k, v:votes[k]};});   // pour l'export CSV
-    var RL={T:'Tit.',R:'Remp.',N:'Ne pas jouer',REF:'Référent'};
+    var RL={T:'Tit.',R:'Remp.',N:'Ne pas jouer',REF:'Capitaine'};
     var RESP=Object.keys(votes).map(function(k){
       var v=votes[k];
       var p=byLic[k] || bySN[k] || null;
