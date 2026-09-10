@@ -1,6 +1,6 @@
 {
  "maj": "10/09/2026",
- "note": "capitaines désignés par la sportive — clé = équipe (numérotation V2 en cours), valeur = licence",
+ "note": "capitaines désignés par la sportive — clé = équipe (numérotation V2 en cours), valeur = licence (liste = co-capitaines)",
  "capitaines": {
   "M2": "8015853",
   "M3": "748713",
@@ -17,6 +17,13 @@
   "M14": "9238309",
   "M15": "9244767",
   "M16": "9259617",
-  "M17": "9256241"
+  "M17": "9256241",
+  "F1": "7847253",
+  "F2": "4110787",
+  "F3": [
+   "9257788",
+   "9256241",
+   "7529318"
+  ]
  }
 }
