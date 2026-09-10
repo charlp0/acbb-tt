@@ -315,8 +315,8 @@
 <a href="#dispoSec" class="dispo-cta" id="ctaDispo">
   <div class="ico">📋</div>
   <div class="txt">
-    <div class="k">Action requise · avant le 31 août</div>
-    <div class="t">Déclare tes disponibilités pour la phase 1 — ça prend 30 secondes et ça aide la sportive à composer les équipes.</div>
+    <div class="k">À tenir à jour · J-7 avant chaque journée</div>
+    <div class="t">Blessure, absence, retour : mets à jour tes disponibilités dès que ça change — la sportive compose les équipes avec ces infos.</div>
   </div>
   <span class="go">Déclarer mes dispos ↓</span>
 </a>
@@ -367,7 +367,7 @@
     <div>
       <div class="eyebrow">Disponibilités · Phase 1</div>
       <h2 class="cal-title">Ta <em>dispo.</em></h2>
-      <div class="d-badge" id="dDeadline">⏳ à remplir avant le 31 août 2026</div>
+      <div class="d-badge" id="dDeadline">🔄 modifiable à tout moment — vérifie à J-7 de chaque journée</div>
     </div>
     <div class="d-ringwrap">
       <svg viewBox="0 0 72 72"><circle class="bgc" cx="36" cy="36" r="30"/><circle class="fgc" id="dRing" cx="36" cy="36" r="30" stroke-dasharray="188.5" stroke-dashoffset="188.5"/></svg>
@@ -573,8 +573,8 @@
       .catch(function(e){ st.textContent='❌ Échec de l\'enregistrement — réessaie dans un instant (ta saisie est conservée).'; })
       .then(function(){ btn.disabled=false; });
   });
-  /* clôture automatique au 31 août 2026 */
-  var CLOS=Date.now()>new Date('2026-08-31T23:59:59+02:00').getTime();
+  /* formulaire ouvert toute la phase : les joueurs mettent à jour leurs dispos à J-7 de chaque journée (déclarations closes le 31/08 pour la compo initiale) */
+  var CLOS=false;
   if(CLOS){
     var dl=document.getElementById('dDeadline');
     if(dl){dl.textContent='⏰ Déclarations closes depuis le 31 août 2026'; dl.style.color='#FCA5A5'; dl.style.borderColor='rgba(242,99,86,0.4)'; dl.style.background='rgba(242,99,86,0.10)';}
@@ -588,7 +588,7 @@
   }).catch(function(){ btn.disabled=true; st.textContent='Ouverture du formulaire très bientôt…'; });
 })();
 </script>
-<a href="#dispoSec" id="fabDispo">📋 Mes dispos phase 1 →</a>
+<a href="#dispoSec" id="fabDispo">📋 Mettre à jour mes dispos →</a>
 <script>
 (function(){
   var fab=document.getElementById('fabDispo'), sec=document.getElementById('dispoSec');
