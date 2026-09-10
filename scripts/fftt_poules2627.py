@@ -200,6 +200,18 @@ DATES = ['19/09/2026', '03/10/2026', '17/10/2026', '07/11/2026',
 DATES_VEN = ['18/09/2026', '02/10/2026', '16/10/2026', '06/11/2026',
              '20/11/2026', '04/12/2026', '11/12/2026']      # vendredis (départemental M)
 
+# niveau approximatif d'une division (0 = Pro B … 10 = D2) pour écarter les homonymes d'un autre échelon
+_LVL = [('PRO B',0),('PRO A',0),('NATIONALE 1',1),('N1',1),('NATIONALE 2',2),('N2',2),('NATIONALE 3',3),('N3',3),('PN',4),('PRE-NAT',4),
+        ('REGIONALE 1',5),('R1',5),('REGIONALE 2',6),('R2',6),('REGIONALE 3',7),('R3',7),('PRE-REGIONALE',8),('PR',8),('D1',9),('D2',10)]
+def _lvl(d):
+    d = unicodedata.normalize('NFD', d or '').encode('ascii', 'ignore').decode().upper()
+    for k, v in _LVL:
+        if d.startswith(k): return v
+    return None
+def coherent(div2627, div2526, tol=2):
+    a, b = _lvl(div2627), _lvl(div2526)
+    return a is None or b is None or abs(a - b) <= tol
+
 out = {'source': 'Ligue IDF V.26-07-23 + CD92 v13/07/2026', 'dates': DATES, 'poules': []}
 for P in POULES:
     dept92 = '(92)' in P['division']
@@ -207,6 +219,8 @@ for P in POULES:
     teams = []
     for pos, club, num, dep in P['teams']:
         hit = find(P['genre'], club, num)
+        if hit and not coherent(P['division'], hit['div']):   # homonyme d'un autre niveau (ex. SAINT QUENTIN TT 1 R3 vs N1)
+            hit = None
         acbb = club.startswith('BOULOGNE')
         teams.append({'pos': pos, 'name': (f'{club} {num}' if num != '' else club), 'dept': dep, 'acbb': acbb,
                       's25': ({'avg': hit['avg'], 'div': hit['div'], 'rank': hit['rank'],
