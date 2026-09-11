@@ -1,5 +1,5 @@
 {
- "source": "Ligue IDF V.26-07-23 + CD92 v13/07/2026 · CD92 poules v03/09/2026 · N2D FFTT 03/09/2026",
+ "source": "Ligue IDF V.26-07-23 + CD92 v13/07/2026",
  "dates": [
   "19/09/2026",
   "03/10/2026",
@@ -297,7 +297,7 @@
     },
     {
      "pos": 2,
-     "name": "ALCL TT / GRAVIGNY TT 2",
+     "name": "AL GRAND QUEVILLY / GRAVIGNY TT 2",
      "dept": "76",
      "acbb": false,
      "s25": null
@@ -336,7 +336,7 @@
      "dept": "92",
      "acbb": true,
      "s25": {
-      "avg": 1061,
+      "avg": 1075,
       "div": "PN Dames p2",
       "rank": 2,
       "nm": 7
@@ -470,7 +470,7 @@
      "dept": "92",
      "acbb": true,
      "s25": {
-      "avg": 786,
+      "avg": 800,
       "div": "R1 Dames p3",
       "rank": 4,
       "nm": 7
@@ -571,7 +571,7 @@
      "dept": "92",
      "acbb": true,
      "s25": {
-      "avg": 1437,
+      "avg": 1418,
       "div": "R2 M p4",
       "rank": 1,
       "nm": 7
@@ -705,7 +705,7 @@
      "dept": "92",
      "acbb": true,
      "s25": {
-      "avg": 1395,
+      "avg": 1385,
       "div": "R3 M p11",
       "rank": 3,
       "nm": 7
@@ -844,7 +844,7 @@
      "dept": "94",
      "acbb": false,
      "s25": {
-      "avg": 767,
+      "avg": 1364,
       "div": "R3 M p13",
       "rank": 3,
       "nm": 7
@@ -892,7 +892,7 @@
      "dept": "92",
      "acbb": true,
      "s25": {
-      "avg": 1405,
+      "avg": 1431,
       "div": "R3 M p4",
       "rank": 1,
       "nm": 7
@@ -974,7 +974,7 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 627,
+      "avg": 596,
       "div": "PR Dames (92) p1",
       "rank": 4,
       "nm": 6
@@ -1022,7 +1022,7 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 571,
+      "avg": 516,
       "div": "PR Dames (92) p1",
       "rank": 7,
       "nm": 6
@@ -1118,9 +1118,9 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 1305,
-      "div": "PR (92) p4",
-      "rank": 1,
+      "avg": 1142,
+      "div": "PR (92) p3",
+      "rank": 7,
       "nm": 7
      }
     },
@@ -1166,9 +1166,9 @@
      "dept": "92",
      "acbb": true,
      "s25": {
-      "avg": 1062,
-      "div": "PR (92) p2",
-      "rank": 8,
+      "avg": 1322,
+      "div": "PR (92) p1",
+      "rank": 2,
       "nm": 7
      }
     },
@@ -1178,9 +1178,9 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 1091,
-      "div": "D1 (92) p3",
-      "rank": 6,
+      "avg": 865,
+      "div": "D1 (92) p1",
+      "rank": 1,
       "nm": 7
      }
     },
@@ -1190,9 +1190,9 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 1139,
-      "div": "PR (92) p3",
-      "rank": 3,
+      "avg": 1254,
+      "div": "PR (92) p2",
+      "rank": 2,
       "nm": 7
      }
     },
@@ -1272,9 +1272,9 @@
      "dept": "92",
      "acbb": true,
      "s25": {
-      "avg": 989,
-      "div": "PR (92) p3",
-      "rank": 8,
+      "avg": 1192,
+      "div": "PR (92) p4",
+      "rank": 4,
       "nm": 7
      }
     },
@@ -1320,9 +1320,9 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 841,
-      "div": "D1 (92) p2",
-      "rank": 5,
+      "avg": 1187,
+      "div": "D1 (92) p3",
+      "rank": 1,
       "nm": 7
      }
     },
@@ -1474,8 +1474,8 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 512,
-      "div": "D1 (92) p1",
+      "avg": 841,
+      "div": "D1 (92) p2",
       "rank": 5,
       "nm": 7
      }
@@ -1616,9 +1616,9 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 1093,
-      "div": "D1 (92) p6",
-      "rank": 1,
+      "avg": 972,
+      "div": "D1 (92) p1",
+      "rank": 3,
       "nm": 7
      }
     },
@@ -1734,9 +1734,9 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 841,
-      "div": "D1 (92) p6",
-      "rank": 7,
+      "avg": 875,
+      "div": "D1 (92) p5",
+      "rank": 3,
       "nm": 7
      }
     },
@@ -1782,9 +1782,9 @@
      "dept": "92",
      "acbb": true,
      "s25": {
-      "avg": 1192,
-      "div": "PR (92) p4",
-      "rank": 4,
+      "avg": 989,
+      "div": "PR (92) p3",
+      "rank": 8,
       "nm": 7
      }
     },
@@ -1794,9 +1794,9 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 859,
-      "div": "D1 (92) p6",
-      "rank": 6,
+      "avg": 968,
+      "div": "D1 (92) p4",
+      "rank": 3,
       "nm": 7
      }
     },
@@ -1900,9 +1900,9 @@
      "dept": "92",
      "acbb": true,
      "s25": {
-      "avg": 1322,
-      "div": "PR (92) p1",
-      "rank": 2,
+      "avg": 1062,
+      "div": "PR (92) p2",
+      "rank": 8,
       "nm": 7
      }
     },
@@ -1936,9 +1936,9 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 1187,
-      "div": "D1 (92) p3",
-      "rank": 1,
+      "avg": 859,
+      "div": "D1 (92) p1",
+      "rank": 5,
       "nm": 7
      }
     },
@@ -1948,9 +1948,9 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 865,
-      "div": "D1 (92) p1",
-      "rank": 1,
+      "avg": 859,
+      "div": "D1 (92) p6",
+      "rank": 6,
       "nm": 7
      }
     },
@@ -2183,12 +2183,7 @@
      "name": "MEUDON AS 6",
      "dept": "92",
      "acbb": false,
-     "s25": {
-      "avg": 746,
-      "div": "D2 (92) p8",
-      "rank": 1,
-      "nm": 7
-     }
+     "s25": null
     },
     {
      "pos": 2,
@@ -2231,12 +2226,7 @@
      "name": "BOIS COLOMBES S 8",
      "dept": "92",
      "acbb": false,
-     "s25": {
-      "avg": 875,
-      "div": "D1 (92) p5",
-      "rank": 3,
-      "nm": 7
-     }
+     "s25": null
     },
     {
      "pos": 6,
@@ -2539,12 +2529,7 @@
      "name": "AS FONTENAY TT 3",
      "dept": "92",
      "acbb": false,
-     "s25": {
-      "avg": 993,
-      "div": "D2 (92) p12",
-      "rank": 1,
-      "nm": 7
-     }
+     "s25": null
     }
    ],
    "cal": [
@@ -2669,12 +2654,7 @@
      "name": "CLAMART CSM 7",
      "dept": "92",
      "acbb": false,
-     "s25": {
-      "avg": 877,
-      "div": "D1 (92) p1",
-      "rank": 2,
-      "nm": 7
-     }
+     "s25": null
     },
     {
      "pos": 7,
