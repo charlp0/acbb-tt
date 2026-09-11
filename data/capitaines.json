@@ -1,6 +1,6 @@
 {
  "maj": "11/09/2026",
- "note": "capitaines désignés par la sportive — clé = équipe (numérotation V2 en cours), valeur = licence (liste = co-capitaines)",
+ "note": "capitaines désignés par la sportive — clé = équipe (numérotation V2 en cours), valeur = licence (liste = co-capitaines) M1 : capitaine non joueur de l'équipe (Boudjadja).",
  "capitaines": {
   "M2": "8015853",
   "M3": "748713",
@@ -24,6 +24,7 @@
    "9257788",
    "9256241",
    "7529318"
-  ]
+  ],
+  "M1": "9212594"
  }
 }
