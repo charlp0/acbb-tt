@@ -196,6 +196,7 @@
 
     var html='';
     var num=function(P){return parseInt(P.acbb.slice(1),10)||99;};
+    var numOf=function(n){var m=/(\d+)\s*$/.exec(String(n||''));return m?m[1]:'';};   // « ex-… » seulement si le numéro d'équipe a changé
     var groupes=[
       {titre:'Championnat Masculin', liste:data.poules.filter(function(P){return P.acbb[0]==='M';}).sort(function(a,b){return num(a)-num(b);})},
       {titre:'Championnat Féminin',  liste:data.poules.filter(function(P){return P.acbb[0]==='F';}).sort(function(a,b){return num(a)-num(b);})}
@@ -217,7 +218,7 @@
           +'<td class="dept">'+esc(t.dept)+'</td>'
           +'<td class="r">'+(s?'<span class="avg">'+s.avg+'</span><span class="avgbar" style="width:'+w+'px"></span>':'<span class="na">—</span>')+'</td>'
           +'<td class="r">'+(s&&s.ceil?'<span class="ceil'+(s.vivier?' viv':'')+'" title="'+esc((s.top||[]).map(function(x){return x[0]+' '+x[1];}).join(' · ')+(s.vivier?' — vivier club : joueurs de '+s.vivier.join(', ')+' (25/26)':''))+'">'+s.ceil+(s.vivier?'<sup>club</sup>':'')+'</span>':'<span class="na">—</span>')+'</td>'
-          +'<td class="prov">'+(s?((s.src&&s.src!==t.name)?'<span class="ex" title="nom de l\'équipe en 2025/26 (renumérotation CD92)">ex-'+esc(s.src)+'</span> · ':'')+'<b>'+esc(s.div)+'</b> · '+s.rank+'ᵉ'+(s.mvt?' <span class="mvt '+s.mvt+'">'+(s.mvt==='promu'?'↑ promu':'↓ descendu')+'</span>':''):'<span class="na">—</span>')+'</td>'
+          +'<td class="prov">'+(s?((s.src&&numOf(s.src)!==numOf(t.name))?'<span class="ex" title="nom de l\'équipe en 2025/26 (renumérotation CD92)">ex-'+esc(s.src)+'</span> · ':'')+'<b>'+esc(s.div)+'</b> · '+s.rank+'ᵉ'+(s.mvt?' <span class="mvt '+s.mvt+'">'+(s.mvt==='promu'?'↑ promu':'↓ descendu')+'</span>':''):'<span class="na">—</span>')+'</td>'
           +'</tr>';
       }).join('');
 
