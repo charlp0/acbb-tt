@@ -11,7 +11,7 @@
   :root{--bg:#0B0B0D;--paper:#141416;--panel:#141416;--panel-2:#1E1E22;--panel-3:#26262B;--line:rgba(255,255,255,0.08);--line-2:rgba(255,255,255,0.16);--ink:#F6F5F3;--ink-2:#D4D3CF;--dim:rgba(246,245,243,0.60);--dimmer:rgba(246,245,243,0.48);--orange:#F26A1B;--win:#3DD68C;--win-lt:#86EFAC;--warn:#FACC15;--lose:#F26356;--lose-lt:#FCA5A5;--blue:#60A5FA;--violet:#A78BFA}
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;font-size:14px;line-height:1.4}
-  body{min-height:100vh;padding-bottom:90px}
+  body{min-height:100vh;padding-bottom:160px}
   .mono{font-family:"JetBrains Mono",monospace}
   .wrap{max-width:1440px;margin:0 auto;background:var(--paper);min-height:100vh}
   @media (min-width:900px){.wrap{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
@@ -150,11 +150,18 @@
   .chk i{font-family:"JetBrains Mono",monospace;font-weight:800;font-style:normal;flex-shrink:0}
   .chk.ok i{color:var(--win-lt)} .chk.err i,.chk.err span{color:var(--lose-lt)} .chk.warn i,.chk.warn span{color:var(--warn)} .chk.na i,.chk.na span{color:var(--dimmer)}
   .hint{font-size:10px;color:var(--dimmer);line-height:1.5;border-top:1px solid var(--line);padding-top:8px}
-  /* barre d'enregistrement */
-  .savebar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;justify-content:center;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(11,11,13,.9);backdrop-filter:blur(12px);border-top:1px solid var(--line-2)}
-  .savebar.show{display:flex}
-  .savebar .in{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
-  .savebar .stt{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim)}
+  /* panneau d'enregistrement compact (même look que Scoring & compos) */
+  .savebar{position:fixed;right:14px;bottom:14px;z-index:60;width:302px;background:#17171B;border:1px solid rgba(255,255,255,.18);border-radius:13px;padding:13px 15px;font-size:12px;color:var(--ink);box-shadow:0 10px 30px rgba(0,0,0,.5);display:none}
+  .savebar.show{display:block}
+  .savebar .ttl{font-weight:700;margin-bottom:6px}
+  .savebar .stt{display:block;color:var(--dim);min-height:14px;line-height:1.45;font-size:11.5px}
+  .savebar .stt.ok{color:#86EFAC}.savebar .stt.warn{color:var(--warn)}.savebar .stt.err{color:#FCA5A5}
+  .savebar .btns{margin-top:10px;display:flex;gap:7px}
+  .savebar .btns button{flex:1;min-width:86px;padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.22);background:#232328;color:var(--ink);font-family:inherit;font-size:11.5px;cursor:pointer;white-space:nowrap}
+  .savebar .btns button:hover{border-color:var(--orange);color:var(--orange)}
+  .savebar .btns button.sv{background:rgba(242,106,27,.16);border-color:rgba(242,106,27,.55);color:var(--orange);font-weight:700}
+  .savebar .btns button:disabled{opacity:.4;cursor:default;border-color:rgba(255,255,255,.14);color:var(--ink)}
+  @media (max-width:520px){.savebar{left:10px;right:10px;width:auto;bottom:10px}}
   .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:70;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;padding:10px 16px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none}
   .toast.show{opacity:1}
   /* carte export */
@@ -264,11 +271,12 @@
 </div>
 </div>
 
-<div class="savebar" id="saveBar"><div class="in">
-  <span class="stt" id="saveSt"></span><span class="stt" style="color:var(--warn)">brouillon conservé sur cet appareil jusqu’à l’enregistrement</span>
-  <button class="btn" id="undoBtn" type="button">↺ Annuler les modifs</button>
-  <button class="btn o" id="saveBtn" type="button">💾 Enregistrer</button>
-</div></div>
+<div class="savebar" id="saveBar">
+  <div class="ttl" id="saveTtl">📅 Compos — drag &amp; drop</div>
+  <span class="stt" id="saveSt"></span>
+  <span class="stt" id="saveChk"></span>
+  <div class="btns"><button id="undoBtn" type="button">↶ Annuler</button><button id="saveBtn" class="sv" type="button">💾 Enregistrer</button></div>
+</div>
 <div class="toast" id="toast"></div>
 <div id="cardHost"></div>
 
@@ -468,8 +476,7 @@ function renderState(){
     +'<span style="flex-grow:1"></span>'
     +'<button class="btn sm" id="fillAll" type="button" title="Pré-remplit les équipes vides avec leurs titulaires disponibles (par ordre de points)">⚡ Proposer les compos vides</button>'
     +'<button class="btn" id="exportAll" type="button">📋 Copier les '+pl.length+' compos</button>'
-    +'<button class="btn o" id="saveTop" type="button"'+(dirtyTeams().length?'':' disabled')+'>💾 Enregistrer J'+J+(dirtyTeams().length?' ('+dirtyTeams().length+')':'')+'</button>';
-  document.getElementById('saveTop').onclick=()=>document.getElementById('saveBtn').click();
+;
   document.getElementById('fillAll').onclick=()=>{ let n=0; pl.forEach(t=>{ if(!compo(J,t).p.length){ propose(t); n++; } }); toast(n?n+' compo'+(n>1?'s':'')+' proposée'+(n>1?'s':''):'toutes les équipes ont déjà une compo'); renderAll(); };
   document.getElementById('exportAll').onclick=()=>{ copy(pl.filter(t=>compo(J,t).p.length).map(t=>waText(t,J)).join('\n\n———\n\n')); };
 }
@@ -635,9 +642,19 @@ function renderChecker(){
   document.getElementById('chkList').innerHTML=h;
 }
 function renderSave(){
-  const d=dirtyTeams(); const bar=document.getElementById('saveBar'); bar.classList.toggle('show',d.length>0);
-  document.getElementById('saveSt').textContent=d.length?('J'+J+' · '+d.length+' équipe'+(d.length>1?'s':'')+' modifiée'+(d.length>1?'s':'')+' : '+d.join(', ')):'';
-  document.getElementById('saveBtn').textContent='💾 Enregistrer J'+J+(d.length?' ('+d.length+')':'');
+  const d=dirtyTeams(); const bar=document.getElementById('saveBar'); bar.classList.add('show');
+  document.getElementById('saveTtl').textContent='📅 Compos J'+J+' — drag & drop';
+  const st=document.getElementById('saveSt'); const m=META[J];
+  if(d.length){ st.className='stt warn'; st.textContent=d.length+' équipe'+(d.length>1?'s':'')+' modifiée'+(d.length>1?'s':'')+' ('+d.join(', ')+') — brouillon conservé sur cet appareil'; }
+  else { st.className='stt'; st.textContent=m?('✓ Enregistrée · '+esc(m.author||'')+' · '+new Date(m.at).toLocaleDateString('fr-FR')+' '+new Date(m.at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})):'Aucune compo enregistrée pour cette journée'; }
+  const pl=TEAMS.filter(t=>playing(t,J)); let errs=0,warns=0,inc=0;
+  pl.forEach(t=>{ const r=checkTeam(t,J); if(r.issues.some(i=>i.lvl==='err'))errs++; else if(r.issues.some(i=>i.lvl==='warn'))warns++; if(compo(J,t).p.length<sizeOf(t))inc++; });
+  const chk=document.getElementById('saveChk');
+  if(errs){ chk.className='stt err'; chk.textContent='⛔ '+errs+' équipe'+(errs>1?'s':'')+' en infraction (règlement)'; }
+  else if(warns||inc){ chk.className='stt warn'; chk.textContent='⚠ '+(inc?inc+' incomplète'+(inc>1?'s':''):'')+(inc&&warns?' · ':'')+(warns?warns+' à vérifier':''); }
+  else { chk.className='stt ok'; chk.textContent='✓ Règles conformes ('+pl.length+' équipes complètes)'; }
+  const sb=document.getElementById('saveBtn'), ub=document.getElementById('undoBtn');
+  sb.textContent='💾 Enregistrer'+(d.length?' ('+d.length+')':''); sb.disabled=!d.length; ub.disabled=!d.length;
 }
 document.getElementById('undoBtn').onclick=()=>{ COMPOS[J]=JSON.parse(JSON.stringify(BASE[J]||{})); SEL=null; try{localStorage.removeItem(draftKey(J));}catch(e){} renderAll(); };
 document.getElementById('saveBtn').onclick=async()=>{
