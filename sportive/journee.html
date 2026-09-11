@@ -107,6 +107,7 @@
   .bar i{display:block;height:100%;border-radius:99px}
   .pct{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:800}
   .others{background:rgba(255,255,255,.025);border:1px dashed var(--line-2);border-radius:10px;padding:8px 10px}
+  .others.over{border-color:var(--orange);background:rgba(242,106,27,.08)}
   .others .ot{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--dimmer);margin-bottom:6px}
   .others .ol{display:flex;flex-wrap:wrap;gap:6px}
   .oc{display:inline-flex;align-items:center;gap:6px;background:var(--panel-2);border:1px solid rgba(61,214,140,.35);border-radius:99px;padding:4px 9px 4px 7px;font-size:11.5px;font-weight:600;cursor:pointer}
@@ -513,7 +514,7 @@ function card(t){
   const others=(GENRE(t)==='F'?titulaires(t).concat(remplacantsF(t)):titulaires(t)).filter(k=>BYKEY[k]&&c.p.indexOf(k)<0)
     .sort((a,b)=>{const o={g:0,y:1,r:2};const d=o[dispo(a,J)]-o[dispo(b,J)];return d||((BYKEY[b].men||0)-(BYKEY[a].men||0));});
   const nDisp=others.filter(k=>dispo(k,J)==='g').length;
-  const othersH=others.length?'<div class="others"><div class="ot">Autres joueurs de l\'équipe · '+nDisp+' dispo'+(nDisp>1?'s':'')+'</div><div class="ol">'+others.map(k=>{
+  const othersH=others.length?'<div class="others"><div class="ot">Autres joueurs de l\'équipe (dépose ici pour retirer) · '+nDisp+' dispo'+(nDisp>1?'s':'')+'</div><div class="ol">'+others.map(k=>{
       const p=BYKEY[k], st=dispo(k,J), elsewhere=usedAll.has(k)?TEAMS.find(o=>o!==t&&playing(o,J)&&compo(J,o).p.indexOf(k)>=0):null;
       const cls=st==='g'?(elsewhere?' unk':''):(st==='y'?' unk':' off');
       const tip=elsewhere?('déjà aligné en '+elsewhere):(st==='g'?'dispo — cliquer pour aligner':dispoTxt(k,J));
@@ -544,10 +545,16 @@ function renderGrid(){
   g.querySelectorAll('.slot').forEach(el=>el.onclick=()=>{ if(SEL){ place(SEL,el.dataset.slot); } else toast('touche d\'abord un joueur dans la colonne de droite'); });
   // drag & drop
   g.querySelectorAll('.pr').forEach(el=>{ el.addEventListener('dragstart',e=>{ DRAG={k:el.dataset.k,from:el.dataset.t}; e.dataTransfer.effectAllowed='move'; try{e.dataTransfer.setData('text/plain',el.dataset.k);}catch(x){} }); el.addEventListener('dragend',()=>{DRAG=null;}); el.onclick=e=>{ if(e.target.closest('.rm'))return; SEL={k:el.dataset.k,from:el.dataset.t}; toast(short(BYKEY[el.dataset.k]||{nom:el.dataset.k})+' sélectionné — touche une case ＋ ou la colonne de droite'); }; });
+  g.querySelectorAll('.others').forEach(ob=>{
+    ob.addEventListener('dragover',e=>{ if(DRAG&&DRAG.from){ e.preventDefault(); e.stopPropagation(); ob.classList.add('over'); } });
+    ob.addEventListener('dragleave',()=>ob.classList.remove('over'));
+    ob.addEventListener('drop',e=>{ if(!(DRAG&&DRAG.from))return; e.preventDefault(); e.stopPropagation(); ob.classList.remove('over'); const c=compo(J,DRAG.from); c.p=c.p.filter(k=>k!==DRAG.k); if(c.st==='sent')c.st='valid'; DRAG=null; renderAll(); toast('joueur retiré de l\'équipe'); });
+    ob.addEventListener('click',e=>{ if(e.target.closest('.oc'))return; if(SEL&&SEL.from){ const c=compo(J,SEL.from); c.p=c.p.filter(k=>k!==SEL.k); if(c.st==='sent')c.st='valid'; SEL=null; renderAll(); toast('joueur retiré de l\'équipe'); } });
+  });
   g.querySelectorAll('.tc:not(.exempt)').forEach(tc=>{
     tc.addEventListener('dragover',e=>{ if(!DRAG)return; e.preventDefault(); tc.classList.add('over'); });
     tc.addEventListener('dragleave',()=>tc.classList.remove('over'));
-    tc.addEventListener('drop',e=>{ e.preventDefault(); tc.classList.remove('over'); if(!DRAG)return; place(DRAG,tc.dataset.team); DRAG=null; });
+    tc.addEventListener('drop',e=>{ e.preventDefault(); tc.classList.remove('over'); if(!DRAG)return; if(DRAG.from===tc.dataset.team){ DRAG=null; toast('déjà dans cette équipe — glisse-le sur « Autres joueurs » ou touche ✕ pour le retirer'); return; } place(DRAG,tc.dataset.team); DRAG=null; });
   });
 }
 function place(sel,t){
