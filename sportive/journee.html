@@ -495,8 +495,9 @@ function usedSameDate(t){ // joueurs déjà alignés dans une autre équipe joua
 function pRow(k,t,flags){
   const p=BYKEY[k]; const s=dispo(k,J); const lvl=flags[k];
   if(!p) return '<div class="pr bad" draggable="true" data-k="'+esc(k)+'" data-t="'+t+'"><span class="dot"></span><span class="nm x">'+esc(k)+'</span><span class="note">joueur inconnu</span><span class="pts"></span><button class="rm" data-rm="'+esc(k)+'" title="retirer">✕</button></div>';
-  const home=homeTeam(k); let tag='';
-  if(home&&home!==t){ tag='<span class="agec t" title="équipe d\'origine">'+esc(home)+'</span>'; }
+  // équipe d'origine dans le même championnat (dames : compo féminine ; messieurs : compo officielle) — une joueuse F alignée en M n'est pas « hors équipe » en F
+  const home=GENRE(t)==='F'?((FEM[k]&&FEM[k].e)||homeTeam(k)):((TAGS[k]&&TAGS[k].e)||homeTeam(k)); let tag='';
+  if(home&&home!==t){ tag='<span class="agec t" title="titulaire de '+esc(home)+' dans la compo officielle — aligné ici en renfort">'+esc(home)+'</span>'; }
   else if(!home){ const tg=TAGS[k]; tag='<span class="agec t" title="'+esc(homeLabel(k)||'hors effectif tagué')+'">'+(tg&&tg.r==='R'?'R':'?')+'</span>'; }
   const cap=isCapt(k,t)?'<span class="agec c" title="capitaine">C</span>':'';
   const txt=dispoTxt(k,J);
