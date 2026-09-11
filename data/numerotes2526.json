@@ -1,0 +1,173 @@
+{
+ "_note": "Feuilles FFTT : pour un joueur numéroté, l'archive contient son n° national à la place des points (pts < 500). Correction : points 25/26 P2 exacts (scoring.json) pour l'ACBB, sinon estimation depuis le n° (hommes : 4166−310·ln n ; femmes : 3207−273·ln n). Compléter/corriger à la main si besoin.",
+ "joueurs": {
+  "XIAO Qiwen": {
+   "numero": 83,
+   "genre": "F",
+   "pts": 2001,
+   "source": "estimation"
+  },
+  "BERTHAUD Marion": {
+   "numero": 93,
+   "genre": "F",
+   "pts": 1970,
+   "source": "estimation"
+  },
+  "PICOT Celeste": {
+   "numero": 171,
+   "genre": "F",
+   "pts": 1803,
+   "source": "estimation"
+  },
+  "BERGE Sarah": {
+   "numero": 173,
+   "genre": "F",
+   "pts": 1800,
+   "source": "estimation"
+  },
+  "ETIENNE Lilou": {
+   "numero": 175,
+   "genre": "F",
+   "pts": 1797,
+   "source": "estimation"
+  },
+  "SILVA Celia": {
+   "numero": 182,
+   "genre": "F",
+   "pts": 1786,
+   "source": "estimation"
+  },
+  "EVANGELISTA Serena": {
+   "numero": 185,
+   "genre": "F",
+   "pts": 1782,
+   "source": "estimation"
+  },
+  "MOREAU Helene": {
+   "numero": 187,
+   "genre": "F",
+   "pts": 1779,
+   "source": "estimation"
+  },
+  "PERRET Charlotte": {
+   "numero": 198,
+   "genre": "F",
+   "pts": 1763,
+   "source": "estimation"
+  },
+  "CHOMIS Chloé": {
+   "numero": 209,
+   "genre": "F",
+   "pts": 1749,
+   "source": "estimation"
+  },
+  "WANG Chen": {
+   "numero": 215,
+   "genre": "M",
+   "pts": 2501,
+   "source": "scoring 25/26 P2"
+  },
+  "BAELDE Eleonore": {
+   "numero": 225,
+   "genre": "F",
+   "pts": 1728,
+   "source": "estimation"
+  },
+  "DAIRON Arnaud": {
+   "numero": 230,
+   "genre": "M",
+   "pts": 2480,
+   "source": "estimation"
+  },
+  "BUIL Julie": {
+   "numero": 241,
+   "genre": "F",
+   "pts": 1710,
+   "source": "estimation"
+  },
+  "LEFEVRE Chloe": {
+   "numero": 263,
+   "genre": "F",
+   "pts": 1686,
+   "source": "estimation"
+  },
+  "DESJAMES Roxane": {
+   "numero": 274,
+   "genre": "F",
+   "pts": 1675,
+   "source": "estimation"
+  },
+  "DAYCARD FLEURY Angeline": {
+   "numero": 274,
+   "genre": "F",
+   "pts": 1675,
+   "source": "estimation"
+  },
+  "BOST Julie": {
+   "numero": 280,
+   "genre": "F",
+   "pts": 1669,
+   "source": "estimation"
+  },
+  "XIAO Jieyun": {
+   "numero": 287,
+   "genre": "F",
+   "pts": 1662,
+   "source": "estimation"
+  },
+  "DUCHET Lulie": {
+   "numero": 289,
+   "genre": "F",
+   "pts": 1660,
+   "source": "estimation"
+  },
+  "GOUT Emeline": {
+   "numero": 299,
+   "genre": "F",
+   "pts": 1651,
+   "source": "estimation"
+  },
+  "PAULY Jérôme": {
+   "numero": 409,
+   "genre": "M",
+   "pts": 2302,
+   "source": "estimation"
+  },
+  "BOURIAH Larbi": {
+   "numero": 415,
+   "genre": "M",
+   "pts": 2297,
+   "source": "estimation"
+  },
+  "KIEN Robin": {
+   "numero": 435,
+   "genre": "M",
+   "pts": 2283,
+   "source": "estimation"
+  },
+  "KREDER Benjamin": {
+   "numero": 442,
+   "genre": "M",
+   "pts": 2278,
+   "source": "estimation"
+  },
+  "BOUDJADJA Mohamed Sofiane": {
+   "numero": 457,
+   "genre": "M",
+   "pts": 2271,
+   "source": "scoring 25/26 P2"
+  },
+  "PLOTUNA Malin": {
+   "numero": 460,
+   "genre": "M",
+   "pts": 2265,
+   "source": "estimation"
+  },
+  "XAYASANE Laurent": {
+   "numero": 465,
+   "genre": "M",
+   "pts": 2262,
+   "source": "estimation"
+  }
+ }
+}

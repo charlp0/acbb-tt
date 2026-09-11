@@ -16,7 +16,7 @@ Niveau moyen 25/26 : compos phase 2 archivées (data/archive/2025-2026/phase-2/)
    utiliser le dossier + champ `poule`.
 Sortie : data/poules2627.json. Usage : python3 scripts/fftt_poules2627.py
 """
-import json, re, glob, os, unicodedata
+import json, re, glob, os, unicodedata, math
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -36,6 +36,7 @@ DIVLBL = {
 }
 
 # ---- Index des équipes archivées phase 2 : moyenne compos + classement final
+NUMEROTES = json.load(open(os.path.join(ROOT, 'data/numerotes2526.json'))).get('joueurs', {})
 idx = {}
 PLAY = {}   # équipe archivée -> {joueur: meilleurs pts vus}
 for f in glob.glob(os.path.join(ROOT, 'data/archive/2025-2026/phase-2/*/poule-*.json')):
@@ -49,6 +50,12 @@ for f in glob.glob(os.path.join(ROOT, 'data/archive/2025-2026/phase-2/*/poule-*.
     # (joueurs déjà vus avec chaque équipe dans les autres rencontres), en itérant jusqu'à stabilité.
     R = [r for r in d['rencontres'] if r.get('equa') and r.get('equb')]
     def names(side): return [p.get('nom', '') + '|' + p.get('prenom', '') for p in (side or []) if p.get('pts')]
+    for r in R:   # joueurs numérotés : n° national -> points (data/numerotes2526.json)
+        for side in ('compo_a', 'compo_b'):
+            for p in (r.get(side) or []):
+                if p.get('pts') and p['pts'] < 500:
+                    fix = NUMEROTES.get(p.get('nom', ''))
+                    p['pts'] = fix['pts'] if fix else round(4166 - 310 * math.log(p['pts']))
     orient = [False] * len(R)          # False = compo_a -> equa ; True = inversé
     for _ in range(6):
         seen = {}
