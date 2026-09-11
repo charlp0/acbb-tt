@@ -11,7 +11,7 @@ Sources poules :
 Niveau moyen 25/26 : compos phase 2 archivées (data/archive/2025-2026/phase-2/).
 ⚠️ ORIENTATION : dans l'archive, compo_a/compo_b ne suivent PAS toujours equa/equb (feuille inversée
    dans ~30 % des rencontres) -> réattribuer par cohérence des effectifs avant toute moyenne par équipe
-   (voir correction du 08/09/2026, data/poules2627.json s25 recalculés). Les moyennes « toutes équipes » ne sont pas affectées.
+   (réattribution intégrée au script le 11/09/2026 ; renumérotation CD92 26/27 appliquée via data/renumerotation2627.json). Les moyennes « toutes équipes » ne sont pas affectées.
 ⚠️ Le champ `division` des fichiers d'archive est buggé (toujours "Poule 4") —
    utiliser le dossier + champ `poule`.
 Sortie : data/poules2627.json. Usage : python3 scripts/fftt_poules2627.py
@@ -43,10 +43,33 @@ for f in glob.glob(os.path.join(ROOT, 'data/archive/2025-2026/phase-2/*/poule-*.
     genre = 'F' if 'DAMES' in folder else 'M'
     lbl = f"{DIVLBL.get(folder, folder)} p{d['poule']}"
     pts, nm = {}, {}
-    for r in d['rencontres']:
-        for side, team in (('compo_a', r['equa']), ('compo_b', r['equb'])):
-            if not team: continue
-            pl = [p['pts'] for p in (r.get(side) or []) if p.get('pts')]
+    # --- réattribution des feuilles inversées : compo_a/compo_b ne suivent pas toujours equa/equb.
+    # On choisit, rencontre par rencontre, l'orientation qui maximise la cohérence des effectifs
+    # (joueurs déjà vus avec chaque équipe dans les autres rencontres), en itérant jusqu'à stabilité.
+    R = [r for r in d['rencontres'] if r.get('equa') and r.get('equb')]
+    def names(side): return [p.get('nom', '') + '|' + p.get('prenom', '') for p in (side or []) if p.get('pts')]
+    orient = [False] * len(R)          # False = compo_a -> equa ; True = inversé
+    for _ in range(6):
+        seen = {}
+        for i, r in enumerate(R):
+            a, b = (r.get('compo_b'), r.get('compo_a')) if orient[i] else (r.get('compo_a'), r.get('compo_b'))
+            for t, side in ((r['equa'], a), (r['equb'], b)):
+                for n in names(side): seen.setdefault(t, {}); seen[t][n] = seen[t].get(n, 0) + 1
+        changed = False
+        for i, r in enumerate(R):
+            def score(inv):
+                a, b = (r.get('compo_b'), r.get('compo_a')) if inv else (r.get('compo_a'), r.get('compo_b'))
+                sc = 0
+                for t, side in ((r['equa'], a), (r['equb'], b)):
+                    for n in names(side): sc += max(0, seen.get(t, {}).get(n, 0) - 1)   # -1 : ne pas compter la rencontre elle-même
+                return sc
+            best = score(True) > score(False)
+            if best != orient[i]: orient[i] = best; changed = True
+        if not changed: break
+    for i, r in enumerate(R):
+        a, b = (r.get('compo_b'), r.get('compo_a')) if orient[i] else (r.get('compo_a'), r.get('compo_b'))
+        for team, side in ((r['equa'], a), (r['equb'], b)):
+            pl = [p['pts'] for p in (side or []) if p.get('pts')]
             if pl:
                 pts.setdefault(team, []).extend(pl)
                 nm[team] = nm.get(team, 0) + 1
@@ -62,7 +85,25 @@ for f in glob.glob(os.path.join(ROOT, 'data/archive/2025-2026/phase-2/*/poule-*.
             'div': lbl, 'rank': rk, 'src': team,
         }
 
+# ---- Renumérotation CD92 2026/27 (data/renumerotation2627.json : nom 25/26 -> nom 26/27)
+_REN = json.load(open(os.path.join(ROOT, 'data/renumerotation2627.json'))).get('devient', {})
+_split = lambda t: (lambda m: (m.group(1), int(m.group(2))) if m else (t, None))(re.match(r'^(.*?)\s*(\d+)$', t.strip()))
+NEW2OLD = {}; RENAMED_OLD = set()
+for o, n in _REN.items():
+    oc, on = _split(o); nc, nn = _split(n)
+    NEW2OLD[(nrm(nc), nn)] = (oc, on); RENAMED_OLD.add((nrm(oc), on))
+def identity_2526(club, num):
+    """(club, n° 26/27) -> (club, n° 25/26) ; None si l'équipe 26/27 n'a pas d'ancêtre identifiable."""
+    k = (nrm(club), num)
+    if k in NEW2OLD: return NEW2OLD[k]
+    if k in RENAMED_OLD: return None      # l'ancienne « X n » est devenue autre chose : la nouvelle « X n » est une autre équipe
+    return (club, num)
+
 def find(genre, club, num):
+    if genre == 'M':
+        ident = identity_2526(club, num)
+        if ident is None: return None
+        club, num = ident
     k = (genre, nrm(club), num)
     if k in idx: return idx[k]
     T = set(nrm(club).split()); best, bs = None, 0.0
