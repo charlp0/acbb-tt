@@ -106,6 +106,15 @@
   .bar{flex-grow:1;height:7px;border-radius:99px;background:var(--panel-3);overflow:hidden;display:flex}
   .bar i{display:block;height:100%;border-radius:99px}
   .pct{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:800}
+  .others{background:rgba(255,255,255,.025);border:1px dashed var(--line-2);border-radius:10px;padding:8px 10px}
+  .others .ot{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--dimmer);margin-bottom:6px}
+  .others .ol{display:flex;flex-wrap:wrap;gap:6px}
+  .oc{display:inline-flex;align-items:center;gap:6px;background:var(--panel-2);border:1px solid rgba(61,214,140,.35);border-radius:99px;padding:4px 9px 4px 7px;font-size:11.5px;font-weight:600;cursor:pointer}
+  .oc:hover{border-color:var(--orange)}
+  .oc .pts{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim)}
+  .oc.off{opacity:.45;border-color:var(--line);cursor:default}
+  .oc.off .nm{text-decoration:line-through}
+  .oc.unk{opacity:.7;border-color:rgba(250,204,21,.35)}
   .rules{font-size:10.5px;color:var(--dimmer);font-family:"JetBrains Mono",monospace;line-height:1.5}
   .alert{display:flex;align-items:flex-start;gap:8px;border-radius:10px;padding:8px 11px;font-size:11.5px;line-height:1.45}
   .alert.err{background:rgba(242,99,86,.12);border:1px solid rgba(242,99,86,.5);color:var(--lose-lt)}
@@ -234,10 +243,10 @@
   <div class="grid" id="grid"><div class="mono" style="color:var(--dim);padding:20px">chargement des données…</div></div>
   <div class="rail" id="rail">
     <div class="rc" id="railPool">
-      <div class="rt">Remplaçants · dispo <span id="railJ">J—</span></div>
+      <div class="rt">Pools de remplaçants · <span id="railJ">J—</span></div>
       <input id="q" placeholder="🔍 chercher un joueur…" autocomplete="off">
       <div id="railList"></div>
-      <div class="hint">Glisse un joueur vers une carte d'équipe (ou touche-le puis touche une case « ＋ »). Dépose un joueur ici pour le retirer. Le vérificateur re-contrôle brûlage et règles à chaque dépôt.</div>
+      <div class="hint">Glisse un remplaçant vers une carte d'équipe (ou touche-le puis touche une case « ＋ »). Les autres joueurs de chaque équipe sont proposés directement dans sa carte. Dépose un joueur ici pour le retirer. Le vérificateur re-contrôle brûlage et règles à chaque dépôt.</div>
     </div>
     <div class="rc" id="railChk">
       <div class="rt">Vérificateur · <span id="chkJ">J—</span></div>
@@ -248,7 +257,7 @@
 </div>
 
 <div class="savebar" id="saveBar"><div class="in">
-  <span class="stt" id="saveSt"></span>
+  <span class="stt" id="saveSt"></span><span class="stt" style="color:var(--warn)">brouillon conservé sur cet appareil jusqu’à l’enregistrement</span>
   <button class="btn" id="undoBtn" type="button">↺ Annuler les modifs</button>
   <button class="btn o" id="saveBtn" type="button">💾 Enregistrer</button>
 </div></div>
@@ -317,6 +326,8 @@ function boot(){
     res[8].forEach(r=>{ if(seen[r.slot])return; seen[r.slot]=1; const j=parseInt(r.slot.slice(1),10); const t=Object.assign({},r.tags||{}); META[j]={id:r.id,author:r.author,at:r.created_at,meta:t._meta||null}; delete t._meta; COMPOS[j]=t; });
     for(let j=1;j<=NJ;j++){ COMPOS[j]=COMPOS[j]||{}; }
     BASE=JSON.parse(JSON.stringify(COMPOS));
+    let restored=[]; for(let j=1;j<=NJ;j++){ if(draftRestore(j)) restored.push('J'+j); }
+    if(restored.length) setTimeout(()=>toast('brouillon non enregistré restauré : '+restored.join(', ')),800);
     // journée par défaut : la prochaine à venir (paramètre ?j= prioritaire)
     const qj=parseInt(new URLSearchParams(location.search).get('j')||'0',10);
     if(qj>=1&&qj<=NJ) J=qj; else { const today=new Date(); today.setHours(0,0,0,0); J=NJ; for(let j=1;j<=NJ;j++){ const d=jDate(j); if(d&&d>=today){J=j;break;} } }
@@ -411,7 +422,10 @@ function checkTeam(t,j){
 function lvlOf(issues){ return issues.some(i=>i.lvl==='err')?'err':(issues.some(i=>i.lvl==='warn')?'warn':'ok'); }
 
 /* ===================== RENDU ===================== */
-function renderAll(){ renderHero(); renderState(); renderFilters(); renderGrid(); renderRail(); renderChecker(); renderSave(); }
+function draftKey(j){ return 'acbb_journee_draft_j'+j; }
+function draftSave(){ try{ const d=dirtyTeams(); if(d.length) localStorage.setItem(draftKey(J),JSON.stringify({at:Date.now(),compos:COMPOS[J]})); else localStorage.removeItem(draftKey(J)); }catch(e){} }
+function draftRestore(j){ try{ const raw=localStorage.getItem(draftKey(j)); if(!raw)return false; const d=JSON.parse(raw); const baseAt=META[j]?new Date(META[j].at).getTime():0; if(d.at<baseAt){ localStorage.removeItem(draftKey(j)); return false; } COMPOS[j]=d.compos; return true; }catch(e){ return false; } }
+function renderAll(){ renderHero(); renderState(); renderFilters(); renderGrid(); renderRail(); renderChecker(); renderSave(); draftSave(); }
 function renderHero(){
   document.getElementById('hJ').textContent='J'+J+'.';
   const dates={}; let play=0, ex=0;
@@ -437,7 +451,9 @@ function renderState(){
     +'<span class="mono" style="font-size:10px;color:var(--dimmer);margin-left:4px">'+(m?('dernier enregistrement : '+esc(m.author||'')+' · '+new Date(m.at).toLocaleDateString('fr-FR')+' '+new Date(m.at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})):'aucune compo enregistrée pour cette journée')+'</span>'
     +'<span style="flex-grow:1"></span>'
     +'<button class="btn sm" id="fillAll" type="button" title="Pré-remplit les équipes vides avec leurs titulaires disponibles (par ordre de points)">⚡ Proposer les compos vides</button>'
-    +'<button class="btn" id="exportAll" type="button">📋 Copier les '+pl.length+' compos</button>';
+    +'<button class="btn" id="exportAll" type="button">📋 Copier les '+pl.length+' compos</button>'
+    +'<button class="btn o" id="saveTop" type="button"'+(dirtyTeams().length?'':' disabled')+'>💾 Enregistrer J'+J+(dirtyTeams().length?' ('+dirtyTeams().length+')':'')+'</button>';
+  document.getElementById('saveTop').onclick=()=>document.getElementById('saveBtn').click();
   document.getElementById('fillAll').onclick=()=>{ let n=0; pl.forEach(t=>{ if(!compo(J,t).p.length){ propose(t); n++; } }); toast(n?n+' compo'+(n>1?'s':'')+' proposée'+(n>1?'s':''):'toutes les équipes ont déjà une compo'); renderAll(); };
   document.getElementById('exportAll').onclick=()=>{ copy(pl.filter(t=>compo(J,t).p.length).map(t=>waText(t,J)).join('\n\n———\n\n')); };
 }
@@ -492,12 +508,23 @@ function card(t){
     +'<div class="m1">'+esc(m.opp)+' <span>· '+(m.dom?'Domicile':'Extérieur')+' · '+fmtD(m.date)+'</span></div>'
     +(m.oppAvg?'<span class="mono" style="font-size:11px;color:'+(m.oppAvg>(avg||0)?'#FCA5A5':'#86EFAC')+'" title="moyenne alignée 25/26'+(m.oppRank?' · '+m.oppRank+'ᵉ':'')+'">≈'+m.oppAvg+'</span>':'<span class="mono" style="font-size:10px;color:var(--dimmer)">nouveau / sans repère</span>')
     +(m.venue&&!m.dom?'<div class="venue" title="'+esc(m.venue)+'">📍 '+esc(m.venue)+'</div>':'')+'</div>';
+  // autres joueurs de l'équipe (titulaires + remplaçantes pour les dames) non alignés : dispo en couleur, indispo / sans réponse grisés
+  const usedAll=new Set(); TEAMS.forEach(o=>{ if(playing(o,J)) compo(J,o).p.forEach(k=>usedAll.add(k)); });
+  const others=(GENRE(t)==='F'?titulaires(t).concat(remplacantsF(t)):titulaires(t)).filter(k=>BYKEY[k]&&c.p.indexOf(k)<0)
+    .sort((a,b)=>{const o={g:0,y:1,r:2};const d=o[dispo(a,J)]-o[dispo(b,J)];return d||((BYKEY[b].men||0)-(BYKEY[a].men||0));});
+  const nDisp=others.filter(k=>dispo(k,J)==='g').length;
+  const othersH=others.length?'<div class="others"><div class="ot">Autres joueurs de l\'équipe · '+nDisp+' dispo'+(nDisp>1?'s':'')+'</div><div class="ol">'+others.map(k=>{
+      const p=BYKEY[k], st=dispo(k,J), elsewhere=usedAll.has(k)?TEAMS.find(o=>o!==t&&playing(o,J)&&compo(J,o).p.indexOf(k)>=0):null;
+      const cls=st==='g'?(elsewhere?' unk':''):(st==='y'?' unk':' off');
+      const tip=elsewhere?('déjà aligné en '+elsewhere):(st==='g'?'dispo — cliquer pour aligner':dispoTxt(k,J));
+      return '<span class="oc'+cls+'" draggable="'+(st!=='r')+'" data-k="'+esc(k)+'" data-ot="'+t+'" title="'+esc(tip)+'"><span class="dot '+st+'"></span><span class="nm">'+esc(short(p))+'</span><span class="pts">'+(p.men||'—')+'</span>'+(elsewhere?'<span class="pts" style="color:var(--warn)">'+elsewhere+'</span>':'')+'</span>';
+    }).join('')+'</div></div>':'';
   const shown=r.issues.filter(i=>i.lvl!=='info'); const infos=r.issues.filter(i=>i.lvl==='info');
   const alerts=shown.map(i=>'<div class="alert '+i.lvl+'">'+(i.lvl==='err'?'⛔':'⚠')+' <span>'+esc(i.msg)+'</span></div>').join('');
   const ruleLine='<div class="rules">'+(shown.length?'':'✓ règles OK')+(infos.length?(shown.length?'':' · ')+infos.map(i=>i.msg).join(' · '):'')+(J>1?' · brûlage calculé sur les compos enregistrées '+(J>2?'J1→J'+(J-1):'J1'):'')+'</div>';
   const cap=CAPT[t]; const capName=cap?[].concat(cap).map(k=>BYKEY[k]?short(BYKEY[k]):k).join(', '):'';
   return '<div class="tc '+lvl+'" data-team="'+t+'">'+head+'<span class="st '+c.st+'" data-st="'+t+'" title="cliquer pour changer : brouillon → validée → envoyée">'+stLbl+'</span></div>'
-    +oppLine+'<div class="plist" data-team="'+t+'">'+rows+slots+'</div>'+pctH+alerts+ruleLine
+    +oppLine+'<div class="plist" data-team="'+t+'">'+rows+slots+'</div>'+pctH+othersH+alerts+ruleLine
     +'<textarea data-note="'+t+'" rows="1" placeholder="note pour le capitaine (RDV, covoiturage…)">'+esc(c.note||'')+'</textarea>'
     +'<div class="acts"><button class="btn sm" data-prop="'+t+'" type="button">⚡ Proposer</button><button class="btn sm" data-wa="'+t+'" type="button">📋 Texte WhatsApp</button><button class="btn sm" data-img="'+t+'" type="button">📸 Carte image</button>'
     +(capName?'<span class="mono" style="font-size:10px;color:var(--dimmer);margin-left:auto">C : '+esc(capName)+'</span>':'')+'</div></div>';
@@ -512,6 +539,8 @@ function renderGrid(){
   g.querySelectorAll('[data-wa]').forEach(el=>el.onclick=()=>copy(waText(el.dataset.wa,J)));
   g.querySelectorAll('[data-img]').forEach(el=>el.onclick=()=>exportImg(el.dataset.img));
   g.querySelectorAll('[data-note]').forEach(el=>el.onchange=()=>{ compo(J,el.dataset.note).note=el.value.trim(); renderSave(); renderState(); });
+  g.querySelectorAll('.oc').forEach(el=>{ el.onclick=()=>{ const k=el.dataset.k, t=el.dataset.ot; if(dispo(k,J)==='r'&&!confirm(short(BYKEY[k])+' est indisponible pour cette journée. L\'aligner quand même ?'))return; place({k:k,from:null},t); };
+    el.addEventListener('dragstart',e=>{ DRAG={k:el.dataset.k,from:null}; e.dataTransfer.effectAllowed='move'; try{e.dataTransfer.setData('text/plain',el.dataset.k);}catch(x){} }); el.addEventListener('dragend',()=>{DRAG=null;}); });
   g.querySelectorAll('.slot').forEach(el=>el.onclick=()=>{ if(SEL){ place(SEL,el.dataset.slot); } else toast('touche d\'abord un joueur dans la colonne de droite'); });
   // drag & drop
   g.querySelectorAll('.pr').forEach(el=>{ el.addEventListener('dragstart',e=>{ DRAG={k:el.dataset.k,from:el.dataset.t}; e.dataTransfer.effectAllowed='move'; try{e.dataTransfer.setData('text/plain',el.dataset.k);}catch(x){} }); el.addEventListener('dragend',()=>{DRAG=null;}); el.onclick=e=>{ if(e.target.closest('.rm'))return; SEL={k:el.dataset.k,from:el.dataset.t}; toast(short(BYKEY[el.dataset.k]||{nom:el.dataset.k})+' sélectionné — touche une case ＋ ou la colonne de droite'); }; });
@@ -539,12 +568,12 @@ function renderRail(){
     const divs=[]; ts.forEach(t=>{ const d=GENRE(t)==='F'?'F':(POOLDIV[t]||TEAMDIV[t]); if(divs.indexOf(d)<0)divs.push(d); });
     divs.forEach(d=>{
       let keys=[];
-      if(d==='F'){ Object.keys(FEM).forEach(k=>{ if(!usedF.has(k)) keys.push([k,(FEM[k].r==='T'?'tit. ':'remp. ')+FEM[k].e+(used.has(k)?' · aussi '+where[k].join('+'):'')]); }); }
-      else { pool(d).forEach(k=>{ if(!used.has(k)) keys.push([k,'pool '+d]); });
-        TEAMS.filter(t=>(POOLDIV[t]||TEAMDIV[t])===d).forEach(t=>titulaires(t).forEach(k=>{ if(!used.has(k)&&!keys.some(x=>x[0]===k)) keys.push([k,'tit. '+t]); })); }
+      if(d==='F'){ Object.keys(FEM).forEach(k=>{ if(FEM[k].r==='R'&&!usedF.has(k)) keys.push([k,'remp. '+FEM[k].e+(used.has(k)?' · aussi '+where[k].join('+'):'')]); }); }
+      else { pool(d).forEach(k=>{ if(!used.has(k)) keys.push([k,'pool '+d]); }); }
       keys=keys.filter(x=>BYKEY[x[0]]).sort((a,b)=>order(a[0],b[0]));
       const col=d==='F'?'244,114,182':(DIVC[d==='R1-R3'?'R1':d]||'242,106,27');
-      h+='<div class="rdiv" style="color:rgb('+col+')">'+(d==='F'?'DAMES — non alignées':(pool(d).length?'POOL '+d+' + titulaires non alignés':d+' — titulaires non alignés'))+' <span style="color:var(--dimmer)">('+keys.length+')</span></div>'+keys.map(x=>rp(x[0],x[1])).join('');
+      if(d!=='F'&&!pool(d).length) return;   // division sans pool (national / régional)
+      h+='<div class="rdiv" style="color:rgb('+col+')">'+(d==='F'?'REMPLAÇANTES — dames':'POOL '+d)+' <span style="color:var(--dimmer)">('+keys.length+')</span></div>'+(keys.map(x=>rp(x[0],x[1])).join('')||'<div style="font-size:11px;color:var(--dimmer);padding:2px 0 6px">tous alignés</div>');
     });
   }
   document.getElementById('railList').innerHTML=h||'<div style="font-size:11px;color:var(--dimmer)">aucune équipe ne joue</div>';
@@ -586,7 +615,7 @@ function renderSave(){
   document.getElementById('saveSt').textContent=d.length?('J'+J+' · '+d.length+' équipe'+(d.length>1?'s':'')+' modifiée'+(d.length>1?'s':'')+' : '+d.join(', ')):'';
   document.getElementById('saveBtn').textContent='💾 Enregistrer J'+J+(d.length?' ('+d.length+')':'');
 }
-document.getElementById('undoBtn').onclick=()=>{ COMPOS[J]=JSON.parse(JSON.stringify(BASE[J]||{})); SEL=null; renderAll(); };
+document.getElementById('undoBtn').onclick=()=>{ COMPOS[J]=JSON.parse(JSON.stringify(BASE[J]||{})); SEL=null; try{localStorage.removeItem(draftKey(J));}catch(e){} renderAll(); };
 document.getElementById('saveBtn').onclick=async()=>{
   let author=localStorage.getItem('acbb_tag_author'); if(!author){author=(prompt('Ton prénom (pour l\'historique des compos) :')||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
   const btn=document.getElementById('saveBtn'); btn.disabled=true; btn.textContent='⏳ enregistrement…';
@@ -597,7 +626,7 @@ document.getElementById('saveBtn').onclick=async()=>{
     if(!r.ok) throw new Error('HTTP '+r.status);
     const rows=await fetch(SB+'/rest/v1/scenarios_log?select=id,slot,tags,author,created_at&slot=eq.j'+J+'&order=id.desc&limit=1',{headers:HD}).then(x=>x.json());
     if(rows[0]){ const t=Object.assign({},rows[0].tags); META[J]={id:rows[0].id,author:rows[0].author,at:rows[0].created_at,meta:t._meta||null}; delete t._meta; COMPOS[J]=t; BASE[J]=JSON.parse(JSON.stringify(t)); }
-    toast('✓ J'+J+' enregistrée et partagée'); renderAll();
+    try{localStorage.removeItem(draftKey(J));}catch(e){} toast('✓ J'+J+' enregistrée et partagée'); renderAll();
   }catch(e){ toast('⚠ échec : '+e.message); }
   btn.disabled=false; renderSave();
 };
