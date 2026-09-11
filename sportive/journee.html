@@ -529,12 +529,12 @@ function card(t){
   const others=(GENRE(t)==='F'?titulaires(t).concat(remplacantsF(t)):titulaires(t)).filter(k=>BYKEY[k]&&c.p.indexOf(k)<0)
     .sort((a,b)=>{const o={g:0,y:1,r:2};const d=o[dispo(a,J)]-o[dispo(b,J)];return d||((BYKEY[b].men||0)-(BYKEY[a].men||0));});
   const nDisp=others.filter(k=>dispo(k,J)==='g').length;
-  const othersH=others.length?'<div class="others"><div class="ot">Autres joueurs de l\'équipe (dépose ici pour retirer) · '+nDisp+' dispo'+(nDisp>1?'s':'')+'</div><div class="ol">'+others.map(k=>{
+  const othersH='<div class="others"><div class="ot">Autres joueurs de l\'équipe (dépose ici pour retirer) · '+(others.length?nDisp+' dispo'+(nDisp>1?'s':''):'tous alignés')+'</div><div class="ol">'+(others.length?others.map(k=>{
       const p=BYKEY[k], st=dispo(k,J), elsewhere=usedAll.has(k)?TEAMS.find(o=>o!==t&&playing(o,J)&&compo(J,o).p.indexOf(k)>=0):null;
       const cls=st==='r'?' off':(elsewhere?' unk':'');
       const tip=elsewhere?('déjà aligné en '+elsewhere):(st==='g'?'dispo — cliquer pour aligner':dispoTxt(k,J));
       return '<span class="oc'+cls+'" draggable="'+(st!=='r')+'" data-k="'+esc(k)+'" data-ot="'+t+'" title="'+esc(tip)+'"><span class="dot '+st+'"></span><span class="nm">'+esc(short(p))+'</span>'+ticks(k)+'<span class="pts">'+(p.men||'—')+'</span>'+(elsewhere?'<span class="pts" style="color:var(--warn)">'+elsewhere+'</span>':'')+'</span>';
-    }).join('')+'</div></div>':'';
+    }).join(''):'<span style="font-size:11px;color:var(--dimmer)">tout l\'effectif est aligné — glisse ici (ou sélectionne puis touche ici) un joueur pour le sortir de l\'équipe</span>')+'</div></div>';
   const shown=r.issues.filter(i=>i.lvl!=='info'); const infos=r.issues.filter(i=>i.lvl==='info');
   const alerts=shown.map(i=>'<div class="alert '+i.lvl+'">'+(i.lvl==='err'?'⛔':'⚠')+' <span>'+esc(i.msg)+'</span></div>').join('');
   const ruleLine='<div class="rules">'+(shown.length?'':'✓ règles OK')+(infos.length?(shown.length?'':' · ')+infos.map(i=>i.msg).join(' · '):'')+(J>1?' · brûlage calculé sur les compos enregistrées '+(J>2?'J1→J'+(J-1):'J1'):'')+'</div>';
