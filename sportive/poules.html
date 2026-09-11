@@ -54,6 +54,13 @@
   .pt tr.me{background:linear-gradient(90deg,rgba(242,106,27,0.14),rgba(242,106,27,0.03))}
   .pt tr.me .tname{color:var(--orange)}
   .pt .na{color:var(--dimmer)}
+  .pt .ceil{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:12.5px;color:var(--ink-2);border-bottom:1px dotted var(--dimmer);cursor:help}
+  .pt .ceil.viv{color:var(--orange)}
+  .pt .ceil sup{font-size:7.5px;margin-left:2px;font-weight:800;letter-spacing:.3px}
+  .pt .ex{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--orange);border-bottom:1px dotted rgba(242,106,27,.6);cursor:help}
+  .pt .mvt{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px;margin-left:4px;vertical-align:1px}
+  .pt .mvt.promu{color:var(--win-lt,#86EFAC);background:rgba(61,214,140,.12);border:1px solid rgba(61,214,140,.4)}
+  .pt .mvt.descendu{color:#FCA5A5;background:rgba(242,99,86,.12);border:1px solid rgba(242,99,86,.4)}
   .avgbar{display:inline-block;height:5px;border-radius:3px;background:linear-gradient(90deg,rgba(242,106,27,0.55),var(--orange));vertical-align:2px;margin-left:8px}
   .tag27{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;background:rgba(61,214,140,0.12);border:1px solid rgba(61,214,140,0.4);color:var(--win-lt);margin-left:8px}
   .cal{display:flex;gap:8px;overflow-x:auto;padding:12px 14px;border-top:1px solid var(--line);background:rgba(255,255,255,0.02)}
@@ -122,8 +129,14 @@
 <div class="note" id="foot" hidden>
   <b>Niveau ph2 25/26</b> = moyenne des points <b>officiels</b> des joueurs alignés par l'équipe en phase 2 2025/26
   (compos archivées, 7 rencontres). <b>—</b> : équipe absente des divisions archivées (ex-R1 Messieurs, PN M,
-  ou départemental hors 92) — niveau inconnu. La colonne « 25/26 » rappelle la division et le classement final de
-  l'équipe la saison passée. Le badge vert sur la ligne ACBB = moyenne des <b>titulaires tagués 26/27</b> (onglet Scoring &amp; compos).
+  ou départemental hors 92) — niveau inconnu. La colonne « 25/26 » rappelle l'identité, la division et le classement final de
+  l'équipe la saison passée : <b>ex-…</b> signale une équipe renumérotée par le CD92 avec les montées/descentes (table de correspondance
+  transmise par Minh le 11/09 — ex. Montrouge 3 → Montrouge 1) ; ↑ promu / ↓ descendu = mouvement de division.
+  <b>Plafond</b> = moyenne des 4 meilleurs joueurs alignés au moins une fois par l'équipe en phase 2 : ce qu'elle peut sortir quand elle
+  se renforce (survoler pour voir les joueurs). En orange avec la mention <b>club</b> : plafond calculé sur le vivier D1 du club, car les
+  joueurs d'une équipe reléguée restent disponibles en D1 (Bois-Colombes 6 et 7 : 1629, 1364, 1284, 1259). Le plafond est un maximum vu une
+  fois, pas un niveau habituel. La renumérotation interne à la D2 n'est pas connue : repères des poules de D2 à prendre avec prudence.
+  Le badge vert sur la ligne ACBB = moyenne des <b>titulaires tagués 26/27</b> (onglet Scoring &amp; compos).
 </div>
 </div>
 
@@ -203,7 +216,8 @@
           +'<td class="tname">'+esc(t.name)+(t.acbb&&a27!=null?'<span class="tag27" title="moyenne officiel 26/27 des titulaires tagués ('+esc(P.acbb)+')">tit. 26/27 : '+a27+'</span>':'')+'</td>'
           +'<td class="dept">'+esc(t.dept)+'</td>'
           +'<td class="r">'+(s?'<span class="avg">'+s.avg+'</span><span class="avgbar" style="width:'+w+'px"></span>':'<span class="na">—</span>')+'</td>'
-          +'<td class="prov">'+(s?'<b>'+esc(s.div)+'</b> · '+s.rank+'ᵉ':'<span class="na">—</span>')+'</td>'
+          +'<td class="r">'+(s&&s.ceil?'<span class="ceil'+(s.vivier?' viv':'')+'" title="'+esc((s.top||[]).map(function(x){return x[0]+' '+x[1];}).join(' · ')+(s.vivier?' — vivier club : joueurs de '+s.vivier.join(', ')+' (25/26)':''))+'">'+s.ceil+(s.vivier?'<sup>club</sup>':'')+'</span>':'<span class="na">—</span>')+'</td>'
+          +'<td class="prov">'+(s?((s.src&&s.src!==t.name)?'<span class="ex" title="nom de l\'équipe en 2025/26 (renumérotation CD92)">ex-'+esc(s.src)+'</span> · ':'')+'<b>'+esc(s.div)+'</b> · '+s.rank+'ᵉ'+(s.mvt?' <span class="mvt '+s.mvt+'">'+(s.mvt==='promu'?'↑ promu':'↓ descendu')+'</span>':''):'<span class="na">—</span>')+'</td>'
           +'</tr>';
       }).join('');
 
@@ -220,14 +234,14 @@
             +'<div class="opp" style="color:var(--dimmer)">repos</div></div>';
         return '<div class="cal-j"><div class="jt">J'+c.j+'<span class="dt">'+esc(c.date.slice(0,5))+'</span></div>'
           +'<span class="lieu '+(c.dom?'dom':'ext')+'">'+(c.dom?'DOM':'EXT')+'</span>'
-          +'<div class="opp">'+esc(o.name||'?')+(o.s25?' <span style="color:var(--dimmer);font-family:JetBrains Mono,monospace;font-size:10px">('+o.s25.avg+')</span>':'')+'</div></div>';
+          +'<div class="opp">'+esc(o.name||'?')+(o.s25?' <span style="color:var(--dimmer);font-family:JetBrains Mono,monospace;font-size:10px" title="niveau moyen 25/26 · plafond">('+o.s25.avg+(o.s25.ceil?' · <span style=\'color:var(--dim)\'>↑'+o.s25.ceil+'</span>':'')+')</span>':'')+'</div></div>';
       }).join('');
 
       html+='<div class="pcard">'
         +'<div class="p-head"><div class="p-title">'+esc(P.division)+(P.poule!=null?'<small>Poule '+P.poule+'</small>':'<small>championnat unique · aller J1-J11</small>')+'</div>'
         +'<span class="p-badge">ACBB → '+esc(P.acbb)+'</span></div>'
         +'<div class="pt-wrap"><table class="pt">'
-        +'<thead><tr><th>#</th><th>Équipe</th><th>Dépt</th><th class="r">Niveau ph2 25/26</th><th>25/26 (div · clt)</th></tr></thead>'
+        +'<thead><tr><th>#</th><th>Équipe</th><th>Dépt</th><th class="r">Niveau ph2 25/26</th><th class="r" title="moyenne des 4 meilleurs joueurs alignés au moins une fois en phase 2 25/26">Plafond</th><th>25/26 (identité · div · clt)</th></tr></thead>'
         +'<tbody>'+rows+'</tbody></table></div>'
         +'<div class="cal">'+cal+'</div>'
         +'</div>';

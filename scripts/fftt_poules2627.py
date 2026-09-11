@@ -37,6 +37,7 @@ DIVLBL = {
 
 # ---- Index des équipes archivées phase 2 : moyenne compos + classement final
 idx = {}
+PLAY = {}   # équipe archivée -> {joueur: meilleurs pts vus}
 for f in glob.glob(os.path.join(ROOT, 'data/archive/2025-2026/phase-2/*/poule-*.json')):
     folder = os.path.basename(os.path.dirname(f))
     d = json.load(open(f))
@@ -70,6 +71,10 @@ for f in glob.glob(os.path.join(ROOT, 'data/archive/2025-2026/phase-2/*/poule-*.
         a, b = (r.get('compo_b'), r.get('compo_a')) if orient[i] else (r.get('compo_a'), r.get('compo_b'))
         for team, side in ((r['equa'], a), (r['equb'], b)):
             pl = [p['pts'] for p in (side or []) if p.get('pts')]
+            for p in (side or []):   # meilleur classement vu par joueur -> plafond de l'équipe
+                if p.get('pts'):
+                    kk = (p.get('nom') or '') + ' ' + (p.get('prenom') or '')
+                    d_ = PLAY.setdefault(team, {}); d_[kk] = max(d_.get(kk, 0), p['pts'])
             if pl:
                 pts.setdefault(team, []).extend(pl)
                 nm[team] = nm.get(team, 0) + 1
@@ -80,13 +85,18 @@ for f in glob.glob(os.path.join(ROOT, 'data/archive/2025-2026/phase-2/*/poule-*.
         rk = rank.get(team)
         # Art. 14 : ACBB 3 finit 1er de R2 p4 (confrontation directe), pas 2e
         if team == 'BOULOGNE BILLANCOURT 3': rk = 1
+        top = sorted(PLAY.get(team, {}).items(), key=lambda x: -x[1])[:4]
         idx[(genre, nrm(club), num)] = {
             'avg': round(sum(v) / len(v)), 'nm': nm[team],
             'div': lbl, 'rank': rk, 'src': team,
+            'ceil': round(sum(p for _, p in top) / len(top)) if len(top) >= 3 else None,
+            'top': [[n.title(), p] for n, p in top],
         }
 
 # ---- Renumérotation CD92 2026/27 (data/renumerotation2627.json : nom 25/26 -> nom 26/27)
-_REN = json.load(open(os.path.join(ROOT, 'data/renumerotation2627.json'))).get('devient', {})
+_RENJ = json.load(open(os.path.join(ROOT, 'data/renumerotation2627.json')))
+_REN = _RENJ.get('devient', {})
+_VIV = {k: v for k, v in _RENJ.get('vivier', {}).items() if not k.startswith('_')}
 _split = lambda t: (lambda m: (m.group(1), int(m.group(2))) if m else (t, None))(re.match(r'^(.*?)\s*(\d+)$', t.strip()))
 NEW2OLD = {}; RENAMED_OLD = set()
 for o, n in _REN.items():
@@ -253,7 +263,30 @@ def coherent(div2627, div2526, tol=2):
     a, b = _lvl(div2627), _lvl(div2526)
     return a is None or b is None or abs(a - b) <= tol
 
-out = {'source': 'Ligue IDF V.26-07-23 + CD92 v13/07/2026', 'dates': DATES, 'poules': []}
+def s25_of(hit, genre, club, num, div2627):
+    """bloc s25 : niveau moyen, identité 25/26 (src), plafond, mouvement, vivier club éventuel"""
+    if not hit: return None
+    lv27, lv26 = _lvl(div2627), _lvl(hit['div'])
+    mvt = None
+    if lv27 is not None and lv26 is not None:
+        mvt = 'promu' if lv26 > lv27 else ('descendu' if lv26 < lv27 else None)
+    out = {'avg': hit['avg'], 'div': hit['div'], 'rank': hit['rank'], 'nm': hit['nm'], 'src': hit['src'],
+           'ceil': hit.get('ceil'), 'top': hit.get('top', []), 'mvt': mvt}
+    name27 = f'{club} {num}' if num != '' else club
+    if genre == 'M' and name27 in _VIV:
+        pool = {}
+        for old in _VIV[name27]:
+            m = re.match(r'^(.*?)\s*(\d+)$', old); oc, on = m.group(1), int(m.group(2))
+            for (g, ak, an), v in idx.items():
+                if g == 'M' and an == on and ak == nrm(oc):
+                    for n, p in PLAY.get(v['src'], {}).items(): pool[n] = max(pool.get(n, 0), p)
+        top = sorted(pool.items(), key=lambda x: -x[1])[:4]
+        if len(top) >= 3:
+            out['ceil_team'] = out['ceil']; out['ceil'] = round(sum(p for _, p in top) / len(top))
+            out['top'] = [[n.title(), p] for n, p in top]; out['vivier'] = _VIV[name27]
+    return out
+
+out = {'source': 'Ligue IDF V.26-07-23 + CD92 v13/07/2026 · renumérotation CD92 26/27 (Minh, 11/09/2026)', 'dates': DATES, 'poules': []}
 for P in POULES:
     dept92 = '(92)' in P['division']
     dates = DATES if (not dept92 or P.get('cal') == 'sam') else DATES_VEN
@@ -264,8 +297,7 @@ for P in POULES:
             hit = None
         acbb = club.startswith('BOULOGNE')
         teams.append({'pos': pos, 'name': (f'{club} {num}' if num != '' else club), 'dept': dep, 'acbb': acbb,
-                      's25': ({'avg': hit['avg'], 'div': hit['div'], 'rank': hit['rank'],
-                               'nm': hit['nm']} if hit else None)})
+                      's25': s25_of(hit, P['genre'], club, num, P['division'])})
     filled = {t['pos'] for t in teams}
     cal = []
     if P.get('fixtures'):
