@@ -139,11 +139,12 @@
   .rdiv{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.5px;margin-top:4px}
   .rp{display:flex;align-items:center;gap:8px;background:var(--panel-2);border-radius:9px;padding:7px 10px;cursor:grab;border:1px solid transparent}
   .rp.ok{border-color:rgba(61,214,140,.35)}
-  .rp.dim{opacity:.55} .rp.dimmer{opacity:.4}
+  .rp.dimmer{opacity:.45} .rp.dimmer .nm{text-decoration:line-through}
   .rp.sel{outline:2px solid var(--orange)}
+  .rp .rpm{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
   .rp .nm{font-size:12.5px;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .rp .tag{font-size:9.5px;color:var(--dimmer);font-family:"JetBrains Mono",monospace;white-space:nowrap}
-  .rp .pts{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-2);margin-left:auto}
+  .rp .tag{font-size:9.5px;color:var(--dimmer);font-family:"JetBrains Mono",monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rp .pts{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-2);margin-left:4px}
   .rail input{width:100%;background:var(--panel-2);border:1px solid var(--line-2);border-radius:9px;color:var(--ink);font-family:inherit;font-size:12.5px;padding:8px 11px;outline:none}
   .chk{display:flex;align-items:flex-start;gap:7px;font-size:11.5px;line-height:1.4}
   .chk i{font-family:"JetBrains Mono",monospace;font-weight:800;font-style:normal;flex-shrink:0}
@@ -530,7 +531,7 @@ function card(t){
   const nDisp=others.filter(k=>dispo(k,J)==='g').length;
   const othersH=others.length?'<div class="others"><div class="ot">Autres joueurs de l\'équipe (dépose ici pour retirer) · '+nDisp+' dispo'+(nDisp>1?'s':'')+'</div><div class="ol">'+others.map(k=>{
       const p=BYKEY[k], st=dispo(k,J), elsewhere=usedAll.has(k)?TEAMS.find(o=>o!==t&&playing(o,J)&&compo(J,o).p.indexOf(k)>=0):null;
-      const cls=st==='g'?(elsewhere?' unk':''):(st==='y'?' unk':' off');
+      const cls=st==='r'?' off':(elsewhere?' unk':'');
       const tip=elsewhere?('déjà aligné en '+elsewhere):(st==='g'?'dispo — cliquer pour aligner':dispoTxt(k,J));
       return '<span class="oc'+cls+'" draggable="'+(st!=='r')+'" data-k="'+esc(k)+'" data-ot="'+t+'" title="'+esc(tip)+'"><span class="dot '+st+'"></span><span class="nm">'+esc(short(p))+'</span>'+ticks(k)+'<span class="pts">'+(p.men||'—')+'</span>'+(elsewhere?'<span class="pts" style="color:var(--warn)">'+elsewhere+'</span>':'')+'</span>';
     }).join('')+'</div></div>':'';
@@ -580,7 +581,8 @@ function renderRail(){
   const ts=visibleTeams().filter(t=>playing(t,J)); const q=nrmK(document.getElementById('q').value||'');
   const used=new Set(), usedF=new Set(), where={}; TEAMS.forEach(t=>{ if(playing(t,J)) compo(J,t).p.forEach(k=>{ used.add(k); (where[k]=where[k]||[]).push(t); if(GENRE(t)==='F') usedF.add(k); }); });
   const rp=(k,tag)=>{ const p=BYKEY[k]; if(!p)return''; const s=dispo(k,J); const txt=dispoTxt(k,J);
-    return '<div class="rp'+(s==='g'?' ok':(s==='y'?' dim':' dimmer'))+(SEL&&SEL.k===k&&!SEL.from?' sel':'')+'" draggable="true" data-k="'+esc(k)+'" title="'+esc(homeLabel(k))+'"><span class="dot '+s+'"></span>'+catBadge(k)+'<span class="nm">'+esc(short(p))+'</span>'+ticks(k)+'<span class="tag">'+esc(tag||'')+(txt?' · '+esc(txt):'')+'</span><span class="pts">'+(p.men||'—')+'</span></div>'; };
+    const sub=[txt, (tag&&/aussi/.test(tag))?tag.replace(/^.*aussi/,'aussi'):''].filter(Boolean).join(' · ');   // l'état seul : la division est déjà dans le titre de section
+    return '<div class="rp'+(s==='g'?' ok':(s==='r'?' dimmer':''))+(SEL&&SEL.k===k&&!SEL.from?' sel':'')+'" draggable="true" data-k="'+esc(k)+'" title="'+esc(homeLabel(k))+'"><span class="dot '+s+'"></span>'+catBadge(k)+'<div class="rpm"><span class="nm">'+esc(short(p))+'</span>'+(sub?'<span class="tag">'+esc(sub)+'</span>':'')+'</div>'+ticks(k)+'<span class="pts">'+(p.men||'—')+'</span></div>'; };
   const order=(a,b)=>{ const o={g:0,y:1,r:2}; const da=o[dispo(a,J)],db=o[dispo(b,J)]; if(da!==db)return da-db; return ((BYKEY[b]||{}).men||0)-((BYKEY[a]||{}).men||0); };
   let h='';
   if(q){ const hits=D.filter(p=>nrmK(p.nom+p.pre).indexOf(q)>=0||nrmK(p.pre+p.nom).indexOf(q)>=0).map(pkey).sort(order).slice(0,20);
