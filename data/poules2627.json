@@ -1,5 +1,5 @@
 {
- "source": "Ligue IDF V.26-07-23 + CD92 v13/07/2026",
+ "source": "Ligue IDF V.26-07-23 + CD92 v13/07/2026 · renumérotation CD92 26/27 (Minh, 11/09/2026)",
  "dates": [
   "19/09/2026",
   "03/10/2026",
@@ -339,7 +339,28 @@
       "avg": 1075,
       "div": "PN Dames p2",
       "rank": 2,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLANCOURT 1",
+      "ceil": 1282,
+      "top": [
+       [
+        "Le Bourg Virginie ",
+        1329
+       ],
+       [
+        "Thauvin Romane ",
+        1322
+       ],
+       [
+        "De Cosnac Astrid ",
+        1295
+       ],
+       [
+        "Meric Marion ",
+        1183
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -423,7 +444,28 @@
       "avg": 738,
       "div": "R1 Dames p3",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "ATT XV 1",
+      "ceil": 822,
+      "top": [
+       [
+        "Butterlin Agnes ",
+        904
+       ],
+       [
+        "Chelala Clara ",
+        900
+       ],
+       [
+        "Lescaudron Florence ",
+        847
+       ],
+       [
+        "Grabiel Tuyet-Mai ",
+        639
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -435,7 +477,28 @@
       "avg": 820,
       "div": "R1 Dames p2",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "IVRY US TT 1",
+      "ceil": 868,
+      "top": [
+       [
+        "Barberi Xu Eva ",
+        1021
+       ],
+       [
+        "Fares Noélia ",
+        849
+       ],
+       [
+        "Huang Amandine ",
+        812
+       ],
+       [
+        "Huang Caroline ",
+        791
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -461,7 +524,28 @@
       "avg": 706,
       "div": "R1 Dames p3",
       "rank": 6,
-      "nm": 7
+      "nm": 7,
+      "src": "PALAISEAU US 2",
+      "ceil": 936,
+      "top": [
+       [
+        "Augier Elisa ",
+        1038
+       ],
+       [
+        "Andrieux Emilie ",
+        1030
+       ],
+       [
+        "Oliveira Cindia ",
+        902
+       ],
+       [
+        "Mertel Alexandra ",
+        774
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -473,7 +557,28 @@
       "avg": 800,
       "div": "R1 Dames p3",
       "rank": 4,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLANCOURT 2",
+      "ceil": 1134,
+      "top": [
+       [
+        "Le Bourg Virginie ",
+        1329
+       ],
+       [
+        "Thauvin Romane ",
+        1322
+       ],
+       [
+        "Lespinasse Joanne ",
+        970
+       ],
+       [
+        "Camion Chloe ",
+        914
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -485,7 +590,28 @@
       "avg": 863,
       "div": "PN Dames p2",
       "rank": 8,
-      "nm": 7
+      "nm": 7,
+      "src": "SQY PING 2",
+      "ceil": 1087,
+      "top": [
+       [
+        "Chiri Bissan ",
+        1148
+       ],
+       [
+        "Moingeon Claire ",
+        1143
+       ],
+       [
+        "Lacerda Rodrigues Lethicia ",
+        1100
+       ],
+       [
+        "Bessette Aurore ",
+        957
+       ]
+      ],
+      "mvt": "descendu"
      }
     }
    ],
@@ -562,7 +688,28 @@
       "avg": 1695,
       "div": "R2 M p6",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "LEVALLOIS SPORT 6",
+      "ceil": 1823,
+      "top": [
+       [
+        "Bakx Djen ",
+        2023
+       ],
+       [
+        "Catherine Valentin ",
+        1816
+       ],
+       [
+        "Le Metter Theophile ",
+        1728
+       ],
+       [
+        "Siramy Benoit ",
+        1726
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -574,7 +721,28 @@
       "avg": 1418,
       "div": "R2 M p4",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLANCOURT 3",
+      "ceil": 1684,
+      "top": [
+       [
+        "Zhao Antoine ",
+        1811
+       ],
+       [
+        "Tard Gregory ",
+        1679
+       ],
+       [
+        "Martinod Thomas ",
+        1636
+       ],
+       [
+        "Gontard Nicolas ",
+        1608
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -586,7 +754,28 @@
       "avg": 1756,
       "div": "R2 M p8",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "JOSASSIEN TT 1",
+      "ceil": 1756,
+      "top": [
+       [
+        "Montmeat Florian ",
+        1900
+       ],
+       [
+        "Gadelle Alexis ",
+        1792
+       ],
+       [
+        "Richard Franck ",
+        1758
+       ],
+       [
+        "Chamont Florent ",
+        1575
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -684,7 +873,28 @@
       "avg": 1478,
       "div": "R2 M p1",
       "rank": 6,
-      "nm": 7
+      "nm": 7,
+      "src": "MENUCOURT 1",
+      "ceil": 1531,
+      "top": [
+       [
+        "Boudet Sebastien ",
+        1570
+       ],
+       [
+        "Carlier Niels ",
+        1543
+       ],
+       [
+        "Lasseaux Mickael ",
+        1542
+       ],
+       [
+        "Wilkie-Chancellier Simon ",
+        1470
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -696,7 +906,28 @@
       "avg": 1406,
       "div": "R3 M p16",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "LAGNY SMTT 1",
+      "ceil": 1575,
+      "top": [
+       [
+        "Pereira Louis ",
+        1622
+       ],
+       [
+        "Delcambre Bicard Thomas ",
+        1585
+       ],
+       [
+        "Gicquel Erwann ",
+        1555
+       ],
+       [
+        "Charlot Sebastien ",
+        1539
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -708,7 +939,28 @@
       "avg": 1385,
       "div": "R3 M p11",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLANCOURT 4",
+      "ceil": 1506,
+      "top": [
+       [
+        "Schuller Eric ",
+        1600
+       ],
+       [
+        "Louet Sebastien ",
+        1523
+       ],
+       [
+        "De Monval Axel ",
+        1489
+       ],
+       [
+        "Bouche Thomas ",
+        1414
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -720,7 +972,28 @@
       "avg": 1629,
       "div": "R2 M p3",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "CHESNAY 78 AS 4",
+      "ceil": 1640,
+      "top": [
+       [
+        "Betito Pierre ",
+        1745
+       ],
+       [
+        "Serehen Eddy ",
+        1685
+       ],
+       [
+        "Riouall-Loron Mathis ",
+        1616
+       ],
+       [
+        "Closon Timothée ",
+        1512
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -732,7 +1005,28 @@
       "avg": 1625,
       "div": "R2 M p1",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "THIAIS AS TT 3",
+      "ceil": 1907,
+      "top": [
+       [
+        "Ribeiro Julien ",
+        2014
+       ],
+       [
+        "Ghinda Mihai ",
+        1959
+       ],
+       [
+        "Messarra Maxime ",
+        1836
+       ],
+       [
+        "Germain Pierre Mathieu ",
+        1820
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -744,7 +1038,28 @@
       "avg": 1507,
       "div": "R2 M p8",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "VERSAILLES SCTT 3",
+      "ceil": 1852,
+      "top": [
+       [
+        "Monga Adrien ",
+        2050
+       ],
+       [
+        "Miyake Taira ",
+        1978
+       ],
+       [
+        "Doineau Lucas ",
+        1707
+       ],
+       [
+        "Chadelaud Jovan ",
+        1672
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -763,7 +1078,28 @@
       "avg": 1632,
       "div": "R2 M p2",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "PARIS IX ATT 2",
+      "ceil": 1670,
+      "top": [
+       [
+        "Johnson Maxime ",
+        1740
+       ],
+       [
+        "Leger Louis ",
+        1705
+       ],
+       [
+        "Dalmont Victor ",
+        1675
+       ],
+       [
+        "Prioul Corentin ",
+        1560
+       ]
+      ],
+      "mvt": null
      }
     }
    ],
@@ -847,7 +1183,28 @@
       "avg": 1364,
       "div": "R3 M p13",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "VITRY ES 1",
+      "ceil": 1384,
+      "top": [
+       [
+        "Ta Pascal ",
+        1454
+       ],
+       [
+        "Le Bozec Robin ",
+        1387
+       ],
+       [
+        "Piton Nolann ",
+        1359
+       ],
+       [
+        "Banh Eric ",
+        1335
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -859,7 +1216,28 @@
       "avg": 1454,
       "div": "R3 M p1",
       "rank": 6,
-      "nm": 7
+      "nm": 7,
+      "src": "PING PARIS 14 1",
+      "ceil": 1550,
+      "top": [
+       [
+        "Perez Pierre ",
+        1618
+       ],
+       [
+        "Lieutaud Antoine ",
+        1555
+       ],
+       [
+        "Lafleur Paul ",
+        1515
+       ],
+       [
+        "Serraille Baptiste ",
+        1510
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -871,7 +1249,28 @@
       "avg": 1142,
       "div": "R3 M p14",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "VINCENNOIS TT 2",
+      "ceil": 1789,
+      "top": [
+       [
+        "De Vito Simone ",
+        2000
+       ],
+       [
+        "Midol-Monnet Mathieu ",
+        1977
+       ],
+       [
+        "Dumontier Mathieu ",
+        1650
+       ],
+       [
+        "Tran Alexandre ",
+        1529
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -883,7 +1282,28 @@
       "avg": 1333,
       "div": "R3 M p7",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "PONTAULT UMS TT 5",
+      "ceil": 1440,
+      "top": [
+       [
+        "Lefevre Thomas ",
+        1519
+       ],
+       [
+        "Chargueraud Justin ",
+        1512
+       ],
+       [
+        "Guillard Titouan ",
+        1421
+       ],
+       [
+        "Pedrosa Ferreira Raphael ",
+        1310
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -895,7 +1315,28 @@
       "avg": 1431,
       "div": "R3 M p4",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLANCOURT 5",
+      "ceil": 1553,
+      "top": [
+       [
+        "Tard Gregory ",
+        1679
+       ],
+       [
+        "Janus Krzysztof ",
+        1614
+       ],
+       [
+        "Le Fanic Ronan ",
+        1527
+       ],
+       [
+        "Suede Samuel ",
+        1393
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -907,7 +1348,28 @@
       "avg": 1421,
       "div": "R2 M p5",
       "rank": 6,
-      "nm": 7
+      "nm": 7,
+      "src": "STAINS ES-PIERREFITTE AS 1",
+      "ceil": 1720,
+      "top": [
+       [
+        "Chopineaux Alexandre ",
+        1878
+       ],
+       [
+        "Perovic Stevan ",
+        1863
+       ],
+       [
+        "Khodja Kamel ",
+        1631
+       ],
+       [
+        "Ponnin Alex ",
+        1509
+       ]
+      ],
+      "mvt": "descendu"
      }
     }
    ],
@@ -977,7 +1439,28 @@
       "avg": 596,
       "div": "PR Dames (92) p1",
       "rank": 4,
-      "nm": 6
+      "nm": 6,
+      "src": "CLAMART CSM 1",
+      "ceil": 758,
+      "top": [
+       [
+        "Martin Benvenuto Clara ",
+        1018
+       ],
+       [
+        "Herrouin Lena ",
+        738
+       ],
+       [
+        "Holtz Beatrice ",
+        645
+       ],
+       [
+        "Laclau Charlotte ",
+        633
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -989,7 +1472,28 @@
       "avg": 632,
       "div": "PR Dames (92) p1",
       "rank": 3,
-      "nm": 6
+      "nm": 6,
+      "src": "RUEIL ATHLETIC 3",
+      "ceil": 715,
+      "top": [
+       [
+        "Malheiro Da Silva Lea ",
+        767
+       ],
+       [
+        "Winne Laetitia ",
+        722
+       ],
+       [
+        "Tisserand Hermine ",
+        690
+       ],
+       [
+        "Masson Lucile ",
+        681
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1001,7 +1505,28 @@
       "avg": 644,
       "div": "PR Dames (92) p2",
       "rank": 2,
-      "nm": 6
+      "nm": 6,
+      "src": "TTMC CHATILLON  2",
+      "ceil": 674,
+      "top": [
+       [
+        "Tran Laura ",
+        713
+       ],
+       [
+        "Carvalho Nathalie ",
+        691
+       ],
+       [
+        "Quintric Axelle ",
+        654
+       ],
+       [
+        "Ferreira Julia ",
+        637
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1013,7 +1538,28 @@
       "avg": 503,
       "div": "PR Dames (92) p2",
       "rank": 5,
-      "nm": 6
+      "nm": 6,
+      "src": "Courbevoie STT 5",
+      "ceil": 516,
+      "top": [
+       [
+        "Tang Yu ",
+        539
+       ],
+       [
+        "Descroix Lucie ",
+        524
+       ],
+       [
+        "Fouco Florence ",
+        500
+       ],
+       [
+        "Colin De Verdiere Maylis ",
+        500
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1025,7 +1571,28 @@
       "avg": 516,
       "div": "PR Dames (92) p1",
       "rank": 7,
-      "nm": 6
+      "nm": 6,
+      "src": "NANTERRE ES (1)",
+      "ceil": 532,
+      "top": [
+       [
+        "Clairet Christelle ",
+        607
+       ],
+       [
+        "Demay Laurence ",
+        519
+       ],
+       [
+        "Vu Than Elisabeth ",
+        502
+       ],
+       [
+        "Darnaux Victoire ",
+        502
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1044,7 +1611,28 @@
       "avg": 534,
       "div": "PR Dames (92) p1",
       "rank": 6,
-      "nm": 6
+      "nm": 6,
+      "src": "BOULOGNE BILLAN 3",
+      "ceil": 618,
+      "top": [
+       [
+        "Avedissian Muriel ",
+        731
+       ],
+       [
+        "Admi Johara ",
+        636
+       ],
+       [
+        "Aubry Claire ",
+        578
+       ],
+       [
+        "Mikami Monique ",
+        528
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1121,7 +1709,28 @@
       "avg": 1142,
       "div": "PR (92) p3",
       "rank": 7,
-      "nm": 7
+      "nm": 7,
+      "src": "BOIS COLOMBES S 4",
+      "ceil": 1498,
+      "top": [
+       [
+        "Legrand Vincent ",
+        1703
+       ],
+       [
+        "Chaudoreille Thomas ",
+        1597
+       ],
+       [
+        "Boucher Christophe ",
+        1364
+       ],
+       [
+        "Boitel Théo ",
+        1330
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1133,7 +1742,28 @@
       "avg": 1169,
       "div": "PR (92) p3",
       "rank": 4,
-      "nm": 7
+      "nm": 7,
+      "src": "CLAMART CSM 4",
+      "ceil": 1310,
+      "top": [
+       [
+        "Monjo Luc ",
+        1419
+       ],
+       [
+        "Moreaux Dimitri ",
+        1330
+       ],
+       [
+        "Prud'Homme Leo ",
+        1300
+       ],
+       [
+        "Elie Dit Cosaque Olivier ",
+        1193
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1145,7 +1775,28 @@
       "avg": 1015,
       "div": "PR (92) p2",
       "rank": 6,
-      "nm": 7
+      "nm": 7,
+      "src": "TTMC CHATILLON  5",
+      "ceil": 1457,
+      "top": [
+       [
+        "Soulas Alexis ",
+        1606
+       ],
+       [
+        "Muresan Florin ",
+        1519
+       ],
+       [
+        "Brenot Jeanne ",
+        1355
+       ],
+       [
+        "Gree Eric ",
+        1347
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1157,7 +1808,28 @@
       "avg": 1186,
       "div": "PR (92) p4",
       "rank": 2,
-      "nm": 7
+      "nm": 7,
+      "src": "CLICHY CS 1",
+      "ceil": 1239,
+      "top": [
+       [
+        "Vallet Corentin ",
+        1459
+       ],
+       [
+        "Spronck Loup ",
+        1286
+       ],
+       [
+        "Corad Johann ",
+        1206
+       ],
+       [
+        "Petrilli Alexandre ",
+        1004
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1169,7 +1841,28 @@
       "avg": 1322,
       "div": "PR (92) p1",
       "rank": 2,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLAN 9",
+      "ceil": 1492,
+      "top": [
+       [
+        "Berrichi Ilyes ",
+        1597
+       ],
+       [
+        "Janus Tomasz ",
+        1552
+       ],
+       [
+        "De Monval Axel ",
+        1489
+       ],
+       [
+        "Le Bourg Virginie ",
+        1329
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1181,7 +1874,28 @@
       "avg": 865,
       "div": "D1 (92) p1",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "LEVALLOIS SPORT 14",
+      "ceil": 1102,
+      "top": [
+       [
+        "Rabinand Paul ",
+        1777
+       ],
+       [
+        "Hou Hédi ",
+        914
+       ],
+       [
+        "Cai Victor ",
+        898
+       ],
+       [
+        "Pomares Jules ",
+        818
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -1193,7 +1907,28 @@
       "avg": 1254,
       "div": "PR (92) p2",
       "rank": 2,
-      "nm": 7
+      "nm": 7,
+      "src": "NEUILLY ASPN 4",
+      "ceil": 1288,
+      "top": [
+       [
+        "Amadoru Chamod ",
+        1312
+       ],
+       [
+        "Dulou Ethan ",
+        1307
+       ],
+       [
+        "Gaitan-Aparicio Thomas ",
+        1276
+       ],
+       [
+        "Ferreira Dos Santos Tomas ",
+        1256
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1205,7 +1940,28 @@
       "avg": 974,
       "div": "D1 (92) p2",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "ISSEENNE E P 4",
+      "ceil": 1175,
+      "top": [
+       [
+        "Kosiak Fabrice ",
+        1586
+       ],
+       [
+        "Gisson Anthony ",
+        1129
+       ],
+       [
+        "Brossard Antonin ",
+        1043
+       ],
+       [
+        "Victorien Dalil ",
+        943
+       ]
+      ],
+      "mvt": "promu"
      }
     }
    ],
@@ -1275,7 +2031,28 @@
       "avg": 1192,
       "div": "PR (92) p4",
       "rank": 4,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLAN 8",
+      "ceil": 1224,
+      "top": [
+       [
+        "Habert Patrick ",
+        1268
+       ],
+       [
+        "Liorzou Sebastien ",
+        1251
+       ],
+       [
+        "Limoges Ulrich ",
+        1194
+       ],
+       [
+        "Meric Marion ",
+        1183
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1287,7 +2064,28 @@
       "avg": 1118,
       "div": "PR (92) p1",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "ASNIERES TT 4",
+      "ceil": 1230,
+      "top": [
+       [
+        "Pacreau Gerard ",
+        1302
+       ],
+       [
+        "Mineo Jean-René ",
+        1254
+       ],
+       [
+        "Hastings Vianney ",
+        1205
+       ],
+       [
+        "Sprecacenere Cyril ",
+        1160
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1299,7 +2097,28 @@
       "avg": 1152,
       "div": "PR (92) p3",
       "rank": 6,
-      "nm": 7
+      "nm": 7,
+      "src": "TTMC CHATILLON  6",
+      "ceil": 1297,
+      "top": [
+       [
+        "Chalaux Thomas ",
+        1516
+       ],
+       [
+        "Gree Eric ",
+        1347
+       ],
+       [
+        "Balu Arthur ",
+        1195
+       ],
+       [
+        "Houssin Christophe ",
+        1129
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1311,7 +2130,28 @@
       "avg": 1145,
       "div": "PR (92) p2",
       "rank": 4,
-      "nm": 7
+      "nm": 7,
+      "src": "COURBEVOIE STT 9",
+      "ceil": 1485,
+      "top": [
+       [
+        "Delorme Thibault ",
+        1662
+       ],
+       [
+        "Mazerat Hugo ",
+        1474
+       ],
+       [
+        "Marchand Romain ",
+        1404
+       ],
+       [
+        "Bentolila Laurent ",
+        1401
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1323,7 +2163,28 @@
       "avg": 1187,
       "div": "D1 (92) p3",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "SM MONTROUGE  3",
+      "ceil": 1349,
+      "top": [
+       [
+        "Wilson Rene-Claude ",
+        1706
+       ],
+       [
+        "Obam Nicolas ",
+        1287
+       ],
+       [
+        "Chartin Benoit ",
+        1225
+       ],
+       [
+        "Chaline Lucas ",
+        1177
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -1335,7 +2196,28 @@
       "avg": 964,
       "div": "D1 (92) p5",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "MALAKOFF USM 4",
+      "ceil": 1234,
+      "top": [
+       [
+        "Lafont Thomas ",
+        1773
+       ],
+       [
+        "Pineau Benjamin ",
+        1192
+       ],
+       [
+        "Leonard Selim ",
+        996
+       ],
+       [
+        "Faucher Thierry ",
+        976
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -1347,7 +2229,28 @@
       "avg": 1321,
       "div": "PR (92) p3",
       "rank": 2,
-      "nm": 7
+      "nm": 7,
+      "src": "RUEIL ATHLETIC 6",
+      "ceil": 1427,
+      "top": [
+       [
+        "Beaumont Guillaume ",
+        1512
+       ],
+       [
+        "Ricart Franck ",
+        1445
+       ],
+       [
+        "Lopes Andre ",
+        1433
+       ],
+       [
+        "De Rozario Fabien ",
+        1318
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1359,7 +2262,28 @@
       "avg": 1061,
       "div": "PR (92) p4",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "SCEAUX T.T. 2",
+      "ceil": 1310,
+      "top": [
+       [
+        "Woliner Romain ",
+        1406
+       ],
+       [
+        "Hervy Jean-Marc ",
+        1300
+       ],
+       [
+        "Piolot Gaetan ",
+        1272
+       ],
+       [
+        "Benoist Samuel ",
+        1264
+       ]
+      ],
+      "mvt": null
      }
     }
    ],
@@ -1429,7 +2353,28 @@
       "avg": 1000,
       "div": "D2 (92) p4",
       "rank": 1,
-      "nm": 6
+      "nm": 6,
+      "src": "MEUDON AS 4",
+      "ceil": 1148,
+      "top": [
+       [
+        "Pruvost Laurent ",
+        1897
+       ],
+       [
+        "Jumeau Cyril ",
+        954
+       ],
+       [
+        "Giret Bruno ",
+        876
+       ],
+       [
+        "Boutry Joanna ",
+        867
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -1441,7 +2386,28 @@
       "avg": 903,
       "div": "D1 (92) p3",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "PLESSIS ROBINS. 4",
+      "ceil": 944,
+      "top": [
+       [
+        "Peralta Raphael ",
+        1004
+       ],
+       [
+        "Soares Julien ",
+        964
+       ],
+       [
+        "Lebrun Clement ",
+        962
+       ],
+       [
+        "Even Alain ",
+        847
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1453,7 +2419,28 @@
       "avg": 856,
       "div": "D1 (92) p4",
       "rank": 7,
-      "nm": 7
+      "nm": 7,
+      "src": "TTMC CHATILLON  8",
+      "ceil": 932,
+      "top": [
+       [
+        "Renou Gilles ",
+        1053
+       ],
+       [
+        "Hedjal Thibaut ",
+        995
+       ],
+       [
+        "Violas Noé ",
+        852
+       ],
+       [
+        "Bousquet Gabriel ",
+        829
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1465,7 +2452,28 @@
       "avg": 1127,
       "div": "PR (92) p1",
       "rank": 8,
-      "nm": 7
+      "nm": 7,
+      "src": "NANTERRE ES 2",
+      "ceil": 1268,
+      "top": [
+       [
+        "Deroues Brice ",
+        1478
+       ],
+       [
+        "Bertrand Olivier ",
+        1382
+       ],
+       [
+        "Leroy Jean-Louis ",
+        1119
+       ],
+       [
+        "Serot Quentin ",
+        1091
+       ]
+      ],
+      "mvt": "descendu"
      }
     },
     {
@@ -1477,7 +2485,28 @@
       "avg": 841,
       "div": "D1 (92) p2",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "SM MONTROUGE  1",
+      "ceil": 1203,
+      "top": [
+       [
+        "Obam Nicolas ",
+        1287
+       ],
+       [
+        "Chartin Benoit ",
+        1225
+       ],
+       [
+        "Chaline Lucas ",
+        1177
+       ],
+       [
+        "Gaillard Thomas ",
+        1122
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1489,7 +2518,28 @@
       "avg": 908,
       "div": "D1 (92) p3",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLAN 10",
+      "ceil": 1295,
+      "top": [
+       [
+        "Schuller Eric ",
+        1600
+       ],
+       [
+        "Janus Tomasz ",
+        1552
+       ],
+       [
+        "Diab Boustani Evan ",
+        1076
+       ],
+       [
+        "Perrot Charles ",
+        953
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1501,7 +2551,28 @@
       "avg": 826,
       "div": "D1 (92) p2",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "STADE DE VANVES 1",
+      "ceil": 862,
+      "top": [
+       [
+        "Yang Axel ",
+        1040
+       ],
+       [
+        "Drouineau Theo ",
+        911
+       ],
+       [
+        "Vinant Pierre ",
+        763
+       ],
+       [
+        "Yang Izac ",
+        736
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1513,7 +2584,28 @@
       "avg": 725,
       "div": "D2 (92) p9",
       "rank": 2,
-      "nm": 6
+      "nm": 6,
+      "src": "ISSEENNE E P 7",
+      "ceil": 905,
+      "top": [
+       [
+        "Rayes Aymen ",
+        1270
+       ],
+       [
+        "Ple Julien ",
+        862
+       ],
+       [
+        "Ip Fon Young Mathieu ",
+        759
+       ],
+       [
+        "Tosolini Pierre ",
+        729
+       ]
+      ],
+      "mvt": "promu"
      }
     }
    ],
@@ -1583,7 +2675,28 @@
       "avg": 718,
       "div": "D2 (92) p3",
       "rank": 1,
-      "nm": 6
+      "nm": 6,
+      "src": "PUTEAUX TT CSM 3",
+      "ceil": 824,
+      "top": [
+       [
+        "Blondel Yanis ",
+        899
+       ],
+       [
+        "Hayon Kevin ",
+        840
+       ],
+       [
+        "Olympio Francisco ",
+        810
+       ],
+       [
+        "Percio Valentina ",
+        746
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -1595,7 +2708,28 @@
       "avg": 1142,
       "div": "PR (92) p4",
       "rank": 8,
-      "nm": 7
+      "nm": 7,
+      "src": "ASNIERES TT 5",
+      "ceil": 1324,
+      "top": [
+       [
+        "Loisel Serge ",
+        1371
+       ],
+       [
+        "Leroy Eric ",
+        1358
+       ],
+       [
+        "Lagarde Maxence ",
+        1293
+       ],
+       [
+        "Viguier Vincent ",
+        1272
+       ]
+      ],
+      "mvt": "descendu"
      }
     },
     {
@@ -1607,7 +2741,28 @@
       "avg": 825,
       "div": "D2 (92) p2",
       "rank": 1,
-      "nm": 6
+      "nm": 6,
+      "src": "RUEIL ATHLETIC 11",
+      "ceil": 901,
+      "top": [
+       [
+        "Piriou Olivier ",
+        1255
+       ],
+       [
+        "Rebot Alain ",
+        834
+       ],
+       [
+        "Riotte Vincent ",
+        788
+       ],
+       [
+        "Covo Arthur ",
+        728
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -1619,7 +2774,28 @@
       "avg": 972,
       "div": "D1 (92) p1",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "ISSEENNE E P 5",
+      "ceil": 1094,
+      "top": [
+       [
+        "Philip Marceau ",
+        1156
+       ],
+       [
+        "Deniau Alban ",
+        1107
+       ],
+       [
+        "Humeau Rodolphe ",
+        1097
+       ],
+       [
+        "Simon Philippe ",
+        1016
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1631,7 +2807,28 @@
       "avg": 939,
       "div": "D1 (92) p6",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "MEUDON AS 3",
+      "ceil": 1002,
+      "top": [
+       [
+        "Hajj Chehade Tammam ",
+        1061
+       ],
+       [
+        "Brkic Jules ",
+        1014
+       ],
+       [
+        "Bajon Celia ",
+        977
+       ],
+       [
+        "Jumeau Cyril ",
+        954
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1643,7 +2840,28 @@
       "avg": 943,
       "div": "D1 (92) p2",
       "rank": 7,
-      "nm": 7
+      "nm": 7,
+      "src": "PLESSIS ROBINS. 3",
+      "ceil": 1004,
+      "top": [
+       [
+        "Roussel Mickael ",
+        1096
+       ],
+       [
+        "Duhayon Pierre ",
+        1090
+       ],
+       [
+        "Saber Franck ",
+        938
+       ],
+       [
+        "Laboulbene David ",
+        891
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1655,7 +2873,28 @@
       "avg": 966,
       "div": "D1 (92) p4",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLAN 11",
+      "ceil": 1257,
+      "top": [
+       [
+        "Crenn-Aldea Julien ",
+        1365
+       ],
+       [
+        "Morel Julien ",
+        1332
+       ],
+       [
+        "Prudent Christian ",
+        1195
+       ],
+       [
+        "Aubert Richard ",
+        1135
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1667,7 +2906,28 @@
       "avg": 852,
       "div": "D1 (92) p6",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "BOURG LA REINE  2",
+      "ceil": 896,
+      "top": [
+       [
+        "Espitalier Achille ",
+        963
+       ],
+       [
+        "Thibaut Christophe ",
+        948
+       ],
+       [
+        "Barbault Matthieu ",
+        853
+       ],
+       [
+        "Parent Lionel ",
+        819
+       ]
+      ],
+      "mvt": null
      }
     }
    ],
@@ -1737,7 +2997,34 @@
       "avg": 875,
       "div": "D1 (92) p5",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "BOIS COLOMBES S 8",
+      "ceil": 1384,
+      "top": [
+       [
+        "De Lardemelle Clément ",
+        1629
+       ],
+       [
+        "Boucher Christophe ",
+        1364
+       ],
+       [
+        "Enjolras Guillaume ",
+        1284
+       ],
+       [
+        "Bertomeu Arnaud ",
+        1259
+       ]
+      ],
+      "mvt": null,
+      "ceil_team": 1122,
+      "vivier": [
+       "BOIS COLOMBES S 6",
+       "BOIS COLOMBES S 7",
+       "BOIS COLOMBES S 8"
+      ]
      }
     },
     {
@@ -1749,7 +3036,28 @@
       "avg": 1049,
       "div": "D1 (92) p6",
       "rank": 2,
-      "nm": 7
+      "nm": 7,
+      "src": "PLESSIS ROBINS. 2",
+      "ceil": 1166,
+      "top": [
+       [
+        "Cariou Romain ",
+        1337
+       ],
+       [
+        "Lebrun Gregoire ",
+        1152
+       ],
+       [
+        "Fontaine Kevin ",
+        1095
+       ],
+       [
+        "Calvie Laurent ",
+        1081
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1761,7 +3069,28 @@
       "avg": 650,
       "div": "D2 (92) p7",
       "rank": 1,
-      "nm": 6
+      "nm": 6,
+      "src": "AS FONTENAY TT 1",
+      "ceil": 993,
+      "top": [
+       [
+        "Noamane Sofiane ",
+        1144
+       ],
+       [
+        "Berthier Etienne ",
+        1083
+       ],
+       [
+        "Deberthe Denis ",
+        906
+       ],
+       [
+        "Le Manchec Gopal ",
+        838
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -1773,7 +3102,28 @@
       "avg": 975,
       "div": "D1 (92) p5",
       "rank": 6,
-      "nm": 7
+      "nm": 7,
+      "src": "CHATENAY ASVTT 4",
+      "ceil": 1160,
+      "top": [
+       [
+        "Huveau Noah ",
+        1283
+       ],
+       [
+        "Bisson Tom ",
+        1251
+       ],
+       [
+        "Julian Alexandre ",
+        1076
+       ],
+       [
+        "Cochin Nolan ",
+        1028
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1785,7 +3135,28 @@
       "avg": 989,
       "div": "PR (92) p3",
       "rank": 8,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLAN 6",
+      "ceil": 1094,
+      "top": [
+       [
+        "Grandjean Guillaume ",
+        1145
+       ],
+       [
+        "Boiteau Jean-Serge ",
+        1133
+       ],
+       [
+        "Feret Hedi ",
+        1065
+       ],
+       [
+        "Li Max ",
+        1032
+       ]
+      ],
+      "mvt": "descendu"
      }
     },
     {
@@ -1797,7 +3168,28 @@
       "avg": 968,
       "div": "D1 (92) p4",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "LEVALLOIS SPORT 12",
+      "ceil": 1238,
+      "top": [
+       [
+        "Seletzky Marc-David ",
+        1596
+       ],
+       [
+        "Benichou Eric ",
+        1184
+       ],
+       [
+        "Gourlay Vincent ",
+        1132
+       ],
+       [
+        "Guespin Eliot ",
+        1041
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1809,7 +3201,28 @@
       "avg": 768,
       "div": "D2 (92) p1",
       "rank": 1,
-      "nm": 6
+      "nm": 6,
+      "src": "RUEIL ATHLETIC 10",
+      "ceil": 811,
+      "top": [
+       [
+        "Vieyra Hubert Evariste ",
+        916
+       ],
+       [
+        "Wasilewski Steve ",
+        791
+       ],
+       [
+        "Gautier Brice ",
+        773
+       ],
+       [
+        "Battistel Xavier ",
+        763
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -1821,7 +3234,28 @@
       "avg": 950,
       "div": "D1 (92) p4",
       "rank": 4,
-      "nm": 7
+      "nm": 7,
+      "src": "SCEAUX T.T. 3",
+      "ceil": 1032,
+      "top": [
+       [
+        "Frolov Ilya ",
+        1076
+       ],
+       [
+        "Leprince Thomas ",
+        1035
+       ],
+       [
+        "Goron Julien ",
+        1034
+       ],
+       [
+        "Krol Fabien ",
+        981
+       ]
+      ],
+      "mvt": null
      }
     }
    ],
@@ -1891,7 +3325,34 @@
       "avg": 784,
       "div": "D1 (92) p2",
       "rank": 4,
-      "nm": 7
+      "nm": 7,
+      "src": "BOIS COLOMBES S 6",
+      "ceil": 1384,
+      "top": [
+       [
+        "De Lardemelle Clément ",
+        1629
+       ],
+       [
+        "Boucher Christophe ",
+        1364
+       ],
+       [
+        "Enjolras Guillaume ",
+        1284
+       ],
+       [
+        "Bertomeu Arnaud ",
+        1259
+       ]
+      ],
+      "mvt": null,
+      "ceil_team": 1082,
+      "vivier": [
+       "BOIS COLOMBES S 6",
+       "BOIS COLOMBES S 7",
+       "BOIS COLOMBES S 8"
+      ]
      }
     },
     {
@@ -1903,7 +3364,28 @@
       "avg": 1062,
       "div": "PR (92) p2",
       "rank": 8,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLAN 7",
+      "ceil": 1100,
+      "top": [
+       [
+        "Roux Yannis ",
+        1167
+       ],
+       [
+        "Bouzanne Des Mazery Stephane ",
+        1089
+       ],
+       [
+        "Gautier Olivier ",
+        1084
+       ],
+       [
+        "Peigne Gilles ",
+        1059
+       ]
+      ],
+      "mvt": "descendu"
      }
     },
     {
@@ -1915,7 +3397,28 @@
       "avg": 934,
       "div": "D1 (92) p5",
       "rank": 4,
-      "nm": 7
+      "nm": 7,
+      "src": "TTMC CHATILLON  7",
+      "ceil": 1140,
+      "top": [
+       [
+        "Muresan Florin ",
+        1519
+       ],
+       [
+        "Billiard Julien ",
+        1100
+       ],
+       [
+        "Lecomte Antoine ",
+        978
+       ],
+       [
+        "Pascoli Benoit ",
+        961
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1927,7 +3430,28 @@
       "avg": 725,
       "div": "D2 (92) p11",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "CHATENAY ASVTT 5",
+      "ceil": 761,
+      "top": [
+       [
+        "Monteau Olivier ",
+        817
+       ],
+       [
+        "Reynaud Philippe ",
+        759
+       ],
+       [
+        "Pignot Yohann ",
+        752
+       ],
+       [
+        "Dufour Gaspard ",
+        715
+       ]
+      ],
+      "mvt": "promu"
      }
     },
     {
@@ -1939,7 +3463,28 @@
       "avg": 859,
       "div": "D1 (92) p1",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "SM MONTROUGE  2",
+      "ceil": 985,
+      "top": [
+       [
+        "Chartin Benoit ",
+        1225
+       ],
+       [
+        "Fle Nicolas ",
+        917
+       ],
+       [
+        "Legrand Stephane ",
+        900
+       ],
+       [
+        "Long Quoc-Tien ",
+        897
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1951,7 +3496,28 @@
       "avg": 859,
       "div": "D1 (92) p6",
       "rank": 6,
-      "nm": 7
+      "nm": 7,
+      "src": "LEVALLOIS SPORT 13",
+      "ceil": 1118,
+      "top": [
+       [
+        "Stein Thomas ",
+        1371
+       ],
+       [
+        "Maria Merlin ",
+        1119
+       ],
+       [
+        "Schelz Stephane ",
+        1066
+       ],
+       [
+        "Hou Hédi ",
+        914
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1963,7 +3529,28 @@
       "avg": 1090,
       "div": "D1 (92) p4",
       "rank": 2,
-      "nm": 7
+      "nm": 7,
+      "src": "RUEIL ATHLETIC 8",
+      "ceil": 1164,
+      "top": [
+       [
+        "Le Frapper Romuald ",
+        1278
+       ],
+       [
+        "Ibrahim Antoine ",
+        1176
+       ],
+       [
+        "Claveau Christophe ",
+        1163
+       ],
+       [
+        "Caviale Laurent ",
+        1041
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -1975,7 +3562,28 @@
       "avg": 815,
       "div": "D2 (92) p10",
       "rank": 1,
-      "nm": 7
+      "nm": 7,
+      "src": "NANTERRE ES 3",
+      "ceil": 872,
+      "top": [
+       [
+        "Peter Paul ",
+        934
+       ],
+       [
+        "Salaun Pierre ",
+        878
+       ],
+       [
+        "Cado Christophe ",
+        858
+       ],
+       [
+        "Mauratille Vincent ",
+        820
+       ]
+      ],
+      "mvt": "promu"
      }
     }
    ],
@@ -2045,7 +3653,28 @@
       "avg": 601,
       "div": "D2 (92) p10",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLAN 15",
+      "ceil": 634,
+      "top": [
+       [
+        "Admi Johara ",
+        636
+       ],
+       [
+        "Laine Guillaume ",
+        634
+       ],
+       [
+        "De Bonnechose Isabelle ",
+        634
+       ],
+       [
+        "Ma Qi ",
+        633
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2057,7 +3686,28 @@
       "avg": 516,
       "div": "D2 (92) p10",
       "rank": 7,
-      "nm": 7
+      "nm": 7,
+      "src": "MALAKOFF USM 6",
+      "ceil": 558,
+      "top": [
+       [
+        "Leger Renaud Alexandre ",
+        616
+       ],
+       [
+        "Jakubowicz Jeremie ",
+        582
+       ],
+       [
+        "Chen Emily ",
+        533
+       ],
+       [
+        "Clement Marceau ",
+        502
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2069,7 +3719,28 @@
       "avg": 756,
       "div": "D2 (92) p9",
       "rank": 3,
-      "nm": 6
+      "nm": 6,
+      "src": "RUEIL ATHLETIC 13",
+      "ceil": 768,
+      "top": [
+       [
+        "Graffeille Emmanuel ",
+        811
+       ],
+       [
+        "Preux Jean-Francois ",
+        781
+       ],
+       [
+        "Lewis Bernard ",
+        743
+       ],
+       [
+        "Boufadel Emile ",
+        737
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2081,7 +3752,28 @@
       "avg": 649,
       "div": "D2 (92) p4",
       "rank": 3,
-      "nm": 6
+      "nm": 6,
+      "src": "Courbevoie STT 13",
+      "ceil": 733,
+      "top": [
+       [
+        "Laniewski Wojciech ",
+        833
+       ],
+       [
+        "Auville Laurent ",
+        738
+       ],
+       [
+        "Ferrer Frederic ",
+        691
+       ],
+       [
+        "Said Mohamed Seif ",
+        671
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2093,7 +3785,28 @@
       "avg": 871,
       "div": "D1 (92) p5",
       "rank": 7,
-      "nm": 7
+      "nm": 7,
+      "src": "ANTONY SPORT TT 5",
+      "ceil": 957,
+      "top": [
+       [
+        "Foucher Alix ",
+        1204
+       ],
+       [
+        "Thominot Fabrice ",
+        932
+       ],
+       [
+        "Gein Julien ",
+        865
+       ],
+       [
+        "Msolli Wajdy ",
+        828
+       ]
+      ],
+      "mvt": "descendu"
      }
     },
     {
@@ -2105,7 +3818,28 @@
       "avg": 513,
       "div": "D2 (92) p2",
       "rank": 7,
-      "nm": 6
+      "nm": 6,
+      "src": "PLESSIS ROBINS. 5",
+      "ceil": 515,
+      "top": [
+       [
+        "Azoulay Frederic ",
+        545
+       ],
+       [
+        "Aler Christian ",
+        514
+       ],
+       [
+        "Vigogne Pascal ",
+        500
+       ],
+       [
+        "Ciocan Grigore ",
+        500
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2117,7 +3851,28 @@
       "avg": 634,
       "div": "D2 (92) p11",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "NEUILLY ASPN 11",
+      "ceil": 728,
+      "top": [
+       [
+        "Petoton Louis ",
+        766
+       ],
+       [
+        "Picovsky Marc ",
+        737
+       ],
+       [
+        "Cabral Marco ",
+        719
+       ],
+       [
+        "L Eleu De La Simone Antoine ",
+        688
+       ]
+      ],
+      "mvt": null
      }
     }
    ],
@@ -2194,7 +3949,28 @@
       "avg": 506,
       "div": "D2 (92) p4",
       "rank": 6,
-      "nm": 6
+      "nm": 6,
+      "src": "BOULOGNE BILLAN 17",
+      "ceil": 534,
+      "top": [
+       [
+        "De Bonnechose Isabelle ",
+        634
+       ],
+       [
+        "Latimier Guillaume ",
+        500
+       ],
+       [
+        "Kath Julian ",
+        500
+       ],
+       [
+        "Bauby Marc ",
+        500
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2206,7 +3982,28 @@
       "avg": 627,
       "div": "D2 (92) p8",
       "rank": 4,
-      "nm": 7
+      "nm": 7,
+      "src": "COLOMBIENNE ES 4",
+      "ceil": 681,
+      "top": [
+       [
+        "Langevin Antoine ",
+        741
+       ],
+       [
+        "Moszkowicz David ",
+        705
+       ],
+       [
+        "Chaillot Thomas ",
+        663
+       ],
+       [
+        "Lozach Antoine ",
+        616
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2218,7 +4015,28 @@
       "avg": 541,
       "div": "D2 (92) p11",
       "rank": 7,
-      "nm": 7
+      "nm": 7,
+      "src": "Courbevoie STT 15",
+      "ceil": 553,
+      "top": [
+       [
+        "Lancelot Maxime ",
+        592
+       ],
+       [
+        "Chealy Ratha ",
+        577
+       ],
+       [
+        "Maugeri Pascal ",
+        543
+       ],
+       [
+        "Colin De Verdiere Eric ",
+        500
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2237,7 +4055,28 @@
       "avg": 642,
       "div": "D2 (92) p1",
       "rank": 5,
-      "nm": 6
+      "nm": 6,
+      "src": "CLAMART CSM 8",
+      "ceil": 881,
+      "top": [
+       [
+        "Cavilla Romain ",
+        1207
+       ],
+       [
+        "Briere Yvonnick ",
+        812
+       ],
+       [
+        "Thomas Antoine ",
+        767
+       ],
+       [
+        "Herrouin Lena ",
+        738
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2249,7 +4088,28 @@
       "avg": 586,
       "div": "D2 (92) p7",
       "rank": 3,
-      "nm": 6
+      "nm": 6,
+      "src": "RUEIL ATHLETIC 16",
+      "ceil": 693,
+      "top": [
+       [
+        "David Franck ",
+        775
+       ],
+       [
+        "Ercoli Philippe ",
+        672
+       ],
+       [
+        "De Chateaubodeau Maxime ",
+        669
+       ],
+       [
+        "Pelvet Robin ",
+        656
+       ]
+      ],
+      "mvt": null
      }
     }
    ],
@@ -2319,7 +4179,28 @@
       "avg": 701,
       "div": "D2 (92) p12",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "ANTONY SPORT TT 6",
+      "ceil": 770,
+      "top": [
+       [
+        "Nowakowski Florent ",
+        796
+       ],
+       [
+        "Di Ponzio Ethan ",
+        788
+       ],
+       [
+        "Derrien Mael ",
+        754
+       ],
+       [
+        "Duffier Arthur ",
+        742
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2331,7 +4212,28 @@
       "avg": 586,
       "div": "D2 (92) p5",
       "rank": 7,
-      "nm": 6
+      "nm": 6,
+      "src": "VILLENEUVE LA G 1",
+      "ceil": 620,
+      "top": [
+       [
+        "Patinot Johan ",
+        908
+       ],
+       [
+        "Carton Thierry ",
+        537
+       ],
+       [
+        "Lagarde Jeremie ",
+        534
+       ],
+       [
+        "Ghelab Hamza ",
+        500
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2343,7 +4245,28 @@
       "avg": 818,
       "div": "D2 (92) p8",
       "rank": 5,
-      "nm": 6
+      "nm": 6,
+      "src": "BOULOGNE BILLAN 12",
+      "ceil": 1004,
+      "top": [
+       [
+        "Roux Yannis ",
+        1167
+       ],
+       [
+        "Savan Vuthny ",
+        960
+       ],
+       [
+        "Perrot Charles ",
+        953
+       ],
+       [
+        "Fontaine Sebastien ",
+        934
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2355,7 +4278,28 @@
       "avg": 802,
       "div": "D1 (92) p1",
       "rank": 7,
-      "nm": 7
+      "nm": 7,
+      "src": "BOURG LA REINE  3",
+      "ceil": 880,
+      "top": [
+       [
+        "Gaquer Florian ",
+        964
+       ],
+       [
+        "Szendy Olivier ",
+        896
+       ],
+       [
+        "Hoang Hong-Minh ",
+        839
+       ],
+       [
+        "Parent Lionel ",
+        819
+       ]
+      ],
+      "mvt": "descendu"
      }
     },
     {
@@ -2367,7 +4311,28 @@
       "avg": 542,
       "div": "D2 (92) p3",
       "rank": 5,
-      "nm": 6
+      "nm": 6,
+      "src": "ASNIERES TT 9",
+      "ceil": 562,
+      "top": [
+       [
+        "Beaubouchez Philippe ",
+        638
+       ],
+       [
+        "Meier Michael ",
+        572
+       ],
+       [
+        "Ibanez Hugo ",
+        526
+       ],
+       [
+        "Huet Timothey ",
+        514
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2379,7 +4344,28 @@
       "avg": 747,
       "div": "D2 (92) p10",
       "rank": 2,
-      "nm": 7
+      "nm": 7,
+      "src": "PLESSIS ROBINS. 7",
+      "ceil": 771,
+      "top": [
+       [
+        "Fichelle Francois ",
+        870
+       ],
+       [
+        "Frelon Eric ",
+        751
+       ],
+       [
+        "Francoise Philippe ",
+        741
+       ],
+       [
+        "Bernot Laurent ",
+        723
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2391,7 +4377,28 @@
       "avg": 529,
       "div": "D2 (92) p1",
       "rank": 7,
-      "nm": 6
+      "nm": 6,
+      "src": "STADE DE VANVES 2",
+      "ceil": 552,
+      "top": [
+       [
+        "Herisson Alexandre ",
+        626
+       ],
+       [
+        "Torres De Sousa Vittorio ",
+        563
+       ],
+       [
+        "Laufer Marc ",
+        519
+       ],
+       [
+        "Baduel Philippe ",
+        500
+       ]
+      ],
+      "mvt": null
      }
     }
    ],
@@ -2461,7 +4468,28 @@
       "avg": 565,
       "div": "D2 (92) p7",
       "rank": 5,
-      "nm": 6
+      "nm": 6,
+      "src": "SM MONTROUGE  4",
+      "ceil": 631,
+      "top": [
+       [
+        "Bignon Jacques ",
+        631
+       ],
+       [
+        "Paternotte Cédric ",
+        631
+       ],
+       [
+        "Liu Zhiyuan ",
+        631
+       ],
+       [
+        "Jamet Franck ",
+        630
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2473,7 +4501,28 @@
       "avg": 796,
       "div": "D1 (92) p3",
       "rank": 7,
-      "nm": 6
+      "nm": 6,
+      "src": "MALAKOFF USM 5",
+      "ceil": 862,
+      "top": [
+       [
+        "Clement Philippe ",
+        1197
+       ],
+       [
+        "Plat Xavier ",
+        846
+       ],
+       [
+        "Bichot Vincent ",
+        743
+       ],
+       [
+        "Cordeiro Jose ",
+        663
+       ]
+      ],
+      "mvt": "descendu"
      }
     },
     {
@@ -2485,7 +4534,28 @@
       "avg": 594,
       "div": "D2 (92) p12",
       "rank": 7,
-      "nm": 7
+      "nm": 7,
+      "src": "VOLTIGEURS  5",
+      "ceil": 616,
+      "top": [
+       [
+        "Bismuth Nicolas ",
+        686
+       ],
+       [
+        "Wang Hao ",
+        677
+       ],
+       [
+        "Nouchi Philippe ",
+        556
+       ],
+       [
+        "Labarre Matthieu ",
+        546
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2497,7 +4567,28 @@
       "avg": 566,
       "div": "D2 (92) p2",
       "rank": 4,
-      "nm": 6
+      "nm": 6,
+      "src": "CS Clichy TT 5",
+      "ceil": 614,
+      "top": [
+       [
+        "Massol Paul ",
+        705
+       ],
+       [
+        "Arnaud Maë ",
+        627
+       ],
+       [
+        "Crochet-Damais Lancelot ",
+        564
+       ],
+       [
+        "Timsit Lisandro ",
+        562
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2509,7 +4600,28 @@
       "avg": 602,
       "div": "D2 (92) p8",
       "rank": 7,
-      "nm": 7
+      "nm": 7,
+      "src": "BOIS COLOMBES S 10",
+      "ceil": 660,
+      "top": [
+       [
+        "Luppino Ludovic ",
+        733
+       ],
+       [
+        "Yvernay Mélanie ",
+        675
+       ],
+       [
+        "Sonnette Bruno ",
+        619
+       ],
+       [
+        "Coevoet Léon ",
+        613
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2521,7 +4633,28 @@
       "avg": 681,
       "div": "D2 (92) p11",
       "rank": 2,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLAN 13",
+      "ceil": 718,
+      "top": [
+       [
+        "Morris Jean-Baptiste ",
+        780
+       ],
+       [
+        "Avedissian Muriel ",
+        731
+       ],
+       [
+        "Benetiere Guy ",
+        709
+       ],
+       [
+        "Perron Nicolas ",
+        650
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2598,7 +4731,28 @@
       "avg": 561,
       "div": "D2 (92) p9",
       "rank": 6,
-      "nm": 7
+      "nm": 7,
+      "src": "ANTONY SPORT TT 8",
+      "ceil": 660,
+      "top": [
+       [
+        "Saudrais Nicolas ",
+        701
+       ],
+       [
+        "Ravat Jean-Loup ",
+        678
+       ],
+       [
+        "Vang Stephane ",
+        635
+       ],
+       [
+        "Pham Khai An ",
+        626
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2610,7 +4764,28 @@
       "avg": 587,
       "div": "D2 (92) p5",
       "rank": 4,
-      "nm": 6
+      "nm": 6,
+      "src": "LEVALLOIS SPORT 16",
+      "ceil": 604,
+      "top": [
+       [
+        "Mena Nicolas ",
+        691
+       ],
+       [
+        "Brunschwig Franck ",
+        624
+       ],
+       [
+        "Amedodji Kwame ",
+        586
+       ],
+       [
+        "Habian Franck ",
+        514
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2622,7 +4797,28 @@
       "avg": 572,
       "div": "D2 (92) p5",
       "rank": 3,
-      "nm": 6
+      "nm": 6,
+      "src": "BOULOGNE BILLAN 16",
+      "ceil": 639,
+      "top": [
+       [
+        "Girou Alain ",
+        730
+       ],
+       [
+        "Habert Jean-Francois ",
+        628
+       ],
+       [
+        "Kol Nicolas ",
+        615
+       ],
+       [
+        "Cinotti Pierre ",
+        583
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2634,7 +4830,28 @@
       "avg": 646,
       "div": "D2 (92) p7",
       "rank": 2,
-      "nm": 6
+      "nm": 6,
+      "src": "CHATENAY ASVTT 6",
+      "ceil": 652,
+      "top": [
+       [
+        "Tourki Soufiane ",
+        713
+       ],
+       [
+        "Kunovsky Rostislav ",
+        680
+       ],
+       [
+        "Vaniche Andre ",
+        609
+       ],
+       [
+        "Michel Jacques ",
+        608
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2646,7 +4863,28 @@
       "avg": 558,
       "div": "D2 (92) p2",
       "rank": 5,
-      "nm": 6
+      "nm": 6,
+      "src": "PUTEAUX TT CSM 5",
+      "ceil": 584,
+      "top": [
+       [
+        "Paris Pascal ",
+        622
+       ],
+       [
+        "Vidal Rémi ",
+        590
+       ],
+       [
+        "Coudoin Sébastien ",
+        573
+       ],
+       [
+        "Feyel Matthieu ",
+        552
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2665,7 +4903,28 @@
       "avg": 500,
       "div": "D2 (92) p4",
       "rank": 7,
-      "nm": 5
+      "nm": 5,
+      "src": "LA GARENNE COLO 4",
+      "ceil": 501,
+      "top": [
+       [
+        "Bertin Alexis ",
+        503
+       ],
+       [
+        "Chapelier Thierry ",
+        500
+       ],
+       [
+        "Becher Alexandre ",
+        500
+       ],
+       [
+        "Krawczyk Rafal ",
+        500
+       ]
+      ],
+      "mvt": null
      }
     }
    ],
@@ -2735,7 +4994,28 @@
       "avg": 525,
       "div": "D2 (92) p5",
       "rank": 6,
-      "nm": 6
+      "nm": 6,
+      "src": "ASNIERES TT 10",
+      "ceil": 547,
+      "top": [
+       [
+        "Marrakchi Youssef ",
+        582
+       ],
+       [
+        "Douelle Valentin ",
+        549
+       ],
+       [
+        "Vaccharezza Victor ",
+        544
+       ],
+       [
+        "Lirou Baptiste ",
+        512
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2747,7 +5027,28 @@
       "avg": 500,
       "div": "D2 (92) p7",
       "rank": 7,
-      "nm": 6
+      "nm": 6,
+      "src": "VILLENEUVE LA G 2",
+      "ceil": 500,
+      "top": [
+       [
+        "Leo Nicolas ",
+        500
+       ],
+       [
+        "Boukabous Kamel ",
+        500
+       ],
+       [
+        "Vandamme Ludovic ",
+        500
+       ],
+       [
+        "Retaud Pascal ",
+        500
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2759,7 +5060,28 @@
       "avg": 627,
       "div": "D2 (92) p12",
       "rank": 4,
-      "nm": 7
+      "nm": 7,
+      "src": "BOULOGNE BILLAN 14",
+      "ceil": 647,
+      "top": [
+       [
+        "Lespinasse Hugo ",
+        697
+       ],
+       [
+        "Cassagnou Xavier ",
+        637
+       ],
+       [
+        "De Bonnechose Isabelle ",
+        634
+       ],
+       [
+        "Agriopoulos Anastasios ",
+        620
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2771,7 +5093,28 @@
       "avg": 611,
       "div": "D2 (92) p8",
       "rank": 3,
-      "nm": 7
+      "nm": 7,
+      "src": "Courbevoie STT 14",
+      "ceil": 760,
+      "top": [
+       [
+        "Frelaut Yannick ",
+        865
+       ],
+       [
+        "Tillard Nicolas ",
+        853
+       ],
+       [
+        "Lounas Yanelle ",
+        711
+       ],
+       [
+        "Patry Luca Kai ",
+        609
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2783,7 +5126,28 @@
       "avg": 747,
       "div": "D2 (92) p1",
       "rank": 2,
-      "nm": 6
+      "nm": 6,
+      "src": "PUTEAUX TT CSM 4",
+      "ceil": 977,
+      "top": [
+       [
+        "Azoula Raphaël ",
+        1189
+       ],
+       [
+        "Seyer Guillaume ",
+        1045
+       ],
+       [
+        "Hayon Kevin ",
+        840
+       ],
+       [
+        "Jovene Pierre ",
+        833
+       ]
+      ],
+      "mvt": null
      }
     },
     {
@@ -2795,7 +5159,28 @@
       "avg": 806,
       "div": "D1 (92) p6",
       "rank": 8,
-      "nm": 7
+      "nm": 7,
+      "src": "VOLTIGEURS 2",
+      "ceil": 866,
+      "top": [
+       [
+        "Levasseur Arnaud ",
+        953
+       ],
+       [
+        "Durand Marc ",
+        882
+       ],
+       [
+        "Barbier Daniel ",
+        827
+       ],
+       [
+        "Stemler Grégoire ",
+        802
+       ]
+      ],
+      "mvt": "descendu"
      }
     },
     {
@@ -2807,7 +5192,28 @@
       "avg": 643,
       "div": "D2 (92) p12",
       "rank": 5,
-      "nm": 7
+      "nm": 7,
+      "src": "RUEIL ATHLETIC (14)",
+      "ceil": 851,
+      "top": [
+       [
+        "Piriou Olivier ",
+        1255
+       ],
+       [
+        "David Franck ",
+        775
+       ],
+       [
+        "Bailly Gregory ",
+        701
+       ],
+       [
+        "Vidal Bruno ",
+        674
+       ]
+      ],
+      "mvt": null
      }
     }
    ],

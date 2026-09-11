@@ -31,10 +31,56 @@
   "MEUDON AS 6": "MEUDON AS 5"
  },
  "mouvements": {
-  "montees_R3": ["CHATENAY ASVTT 1", "BOIS COLOMBES S 5", "SCEAUX T.T. 1", "NEUILLY ASPN 6"],
-  "descentes_R3": ["TT PLESSIS ROBINSON 1", "AS MEUDON 2"],
-  "montees_D1_vers_PR": ["ISSEENNE E P 4", "ISSEENNE E P 6", "LEVALLOIS SPORT 14", "MALAKOFF USM 4", "SM MONTROUGE 3", "NEUILLY ASPN 9"],
-  "descentes_PR_vers_D1": ["ASNIERES TT 5", "BOULOGNE BILLAN 6", "BOULOGNE BILLAN 7", "NANTERRE ES 2"],
-  "montees_D2_vers_D1": ["CHATENAY ASVTT 5", "CLICHY CS 3", "AS FONTENAY TT 1", "AS FONTENAY TT 3", "ISSEENNE E P 7", "MEUDON AS 4", "MEUDON AS 6", "NANTERRE ES 3", "PUTEAUX TT CSM 3", "RUEIL ATHLETIC 10", "RUEIL ATHLETIC 11", "RUEIL ATHLETIC 12"]
+  "montees_R3": [
+   "CHATENAY ASVTT 1",
+   "BOIS COLOMBES S 5",
+   "SCEAUX T.T. 1",
+   "NEUILLY ASPN 6"
+  ],
+  "descentes_R3": [
+   "TT PLESSIS ROBINSON 1",
+   "AS MEUDON 2"
+  ],
+  "montees_D1_vers_PR": [
+   "ISSEENNE E P 4",
+   "ISSEENNE E P 6",
+   "LEVALLOIS SPORT 14",
+   "MALAKOFF USM 4",
+   "SM MONTROUGE 3",
+   "NEUILLY ASPN 9"
+  ],
+  "descentes_PR_vers_D1": [
+   "ASNIERES TT 5",
+   "BOULOGNE BILLAN 6",
+   "BOULOGNE BILLAN 7",
+   "NANTERRE ES 2"
+  ],
+  "montees_D2_vers_D1": [
+   "CHATENAY ASVTT 5",
+   "CLICHY CS 3",
+   "AS FONTENAY TT 1",
+   "AS FONTENAY TT 3",
+   "ISSEENNE E P 7",
+   "MEUDON AS 4",
+   "MEUDON AS 6",
+   "NANTERRE ES 3",
+   "PUTEAUX TT CSM 3",
+   "RUEIL ATHLETIC 10",
+   "RUEIL ATHLETIC 11",
+   "RUEIL ATHLETIC 12"
+  ]
+ },
+ "vivier": {
+  "_note": "plafond d'une équipe 26/27 = 4 meilleurs joueurs vus en phase 2 25/26 sur l'ensemble des équipes 25/26 listées (joueurs d'une équipe reléguée qui restent dans la division — cas Bois-Colombes signalé par Minh le 11/09/2026)",
+  "BOIS COLOMBES S 6": [
+   "BOIS COLOMBES S 6",
+   "BOIS COLOMBES S 7",
+   "BOIS COLOMBES S 8"
+  ],
+  "BOIS COLOMBES S 7": [
+   "BOIS COLOMBES S 6",
+   "BOIS COLOMBES S 7",
+   "BOIS COLOMBES S 8"
+  ]
  }
 }
