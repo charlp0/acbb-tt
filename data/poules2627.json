@@ -587,13 +587,17 @@
      "dept": "78",
      "acbb": false,
      "s25": {
-      "avg": 863,
+      "avg": 916,
       "div": "PN Dames p2",
       "rank": 8,
       "nm": 7,
       "src": "SQY PING 2",
-      "ceil": 1087,
+      "ceil": 1275,
       "top": [
+       [
+        "Buil Julie ",
+        1710
+       ],
        [
         "Chiri Bissan ",
         1148
@@ -605,10 +609,6 @@
        [
         "Lacerda Rodrigues Lethicia ",
         1100
-       ],
-       [
-        "Bessette Aurore ",
-        957
        ]
       ],
       "mvt": "descendu"
@@ -718,13 +718,21 @@
      "dept": "92",
      "acbb": true,
      "s25": {
-      "avg": 1418,
+      "avg": 1792,
       "div": "R2 M p4",
       "rank": 1,
       "nm": 7,
       "src": "BOULOGNE BILLANCOURT 3",
-      "ceil": 1684,
+      "ceil": 2066,
       "top": [
+       [
+        "Wang Chen ",
+        2501
+       ],
+       [
+        "Boudjadja Mohamed Sofiane ",
+        2271
+       ],
        [
         "Zhao Antoine ",
         1811
@@ -732,14 +740,6 @@
        [
         "Tard Gregory ",
         1679
-       ],
-       [
-        "Martinod Thomas ",
-        1636
-       ],
-       [
-        "Gontard Nicolas ",
-        1608
        ]
       ],
       "mvt": "promu"
@@ -1035,13 +1035,21 @@
      "dept": "78",
      "acbb": false,
      "s25": {
-      "avg": 1507,
+      "avg": 1707,
       "div": "R2 M p8",
       "rank": 3,
       "nm": 7,
       "src": "VERSAILLES SCTT 3",
-      "ceil": 1852,
+      "ceil": 2149,
       "top": [
+       [
+        "Pauly Jérôme ",
+        2302
+       ],
+       [
+        "Plotuna Malin ",
+        2265
+       ],
        [
         "Monga Adrien ",
         2050
@@ -1049,14 +1057,6 @@
        [
         "Miyake Taira ",
         1978
-       ],
-       [
-        "Doineau Lucas ",
-        1707
-       ],
-       [
-        "Chadelaud Jovan ",
-        1672
        ]
       ],
       "mvt": null
@@ -1246,12 +1246,12 @@
      "dept": "94",
      "acbb": false,
      "s25": {
-      "avg": 1142,
+      "avg": 1492,
       "div": "R3 M p14",
       "rank": 3,
       "nm": 7,
       "src": "VINCENNOIS TT 2",
-      "ceil": 1789,
+      "ceil": 1826,
       "top": [
        [
         "De Vito Simone ",
@@ -1262,12 +1262,12 @@
         1977
        ],
        [
-        "Dumontier Mathieu ",
-        1650
+        "Daycard Fleury Angeline ",
+        1675
        ],
        [
-        "Tran Alexandre ",
-        1529
+        "Dumontier Mathieu ",
+        1650
        ]
       ],
       "mvt": null
@@ -1279,13 +1279,21 @@
      "dept": "77",
      "acbb": false,
      "s25": {
-      "avg": 1333,
+      "avg": 1464,
       "div": "R3 M p7",
       "rank": 1,
       "nm": 7,
       "src": "PONTAULT UMS TT 5",
-      "ceil": 1440,
+      "ceil": 1894,
       "top": [
+       [
+        "Kien Robin ",
+        2283
+       ],
+       [
+        "Xayasane Laurent ",
+        2262
+       ],
        [
         "Lefevre Thomas ",
         1519
@@ -1293,14 +1301,6 @@
        [
         "Chargueraud Justin ",
         1512
-       ],
-       [
-        "Guillard Titouan ",
-        1421
-       ],
-       [
-        "Pedrosa Ferreira Raphael ",
-        1310
        ]
       ],
       "mvt": null
@@ -1312,13 +1312,17 @@
      "dept": "92",
      "acbb": true,
      "s25": {
-      "avg": 1431,
+      "avg": 1496,
       "div": "R3 M p4",
       "rank": 1,
       "nm": 7,
       "src": "BOULOGNE BILLANCOURT 5",
-      "ceil": 1553,
+      "ceil": 1773,
       "top": [
+       [
+        "Boudjadja Mohamed Sofiane ",
+        2271
+       ],
        [
         "Tard Gregory ",
         1679
@@ -1330,10 +1334,6 @@
        [
         "Le Fanic Ronan ",
         1527
-       ],
-       [
-        "Suede Samuel ",
-        1393
        ]
       ],
       "mvt": null
@@ -1772,13 +1772,17 @@
      "dept": "92",
      "acbb": false,
      "s25": {
-      "avg": 1015,
+      "avg": 1213,
       "div": "PR (92) p2",
       "rank": 6,
       "nm": 7,
       "src": "TTMC CHATILLON  5",
-      "ceil": 1457,
+      "ceil": 1537,
       "top": [
+       [
+        "Bost Julie ",
+        1669
+       ],
        [
         "Soulas Alexis ",
         1606
@@ -1790,10 +1794,6 @@
        [
         "Brenot Jeanne ",
         1355
-       ],
-       [
-        "Gree Eric ",
-        1347
        ]
       ],
       "mvt": null
