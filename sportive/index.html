@@ -524,7 +524,7 @@ const canonV=r=>{ const raw=String(r.licence||''); if(/^SN-/.test(raw)){const m=
 const voteForP=p=>VOTES[String(p.lic)]||VOTES['SN-'+nrmK(p.nom)+'-'+nrmK(p.pre)]||VOTES['SN-'+nrmK(p.pre)+'-'+nrmK(p.nom)];
 /* overrides manuels (blessés / indispos) : forcent le rouge quel que soit le vote. Clé = NOM|PRENOM normalisés */
 const fkey=p=>nrmK(p.nom)+'|'+nrmK(p.pre);
-const FORCE_STATUS={ 'ARGUT|DANIEL':'blessé — indisponible pour le moment' };   // rouge forcé manuellement
+const FORCE_STATUS={ 'ARGUT|DANIEL':'blessé — indisponible pour le moment', 'GRANDJEAN|GUILLAUME':'ne jouera pas cette phase (Charles, 12/09)' };   // rouge forcé manuellement
 /* joueurs listés AUSSI dans une carte pool, tout en gardant leur équipe (clé NOM|PRENOM -> division) */
 const POOL_ADD={};   // pools désormais portés par les vrais tags (bascule scénario V2 -> officiel, 27/08)
 const DISPO_TIP={g:'titulaire dispo (≥4 journées)',o:'remplaçant ou 3 journées ou moins',r:'ne veut pas jouer / blessé',y:'n\'a pas répondu'};

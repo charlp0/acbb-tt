@@ -293,7 +293,7 @@ const SIZE={M1:3};               // Pro B = 3 joueurs ; toutes les autres équip
 const sizeOf=t=>SIZE[t]||4;
 const DIVC={'Pro B':'250,204,21','N1':'242,106,27','N2D':'251,146,60','R1D':'244,114,182','PRD':'244,114,182','R1':'61,214,140','R2':'61,214,140','R3':'61,214,140','PR':'96,165,250','D1':'167,139,250','D2':'148,163,184'};
 const GROUPS=[['all','Toutes',TEAMS],['nat','N1',['M2']],['reg','Régional',['M3','M4','M5']],['pr','PR',['M6','M7']],['d1','D1',['M8','M9','M10','M11']],['d2','D2',['M12','M13','M14','M15','M16','M17']]];
-const FORCE_STATUS={'ARGUT|DANIEL':'blessé — indisponible pour le moment'};
+const FORCE_STATUS={'ARGUT|DANIEL':'blessé — indisponible pour le moment','GRANDJEAN|GUILLAUME':'ne jouera pas cette phase (Charles, 12/09)'};
 /* contraintes internes (clé NOM|PRENOM normalisée) */
 const INT={
   allegre:['ALLEGREGUILLAUME|ANTOINE','ALLEGREGUILLAUME|BAPTISTE'],
@@ -698,6 +698,41 @@ async function waText(t,j,opts){
   }
   if(c.note) s+='\n\nℹ️ '+c.note;
   return s;
+}
+/* ===== ANNUAIRE TÉLÉPHONIQUE CHIFFRÉ (data/phones.enc.json, AES-GCM, clé dérivée du mot de passe sportive) ===== */
+let PH=null, PH_ENC=null;
+const GH_HASH='359d888f0c14b4835cec5d55404ab307115c4841f77e226ccd592bb943ccdabb';
+const b64d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function loadEnc(){ if(PH_ENC) return PH_ENC; const r=await fetch('../data/phones.enc.json',{cache:'no-cache'}); if(!r.ok) throw new Error('annuaire absent'); PH_ENC=await r.json(); return PH_ENC; }
+async function deriveKey(pw){ const enc=await loadEnc(); const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64d(enc.salt),iterations:200000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},true,['decrypt']);
+  const raw=new Uint8Array(await crypto.subtle.exportKey('raw',key)); try{ sessionStorage.setItem('acbb_dir_key',btoa(String.fromCharCode(...raw))); }catch(e){} return key; }
+window.__deriveDirKey=pw=>deriveKey(pw).catch(()=>{});
+async function getPhones(){ // null si l'utilisateur renonce
+  if(PH) return PH;
+  try{
+    const enc=await loadEnc(); let key=null;
+    try{ const raw=sessionStorage.getItem('acbb_dir_key'); if(raw) key=await crypto.subtle.importKey('raw',b64d(raw),{name:'AES-GCM'},false,['decrypt']); }catch(e){}
+    if(!key){ const pw=prompt('Mot de passe sportive (pour déchiffrer les numéros de téléphone) :'); if(pw==null) return null;
+      const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(pw.trim())); const h=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+      if(h!==GH_HASH){ toast('mot de passe incorrect'); return null; } key=await deriveKey(pw.trim()); }
+    const plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(enc.iv)},key,b64d(enc.ct));
+    PH=JSON.parse(new TextDecoder().decode(plain)); return PH;
+  }catch(e){ toast('annuaire indisponible ('+e.message+')'); return null; }
+}
+const phoneKey=k=>{ const p=BYKEY[k]; return p?nrmK(p.nom)+'|'+nrmK(p.pre):''; };
+const fmtTel=t=>t&&/^\d{10}$/.test(t)?t.replace(/(\d{2})(?=\d)/g,'$1 '):t;
+function freeText(j){ // titulaires (compo officielle, hors pools) disponibles à Jj et non alignés dans aucune équipe
+  const used=new Set(); Object.keys(COMPOS[j]||{}).forEach(t=>{ if(t!=='_meta') ((COMPOS[j][t]||{}).p||[]).forEach(k=>used.add(k)); });
+  const d=jDate(j); let out='🏓 ACBB TT — J'+j+(d?' ('+fmtD(d.toLocaleDateString('fr-FR'))+')':'')+' · titulaires disponibles non engagés\n';
+  let total=0;
+  TEAMS.forEach(t=>{
+    const m=matchOf(t,j);
+    const free=titulaires(t).filter(k=>BYKEY[k]&&!used.has(k)&&dispo(k,j)==='g').sort((a,b)=>(BYKEY[b].men||0)-(BYKEY[a].men||0));
+    if(!free.length) return; total+=free.length;
+    out+='\n'+t+(m&&m.exempt?' (exempte)':'')+' : '+free.map(k=>full(BYKEY[k])+' ('+(BYKEY[k].men||'—')+')').join(', ');
+  });
+  return total?out+'\n\n'+total+' joueur'+(total>1?'s':'')+' — pools de remplacement non inclus':out+'\naucun titulaire disponible non engagé';
 }
 function copy(txt){ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>toast('📋 copié — colle dans WhatsApp'),()=>prompt('Copie ce texte :',txt)); } else prompt('Copie ce texte :',txt); }
 function exportImg(t){
