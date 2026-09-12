@@ -76,26 +76,22 @@ if not real:   # rien de nouveau (ou seulement des ressaisies identiques) : on a
     print('CHANGES=0'); sys.exit(0)
 now = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=2))).strftime('%d/%m %Hh%M')
 def rolestr(r): return {'T': 'titulaire', 'R': 'remplaçant', 'N': 'ne veut pas jouer', 'REF': 'capitaine'}.get(r, r)
-wa = [f"📋 *Dispos — MAJ du {now}*"]
-imp = [c for c in changes if c['impacts']]
-if imp:
-    wa.append(''); wa.append('⚠️ *Impact sur les compos enregistrées*')
-    for c in imp:
-        chg = (f"{c['before']} → {c['after']}" if c['before'] else f"nouvelle saisie : {c['after']}") + (" · ne veut pas jouer" if 'N' in c['roles'] else '')
-        wa.append(f"• {c['name']} ({c['team']}) : {chg}")
-        for x in c['impacts']: wa.append(f"   ⚠️ {x}")
-mods = [c for c in changes if c['kind'] == 'mod' and not c['impacts']]
-if mods:
-    wa.append(''); wa.append('✏️ *Modifications*')
-    for c in mods: wa.append(f"• {c['name']} ({c['team']}) : {c['before']} → {c['after']}" + (" · " + ', '.join(rolestr(x) for x in c['roles']) if c['roles'] != ['T'] else ''))
-news = [c for c in changes if c['kind'] == 'new' and not c['impacts']]
-if news:
-    wa.append(''); wa.append('🆕 *Nouvelles saisies*')
-    for c in news: wa.append(f"• {c['name']} ({c['team']}) : {c['after']}" + (" · " + ', '.join(rolestr(x) for x in c['roles']) if c['roles'] != ['T'] else ''))
+wa = [f"📋 *Dispos — MAJ du {now}*", '']
+def tnum(t): m = re.search(r'(\d+)', t or ''); return (0 if (t or '').startswith('M') else 1, int(m.group(1)) if m else 99)
+def line(c):
+    chg = (f"{c['before']} → {c['after']}" if c['before'] else f"🆕 → {c['after']}")
+    extra = [rolestr(x) for x in c['roles'] if x != 'T']
+    l = [f"• {c['name']} ({c['team']}) : {chg}" + (' · ' + ', '.join(extra) if extra else '')]
+    for x in c['impacts']: l.append(f"   ⚠️ {x}")
+    return l
+imp = [c for c in real if c['impacts']]; rest = [c for c in real if not c['impacts']]
+for c in imp: wa += line(c)
+if imp and rest: wa.append('')
+for c in sorted(rest, key=lambda c: tnum(c['team'])): wa += line(c)
 same = [c for c in changes if c['kind'] == 'same']
 if same:
     wa.append(''); wa.append('🔁 Ressaisies sans changement : ' + ', '.join(c['name'] for c in same))
-wa.append(''); wa.append('_✓✗ = J1→J7 · détail sur team.acbb-tt.fr/sportive/suivi-dispos.html_')
+wa.append(''); wa.append('_✓✗ = dispos J1→J7 · ⚠️ = déjà aligné dans une compo enregistrée · détail sur team.acbb-tt.fr/sportive/suivi-dispos.html_')
 wa_txt = '\n'.join(wa)
 md = f"**{len(real)} changement(s)**, {len(same)} ressaisie(s) identique(s), {len(new_rows)} ligne(s) lues (id {since + 1} → {new_rows[-1]['id']}).\n\nBloc à coller dans WhatsApp :\n\n```\n{wa_txt}\n```\n"
 open(out_path, 'w').write(md)
