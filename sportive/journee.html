@@ -682,7 +682,9 @@ function waText(t,j,opts){ opts=opts||{}; const withCapt=opts.capitaine!==false,
   let s='🏓 ACBB TT — '+t+' · J'+j+' ('+div+(m.poule?' poule '+m.poule:'')+')\n';
   s+='📅 '+fmtD(m.date)+' · '+(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp)+'\n';
   if(withVenue&&m.venue) s+='📍 '+m.venue+'\n';
-  s+='\n👥 Compo :\n'+sorted.map((k,i)=>{const p=BYKEY[k];return (i+1)+'. '+(p?full(p)+' ('+(p.men||'—')+')':k)+((withCapt&&isCapt(k,t))?' — capitaine':'');}).join('\n');
+  // gras WhatsApp (*…*) pour les joueurs alignés hors de leur équipe habituelle (renforts)
+  const homeOf=k=>GENRE(t)==='F'?((FEM[k]&&FEM[k].e)||homeTeam(k)):((TAGS[k]&&TAGS[k].e)||homeTeam(k));
+  s+='\n👥 Compo :\n'+sorted.map((k,i)=>{const p=BYKEY[k]; const h=homeOf(k); const renfort=h&&h!==t; const nm=p?full(p):k; return (i+1)+'. '+(renfort?'*'+nm+'*':nm)+(p?' ('+(p.men||'—')+')':'')+((withCapt&&isCapt(k,t))?' — capitaine':'');}).join('\n');
   if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
   if(c.note) s+='\n\nℹ️ '+c.note;
   if(withCapt&&capName&&!c.p.some(k=>isCapt(k,t))) s+='\n\nCapitaine : '+capName;
