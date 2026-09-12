@@ -284,14 +284,15 @@
 <script>
 /* ===================== CONFIG ===================== */
 const SB='https://vhhmageufrcenruywawg.supabase.co', KEY='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay', HD={'apikey':KEY};
-const TEAMS=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
+const ALL_TEAMS=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
+const TEAMS=['M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17'];   // périmètre de la sportive : M1, M2 et les équipes féminines ne sont pas composées ici
 const NJ=7;
 const TEAMDIV={M1:'Pro B',M2:'N1',M3:'R1',M4:'R2',M5:'R3',M6:'PR',M7:'PR',M8:'D1',M9:'D1',M10:'D1',M11:'D1',M12:'D2',M13:'D2',M14:'D2',M15:'D2',M16:'D2',M17:'D2',F1:'N2D',F2:'R1D',F3:'PRD'};
 const POOLDIV={M3:'R1-R3',M4:'R1-R3',M5:'R1-R3',M6:'PR',M7:'PR',M8:'D1',M9:'D1',M10:'D1',M11:'D1',M12:'D2',M13:'D2',M14:'D2',M15:'D2',M16:'D2',M17:'D2'};
 const SIZE={M1:3};               // Pro B = 3 joueurs ; toutes les autres équipes = 4 (formule ACBB)
 const sizeOf=t=>SIZE[t]||4;
 const DIVC={'Pro B':'250,204,21','N1':'242,106,27','N2D':'251,146,60','R1D':'244,114,182','PRD':'244,114,182','R1':'61,214,140','R2':'61,214,140','R3':'61,214,140','PR':'96,165,250','D1':'167,139,250','D2':'148,163,184'};
-const GROUPS=[['all','Toutes',TEAMS],['nat','National',['M1','M2','F1']],['reg','Régional',['M3','M4','M5','F2']],['pr','PR',['M6','M7','F3']],['d1','D1',['M8','M9','M10','M11']],['d2','D2',['M12','M13','M14','M15','M16','M17']],['f','Dames',['F1','F2','F3']]];
+const GROUPS=[['all','Toutes',TEAMS],['reg','Régional',['M3','M4','M5']],['pr','PR',['M6','M7']],['d1','D1',['M8','M9','M10','M11']],['d2','D2',['M12','M13','M14','M15','M16','M17']]];
 const FORCE_STATUS={'ARGUT|DANIEL':'blessé — indisponible pour le moment'};
 /* contraintes internes (clé NOM|PRENOM normalisée) */
 const INT={
@@ -456,7 +457,7 @@ function renderHero(){
   TEAMS.forEach(t=>{ const m=matchOf(t,J); if(!m)return; if(m.exempt){ex++;return;} play++; if(parseDate(m.date)) dates[m.date]=1; });
   const ds=Object.keys(dates).sort((a,b)=>parseDate(a)-parseDate(b)).map(fmtD).join(' & ');
   const ref=jDate(J); let cd=''; if(ref){ const days=Math.round((ref-new Date().setHours(0,0,0,0))/864e5); cd=days>1?' · dans '+days+' jours':(days===1?' · demain':(days===0?' · aujourd\'hui':' · passée')); }
-  document.getElementById('hSub').textContent=ds+' · '+play+' équipes jouent'+(ex?' · '+ex+' exempte'+(ex>1?'s':''):'')+cd;
+  document.getElementById('hSub').textContent=ds+' · '+play+' équipes M3→M17 jouent'+(ex?' · '+ex+' exempte'+(ex>1?'s':''):'')+cd+' · M1, M2 et dames composées hors outil';
   document.getElementById('jpills').innerHTML=Array.from({length:NJ},(_,i)=>i+1).map(j=>{
     const d=jDate(j); const pl=TEAMS.filter(t=>playing(t,j)); const sent=pl.filter(t=>((BASE[j]||{})[t]||{}).st==='sent').length;
     const done=pl.length&&sent===pl.length; const past=d&&d<new Date().setHours(0,0,0,0);
@@ -596,7 +597,7 @@ function renderRail(){
   if(q){ const hits=D.filter(p=>nrmK(p.nom+p.pre).indexOf(q)>=0||nrmK(p.pre+p.nom).indexOf(q)>=0).map(pkey).sort(order).slice(0,20);
     h='<div class="rdiv" style="color:var(--orange)">RÉSULTATS ('+hits.length+')</div>'+(hits.map(k=>rp(k,(used.has(k)?'déjà en '+where[k].join('+')+' · ':'')+(homeLabel(k)||(BYKEY[k].ext?BYKEY[k].ext:'non tagué')))).join('')||'<div class="tag" style="font-size:11px;color:var(--dimmer)">aucun joueur ne correspond</div>'); }
   else{
-    const divs=[]; ts.forEach(t=>{ const d=GENRE(t)==='F'?'F':(POOLDIV[t]||TEAMDIV[t]); if(divs.indexOf(d)<0)divs.push(d); });
+    const divs=[]; ts.forEach(t=>{ const d=POOLDIV[t]||TEAMDIV[t]; if(divs.indexOf(d)<0)divs.push(d); });
     divs.forEach(d=>{
       let keys=[];
       if(d==='F'){ Object.keys(FEM).forEach(k=>{ if(FEM[k].r==='R'&&!usedF.has(k)) keys.push([k,'remp. '+FEM[k].e+(used.has(k)?' · aussi '+where[k].join('+'):'')]); }); }
@@ -660,7 +661,7 @@ document.getElementById('undoBtn').onclick=()=>{ COMPOS[J]=JSON.parse(JSON.strin
 document.getElementById('saveBtn').onclick=async()=>{
   let author=localStorage.getItem('acbb_tag_author'); if(!author){author=(prompt('Ton prénom (pour l\'historique des compos) :')||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
   const btn=document.getElementById('saveBtn'); btn.disabled=true; btn.textContent='⏳ enregistrement…';
-  const payload={}; TEAMS.forEach(t=>{ const c=COMPOS[J][t]; if(c&&(c.p.length||c.note||c.st!=='draft')) payload[t]={p:c.p,st:c.st,note:c.note||''}; });
+  const payload={}; Object.keys(COMPOS[J]).forEach(t=>{ const c=COMPOS[J][t]; if(c&&((c.p||[]).length||c.note||(c.st&&c.st!=='draft'))) payload[t]={p:c.p||[],st:c.st||'draft',note:c.note||''}; });
   payload._meta={j:J,saved:new Date().toISOString(),by:author};
   try{
     const r=await fetch(SB+'/rest/v1/scenarios_log',{method:'POST',headers:Object.assign({'Content-Type':'application/json','Prefer':'return=minimal'},HD),body:JSON.stringify({tags:payload,author:author+' · J'+J,slot:'j'+J})});
