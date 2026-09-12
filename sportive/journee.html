@@ -223,7 +223,7 @@
     }catch(e){ var L={n:0,t:0}; }
     var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(inp.value.trim()));
     var h=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
-    if(h===GH){ try{localStorage.removeItem('acbb_gate_l');}catch(e){} unlock(); return; }
+    if(h===GH){ try{localStorage.removeItem('acbb_gate_l');}catch(e){} try{ window.__deriveDirKey&&window.__deriveDirKey(inp.value.trim()); }catch(e){} unlock(); return; }
     L.n++; L.t=Date.now(); try{localStorage.setItem('acbb_gate_l',JSON.stringify(L));}catch(e){}
     err.textContent='Mot de passe incorrect';
     try{ var _S='https://vhhmageufrcenruywawg.supabase.co',_K='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay';
@@ -481,7 +481,7 @@ function renderState(){
 ;
   document.getElementById('fillAll').onclick=()=>{ let n=0; pl.forEach(t=>{ if(!compo(J,t).p.length){ propose(t); n++; } }); toast(n?n+' compo'+(n>1?'s':'')+' proposée'+(n>1?'s':''):'toutes les équipes ont déjà une compo'); renderAll(); };
   document.getElementById('exportFree').onclick=()=>copy(freeText(J));
-  document.getElementById('exportAll').onclick=()=>{ copy(pl.filter(t=>compo(J,t).p.length).map(t=>waText(t,J,{capitaine:false,adresse:false})).join('\n\n———\n\n')); };   // export groupé : sans capitaines ni adresses de gymnases
+  document.getElementById('exportAll').onclick=async()=>{ const parts=[]; for(const t of pl.filter(t=>compo(J,t).p.length)) parts.push(await waText(t,J,{adresse:false})); copy(parts.join('\n\n———\n\n')); };   // export groupé : sans adresses de gymnases
 }
 function renderFilters(){
   document.getElementById('filters').innerHTML=GROUPS.map(g=>'<span class="fp'+(FILTER===g[0]?' on':'')+'" data-f="'+g[0]+'">'+g[1]+'</span>').join('');
@@ -563,7 +563,7 @@ function renderGrid(){
   g.querySelectorAll('[data-st]').forEach(el=>el.onclick=()=>{ const c=compo(J,el.dataset.st); c.st=c.st==='draft'?'valid':(c.st==='valid'?'sent':'draft'); renderAll(); });
   g.querySelectorAll('[data-rm]').forEach(el=>el.onclick=e=>{ e.stopPropagation(); const t=el.closest('.plist').dataset.team; const c=compo(J,t); c.p=c.p.filter(k=>k!==el.dataset.rm); renderAll(); });
   g.querySelectorAll('[data-prop]').forEach(el=>el.onclick=()=>{ propose(el.dataset.prop); renderAll(); toast('proposition : titulaires dispo par points'); });
-  g.querySelectorAll('[data-wa]').forEach(el=>el.onclick=()=>copy(waText(el.dataset.wa,J)));
+  g.querySelectorAll('[data-wa]').forEach(el=>el.onclick=async()=>copy(await waText(el.dataset.wa,J)));
   g.querySelectorAll('[data-img]').forEach(el=>el.onclick=()=>exportImg(el.dataset.img));
   g.querySelectorAll('[data-note]').forEach(el=>el.onchange=()=>{ compo(J,el.dataset.note).note=el.value.trim(); renderSave(); renderState(); });
   g.querySelectorAll('.oc').forEach(el=>{ el.onclick=()=>{ const k=el.dataset.k, t=el.dataset.ot; if(dispo(k,J)==='r'&&!confirm(short(BYKEY[k])+' est indisponible pour cette journée. L\'aligner quand même ?'))return; place({k:k,from:null},t); };
@@ -677,32 +677,27 @@ document.getElementById('saveBtn').onclick=async()=>{
 document.getElementById('q').addEventListener('input',renderRail);
 
 /* ===================== EXPORTS ===================== */
-function waText(t,j,opts){ opts=opts||{}; const withCapt=opts.capitaine!==false, withVenue=opts.adresse!==false;
+async function waText(t,j,opts){
+  opts=opts||{}; const withVenue=opts.adresse!==false;
   const m=matchOf(t,j), c=compo(j,t); if(!m||m.exempt) return t+' · J'+j+' : exempte';
   const div=TEAMDIV[t]||''; const sorted=c.p.slice().sort((a,b)=>((BYKEY[b]||{}).men||0)-((BYKEY[a]||{}).men||0));
-  const cap=CAPT[t]; const capName=cap?[].concat(cap).map(k=>BYKEY[k]?full(BYKEY[k]):k).join(', '):'';
+  // équipe d'origine (compo officielle) : code d'équipe, ou « pool D1 » pour un remplaçant
+  const origin=k=>{ if(GENRE(t)==='F') return (FEM[k]&&FEM[k].e)||homeTeam(k)||''; const g=TAGS[k]||{}; if(g.e) return g.e; if(g.r==='R'&&g.d) return 'pool '+g.d; const f=FEM[k]; return f&&f.e?f.e:''; };
+  const renforts=sorted.filter(k=>{ const o=origin(k); return o&&o!==t; });
+  const ph=renforts.length?await getPhones():null;
   let s='🏓 ACBB TT — '+t+' · J'+j+' ('+div+(m.poule?' poule '+m.poule:'')+')\n';
   s+='📅 '+fmtD(m.date)+' · '+(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp)+'\n';
   if(withVenue&&m.venue) s+='📍 '+m.venue+'\n';
-  // gras WhatsApp (*…*) pour les joueurs alignés hors de leur équipe habituelle (renforts)
-  const homeOf=k=>GENRE(t)==='F'?((FEM[k]&&FEM[k].e)||homeTeam(k)):((TAGS[k]&&TAGS[k].e)||homeTeam(k));
-  s+='\n👥 Compo :\n'+sorted.map((k,i)=>{const p=BYKEY[k]; const h=homeOf(k); const renfort=h&&h!==t; const nm=p?full(p):k; return (i+1)+'. '+(renfort?'*'+nm+'*':nm)+(p?' ('+(p.men||'—')+')':'')+((withCapt&&isCapt(k,t))?' — capitaine':'');}).join('\n');
+  s+='\n👥 Compo :\n'+sorted.map((k,i)=>{ const p=BYKEY[k]; const nm=p?full(p):k; const o=origin(k); const ren=o&&o!==t; return (i+1)+'. '+(ren?'*'+nm+'* ('+o+')':nm)+(p?' ('+(p.men||'—')+')':''); }).join('\n');
   if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
+  const cap=CAPT[t]; const capName=cap?[].concat(cap).map(k=>BYKEY[k]?full(BYKEY[k]):k).join(', '):'';
+  if(capName) s+='\n\nCapitaine de l\'équipe : '+capName;
+  if(renforts.length){
+    s+='\n\n📞 Joueurs à contacter en dehors de l\'équipe :\n'+renforts.map(k=>{ const p=BYKEY[k]; const tel=ph?ph.phones[phoneKey(k)]:null; const ex=ph?ph.extra[phoneKey(k)]:null;
+      return '• '+(p?full(p):k)+' ('+origin(k)+') — '+(ph?(tel?fmtTel(tel)+(ex?' · '+ex:''):'numéro non renseigné'):'numéro : voir PDF capitaines'); }).join('\n');
+  }
   if(c.note) s+='\n\nℹ️ '+c.note;
-  if(withCapt&&capName&&!c.p.some(k=>isCapt(k,t))) s+='\n\nCapitaine : '+capName;
   return s;
-}
-function freeText(j){ // titulaires (compo officielle, hors pools) disponibles à Jj et non alignés dans aucune équipe
-  const used=new Set(); Object.keys(COMPOS[j]||{}).forEach(t=>{ if(t!=='_meta') ((COMPOS[j][t]||{}).p||[]).forEach(k=>used.add(k)); });
-  const d=jDate(j); let out='🏓 ACBB TT — J'+j+(d?' ('+fmtD(d.toLocaleDateString('fr-FR'))+')':'')+' · titulaires disponibles non engagés\n';
-  let total=0;
-  TEAMS.forEach(t=>{
-    const m=matchOf(t,j);
-    const free=titulaires(t).filter(k=>BYKEY[k]&&!used.has(k)&&dispo(k,j)==='g').sort((a,b)=>(BYKEY[b].men||0)-(BYKEY[a].men||0));
-    if(!free.length) return; total+=free.length;
-    out+='\n'+t+(m&&m.exempt?' (exempte)':'')+' : '+free.map(k=>full(BYKEY[k])+' ('+(BYKEY[k].men||'—')+')').join(', ');
-  });
-  return total?out+'\n\n'+total+' joueur'+(total>1?'s':'')+' — pools de remplacement non inclus':out+'\naucun titulaire disponible non engagé';
 }
 function copy(txt){ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>toast('📋 copié — colle dans WhatsApp'),()=>prompt('Copie ce texte :',txt)); } else prompt('Copie ce texte :',txt); }
 function exportImg(t){
