@@ -479,7 +479,7 @@ function renderState(){
     +'<button class="btn" id="exportAll" type="button">📋 Copier les '+pl.length+' compos</button>'
 ;
   document.getElementById('fillAll').onclick=()=>{ let n=0; pl.forEach(t=>{ if(!compo(J,t).p.length){ propose(t); n++; } }); toast(n?n+' compo'+(n>1?'s':'')+' proposée'+(n>1?'s':''):'toutes les équipes ont déjà une compo'); renderAll(); };
-  document.getElementById('exportAll').onclick=()=>{ copy(pl.filter(t=>compo(J,t).p.length).map(t=>waText(t,J,{capitaine:false})).join('\n\n———\n\n')); };   // export groupé : sans la mention des capitaines
+  document.getElementById('exportAll').onclick=()=>{ copy(pl.filter(t=>compo(J,t).p.length).map(t=>waText(t,J,{capitaine:false,adresse:false})).join('\n\n———\n\n')); };   // export groupé : sans capitaines ni adresses de gymnases
 }
 function renderFilters(){
   document.getElementById('filters').innerHTML=GROUPS.map(g=>'<span class="fp'+(FILTER===g[0]?' on':'')+'" data-f="'+g[0]+'">'+g[1]+'</span>').join('');
@@ -675,13 +675,13 @@ document.getElementById('saveBtn').onclick=async()=>{
 document.getElementById('q').addEventListener('input',renderRail);
 
 /* ===================== EXPORTS ===================== */
-function waText(t,j,opts){ opts=opts||{}; const withCapt=opts.capitaine!==false;
+function waText(t,j,opts){ opts=opts||{}; const withCapt=opts.capitaine!==false, withVenue=opts.adresse!==false;
   const m=matchOf(t,j), c=compo(j,t); if(!m||m.exempt) return t+' · J'+j+' : exempte';
   const div=TEAMDIV[t]||''; const sorted=c.p.slice().sort((a,b)=>((BYKEY[b]||{}).men||0)-((BYKEY[a]||{}).men||0));
   const cap=CAPT[t]; const capName=cap?[].concat(cap).map(k=>BYKEY[k]?full(BYKEY[k]):k).join(', '):'';
   let s='🏓 ACBB TT — '+t+' · J'+j+' ('+div+(m.poule?' poule '+m.poule:'')+')\n';
   s+='📅 '+fmtD(m.date)+' · '+(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp)+'\n';
-  if(m.venue) s+='📍 '+m.venue+'\n';
+  if(withVenue&&m.venue) s+='📍 '+m.venue+'\n';
   s+='\n👥 Compo :\n'+sorted.map((k,i)=>{const p=BYKEY[k];return (i+1)+'. '+(p?full(p)+' ('+(p.men||'—')+')':k)+((withCapt&&isCapt(k,t))?' — capitaine':'');}).join('\n');
   if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
   if(c.note) s+='\n\nℹ️ '+c.note;
