@@ -1,0 +1,45 @@
+name: Alerte dispos (mail via issue)
+# Toutes les heures (7h-22h Paris) : nouvelles saisies / modifications de dispos depuis le dernier passage.
+# S'il y a du nouveau -> issue GitHub (= mail à Charles) avec un bloc prêt à coller dans WhatsApp,
+# en signalant les changements qui touchent une compo enregistrée d'une journée à venir.
+on:
+  schedule:
+    - cron: '0 5-20 * * *'
+  workflow_dispatch:
+    inputs:
+      since_id:
+        description: "Relire depuis cet id de dispos_log (test) — vide = depuis le dernier passage"
+        required: false
+        default: ''
+permissions:
+  contents: write
+  issues: write
+concurrency: dispos-alert
+jobs:
+  alert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Détecter les changements
+        id: run
+        run: |
+          set -e
+          ARGS=""; [ -n "${{ github.event.inputs.since_id }}" ] && ARGS="--since ${{ github.event.inputs.since_id }}"
+          python3 scripts/dispos_alert.py $ARGS --out alert.md | tee run.log
+          N=$(grep -o 'CHANGES=[0-9]*' run.log | tail -1 | cut -d= -f2)
+          I=$(grep -o 'IMPACTS=[0-9]*' run.log | tail -1 | cut -d= -f2)
+          echo "changes=${N:-0}" >> "$GITHUB_OUTPUT"; echo "impacts=${I:-0}" >> "$GITHUB_OUTPUT"
+      - name: Créer l'issue (mail)
+        if: steps.run.outputs.changes != '0' && hashFiles('alert.md') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          D=$(TZ=Europe/Paris date +'%d/%m %Hh')
+          T="📋 Dispos — ${{ steps.run.outputs.changes }} changement(s) · $D"
+          [ "${{ steps.run.outputs.impacts }}" != "0" ] && T="⚠️ Dispos — ${{ steps.run.outputs.impacts }} impact(s) compo · ${{ steps.run.outputs.changes }} changement(s) · $D"
+          gh issue create -R "$GITHUB_REPOSITORY" --title "$T" --body-file alert.md --label dispos || gh issue create -R "$GITHUB_REPOSITORY" --title "$T" --body-file alert.md
+      - name: Mémoriser le curseur
+        run: |
+          git config user.name "acbb-data-bot"; git config user.email "bot@users.noreply.github.com"
+          git add data/dispos_alert_state.json
+          git diff --staged --quiet && echo "curseur inchangé" || (git commit -m "dispos-alert: curseur" && git pull --rebase origin main && git push)
