@@ -1,10 +1,13 @@
 name: Alerte dispos (mail via issue)
-# Toutes les heures (7h-22h Paris) : nouvelles saisies / modifications de dispos depuis le dernier passage.
+# Toutes les heures (7h-22h Paris) + en temps réel via webhook Supabase (repository_dispatch 'dispos', regroupement 2 min) :
+# nouvelles saisies / modifications de dispos depuis le dernier passage.
 # S'il y a du nouveau -> issue GitHub (= mail à Charles) avec un bloc prêt à coller dans WhatsApp,
 # en signalant les changements qui touchent une compo enregistrée d'une journée à venir.
 on:
   schedule:
     - cron: '0 5-20 * * *'
+  repository_dispatch:          # temps réel : déclenché par un webhook Supabase à chaque saisie de dispo
+    types: [dispos]
   workflow_dispatch:
     inputs:
       since_id:
@@ -14,11 +17,16 @@ on:
 permissions:
   contents: write
   issues: write
-concurrency: dispos-alert
+concurrency:
+  group: dispos-alert
+  cancel-in-progress: true      # plusieurs saisies rapprochées -> un seul mail (le dernier run gagne)
 jobs:
   alert:
     runs-on: ubuntu-latest
     steps:
+      - name: Regrouper les saisies rapprochées
+        if: github.event_name == 'repository_dispatch'
+        run: sleep 120
       - uses: actions/checkout@v4
       - name: Détecter les changements
         id: run
