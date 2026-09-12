@@ -71,7 +71,8 @@ for k, rs in hist.items():
             impacts.append(f"aligné en {t} pour la J{j} ({jdates[j].strftime('%d/%m')})")
     changes.append({'k': k, 'name': name(last, k), 'team': team(k) or '—', 'kind': kind, 'before': js(before) if before else None, 'after': js(after), 'roles': roles, 'n': after.get('n', last.get('n')), 'impacts': impacts, 'at': last['created_at']})
 real = [c for c in changes if c['kind'] != 'same']
-if not changes:
+if not real:   # rien de nouveau (ou seulement des ressaisies identiques) : on avance le curseur sans alerter
+    if new_rows: json.dump({'last_id': new_rows[-1]['id'], 'at': datetime.datetime.utcnow().isoformat() + 'Z'}, open(state_path, 'w'))
     print('CHANGES=0'); sys.exit(0)
 now = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=2))).strftime('%d/%m %Hh%M')
 def rolestr(r): return {'T': 'titulaire', 'R': 'remplaçant', 'N': 'ne veut pas jouer', 'REF': 'capitaine'}.get(r, r)
