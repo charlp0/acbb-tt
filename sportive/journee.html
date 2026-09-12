@@ -477,8 +477,10 @@ function renderState(){
     +'<span style="flex-grow:1"></span>'
     +'<button class="btn sm" id="fillAll" type="button" title="Pré-remplit les équipes vides avec leurs titulaires disponibles (par ordre de points)">⚡ Proposer les compos vides</button>'
     +'<button class="btn" id="exportAll" type="button">📋 Copier les '+pl.length+' compos</button>'
+    +'<button class="btn" id="exportFree" type="button" title="titulaires disponibles ce jour-là mais non alignés (pools exclus)">📋 Copier titulaires non engagés</button>'
 ;
   document.getElementById('fillAll').onclick=()=>{ let n=0; pl.forEach(t=>{ if(!compo(J,t).p.length){ propose(t); n++; } }); toast(n?n+' compo'+(n>1?'s':'')+' proposée'+(n>1?'s':''):'toutes les équipes ont déjà une compo'); renderAll(); };
+  document.getElementById('exportFree').onclick=()=>copy(freeText(J));
   document.getElementById('exportAll').onclick=()=>{ copy(pl.filter(t=>compo(J,t).p.length).map(t=>waText(t,J,{capitaine:false,adresse:false})).join('\n\n———\n\n')); };   // export groupé : sans capitaines ni adresses de gymnases
 }
 function renderFilters(){
@@ -689,6 +691,18 @@ function waText(t,j,opts){ opts=opts||{}; const withCapt=opts.capitaine!==false,
   if(c.note) s+='\n\nℹ️ '+c.note;
   if(withCapt&&capName&&!c.p.some(k=>isCapt(k,t))) s+='\n\nCapitaine : '+capName;
   return s;
+}
+function freeText(j){ // titulaires (compo officielle, hors pools) disponibles à Jj et non alignés dans aucune équipe
+  const used=new Set(); Object.keys(COMPOS[j]||{}).forEach(t=>{ if(t!=='_meta') ((COMPOS[j][t]||{}).p||[]).forEach(k=>used.add(k)); });
+  const d=jDate(j); let out='🏓 ACBB TT — J'+j+(d?' ('+fmtD(d.toLocaleDateString('fr-FR'))+')':'')+' · titulaires disponibles non engagés\n';
+  let total=0;
+  TEAMS.forEach(t=>{
+    const m=matchOf(t,j);
+    const free=titulaires(t).filter(k=>BYKEY[k]&&!used.has(k)&&dispo(k,j)==='g').sort((a,b)=>(BYKEY[b].men||0)-(BYKEY[a].men||0));
+    if(!free.length) return; total+=free.length;
+    out+='\n'+t+(m&&m.exempt?' (exempte)':'')+' : '+free.map(k=>full(BYKEY[k])+' ('+(BYKEY[k].men||'—')+')').join(', ');
+  });
+  return total?out+'\n\n'+total+' joueur'+(total>1?'s':'')+' — pools de remplacement non inclus':out+'\naucun titulaire disponible non engagé';
 }
 function copy(txt){ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>toast('📋 copié — colle dans WhatsApp'),()=>prompt('Copie ce texte :',txt)); } else prompt('Copie ce texte :',txt); }
 function exportImg(t){
