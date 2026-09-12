@@ -45,6 +45,7 @@ jobs:
           D=$(TZ=Europe/Paris date +'%d/%m %Hh')
           T="📋 Dispos — ${{ steps.run.outputs.changes }} changement(s) · $D"
           [ "${{ steps.run.outputs.impacts }}" != "0" ] && T="⚠️ Dispos — ${{ steps.run.outputs.impacts }} impact(s) compo · ${{ steps.run.outputs.changes }} changement(s) · $D"
+          printf '\n\n@charlp0 — à coller dans le groupe WhatsApp sportive.\n' >> alert.md   # la mention garantit le mail
           gh issue create -R "$GITHUB_REPOSITORY" --title "$T" --body-file alert.md --label dispos || gh issue create -R "$GITHUB_REPOSITORY" --title "$T" --body-file alert.md
       - name: Mémoriser le curseur
         run: |
