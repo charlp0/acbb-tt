@@ -80,7 +80,10 @@ wa = [f"📋 *Dispos — MAJ du {now}*"]
 imp = [c for c in changes if c['impacts']]
 if imp:
     wa.append(''); wa.append('⚠️ *Impact sur les compos enregistrées*')
-    for c in imp: wa.append(f"• {c['name']} ({c['team']}) : {c['after']}" + (" · ne veut pas jouer" if 'N' in c['roles'] else '') + " — " + ' ; '.join(c['impacts']))
+    for c in imp:
+        chg = (f"{c['before']} → {c['after']}" if c['before'] else f"nouvelle saisie : {c['after']}") + (" · ne veut pas jouer" if 'N' in c['roles'] else '')
+        wa.append(f"• {c['name']} ({c['team']}) : {chg}")
+        for x in c['impacts']: wa.append(f"   ⚠️ {x}")
 mods = [c for c in changes if c['kind'] == 'mod' and not c['impacts']]
 if mods:
     wa.append(''); wa.append('✏️ *Modifications*')
