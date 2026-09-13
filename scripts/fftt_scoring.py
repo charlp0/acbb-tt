@@ -119,8 +119,8 @@ def main():
         ys=[e['pt'] for e in win]; b=slope(ys)
         out.append({'lic':lic,'nom':nom,'pre':pre,'men':round(men) if isinstance(men,(int,float)) else (ys[-1] if ys else 500),
                     'tend':round(b*(len(ys)-1)) if b is not None else 0,'spp':round(b,1) if b is not None else None,'h':win,'mut':'2026/2027'})
-    # Inscrits compétiteurs 26/27 sans données FFTT (liste Cyril 11/09/2026) : 500 pts par défaut, badge « nouveau »
-    NEW_HARD=[('DE CAMPIGNEULLES','Cyril',500),('MICHON','Clément',500),('TANIGA','Vélan',500),('NEIGE','Emmanuel',500),('SIMON','Patrick',500)]
+    # Nouveaux compétiteurs 26/27 sans données FFTT : 500 pts par défaut, badge « nouveau »
+    NEW_HARD=[('MICHON','Clément',500)]   # mail Cyril 11/09/2026 (jeune 2008, inscrit jeudi 20h)
     _nk=lambda x:re.sub(r'[^A-Z0-9]','',unicodedata.normalize('NFD',x or '').encode('ascii','ignore').decode().upper())
     _have={(_nk(r['nom']),_nk(r['pre'])) for r in out}
     for nom,pre,men in MUT_HARD:
