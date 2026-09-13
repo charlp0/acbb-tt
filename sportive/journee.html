@@ -699,8 +699,6 @@ async function waText(t,j,opts){
   if(withVenue&&m.venue) s+='📍 '+m.venue+'\n';
   s+='\n👥 Compo :\n'+sorted.map((k,i)=>{ const p=BYKEY[k]; const nm=p?full(p):k; const o=origin(k); const ren=o&&o!==t; return (i+1)+'. '+(ren?'*'+nm+'* ('+o+')':nm)+(p?' ('+(p.men||'—')+')':''); }).join('\n');
   if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
-  const cap=CAPT[t]; const capName=cap?[].concat(cap).map(k=>BYKEY[k]?full(BYKEY[k]):k).join(', '):'';
-  if(capName) s+='\n\nCapitaine de l\'équipe : '+capName;
   if(renforts.length){
     s+='\n\n📞 Joueurs à contacter en dehors de l\'équipe :\n'+renforts.map(k=>{ const p=BYKEY[k]; const tel=ph?ph.phones[phoneKey(k)]:null; const ex=ph?ph.extra[phoneKey(k)]:null;
       return '• '+(p?full(p):k)+' ('+origin(k)+') — '+(ph?(tel?fmtTel(tel)+(ex?' · '+ex:''):'numéro non renseigné'):'numéro : voir PDF capitaines'); }).join('\n');
