@@ -122,6 +122,7 @@
   .oc.off{opacity:.45;border-color:var(--line);cursor:default}
   .oc.off .nm{text-decoration:line-through}
   .oc.unk{opacity:.7;border-color:rgba(250,204,21,.35)}
+  .oc.sel{outline:2px solid var(--orange)}
   .rules{font-size:10.5px;color:var(--dimmer);font-family:"JetBrains Mono",monospace;line-height:1.5}
   .alert{display:flex;align-items:flex-start;gap:8px;border-radius:10px;padding:8px 11px;font-size:11.5px;line-height:1.45}
   .alert.err{background:rgba(242,99,86,.12);border:1px solid rgba(242,99,86,.5);color:var(--lose-lt)}
@@ -521,7 +522,15 @@ function card(t){
   const head='<div class="tc-h"><span class="tc-name" style="color:hsl('+hue+',75%,72%)">'+t+'</span><span class="dchip" style="color:rgb('+col+');border-color:rgba('+col+',.5);background:rgba('+col+',.12)">'+esc(div)+'</span>'
     +(m&&!m.exempt&&m.poule?'<span class="mono" style="font-size:9.5px;color:var(--dimmer)">poule '+esc(m.poule)+'</span>':'')+'<span style="flex-grow:1"></span>';
   if(!m) return '<div class="tc exempt" data-team="'+t+'">'+head+'</div><div class="rules">calendrier inconnu</div></div>';
-  if(m.exempt) return '<div class="tc exempt" data-team="'+t+'">'+head+'<span class="st">EXEMPTE</span></div><div class="rules">'+fmtD(m.date)+' · pas de rencontre pour '+t+' en J'+J+'</div></div>';
+  if(m.exempt){ // équipe exempte : ses joueurs restent proposables comme renforts ailleurs (glisser / sélectionner puis toucher une case ＋)
+    const usedAll=new Set(); TEAMS.forEach(o=>{ if(playing(o,J)) compo(J,o).p.forEach(k=>usedAll.add(k)); });
+    const pl=titulaires(t).filter(k=>BYKEY[k]).sort((a,b)=>{const o={g:0,y:1,r:2};const d=o[dispo(a,J)]-o[dispo(b,J)];return d||((BYKEY[b].men||0)-(BYKEY[a].men||0));});
+    const nD=pl.filter(k=>dispo(k,J)==='g'&&!usedAll.has(k)).length;
+    const chips=pl.map(k=>{ const p=BYKEY[k], st=dispo(k,J), elsewhere=TEAMS.find(o=>o!==t&&playing(o,J)&&compo(J,o).p.indexOf(k)>=0);
+      const cls=st==='r'?' off':(elsewhere?' unk':''); const tip=elsewhere?('déjà aligné en '+elsewhere):(st==='g'?'dispo — sélectionner puis toucher une case ＋ dans une autre équipe':dispoTxt(k,J));
+      return '<span class="oc'+cls+'" draggable="'+(st!=='r')+'" data-k="'+esc(k)+'" data-ex="1" title="'+esc(tip)+'"><span class="dot '+st+'"></span><span class="nm">'+esc(short(p))+'</span>'+ticks(k)+'<span class="pts">'+(p.men||'—')+'</span>'+(elsewhere?'<span class="pts" style="color:var(--warn)">'+elsewhere+'</span>':'')+'</span>'; }).join('');
+    return '<div class="tc" data-team="'+t+'" style="opacity:.85">'+head+'<span class="st">EXEMPTE</span></div><div class="rules">'+fmtD(m.date)+' · pas de rencontre pour '+t+' en J'+J+'</div>'
+      +'<div class="others"><div class="ot">Joueurs de '+t+' disponibles comme renforts · '+nD+' dispo'+(nD>1?'s':'')+' non aligné'+(nD>1?'s':'')+'</div><div class="ol">'+(chips||'<span style="font-size:11px;color:var(--dimmer)">aucun titulaire</span>')+'</div></div></div>'; }
   const r=checkTeam(t,J), lvl=lvlOf(r.issues);
   const stLbl={draft:'BROUILLON',valid:'VALIDÉE',sent:'ENVOYÉE ✓'}[c.st]||'BROUILLON';
   const rows=c.p.map(k=>pRow(k,t,r.flags)).join('');
@@ -566,7 +575,7 @@ function renderGrid(){
   g.querySelectorAll('[data-wa]').forEach(el=>el.onclick=async()=>copy(await waText(el.dataset.wa,J)));
   g.querySelectorAll('[data-img]').forEach(el=>el.onclick=()=>exportImg(el.dataset.img));
   g.querySelectorAll('[data-note]').forEach(el=>el.onchange=()=>{ compo(J,el.dataset.note).note=el.value.trim(); renderSave(); renderState(); });
-  g.querySelectorAll('.oc').forEach(el=>{ el.onclick=()=>{ const k=el.dataset.k, t=el.dataset.ot; if(dispo(k,J)==='r'&&!confirm(short(BYKEY[k])+' est indisponible pour cette journée. L\'aligner quand même ?'))return; place({k:k,from:null},t); };
+  g.querySelectorAll('.oc').forEach(el=>{ el.onclick=()=>{ const k=el.dataset.k, t=el.dataset.ot; if(el.dataset.ex){ if(dispo(k,J)==='r'){toast(short(BYKEY[k])+' est indisponible pour cette journée');return;} SEL={k:k,from:null}; document.querySelectorAll('.oc.sel').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); toast(short(BYKEY[k])+' sélectionné — touche une case ＋ dans une autre équipe'); return; } if(dispo(k,J)==='r'&&!confirm(short(BYKEY[k])+' est indisponible pour cette journée. L\'aligner quand même ?'))return; place({k:k,from:null},t); };
     el.addEventListener('dragstart',e=>{ DRAG={k:el.dataset.k,from:null}; e.dataTransfer.effectAllowed='move'; try{e.dataTransfer.setData('text/plain',el.dataset.k);}catch(x){} }); el.addEventListener('dragend',()=>{DRAG=null;}); });
   g.querySelectorAll('.slot').forEach(el=>el.onclick=()=>{ if(SEL){ place(SEL,el.dataset.slot); } else toast('touche d\'abord un joueur dans la colonne de droite'); });
   // drag & drop
@@ -577,7 +586,7 @@ function renderGrid(){
     ob.addEventListener('drop',e=>{ if(!(DRAG&&DRAG.from))return; e.preventDefault(); e.stopPropagation(); ob.classList.remove('over'); const c=compo(J,DRAG.from); c.p=c.p.filter(k=>k!==DRAG.k); if(c.st==='sent')c.st='valid'; DRAG=null; renderAll(); toast('joueur retiré de l\'équipe'); });
     ob.addEventListener('click',e=>{ if(e.target.closest('.oc'))return; if(SEL&&SEL.from){ const c=compo(J,SEL.from); c.p=c.p.filter(k=>k!==SEL.k); if(c.st==='sent')c.st='valid'; SEL=null; renderAll(); toast('joueur retiré de l\'équipe'); } });
   });
-  g.querySelectorAll('.tc:not(.exempt)').forEach(tc=>{
+  g.querySelectorAll('.tc').forEach(tc=>{ if(!tc.querySelector('.plist')) return;
     tc.addEventListener('dragover',e=>{ if(!DRAG)return; e.preventDefault(); tc.classList.add('over'); });
     tc.addEventListener('dragleave',()=>tc.classList.remove('over'));
     tc.addEventListener('drop',e=>{ e.preventDefault(); tc.classList.remove('over'); if(!DRAG)return; if(DRAG.from===tc.dataset.team){ DRAG=null; toast('déjà dans cette équipe — glisse-le sur « Autres joueurs » ou touche ✕ pour le retirer'); return; } place(DRAG,tc.dataset.team); DRAG=null; });
