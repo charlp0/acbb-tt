@@ -725,7 +725,6 @@ async function waText(t,j,opts){
       if(st==='y') return '• '+full(p)+' n\'a pas renseigné ses dispos pour J'+j;
       return '• '+full(p)+' ne joue pas en J'+j; }).join('\n');
   }
-  if(c.note) s+='\n\nℹ️ '+c.note;
   return s;
 }
 /* ===== ANNUAIRE TÉLÉPHONIQUE CHIFFRÉ (data/phones.enc.json, AES-GCM, clé dérivée du mot de passe sportive) ===== */
@@ -778,7 +777,7 @@ function exportImg(t){
   const sorted=c.p.slice().sort((a,b)=>((BYKEY[b]||{}).men||0)-((BYKEY[a]||{}).men||0));
   const host=document.getElementById('cardHost');
   host.innerHTML='<div class="wa" id="waCard"><div class="band"><img class="logo" src="../logo.png" alt=""><div><div class="t1">Compo <span style="color:var(--orange)">'+t+'</span></div><div class="t2">ACBB TT · '+esc(m.division||TEAMDIV[t])+(m.poule?' · poule '+m.poule:'')+'</div></div><div class="jb"><b>J'+J+'</b><small>Phase 1</small></div></div>'
-    +'<div class="sec"><div class="mt">'+(m.dom?'Domicile · ':'Déplacement · ')+'<span>'+esc(m.opp)+'</span></div><div class="mi">📅 '+esc(fmtD(m.date))+(m.venue?'<br>📍 '+esc(m.venue):'')+'</div>'+(c.note?'<div class="mi" style="background:rgba(242,106,27,.1);border:1px solid rgba(242,106,27,.35);border-radius:10px;padding:7px 11px;color:#F6F5F3">ℹ️ '+esc(c.note)+'</div>':'')+'</div>'
+    +'<div class="sec"><div class="mt">'+(m.dom?'Domicile · ':'Déplacement · ')+'<span>'+esc(m.opp)+'</span></div><div class="mi">📅 '+esc(fmtD(m.date))+(m.venue?'<br>📍 '+esc(m.venue):'')+'</div>'+'</div>'
     +'<div class="sec">'+sorted.map((k,i)=>{const p=BYKEY[k];return '<div class="pl"><span class="n">'+(i+1)+'</span><b>'+esc(p?full(p):k)+(isCapt(k,t)?' <span style="color:var(--orange);font-size:11px">C</span>':'')+'</b><span class="p">'+(p&&p.men?p.men:'—')+'</span></div>';}).join('')+'</div>'
     +'<div class="ft"><span>team.acbb-tt.fr</span><span>compo '+(c.st==='sent'?'envoyée':(c.st==='valid'?'validée':'provisoire'))+'</span></div></div>';
   const el=document.getElementById('waCard');
