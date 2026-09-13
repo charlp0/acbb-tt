@@ -696,6 +696,16 @@ async function waText(t,j,opts){
     s+='\n\n📞 Joueurs à contacter en dehors de l\'équipe :\n'+renforts.map(k=>{ const p=BYKEY[k]; const tel=ph?ph.phones[phoneKey(k)]:null; const ex=ph?ph.extra[phoneKey(k)]:null;
       return '• '+(p?full(p):k)+' ('+origin(k)+') — '+(ph?(tel?fmtTel(tel)+(ex?' · '+ex:''):'numéro non renseigné'):'numéro : voir PDF capitaines'); }).join('\n');
   }
+  // titulaires de l'équipe absents de cette compo : où jouent-ils ce jour-là ?
+  const others=titulaires(t).filter(k=>BYKEY[k]&&c.p.indexOf(k)<0);
+  if(others.length){
+    const where=k=>{ for(const o of Object.keys(COMPOS[j]||{})){ if(o!=='_meta'&&o!==t&&((COMPOS[j][o]||{}).p||[]).indexOf(k)>=0) return o; } return null; };
+    s+='\n\n🔀 Les autres joueurs de '+t+' cette journée :\n'+others.sort((a,b)=>(BYKEY[b].men||0)-(BYKEY[a].men||0)).map(k=>{ const p=BYKEY[k], o=where(k), st=dispo(k,j);
+      if(o) return '• '+full(p)+' jouera en '+o;
+      if(st==='r') return '• '+full(p)+' n\'était pas dispo pour J'+j+(FORCE_STATUS[fkey(p)]?' ('+FORCE_STATUS[fkey(p)].split(' — ')[0]+')':'');
+      if(st==='y') return '• '+full(p)+' n\'a pas renseigné ses dispos pour J'+j;
+      return '• '+full(p)+' ne joue pas en J'+j; }).join('\n');
+  }
   if(c.note) s+='\n\nℹ️ '+c.note;
   return s;
 }
