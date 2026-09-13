@@ -402,7 +402,7 @@ function ticks(k){ // 7 traits : vert dispo, rouge indispo, gris sans réponse ;
 function dispoTxt(k,j){ const p=BYKEY[k]; const s=dispo(k,j); if(s==='g') return ''; if(p&&FORCE_STATUS[fkey(p)]) return FORCE_STATUS[fkey(p)]; if(s==='y') return 'pas répondu'; const v=p&&voteFor(p); if(v&&((v.dispos||{}).roles||[]).indexOf('N')>=0) return 'ne veut pas jouer'; return 'indispo J'+j; }
 function isCapt(k,t){ const c=CAPT[t]; if(!c) return false; return Array.isArray(c)?c.indexOf(k)>=0:c===k; }
 const isEx=k=>EXC.ex.has(String(k)), isExQ=k=>EXC.conf.has(String(k));
-const exBadge=k=>isEx(k)?'<span class="agec ex" title="extra-communautaire : 1 seul par feuille (II.609)">EX</span>':(isExQ(k)?'<span class="agec ex q" title="extra-communautaire ? à confirmer">EX?</span>':'');
+const exBadge=k=>isEx(k)?'<span class="agec ex" title="nationalité hors UE / EEE / Suisse / RU : 1 seul par feuille (II.609)">EX</span>':(isExQ(k)?'<span class="agec ex q" title="nationalité hors UE à confirmer">EX?</span>':'');
 function catBadge(k){ const p=BYKEY[k]; const c=CAT[k]||(p?CAT[nrmK(p.nom)+'|'+nrmK(p.pre)]:null); return c?'<span class="agec'+(c==='S'?' s':'')+'" title="catégorie">'+esc(c)+'</span>':''; }
 function compo(j,t){ const c=COMPOS[j][t]||(COMPOS[j][t]={p:[],st:'draft',note:''}); c.p=c.p||[]; c.st=c.st||'draft'; return c; }
 function dirtyTeams(){ const out=[]; TEAMS.forEach(t=>{ const a=JSON.stringify(COMPOS[J][t]||null), b=JSON.stringify(BASE[J][t]||null); if(a!==b && !(a==='null'&&b&&JSON.parse(b).p.length===0) && !(b==='null'&&COMPOS[J][t]&&!COMPOS[J][t].p.length&&COMPOS[J][t].st==='draft'&&!COMPOS[J][t].note)) out.push(t); }); return out; }
