@@ -103,6 +103,8 @@
   .agec{display:inline-block;min-width:16px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:800;border-radius:4px;padding:1px 4px;background:rgba(96,165,250,.16);color:#60A5FA;border:1px solid rgba(96,165,250,.4);flex-shrink:0}
   .agec.s{background:rgba(255,255,255,.06);color:var(--dimmer);border-color:rgba(255,255,255,.14)}
   .agec.c{background:rgba(242,106,27,.18);color:var(--orange);border-color:rgba(242,106,27,.55)}
+  .agec.ex{background:rgba(244,114,182,.16);color:#F472B6;border-color:rgba(244,114,182,.5)}
+  .agec.ex.q{opacity:.7;border-style:dashed}
   .agec.t{background:rgba(255,255,255,.06);color:var(--ink-2);border-color:rgba(255,255,255,.2)}
   .slot{display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px dashed rgba(242,106,27,.5);border-radius:9px;padding:8px 11px;font-size:11.5px;color:var(--orange);font-weight:600;cursor:pointer}
   .slot:hover{background:rgba(242,106,27,.07)}
@@ -307,6 +309,7 @@ const SCALE=250;   // écart de points -> indice de victoire (logistique)
 
 /* ===================== ÉTAT ===================== */
 let D=[], BYKEY={}, BYFK={}, BYSN={}, CAT={}, CAPT={}, POULES={}, SALLES={}, TAGS={}, FEM={}, VOTES={};
+let EXC={ex:new Set(),conf:new Set()};   // extra-communautaires (data/extra_communautaires.json)
 let COMPOS={}, BASE={}, META={};      // COMPOS[j][team]={p:[],st:'draft'|'valid'|'sent',note:''}
 let J=1, FILTER='all', SEL=null, DRAG=null;
 const teamHue=e=>{const all=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3','F4'];const i=all.indexOf(e);return i<0?24:Math.round(i*137.5)%360;};
@@ -325,7 +328,7 @@ function boot(){
   const sb=q=>fetch(SB+'/rest/v1/'+q,{headers:HD}).then(r=>r.ok?r.json():[]).catch(()=>[]);
   Promise.all([
     gj('../data/scoring.json'), gj('../data/categories.json'), gj('../data/capitaines.json'),
-    gj('../data/poules2627.json'), gj('../data/salles2627.json'),
+    gj('../data/poules2627.json'), gj('../data/salles2627.json'), gj('../data/extra_communautaires.json'),
     sb('tags_log?select=id,tags&order=id.desc&limit=1'),
     sb('scenarios_log?select=id,tags&slot=eq.fem&order=id.desc&limit=1'),
     sb('dispos_log?select=licence,nom,prenom,dispos,n,created_at&order=id.asc'),
@@ -337,11 +340,12 @@ function boot(){
     CAPT=(res[2]&&res[2].capitaines)||{};
     ((res[3]&&res[3].poules)||[]).forEach(q=>{POULES[q.acbb]=q;});
     SALLES=(res[4]&&res[4].salles)||{};
-    TAGS=(res[5][0]&&res[5][0].tags)||{}; delete TAGS._params;
-    FEM=(res[6][0]&&res[6][0].tags)||{};
-    res[7].forEach(r=>{ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)){ const raw=String(r.licence); let k=raw; if(/^SN-/.test(raw)){const m=BYSN[raw]; if(m&&m.lic)k=String(m.lic);} VOTES[k]=r; } });
+    const exj=res[5]||{}; EXC={ex:new Set(Object.values(exj.ex||{}).map(String)),conf:new Set(Object.values(exj.a_confirmer||{}).map(String))};
+    TAGS=(res[6][0]&&res[6][0].tags)||{}; delete TAGS._params;
+    FEM=(res[7][0]&&res[7][0].tags)||{};
+    res[8].forEach(r=>{ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)){ const raw=String(r.licence); let k=raw; if(/^SN-/.test(raw)){const m=BYSN[raw]; if(m&&m.lic)k=String(m.lic);} VOTES[k]=r; } });
     const seen={};
-    res[8].forEach(r=>{ if(seen[r.slot])return; seen[r.slot]=1; const j=parseInt(r.slot.slice(1),10); const t=Object.assign({},r.tags||{}); META[j]={id:r.id,author:r.author,at:r.created_at,meta:t._meta||null}; delete t._meta; COMPOS[j]=t; });
+    res[9].forEach(r=>{ if(seen[r.slot])return; seen[r.slot]=1; const j=parseInt(r.slot.slice(1),10); const t=Object.assign({},r.tags||{}); META[j]={id:r.id,author:r.author,at:r.created_at,meta:t._meta||null}; delete t._meta; COMPOS[j]=t; });
     for(let j=1;j<=NJ;j++){ COMPOS[j]=COMPOS[j]||{}; }
     BASE=JSON.parse(JSON.stringify(COMPOS));
     let restored=[]; for(let j=1;j<=NJ;j++){ if(draftRestore(j)) restored.push('J'+j); }
@@ -397,6 +401,8 @@ function ticks(k){ // 7 traits : vert dispo, rouge indispo, gris sans réponse ;
 }
 function dispoTxt(k,j){ const p=BYKEY[k]; const s=dispo(k,j); if(s==='g') return ''; if(p&&FORCE_STATUS[fkey(p)]) return FORCE_STATUS[fkey(p)]; if(s==='y') return 'pas répondu'; const v=p&&voteFor(p); if(v&&((v.dispos||{}).roles||[]).indexOf('N')>=0) return 'ne veut pas jouer'; return 'indispo J'+j; }
 function isCapt(k,t){ const c=CAPT[t]; if(!c) return false; return Array.isArray(c)?c.indexOf(k)>=0:c===k; }
+const isEx=k=>EXC.ex.has(String(k)), isExQ=k=>EXC.conf.has(String(k));
+const exBadge=k=>isEx(k)?'<span class="agec ex" title="extra-communautaire : 1 seul par feuille (II.609)">EX</span>':(isExQ(k)?'<span class="agec ex q" title="extra-communautaire ? à confirmer">EX?</span>':'');
 function catBadge(k){ const p=BYKEY[k]; const c=CAT[k]||(p?CAT[nrmK(p.nom)+'|'+nrmK(p.pre)]:null); return c?'<span class="agec'+(c==='S'?' s':'')+'" title="catégorie">'+esc(c)+'</span>':''; }
 function compo(j,t){ const c=COMPOS[j][t]||(COMPOS[j][t]={p:[],st:'draft',note:''}); c.p=c.p||[]; c.st=c.st||'draft'; return c; }
 function dirtyTeams(){ const out=[]; TEAMS.forEach(t=>{ const a=JSON.stringify(COMPOS[J][t]||null), b=JSON.stringify(BASE[J][t]||null); if(a!==b && !(a==='null'&&b&&JSON.parse(b).p.length===0) && !(b==='null'&&COMPOS[J][t]&&!COMPOS[J][t].p.length&&COMPOS[J][t].st==='draft'&&!COMPOS[J][t].note)) out.push(t); }); return out; }
@@ -432,6 +438,10 @@ function checkTeam(t,j){
     c.p.forEach(k=>{ if(participations(k,j).some(x=>x.t===o)) add('err',short(BYKEY[k]||{nom:k})+' a déjà joué en '+o+' (même poule) — interdit',[k]); }); });
   // classement minimum N1
   if(t==='M2') c.p.forEach(k=>{ const p=BYKEY[k]; if(p&&p.men&&p.men<1800) add('err',short(p)+' : '+p.men+' pts < 1800 (minimum N1)',[k]); });
+  // étrangers extra-communautaires : 1 seul par feuille en équipe de 4 (II.609)
+  const exs=c.p.filter(isEx), exq=c.p.filter(isExQ);
+  if(exs.length>1) add('err','II.609 : '+exs.length+' joueurs extra-communautaires ('+exs.map(k=>short(BYKEY[k]||{nom:k})).join(', ')+') — 1 seul autorisé par feuille',exs);
+  else if(exs.length+exq.length>1) add('warn','II.609 : '+(exs.length+exq.length)+' extra-communautaires possibles ('+exs.concat(exq).map(k=>short(BYKEY[k]||{nom:k})).join(', ')+') — statut à confirmer',exq);
   // dispos
   c.p.forEach(k=>{ const s=dispo(k,j); if(s==='r') add('warn',short(BYKEY[k]||{nom:k})+' : '+dispoTxt(k,j),[k]); else if(s==='y') add('info',short(BYKEY[k]||{nom:k})+' n\'a pas répondu au formulaire',[k]); });
   // contraintes internes
@@ -513,7 +523,7 @@ function pRow(k,t,flags){
   const cap=isCapt(k,t)?'<span class="agec c" title="capitaine">C</span>':'';
   const txt=dispoTxt(k,J);
   return '<div class="pr'+(lvl==='err'?' bad':(lvl==='warn'?' meh':''))+'" draggable="true" data-k="'+esc(k)+'" data-t="'+t+'" title="'+esc(homeLabel(k))+'">'
-    +'<span class="dot '+s+'"></span>'+catBadge(k)+cap+tag+'<span class="nm'+(s==='r'?' x':'')+'">'+esc(short(p))+'</span>'+ticks(k)
+    +'<span class="dot '+s+'"></span>'+catBadge(k)+exBadge(k)+cap+tag+'<span class="nm'+(s==='r'?' x':'')+'">'+esc(short(p))+'</span>'+ticks(k)
     +(txt?'<span class="note'+(s==='y'?' y':'')+'">'+esc(txt)+'</span>':'')
     +'<span class="pts">'+(p.men||'—')+'</span><button class="rm" data-rm="'+esc(k)+'" title="retirer">✕</button></div>';
 }
@@ -528,7 +538,7 @@ function card(t){
     const nD=pl.filter(k=>dispo(k,J)==='g'&&!usedAll.has(k)).length;
     const chips=pl.map(k=>{ const p=BYKEY[k], st=dispo(k,J), elsewhere=TEAMS.find(o=>o!==t&&playing(o,J)&&compo(J,o).p.indexOf(k)>=0);
       const cls=st==='r'?' off':(elsewhere?' unk':''); const tip=elsewhere?('déjà aligné en '+elsewhere):(st==='g'?'dispo — sélectionner puis toucher une case ＋ dans une autre équipe':dispoTxt(k,J));
-      return '<span class="oc'+cls+'" draggable="'+(st!=='r')+'" data-k="'+esc(k)+'" data-ex="1" title="'+esc(tip)+'"><span class="dot '+st+'"></span><span class="nm">'+esc(short(p))+'</span>'+ticks(k)+'<span class="pts">'+(p.men||'—')+'</span>'+(elsewhere?'<span class="pts" style="color:var(--warn)">'+elsewhere+'</span>':'')+'</span>'; }).join('');
+      return '<span class="oc'+cls+'" draggable="'+(st!=='r')+'" data-k="'+esc(k)+'" data-ex="1" title="'+esc(tip)+'"><span class="dot '+st+'"></span>'+exBadge(k)+'<span class="nm">'+esc(short(p))+'</span>'+ticks(k)+'<span class="pts">'+(p.men||'—')+'</span>'+(elsewhere?'<span class="pts" style="color:var(--warn)">'+elsewhere+'</span>':'')+'</span>'; }).join('');
     return '<div class="tc" data-team="'+t+'" style="opacity:.85">'+head+'<span class="st">EXEMPTE</span></div><div class="rules">'+fmtD(m.date)+' · pas de rencontre pour '+t+' en J'+J+'</div>'
       +'<div class="others"><div class="ot">Joueurs de '+t+' disponibles comme renforts · '+nD+' dispo'+(nD>1?'s':'')+' non aligné'+(nD>1?'s':'')+'</div><div class="ol">'+(chips||'<span style="font-size:11px;color:var(--dimmer)">aucun titulaire</span>')+'</div></div></div>'; }
   const r=checkTeam(t,J), lvl=lvlOf(r.issues);
@@ -553,7 +563,7 @@ function card(t){
       const p=BYKEY[k], st=dispo(k,J), elsewhere=usedAll.has(k)?TEAMS.find(o=>o!==t&&playing(o,J)&&compo(J,o).p.indexOf(k)>=0):null;
       const cls=st==='r'?' off':(elsewhere?' unk':'');
       const tip=elsewhere?('déjà aligné en '+elsewhere):(st==='g'?'dispo — cliquer pour aligner':dispoTxt(k,J));
-      return '<span class="oc'+cls+'" draggable="'+(st!=='r')+'" data-k="'+esc(k)+'" data-ot="'+t+'" title="'+esc(tip)+'"><span class="dot '+st+'"></span><span class="nm">'+esc(short(p))+'</span>'+ticks(k)+'<span class="pts">'+(p.men||'—')+'</span>'+(elsewhere?'<span class="pts" style="color:var(--warn)">'+elsewhere+'</span>':'')+'</span>';
+      return '<span class="oc'+cls+'" draggable="'+(st!=='r')+'" data-k="'+esc(k)+'" data-ot="'+t+'" title="'+esc(tip)+'"><span class="dot '+st+'"></span>'+exBadge(k)+'<span class="nm">'+esc(short(p))+'</span>'+ticks(k)+'<span class="pts">'+(p.men||'—')+'</span>'+(elsewhere?'<span class="pts" style="color:var(--warn)">'+elsewhere+'</span>':'')+'</span>';
     }).join(''):'<span style="font-size:11px;color:var(--dimmer)">tout l\'effectif est aligné — glisse ici (ou sélectionne puis touche ici) un joueur pour le sortir de l\'équipe</span>')+'</div></div>';
   const shown=r.issues.filter(i=>i.lvl!=='info'); const infos=r.issues.filter(i=>i.lvl==='info');
   const alerts=shown.map(i=>'<div class="alert '+i.lvl+'">'+(i.lvl==='err'?'⛔':'⚠')+' <span>'+esc(i.msg)+'</span></div>').join('');
@@ -602,7 +612,7 @@ function renderRail(){
   const used=new Set(), usedF=new Set(), where={}; TEAMS.forEach(t=>{ if(playing(t,J)) compo(J,t).p.forEach(k=>{ used.add(k); (where[k]=where[k]||[]).push(t); if(GENRE(t)==='F') usedF.add(k); }); });
   const rp=(k,tag)=>{ const p=BYKEY[k]; if(!p)return''; const s=dispo(k,J); const txt=dispoTxt(k,J);
     const sub=[txt, (tag&&/aussi/.test(tag))?tag.replace(/^.*aussi/,'aussi'):''].filter(Boolean).join(' · ');   // l'état seul : la division est déjà dans le titre de section
-    return '<div class="rp'+(s==='g'?' ok':(s==='r'?' dimmer':''))+(SEL&&SEL.k===k&&!SEL.from?' sel':'')+'" draggable="true" data-k="'+esc(k)+'" title="'+esc(homeLabel(k))+'"><span class="dot '+s+'"></span>'+catBadge(k)+'<div class="rpm"><span class="nm">'+esc(short(p))+'</span>'+(sub?'<span class="tag">'+esc(sub)+'</span>':'')+'</div>'+ticks(k)+'<span class="pts">'+(p.men||'—')+'</span></div>'; };
+    return '<div class="rp'+(s==='g'?' ok':(s==='r'?' dimmer':''))+(SEL&&SEL.k===k&&!SEL.from?' sel':'')+'" draggable="true" data-k="'+esc(k)+'" title="'+esc(homeLabel(k))+'"><span class="dot '+s+'"></span>'+catBadge(k)+exBadge(k)+'<div class="rpm"><span class="nm">'+esc(short(p))+'</span>'+(sub?'<span class="tag">'+esc(sub)+'</span>':'')+'</div>'+ticks(k)+'<span class="pts">'+(p.men||'—')+'</span></div>'; };
   const order=(a,b)=>{ const o={g:0,y:1,r:2}; const da=o[dispo(a,J)],db=o[dispo(b,J)]; if(da!==db)return da-db; return ((BYKEY[b]||{}).men||0)-((BYKEY[a]||{}).men||0); };
   let h='';
   if(q){ const hits=D.filter(p=>nrmK(p.nom+p.pre).indexOf(q)>=0||nrmK(p.pre+p.nom).indexOf(q)>=0).map(pkey).sort(order).slice(0,20);
@@ -648,7 +658,7 @@ function renderChecker(){
   h+=line(/Emiliano/,'Emiliano à domicile');
   h+=line(/indispo|blessé|ne veut pas/,'Dispos déclarées respectées');
   h+=line(/incomplète|aucun joueur|trop de joueurs/,'Équipes complètes');
-  h+=row('na','Étrangers ≤ 1 / équipe — non vérifiable (nationalités non renseignées)');
+  h+=line(/II\.609/,'Extra-communautaires ≤ 1 / feuille (II.609)');
   h+=row('na','Mutés : illimités (II.610)');
   h+='<div class="hint">Participations = compos <b>enregistrées</b> des journées précédentes (prévisionnel). Quand les feuilles FFTT seront disponibles, elles prendront le relais.</div>';
   document.getElementById('chkList').innerHTML=h;
