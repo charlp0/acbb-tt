@@ -275,6 +275,8 @@
   .tm-p .nmn{flex:1;min-width:0;white-space:normal;overflow-wrap:break-word;line-height:1.35}
   .agec{display:inline-block;min-width:15px;text-align:center;font-size:8px;font-weight:800;border-radius:4px;padding:1px 3px;margin-right:4px;vertical-align:1px;background:rgba(96,165,250,.16);color:#60A5FA;border:1px solid rgba(96,165,250,.4)}
   .agec.s{background:rgba(255,255,255,.06);color:var(--dimmer);border-color:rgba(255,255,255,.14)}
+  .agec.ex{background:rgba(244,114,182,.16);color:#F472B6;border-color:rgba(244,114,182,.5)}
+  .agec.ex.q{opacity:.7;border-style:dashed}
   .tm-cnt{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;color:var(--dim);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:99px;padding:1px 7px;margin-left:6px;vertical-align:2px}
   .tm-p .ref-r,.fm-p .ref-r{display:inline-block;min-width:15px;text-align:center;font-size:8px;font-weight:800;border-radius:4px;padding:1px 3px;margin-right:4px;vertical-align:1px;background:rgba(242,106,27,.18);color:#F26A1B;border:1px solid rgba(242,106,27,.55)}
   .tm-p .nmn.dsp-g{color:#4ADE80;font-weight:600}
@@ -434,7 +436,7 @@
     <span><i style="background:#FB923C"></i> Remplaçant ou ≤3 journées</span>
     <span><i style="background:#F87171"></i> Ne veut pas jouer / blessé</span>
     <span><i style="background:#FACC15"></i> Pas de réponse</span>
-    <span><span class="agec" style="background:rgba(242,106,27,.18);color:#F26A1B;border-color:rgba(242,106,27,.55)">C</span> = capitaine</span>
+    <span><span class="agec" style="background:rgba(242,106,27,.18);color:#F26A1B;border-color:rgba(242,106,27,.55)">C</span> = capitaine</span><span><span class="agec ex">EX</span> = extra-communautaire (1 max par feuille)</span>
   </div>
   <div class="teams-mini" id="teamsMini"></div>
   <div class="section-h">Pools de remplacement par division</div>
@@ -467,6 +469,10 @@ let CAPT_MAP={}; fetch('../data/capitaines.json',{cache:'no-cache'}).then(r=>r.j
 /* badge C = capitaine DE L'ÉQUIPE AFFICHÉE (une joueuse capitaine en F3 ne l'est pas dans son équipe masculine) */
 const isCaptOf=(p,team)=>{const c=CAPT_MAP[team]; const k=String(p.lic||p._k||''); return c?(Array.isArray(c)?c.indexOf(k)>=0:c===k):false;};
 const captBadge=(p,team)=>isCaptOf(p,team)?'<span class="ref-r" title="capitaine de l\'équipe">C</span>':'';
+/* joueurs extra-communautaires (hors UE) : 1 seul par feuille en équipe de 4 (II.609) — data/extra_communautaires.json */
+let EXC={ex:new Set(),conf:new Set()};
+fetch('../data/extra_communautaires.json',{cache:'no-cache'}).then(r=>r.json()).then(j=>{EXC={ex:new Set(Object.values(j.ex||{}).map(String)),conf:new Set(Object.values(j.a_confirmer||{}).map(String))};if(typeof render==='function')render();}).catch(()=>{});
+const exBadge=p=>{const k=String(p.lic||pkey(p)); return EXC.ex.has(k)?'<span class="agec ex" title="extra-communautaire : 1 seul par feuille (II.609)">EX</span>':(EXC.conf.has(k)?'<span class="agec ex q" title="extra-communautaire ? à confirmer">EX?</span>':'');};
 const tb=document.getElementById('tb'), q=document.getElementById('q'), ks=document.getElementById('k'), kv=document.getElementById('kv'), cs=document.getElementById('cap'), cv=document.getElementById('capv');
 function traj(t){return t>=30?'<span class="up">↗</span>':(t<=-30?'<span class="down">↘</span>':'<span class="flat">→</span>');}
 
@@ -566,7 +572,7 @@ function renderTeamsMini(){
           const dst=DISPO_READY?dispoStatus(p):'';
           const dsc=dst?(' dsp-'+dst):'';
           const _vr=voteForP(p);
-          const refB=captBadge(p,k);
+          const refB=captBadge(p,k)+exBadge(p);
           const dTit=dst?(FORCE_STATUS[fkey(p)]||DISPO_TIP[dst]):'';
           return '<div class="tm-p" draggable="true" data-k="'+esc(pkey(p))+'"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+ageBadge(p)+refB+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
         }).join('')+'</div>'
@@ -603,7 +609,7 @@ function renderPools(){
           const dst=DISPO_READY?dispoStatus(p):''; const dsc=dst?(' dsp-'+dst):'';
           const dTit=dst?(FORCE_STATUS[fkey(p)]||DISPO_TIP[dst]):'';
           const _vr=voteForP(p);
-          const refB='';   // pas de capitaine dans un pool
+          const refB=exBadge(p);   // pas de capitaine dans un pool
           const nJ=(_vr&&_vr.n!=null)?' <span style="color:var(--dim);font-weight:400" title="journées de dispo déclarées">('+_vr.n+'/7J)</span>':'';
           return '<div class="tm-p" draggable="true" data-k="'+esc(pkey(p))+'"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+ageBadge(p)+refB+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+nJ+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'">'+pcTxt+'</span></div>';
         }).join('')+'</div>'
