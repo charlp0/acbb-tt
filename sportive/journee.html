@@ -758,7 +758,6 @@ function draftText(t,j){ // version « draft » : texte brut pour discuter des c
   let s=t+' · J'+j+' — '+fmtD(m.date)+' · '+(m.dom?'dom. vs ':'ext. à ')+m.opp+(m.oppAvg?' (≈'+m.oppAvg+')':'')+'\n';
   s+=sorted.map((k,i)=>{ const p=BYKEY[k]; const o=origin(k); return (i+1)+'. '+(p?full(p):k)+(o&&o!==t?' ('+o+')':'')+(p?' '+(p.men||'—'):''); }).join('\n');
   if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
-  if(c.note) s+='\nNote : '+c.note;
   return s;
 }
 function freeText(j){ // titulaires (compo officielle, hors pools) disponibles à Jj et non alignés dans aucune équipe
