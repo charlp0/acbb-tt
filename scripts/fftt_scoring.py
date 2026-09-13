@@ -4,7 +4,7 @@ Score = mensuel actuel + k × tendance, où tendance = PENTE de régression lin�
 4 dernières phases du classement OFFICIEL (via xml_histo_classement.php?numlic=...).
 Identifiants via FFTT_ID / FFTT_PWD. Usage : python3 scripts/fftt_scoring.py
 """
-import os, re, json, time, datetime, importlib.util
+import unicodedata, os, re, json, time, datetime, importlib.util
 spec=importlib.util.spec_from_file_location("fb","scripts/fftt_build.py")
 fb=importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
 def tg(s,t):
@@ -119,8 +119,16 @@ def main():
         ys=[e['pt'] for e in win]; b=slope(ys)
         out.append({'lic':lic,'nom':nom,'pre':pre,'men':round(men) if isinstance(men,(int,float)) else (ys[-1] if ys else 500),
                     'tend':round(b*(len(ys)-1)) if b is not None else 0,'spp':round(b,1) if b is not None else None,'h':win,'mut':'2026/2027'})
+    # Inscrits compétiteurs 26/27 sans données FFTT (liste Cyril 11/09/2026) : 500 pts par défaut, badge « nouveau »
+    NEW_HARD=[('DE CAMPIGNEULLES','Cyril',500),('MICHON','Clément',500),('TANIGA','Vélan',500),('NEIGE','Emmanuel',500),('SIMON','Patrick',500)]
+    _nk=lambda x:re.sub(r'[^A-Z0-9]','',unicodedata.normalize('NFD',x or '').encode('ascii','ignore').decode().upper())
+    _have={(_nk(r['nom']),_nk(r['pre'])) for r in out}
     for nom,pre,men in MUT_HARD:
+        if (_nk(nom),_nk(pre)) in _have: continue   # déjà licencié FFTT : ne pas dupliquer
         out.append({'lic':None,'nom':nom,'pre':pre,'men':men,'tend':None,'spp':None,'h':[],'mut':'2026/2027'})
+    for nom,pre,men in NEW_HARD:
+        if (_nk(nom),_nk(pre)) in _have: continue
+        out.append({'lic':None,'nom':nom,'pre':pre,'men':men,'tend':None,'spp':None,'h':[],'new':'2026/2027'})
     print(f"  + {len(MUT_LOOKUP)+len(MUT_HARD)} mutations 2026/2027 ajoutées")
     out.sort(key=lambda r:r['nom'])
     payload={'built':datetime.datetime.now(datetime.timezone.utc).isoformat(),'window':WINDOW,'players':out}
