@@ -758,11 +758,6 @@ function draftText(t,j){ // version « draft » : texte brut pour discuter des c
   let s=t+' · J'+j+' — '+fmtD(m.date)+' · '+(m.dom?'dom. vs ':'ext. à ')+m.opp+(m.oppAvg?' (≈'+m.oppAvg+')':'')+'\n';
   s+=sorted.map((k,i)=>{ const p=BYKEY[k]; const o=origin(k); return (i+1)+'. '+(p?full(p):k)+(o&&o!==t?' ('+o+')':'')+(p?' '+(p.men||'—'):''); }).join('\n');
   if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
-  const others=titulaires(t).filter(k=>BYKEY[k]&&c.p.indexOf(k)<0).sort((a,b)=>(BYKEY[b].men||0)-(BYKEY[a].men||0));
-  if(others.length){
-    const where=k=>{ for(const o of Object.keys(COMPOS[j]||{})){ if(o!=='_meta'&&o!==t&&((COMPOS[j][o]||{}).p||[]).indexOf(k)>=0) return o; } return null; };
-    s+='\nAutres '+t+' : '+others.map(k=>{ const p=BYKEY[k], o=where(k), st=dispo(k,j); return short(p)+(o?' → '+o:(st==='r'?' indispo':(st==='y'?' ?dispo':' dispo, non retenu'))); }).join(', ');
-  }
   if(c.note) s+='\nNote : '+c.note;
   return s;
 }
