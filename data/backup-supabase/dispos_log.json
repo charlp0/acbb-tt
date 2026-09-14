@@ -3885,5 +3885,135 @@
   },
   "n": 5,
   "ip": "176.160.177.78"
+ },
+ {
+  "id": 246,
+  "created_at": "2026-09-13T11:09:19.172943+00:00",
+  "licence": "SN-LAGABE-GREGOIRE",
+  "prenom": "Grégoire",
+  "nom": "LAGABE",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": false,
+   "j4": false,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T",
+    "R",
+    "REF"
+   ]
+  },
+  "n": 5,
+  "ip": "87.88.150.73"
+ },
+ {
+  "id": 247,
+  "created_at": "2026-09-13T14:10:04.037512+00:00",
+  "licence": "SN-SEBASTIEN-COUCHOURON",
+  "prenom": "Couchouron",
+  "nom": "Sébastien",
+  "dispos": {
+   "j1": false,
+   "j2": true,
+   "j3": true,
+   "j4": true,
+   "j5": true,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 6,
+  "ip": "82.225.30.195"
+ },
+ {
+  "id": 248,
+  "created_at": "2026-09-13T16:28:51.172912+00:00",
+  "licence": "9244767",
+  "prenom": "Guillaume",
+  "nom": "Pierron",
+  "dispos": {
+   "j1": true,
+   "j2": false,
+   "j3": false,
+   "j4": true,
+   "j5": false,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T",
+    "REF"
+   ]
+  },
+  "n": 4,
+  "ip": "37.66.89.148"
+ },
+ {
+  "id": 249,
+  "created_at": "2026-09-13T16:28:58.576513+00:00",
+  "licence": "9244767",
+  "prenom": "Guillaume",
+  "nom": "Pierron",
+  "dispos": {
+   "j1": true,
+   "j2": false,
+   "j3": false,
+   "j4": true,
+   "j5": false,
+   "j6": true,
+   "j7": true,
+   "roles": [
+    "T",
+    "REF"
+   ]
+  },
+  "n": 4,
+  "ip": "37.66.89.148"
+ },
+ {
+  "id": 250,
+  "created_at": "2026-09-14T07:25:07.976908+00:00",
+  "licence": "9218870",
+  "prenom": "alain",
+  "nom": "girou",
+  "dispos": {
+   "j1": true,
+   "j2": true,
+   "j3": true,
+   "j4": false,
+   "j5": true,
+   "j6": true,
+   "j7": false,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 5,
+  "ip": "80.215.105.50"
+ },
+ {
+  "id": 251,
+  "created_at": "2026-09-14T08:29:54.836923+00:00",
+  "licence": "9261324",
+  "prenom": "Guillaume",
+  "nom": "Latimier",
+  "dispos": {
+   "j1": false,
+   "j2": true,
+   "j3": true,
+   "j4": false,
+   "j5": false,
+   "j6": false,
+   "j7": true,
+   "roles": [
+    "T"
+   ]
+  },
+  "n": 3,
+  "ip": "104.28.30.18"
  }
 ]
