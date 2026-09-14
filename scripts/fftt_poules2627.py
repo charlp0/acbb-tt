@@ -141,13 +141,13 @@ POULES = [
         (7, 'COURBEVOIE SPORT TT', '', '92'), (8, 'LE HAVRE ATT', '', '76'),
         (9, 'BOULOGNE-BILLANCOURT AC', '', '92'), (10, 'PAYS COMPIEGNOIS TT', '', '60'),
         (11, 'NANTES TT', '', '44'), (12, 'MIRAMAS AS TT', '', '13')],
-       # grille 12 équipes (ACBB=9), aller J1-J11 sept->dec, dates FFTT variables (mar/ven/dim)
-       fixtures=[(1,'sept.','PONTOISE-CERGY AS',False),(2,'sept.','CAEN TTC',True),
-                 (3,'oct.','PROVILLE ASL',False),(4,'oct.','LILLE METROPOLE TT',True),
-                 (5,'nov.','NANTES TT',False),(6,'nov.','PAYS COMPIEGNOIS TT',True),
-                 (7,'nov.','MIRAMAS AS TT',False),(8,'nov.','LE HAVRE ATT',False),
-                 (9,'dec.','COURBEVOIE SPORT TT',True),(10,'dec.','FREJUS ASML',False),
-                 (11,'dec.','AMIENS STT',True)]),
+       # calendrier officiel FFTT Pro B 2026/27 (PDF du 16/07/2026, ACBB = n°7) ; J7-J11 non datées par la FFTT
+       fixtures=[(1,'mar. 22/09','LE HAVRE ATT',False),(2,'mar. 29/09','COURBEVOIE SPORT TT',True),
+                 (3,'ven. 23/10','FREJUS ASML',False),(4,'dim. 08/11','AMIENS STT',True),
+                 (5,'ven. 11/12','PONTOISE-CERGY AS',False),(6,'ven. 18/12','CAEN TTC',True),
+                 (7,'à fixer','PROVILLE ASL',False),(8,'à fixer','LILLE METROPOLE TT',True),
+                 (9,'à fixer','NANTES TT',False),(10,'à fixer','PAYS COMPIEGNOIS TT',True),
+                 (11,'à fixer','MIRAMAS AS TT',False)]),
     dict(division='Nationale 1 Messieurs', poule=2, acbb='M2', genre='M', pos=3, teams=[
         (1, 'NICE CAVIGAL', 1, '06'), (2, 'DOUAI TT', 1, '59'),
         (3, 'BOULOGNE BILLANCOURT AC', 2, '92'), (4, 'ISTRES TT', 1, '13'),

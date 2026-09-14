@@ -103,69 +103,69 @@
    "cal": [
     {
      "j": 1,
-     "date": "sept.",
-     "oppName": "PONTOISE-CERGY AS",
-     "dom": false
-    },
-    {
-     "j": 2,
-     "date": "sept.",
-     "oppName": "CAEN TTC",
-     "dom": true
-    },
-    {
-     "j": 3,
-     "date": "oct.",
-     "oppName": "PROVILLE ASL",
-     "dom": false
-    },
-    {
-     "j": 4,
-     "date": "oct.",
-     "oppName": "LILLE METROPOLE TT",
-     "dom": true
-    },
-    {
-     "j": 5,
-     "date": "nov.",
-     "oppName": "NANTES TT",
-     "dom": false
-    },
-    {
-     "j": 6,
-     "date": "nov.",
-     "oppName": "PAYS COMPIEGNOIS TT",
-     "dom": true
-    },
-    {
-     "j": 7,
-     "date": "nov.",
-     "oppName": "MIRAMAS AS TT",
-     "dom": false
-    },
-    {
-     "j": 8,
-     "date": "nov.",
+     "date": "mar. 22/09",
      "oppName": "LE HAVRE ATT",
      "dom": false
     },
     {
-     "j": 9,
-     "date": "dec.",
+     "j": 2,
+     "date": "mar. 29/09",
      "oppName": "COURBEVOIE SPORT TT",
      "dom": true
     },
     {
-     "j": 10,
-     "date": "dec.",
+     "j": 3,
+     "date": "ven. 23/10",
      "oppName": "FREJUS ASML",
      "dom": false
     },
     {
-     "j": 11,
-     "date": "dec.",
+     "j": 4,
+     "date": "dim. 08/11",
      "oppName": "AMIENS STT",
      "dom": true
+    },
+    {
+     "j": 5,
+     "date": "ven. 11/12",
+     "oppName": "PONTOISE-CERGY AS",
+     "dom": false
+    },
+    {
+     "j": 6,
+     "date": "ven. 18/12",
+     "oppName": "CAEN TTC",
+     "dom": true
+    },
+    {
+     "j": 7,
+     "date": "à fixer",
+     "oppName": "PROVILLE ASL",
+     "dom": false
+    },
+    {
+     "j": 8,
+     "date": "à fixer",
+     "oppName": "LILLE METROPOLE TT",
+     "dom": true
+    },
+    {
+     "j": 9,
+     "date": "à fixer",
+     "oppName": "NANTES TT",
+     "dom": false
+    },
+    {
+     "j": 10,
+     "date": "à fixer",
+     "oppName": "PAYS COMPIEGNOIS TT",
+     "dom": true
+    },
+    {
+     "j": 11,
+     "date": "à fixer",
+     "oppName": "MIRAMAS AS TT",
+     "dom": false
     }
    ]
   },
