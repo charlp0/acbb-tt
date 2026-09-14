@@ -1,0 +1,24 @@
+{
+ "maj": "14/09/2026",
+ "source": "répartition des salles à domicile (grille Minh, vérifiée 14/09/2026)",
+ "codes": {
+  "G": "piscine grand côté",
+  "P": "piscine petit côté",
+  "B": "Bartholdi",
+  "-": "exempte"
+ },
+ "salles": {
+  "M6": "GGGGGGG",
+  "M7": "GGGGGGG",
+  "M8": "GGGGGGG",
+  "M9": "GGGGGBG",
+  "M10": "GGGGGGG",
+  "M11": "GGGGGGG",
+  "M12": "GGB-GGG",
+  "M13": "GPGG-GP",
+  "M14": "BGG-GGG",
+  "M15": "-GBGGGG",
+  "M16": "GGP-GPG",
+  "M17": "PGGGP-G"
+ }
+}
