@@ -365,6 +365,21 @@
   .pill-stat.lose b{color:var(--lose-lt)}
   .pill-stat.acc b{color:var(--orange)}
 </style>
+<script>
+/* Mode embed (iframe depuis refonte/joueurs.html?lic=…&embed=1) : masque l'en-tête, le bandeau « Signaler » et le pied de page,
+   et remonte la hauteur du document au parent (parent.postMessage({acbbHeight})). Aucun autre comportement modifié. */
+(function(){try{
+  if(!/[?&]embed=1(?:&|$)/.test(location.search)) return;
+  window.__EMBED=true;
+  var st=document.createElement('style');
+  st.textContent='html.embed header.header,html.embed .rep-bar,html.embed .rep-foot,html.embed .foot{display:none!important}html.embed body,html.embed .wrap{min-height:0!important}html.embed body{padding-bottom:16px!important}';
+  document.head.appendChild(st); document.documentElement.classList.add('embed');
+  var last=0;
+  window.__sendEmbedHeight=function(){ var h=Math.max(document.body.scrollHeight||0,document.body.offsetHeight||0); if(h&&h!==last){ last=h; try{ parent.postMessage({acbbHeight:h},'*'); }catch(e){} } };
+  window.addEventListener('load',function(){ window.__sendEmbedHeight(); setTimeout(window.__sendEmbedHeight,600); setTimeout(window.__sendEmbedHeight,2000); });
+  if(window.ResizeObserver){ document.addEventListener('DOMContentLoaded',function(){ try{ new ResizeObserver(function(){ window.__sendEmbedHeight(); }).observe(document.body); }catch(e){} }); }
+}catch(e){}})();
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -1044,6 +1059,7 @@ async function boot(){
   const scl=document.getElementById('shareClose'); if(scl) scl.addEventListener('click',()=>{document.getElementById('shareOverlay').style.display='none';});
   const ovl=document.getElementById('shareOverlay'); if(ovl) ovl.addEventListener('click',e=>{ if(e.target===ovl) ovl.style.display='none'; });
   setTimeout(()=>preBuildShareImage(0),1000);   // pré-génère l'image (attend html2canvas) -> partage natif 1 tap si possible
+  if(window.__EMBED&&window.__sendEmbedHeight){ window.__sendEmbedHeight(); setTimeout(window.__sendEmbedHeight,300); setTimeout(window.__sendEmbedHeight,1500); }
 }
 function miniCurve(vals){
   vals=(vals||[]).filter(v=>typeof v==='number');
