@@ -51,6 +51,8 @@ jobs:
           FFTT_SKIP_IF_FRESH: ${{ github.event_name == 'schedule' && '1' || '0' }}   # créneaux multiples : ignore si déjà à jour aujourd'hui (runs programmés uniquement)
         run: python3 scripts/fftt_build.py
       - name: Génération data-driven des pages d'équipe (site.json)
+        # 26/27 : les poules FFTT ne sont pas encore résolues par fftt_site.py → l'étape ne doit pas bloquer les profils joueurs
+        continue-on-error: true
         env:
           FFTT_ID: ${{ secrets.FFTT_ID }}
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
