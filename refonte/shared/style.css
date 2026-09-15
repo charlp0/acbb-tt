@@ -16,7 +16,9 @@ a{color:var(--orange)}a:hover{color:#FF8B45}
 .brand img{width:38px;height:38px;border-radius:8px;background:#fff;padding:3px;border:1px solid var(--line-2);object-fit:contain;box-shadow:0 4px 12px rgba(242,106,27,0.18)}
 .brand .b1{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:22px;line-height:1}
 .brand .b2{font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--dim);letter-spacing:.3px;text-transform:uppercase;margin-top:3px}
-.nav{display:flex;gap:8px;flex-wrap:wrap}
+.nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.hdr .nav .pill{font-size:10.5px;padding:5px 10px}
+@media(min-width:1200px){.hdr{flex-wrap:nowrap}.hdr .nav{flex:1 1 auto}}
 .pill{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:6px 12px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .pill.on{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
 .pill.cap{color:var(--blue);border-color:rgba(96,165,250,.6)}.pill.cap.on{background:var(--blue);border-color:var(--blue);color:#0B0B0D}
