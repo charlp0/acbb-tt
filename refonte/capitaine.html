@@ -97,9 +97,37 @@
   .seen .card2 .pt{font-family:"JetBrains Mono",monospace;font-weight:800}
   .empty{font-size:12.5px;color:var(--dim);line-height:1.45}
   .note{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--warn);background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.35);border-radius:9px;padding:8px 12px}
+  /* scouting */
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:4px 9px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line);color:var(--ink-2);white-space:nowrap}
+  .chip b{color:var(--ink)} .chip sup{font-size:8px}
+  .band{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim);border:1px dashed var(--line-2);border-radius:9px;padding:6px 10px;margin-top:14px;letter-spacing:.2px}
+  .sblock{margin-top:14px} .sblock>.lab{display:flex;align-items:center;gap:8px}
+  .sblock .lab .n{background:var(--panel-3);border-radius:99px;padding:1px 7px;color:var(--ink-2)}
+  .face{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:6px;font-size:13px}
+  .face .sc{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:18px}
+  .lineup{font-size:12.5px;color:var(--ink-2);line-height:1.55;margin-top:6px}
+  .lineup .cl{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim)}
+  .lineup .sc{font-family:"JetBrains Mono",monospace;font-weight:800}
+  .seen .card2 .nm{display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap}
+  .seen .card2 .rs{display:flex;gap:8px;align-items:center;flex-shrink:0}
+  .seen .card2 .ct{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim)}
+  .seen .card2.top{border-color:rgba(61,214,140,.45)} .seen .card2.top .nm{color:var(--win-lt)}
+  .slist{display:flex;flex-direction:column;gap:5px;margin-top:6px}
+  .res{display:grid;grid-template-columns:28px 58px minmax(0,1fr) auto;align-items:center;gap:8px;padding:7px 12px;font-size:12.5px}
+  .res .j{font-family:"JetBrains Mono",monospace;font-weight:800}
+  .res .dt{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dimmer);white-space:nowrap}
+  .res .o{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .res .sc{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:13px;text-align:right}
+  .res.us{border-color:rgba(242,106,27,.5)} .res.us .o{color:var(--orange);font-weight:700}
+  .scout details>summary{cursor:pointer;list-style:none;user-select:none;min-height:24px}
+  .scout details>summary::-webkit-details-marker{display:none}
+  .scout details>summary::before{content:"+";font-size:12px;width:12px;display:inline-block}
+  .scout details[open]>summary::before{content:"–"}
   @media(max-width:900px){.grid2,.grid2.poule{grid-template-columns:1fr}}
   @media(max-width:480px){
-    .orow{grid-template-columns:26px 66px 50px minmax(0,1fr) 40px;grid-template-areas:"j d t rk s" "o o o o o";gap:4px 6px;padding:10px 10px}
+    .orow{grid-template-columns:26px 66px 50px minmax(0,1fr) auto;grid-template-areas:"j d t rk s" "o o o o o";gap:4px 6px;padding:10px 10px}
+    .orow .sc,.orow .wait{white-space:nowrap}
     .orow .j{grid-area:j}.orow .dt{grid-area:d}.orow .tag,.orow .ph{grid-area:t}.orow .opp{grid-area:o}.orow .rk{grid-area:rk}.orow .sc,.orow .wait{grid-area:s}
     .prow{grid-template-columns:10px minmax(0,1fr);row-gap:6px}.prow .ticks{grid-column:2}
     .ditem{grid-template-columns:34px 64px minmax(0,1fr)}.ditem .st2{grid-column:1/-1}
@@ -204,14 +232,35 @@
   function scoreClass(a,b){ return a>b?'win':(a<b?'lose':'draw'); }
   function normName(s){ return String(s||'').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
   function sameTeam(a,b){ a=normName(a); b=normName(b); if(!a||!b) return false; if(a===b) return true; const na=a.match(/(\d+)$/),nb=b.match(/(\d+)$/); const fa=a.split(' ')[0],fb=b.split(' ')[0]; return !!(na&&nb&&na[1]===nb[1]&&fa===fb&&fa.length>=4); }
-  function standingsFor(site,poule){ const st=site&&site.STANDINGS&&site.STANDINGS[poule.acbb]; if(!Array.isArray(st)||!st.length||!poule.teams) return null; let hits=0; poule.teams.forEach(t=>{ if(st.some(r=>sameTeam(r.name,t.name))) hits++; }); return hits>=Math.max(4,Math.ceil(poule.teams.length*0.6))?st:null; }
+  /* site.json (DATA / STANDINGS, produit par fftt_site.py) n'est exploité que si ≥ 60 % des équipes de la poule 26/27 s'y retrouvent
+     (sameTeam : même club + même numéro, ex. « BOULOGNE BILLAN 11 » ≈ « BOULOGNE BILLANCOURT 11 ») : tant qu'il porte la saison 25/26,
+     les noms ne correspondent pas et la carte de scouting reste sur les repères 25/26 de poules2627.json. */
+  function matchesPoule(names,poule){ const ts=(poule&&poule.teams)||[]; if(!ts.length||!names.length) return false; let hits=0; ts.forEach(t=>{ if(names.some(n=>sameTeam(n,t.name))) hits++; }); return hits>=Math.max(4,Math.ceil(ts.length*0.6)); }
+  function standingsFor(site,poule){ const st=site&&site.STANDINGS&&poule&&site.STANDINGS[poule.acbb]; if(!Array.isArray(st)||!st.length) return null; return matchesPoule(st.map(r=>r.name),poule)?st:null; }
+  function poolFor(site,poule){ /* DATA de notre clé + celles d'autres équipes ACBB éventuellement dans la même poule (même libellé pool) */
+    if(!site||!site.DATA||!poule) return null;
+    const own=site.DATA[poule.acbb]; if(!own||!Array.isArray(own.teams)) return null;
+    const pools=[own]; Object.keys(site.DATA).forEach(k=>{ const d=site.DATA[k]; if(d&&d!==own&&own.pool&&d.pool===own.pool&&Array.isArray(d.teams)) pools.push(d); });
+    const names=[]; pools.forEach(d=>d.teams.forEach(t=>names.push(t.name)));
+    return matchesPoule(names,poule)?pools:null;
+  }
   function currentJ(cal){ const today=new Date(); today.setHours(0,0,0,0); let cur=1; (cal||[]).forEach(c=>{ const dt=parseFR(c.date); if(dt){ const open=new Date(dt); open.setDate(open.getDate()-3); if(open<=today) cur=c.j; } }); return Math.min(7,Math.max(1,cur)); }
-  function matchOf(poule,j){ if(!poule) return null; const c=(poule.cal||[]).find(x=>x.j===j); if(!c) return null; let t=null,name=c.oppName||null; if(!name&&c.opp!=null){ t=(poule.teams||[]).find(x=>x.pos===c.opp)||null; name=t?t.name:null; } return {j:j,date:c.date,dom:!!c.dom,exempt:!!c.exempt,opp:name,oppTeam:t}; }
+  function matchOf(poule,j){ if(!poule) return null; const c=(poule.cal||[]).find(x=>x.j===j); if(!c) return null; let t=null,name=c.oppName||null; if(name) t=(poule.teams||[]).find(x=>sameTeam(x.name,name))||null; else if(c.opp!=null){ t=(poule.teams||[]).find(x=>x.pos===c.opp)||null; name=t?t.name:null; } return {j:j,date:c.date,dom:!!c.dom,exempt:!!c.exempt,opp:name,oppTeam:t}; }
   function ordinal(n){ return n+'<sup>'+(n===1?'er':'e')+'</sup>'; }
 
   const params=new URLSearchParams(location.search);
   const TAB=params.get('tab')==='poule'?'poule':'equipe';
   const S={me:null,team:null,poule:null,poules:null,caps:null,site:null,resultats:{},j:1,dispos:null,debriefs:[],capRes:{},photoPath:null,selOpp:null,selUser:false};
+
+  /* Mode démo local (?dev=1), actif uniquement sur localhost / 127.0.0.1 : simule un capitaine de l'équipe ?equipe= (M11 par défaut)
+     et des réponses API vides pour vérifier le rendu sans jeton. Aucun appel serveur, aucune donnée réelle : seuls les JSON publics
+     ../data/*.json sont lus, comme sur le site. Inerte en production (autre nom d'hôte). */
+  if(params.get('dev')==='1'&&/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){
+    const eq=/^[MF]\d{1,2}$/.test(params.get('equipe')||'')?params.get('equipe'):'M11';
+    const FAKE={'me':{role:'capitaine',equipe:eq,nom:'Test'},'cap/dispos':{equipe:eq,journees:[],joueurs:[]},'cap/debriefs':{items:[]},'cap/poule':{equipe:eq,resultats:[]}};
+    ACBB.api=function(route){ return Promise.resolve(FAKE[String(route||'').replace(/^\//,'')]||{}); };
+    ACBB.upload=function(){ return Promise.reject(new Error('mode démo : pas d\'envoi')); };
+  }
 
   renderNav({active:TAB==='poule'?'Ma poule':'Mon équipe'});
   const gate=document.getElementById('gate');
@@ -348,7 +397,15 @@
     ACBB.api('cap/poule').then(r=>{ ((r&&r.resultats)||[]).forEach(x=>{ if(x.score_acbb!=null&&x.score_adv!=null) S.capRes[+x.journee]=[+x.score_acbb,+x.score_adv]; }); renderPoule(); })
       .catch(err=>{ apiNote(err&&err.status?'Résultats indisponibles (erreur '+err.status+').':'Serveur indisponible : les scores 26/27 ne sont pas affichés, le reste de la poule est à jour.'); renderPoule(); });
   }
-  function scoreOf(j){ if(S.capRes[j]) return S.capRes[j]; const rr=(S.resultats[S.team]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null) return [+rr.score_acbb,+rr.score_adv]; return null; }
+  /* score d'une journée : saisie du capitaine (cap/poule) → resultats2627.json → feuille FFTT 26/27 de site.json (si la poule correspond) */
+  function scoreOf(j){ if(S.capRes[j]) return S.capRes[j]; const rr=(S.resultats[S.team]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null) return [+rr.score_acbb,+rr.score_adv]; return siteScore(matchOf(S.poule,j)); }
+  function sitePools(){ if(S.poolsFor!==S.site){ S.poolsFor=S.site; S.pools=poolFor(S.site,S.poule); } return S.pools||null; }
+  function siteScore(m){ /* rencontre retrouvée par le nom de l'adversaire (pas par le numéro de journée, qui peut différer du calendrier club) */
+    if(!m||!m.opp||m.exempt) return null; const pools=sitePools(); if(!pools) return null;
+    const acbb=(S.poule.teams||[]).find(t=>t.acbb)||null;
+    for(const d of pools){ const me=d.teams.find(t=>t.acbb)||(acbb?d.teams.find(t=>sameTeam(t.name,acbb.name)):null); const jj=me?(me.journees||[]).find(x=>sameTeam(x.opponent,m.opp)&&x.match_score!=null&&x.opp_score!=null):null; if(jj) return [+jj.match_score,+jj.opp_score]; }
+    return null;
+  }
   function renderPoule(){
     const p=S.poule; if(!p){ document.getElementById('opps').innerHTML='<div class="empty">Poule introuvable pour '+esc(S.team)+'.</div>'; return; }
     const st=standingsFor(S.site,p);
@@ -378,26 +435,100 @@
     }
     renderScout(selM,acbbTeam,st);
   }
+  /* ---------- Scouting de l'adversaire ----------
+     Données 26/27 : ../data/site.json → DATA[<clé ACBB>].teams[] — chaque équipe de la poule y figure avec ses propres feuilles
+     (journees[{journee, date, opponent, match_score, opp_score, players[{nom, prenom, cls, vic}]}]) — et STANDINGS[<clé>]
+     ([{pos, name, pts, mp, V, N, D, gf, ga, diff}]). Utilisées seulement si la poule correspond (poolFor / standingsFor), sinon repli
+     sur les repères 25/26 (teams[].s25 de poules2627.json) avec un bandeau. Règles de calcul reprises de equipe.html (bloc « scout ») :
+     aggregateLineup, avgCls, difficulty, meilleur joueur = plus de victoires, joueurs récurrents = vus sur ≥ 2 feuilles.
+     Limite : si l'adversaire manque dans teams[], ses journées sont reconstruites depuis les feuilles des autres équipes de la poule
+     où il apparaît en « opponent » — scores seulement, une feuille ne listant que les joueurs de l'équipe qui la porte. */
+  function oppJournees(pools,team){
+    if(!pools||!team) return null;
+    for(const d of pools){ const t=d.teams.find(x=>sameTeam(x.name,team.name)); if(t&&Array.isArray(t.journees)&&t.journees.length) return {journees:t.journees.slice().sort((a,b)=>(+a.journee)-(+b.journee)),full:true}; }
+    const js=[];
+    pools.forEach(d=>d.teams.forEach(x=>(x.journees||[]).forEach(j=>{ if(sameTeam(j.opponent,team.name)&&!js.some(y=>+y.journee===+j.journee)) js.push({journee:j.journee,date:j.date,opponent:x.name,match_score:j.opp_score,opp_score:j.match_score,players:[]}); })));
+    js.sort((a,b)=>(+a.journee)-(+b.journee));
+    return js.length?{journees:js,full:false}:null;
+  }
+  function realPlayers(players){ return (players||[]).filter(p=>p&&p.nom&&p.nom!=='Joueur absent'); }
+  function aggregateLineup(js){
+    const stats={};
+    (js||[]).forEach(j=>realPlayers(j.players).forEach(p=>{ const k=(p.nom+'|'+(p.prenom||'')).toUpperCase(); if(!stats[k]) stats[k]={nom:p.nom,prenom:p.prenom||'',cls:p.cls,count:0,vic:0}; stats[k].count+=1; stats[k].vic+=(+p.vic||0); stats[k].cls=p.cls; }));
+    return Object.values(stats).sort((a,b)=>b.count-a.count||b.vic-a.vic);
+  }
+  function avgCls(players){ const nums=realPlayers(players).map(p=>typeof p.cls==='number'?p.cls:(typeof p.cls==='string'&&/^N\d+/i.test(p.cls)?1700:null)).filter(v=>v!=null); return nums.length?Math.round(nums.reduce((s,v)=>s+v,0)/nums.length):null; }
+  function difficulty(avg,pos){ /* moyenne de la dernière compo adverse + place au classement ; rien à afficher si aucune des deux n'informe */
+    const top=pos!=null&&pos<=3;
+    if(avg==null) return top?{cls:'lose',label:'Très difficile'}:null;
+    if(avg>=1300||top) return {cls:'lose',label:'Très difficile'};
+    if(avg>=1100) return {cls:'warn',label:'Difficile'};
+    if(avg>=900) return {cls:'',label:'Moyenne'};
+    return {cls:'win',label:'Accessible'};
+  }
+  function clsDisplay(c){ if(c==null) return '—'; if(typeof c==='string') return (c==='x'||c==='?'||c==='')?'—':c; return String(c); }
+  function personName(n){ return String(n||'').trim().split(/\s+/).map(w=>w.split('-').map(x=>{ const u=x.toUpperCase(); if(!x) return x; if(PART[u]) return PART[u]; return u[0]+u.slice(1).toLowerCase(); }).join('-')).join(' '); } /* noms de joueurs : pas de règle acronyme (GAO → Gao) */
+  function playerLabel(p){ const f=p&&p.prenom?String(p.prenom).trim():''; const n=personName(p&&p.nom||''); return f?f+' '+n:n; }
+  function shortOpp(name){ const s=String(name||'').replace(/\s+\(\d+\)$/,''); const r=s.replace(/^BOULOGNE[ -]BILLAN(COURT)?(\s+AC)?\s*/i,'ACBB '); return r!==s?r.trim():shortName(s); }
+  function fmtD26(d){ return String(d||'').replace(/\s?\d{4}$/,''); }
+  function avgScore(played){ if(!played.length) return null; return (played.reduce((s,j)=>s+(+j.match_score||0),0)/played.length).toFixed(1).replace('.',','); }
+  function block2526(t,s,ours){
+    if(!s) return '<div class="empty" style="margin-top:8px">Pas de données de niveau 25/26 pour cette équipe.</div>';
+    let h='<div class="kpis" style="margin-top:8px"><div class="kpi"><span class="lab">moyenne 25/26</span><b>'+(s.avg!=null?s.avg:'–')+'</b>'+(ours&&ours.avg!=null?'<span class="small muted">nous : '+ours.avg+'</span>':'')+'</div><div class="kpi"><span class="lab">plafond 25/26</span><b>'+(s.ceil!=null?s.ceil:'–')+'</b>'+(ours&&ours.ceil!=null?'<span class="small muted">nous : '+ours.ceil+'</span>':'')+'</div><div class="kpi"><span class="lab">saison 25/26</span><b style="font-size:14px;line-height:1.3;margin-top:3px">'+esc(s.div||'–')+(s.rank?' · '+s.rank+'<sup>'+(s.rank===1?'er':'e')+'</sup>':'')+'</b>'+(s.mvt?'<span class="small" style="color:var(--warn)">'+esc(s.mvt)+'</span>':'')+'</div></div>';
+    if(s.src&&normName(s.src)!==normName(t.name)) h+='<div class="small muted" style="margin-top:8px">Équipe issue de « '+esc(shortName(s.src))+' » la saison dernière.</div>';
+    const top=(s.top||[]).filter(x=>Array.isArray(x)&&x[0]);
+    h+='<div class="lab" style="margin-top:14px">Joueurs vus en 25/26'+(s.nm?' · '+s.nm+' feuilles':'')+'</div>';
+    h+=top.length?'<div class="seen">'+top.map(x=>'<div class="card2"><span>'+esc(shortName(String(x[0]).trim()))+'</span><span class="pt">'+esc(x[1])+'</span></div>').join('')+'</div>':'<div class="empty" style="margin-top:6px">Pas de feuille de match exploitable.</div>';
+    return h;
+  }
   function renderScout(m,acbbTeam,st){
     const el=document.getElementById('scout');
     if(!m||m.exempt||!m.oppTeam){ el.innerHTML='<div class="ch"><span class="t">Scouting</span></div><div class="empty">'+(m&&m.exempt?'Journée exempte : pas d\'adversaire.':'Sélectionne un adversaire dans la liste.')+'</div>'; return; }
     const t=m.oppTeam, s=t.s25||null, ours=acbbTeam&&acbbTeam.s25||null;
-    const sc=scoreOf(m.j);
+    const pools=sitePools();
+    const od=pools?oppJournees(pools,t):null;
+    const played=od?od.journees.filter(j=>j.match_score!=null&&j.opp_score!=null):[];
+    const lastJ=played.length?played[played.length-1]:null;
+    const lastAvg=lastJ?avgCls(lastJ.players):null;
+    const agg=od?aggregateLineup(od.journees):[];
+    const recurring=agg.filter(p=>p.count>=2);
+    const top=agg.slice().sort((a,b)=>b.vic-a.vic)[0]||null;
     const rk=st?st.find(r=>sameTeam(r.name,t.name)):null;
-    let h='<div class="ch"><span class="lab" style="color:var(--blue)">Scouting · J'+m.j+' · '+esc(fmtDate(m.date))+' · '+(m.dom?'domicile':'extérieur')+'</span>'+(rk?'<span class="tag blue">'+ordinal(+rk.pos)+' · '+esc(rk.pts)+' pts</span>':'')+'</div>';
+    const diff=difficulty(lastAvg,rk?+rk.pos:null);
+    const vsAll=acbbTeam?played.filter(j=>sameTeam(j.opponent,acbbTeam.name)):[];
+    const vsUs=vsAll.find(j=>+j.journee===m.j)||vsAll[0]||null;
+    const sc=scoreOf(m.j)||(vsUs?[+vsUs.opp_score,+vsUs.match_score]:null); /* dernier repli : la feuille adverse, score inversé */
+
+    let h='<div class="ch"><span class="lab" style="color:var(--blue)">Scouting · J'+m.j+' · '+esc(fmtDate(m.date))+' · '+(m.dom?'domicile':'extérieur')+'</span>'+(diff?'<span class="tag'+(diff.cls?' '+diff.cls:'')+'" title="Estimation : moyenne de la dernière compo adverse et place au classement">'+diff.label+'</span>':'')+'</div>';
     h+='<div class="h2">'+esc(shortName(t.name))+'</div>';
-    if(s){
-      h+='<div class="kpis"><div class="kpi"><span class="lab">moyenne 25/26</span><b>'+(s.avg!=null?s.avg:'–')+'</b>'+(ours&&ours.avg!=null?'<span class="small muted">nous : '+ours.avg+'</span>':'')+'</div><div class="kpi"><span class="lab">plafond 25/26</span><b>'+(s.ceil!=null?s.ceil:'–')+'</b>'+(ours&&ours.ceil!=null?'<span class="small muted">nous : '+ours.ceil+'</span>':'')+'</div><div class="kpi"><span class="lab">saison 25/26</span><b style="font-size:14px;line-height:1.3;margin-top:3px">'+esc(s.div||'–')+(s.rank?' · '+s.rank+'<sup>'+(s.rank===1?'er':'e')+'</sup>':'')+'</b>'+(s.mvt?'<span class="small" style="color:var(--warn)">'+esc(s.mvt)+'</span>':'')+'</div></div>';
-      if(s.src&&normName(s.src)!==normName(t.name)) h+='<div class="small muted" style="margin-top:8px">Équipe issue de « '+esc(shortName(s.src))+' » la saison dernière.</div>';
-      const top=(s.top||[]).filter(x=>Array.isArray(x)&&x[0]);
-      h+='<div class="lab" style="margin-top:14px">Joueurs vus en 25/26'+(s.nm?' · '+s.nm+' feuilles':'')+'</div>';
-      h+=top.length?'<div class="seen">'+top.map(x=>'<div class="card2"><span>'+esc(shortName(String(x[0]).trim()))+'</span><span class="pt">'+esc(x[1])+'</span></div>').join('')+'</div>':'<div class="empty" style="margin-top:6px">Pas de feuille de match exploitable.</div>';
+    const chips=[];
+    if(rk){ const d=rk.diff!=null?+rk.diff:((+rk.gf||0)-(+rk.ga||0)); chips.push('<span class="chip" title="place au classement"><b>'+ordinal(+rk.pos)+'</b>/'+st.length+'</span>','<span class="chip"><b>'+esc(rk.pts)+'</b> pts</span>','<span class="chip" title="victoires / nuls / défaites">'+esc(rk.V)+'/'+esc(rk.N)+'/'+esc(rk.D)+'</span>','<span class="chip" title="parties gagnées moins parties perdues">GA <b>'+(d>0?'+':'')+d+'</b></span>'); }
+    if(lastAvg!=null) chips.push('<span class="chip" title="classement moyen de la dernière compo">⌀ <b>'+lastAvg+'</b></span>');
+    const asc=avgScore(played); if(asc!=null) chips.push('<span class="chip" title="score moyen marqué par match">Score moy. <b>'+asc+'</b></span>');
+    if(chips.length) h+='<div class="chips">'+chips.join('')+'</div>';
+
+    h+='<div class="sblock"><span class="lab">Notre rencontre</span><div class="card2 face"><span>J'+m.j+' · '+(m.dom?'domicile':'extérieur')+' · '+esc(fmtDate(m.date))+'</span>'+(sc?'<span class="sc '+scoreClass(sc[0],sc[1])+'" title="ACBB – adversaire">'+sc[0]+' – '+sc[1]+'</span>':'<span class="lab">à jouer</span>')+'</div></div>';
+
+    if(pools){
+      h+='<div class="sblock"><span class="lab">Compo récente</span>';
+      if(!od) h+='<div class="empty" style="margin-top:6px">Pas encore de feuille de match 26/27 pour cette équipe.</div>';
+      else if(lastJ&&realPlayers(lastJ.players).length){
+        const r=+lastJ.match_score>+lastJ.opp_score?'gagné':(+lastJ.match_score<+lastJ.opp_score?'perdu':'nul');
+        h+='<div class="lineup"><span class="small muted">J'+esc(lastJ.journee)+' · '+r+' <b class="sc '+scoreClass(+lastJ.match_score,+lastJ.opp_score)+'">'+esc(lastJ.match_score)+' – '+esc(lastJ.opp_score)+'</b> vs '+esc(shortOpp(lastJ.opponent))+'</span><br>'+realPlayers(lastJ.players).map(p=>esc(playerLabel(p))+' <span class="cl">cl. '+esc(clsDisplay(p.cls))+'</span>').join(' · ')+'</div>';
+      } else h+='<div class="empty" style="margin-top:6px">Pas de composition récente disponible.</div>';
+      h+='</div>';
+      if(recurring.length){
+        h+='<div class="sblock"><span class="lab">Joueurs récurrents <span class="n">'+recurring.length+'</span></span><div class="seen">'+recurring.map(p=>{ const isTop=!!(top&&top.vic>0&&top.nom===p.nom&&top.prenom===p.prenom); return '<div class="card2'+(isTop?' top':'')+'"><span class="nm">'+esc(playerLabel(p))+(isTop?'<span class="tag win">meilleur</span>':'')+'</span><span class="rs"><span class="pt">'+esc(clsDisplay(p.cls))+'</span><span class="ct">'+p.count+' feuilles</span></span></div>'; }).join('')+'</div></div>';
+      }
+      if(top&&top.vic>0) h+='<div class="sblock"><span class="lab">Meilleur joueur</span><div class="card2" style="margin-top:6px;font-size:13px"><b>'+esc(playerLabel(top))+'</b> · cl. '+esc(clsDisplay(top.cls))+' · <b>'+top.vic+' victoire'+(top.vic>1?'s':'')+'</b> en '+top.count+' feuille'+(top.count>1?'s':'')+' de match</div></div>';
+      if(played.length){
+        h+='<div class="sblock"><span class="lab">Résultats 26/27 · journée par journée</span><div class="slist">'+played.map(j=>{ const us=!!(acbbTeam&&sameTeam(j.opponent,acbbTeam.name)); return '<div class="card2 res'+(us?' us':'')+'"><span class="j">J'+esc(j.journee)+'</span><span class="dt">'+esc(fmtD26(j.date))+'</span><span class="o" title="'+esc(j.opponent)+'">'+esc(shortOpp(j.opponent))+'</span><span class="sc '+scoreClass(+j.match_score,+j.opp_score)+'">'+esc(j.match_score)+' – '+esc(j.opp_score)+'</span></div>'; }).join('')+'</div></div>';
+      }
+      if(s) h+='<details class="sblock"><summary class="lab">Repères saison 25/26</summary>'+block2526(t,s,ours)+'</details>';
     } else {
-      h+='<div class="empty">Pas de données de niveau 25/26 pour cette équipe.</div>';
+      h+='<div class="band">Saison 25/26 · le scouting 26/27 se remplit après la J1</div>';
+      h+=block2526(t,s,ours);
     }
-    h+='<div class="lab" style="margin-top:14px">Bilan 26/27</div>';
-    if(sc) h+='<div class="card2" style="margin-top:6px;display:flex;align-items:center;justify-content:space-between"><span>J'+m.j+' · '+(m.dom?'domicile':'extérieur')+'</span><span class="sc '+scoreClass(sc[0],sc[1])+'" style="font-family:JetBrains Mono,monospace;font-weight:800;font-size:16px">'+sc[0]+' – '+sc[1]+'</span></div>';
-    else h+='<div class="empty" style="margin-top:6px">Match à jouer le '+esc(fmtDate(m.date))+'. Le score apparaîtra ici dès sa saisie.</div>';
     el.innerHTML=h;
   }
 })();
