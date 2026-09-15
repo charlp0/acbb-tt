@@ -15,6 +15,9 @@ on:
       full:
         description: 'Rebuild complet (1 = tout reconstruire, ignore le cache)'
         default: '0'
+      only_site:
+        description: 'Ne régénérer que site.json (poules/classements), sans les profils joueurs (1 = oui)'
+        default: '0'
 
 permissions:
   contents: write
@@ -43,6 +46,7 @@ jobs:
           restore-keys: |
             fftt-cache-                            # restaure le cache le plus récent
       - name: Génération des profils joueurs
+        if: ${{ github.event.inputs.only_site != '1' }}
         env:
           FFTT_ID: ${{ secrets.FFTT_ID }}
           FFTT_PWD: ${{ secrets.FFTT_PWD }}

@@ -135,16 +135,51 @@ def main():
                 print(f"site.json déjà à jour ({prev}) — skip."); return
         except Exception: pass
     eq=fb.get(f"xml_equipe.php?numclu={fb.CLUB}&type=A")
+    # 26/27 : rapprochement par DIVISION + N° DE POULE depuis data/poules2627.json (les noms d'équipes FFTT ont changé
+    # et « BOULOGNE BILLANCOURT AC 2 » désigne à la fois M2 (N1) et F2 (R1 dames)). Toutes les phases de la saison.
+    TOKENS=[('Nationale 1','Nationale 1','Nationale 1','level-nat2'),('Nationale 2','Nationale 2','Nationale 2','level-nat2'),
+            ('Régionale 1','R1','Régional 1','level-r1'),('Régionale 2','R2','Régional 2','level-regional'),('Régionale 3','R3','Régional 3','level-regional'),
+            ('Pré-Régionale','Pré-Régionale','Pré-Régional','level-prereg'),('D1 ','D1','Départemental 1','level-d1'),('D2 ','D2','Départemental 2','level-d2')]
+    want={}   # key -> (token libdivision, poule, level, levelClass, nom ACBB)
+    try:
+        P=json.load(open("data/poules2627.json"))['poules']
+        for e in P:
+            key=e['acbb']
+            if key=='M1' or e.get('poule') is None: continue
+            tok=next(((t[1],t[2],t[3]) for t in TOKENS if e['division'].startswith(t[0])),None)
+            if not tok: continue
+            acbb=next((t['name'] for t in e['teams'] if t.get('acbb')),'')
+            want[key]=(tok[0],int(e['poule']),tok[1],tok[2],acbb)
+    except Exception as ex:
+        print(f"  poules2627.json illisible ({ex}) — repli sur META 25/26")
     coords={}   # key -> (cx,D1,org)
+    vus=[]
     for mm in re.finditer(r'<equipe>(.*?)</equipe>', eq, re.S):
-        b=mm.group(1); lib=tg(b,'libequipe')
-        if ' - Phase 2' not in lib: continue
-        nm=fb.nrm(lib.replace(' - Phase 2',''))
-        key=fb.TEAMKEY.get(nm)
-        if not key or key not in META: continue
+        b=mm.group(1); lib=tg(b,'libequipe'); libdiv=tg(b,'libdivision')
+        if ' - Phase ' not in lib: continue
+        nm=fb.nrm(re.sub(r' - Phase \d+$','',lib))
+        vus.append((lib,libdiv))
         m=re.search(r'<liendivision><!\[CDATA\[(.*?)\]\]>',b)
+        if not m: continue
         p=dict(x.split('=') for x in html.unescape(m.group(1)).split('&'))
+        key=None
+        if want:
+            pm=re.search(r'[Pp]oule\s*(\d+)', libdiv); pn=int(pm.group(1)) if pm else None
+            cands=[k for k,(tok,pn2,lvl,cls,acbb) in want.items() if pn==pn2 and tok in libdiv.replace('_',' ').replace('Regionale','Régionale').replace('Pre-','Pré-')]
+            if len(cands)>1:   # départage par le nom ACBB (dames/messieurs)
+                cands=[k for k in cands if fb.nrm(want[k][4])==nm] or cands
+            if len(cands)==1: key=cands[0]
+        if not key:   # repli : ancien rapprochement par nom (saison 25/26)
+            key=fb.TEAMKEY.get(nm)
+            if key not in META: key=None
+        if not key or key in coords: continue
         coords[key]=(p['cx_poule'],p['D1'],p['organisme_pere'])
+        if key in want:
+            META[key]=(libdiv.strip() or f"{want[key][0]} Poule {want[key][1]}", want[key][2], want[key][3])
+    manquantes=[k for k in ORDER if k not in coords]
+    if manquantes:
+        print(f"  non résolues : {manquantes} — équipes vues dans xml_equipe :")
+        for lib,libdiv in vus: print(f"    · {lib} | {libdiv}")
     DATA={}; STAND={}
     for key in ORDER:
         if key not in coords: print(f"  {key} : poule introuvable, ignorée"); continue

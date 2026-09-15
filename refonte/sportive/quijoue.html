@@ -8,46 +8,46 @@
 <link rel="icon" type="image/png" href="../../logo.png">
 <link rel="stylesheet" href="../shared/style.css">
 <style>
-  .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:22px}
-  .eyebrow{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
-  .eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
-  .views{display:flex;gap:6px}
-  .vw{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:700;padding:6px 12px;border-radius:99px;background:var(--panel);border:1px solid var(--line-2);color:var(--ink-2);text-decoration:none;white-space:nowrap}
-  .vw.on{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
-  .vw:not(.on):hover{border-color:var(--orange);color:var(--orange)}
-  .filters{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 14px;align-items:center}
-  .fp{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:700;padding:6px 12px;border-radius:99px;background:var(--panel);border:1px solid var(--line-2);color:var(--ink-2);cursor:pointer;user-select:none}
+  /* Qui joue où — rendu aligné sur la maquette QuiJoueOu.dc.html : en-tête .h1 + sous-titre mono + pastilles « Par équipe / Qui joue où »,
+     matrice minmax(0,1.4fr) 40px 44px repeat(7,minmax(0,1fr)) minmax(0,1.3fr), cellules vert / bleu / rouge, « abs. » gris, légende en bas. */
+  #main{display:flex;flex-direction:column;gap:22px;margin-top:22px}
+  .phead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .phead .tt{display:flex;flex-direction:column;gap:4px;min-width:0}
+  .phead .hsub{margin-top:0}
+  .views{display:flex;gap:8px}
+  .filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:-8px}
+  .fp{cursor:pointer;user-select:none}
   .fp.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-  .kp{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);margin-left:auto}
-  .mx{overflow-x:auto}
-  .g{display:grid;grid-template-columns:minmax(170px,1.4fr) 48px 48px repeat(7,minmax(54px,1fr)) minmax(190px,1.4fr);gap:6px;align-items:center;min-width:940px}
-  .g.head{padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:4px;align-items:end}
-  .g.row{padding:3px 4px;border-radius:8px}
-  .g.row:hover{background:rgba(255,255,255,.025)}
+  .fp:not(.on):hover{border-color:rgba(255,255,255,.35)}
+  .mcard{padding:16px 20px;display:flex;flex-direction:column;gap:6px;min-width:0}
+  .mx{overflow-x:auto;display:flex;flex-direction:column;gap:6px}
+  .g{display:grid;grid-template-columns:minmax(0,1.4fr) 40px 44px repeat(7,minmax(0,1fr)) minmax(0,1.3fr);gap:6px;align-items:center;min-width:900px}
+  .g.head{padding-bottom:4px;align-items:end}
+  .g.head .jc{text-align:center;display:flex;flex-direction:column;align-items:center;gap:1px}
+  .g.head .jc small{font-size:8px;font-weight:600;letter-spacing:0;text-transform:none;white-space:nowrap}
+  .g.head .jc.nc{opacity:.45}
   .nm{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .nm small{font-weight:400;color:var(--dimmer);font-size:10px;margin-left:5px;font-family:"JetBrains Mono",monospace}
+  .hm{color:var(--win);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hm.pool{color:var(--dimmer);text-transform:none}
   .pts{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-2);text-align:right}
-  .hm{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:800}
   .c{font-family:"JetBrains Mono",monospace;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;border:1px solid transparent;white-space:nowrap;overflow:hidden}
   .c.own{background:rgba(61,214,140,.16);color:var(--win);border-color:rgba(61,214,140,.45)}
   .c.up{background:rgba(96,165,250,.16);color:var(--blue);border-color:rgba(96,165,250,.45)}
   .c.down{background:rgba(167,139,250,.14);color:var(--violet);border-color:rgba(167,139,250,.45)}
   .c.bad{background:rgba(242,99,86,.16);color:var(--lose);border-color:rgba(242,99,86,.45)}
-  .c.abs{background:var(--panel-2);color:var(--dimmer);font-size:9.5px;font-weight:700;letter-spacing:.4px}
+  .c.abs{background:var(--panel-2);color:var(--dimmer);font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase}
   .c.none{color:rgba(246,245,243,.22);font-weight:400}
-  .c.empty{background:var(--panel);border-color:rgba(255,255,255,.05)}
-  .al{font-family:"JetBrains Mono",monospace;font-size:9px;line-height:1.35;color:var(--lose);overflow:hidden}
-  .al div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .jh{display:flex;flex-direction:column;align-items:center;gap:2px}
-  .jh small{font-size:8px;color:var(--dimmer);letter-spacing:0;text-transform:none;font-weight:600;white-space:nowrap}
-  .jh.nc{opacity:.45}
-  .leg{display:flex;flex-wrap:wrap;gap:12px 16px;margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-2)}
-  .leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px;border:1px solid transparent}
-  .note{font-size:11px;color:var(--dimmer);line-height:1.5;margin-top:10px;font-family:"JetBrains Mono",monospace}
+  .c.empty{background:var(--panel);border-color:rgba(255,255,255,.06)}
+  .al{font-size:8.5px;color:var(--lose);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.3px}
+  .al .more{color:var(--dimmer)}
+  .leg{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:auto;padding-top:8px}
+  .leg .kp{margin-left:auto;text-align:right}
+  .note{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dimmer);line-height:1.5}
   .gatemsg{max-width:520px;margin:60px auto;text-align:center;color:var(--dim);font-size:13px}
   .gatemsg .h1{font-size:34px;margin-bottom:10px}
   .gatemsg a{color:var(--dim);font-size:12px;text-decoration:none}
-  .srverr{background:rgba(242,99,86,.10);border:1px solid rgba(242,99,86,.4);border-radius:12px;padding:10px 14px;font-size:12px;margin-top:14px;color:var(--lose-lt)}
+  .srverr{border-color:rgba(242,99,86,.4);color:var(--lose-lt);font-size:12px;padding:10px 14px}
 </style>
 </head><body>
 <div class="wrap">
@@ -59,25 +59,24 @@
     <a href="../index.html">← Retour au site</a>
   </div>
   <main id="main" hidden>
-    <div class="hero">
-      <div>
-        <div class="eyebrow">Espace sportive · Phase 1 · 2026/2027</div>
-        <div class="h1">Qui joue <em>où.</em></div>
+    <div class="phead">
+      <div class="tt">
+        <div class="h1">Qui joue où</div>
         <div class="hsub">Vue complémentaire de Compos journée · un joueur par ligne, son équipe par journée · bleu = renfort dans une équipe supérieure</div>
       </div>
-      <div class="views"><a class="vw" href="journee.html">📅 Par équipe</a><span class="vw on">🔀 Qui joue où</span></div>
+      <div class="views"><a class="pill" href="journee.html">Par équipe</a><span class="pill on">Qui joue où</span></div>
     </div>
-    <div id="srvErr" class="srverr" hidden></div>
+    <div id="srvErr" class="card srverr" hidden></div>
     <div class="filters" id="filters"></div>
-    <div class="card">
+    <div class="card mcard">
       <div class="mx" id="mx"><div class="muted mono small">chargement…</div></div>
       <div class="leg">
-        <span><i style="background:rgba(61,214,140,.16);border-color:rgba(61,214,140,.45)"></i>son équipe</span>
-        <span><i style="background:rgba(96,165,250,.16);border-color:rgba(96,165,250,.45)"></i>renfort dans une équipe supérieure (ou joueur de pool)</span>
-        <span><i style="background:rgba(167,139,250,.14);border-color:rgba(167,139,250,.45)"></i>aligné dans une équipe inférieure</span>
-        <span><i style="background:rgba(242,99,86,.16);border-color:rgba(242,99,86,.45)"></i>3ᵉ montée · brûlé (II.112) · règle J2 · même poule</span>
-        <span><i style="background:var(--panel-2)"></i>abs. = indisponible déclaré</span>
-        <span style="color:var(--dimmer)">– = non aligné · vide = journée non composée</span>
+        <span class="lab">vert : son équipe</span>
+        <span class="lab" style="color:var(--blue)">bleu : renfort au-dessus (ou joueur de pool)</span>
+        <span class="lab" style="color:var(--violet)">violet : aligné dans une équipe inférieure</span>
+        <span class="lab" style="color:var(--lose)">rouge : brûlage ou règle J2 à vérifier</span>
+        <span class="lab">gris : absent · vide : journée non composée · – : dispo, non aligné · ? : sans réponse</span>
+        <span class="lab kp" id="kp"></span>
       </div>
       <div class="note">Règles calculées sur les compos enregistrées dans Compos journée (brouillon ou finale, dernière version de chaque journée), exactement comme le vérificateur de la page « Par équipe ». Une ligne apparaît dès qu'un joueur est aligné au moins une fois hors de son équipe d'origine.</div>
     </div>
@@ -105,7 +104,6 @@ const nrmK=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().repl
 const pkey=p=>String(p.key||p.lic||((p.nom||'')+'|'+(p.pre||'')));
 const NUM=t=>parseInt(t.slice(1),10), GENRE=t=>t[0], isTeam=t=>/^[MF]\d+$/.test(t||'');
 const short=p=>(p.pre||'').charAt(0)+'. '+(p.nom||''), full=p=>(p.pre||'')+' '+(p.nom||'');
-const teamHue=e=>{const i=ALL.indexOf(e);return i<0?24:Math.round(i*137.5)%360;};
 
 /* ===== état ===== */
 let D=[], BYKEY={}, BYSN={}, TAGS={}, FEM={}, VOTES={}, COMPOS={}, META={}, POULES={}, FILTER='all';
@@ -128,7 +126,7 @@ function boot(){
     res[4].forEach(r=>{ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)){ const raw=String(r.licence); let k=raw; if(/^SN-/.test(raw)){ const m=BYSN[raw]; if(m&&m.lic) k=String(m.lic); } VOTES[k]=r; } });
     const seen={};
     res[5].forEach(r=>{ if(!r.slot||seen[r.slot]) return; seen[r.slot]=1; const j=parseInt(r.slot.slice(1),10); const t=Object.assign({},r.tags||{}); META[j]={id:r.id,author:r.author,at:r.created_at}; delete t._meta; COMPOS[j]=t; });
-    if(LOADERR){ const se=document.getElementById('srvErr'); se.hidden=false; se.textContent='⚠ données serveur indisponibles ('+LOADERR.message+') — affichage incomplet'; }
+    if(LOADERR){ const se=document.getElementById('srvErr'); se.hidden=false; se.textContent='Données serveur indisponibles ('+LOADERR.message+') — affichage incomplet'; }
     renderFilters(); render();
   }).catch(e=>{ document.getElementById('mx').innerHTML='<div class="tag lose">Erreur de chargement : '+esc(e.message)+'</div>'; });
 }
@@ -171,8 +169,7 @@ function cellInfo(k,j,t){ // classification de la cellule + alertes (mêmes règ
 /* ===== rendu ===== */
 function renderFilters(){
   const counts={}; buildRows().forEach(r=>{ const g=groupOf(r.home); counts[g]=(counts[g]||0)+1; counts.all=(counts.all||0)+1; });
-  document.getElementById('filters').innerHTML=GROUPS.map(g=>'<span class="fp'+(FILTER===g[0]?' on':'')+'" data-f="'+g[0]+'">'+g[1]+(counts[g[0]]?' <span style="opacity:.6">'+counts[g[0]]+'</span>':'')+'</span>').join('')
-    +'<span class="kp" id="kp"></span>';
+  document.getElementById('filters').innerHTML=GROUPS.map(g=>'<span class="pill fp'+(FILTER===g[0]?' on':'')+'" data-f="'+g[0]+'">'+g[1]+(counts[g[0]]?' <span style="opacity:.6">'+counts[g[0]]+'</span>':'')+'</span>').join('');
   document.querySelectorAll('.fp').forEach(el=>el.onclick=()=>{ FILTER=el.dataset.f; renderFilters(); render(); });
 }
 function groupOf(home){ if(!home) return 'pool'; const g=GROUPS.find(x=>x[2]&&x[2].indexOf(home)>=0); return g?g[0]:'pool'; }
@@ -189,15 +186,15 @@ function buildRows(){
 function render(){
   const all=buildRows(); const rows=FILTER==='all'?all:all.filter(r=>groupOf(r.home)===FILTER);
   const composed=[]; for(let j=1;j<=NJ;j++) if(COMPOS[j]) composed.push('J'+j);
-  const kp=document.getElementById('kp'); if(kp) kp.textContent=all.length+' joueur'+(all.length>1?'s':'')+' hors de leur équipe au moins une fois · journées composées : '+(composed.join(', ')||'aucune');
+  const kp=document.getElementById('kp'); if(kp) kp.textContent=all.length+' joueur'+(all.length>1?'s':'')+' sur '+D.length+' affiché'+(all.length>1?'s':'')+' : ceux qui changent d’équipe au moins une fois · journées composées : '+(composed.join(', ')||'aucune');
   let h='<div class="g head"><span class="lab">joueur</span><span class="lab">équipe</span><span class="lab" style="text-align:right">pts</span>';
-  for(let j=1;j<=NJ;j++){ const d=jDate(j); h+='<span class="lab jh'+(COMPOS[j]?'':' nc')+'" title="'+(COMPOS[j]?'compos enregistrées ('+esc((META[j].author||'').split(/\s[—·-]\s/)[0])+')':'journée non composée')+'">J'+j+'<small>'+(d?fmtD(d):'—')+'</small></span>'; }
+  for(let j=1;j<=NJ;j++){ const d=jDate(j); h+='<span class="lab jc'+(COMPOS[j]?'':' nc')+'" title="'+(COMPOS[j]?'compos enregistrées ('+esc((META[j].author||'').split(/\s[—·-]\s/)[0])+')':'journée non composée')+'">J'+j+'<small>'+(d?fmtD(d):'—')+'</small></span>'; }
   h+='<span class="lab">alerte</span></div>';
-  if(!rows.length){ h+='<div class="muted small" style="padding:18px 4px">'+(all.length?'aucun joueur dans cette sélection':'aucune compo enregistrée ne fait sortir un joueur de son équipe')+'</div>'; }
+  if(!rows.length){ h+='<div class="muted small" style="padding:14px 4px">'+(all.length?'aucun joueur dans cette sélection':'aucune compo enregistrée ne fait sortir un joueur de son équipe')+'</div>'; }
   rows.forEach(r=>{
     const p=r.p; const alerts=[];
-    h+='<div class="g row"><span class="nm" title="'+esc(homeLabel(r.k))+'">'+esc(full(p))+(p.ext?'<small>'+esc(p.ext)+'</small>':'')+'</span>'
-      +'<span class="hm" style="color:'+(r.home?'hsl('+teamHue(r.home)+',75%,70%)':'var(--dimmer)')+'">'+esc(r.home||homeLabel(r.k))+'</span>'
+    h+='<div class="g"><span class="nm" title="'+esc(homeLabel(r.k))+'">'+esc(full(p))+(p.ext?'<small>'+esc(p.ext)+'</small>':'')+'</span>'
+      +'<span class="lab hm'+(r.home?'':' pool')+'" title="'+esc(r.home?('équipe d’origine : '+r.home):homeLabel(r.k))+'">'+esc(r.home||homeLabel(r.k))+'</span>'
       +'<span class="pts">'+(p.men||'—')+'</span>';
     for(let j=1;j<=NJ;j++){
       const c=r.cells[j-1];
@@ -209,7 +206,7 @@ function render(){
         h+=abs?'<span class="c abs" title="indisponible déclaré pour J'+j+(roles.indexOf('N')>=0?' (ne souhaite pas jouer)':'')+'">abs.</span>':'<span class="c none" title="'+(v?'disponible, non aligné':'pas de réponse au formulaire, non aligné')+'">'+(v?'–':'?')+'</span>'; }
     }
     const ua=alerts.filter((x,i,a)=>a.indexOf(x)===i);
-    h+='<span class="al" title="'+esc(ua.join('\n'))+'">'+ua.slice(0,2).map(a=>'<div>'+esc(a)+'</div>').join('')+(ua.length>2?'<div style="color:var(--dimmer)">+'+(ua.length-2)+' autre'+(ua.length>3?'s':'')+'</div>':'')+'</span></div>';
+    h+='<span class="lab al" title="'+esc(ua.join('\n'))+'">'+(ua.length?esc(ua[0])+(ua.length>1?' <span class="more">+'+(ua.length-1)+' autre'+(ua.length>2?'s':'')+'</span>':''):'')+'</span></div>';
   });
   document.getElementById('mx').innerHTML=h;
 }
