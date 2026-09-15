@@ -494,7 +494,7 @@
     const recurring=agg.filter(p=>p.count>=2);
     const top=agg.slice().sort((a,b)=>b.vic-a.vic)[0]||null;
     const rk=st?st.find(r=>sameTeam(r.name,t.name)):null;
-    const diff=difficulty(lastAvg,rk?+rk.pos:null);
+    const diff=difficulty(lastAvg,(rk&&(+rk.mp||0)>0)?+rk.pos:null);   // la place ne compte qu'après au moins un match joué (avant J1, tout le monde est 1er ex æquo)
     const vsAll=acbbTeam?played.filter(j=>sameTeam(j.opponent,acbbTeam.name)):[];
     const vsUs=vsAll.find(j=>+j.journee===m.j)||vsAll[0]||null;
     const sc=scoreOf(m.j)||(vsUs?[+vsUs.opp_score,+vsUs.match_score]:null); /* dernier repli : la feuille adverse, score inversé */
