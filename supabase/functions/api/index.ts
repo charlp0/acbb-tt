@@ -260,7 +260,16 @@ function equipeDuJoueur(cle: string, tags: Json, fem: Json | null): string | nul
 }
 
 /** Les 2 dernières lignes dispos_log par clé (licence ou NOM|Prenom). */
-async function disposParJoueur(cles: string[]): Promise<Map<string, DisposRow[]>> {
+/** Clé de rapprochement par nom : sans accents, majuscules, lettres seules (« LE CORRE » = « LECORRE »). */
+function cleNom(nom: unknown, prenom: unknown): string {
+  const n = (x: unknown) => String(x ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z]/g, '');
+  return `${n(nom)}|${n(prenom)}`;
+}
+/**
+ * Deux dernières saisies par clé (licence ou « NOM|Prenom »). Repli par NOM + PRÉNOM pour les joueurs qui ont
+ * saisi leurs dispos avant d'avoir un numéro de licence (clés « SN-NOM-PRENOM » de l'ancien formulaire).
+ */
+async function disposParJoueur(cles: string[], ann?: Map<string, Identite>): Promise<Map<string, DisposRow[]>> {
   const m = new Map<string, DisposRow[]>();
   if (!cles.length) return m;
   const { data, error } = await sb.from('dispos_log')
@@ -271,6 +280,28 @@ async function disposParJoueur(cles: string[]): Promise<Map<string, DisposRow[]>
   for (const r of (data ?? []) as DisposRow[]) {
     const l = m.get(r.licence) ?? [];
     if (l.length < 2) { l.push(r); m.set(r.licence, l); }
+  }
+  const manquants = cles.filter((k) => !m.has(k));
+  if (manquants.length) {
+    const annu = ann ?? await annuaire();
+    const { data: sn, error: e2 } = await sb.from('dispos_log')
+      .select('id,created_at,licence,nom,prenom,dispos')
+      .like('licence', 'SN-%')
+      .order('id', { ascending: false })
+      .limit(1000);
+    if (!e2 && sn?.length) {
+      const parNom = new Map<string, DisposRow[]>();
+      for (const r of sn as DisposRow[]) {
+        const c = cleNom(r.nom, r.prenom);
+        const l = parNom.get(c) ?? [];
+        if (l.length < 2) { l.push(r); parNom.set(c, l); }
+      }
+      for (const k of manquants) {
+        const id = identite(annu, k);
+        const l = parNom.get(cleNom(id.nom, id.prenom));
+        if (l?.length) m.set(k, l);
+      }
+    }
   }
   return m;
 }
@@ -575,7 +606,8 @@ async function router(req: Request): Promise<Response> {
   if (path === '/joueur/entree' && POST) {
     const body = await lireJson(req);
     const jo = await verifierJoueur(req, body);
-    const [ann, tags, fem, dispos] = await Promise.all([annuaire(), derniersTags(), dernierScenario('fem'), disposParJoueur([jo.licence])]);
+    const [ann, tags, fem] = await Promise.all([annuaire(), derniersTags(), dernierScenario('fem')]);
+    const dispos = await disposParJoueur([jo.licence], ann);
     const lignes = dispos.get(jo.licence) ?? [];
     const derniere = lignes[0];
     const id = identite(ann, jo.licence, derniere ? { nom: derniere.nom ?? '', prenom: derniere.prenom ?? '' } : null);
@@ -596,7 +628,8 @@ async function router(req: Request): Promise<Response> {
     const d = body.dispos;
     if (!d || typeof d !== 'object') fail(400, 'dispos_invalides');
     const jo = await verifierJoueur(req, body);
-    const [ann, dispos] = await Promise.all([annuaire(), disposParJoueur([jo.licence])]);
+    const ann = await annuaire();
+    const dispos = await disposParJoueur([jo.licence], ann);
     const precedente = (dispos.get(jo.licence) ?? [])[0];
     const id = identite(ann, jo.licence, precedente ? { nom: precedente.nom ?? '', prenom: precedente.prenom ?? '' } : null);
     const roles = Array.isArray(precedente?.dispos?.roles) ? precedente!.dispos!.roles : [];
@@ -638,7 +671,7 @@ async function router(req: Request): Promise<Response> {
         if (t && Array.isArray(t.p)) for (const k of t.p) if (typeof k === 'string' && !statut.has(k)) statut.set(k, 'renfort');
       }
       const cles = [...statut.keys()];
-      const dispos = await disposParJoueur(cles);
+      const dispos = await disposParJoueur(cles, ann);
       const joueurs = cles.map((k) => {
         const lignes = dispos.get(k) ?? [];
         const derniere = lignes[0];
