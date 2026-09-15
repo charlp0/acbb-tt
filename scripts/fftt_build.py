@@ -76,7 +76,8 @@ def ranked_roster(club, n):
     if n and n>0: ranked=ranked[:n]
     return [(lic,v[0],v[1],v[2]) for lic,v in ranked]
 MOIS=['Sept','Oct','Nov','Déc','Janv','Fév','Mars','Avr','Mai','Juin','Juil']
-SAISON='2026/2027'   # saison courante : fenêtre du récap et du calendrier mensuel (bascule 16/09/2026 ; récap 25/26 archivé dans data/archive/2025-2026/players)
+SAISON='2026/2027'
+SEASON_START=20260701   # AAAAMMJJ : seules les parties à partir de cette date comptent pour le récap et le mensuel de la saison   # saison courante : fenêtre du récap et du calendrier mensuel (bascule 16/09/2026 ; récap 25/26 archivé dans data/archive/2025-2026/players)
 MB=[(2026,9),(2026,10),(2026,11),(2026,12),(2027,1),(2027,2),(2027,3),(2027,4),(2027,5),(2027,6),(2027,7)]
 EXACT = os.environ.get('FFTT_FAST','0') != '1'   # exact = reconstruire le mensuel adversaire (défaut). FFTT_FAST=1 -> hybride léger
 OPPC={}   # cache adversaire: licence -> (initm, [(date,pointres)])
@@ -85,12 +86,13 @@ def opp_mensuel_at(lic, date):
     if not lic: return None
     if lic not in OPPC:
         lb=get(f"xml_licence_b.php?licence={lic}"); im=re.search(r'<initm>([-\d.]+)',lb)
+        po=tag(lb,'point'); base=(float(po) if po and po.replace('.','',1).isdigit() else (float(im.group(1)) if im else None))
         pm=get(f"xml_partie_mysql.php?licence={lic}")
         hh=[]
         for b in re.findall(r'<partie>(.*?)</partie>', pm, re.S):  # parsing par bloc (date AVANT pointres dans le record)
             d=tag(b,'date'); pr=tag(b,'pointres')
-            if d and pr: hh.append((d,float(pr)))
-        OPPC[lic]=(float(im.group(1)) if im else None, hh)
+            if d and pr and dn(d)>=SEASON_START: hh.append((d,float(pr)))   # saison courante uniquement (base = officiel de la saison)
+        OPPC[lic]=(base, hh)
     im,hh=OPPC[lic]
     if im is None: return None
     cut=monthstart(date); return im+sum(pr for d,pr in hh if dn(d)<cut)
@@ -165,18 +167,23 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
     hist=[]; pts_by_id={}; advlic_by_id={}
     for b in re.findall(r'<partie>(.*?)</partie>', pmysql, re.S):
         d=tag(b,'date'); pr=tag(b,'pointres'); idp=tag(b,'idpartie'); al=tag(b,'advlic')
+        if d and dn(d)<SEASON_START: continue          # parties des saisons précédentes : hors récap
         if d and pr: hist.append((d,float(pr)))
         if idp and pr: pts_by_id[idp]=float(pr)
         if idp and al: advlic_by_id[idp]=al
+    # base de la saison = classement officiel 26/27 (l'initm de l'API reste celui de la saison passée tant que le
+    # mensuel n'a pas basculé) ; repli initm puis niveau de référence.
+    base26 = float(offpts) if offpts is not None else (initm if initm is not None else base_level)
     def mensuel_at(date):
-        if initm is None: return None
-        cut=monthstart(date); return initm+sum(pr for dd,pr in hist if dn(dd)<cut)
+        if base26 is None: return None
+        cut=monthstart(date); return base26+sum(pr for dd,pr in hist if dn(dd)<cut)
     # toutes les parties (validé + non validé) avec nom d'épreuve
     if allp is None: allp=get(f"xml_partie.php?numlic={lic}")
     comps={}; tot_pts=0.0; nonval_pts=0.0; perfs=0; cperfs=0; V=D=0; best=None; worst=None
     team_levels=[]   # par match simple de championnat : {t:équipe, my:mensuel ACBB, opp:mensuel adverse}
     for b in re.findall(r'<partie>(.*?)</partie>', allp, re.S):
         date=tag(b,'date'); opp=tag(b,'nom'); ocls=tag(b,'classement'); epr=tag(b,'epreuve')
+        if date and dn(date)<SEASON_START: continue      # sécurité : uniquement la saison courante
         won = tag(b,'victoire')=='V'; coef=float(tag(b,'coefchamp') or 1); idp=tag(b,'idpartie')
         if ' - ' in ocls: ocls=ocls.split(' - ')[-1]   # joueurs nationaux : "N95 - 2846" -> points = 2846
         try: ocls=int(re.sub(r'\D','',ocls) or 0)
@@ -230,10 +237,10 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
     # "à venir" retiré pour l'instant (pas calculable de façon fiable via l'API ; chantier ultérieur)
     avenir = None
     timeline=[]
-    if initm is not None:
-        for (lab,(yy,mm)) in list(zip(MOIS,MB))[:-1]:   # Sept..Juin (escalier mensuel)
+    if base26 is not None:
+        for (lab,(yy,mm)) in list(zip(MOIS,MB))[:-1]:   # Sept..Juin (escalier mensuel depuis l'officiel de la saison)
             cut=yy*10000+mm*100+1
-            timeline.append({'m':lab,'v':round(initm+sum(pr for dd,pr in hist if dn(dd)<cut),1)})
+            timeline.append({'m':lab,'v':round(base26+sum(pr for dd,pr in hist if dn(dd)<cut),1)})
         # dernier point = mensuel officiel actuel (exact), pas de projection
         if pointm: timeline.append({'m':'Actuel','v':round(float(pointm)),'off':True})
     elif base_level:
@@ -244,7 +251,7 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
         'lic':lic,'nom':nom,'prenom':prenom,'club':CLUB,
         'classement':{'officiel':int(point) if point.isdigit() else point,
                       'mensuel':round(float(pointm)) if pointm else (offpts if offpts is not None else None),
-                      'debut':round(initm) if initm else None,'avenir':avenir},
+                      'debut':round(base26) if base26 is not None else None,'avenir':avenir},
         'timeline':timeline,
         'saison':{'V':V,'D':D,'parties':tot,'winpct':round(100*V/tot) if tot else 0,
                   'perfs':perfs,'contre_perfs':cperfs,'best':best,'worst':worst},
