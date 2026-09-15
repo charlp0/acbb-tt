@@ -57,7 +57,7 @@
   .jtabs{display:flex;gap:6px;flex-wrap:wrap}
   .jtabs .pill{min-height:34px}
   .note{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--warn);background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.35);border-radius:9px;padding:8px 12px}
-  .tgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
   .tcard{padding:11px 13px;display:flex;flex-direction:column;gap:6px;min-height:118px}
   .tc-top{display:flex;align-items:center;gap:7px}
   .tc-team{font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:800;color:var(--win)}
@@ -68,9 +68,17 @@
   .tc-score{font-family:"JetBrains Mono",monospace;font-size:17px;font-weight:800;white-space:nowrap}
   .tc-score.win{color:var(--win)} .tc-score.lose{color:var(--lose)} .tc-score.draw{color:var(--warn)}
   .tc-wait{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--dimmer);white-space:nowrap}
-  .tc-deb{display:flex;gap:10px;align-items:flex-start}
-  .tc-deb img{flex:0 0 64px;width:64px;height:48px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
-  .tc-deb p{margin:0;font-size:11.5px;color:var(--dim);line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+  .tc-deb{display:flex;gap:12px;align-items:flex-start;margin-top:4px}
+  .tc-deb img{flex:0 0 84px;width:84px;height:84px;object-fit:cover;border-radius:8px;border:1px solid var(--line-2);cursor:zoom-in;transition:transform .15s}
+  .tc-deb img:hover{transform:scale(1.03)}
+  .tc-deb p{margin:0;font-size:12.5px;color:var(--ink-2);line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical}
+  .tc-deb p.open{display:block;-webkit-line-clamp:unset}
+  .tc-more{background:none;border:0;color:var(--orange);font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;cursor:pointer;padding:0;margin-top:2px}
+  .lb{position:fixed;inset:0;background:rgba(11,11,13,.94);z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+  .lb img{max-width:min(96vw,1200px);max-height:80vh;border-radius:12px;box-shadow:0 30px 90px rgba(0,0,0,.8)}
+  .lb-x{position:absolute;top:16px;right:18px;width:44px;height:44px;border-radius:99px;background:var(--panel-3);border:1px solid var(--line-2);color:var(--ink);font-size:20px;line-height:1;cursor:pointer}
+  .lb-x:hover{border-color:rgba(255,255,255,.4)}
+  .lb-cap{margin-top:12px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);text-align:center}
   .tc-by{font-size:8.5px}
   .tc-empty{font-size:11.5px;color:var(--dimmer);line-height:1.35}
   /* modale dispos */
@@ -96,7 +104,7 @@
   .seg button{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:800;padding:0 14px;min-height:44px;min-width:78px;background:transparent;border:0;color:var(--dim);cursor:pointer}
   .seg button.on.yes{background:rgba(61,214,140,.18);color:var(--win-lt)}
   .seg button.on.no{background:rgba(242,99,86,.18);color:var(--lose-lt)}
-  @media(max-width:1100px){.tgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:1100px){.tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   @media(max-width:800px){
     .top2{grid-template-columns:1fr}
     .cta{min-height:0;padding:16px 16px}
@@ -156,7 +164,12 @@
     <div class="tgrid" id="tgrid"><div class="tc-empty">Chargement du calendrier…</div></div>
   </section>
 
-  <div class="foot">ACBB Tennis de Table · calendrier et poules FFTT · scores et debriefs saisis par les capitaines</div>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo en grand">
+  <button class="lb-x" id="lbX" type="button" aria-label="Fermer">✕</button>
+  <img id="lbImg" alt="">
+  <div class="lb-cap" id="lbCap"></div>
 </div>
 
 <div class="modal-bg" id="mbg" hidden>
@@ -176,7 +189,6 @@
       <div class="merr" id="mErr2" hidden style="margin-top:12px"></div>
       <div class="mok" id="mOk" hidden style="margin-top:12px"></div>
       <button class="btn primary big" id="mSave" type="button" style="margin-top:12px">Enregistrer</button>
-      <p class="mnote" style="margin-top:12px">Aucune composition n'apparaît ici : la compo de la journée t'est envoyée par la sportive.</p>
     </div>
   </div>
 </div>
@@ -280,12 +292,14 @@
         const sc=(sa!=null)?'<span class="tc-score '+scoreClass(sa,sb)+'">'+sa+' – '+sb+'</span>':'<span class="tc-wait">à venir</span>';
         mid='<div class="tc-mid"><span class="tc-opp" title="'+esc(m.opp||'')+'">'+esc(shortName(m.opp)||'adversaire à confirmer')+'</span>'+sc+'</div>';
         if(it&&it.publie&&(it.texte||it.photo_url)){
-          bot='<div class="tc-deb">'+(it.photo_url?'<a href="'+esc(it.photo_url)+'" target="_blank" rel="noopener"><img src="'+esc(it.photo_url)+'" alt="Photo '+t+' J'+j+'" loading="lazy"></a>':'')+'<p>'+esc(it.texte||'')+'</p></div>'+(it.auteur?'<span class="lab tc-by">debrief de '+esc(it.auteur)+'</span>':'');
+          bot='<div class="tc-deb">'+(it.photo_url?'<img class="tc-thumb" src="'+esc(it.photo_url)+'" data-full="'+esc(it.photo_url)+'" data-cap="'+esc(t+' · J'+j+(m.opp?' · '+shortName(m.opp):'')+(it.auteur?' · photo du debrief de '+it.auteur:''))+'" alt="Photo '+t+' J'+j+' (cliquer pour agrandir)" loading="lazy">':'')+'<div><p>'+esc(it.texte||'')+'</p>'+((it.texte||'').length>260?'<button type="button" class="tc-more">lire la suite</button>':'')+'</div></div>'+(it.auteur?'<span class="lab tc-by">debrief de '+esc(it.auteur)+'</span>':'');
         } else bot='<div class="tc-empty">Debrief en attente.</div>';
       }
       return '<article class="card tcard">'+top+mid+bot+'</article>';
     }).join('');
     document.getElementById('tgrid').innerHTML=html||'<div class="tc-empty">Aucune équipe.</div>';
+    // « lire la suite » : déplie le texte du debrief dans la carte
+    document.querySelectorAll('#tgrid .tc-more').forEach(b=>b.addEventListener('click',()=>{ const p=b.previousElementSibling; const open=p.classList.toggle('open'); b.textContent=open?'réduire':'lire la suite'; }));
   }
 
   /* ---------- recherche joueur ---------- */
@@ -351,6 +365,15 @@
     }
     res.innerHTML=html;
   }
+
+  /* ---------- photo en grand (vignette des cartes de journée) ---------- */
+  const lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'), lbCap=document.getElementById('lbCap');
+  function openLb(src,cap){ lbImg.src=src; lbImg.alt=cap||'Photo'; lbCap.textContent=cap||''; lb.hidden=false; document.body.style.overflow='hidden'; }
+  function closeLb(){ lb.hidden=true; lbImg.src=''; document.body.style.overflow=''; }
+  document.getElementById('tgrid').addEventListener('click',e=>{ const im=e.target.closest('img.tc-thumb'); if(im) openLb(im.dataset.full||im.src, im.dataset.cap||''); });
+  document.getElementById('lbX').addEventListener('click',closeLb);
+  lb.addEventListener('click',e=>{ if(e.target===lb) closeLb(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!lb.hidden) closeLb(); });
 
   /* ---------- modale « Mes dispos » ---------- */
   const mbg=document.getElementById('mbg'), step1=document.getElementById('mStep1'), step2=document.getElementById('mStep2');
