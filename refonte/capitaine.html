@@ -129,10 +129,8 @@
     <section class="grid2" id="tabEquipe" hidden>
       <div class="col">
         <div class="card">
-          <div class="ch"><span class="t">Dispos · titulaires et renforts</span><span class="legend">J1 à J7 · vert dispo · rouge absent · gris sans réponse</span></div>
+          <div class="ch"><span class="t">Dispos de l'équipe</span><span class="legend">J1 à J7 · vert dispo · rouge absent · gris sans réponse</span></div>
           <div class="rows" id="dispos"><div class="empty">Chargement…</div></div>
-          <div class="acts"><button class="btn" id="btnWa" type="button">Relancer les sans-réponse (WhatsApp)</button></div>
-          <div class="wa" id="wa" hidden><textarea id="waTxt" readonly aria-label="Message WhatsApp"></textarea><div class="lab" style="margin-top:6px">Texte copié dans le presse-papiers, prêt à coller dans WhatsApp. Sinon, sélectionne-le ci-dessus.</div></div>
           <div class="lab" style="margin-top:12px">Seule ton équipe est visible. Les autres dispos du club restent côté sportive.</div>
         </div>
         <div class="card">
@@ -158,15 +156,9 @@
               <input id="phFile" type="file" accept="image/jpeg,image/png,image/webp">
               <span class="small muted" id="phState"></span>
             </div>
-            <label class="sw"><input id="visClub" type="checkbox" checked><span class="k"></span><span>Visible du club une fois publié par la sportive</span></label>
             <div class="note" id="debErr" hidden></div>
             <button class="btn blue big" id="debSave" type="submit">Enregistrer le debrief</button>
-            <div class="small muted">La sportive relit, corrige l'orthographe si besoin et publie sur l'accueil.</div>
           </form>
-        </div>
-        <div class="card">
-          <div class="ch"><span class="t">Debriefs déjà saisis</span><span class="lab" id="dlSub"></span></div>
-          <div class="dlist" id="dlist"><div class="empty">Chargement…</div></div>
         </div>
       </div>
     </section>
@@ -276,7 +268,7 @@
   function renderDispos(){
     const d=S.dispos; if(!d) return;
     const el=document.getElementById('dispos');
-    const js=(d.joueurs||[]).slice().sort((a,b)=>{ const ra=a.statut==='renfort'?1:0, rb=b.statut==='renfort'?1:0; if(ra!==rb) return ra-rb; return String(a.nom||'').localeCompare(String(b.nom||''),'fr'); });
+    const js=(d.joueurs||[]).filter(p=>p.statut!=='renfort').slice().sort((a,b)=>{ const ra=a.statut==='renfort'?1:0, rb=b.statut==='renfort'?1:0; if(ra!==rb) return ra-rb; return String(a.nom||'').localeCompare(String(b.nom||''),'fr'); });
     if(!js.length){ el.innerHTML='<div class="empty">Aucun joueur rattaché à l\'équipe pour le moment.</div>'; return; }
     const now=Date.now();
     el.innerHTML=js.map(p=>{
@@ -290,21 +282,11 @@
       return '<div class="card2 prow"><span class="dot" style="background:'+(has?'var(--win)':'var(--warn)')+'"></span><div><div class="nm">'+esc((p.prenom||'')+' '+(p.nom||''))+(isCap(p.licence)?'<span class="tag cap">C</span>':'')+(p.statut==='renfort'?'<span class="tag blue">renfort</span>':'')+'</div><div class="sub '+cls+'">'+esc(sub)+'</div></div><span class="ticks">'+ticks+'</span></div>';
     }).join('');
   }
-  document.getElementById('btnWa').addEventListener('click',async()=>{
-    const d=S.dispos; if(!d){ ACBB.toast('Dispos non chargées'); return; }
-    const miss=(d.joueurs||[]).filter(p=>!p.dispos||p.jamais).map(p=>((p.prenom||'')+' '+(p.nom||'')).trim());
-    const url=new URL('index.html',location.href).href;
-    let txt;
-    if(!miss.length) txt='Salut l\'équipe '+S.team+' ! Tout le monde a saisi ses dispos J1 à J7, merci. Pense à les mettre à jour si ça change : '+url;
-    else txt='Salut l\'équipe '+S.team+' ! Il manque encore les dispos J1 à J7 de : '+miss.join(', ')+'.\nMerci de les saisir ici (30 secondes, licence + date de naissance) : '+url+'\nBouton orange « Mets à jour tes dispos ». Merci !';
-    const box=document.getElementById('wa'), ta=document.getElementById('waTxt'); ta.value=txt; box.hidden=false;
-    try{ await navigator.clipboard.writeText(txt); ACBB.toast('Texte copié, colle-le dans WhatsApp'); }catch(e){ ta.focus(); ta.select(); ACBB.toast('Sélectionne le texte et copie-le'); }
-  });
 
   /* ================= Mon équipe : debrief ================= */
   function loadDebriefs(){
     ACBB.api('cap/debriefs').then(r=>{ S.debriefs=(r&&r.items)||[]; renderDebList(); renderDebForm(); }).catch(err=>{
-      document.getElementById('dlist').innerHTML='<div class="empty">'+(err&&err.status?'Debriefs indisponibles (erreur '+err.status+').':'Serveur indisponible : les debriefs ne peuvent pas être chargés pour le moment.')+'</div>';
+      const e0=document.getElementById('debErr'); if(e0){ e0.hidden=false; e0.textContent=err&&err.status?'Debriefs indisponibles (erreur '+err.status+').':'Serveur indisponible : le debrief déjà saisi ne peut pas être rechargé pour le moment.'; }
       renderDebForm();
     });
   }
@@ -318,7 +300,7 @@
     document.getElementById('scA').value=d&&d.score_acbb!=null?d.score_acbb:'';
     document.getElementById('scB').value=d&&d.score_adv!=null?d.score_adv:'';
     document.getElementById('debTxt').value=d?(d.texte||''):'';
-    document.getElementById('visClub').checked=d?d.visible_club!==false:true;
+    document.getElementById('debSave').textContent=d?'Modifier le debrief':'Enregistrer le debrief';
     const prev=document.getElementById('phPrev'), st=document.getElementById('phState');
     S.photoPath=null; prev.hidden=true; prev.removeAttribute('src'); document.getElementById('phFile').value='';
     const purl=d&&(d.photo_url||d.photo_public_url);
@@ -342,15 +324,15 @@
     const a=document.getElementById('scA').value.trim(), b=document.getElementById('scB').value.trim(), txt=document.getElementById('debTxt').value.trim();
     if((a===''&&b!=='')||(a!==''&&b==='')){ err.hidden=false; err.textContent='Indique les deux scores (ACBB et adversaire).'; return; }
     if(a===''&&b===''&&!txt){ err.hidden=false; err.textContent='Saisis au moins le score ou quelques lignes de debrief.'; return; }
-    const body={journee:S.j,score_acbb:a===''?null:+a,score_adv:b===''?null:+b,texte:txt,visible_club:document.getElementById('visClub').checked};
+    const body={journee:S.j,score_acbb:a===''?null:+a,score_adv:b===''?null:+b,texte:txt,visible_club:true};
     if(S.photoPath) body.photo_path=S.photoPath;
     const btn=document.getElementById('debSave'); btn.disabled=true; btn.textContent='Enregistrement…';
-    try{ await ACBB.api('cap/debrief',body); ACBB.toast('Debrief enregistré'); S.photoPath=null; loadDebriefs(); }
+    try{ await ACBB.api('cap/debrief',body); ACBB.toast(debFor(S.j)?'Debrief modifié':'Debrief enregistré'); S.photoPath=null; loadDebriefs(); }
     catch(x){ err.hidden=false; err.textContent=x&&x.status?'Enregistrement refusé ('+(x.body&&x.body.error||x.status)+').':'Serveur indisponible : le debrief n\'a pas été enregistré. Réessaie dans quelques minutes.'; }
-    finally{ btn.disabled=false; btn.textContent='Enregistrer le debrief'; }
+    finally{ btn.disabled=false; btn.textContent=debFor(S.j)?'Modifier le debrief':'Enregistrer le debrief'; }
   });
   function renderDebList(){
-    const el=document.getElementById('dlist');
+    const el=document.getElementById('dlist'); if(!el) return;
     const byJ={}; S.debriefs.forEach(x=>{ const j=+x.journee; if(!byJ[j]||String(x.created_at||'')>String(byJ[j].created_at||'')) byJ[j]=x; });
     const js=Object.keys(byJ).map(Number).sort((a,b)=>a-b);
     document.getElementById('dlSub').textContent=js.length?js.length+' journée'+(js.length>1?'s':''):'';
