@@ -76,7 +76,8 @@ def ranked_roster(club, n):
     if n and n>0: ranked=ranked[:n]
     return [(lic,v[0],v[1],v[2]) for lic,v in ranked]
 MOIS=['Sept','Oct','Nov','Déc','Janv','Fév','Mars','Avr','Mai','Juin','Juil']
-MB=[(2025,9),(2025,10),(2025,11),(2025,12),(2026,1),(2026,2),(2026,3),(2026,4),(2026,5),(2026,6),(2026,7)]
+SAISON='2026/2027'   # saison courante : fenêtre du récap et du calendrier mensuel (bascule 16/09/2026 ; récap 25/26 archivé dans data/archive/2025-2026/players)
+MB=[(2026,9),(2026,10),(2026,11),(2026,12),(2027,1),(2027,2),(2027,3),(2027,4),(2027,5),(2027,6),(2027,7)]
 EXACT = os.environ.get('FFTT_FAST','0') != '1'   # exact = reconstruire le mensuel adversaire (défaut). FFTT_FAST=1 -> hybride léger
 OPPC={}   # cache adversaire: licence -> (initm, [(date,pointres)])
 PAIR2TEAM={}  # (nrm joueur ACBB)|(nrm adversaire) -> clé d'équipe (M2..F3), pour rattacher chaque match simple à son équipe
@@ -106,7 +107,7 @@ def build_team_detail(club=CLUB):
        par joueur ACBB : manches, doubles, set le plus serré, matchs en 5 manches, split par équipe."""
     eq=get(f"xml_equipe.php?numclu={club}&type=A")
     links=[(lib.split(' - ')[0].strip(), html.unescape(l))
-           for lib,l in re.findall(r'<libequipe>(.*?)</libequipe>.*?<liendivision><!\[CDATA\[(.*?)\]\]>', eq, re.S) if 'Phase 2' in lib]
+           for lib,l in re.findall(r'<libequipe>(.*?)</libequipe>.*?<liendivision><!\[CDATA\[(.*?)\]\]>', eq, re.S) if 'Phase' in lib]   # toutes les phases de la saison en cours
     ACBB=set()
     for (nm,pr) in roster(club).values(): ACBB.add(nrm(nm+pr))
     det={}
@@ -346,11 +347,13 @@ def main():
                 prof=json.load(open(fpath)); reused+=1
             else:
                 prof=build_player(lic,nom,prenom,team_detail,allp=allp); rebuilt+=1
-                if not args and prof['saison']['parties']==0:   # exclure ceux qui n'ont pas joué (pros, inactifs)
-                    skipped+=1; continue
+                # 26/27 : on garde TOUS les licenciés, même sans match (la fiche affiche alors le classement officiel
+                # et « reviens après tes premiers matchs ») — indispensable pour la recherche joueur du nouveau site.
                 json.dump(prof, open(fpath,"w"), ensure_ascii=False)
             index.append({'lic':lic,'nom':nom,'prenom':prenom,
-                          'mensuel':prof['classement']['mensuel'],'parties':prof['saison']['parties']})
+                          'mensuel':prof['classement']['mensuel'],'parties':prof['saison']['parties'],
+                          'officiel':prof['classement']['officiel'],'debut':prof['classement']['debut'],
+                          'V':prof['saison']['V'],'D':prof['saison']['D']})
             profiles.append(prof); kept+=1
             flag='=' if unchanged else '↻'
             print(f"[{kept}/{need}] {flag} {lic} {nom} {prenom} — {prof['saison']['parties']}p {prof['saison']['V']}V/{prof['saison']['D']}D")

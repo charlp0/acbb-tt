@@ -53,7 +53,7 @@
   <section class="hero">
     <div>
       <h1 class="h1">Les <em>joueurs</em></h1>
-      <div class="hsub">Cherche un joueur : sa fiche complète s'affiche ici (classement, progression, récap 25/26).</div>
+      <div class="hsub">Cherche un joueur : sa fiche complète s'affiche ici (classement officiel 26/27, progression et bilan de la phase 1).</div>
     </div>
     <span class="lab" id="count"></span>
   </section>
@@ -72,7 +72,7 @@
       <div class="plist" id="recent"><div class="empty">Aucune fiche consultée pour l'instant. Tape un nom ci-dessus.</div></div>
     </div>
     <div class="card">
-      <div class="ch"><span class="t">Plus fortes progressions</span><span class="lab">tendance · points</span></div>
+      <div class="ch"><span class="t">Plus fortes progressions</span><span class="lab">phase 1 · 26/27 · points gagnés depuis le début de saison</span></div>
       <div class="plist" id="prog"><div class="empty">Chargement…</div></div>
     </div>
   </section>
@@ -80,7 +80,7 @@
   <section class="fiche" id="fiche" hidden>
     <div class="fh">
       <b id="fName"></b>
-      <div class="acts"><a class="btn" id="fOpen" href="#" target="_blank" rel="noopener">Ouvrir la fiche en grand</a><button class="btn" id="fClose" type="button">Fermer la fiche</button></div>
+      <div class="acts"><button class="btn" id="fClose" type="button">Fermer la fiche</button></div>
     </div>
     <div class="frame"><div class="ld" id="fLoad">Chargement de la fiche…</div><iframe id="frame" title="Fiche joueur" loading="eager"></iframe></div>
   </section>
@@ -106,7 +106,7 @@
 
   Promise.all([ACBB.json('../data/players_index.json').catch(()=>[]),ACBB.json('../data/scoring.json').catch(()=>null)]).then(([idx,sc])=>{
     const by={};
-    (idx||[]).forEach(p=>{ if(p.lic) by[String(p.lic)]={lic:String(p.lic),nom:p.nom,prenom:p.prenom,men:p.mensuel,parties:p.parties,fiche:true}; });
+    (idx||[]).forEach(p=>{ if(p.lic) by[String(p.lic)]={lic:String(p.lic),nom:p.nom,prenom:p.prenom,men:p.mensuel,parties:p.parties,debut:p.debut,officiel:p.officiel,fiche:true}; });
     ((sc&&sc.players)||[]).forEach(p=>{ if(!p.lic) return; const k=String(p.lic); if(by[k]){ if(p.men!=null) by[k].men=p.men; by[k].tend=p.tend; } });
     S.byLic=by; S.players=Object.values(by);
     document.getElementById('count').textContent=S.players.length+' joueurs · officiel 26/27';
@@ -151,9 +151,10 @@
   }
   function renderProg(){
     const el=document.getElementById('prog');
-    const list=S.players.filter(p=>typeof p.tend==='number'&&p.tend>0).sort((a,b)=>b.tend-a.tend).slice(0,8);
-    if(!list.length){ el.innerHTML='<div class="empty">Tendances disponibles après les premiers matchs.</div>'; return; }
-    el.innerHTML=list.map(p=>item(p,'<span class="pts">'+(p.men!=null?p.men:'')+'</span><span class="delta">+'+p.tend+'</span>')).join(''); bind(el);
+    // Progression de la phase 1 = points mensuels actuels − points au début de la saison 26/27, joueurs ayant joué au moins un match.
+    const list=S.players.filter(p=>p.parties>0&&typeof p.men==='number'&&typeof p.debut==='number').map(p=>({...p,prog:Math.round(p.men-p.debut)})).filter(p=>p.prog>0).sort((a,b)=>b.prog-a.prog).slice(0,8);
+    if(!list.length){ el.innerHTML='<div class="empty">En attente des premiers matchs de la phase 1 : les progressions s\'afficheront ici dès les premières journées.</div>'; return; }
+    el.innerHTML=list.map(p=>item(p,'<span class="pts">'+p.men+'</span><span class="delta">+'+p.prog+'</span>')).join(''); bind(el);
   }
 
   /* ---------- fiche embarquée ---------- */
@@ -164,7 +165,6 @@
     pushRecent(p); renderRecent();
     document.getElementById('shorts').hidden=true; fiche.hidden=false;
     document.getElementById('fName').textContent=(p.prenom||p.nom)?((p.prenom||'')+' '+(p.nom||'')).trim():('Licence '+p.lic);
-    document.getElementById('fOpen').href='../joueur.html?lic='+encodeURIComponent(p.lic);
     fLoad.hidden=false; frame.style.height='2400px';
     frame.src='../joueur.html?lic='+encodeURIComponent(p.lic)+'&embed=1';
     history.replaceState(null,'','joueurs.html?lic='+encodeURIComponent(p.lic));
