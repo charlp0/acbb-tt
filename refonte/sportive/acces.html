@@ -8,52 +8,73 @@
 <link rel="icon" type="image/png" href="../../logo.png">
 <link rel="stylesheet" href="../shared/style.css">
 <style>
+  /* ===== hero ===== */
   .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:22px}
-  .eyebrow{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
-  .eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
-  .body{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;margin-top:18px;align-items:start}
+  .hero .hsub{margin-top:4px}
+  .hero .sign{color:var(--ink-2);padding-bottom:4px}
+  /* ===== grille : liens capitaines (1.1fr) · colonne droite (0.9fr) ===== */
+  .body{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,0.9fr);gap:18px;margin-top:22px}
   @media(max-width:900px){.body{grid-template-columns:1fr}}
-  .col{display:flex;flex-direction:column;gap:14px;min-width:0}
-  .rt{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-  .rt::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
-  .rt .n{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:700;color:var(--dim);text-transform:none;letter-spacing:0}
-  .lr{display:grid;grid-template-columns:44px minmax(0,1.2fr) 92px minmax(0,1fr) auto;gap:8px 10px;align-items:center;padding:8px 0;border-top:1px solid rgba(255,255,255,.05);font-size:12.5px}
-  .lr:first-of-type{border-top:none}
-  @media(max-width:640px){.lr{grid-template-columns:44px 1fr auto}.lr .st,.lr .lu{display:none}}
-  .lr .tn{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:14px}
-  .lr .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .lr .nm small{display:block;font-weight:400;color:var(--dimmer);font-size:10.5px;font-family:"JetBrains Mono",monospace}
-  .lr .lu{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .lr .ac{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:230px}
-  .btn.sm{font-size:10.5px;padding:6px 11px}
-  .st{display:inline-flex;align-items:center;gap:6px;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;white-space:nowrap}
-  .st.on{color:var(--win)} .st.off{color:var(--dimmer)} .st.todo{color:var(--warn)}
-  .out{background:rgba(61,214,140,.08);border:1px solid rgba(61,214,140,.45);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+  .col{display:flex;flex-direction:column;gap:18px;min-width:0}
+  .cc{display:flex;flex-direction:column;gap:8px;min-width:0}
+  .cc.cap{padding:18px 20px;border-color:rgba(96,165,250,.35)}
+  .cc.spo{padding:16px 20px;border-color:rgba(242,106,27,.45)}
+  .cc.nais{padding:16px 20px;border-color:rgba(61,214,140,.35)}
+  .cc.jour{padding:14px 20px;gap:6px}
+  .cc.debs{padding:16px 20px;flex:1 1 auto}
+  .ct{font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:800}
+  .ch{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .lab.on{color:var(--win)} .lab.todo{color:var(--warn)} .lab.off{color:var(--dimmer)} .lab.blue{color:var(--blue)}
+  /* lignes capitaines : équipe · nom · statut · bouton */
+  .lrs{display:flex;flex-direction:column;gap:5px}
+  .lr{padding:8px 12px;display:grid;grid-template-columns:44px minmax(0,1fr) 90px 110px;align-items:center;gap:10px}
+  @media(max-width:640px){.lr{grid-template-columns:44px minmax(0,1fr) auto}.lr .st{display:none}}
+  .lr .tn{font-family:"JetBrains Mono",monospace;font-weight:800;color:var(--win)}
+  .lr .nm{display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;min-width:0;font-size:13px}
+  .lr .nm .nmx{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .lr .nm small{flex-basis:100%;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dimmer)}
+  .lr .st{text-align:right}
+  .lnk{background:none;border:0;padding:0;cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(242,99,86,.65)}
+  .lnk:hover{color:var(--lose)}
+  .btn.xs{font-size:10px;padding:5px 10px}
+  .btn.red{color:var(--lose)}
+  .bot{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
+  /* lien affiché une seule fois · composeur WhatsApp */
+  .out{padding:12px 14px;display:flex;flex-direction:column;gap:10px;border-color:rgba(61,214,140,.45)}
   .out .lab{color:var(--win)}
   .out .row input{flex:1;font-family:"JetBrains Mono",monospace;font-size:11.5px}
-  .out textarea{font-size:12.5px;min-height:70px;resize:vertical}
-  .newl{display:flex;gap:8px;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
-  .newl input{max-width:240px}
-  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-  .kpi span{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dimmer);text-transform:uppercase;letter-spacing:.5px}
-  details summary{cursor:pointer;font-size:12px;color:var(--ink-2);margin-top:8px}
+  .out textarea,.wa textarea{font-size:12.5px;min-height:70px;resize:vertical}
+  .wa{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+  .wa select{width:auto;max-width:100%;font-size:12.5px;padding:7px 10px}
+  /* liens sportive */
+  .srs{display:flex;flex-direction:column;gap:5px;font-size:12.5px}
+  .sr{display:flex;justify-content:space-between;align-items:center;gap:8px 10px;flex-wrap:wrap}
+  .sr .sn small{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dimmer);margin-left:6px}
+  .sr .lab{margin-left:auto;text-align:right}
+  .sr .sa{display:flex;gap:6px}
+  .newl{display:flex;gap:8px;align-items:center;margin-top:4px;padding-top:10px;border-top:1px solid var(--line)}
+  .newl input{max-width:260px;font-size:12.5px;padding:7px 10px}
+  /* dates de naissance */
+  .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .kpi b.k2{color:var(--warn)} .kpi b.k3{color:var(--lose)}
+  .expl{font-size:12px;color:var(--dim);line-height:1.45}
+  details summary{cursor:pointer;font-size:12px;color:var(--ink-2)}
   .sans{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
   .sans .tag{font-size:10.5px;font-weight:600;text-transform:none;letter-spacing:0}
-  .imp{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
-  .imp input[type=file]{font-size:12px;padding:8px}
   .impres{font-size:12px;line-height:1.5}
   .impres b{font-family:"JetBrains Mono",monospace}
-  .jt{width:100%;border-collapse:collapse;font-size:11.5px}
-  .jt th{text-align:left;font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--dimmer);padding:6px 6px;border-bottom:1px solid var(--line)}
-  .jt td{padding:6px 6px;border-top:1px solid rgba(255,255,255,.05);vertical-align:top}
-  .jt .mono{font-size:10.5px;color:var(--dim);white-space:nowrap}
-  .jt .det{color:var(--dim);font-size:11px;word-break:break-word}
-  .jwrap{max-height:520px;overflow:auto}
+  .hint{font-size:11px;color:var(--dimmer);line-height:1.5;font-family:"JetBrains Mono",monospace}
+  /* journal · debriefs à publier */
+  .jl{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--dim)}
+  .jl span{word-break:break-word}
+  .jl.all{max-height:380px;overflow:auto;padding-right:4px}
+  .dr{padding:9px 12px;display:flex;align-items:center;gap:10px}
+  .dr .dt{flex:1 1 auto;min-width:0;font-size:12.5px;color:var(--ink);text-decoration:none}
+  .dr .dt:hover{color:var(--orange)}
   .gatemsg{max-width:520px;margin:60px auto;text-align:center;color:var(--dim);font-size:13px}
   .gatemsg .h1{font-size:34px;margin-bottom:10px}
   .gatemsg a{color:var(--dim);font-size:12px;text-decoration:none}
   .srverr{background:rgba(242,99,86,.10);border:1px solid rgba(242,99,86,.4);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--lose-lt)}
-  .hint{font-size:11px;color:var(--dimmer);line-height:1.5;font-family:"JetBrains Mono",monospace}
 </style>
 </head><body>
 <div class="wrap">
@@ -67,42 +88,50 @@
   <main id="main" hidden>
     <div class="hero">
       <div>
-        <div class="eyebrow">Espace sportive · 2026/2027</div>
-        <div class="h1">Accès <em>&amp; liens.</em></div>
-        <div class="hsub">Liens capitaines et sportive, dates de naissance des joueurs, journal des actions · chaque action est signée par le lien qui la fait</div>
+        <div class="h1">Accès</div>
+        <div class="hsub">Liens capitaines et sportive, dates de naissance, debriefs à publier</div>
       </div>
+      <span class="lab sign">chaque action est signée par le lien qui la fait</span>
     </div>
     <div id="srvErr" class="srverr" hidden style="margin-top:14px"></div>
     <div class="body">
-      <div class="col">
-        <div class="card">
-          <div class="rt">Liens capitaines<span class="n" id="capN"></span></div>
-          <div id="linkOut" hidden></div>
-          <div id="capList" class="small muted">chargement…</div>
-          <div class="hint" style="margin-top:10px">Un lien = un capitaine, une équipe. Régénérer révoque l'ancien lien (remplacer) et affiche le nouveau une seule fois : copie-le tout de suite.</div>
+      <div class="card cc cap">
+        <div class="ch"><span class="ct">Liens capitaines</span><span class="lab blue" id="capN"></span></div>
+        <div id="linkOut" hidden></div>
+        <div class="lrs" id="capList"><span class="small muted">chargement…</span></div>
+        <span class="hint">Un lien = un capitaine, une équipe. Régénérer révoque l'ancien lien et affiche le nouveau une seule fois : copie-le tout de suite.</span>
+        <div class="card2 wa" id="waBox" hidden>
+          <div class="ch"><span class="lab">Message WhatsApp pour un capitaine</span><select id="waTeam"></select></div>
+          <textarea id="waTxt"></textarea>
+          <div class="row"><button class="btn xs primary" id="waCopy" type="button">Copier le message</button><span class="hint">le lien personnel n'est affiché qu'une fois, à la génération : colle-le à la place du crochet</span><span style="flex-grow:1"></span><button class="btn xs" id="waClose" type="button">Fermer</button></div>
         </div>
-        <div class="card">
-          <div class="rt">Liens sportive<span class="n" id="spoN"></span></div>
-          <div id="spoList" class="small muted">chargement…</div>
-          <div class="newl"><input id="spoNom" placeholder="prénom (nouveau lien sportive)" autocomplete="off"><button class="btn sm" id="spoGen" type="button">Générer</button></div>
-        </div>
+        <div class="bot"><button class="btn" id="waBtn" type="button">Message WhatsApp pour un capitaine</button><button class="btn red" id="revAll" type="button">Révoquer tous les liens (fin de phase)</button></div>
       </div>
       <div class="col">
-        <div class="card">
-          <div class="rt">Dates de naissance</div>
-          <div class="kpis"><div class="kpi"><b id="nFic" style="color:var(--win)">–</b><span>fichier inscriptions</span></div><div class="kpi"><b id="nSai" style="color:var(--blue)">–</b><span>première saisie</span></div><div class="kpi"><b id="nSans" style="color:var(--warn)">–</b><span>aucune</span></div></div>
-          <div class="hint" style="margin-top:8px">Le fichier des inscriptions l'emporte sur la première saisie dès qu'il contient la date. Sans date connue, la première saisie du joueur fait foi.</div>
-          <details id="sansBox" hidden><summary>joueurs sans date de naissance (<span id="sansN">0</span>)</summary><div class="sans" id="sansList"></div></details>
-          <div class="imp">
-            <div class="lab">Importer le fichier des inscriptions (xlsx, onglet « 2026-2027 », colonnes Nom / Prénom / Naissance)</div>
-            <input type="file" id="xlsx" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-            <div id="impRes" class="impres" hidden></div>
-            <div class="row" id="impAct" hidden><button class="btn sm primary" id="impBtn" type="button">Importer</button><span class="hint">seules les licences appariées sont envoyées (licence + date, jamais le nom)</span></div>
-          </div>
+        <div class="card cc spo">
+          <div class="ch"><span class="ct">Liens sportive</span><span class="lab" id="spoN"></span></div>
+          <div class="srs" id="spoList"><span class="small muted">chargement…</span></div>
+          <div class="newl"><input id="spoNom" placeholder="prénom (nouveau lien sportive)" autocomplete="off"><button class="btn xs" id="spoGen" type="button">Générer</button></div>
         </div>
-        <div class="card">
-          <div class="rt">Journal des actions<span class="n">signé par le lien, rien à saisir</span></div>
-          <div class="jwrap"><table class="jt"><thead><tr><th>Quand</th><th>Qui</th><th>Action</th><th>Détails</th></tr></thead><tbody id="jBody"><tr><td colspan="4" class="muted">chargement…</td></tr></tbody></table></div>
+        <div class="card cc nais">
+          <span class="ct">Dates de naissance</span>
+          <div class="kpis"><div class="kpi"><b id="nFic">–</b><span class="lab">fichier inscriptions</span></div><div class="kpi"><b class="k2" id="nSai">–</b><span class="lab">première saisie</span></div><div class="kpi"><b class="k3" id="nSans">–</b><span class="lab">aucune</span></div></div>
+          <span class="expl">Le fichier des inscriptions l'emporte sur la première saisie dès qu'il contient la date.</span>
+          <details id="sansBox" hidden><summary>joueurs sans date de naissance (<span id="sansN">0</span>)</summary><div class="sans" id="sansList"></div></details>
+          <input type="file" id="xlsx" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+          <button class="btn" id="impPick" type="button" style="width:100%">Importer le fichier des inscriptions</button>
+          <span class="hint">xlsx, onglet « 2026-2027 », colonnes Nom / Prénom / Naissance · seules les licences appariées sont envoyées (licence + date, jamais le nom)</span>
+          <div id="impRes" class="impres" hidden></div>
+          <div class="row" id="impAct" hidden><button class="btn xs primary" id="impBtn" type="button">Importer</button><button class="btn xs" id="impCancel" type="button">Annuler</button></div>
+        </div>
+        <div class="card cc jour">
+          <div class="ch"><span class="ct">Journal des actions</span><span class="lab">signé par le lien, rien à saisir</span></div>
+          <div class="jl" id="jList"><span>chargement…</span></div>
+          <button class="btn xs" id="jAll" type="button" style="align-self:flex-start" hidden>Tout le journal</button>
+        </div>
+        <div class="card cc debs">
+          <div class="ch"><span class="ct">Debriefs à publier</span><span class="lab" id="debN"></span></div>
+          <div class="lrs" id="debList"><span class="small muted">chargement…</span></div>
         </div>
       </div>
     </div>
@@ -125,10 +154,10 @@ const esc=ACBB.esc, toast=ACBB.toast;
 const SITE='https://team.acbb-tt.fr/refonte/';
 const TEAMS=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
 const TEAMDIV={M1:'Pro B',M2:'N1',M3:'R1',M4:'R2',M5:'R3',M6:'PR',M7:'PR',M8:'D1',M9:'D1',M10:'D1',M11:'D1',M12:'D2',M13:'D2',M14:'D2',M15:'D2',M16:'D2',M17:'D2',F1:'N2D',F2:'R1D',F3:'PRD'};
-const teamHue=e=>{const i=TEAMS.indexOf(e);return i<0?24:Math.round(i*137.5)%360;};
 const nrmK=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 const pad=n=>String(n).padStart(2,'0');
-let ME=null, LIENS=[], NAISS=null, JOURNAL=[], CAPT={}, BYLIC={}, BYFK={}, IMPORT=null;
+const JSHORT=5;
+let ME=null, LIENS=[], NAISS=null, JOURNAL=[], DEBS=[], CAPT={}, BYLIC={}, BYFK={}, IMPORT=null, JALL=false;
 
 function ago(iso){ if(!iso) return 'jamais utilisé'; const d=new Date(iso); if(isNaN(d)) return ''; const m=Math.round((Date.now()-d)/60000);
   if(m<1) return 'à l\'instant'; if(m<60) return 'il y a '+m+' min'; if(m<24*60) return 'il y a '+Math.round(m/60)+' h';
@@ -136,6 +165,7 @@ function ago(iso){ if(!iso) return 'jamais utilisé'; const d=new Date(iso); if(
   if(d.toDateString()===y.toDateString()) return 'hier '+hm; return 'le '+d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})+' à '+hm; }
 function fmtDT(iso){ if(!iso) return ''; const d=new Date(iso); if(isNaN(d)) return ''; return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}).replace(':','h'); }
 const full=p=>(p.pre||'')+' '+(p.nom||'');
+const firstName=s=>String(s||'').trim().split(/\s+/)[0]||'';
 function capOf(t){ const c=CAPT[t]; if(!c) return []; return [].concat(c).map(l=>{ const p=BYLIC[String(l)]; return p?{lic:String(l),nom:full(p),pre:p.pre||''}:{lic:String(l),nom:'licence '+l,pre:''}; }); }
 
 /* ===== chargement ===== */
@@ -143,78 +173,118 @@ async function boot(){
   const gj=u=>fetch(u,{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
   const [cap,sc]=await Promise.all([gj('../../data/capitaines.json'),gj('../../data/scoring.json')]);
   CAPT=(cap&&cap.capitaines)||{}; ((sc&&sc.players)||[]).forEach(p=>{ if(p.lic) BYLIC[String(p.lic)]=p; BYFK[nrmK(p.nom)+'|'+nrmK(p.pre)]=p; });
-  await Promise.all([loadLiens(),loadNaiss(),loadJournal()]);
+  await Promise.all([loadLiens(),loadNaiss(),loadJournal(),loadDebs()]);
 }
-function srvErr(e){ const el=document.getElementById('srvErr'); el.hidden=false; el.textContent='⚠ serveur : '+e.message; }
+function srvErr(e){ const el=document.getElementById('srvErr'); el.hidden=false; el.textContent='serveur : '+e.message; }
 async function loadLiens(){ try{ LIENS=rowsOf(await api('spo/liens')); }catch(e){ LIENS=[]; srvErr(e); } renderLiens(); }
 async function loadNaiss(){ try{ NAISS=await api('spo/naissances'); }catch(e){ NAISS=null; srvErr(e); } renderNaiss(); }
 async function loadJournal(){ try{ JOURNAL=rowsOf(await api('spo/journal?limit=100')); }catch(e){ JOURNAL=[]; srvErr(e); } renderJournal(); }
+async function loadDebs(){ try{ DEBS=rowsOf(await api('spo/debriefs')); }catch(e){ DEBS=[]; srvErr(e); } renderDebs(); }
 
 /* ===== liens ===== */
 function renderLiens(){
   const cap=LIENS.filter(l=>l.role==='capitaine'), spo=LIENS.filter(l=>l.role==='sportive');
-  let act=0, todo=0, h='';
+  let act=0, send=0, gen=0, h='';
   TEAMS.forEach(t=>{
     const ls=cap.filter(l=>String(l.equipe)===t), on=ls.filter(l=>l.actif), caps=capOf(t);
-    if(on.length) act++; else todo++;
-    const last=on.map(l=>l.last_used_at).filter(Boolean).sort().pop();
-    const nameH=on.length?on.map(l=>esc(l.nom)).join(', ')+(caps.length&&!on.some(l=>caps.some(c=>nrmK(c.nom)===nrmK(l.nom)))?'<small>capitaine désigné : '+esc(caps.map(c=>c.nom).join(', '))+'</small>':'')
-      :(caps.length?caps.map(c=>esc(c.nom)).join(', ')+'<small>'+esc(TEAMDIV[t]||'')+' · aucun lien actif</small>':'<small>capitaine non renseigné (capitaines.json)</small>');
-    const stH=on.length?'<span class="st on"><span class="dot" style="background:var(--win)"></span>actif'+(on.length>1?' ×'+on.length:'')+'</span>':(ls.length?'<span class="st off"><span class="dot" style="background:var(--panel-3)"></span>révoqué</span>':'<span class="st todo"><span class="dot" style="background:var(--warn)"></span>à générer</span>');
-    let acH='';
-    if(on.length){ acH+='<button class="btn sm" data-regen="'+t+'" data-nom="'+esc(on[0].nom)+'" title="révoque l\'ancien lien et en crée un nouveau">Régénérer</button>'+on.map(l=>'<button class="btn sm danger" data-revoke="'+l.id+'" data-lbl="'+esc(l.nom+' ('+t+')')+'">Révoquer</button>').join(''); }
-    else if(caps.length){ acH+=caps.map(c=>'<button class="btn sm primary" data-gen="'+t+'" data-nom="'+esc(c.nom)+'" data-pre="'+esc(c.pre)+'">Générer'+(caps.length>1?' · '+esc(c.pre||c.nom):'')+'</button>').join(''); }
-    else acH+='<button class="btn sm" data-genask="'+t+'">Générer…</button>';
-    h+='<div class="lr"><span class="tn" style="color:hsl('+teamHue(t)+',75%,70%)">'+t+'</span><span class="nm">'+nameH+'</span>'+stH+'<span class="lu">'+(on.length?esc(ago(last)):'')+'</span><span class="ac">'+acH+'</span></div>';
+    let stCls, stTxt, stTip;
+    if(on.length){
+      const last=on.map(l=>l.last_used_at).filter(Boolean).sort().pop();
+      if(last){ act++; stCls='on'; stTxt='actif'+(on.length>1?' ×'+on.length:''); stTip='dernière ouverture '+ago(last); }
+      else { send++; stCls='todo'; stTxt='à envoyer'; stTip='lien généré mais jamais ouvert : envoie-le au capitaine'; }
+    } else if(ls.length){ gen++; stCls='off'; stTxt='révoqué'; stTip='aucun lien actif : génère un nouveau lien'; }
+    else { gen++; stCls='todo'; stTxt='à générer'; stTip='aucun lien pour cette équipe'; }
+    let nameH;
+    if(on.length){
+      nameH=on.map(l=>'<span class="nmx">'+esc(l.nom)+'</span><button class="lnk" type="button" data-revoke="'+l.id+'" data-lbl="'+esc(l.nom+' ('+t+')')+'" title="révoquer ce lien">révoquer</button>').join('');
+      if(caps.length&&!on.some(l=>caps.some(c=>nrmK(c.nom)===nrmK(l.nom)))) nameH+='<small>capitaine désigné : '+esc(caps.map(c=>c.nom).join(', '))+'</small>';
+    } else nameH=caps.length?'<span class="nmx">'+esc(caps.map(c=>c.nom).join(', '))+'</span>':'<span class="nmx muted">capitaine non renseigné</span>';
+    const acH=on.length?'<button class="btn xs" type="button" data-regen="'+t+'" data-nom="'+esc(on[0].nom)+'" title="révoque l\'ancien lien et en crée un nouveau">Régénérer</button>'
+      :'<button class="btn xs primary" type="button" data-gen="'+t+'">Générer</button>';
+    h+='<div class="card2 lr"><span class="tn" title="'+esc(TEAMDIV[t]||'')+'">'+t+'</span><span class="nm">'+nameH+'</span><span class="lab st '+stCls+'" title="'+esc(stTip)+'">'+stTxt+'</span>'+acH+'</div>';
   });
   document.getElementById('capList').innerHTML=h;
-  document.getElementById('capN').textContent=TEAMS.length+' équipes · '+act+' actif'+(act>1?'s':'')+(todo?' · '+todo+' à générer':'');
-  const sh=spo.length?spo.map(l=>'<div class="lr" style="grid-template-columns:minmax(0,1.4fr) 92px minmax(0,1fr) auto"><span class="nm">'+esc(l.nom)+(ME&&nrmK(l.nom)===nrmK(ME.nom)&&l.actif?'<small>c\'est ton lien</small>':'')+'</span>'
-      +(l.actif?'<span class="st on"><span class="dot" style="background:var(--win)"></span>actif</span>':'<span class="st off"><span class="dot" style="background:var(--panel-3)"></span>révoqué</span>')
-      +'<span class="lu">'+(l.actif?esc(ago(l.last_used_at)):(l.created_at?'créé '+esc(fmtDT(l.created_at)):''))+'</span>'
-      +'<span class="ac">'+(l.actif?'<button class="btn sm" data-regen="" data-role="sportive" data-nom="'+esc(l.nom)+'">Régénérer</button><button class="btn sm danger" data-revoke="'+l.id+'" data-lbl="'+esc(l.nom+' (sportive)')+'">Révoquer</button>':'')+'</span></div>').join('')
-    :'<div class="muted small">aucun lien sportive enregistré</div>';
+  document.getElementById('capN').textContent=TEAMS.length+' équipes · '+act+' actif'+(act>1?'s':'')+(send?' · '+send+' à envoyer':'')+(gen?' · '+gen+' à générer':'');
+  const sh=spo.length?spo.map(l=>{ const mine=!!(ME&&l.actif&&nrmK(l.nom)===nrmK(ME.nom));
+      return '<div class="sr"><span class="sn">'+esc(l.nom)+(mine?'<small>c\'est ton lien</small>':'')+'</span>'
+        +'<span class="lab '+(l.actif?'on':'off')+'">'+(l.actif?'actif · '+esc(ago(l.last_used_at)):'révoqué'+(l.created_at?' · créé '+esc(fmtDT(l.created_at)):''))+'</span>'
+        +(l.actif?'<span class="sa"><button class="btn xs" type="button" data-regen="" data-role="sportive" data-nom="'+esc(l.nom)+'">Régénérer</button>'+(mine?'':'<button class="btn xs danger" type="button" data-revoke="'+l.id+'" data-lbl="'+esc(l.nom+' (sportive)')+'">Révoquer</button>')+'</span>':'')+'</div>'; }).join('')
+    :'<span class="small muted">aucun lien sportive enregistré</span>';
   document.getElementById('spoList').innerHTML=sh;
-  document.getElementById('spoN').textContent=spo.filter(l=>l.actif).length+' actif'+(spo.filter(l=>l.actif).length>1?'s':'');
-  document.querySelectorAll('[data-gen]').forEach(b=>b.onclick=()=>generer({role:'capitaine',equipe:b.dataset.gen,nom:b.dataset.nom,pre:b.dataset.pre},false,b));
-  document.querySelectorAll('[data-genask]').forEach(b=>b.onclick=()=>{ const n=(prompt('Prénom et nom du capitaine de '+b.dataset.genask+' :')||'').trim(); if(n) generer({role:'capitaine',equipe:b.dataset.genask,nom:n,pre:n.split(' ')[0]},false,b); });
-  document.querySelectorAll('[data-regen]').forEach(b=>b.onclick=()=>{ const role=b.dataset.role||'capitaine'; const eq=b.dataset.regen||null; if(!confirm('Régénérer le lien de '+b.dataset.nom+(eq?' ('+eq+')':' (sportive)')+' ? L\'ancien lien cessera de fonctionner immédiatement.')) return; generer({role:role,equipe:eq,nom:b.dataset.nom,pre:b.dataset.nom.split(' ')[0]},true,b); });
+  const spoOn=spo.filter(l=>l.actif).length; document.getElementById('spoN').textContent=spoOn+' actif'+(spoOn>1?'s':'');
+  document.querySelectorAll('[data-gen]').forEach(b=>b.onclick=()=>genererPour(b.dataset.gen,b));
+  document.querySelectorAll('[data-regen]').forEach(b=>b.onclick=()=>{ const role=b.dataset.role||'capitaine'; const eq=b.dataset.regen||null; if(!confirm('Régénérer le lien de '+b.dataset.nom+(eq?' ('+eq+')':' (sportive)')+' ? L\'ancien lien cessera de fonctionner immédiatement.')) return; generer({role:role,equipe:eq,nom:b.dataset.nom,pre:firstName(b.dataset.nom)},true,b); });
   document.querySelectorAll('[data-revoke]').forEach(b=>b.onclick=()=>revoquer(+b.dataset.revoke,b.dataset.lbl,b));
-  document.getElementById('spoGen').onclick=()=>{ const n=document.getElementById('spoNom').value.trim(); if(!n){ toast('indique le prénom du lien sportive'); return; } generer({role:'sportive',equipe:null,nom:n,pre:n.split(' ')[0]},false,document.getElementById('spoGen')); };
+  fillWaTeams();
 }
-function busy(b,on,txt){ if(!b) return; if(on){ b.dataset.txt=b.textContent; b.textContent=txt||'⏳…'; b.disabled=true; } else { b.textContent=b.dataset.txt||b.textContent; b.disabled=false; } }
+function genererPour(t,b){
+  const caps=capOf(t); let c=null;
+  if(caps.length===1) c=caps[0];
+  else if(caps.length>1){ const n=(prompt('Plusieurs capitaines désignés pour '+t+' — pour qui générer le lien ?\n'+caps.map(x=>x.nom).join(' / '),caps[0].nom)||'').trim(); if(!n) return; c=caps.find(x=>nrmK(x.nom)===nrmK(n))||{nom:n,pre:firstName(n)}; }
+  else { const n=(prompt('Prénom et nom du capitaine de '+t+' :')||'').trim(); if(!n) return; c={nom:n,pre:firstName(n)}; }
+  generer({role:'capitaine',equipe:t,nom:c.nom,pre:c.pre},false,b);
+}
+function busy(b,on,txt){ if(!b) return; if(on){ b.dataset.txt=b.textContent; b.textContent=txt||'…'; b.disabled=true; } else { b.textContent=b.dataset.txt||b.textContent; b.disabled=false; } }
 async function generer(o,remplacer,b){
-  busy(b,true,'⏳…');
+  busy(b,true,'…');
   try{
     const body={role:o.role,nom:o.nom}; if(o.equipe) body.equipe=o.equipe; if(remplacer) body.remplacer=true;
     const r=await api('spo/liens/generer',body);
     const url=(r&&r.url)||(SITE+(o.role==='sportive'?'index.html':'capitaine.html')+'#t='+((r&&r.token)||''));
     showLink(o,url);
-    toast('✓ lien '+(remplacer?'régénéré':'créé')+' — copie-le maintenant, il ne sera plus affiché');
+    toast('lien '+(remplacer?'régénéré':'créé')+' — copie-le maintenant, il ne sera plus affiché');
     document.getElementById('spoNom').value='';
     await loadLiens(); loadJournal();
   }catch(e){ busy(b,false); toast('échec : '+e.message); }
 }
+function waMsg(o,url){
+  const prenom=(o.pre||firstName(o.nom)||'').trim();
+  return 'Bonjour '+prenom+', voici ton lien '+(o.role==='sportive'?'sportive':'capitaine')+' ACBB'+(o.equipe?' ('+o.equipe+')':'')+' : '+url+'\nIl est personnel, ne le partage pas.';
+}
 function showLink(o,url){
-  const prenom=(o.pre||o.nom.split(' ')[0]||'').trim();
-  const wa=o.role==='sportive'?('Bonjour '+prenom+', voici ton lien sportive ACBB : '+url+'\nIl est personnel, ne le partage pas.'):('Bonjour '+prenom+', voici ton lien capitaine ACBB'+(o.equipe?' ('+o.equipe+')':'')+' : '+url+'\nIl est personnel, ne le partage pas.');
+  const wa=waMsg(o,url);
   const el=document.getElementById('linkOut'); el.hidden=false;
-  el.innerHTML='<div class="out"><span class="lab">Lien '+esc(o.role)+' de '+esc(o.nom)+(o.equipe?' · '+esc(o.equipe):'')+' — affiché une seule fois</span>'
-    +'<div class="row"><input id="lnkUrl" readonly value="'+esc(url)+'"><button class="btn sm primary" id="lnkCopy" type="button">Copier le lien</button></div>'
+  el.innerHTML='<div class="card2 out"><span class="lab">Lien '+esc(o.role)+' de '+esc(o.nom)+(o.equipe?' · '+esc(o.equipe):'')+' — affiché une seule fois</span>'
+    +'<div class="row"><input id="lnkUrl" readonly value="'+esc(url)+'"><button class="btn xs primary" id="lnkCopy" type="button">Copier le lien</button></div>'
     +'<textarea id="lnkWa" readonly>'+esc(wa)+'</textarea>'
-    +'<div class="row"><button class="btn sm" id="lnkWaCopy" type="button">Copier le message WhatsApp</button><span style="flex-grow:1"></span><button class="btn sm" id="lnkClose" type="button">Fermer</button></div></div>';
+    +'<div class="row"><button class="btn xs" id="lnkWaCopy" type="button">Copier le message WhatsApp</button><span style="flex-grow:1"></span><button class="btn xs" id="lnkClose" type="button">Fermer</button></div></div>';
   document.getElementById('lnkCopy').onclick=()=>copyText(url,'lien copié');
   document.getElementById('lnkWaCopy').onclick=()=>copyText(wa,'message copié — colle-le dans WhatsApp');
   document.getElementById('lnkClose').onclick=()=>{ if(confirm('Fermer ? Le lien ne sera plus affiché.')){ el.hidden=true; el.innerHTML=''; } };
   el.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
-function copyText(txt,msg){ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(()=>toast('📋 '+msg),()=>prompt('Copie ce texte :',txt)); else prompt('Copie ce texte :',txt); }
+function copyText(txt,msg){ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(()=>toast(msg),()=>prompt('Copie ce texte :',txt)); else prompt('Copie ce texte :',txt); }
 async function revoquer(id,lbl,b){
   if(!confirm('Révoquer le lien de '+lbl+' ? Il cessera de fonctionner immédiatement.')) return;
-  busy(b,true,'⏳…');
+  busy(b,true,'…');
   try{ await api('spo/liens/revoquer',{id:id}); toast('lien révoqué'); await loadLiens(); loadJournal(); }
   catch(e){ busy(b,false); toast('échec : '+e.message); }
 }
+async function revoquerTous(b){
+  const on=LIENS.filter(l=>l.role==='capitaine'&&l.actif);
+  if(!on.length){ toast('aucun lien capitaine actif'); return; }
+  if(!confirm('Révoquer les '+on.length+' liens capitaines actifs (fin de phase) ?\nLes capitaines ne pourront plus se connecter tant qu\'un nouveau lien ne leur est pas envoyé. Les liens sportive sont conservés.')) return;
+  busy(b,true,'révocation…'); let ok=0, ko=0;
+  for(const l of on){ try{ await api('spo/liens/revoquer',{id:l.id}); ok++; }catch(e){ ko++; } }
+  busy(b,false); toast(ok+' lien'+(ok>1?'s':'')+' révoqué'+(ok>1?'s':'')+(ko?' · '+ko+' en échec':''));
+  await loadLiens(); loadJournal();
+}
+/* composeur WhatsApp : message type pour un capitaine (le lien lui-même n'est affiché qu'à la génération) */
+function fillWaTeams(){
+  const sel=document.getElementById('waTeam'), cur=sel.value;
+  sel.innerHTML=TEAMS.map(t=>{ const on=LIENS.filter(l=>l.role==='capitaine'&&l.actif&&String(l.equipe)===t); const nom=on.length?on[0].nom:(capOf(t)[0]||{}).nom; return '<option value="'+t+'">'+t+(nom?' · '+esc(nom):'')+'</option>'; }).join('');
+  if(cur&&TEAMS.includes(cur)) sel.value=cur;
+}
+function fillWaTxt(){
+  const t=document.getElementById('waTeam').value; const on=LIENS.filter(l=>l.role==='capitaine'&&l.actif&&String(l.equipe)===t); const nom=on.length?on[0].nom:(capOf(t)[0]||{}).nom||'';
+  document.getElementById('waTxt').value=waMsg({role:'capitaine',equipe:t,nom:nom,pre:firstName(nom)},'[colle ici le lien personnel]');
+}
+document.getElementById('waBtn').onclick=()=>{ const bx=document.getElementById('waBox'); bx.hidden=!bx.hidden; if(!bx.hidden){ fillWaTeams(); fillWaTxt(); bx.scrollIntoView({behavior:'smooth',block:'nearest'}); } };
+document.getElementById('waTeam').onchange=fillWaTxt;
+document.getElementById('waCopy').onclick=()=>copyText(document.getElementById('waTxt').value,'message copié — colle-le dans WhatsApp');
+document.getElementById('waClose').onclick=()=>{ document.getElementById('waBox').hidden=true; };
+document.getElementById('revAll').onclick=()=>revoquerTous(document.getElementById('revAll'));
+document.getElementById('spoGen').onclick=()=>{ const n=document.getElementById('spoNom').value.trim(); if(!n){ toast('indique le prénom du lien sportive'); return; } generer({role:'sportive',equipe:null,nom:n,pre:firstName(n)},false,document.getElementById('spoGen')); };
 
 /* ===== dates de naissance ===== */
 function renderNaiss(){
@@ -229,13 +299,16 @@ function toISO(v){
   const s=String(v==null?'':v).trim(); let m=/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})/.exec(s); if(m) return m[3]+'-'+pad(m[2])+'-'+pad(m[1]);
   m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s); if(m) return m[1]+'-'+m[2]+'-'+m[3]; return null;
 }
+function resetImport(){ IMPORT=null; document.getElementById('impRes').hidden=true; document.getElementById('impAct').hidden=true; document.getElementById('xlsx').value=''; }
+document.getElementById('impPick').onclick=()=>document.getElementById('xlsx').click();
+document.getElementById('impCancel').onclick=resetImport;
 document.getElementById('xlsx').onchange=async e=>{
   const f=e.target.files[0]; IMPORT=null; const res=document.getElementById('impRes'), act=document.getElementById('impAct'); act.hidden=true; if(!f) return;
   if(typeof XLSX==='undefined'){ res.hidden=false; res.textContent='lecteur xlsx (SheetJS) non chargé — vérifie la connexion'; return; }
   try{
     const wb=XLSX.read(await f.arrayBuffer(),{cellDates:true});
     let name='2026-2027', ws=wb.Sheets[name], note='';
-    if(!ws){ name=wb.SheetNames[0]; ws=wb.Sheets[name]; note='⚠ onglet « 2026-2027 » absent — lecture de « '+name+' »'; }
+    if(!ws){ name=wb.SheetNames[0]; ws=wb.Sheets[name]; note='onglet « 2026-2027 » absent — lecture de « '+name+' »'; }
     const aoa=XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:''});
     let hi=-1, ci=null;
     for(let i=0;i<Math.min(aoa.length,30);i++){ const row=aoa[i].map(x=>nrmK(String(x))); const n=row.indexOf('NOM'), p=row.indexOf('PRENOM'), d=row.findIndex(x=>/NAISSANCE/.test(x)); if(n>=0&&p>=0&&d>=0){ hi=i; ci={n,p,d}; break; } }
@@ -256,19 +329,56 @@ document.getElementById('xlsx').onchange=async e=>{
   }catch(err){ res.hidden=false; res.innerHTML='<span style="color:var(--lose-lt)">lecture impossible : '+esc(err.message)+'</span>'; }
 };
 document.getElementById('impBtn').onclick=async()=>{
-  if(!IMPORT||!IMPORT.length) return; const b=document.getElementById('impBtn'); busy(b,true,'⏳ import…');
+  if(!IMPORT||!IMPORT.length) return; const b=document.getElementById('impBtn'); busy(b,true,'import…');
   try{ const r=await api('spo/naissances/import',{rows:IMPORT.map(x=>({licence:x.licence,dob:x.dob}))});
-    toast('✓ '+((r&&r.importees)!=null?r.importees:IMPORT.length)+' dates importées'+((r&&r.remplacees)?' · '+r.remplacees+' remplacée'+(r.remplacees>1?'s':''):''));
-    IMPORT=null; document.getElementById('impAct').hidden=true; document.getElementById('xlsx').value=''; await loadNaiss(); loadJournal(); }
+    toast(((r&&r.importees)!=null?r.importees:IMPORT.length)+' dates importées'+((r&&r.remplacees)?' · '+r.remplacees+' remplacée'+(r.remplacees>1?'s':''):''));
+    busy(b,false); resetImport(); await loadNaiss(); loadJournal(); }
   catch(e){ busy(b,false); toast('échec : '+e.message); }
 };
 
 /* ===== journal ===== */
-function fmtDetails(d){ if(d==null) return ''; if(typeof d==='string') return d; const parts=[]; ['equipe','journee','slot','nom','role','table','action'].forEach(k=>{ if(d[k]!=null&&d[k]!=='') parts.push(k==='journee'?'J'+d[k]:String(d[k])); }); if(d.publie!=null) parts.push(d.publie?'publié':'dépublié'); if(d.message) parts.push('« '+String(d.message).slice(0,70)+' »'); if(d.importees!=null) parts.push(d.importees+' importées'); if(parts.length) return parts.join(' · '); const s=JSON.stringify(d); return s.length>120?s.slice(0,118)+'…':s; }
+const ACT={lien_genere:'lien généré',lien_revoque:'lien révoqué',naissances_import:'import des dates de naissance',naissance_saisie:'date de naissance saisie',dispos:'dispos',debrief:'debrief enregistré',photo:'photo du debrief',debrief_publie:'debrief publié',debrief_depublie:'debrief dépublié',debrief_corrige:'debrief corrigé (IA)',debrief_renvoye:'debrief renvoyé au capitaine',signalement:'signalement'};
+function jLine(e){
+  const d=(e.details&&typeof e.details==='object')?e.details:{}, a=e.action||'', bits=[];
+  let what=ACT[a]||a.replace(/_/g,' ');
+  if(a==='rest_insert'){
+    if(d.table==='tags_log'){ what='compo officielle'; if(Array.isArray(d.ids)&&d.ids.length) what+=' #'+d.ids.join(', #'); }
+    else if(d.table==='scenarios_log'){ what='compos journée'; const sl=[...new Set((Array.isArray(d.slots)?d.slots:[]).filter(Boolean).map(s=>String(s).toUpperCase()))]; if(sl.length) bits.push(sl.join(', ')); }
+    else what='enregistrement'+(d.table?' '+d.table:'');
+  }
+  if(d.equipe) bits.push(String(d.equipe)); if(d.journee) bits.push('J'+d.journee);
+  if(a==='lien_genere'||a==='lien_revoque'){ if(d.role==='sportive') bits.push('sportive'); if(d.nom) bits.push(String(d.nom)); if(d.revoques) bits.push(d.revoques+' ancien'+(d.revoques>1?'s':'')+' révoqué'+(d.revoques>1?'s':'')); }
+  if(a==='naissances_import'){ if(d.importees!=null) bits.push(d.importees+' importée'+(d.importees>1?'s':'')); if(d.remplacees) bits.push(d.remplacees+' remplacée'+(d.remplacees>1?'s':'')); }
+  if(a==='dispos'){ bits.push('licence + date'); if(d.premiere) bits.push('première fois'); }
+  if(a==='debrief_corrige'&&d.identique) bits.push('aucune coquille');
+  if(d.message) bits.push('« '+String(d.message).slice(0,70)+' »');
+  if(a==='signalement'&&d.page) bits.push(String(d.page));
+  if(typeof e.details==='string'&&e.details) bits.push(e.details.slice(0,80));
+  const who=(e.acteur||'')+(e.role==='capitaine'?' (capitaine'+(d.equipe?' '+d.equipe:'')+')':'');
+  return fmtDT(e.at)+' · '+who+' · '+what+(bits.length?' · '+bits.join(' · '):'');
+}
 function renderJournal(){
-  const tb=document.getElementById('jBody');
-  tb.innerHTML=JOURNAL.length?JOURNAL.map(e=>'<tr><td class="mono">'+esc(fmtDT(e.at))+'</td><td><b>'+esc(e.acteur||'')+'</b>'+(e.role?' <span class="mono">'+esc(e.role)+'</span>':'')+'</td><td>'+esc(e.action||'')+'</td><td class="det">'+esc(fmtDetails(e.details))+'</td></tr>').join('')
-    :'<tr><td colspan="4" class="muted">aucune action enregistrée pour l\'instant</td></tr>';
+  const el=document.getElementById('jList'), rows=JALL?JOURNAL:JOURNAL.slice(0,JSHORT);
+  el.innerHTML=rows.length?rows.map(e=>'<span>'+esc(jLine(e))+'</span>').join(''):'<span>aucune action enregistrée pour l\'instant</span>';
+  el.classList.toggle('all',JALL);
+  const b=document.getElementById('jAll'); b.hidden=JOURNAL.length<=JSHORT; b.textContent=JALL?'Réduire':'Tout le journal';
+}
+document.getElementById('jAll').onclick=()=>{ JALL=!JALL; renderJournal(); };
+
+/* ===== debriefs à publier ===== */
+function renderDebs(){
+  const pend=DEBS.filter(r=>!r.publie).sort((a,b)=>((a.journee||0)-(b.journee||0))||(TEAMS.indexOf(a.equipe)-TEAMS.indexOf(b.equipe)));
+  const n=document.getElementById('debN'); n.textContent=pend.length?pend.length+' en attente':'aucun en attente'; n.className='lab '+(pend.length?'todo':'on');
+  document.getElementById('debList').innerHTML=pend.length?pend.map(r=>'<div class="card2 dr"><a class="dt" href="debriefs.html?j='+esc(r.journee)+'" title="relire dans l\'onglet Debriefs">'+esc(r.equipe)+' · J'+esc(r.journee)+' · '+esc(r.auteur||'?')+' · '+(r.photo_path?'avec photo':'sans photo')+(r.renvoye_message?' · renvoyé au capitaine':'')+'</a><button class="btn xs" type="button" data-pubdeb="'+r.id+'">Publier</button></div>').join('')
+    :'<span class="small muted">tous les debriefs saisis sont publiés</span>';
+  document.querySelectorAll('[data-pubdeb]').forEach(b=>b.onclick=()=>publierDeb(+b.dataset.pubdeb,b));
+}
+async function publierDeb(id,b){
+  const r=DEBS.find(x=>x.id===id); if(!r) return;
+  if(!confirm('Publier sur l\'accueil le debrief de '+r.equipe+' (J'+r.journee+') écrit par '+(r.auteur||'?')+' ?'+(r.visible_club===false?'\nAttention : le capitaine a indiqué ne pas souhaiter de diffusion au club.':'')+'\nPour relire ou corriger le texte avant, passe par l\'onglet Debriefs.')) return;
+  busy(b,true,'publication…');
+  try{ await api('spo/debriefs/publier',{id:id,publie:true,texte_final:r.texte_final||r.texte||''}); toast('publié sur l\'accueil'); await loadDebs(); loadJournal(); }
+  catch(e){ busy(b,false); toast('échec : '+e.message); }
 }
 
 const gateErrTxt=(err,role)=>err?((err.body&&/jeton_invalide|jeton_requis|role_incorrect/.test(err.body.error||''))?'lien invalide ou révoqué — demande un nouveau lien à la sportive':'serveur : '+err.message):(role==='capitaine'?'ton lien est un lien capitaine':'');
