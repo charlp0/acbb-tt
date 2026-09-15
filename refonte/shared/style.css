@@ -1,0 +1,47 @@
+/* ACBB TT — refonte 2026/27 — design system commun (repris de sportive/journee.html) */
+:root{--bg:#0B0B0D;--paper:#141416;--panel:#141416;--panel-2:#1E1E22;--panel-3:#26262B;--line:rgba(255,255,255,0.08);--line-2:rgba(255,255,255,0.16);--ink:#F6F5F3;--ink-2:#D4D3CF;--dim:rgba(246,245,243,0.60);--dimmer:rgba(246,245,243,0.48);--orange:#F26A1B;--win:#3DD68C;--win-lt:#86EFAC;--warn:#FACC15;--lose:#F26356;--lose-lt:#FCA5A5;--blue:#60A5FA;--violet:#A78BFA}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased}
+a{color:var(--orange)}a:hover{color:#FF8B45}
+.mono{font-family:"JetBrains Mono",monospace}
+.h1{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:52px;line-height:1;letter-spacing:.5px;margin:0}
+.h1 em{color:var(--orange);font-style:italic}
+.hsub{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--dim);margin-top:6px}
+.lab{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--dimmer)}
+.wrap{max-width:1360px;margin:0 auto;padding:22px 40px 40px}
+@media(max-width:800px){.wrap{padding:14px 14px 32px}.h1{font-size:36px}}
+/* header */
+.hdr{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand img{width:38px;height:38px;border-radius:8px;background:#fff;padding:3px;border:1px solid var(--line-2);object-fit:contain;box-shadow:0 4px 12px rgba(242,106,27,0.18)}
+.brand .b1{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:22px;line-height:1}
+.brand .b2{font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--dim);letter-spacing:.3px;text-transform:uppercase;margin-top:3px}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.pill{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:6px 12px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.pill.on{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+.pill.cap{color:var(--blue);border-color:rgba(96,165,250,.6)}.pill.cap.on{background:var(--blue);border-color:var(--blue);color:#0B0B0D}
+.pill.spo{color:var(--orange);border-color:rgba(242,106,27,.6)}.pill.spo.on{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+.btn{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:800;padding:9px 16px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink);cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{border-color:rgba(255,255,255,.35)}
+.btn.primary{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+.btn.danger{color:var(--lose);border-color:rgba(242,99,86,.5)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.card2{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.grid{display:grid;gap:18px}
+.row{display:flex;align-items:center;gap:10px}
+.dot{width:8px;height:8px;border-radius:99px;display:inline-block;flex-shrink:0}
+.tick{width:9px;height:16px;border-radius:2px;background:var(--win);display:inline-block}.tick.no{background:var(--lose)}.tick.off{background:var(--panel-3)}
+.ticks{display:inline-flex;gap:3px;vertical-align:middle}
+input,select,textarea{background:var(--panel-2);border:1px solid var(--line-2);border-radius:9px;color:var(--ink);font-family:inherit;font-size:13px;padding:9px 11px;outline:none;width:100%}
+input:focus,textarea:focus{border-color:var(--orange)}
+.kpi{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column}
+.kpi b{font-family:"JetBrains Mono",monospace;font-size:18px;font-weight:800}
+.tag{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
+.tag.win{color:var(--win);border-color:rgba(61,214,140,.5)}.tag.warn{color:var(--warn);border-color:rgba(250,204,21,.5)}.tag.lose{color:var(--lose);border-color:rgba(242,99,86,.5)}.tag.blue{color:var(--blue);border-color:rgba(96,165,250,.5)}
+.muted{color:var(--dim)}.small{font-size:12px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--panel-3);border:1px solid var(--line-2);border-radius:12px;padding:10px 16px;font-family:"JetBrains Mono",monospace;font-size:12px;z-index:50;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.modal-bg{position:fixed;inset:0;background:rgba(11,11,13,.72);display:flex;align-items:flex-start;justify-content:center;padding:80px 16px;z-index:40;overflow:auto}
+.modal{width:100%;max-width:480px;background:var(--panel);border:1px solid rgba(61,214,140,.5);border-radius:14px;padding:22px 24px;box-shadow:0 30px 80px rgba(0,0,0,.7)}
+.foot{margin-top:40px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dimmer)}
+[hidden]{display:none!important}

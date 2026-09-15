@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>ACBB TT — Joueurs</title>
+<meta name="theme-color" content="#0B0B0D">
+<link rel="icon" type="image/png" href="../logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/style.css">
+<style>
+  .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:22px;flex-wrap:wrap}
+  .sbox{margin-top:18px;padding:14px 16px}
+  .srch{position:relative}
+  .srch input{padding:12px 14px 12px 42px;font-size:15px;min-height:48px;border-radius:99px}
+  .srch .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--dim);display:inline-flex}
+  .sug{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--panel-3);border:1px solid var(--line-2);border-radius:12px;overflow:hidden;z-index:30;box-shadow:0 18px 50px rgba(0,0,0,.6)}
+  .sugi{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:14px;padding:12px 14px;min-height:46px;cursor:pointer}
+  .sugi:last-child{border-bottom:0}
+  .sugi:hover,.sugi.sel{background:rgba(242,106,27,.14)}
+  .sugi .pre{color:var(--dim);font-weight:400}
+  .sugi .pts{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-2)}
+  .shorts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}
+  .card .ch{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .card .ch .t{font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:800}
+  .plist{display:flex;flex-direction:column;gap:6px}
+  .pitem{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink);font-family:inherit;font-size:13.5px;cursor:pointer;min-height:44px}
+  .pitem:hover{border-color:var(--orange)}
+  .pitem .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pitem .nm .pre{color:var(--dim);font-weight:500}
+  .pitem .r{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .pitem .pts{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-2)}
+  .pitem .delta{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:800;color:var(--win)}
+  .empty{font-size:12.5px;color:var(--dim);line-height:1.45}
+  .fiche{margin-top:18px}
+  .fh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .fh b{font-size:17px}
+  .fh .acts{display:flex;gap:8px;flex-wrap:wrap}
+  .fh .btn{min-height:40px}
+  .frame{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative}
+  .frame iframe{display:block;width:100%;height:2400px;border:0;background:var(--bg)}
+  .frame .ld{position:absolute;left:0;right:0;top:0;padding:14px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim)}
+  @media(max-width:800px){.shorts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="hdr" class="hdr"></div>
+
+  <section class="hero">
+    <div>
+      <h1 class="h1">Les <em>joueurs</em></h1>
+      <div class="hsub">Cherche un joueur : sa fiche complète s'affiche ici (classement, progression, récap 25/26).</div>
+    </div>
+    <span class="lab" id="count"></span>
+  </section>
+
+  <div class="card sbox">
+    <div class="srch">
+      <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></span>
+      <input id="q" type="search" placeholder="Nom ou prénom…" autocomplete="off" aria-label="Rechercher un joueur" aria-autocomplete="list">
+      <div class="sug" id="sug" role="listbox" hidden></div>
+    </div>
+  </div>
+
+  <section class="shorts" id="shorts">
+    <div class="card">
+      <div class="ch"><span class="t">Derniers consultés</span><span class="lab">sur cet appareil</span></div>
+      <div class="plist" id="recent"><div class="empty">Aucune fiche consultée pour l'instant. Tape un nom ci-dessus.</div></div>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="t">Plus fortes progressions</span><span class="lab">tendance · points</span></div>
+      <div class="plist" id="prog"><div class="empty">Chargement…</div></div>
+    </div>
+  </section>
+
+  <section class="fiche" id="fiche" hidden>
+    <div class="fh">
+      <b id="fName"></b>
+      <div class="acts"><a class="btn" id="fOpen" href="#" target="_blank" rel="noopener">Ouvrir la fiche en grand</a><button class="btn" id="fClose" type="button">Fermer la fiche</button></div>
+    </div>
+    <div class="frame"><div class="ld" id="fLoad">Chargement de la fiche…</div><iframe id="frame" title="Fiche joueur" loading="eager"></iframe></div>
+  </section>
+
+  <div class="foot">ACBB Tennis de Table · classements et résultats FFTT</div>
+</div>
+
+<script src="shared/api.js"></script>
+<script src="shared/report.js" defer></script>
+<script src="shared/nav.js" data-base="."></script>
+<script>
+(function(){
+  'use strict';
+  const esc=ACBB.esc;
+  function nrm(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); }
+  const S={players:[],byLic:{}};
+
+  renderNav({active:'Joueurs'});
+  ACBB.api('me').then(me=>{ renderNav({active:'Joueurs',role:me&&me.role,team:me&&me.equipe,name:me&&me.nom}); }).catch(()=>{});
+
+  const q=document.getElementById('q'), sug=document.getElementById('sug');
+  let sel=-1, cur=[];
+
+  Promise.all([ACBB.json('../data/players_index.json').catch(()=>[]),ACBB.json('../data/scoring.json').catch(()=>null)]).then(([idx,sc])=>{
+    const by={};
+    (idx||[]).forEach(p=>{ if(p.lic) by[String(p.lic)]={lic:String(p.lic),nom:p.nom,prenom:p.prenom,men:p.mensuel,parties:p.parties,fiche:true}; });
+    ((sc&&sc.players)||[]).forEach(p=>{ if(!p.lic) return; const k=String(p.lic); if(by[k]){ if(p.men!=null) by[k].men=p.men; by[k].tend=p.tend; } });
+    S.byLic=by; S.players=Object.values(by);
+    document.getElementById('count').textContent=S.players.length+' joueurs · officiel 26/27';
+    renderRecent(); renderProg();
+    const lic=new URLSearchParams(location.search).get('lic');
+    if(lic){ const p=by[String(lic)]; if(p) show(p); else show({lic:String(lic).replace(/[^0-9A-Za-z]/g,''),nom:'',prenom:''}); }
+  }).catch(()=>{ document.getElementById('prog').innerHTML='<div class="empty">Liste momentanément indisponible.</div>'; });
+
+  function suggest(){
+    const v=nrm(q.value.trim());
+    if(v.length<2||!S.players.length){ sug.hidden=true; cur=[]; return; }
+    const starts=[],inc=[];
+    S.players.forEach(p=>{ const a=nrm(p.nom+' '+p.prenom), b=nrm(p.prenom+' '+p.nom); if(a.startsWith(v)||b.startsWith(v)||nrm(p.nom).startsWith(v)||nrm(p.prenom).startsWith(v)) starts.push(p); else if(a.includes(v)||b.includes(v)) inc.push(p); });
+    const byPts=(x,y)=>(y.men||0)-(x.men||0);
+    cur=starts.sort(byPts).concat(inc.sort(byPts)).slice(0,8); sel=-1;
+    if(!cur.length){ sug.innerHTML='<div class="sugi muted" style="cursor:default">Aucun joueur trouvé</div>'; sug.hidden=false; return; }
+    sug.innerHTML=cur.map((p,i)=>'<button type="button" class="sugi" role="option" data-i="'+i+'">'+esc(p.nom)+' <span class="pre">'+esc(p.prenom)+'</span><span class="pts">'+(p.men!=null?p.men:'')+'</span></button>').join('');
+    sug.hidden=false;
+    sug.querySelectorAll('.sugi[data-i]').forEach(b=>b.addEventListener('click',()=>show(cur[+b.dataset.i])));
+  }
+  q.addEventListener('input',suggest);
+  q.addEventListener('focus',suggest);
+  q.addEventListener('keydown',e=>{
+    if(sug.hidden||!cur.length) return;
+    if(e.key==='ArrowDown'){ e.preventDefault(); sel=Math.min(cur.length-1,sel+1); mark(); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); sel=Math.max(0,sel-1); mark(); }
+    else if(e.key==='Enter'){ e.preventDefault(); show(cur[sel>=0?sel:0]); }
+    else if(e.key==='Escape'){ sug.hidden=true; }
+  });
+  function mark(){ sug.querySelectorAll('.sugi[data-i]').forEach((b,i)=>b.classList.toggle('sel',i===sel)); }
+  document.addEventListener('click',e=>{ if(!e.target.closest('.srch')) sug.hidden=true; });
+
+  /* ---------- raccourcis ---------- */
+  function recents(){ try{ const r=JSON.parse(localStorage.getItem('acbb_recent')||'[]'); return Array.isArray(r)?r:[]; }catch(e){ return []; } }
+  function pushRecent(p){ if(!p||!p.lic||!p.nom) return; try{ const r=recents().filter(x=>x.lic!==p.lic); r.unshift({lic:p.lic,nom:p.nom,prenom:p.prenom}); localStorage.setItem('acbb_recent',JSON.stringify(r.slice(0,6))); }catch(e){} }
+  function item(p,right){ return '<button type="button" class="pitem" data-lic="'+esc(p.lic)+'"><span class="nm">'+esc(p.nom)+' <span class="pre">'+esc(p.prenom)+'</span></span><span class="r">'+right+'</span></button>'; }
+  function bind(el){ el.querySelectorAll('.pitem').forEach(b=>b.addEventListener('click',()=>{ const p=S.byLic[b.dataset.lic]||recents().find(x=>x.lic===b.dataset.lic); if(p) show(p); })); }
+  function renderRecent(){
+    const el=document.getElementById('recent'); const r=recents();
+    if(!r.length){ el.innerHTML='<div class="empty">Aucune fiche consultée pour l\'instant. Tape un nom ci-dessus.</div>'; return; }
+    el.innerHTML=r.map(x=>{ const p=S.byLic[x.lic]||x; return item(p,p.men!=null?'<span class="pts">'+p.men+'</span>':''); }).join(''); bind(el);
+  }
+  function renderProg(){
+    const el=document.getElementById('prog');
+    const list=S.players.filter(p=>typeof p.tend==='number'&&p.tend>0).sort((a,b)=>b.tend-a.tend).slice(0,8);
+    if(!list.length){ el.innerHTML='<div class="empty">Tendances disponibles après les premiers matchs.</div>'; return; }
+    el.innerHTML=list.map(p=>item(p,'<span class="pts">'+(p.men!=null?p.men:'')+'</span><span class="delta">+'+p.tend+'</span>')).join(''); bind(el);
+  }
+
+  /* ---------- fiche embarquée ---------- */
+  const fiche=document.getElementById('fiche'), frame=document.getElementById('frame'), fLoad=document.getElementById('fLoad');
+  function show(p){
+    if(!p||!p.lic) return;
+    sug.hidden=true; q.value='';
+    pushRecent(p); renderRecent();
+    document.getElementById('shorts').hidden=true; fiche.hidden=false;
+    document.getElementById('fName').textContent=(p.prenom||p.nom)?((p.prenom||'')+' '+(p.nom||'')).trim():('Licence '+p.lic);
+    document.getElementById('fOpen').href='../joueur.html?lic='+encodeURIComponent(p.lic);
+    fLoad.hidden=false; frame.style.height='2400px';
+    frame.src='../joueur.html?lic='+encodeURIComponent(p.lic)+'&embed=1';
+    history.replaceState(null,'','joueurs.html?lic='+encodeURIComponent(p.lic));
+    fiche.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  frame.addEventListener('load',()=>{ fLoad.hidden=true; });
+  window.addEventListener('message',e=>{ const d=e.data; if(d&&typeof d.acbbHeight==='number'&&d.acbbHeight>200){ frame.style.height=Math.min(20000,Math.round(d.acbbHeight)+24)+'px'; } });
+  document.getElementById('fClose').addEventListener('click',()=>{ fiche.hidden=true; frame.src='about:blank'; document.getElementById('shorts').hidden=false; history.replaceState(null,'','joueurs.html'); q.focus(); });
+})();
+</script>
+</body>
+</html>

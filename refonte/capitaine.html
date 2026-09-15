@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>ACBB TT — Espace capitaine</title>
+<meta name="theme-color" content="#0B0B0D">
+<link rel="icon" type="image/png" href="../logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/style.css">
+<style>
+  .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:22px;flex-wrap:wrap}
+  .h1 em.b{color:var(--blue)}
+  .jtabs{display:flex;gap:6px;flex-wrap:wrap}
+  .jtabs .pill{min-height:36px;min-width:44px;justify-content:center}
+  .jtabs .pill.on{background:var(--blue);border-color:var(--blue);color:#0B0B0D}
+  .gate{margin-top:22px;padding:26px 24px;text-align:center}
+  .gate .t{font-family:"JetBrains Mono",monospace;font-size:16px;font-weight:800;margin-bottom:8px}
+  .gate p{margin:0;color:var(--dim);font-size:13px;line-height:1.5}
+  .grid2{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;margin-top:18px;align-items:start}
+  .grid2.poule{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}
+  .col{display:flex;flex-direction:column;gap:18px}
+  .card .ch{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .card .ch .t{font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:800}
+  .card.blue{border-color:rgba(96,165,250,.45)}
+  .rows{display:flex;flex-direction:column;gap:6px}
+  /* dispos */
+  .prow{display:grid;grid-template-columns:10px minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 12px}
+  .prow .nm{font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .prow .nm .tag{padding:1px 6px;font-size:8.5px}
+  .prow .nm .tag.cap{color:var(--orange);border-color:rgba(242,106,27,.6)}
+  .prow .sub{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dimmer);margin-top:2px;letter-spacing:.2px}
+  .prow .sub.recent{color:var(--warn)} .prow .sub.never{color:var(--lose-lt)}
+  .ticks .tick{width:10px;height:18px}
+  .legend{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dimmer);letter-spacing:.3px;text-transform:uppercase;font-weight:700}
+  .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .acts .btn{min-height:44px}
+  .wa{margin-top:10px}
+  .wa textarea{min-height:120px;font-family:"JetBrains Mono",monospace;font-size:12px;line-height:1.45}
+  /* debrief */
+  .frm{display:flex;flex-direction:column;gap:10px}
+  .frm .lab{margin-bottom:-4px}
+  .scores{display:grid;grid-template-columns:1fr 24px 1fr;align-items:center;gap:8px}
+  .scores input{font-family:"JetBrains Mono",monospace;font-size:18px;font-weight:800;text-align:center;min-height:48px}
+  .scores .vs{text-align:center;color:var(--dim);font-family:"JetBrains Mono",monospace}
+  .scores .lab{text-align:center;display:block;margin-top:4px}
+  textarea{min-height:110px;resize:vertical;line-height:1.45}
+  .photo{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .photo img{width:96px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--line-2)}
+  .photo input[type=file]{display:none}
+  .sw{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;min-height:44px}
+  .sw input{display:none}
+  .sw .k{width:44px;height:26px;border-radius:99px;background:var(--panel-3);border:1px solid var(--line-2);position:relative;flex-shrink:0;transition:background .15s}
+  .sw .k::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:99px;background:var(--ink-2);transition:left .15s}
+  .sw input:checked+.k{background:rgba(61,214,140,.35);border-color:rgba(61,214,140,.6)} .sw input:checked+.k::after{left:21px;background:var(--win)}
+  .btn.blue{background:var(--blue);border-color:var(--blue);color:#0B0B0D}
+  .btn.big{min-height:48px;font-size:12.5px}
+  .dlist{display:flex;flex-direction:column;gap:6px}
+  .ditem{display:grid;grid-template-columns:34px 64px minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 12px;cursor:pointer}
+  .ditem:hover{border-color:rgba(96,165,250,.6)}
+  .ditem .j{font-family:"JetBrains Mono",monospace;font-weight:800}
+  .ditem .sc{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:13px}
+  .ditem .tx{font-size:12px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sc.win{color:var(--win)} .sc.lose{color:var(--lose)} .sc.draw{color:var(--warn)}
+  .compo{font-size:12.5px;color:var(--dim);line-height:1.45}
+  /* poule */
+  .orow{display:grid;grid-template-columns:30px 76px 52px minmax(0,1fr) 44px 64px;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;text-align:left;width:100%;color:var(--ink);font-family:inherit}
+  .orow:hover{border-color:rgba(96,165,250,.5)}
+  .orow.sel{background:rgba(96,165,250,.14);border-color:rgba(96,165,250,.6)}
+  .orow .j{font-family:"JetBrains Mono",monospace;font-weight:800}
+  .orow .opp{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .orow .rk{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:800;text-align:center;padding:3px 0;border-radius:6px;background:var(--panel-3);color:var(--ink-2)}
+  .orow .rk sup{font-size:8px}
+  .orow .sc{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:800;text-align:right}
+  .orow .wait{text-align:right;color:var(--dimmer)}
+  .tag.dom{color:var(--warn);border-color:rgba(250,204,21,.5)}
+  .tag.c{display:inline-flex;justify-content:center}
+  table.st{width:100%;border-collapse:collapse;font-size:12.5px}
+  .st th{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--dimmer);text-align:right;padding:4px 6px;white-space:nowrap}
+  .st th.l,.st td.l{text-align:left}
+  .st td{padding:7px 6px;border-top:1px solid var(--line);text-align:right;font-family:"JetBrains Mono",monospace;font-size:12px}
+  .st td.l{font-family:"Space Grotesk",system-ui,sans-serif;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0;width:100%}
+  .st tr.me td{background:rgba(242,106,27,.10)} .st tr.me td.l{color:var(--orange);font-weight:700}
+  .st tr.sel td{background:rgba(96,165,250,.12)}
+  .plist{display:flex;flex-direction:column;gap:5px}
+  .plist .card2{display:flex;align-items:center;gap:10px;padding:7px 12px;font-size:13px}
+  .plist .card2 .n{font-family:"JetBrains Mono",monospace;color:var(--dim);width:22px}
+  .plist .card2.me{border-color:rgba(242,106,27,.5);color:var(--orange);font-weight:700}
+  .scout .h2{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:30px;line-height:1;margin:4px 0 12px}
+  .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .kpis .kpi b{font-size:20px}
+  .seen{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+  .seen .card2{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;font-size:13px}
+  .seen .card2 .pt{font-family:"JetBrains Mono",monospace;font-weight:800}
+  .empty{font-size:12.5px;color:var(--dim);line-height:1.45}
+  .note{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--warn);background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.35);border-radius:9px;padding:8px 12px}
+  @media(max-width:900px){.grid2,.grid2.poule{grid-template-columns:1fr}}
+  @media(max-width:480px){
+    .orow{grid-template-columns:26px 66px 50px minmax(0,1fr) 40px;grid-template-areas:"j d t rk s" "o o o o o";gap:4px 6px;padding:10px 10px}
+    .orow .j{grid-area:j}.orow .dt{grid-area:d}.orow .tag,.orow .ph{grid-area:t}.orow .opp{grid-area:o}.orow .rk{grid-area:rk}.orow .sc,.orow .wait{grid-area:s}
+    .prow{grid-template-columns:10px minmax(0,1fr);row-gap:6px}.prow .ticks{grid-column:2}
+    .ditem{grid-template-columns:34px 64px minmax(0,1fr)}.ditem .st2{grid-column:1/-1}
+    .st .hide-sm{display:none}
+    .kpis{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="hdr" class="hdr"></div>
+
+  <div class="card gate" id="gate"><div class="t">Vérification du lien…</div><p>Un instant.</p></div>
+
+  <div id="app" hidden>
+    <section class="hero">
+      <div>
+        <h1 class="h1" id="hTitle"></h1>
+        <div class="hsub" id="hSub"></div>
+      </div>
+      <div class="jtabs" id="jtabs" role="tablist"></div>
+    </section>
+
+    <div class="note" id="apiNote" hidden style="margin-top:14px"></div>
+
+    <!-- Onglet Mon équipe -->
+    <section class="grid2" id="tabEquipe" hidden>
+      <div class="col">
+        <div class="card">
+          <div class="ch"><span class="t">Dispos · titulaires et renforts</span><span class="legend">J1 à J7 · vert dispo · rouge absent · gris sans réponse</span></div>
+          <div class="rows" id="dispos"><div class="empty">Chargement…</div></div>
+          <div class="acts"><button class="btn" id="btnWa" type="button">Relancer les sans-réponse (WhatsApp)</button></div>
+          <div class="wa" id="wa" hidden><textarea id="waTxt" readonly aria-label="Message WhatsApp"></textarea><div class="lab" style="margin-top:6px">Texte copié dans le presse-papiers, prêt à coller dans WhatsApp. Sinon, sélectionne-le ci-dessus.</div></div>
+          <div class="lab" style="margin-top:12px">Seule ton équipe est visible. Les autres dispos du club restent côté sportive.</div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="t">Compo de la journée</span></div>
+          <div class="compo">La compo de la journée arrive par WhatsApp de la sportive. Elle n'est pas affichée ici.</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card blue">
+          <div class="ch"><span class="t" id="debTitle">Debrief J1</span><span class="lab" id="debMatch"></span></div>
+          <form class="frm" id="debForm" autocomplete="off">
+            <div class="scores">
+              <div><input id="scA" type="number" inputmode="numeric" min="0" max="30" placeholder="–" aria-label="Score ACBB"><span class="lab">ACBB</span></div>
+              <span class="vs">–</span>
+              <div><input id="scB" type="number" inputmode="numeric" min="0" max="30" placeholder="–" aria-label="Score adversaire"><span class="lab" id="scBLab">Adversaire</span></div>
+            </div>
+            <label class="lab" for="debTxt">Ton debrief</label>
+            <textarea id="debTxt" placeholder="Le match en quelques lignes : les faits marquants, les perfs, l'ambiance…"></textarea>
+            <span class="lab">Photo (jpg, png ou webp, 5 Mo max.)</span>
+            <div class="photo">
+              <img id="phPrev" alt="" hidden>
+              <label class="btn" for="phFile" style="min-height:44px">Ajouter une photo</label>
+              <input id="phFile" type="file" accept="image/jpeg,image/png,image/webp">
+              <span class="small muted" id="phState"></span>
+            </div>
+            <label class="sw"><input id="visClub" type="checkbox" checked><span class="k"></span><span>Visible du club une fois publié par la sportive</span></label>
+            <div class="note" id="debErr" hidden></div>
+            <button class="btn blue big" id="debSave" type="submit">Enregistrer le debrief</button>
+            <div class="small muted">La sportive relit, corrige l'orthographe si besoin et publie sur l'accueil.</div>
+          </form>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="t">Debriefs déjà saisis</span><span class="lab" id="dlSub"></span></div>
+          <div class="dlist" id="dlist"><div class="empty">Chargement…</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Onglet Ma poule -->
+    <section class="grid2 poule" id="tabPoule" hidden>
+      <div class="col">
+        <div class="card">
+          <div class="ch"><span class="t">Nos adversaires, journée par journée</span><span class="lab" id="oppSub">place dans la poule</span></div>
+          <div class="rows" id="opps"><div class="empty">Chargement…</div></div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="t">Classement complet</span><span class="lab" id="stSub"></span></div>
+          <div id="standings"><div class="empty">Chargement…</div></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card blue scout" id="scout"><div class="empty">Sélectionne un adversaire.</div></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="foot">ACBB Tennis de Table · espace capitaine · aucune composition n'est visible ici</div>
+</div>
+
+<script src="shared/api.js"></script>
+<script src="shared/report.js" defer></script>
+<script src="shared/nav.js" data-base="."></script>
+<script>
+(function(){
+  'use strict';
+  const esc=ACBB.esc;
+  const JOURS=['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'];
+  const ACR=new Set(['ASML','ASPN','SCTT','USMT','ESTT','CSTT','ACBB','ASPTT','ASMB','AVTT','TTMC','PPCM','SLTT','ASTT','ESCP','ASGB']);
+  const PART={LE:'Le',LA:'La',LES:'Les',DE:'de',DU:'du',DES:'des',ST:'St',STE:'Ste',SUR:'sur',EN:'en',ET:'et'};
+  function capWord(w){ const u=w.toUpperCase(); if(/^\d+$/.test(w)||!w) return w; if(PART[u]) return PART[u]; if(u.length<=3||ACR.has(u)||!/[AEIOUY]/.test(u)) return u; return u[0]+u.slice(1).toLowerCase(); }
+  function shortName(n){ return String(n||'').trim().split(/\s+/).map(w=>w.split('-').map(capWord).join('-')).join(' '); }
+  function divShort(d){ d=String(d||''); if(/^Pro/i.test(d)) return d.replace(/\s+(Messieurs|Dames)\b/i,'').trim(); return d.replace(/Pré-?Régionale/i,'PR').replace(/Nationale\s*/i,'N').replace(/Régionale\s*/i,'R').replace(/\s*\(\d+\)/,'').replace(/\s+(Messieurs|Dames)\b/i,'').trim(); }
+  function divLabel(p){ return divShort(p.division)+(p.poule?' poule '+p.poule:''); }
+  function parseFR(d){ const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(d||''); return m?new Date(+m[3],+m[2]-1,+m[1]):null; }
+  function fmtDate(d){ const dt=parseFR(d); if(!dt) return d||'à fixer'; return JOURS[dt.getDay()]+' '+d.slice(0,5); }
+  function fmtTs(iso){ if(!iso) return ''; const d=new Date(iso); if(isNaN(d)) return String(iso); const p=n=>(n<10?'0':'')+n; return p(d.getDate())+'/'+p(d.getMonth()+1)+' '+p(d.getHours())+'h'+p(d.getMinutes()); }
+  function scoreClass(a,b){ return a>b?'win':(a<b?'lose':'draw'); }
+  function normName(s){ return String(s||'').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
+  function sameTeam(a,b){ a=normName(a); b=normName(b); if(!a||!b) return false; if(a===b) return true; const na=a.match(/(\d+)$/),nb=b.match(/(\d+)$/); const fa=a.split(' ')[0],fb=b.split(' ')[0]; return !!(na&&nb&&na[1]===nb[1]&&fa===fb&&fa.length>=4); }
+  function standingsFor(site,poule){ const st=site&&site.STANDINGS&&site.STANDINGS[poule.acbb]; if(!Array.isArray(st)||!st.length||!poule.teams) return null; let hits=0; poule.teams.forEach(t=>{ if(st.some(r=>sameTeam(r.name,t.name))) hits++; }); return hits>=Math.max(4,Math.ceil(poule.teams.length*0.6))?st:null; }
+  function currentJ(cal){ const today=new Date(); today.setHours(0,0,0,0); let cur=1; (cal||[]).forEach(c=>{ const dt=parseFR(c.date); if(dt){ const open=new Date(dt); open.setDate(open.getDate()-3); if(open<=today) cur=c.j; } }); return Math.min(7,Math.max(1,cur)); }
+  function matchOf(poule,j){ if(!poule) return null; const c=(poule.cal||[]).find(x=>x.j===j); if(!c) return null; let t=null,name=c.oppName||null; if(!name&&c.opp!=null){ t=(poule.teams||[]).find(x=>x.pos===c.opp)||null; name=t?t.name:null; } return {j:j,date:c.date,dom:!!c.dom,exempt:!!c.exempt,opp:name,oppTeam:t}; }
+  function ordinal(n){ return n+'<sup>'+(n===1?'er':'e')+'</sup>'; }
+
+  const params=new URLSearchParams(location.search);
+  const TAB=params.get('tab')==='poule'?'poule':'equipe';
+  const S={me:null,team:null,poule:null,poules:null,caps:null,site:null,resultats:{},j:1,dispos:null,debriefs:[],capRes:{},photoPath:null,selOpp:null,selUser:false};
+
+  renderNav({active:TAB==='poule'?'Ma poule':'Mon équipe'});
+  const gate=document.getElementById('gate');
+  function showGate(t,p){ gate.hidden=false; gate.innerHTML='<div class="t">'+esc(t)+'</div><p>'+p+'</p>'; }
+
+  /* ---------- rôle ---------- */
+  ACBB.api('me').then(me=>{
+    if(!me||me.role!=='capitaine'){
+      if(me&&me.role==='sportive'){ renderNav({active:'',role:'sportive',name:me.nom}); showGate('Page réservée aux capitaines','Ton lien est celui de la sportive : tes onglets sont dans le menu ci-dessus.'); return; }
+      renderNav({active:''}); showGate('Lien invalide ou révoqué','Ce lien capitaine n\'est plus reconnu. Demande un nouveau lien à la sportive, puis ouvre-le depuis ton téléphone.'); return;
+    }
+    S.me=me; S.team=me.equipe;
+    renderNav({active:TAB==='poule'?'Ma poule':'Mon équipe',role:'capitaine',team:S.team,name:me.nom});
+    boot();
+  }).catch(err=>{
+    const code=err&&err.body&&err.body.error;
+    if(code==='jeton_invalide'||code==='jeton_requis'||code==='role_incorrect'){ renderNav({active:''}); showGate('Lien invalide ou révoqué','Ce lien capitaine n\'est plus reconnu. Demande un nouveau lien à la sportive, puis ouvre-le depuis ton téléphone.'); return; }
+    showGate('Serveur indisponible','Impossible de vérifier ton lien pour le moment'+(err&&err.status?' (erreur '+err.status+')':'')+'. Réessaie dans quelques minutes.');
+  });
+
+  async function boot(){
+    try{ S.poules=await ACBB.json('../data/poules2627.json'); }catch(e){ showGate('Données indisponibles','Le calendrier des poules n\'a pas pu être chargé.'); return; }
+    S.poule=(S.poules.poules||[]).find(p=>p.acbb===S.team)||null;
+    ACBB.json('../data/capitaines.json').then(c=>{ S.caps=(c&&c.capitaines)||{}; if(TAB==='equipe') renderDispos(); }).catch(()=>{ S.caps={}; });
+    ACBB.json('../data/site.json').then(s=>{ S.site=s; if(TAB==='poule') renderPoule(); }).catch(()=>{});
+    ACBB.json('../data/resultats2627.json').then(r=>{ if(r&&r.resultats) S.resultats=r.resultats; if(TAB==='poule') renderPoule(); }).catch(()=>{});
+    gate.hidden=true; document.getElementById('app').hidden=false;
+    S.j=currentJ(S.poule&&S.poule.cal);
+    document.getElementById('hTitle').innerHTML=esc(S.team)+' <em class="b">· '+esc(TAB==='poule'?'Ma poule':'Mon équipe')+'</em>';
+    hsub();
+    if(TAB==='equipe'){ document.getElementById('tabEquipe').hidden=false; buildTabs(); loadDispos(); loadDebriefs(); }
+    else { document.getElementById('tabPoule').hidden=false; document.getElementById('jtabs').innerHTML=''; loadPoule(); renderPoule(); }
+  }
+  function hsub(){
+    const p=S.poule; const m=matchOf(p,S.j);
+    let s='Capitaine '+(S.me.nom||'')+(p?' · '+divLabel(p):'');
+    if(m) s+=' · J'+S.j+' '+fmtDate(m.date)+' · '+(m.exempt?'exempte':shortName(m.opp)+' · '+(m.dom?'domicile':'extérieur'));
+    document.getElementById('hSub').textContent=s;
+  }
+  function buildTabs(){
+    const el=document.getElementById('jtabs');
+    el.innerHTML=[1,2,3,4,5,6,7].map(j=>'<button class="pill'+(j===S.j?' on':'')+'" role="tab" type="button" data-j="'+j+'" aria-selected="'+(j===S.j)+'">J'+j+'</button>').join('');
+    el.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ S.j=+b.dataset.j; S.photoPath=null; buildTabs(); hsub(); renderDebForm(); }));
+  }
+  function apiNote(msg){ const n=document.getElementById('apiNote'); if(!msg){ n.hidden=true; return; } n.hidden=false; n.textContent=msg; }
+
+  /* ================= Mon équipe : dispos ================= */
+  function loadDispos(){
+    ACBB.api('cap/dispos').then(r=>{ S.dispos=r; renderDispos(); }).catch(err=>{
+      document.getElementById('dispos').innerHTML='<div class="empty">'+(err&&err.status?'Dispos indisponibles (erreur '+err.status+').':'Serveur indisponible : les dispos de l\'équipe ne peuvent pas être affichées pour le moment.')+'</div>';
+    });
+  }
+  function isCap(lic){ const c=S.caps&&S.caps[S.team]; if(!c) return false; return Array.isArray(c)?c.map(String).includes(String(lic)):String(c)===String(lic); }
+  function renderDispos(){
+    const d=S.dispos; if(!d) return;
+    const el=document.getElementById('dispos');
+    const js=(d.joueurs||[]).slice().sort((a,b)=>{ const ra=a.statut==='renfort'?1:0, rb=b.statut==='renfort'?1:0; if(ra!==rb) return ra-rb; return String(a.nom||'').localeCompare(String(b.nom||''),'fr'); });
+    if(!js.length){ el.innerHTML='<div class="empty">Aucun joueur rattaché à l\'équipe pour le moment.</div>'; return; }
+    const now=Date.now();
+    el.innerHTML=js.map(p=>{
+      const has=!!p.dispos&&!p.jamais;
+      const ts=p.saved_at?new Date(p.saved_at).getTime():0;
+      const recent=has&&ts&&(now-ts)<48*3600*1000;
+      let sub,cls='';
+      if(has){ sub='MAJ '+fmtTs(p.saved_at)+((p.changes||[]).length?' · '+p.changes.join(' · '):''); if(recent) cls='recent'; }
+      else { sub='jamais saisi'; cls='never'; }
+      const ticks=[1,2,3,4,5,6,7].map(j=>{ const v=p.dispos?p.dispos['j'+j]:undefined; return '<span class="tick'+(v===true?'':(v===false?' no':' off'))+'" title="J'+j+' · '+(v===true?'dispo':(v===false?'absent':'sans réponse'))+'"></span>'; }).join('');
+      return '<div class="card2 prow"><span class="dot" style="background:'+(has?'var(--win)':'var(--warn)')+'"></span><div><div class="nm">'+esc((p.prenom||'')+' '+(p.nom||''))+(isCap(p.licence)?'<span class="tag cap">C</span>':'')+(p.statut==='renfort'?'<span class="tag blue">renfort</span>':'')+'</div><div class="sub '+cls+'">'+esc(sub)+'</div></div><span class="ticks">'+ticks+'</span></div>';
+    }).join('');
+  }
+  document.getElementById('btnWa').addEventListener('click',async()=>{
+    const d=S.dispos; if(!d){ ACBB.toast('Dispos non chargées'); return; }
+    const miss=(d.joueurs||[]).filter(p=>!p.dispos||p.jamais).map(p=>((p.prenom||'')+' '+(p.nom||'')).trim());
+    const url=new URL('index.html',location.href).href;
+    let txt;
+    if(!miss.length) txt='Salut l\'équipe '+S.team+' ! Tout le monde a saisi ses dispos J1 à J7, merci. Pense à les mettre à jour si ça change : '+url;
+    else txt='Salut l\'équipe '+S.team+' ! Il manque encore les dispos J1 à J7 de : '+miss.join(', ')+'.\nMerci de les saisir ici (30 secondes, licence + date de naissance) : '+url+'\nBouton orange « Mets à jour tes dispos ». Merci !';
+    const box=document.getElementById('wa'), ta=document.getElementById('waTxt'); ta.value=txt; box.hidden=false;
+    try{ await navigator.clipboard.writeText(txt); ACBB.toast('Texte copié, colle-le dans WhatsApp'); }catch(e){ ta.focus(); ta.select(); ACBB.toast('Sélectionne le texte et copie-le'); }
+  });
+
+  /* ================= Mon équipe : debrief ================= */
+  function loadDebriefs(){
+    ACBB.api('cap/debriefs').then(r=>{ S.debriefs=(r&&r.items)||[]; renderDebList(); renderDebForm(); }).catch(err=>{
+      document.getElementById('dlist').innerHTML='<div class="empty">'+(err&&err.status?'Debriefs indisponibles (erreur '+err.status+').':'Serveur indisponible : les debriefs ne peuvent pas être chargés pour le moment.')+'</div>';
+      renderDebForm();
+    });
+  }
+  function debFor(j){ return S.debriefs.filter(x=>+x.journee===j).sort((a,b)=>String(b.created_at||'').localeCompare(String(a.created_at||'')))[0]||null; }
+  function renderDebForm(){
+    const m=matchOf(S.poule,S.j);
+    document.getElementById('debTitle').textContent='Debrief J'+S.j;
+    document.getElementById('debMatch').textContent=m?(fmtDate(m.date)+' · '+(m.exempt?'exempte':shortName(m.opp)+' · '+(m.dom?'domicile':'extérieur'))):'';
+    document.getElementById('scBLab').textContent=m&&m.opp&&!m.exempt?shortName(m.opp):'Adversaire';
+    const d=debFor(S.j);
+    document.getElementById('scA').value=d&&d.score_acbb!=null?d.score_acbb:'';
+    document.getElementById('scB').value=d&&d.score_adv!=null?d.score_adv:'';
+    document.getElementById('debTxt').value=d?(d.texte||''):'';
+    document.getElementById('visClub').checked=d?d.visible_club!==false:true;
+    const prev=document.getElementById('phPrev'), st=document.getElementById('phState');
+    S.photoPath=null; prev.hidden=true; prev.removeAttribute('src'); document.getElementById('phFile').value='';
+    const purl=d&&(d.photo_url||d.photo_public_url);
+    if(d&&(purl||d.photo_path)){ if(purl){ prev.src=purl; prev.hidden=false; } st.textContent='Une photo est déjà jointe à ce debrief.'; } else st.textContent='';
+    document.getElementById('debErr').hidden=true;
+    const f=document.getElementById('debForm'); f.querySelectorAll('input,textarea,button').forEach(x=>{ x.disabled=!!(m&&m.exempt); });
+    if(m&&m.exempt){ document.getElementById('debErr').hidden=false; document.getElementById('debErr').textContent='Équipe exempte cette journée : pas de debrief à saisir.'; }
+  }
+  document.getElementById('phFile').addEventListener('change',async e=>{
+    const f=e.target.files&&e.target.files[0]; if(!f) return;
+    const st=document.getElementById('phState'), prev=document.getElementById('phPrev');
+    if(f.size>5*1024*1024){ st.textContent='Photo trop lourde (5 Mo max.).'; e.target.value=''; return; }
+    try{ prev.src=URL.createObjectURL(f); prev.hidden=false; }catch(x){}
+    st.textContent='Envoi de la photo…';
+    try{ const r=await ACBB.upload('cap/photo',f,{journee:String(S.j)}); S.photoPath=(r&&r.photo_path)||null; st.textContent='Photo envoyée. Enregistre le debrief pour la rattacher.'; }
+    catch(err){ S.photoPath=null; st.textContent='Photo non envoyée ('+esc(err&&err.message||'serveur indisponible')+'). Tu peux enregistrer le debrief sans photo.'; }
+  });
+  document.getElementById('debForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const err=document.getElementById('debErr'); err.hidden=true;
+    const a=document.getElementById('scA').value.trim(), b=document.getElementById('scB').value.trim(), txt=document.getElementById('debTxt').value.trim();
+    if((a===''&&b!=='')||(a!==''&&b==='')){ err.hidden=false; err.textContent='Indique les deux scores (ACBB et adversaire).'; return; }
+    if(a===''&&b===''&&!txt){ err.hidden=false; err.textContent='Saisis au moins le score ou quelques lignes de debrief.'; return; }
+    const body={journee:S.j,score_acbb:a===''?null:+a,score_adv:b===''?null:+b,texte:txt,visible_club:document.getElementById('visClub').checked};
+    if(S.photoPath) body.photo_path=S.photoPath;
+    const btn=document.getElementById('debSave'); btn.disabled=true; btn.textContent='Enregistrement…';
+    try{ await ACBB.api('cap/debrief',body); ACBB.toast('Debrief enregistré'); S.photoPath=null; loadDebriefs(); }
+    catch(x){ err.hidden=false; err.textContent=x&&x.status?'Enregistrement refusé ('+(x.body&&x.body.error||x.status)+').':'Serveur indisponible : le debrief n\'a pas été enregistré. Réessaie dans quelques minutes.'; }
+    finally{ btn.disabled=false; btn.textContent='Enregistrer le debrief'; }
+  });
+  function renderDebList(){
+    const el=document.getElementById('dlist');
+    const byJ={}; S.debriefs.forEach(x=>{ const j=+x.journee; if(!byJ[j]||String(x.created_at||'')>String(byJ[j].created_at||'')) byJ[j]=x; });
+    const js=Object.keys(byJ).map(Number).sort((a,b)=>a-b);
+    document.getElementById('dlSub').textContent=js.length?js.length+' journée'+(js.length>1?'s':''):'';
+    if(!js.length){ el.innerHTML='<div class="empty">Aucun debrief pour l\'instant. Après le match, saisis le score et quelques lignes : la sportive publie sur l\'accueil.</div>'; return; }
+    el.innerHTML=js.map(j=>{ const d=byJ[j]; const sc=(d.score_acbb!=null&&d.score_adv!=null)?'<span class="sc '+scoreClass(+d.score_acbb,+d.score_adv)+'">'+d.score_acbb+' – '+d.score_adv+'</span>':'<span class="lab">sans score</span>';
+      const st=d.publie?'<span class="tag win">publié</span>':(d.renvoye_message?'<span class="tag warn" title="'+esc(d.renvoye_message)+'">à revoir</span>':'<span class="tag">en attente</span>');
+      return '<div class="card2 ditem" data-j="'+j+'" title="Ouvrir dans le formulaire"><span class="j">J'+j+'</span>'+sc+'<span class="tx">'+esc(d.texte||'')+'</span><span class="st2">'+st+'</span></div>'; }).join('');
+    el.querySelectorAll('.ditem').forEach(x=>x.addEventListener('click',()=>{ S.j=+x.dataset.j; buildTabs(); hsub(); renderDebForm(); document.getElementById('debForm').scrollIntoView({behavior:'smooth',block:'start'}); }));
+  }
+
+  /* ================= Ma poule ================= */
+  function loadPoule(){
+    ACBB.api('cap/poule').then(r=>{ ((r&&r.resultats)||[]).forEach(x=>{ if(x.score_acbb!=null&&x.score_adv!=null) S.capRes[+x.journee]=[+x.score_acbb,+x.score_adv]; }); renderPoule(); })
+      .catch(err=>{ apiNote(err&&err.status?'Résultats indisponibles (erreur '+err.status+').':'Serveur indisponible : les scores 26/27 ne sont pas affichés, le reste de la poule est à jour.'); renderPoule(); });
+  }
+  function scoreOf(j){ if(S.capRes[j]) return S.capRes[j]; const rr=(S.resultats[S.team]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null) return [+rr.score_acbb,+rr.score_adv]; return null; }
+  function renderPoule(){
+    const p=S.poule; if(!p){ document.getElementById('opps').innerHTML='<div class="empty">Poule introuvable pour '+esc(S.team)+'.</div>'; return; }
+    const st=standingsFor(S.site,p);
+    const today=new Date(); today.setHours(0,0,0,0);
+    const ms=[1,2,3,4,5,6,7].map(j=>matchOf(p,j)).filter(Boolean);
+    if(!S.selUser){ /* défaut : prochaine rencontre à jouer (recalculé tant que le capitaine n'a rien choisi, les scores arrivant après le premier rendu) */
+      let pick=ms.find(m=>!m.exempt&&!scoreOf(m.j)&&(!parseFR(m.date)||parseFR(m.date)>=today)); if(!pick) pick=ms.find(m=>!m.exempt&&!scoreOf(m.j)); if(!pick) pick=ms.filter(m=>!m.exempt).slice(-1)[0]; S.selOpp=pick?pick.j:1; }
+    document.getElementById('oppSub').textContent=st?'place actuelle dans la poule':'classement après la J1';
+    document.getElementById('opps').innerHTML=ms.map(m=>{
+      const sc=scoreOf(m.j);
+      const rk=(st&&m.oppTeam)?st.find(r=>sameTeam(r.name,m.oppTeam.name)):null;
+      const right=m.exempt?'<span class="lab wait">exempte</span>':(sc?'<span class="sc '+scoreClass(sc[0],sc[1])+'">'+sc[0]+' – '+sc[1]+'</span>':'<span class="lab wait">à jouer</span>');
+      return '<button type="button" class="card2 orow'+(m.j===S.selOpp?' sel':'')+'" data-j="'+m.j+'"><span class="j">J'+m.j+'</span><span class="lab dt">'+esc(fmtDate(m.date))+'</span>'+(m.exempt?'<span class="ph"></span>':'<span class="tag c'+(m.dom?' dom':'')+'">'+(m.dom?'Dom.':'Ext.')+'</span>')+'<span class="opp" title="'+esc(m.opp||'')+'">'+(m.exempt?'Exempte':esc(shortName(m.opp)||'à confirmer'))+'</span><span class="rk">'+(rk?ordinal(+rk.pos):'–')+'</span>'+right+'</button>';
+    }).join('');
+    document.querySelectorAll('#opps .orow').forEach(b=>b.addEventListener('click',()=>{ S.selOpp=+b.dataset.j; S.selUser=true; renderPoule(); }));
+
+    const acbbTeam=(p.teams||[]).find(t=>t.acbb);
+    const selM=ms.find(m=>m.j===S.selOpp);
+    const stEl=document.getElementById('standings'), stSub=document.getElementById('stSub');
+    if(st){
+      const mp=Math.max.apply(0,st.map(r=>+r.mp||0)); stSub.textContent='après '+mp+' journée'+(mp>1?'s':'');
+      stEl.innerHTML='<div style="overflow-x:auto"><table class="st"><thead><tr><th></th><th class="l">Équipe</th><th>Pts</th><th>J</th><th class="hide-sm">V</th><th class="hide-sm">N</th><th class="hide-sm">D</th><th>+/-</th></tr></thead><tbody>'+
+        st.map(r=>{ const me=acbbTeam&&sameTeam(r.name,acbbTeam.name); const sel=selM&&selM.oppTeam&&sameTeam(r.name,selM.oppTeam.name); const diff=(r.diff!=null?r.diff:((+r.gf||0)-(+r.ga||0))); return '<tr class="'+(me?'me':'')+(sel?' sel':'')+'"><td class="pos">'+esc(r.pos)+'</td><td class="l" title="'+esc(r.name)+'">'+esc(shortName(r.name))+'</td><td class="pts">'+esc(r.pts)+'</td><td>'+esc(r.mp)+'</td><td class="hide-sm">'+esc(r.V)+'</td><td class="hide-sm">'+esc(r.N)+'</td><td class="hide-sm">'+esc(r.D)+'</td><td>'+(diff>0?'+':'')+diff+'</td></tr>'; }).join('')+'</tbody></table></div>';
+    } else {
+      stSub.textContent=(p.teams||[]).length+' équipes';
+      stEl.innerHTML='<div class="empty">Classement disponible après la J1, dès publication par la FFTT.</div><div class="lab" style="margin:12px 0 6px">Équipes de la poule · ordre FFTT</div><div class="plist">'+(p.teams||[]).map(t=>'<div class="card2'+(t.acbb?' me':'')+'"><span class="n">'+t.pos+'</span><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+esc(t.name)+'">'+esc(shortName(t.name))+'</span>'+(t.s25&&t.s25.mvt?'<span class="tag" style="margin-left:auto">'+esc(t.s25.mvt)+'</span>':'')+'</div>').join('')+'</div>';
+    }
+    renderScout(selM,acbbTeam,st);
+  }
+  function renderScout(m,acbbTeam,st){
+    const el=document.getElementById('scout');
+    if(!m||m.exempt||!m.oppTeam){ el.innerHTML='<div class="ch"><span class="t">Scouting</span></div><div class="empty">'+(m&&m.exempt?'Journée exempte : pas d\'adversaire.':'Sélectionne un adversaire dans la liste.')+'</div>'; return; }
+    const t=m.oppTeam, s=t.s25||null, ours=acbbTeam&&acbbTeam.s25||null;
+    const sc=scoreOf(m.j);
+    const rk=st?st.find(r=>sameTeam(r.name,t.name)):null;
+    let h='<div class="ch"><span class="lab" style="color:var(--blue)">Scouting · J'+m.j+' · '+esc(fmtDate(m.date))+' · '+(m.dom?'domicile':'extérieur')+'</span>'+(rk?'<span class="tag blue">'+ordinal(+rk.pos)+' · '+esc(rk.pts)+' pts</span>':'')+'</div>';
+    h+='<div class="h2">'+esc(shortName(t.name))+'</div>';
+    if(s){
+      h+='<div class="kpis"><div class="kpi"><span class="lab">moyenne 25/26</span><b>'+(s.avg!=null?s.avg:'–')+'</b>'+(ours&&ours.avg!=null?'<span class="small muted">nous : '+ours.avg+'</span>':'')+'</div><div class="kpi"><span class="lab">plafond 25/26</span><b>'+(s.ceil!=null?s.ceil:'–')+'</b>'+(ours&&ours.ceil!=null?'<span class="small muted">nous : '+ours.ceil+'</span>':'')+'</div><div class="kpi"><span class="lab">saison 25/26</span><b style="font-size:14px;line-height:1.3;margin-top:3px">'+esc(s.div||'–')+(s.rank?' · '+s.rank+'<sup>'+(s.rank===1?'er':'e')+'</sup>':'')+'</b>'+(s.mvt?'<span class="small" style="color:var(--warn)">'+esc(s.mvt)+'</span>':'')+'</div></div>';
+      if(s.src&&normName(s.src)!==normName(t.name)) h+='<div class="small muted" style="margin-top:8px">Équipe issue de « '+esc(shortName(s.src))+' » la saison dernière.</div>';
+      const top=(s.top||[]).filter(x=>Array.isArray(x)&&x[0]);
+      h+='<div class="lab" style="margin-top:14px">Joueurs vus en 25/26'+(s.nm?' · '+s.nm+' feuilles':'')+'</div>';
+      h+=top.length?'<div class="seen">'+top.map(x=>'<div class="card2"><span>'+esc(shortName(String(x[0]).trim()))+'</span><span class="pt">'+esc(x[1])+'</span></div>').join('')+'</div>':'<div class="empty" style="margin-top:6px">Pas de feuille de match exploitable.</div>';
+    } else {
+      h+='<div class="empty">Pas de données de niveau 25/26 pour cette équipe.</div>';
+    }
+    h+='<div class="lab" style="margin-top:14px">Bilan 26/27</div>';
+    if(sc) h+='<div class="card2" style="margin-top:6px;display:flex;align-items:center;justify-content:space-between"><span>J'+m.j+' · '+(m.dom?'domicile':'extérieur')+'</span><span class="sc '+scoreClass(sc[0],sc[1])+'" style="font-family:JetBrains Mono,monospace;font-weight:800;font-size:16px">'+sc[0]+' – '+sc[1]+'</span></div>';
+    else h+='<div class="empty" style="margin-top:6px">Match à jouer le '+esc(fmtDate(m.date))+'. Le score apparaîtra ici dès sa saisie.</div>';
+    el.innerHTML=h;
+  }
+})();
+</script>
+</body>
+</html>
