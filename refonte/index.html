@@ -42,6 +42,7 @@
   .res .who{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .res .who b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .res .who .btn{padding:7px 12px;font-size:10.5px;min-height:34px}
+  .kpis.one{grid-template-columns:minmax(0,1fr)}
   .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
   .kpis .kpi{padding:6px 9px}
   .kpis .kpi b{font-size:16px}
@@ -131,7 +132,6 @@
         <button class="btn primary" id="iGo" type="submit">Voir mes dispos</button>
       </form>
       <div class="err" id="iErr" hidden></div>
-      <div class="fine">Ta date n'est jamais mémorisée sur cet appareil · première connexion : la date saisie devient ta référence</div>
     </div>
 
     <div class="card perf">
@@ -328,19 +328,27 @@
     res.innerHTML='<p class="hint">Chargement de la fiche…</p>';
     let f=null; if(p.fiche!==false){ try{ f=await ACBB.json('../data/players/'+p.lic+'.json'); }catch(e){} }
     const c=(f&&f.classement)||{};
-    const pts=(p.men!=null)?p.men:(c.officiel!=null?c.officiel:c.mensuel);
-    const tl=((f&&f.timeline)||[]).map(x=>x.v).filter(v=>typeof v==='number');
-    if(tl.length&&pts!=null) tl[tl.length-1]=pts;
-    let prog=null,progLab='sur 12 mois';
-    if(tl.length>=2) prog=Math.round(tl[tl.length-1]-tl[0]); else if(typeof p.tend==='number'){ prog=p.tend; progLab='tendance'; }
+    const off=(c.officiel!=null?c.officiel:(p.men!=null?p.men:c.mensuel));
     const s=(f&&f.saison)||null;
-    const k=[];
-    if(pts!=null) k.push('<div class="kpi"><span class="lab">officiel 26/27</span><b>'+pts+'</b><span class="small muted">points</span></div>');
-    if(prog!=null) k.push('<div class="kpi '+(prog>0?'up':(prog<0?'down':''))+'"><span class="lab">progression</span><b>'+(prog>0?'+':'')+prog+'</b><span class="small muted">'+progLab+'</span></div>');
-    if(s&&s.parties) k.push('<div class="kpi"><span class="lab">'+(s.winpct!=null?'victoires 25/26':'saison 25/26')+'</span><b>'+(s.winpct!=null?s.winpct+'%':s.parties)+'</b><span class="small muted">'+(s.winpct!=null?s.parties+' partie'+(s.parties>1?'s':''):'parties')+'</span></div>');
+    const played=!!(s&&s.parties>0);
     let html='<div class="who"><b>'+esc(p.prenom+' '+p.nom)+'</b>'+(p.fiche!==false?'<a class="btn" href="joueurs.html?lic='+esc(p.lic)+'">Voir plus</a>':'')+'</div>';
-    if(k.length) html+='<div class="kpis">'+k.join('')+'</div>';
-    if(tl.length>=2) html+=spark(tl); else if(!k.length) html+='<p class="hint">Fiche indisponible pour ce joueur.</p>'; else if(p.fiche===false) html+='<p class="hint" style="margin-top:0">Fiche détaillée disponible après les premiers matchs 26/27.</p>';
+    if(!played){
+      // Pas encore de match en 26/27 : le classement officiel et un rendez-vous.
+      html+='<div class="kpis one"><div class="kpi"><span class="lab">classement officiel 26/27</span><b>'+(off!=null?off:'—')+'</b><span class="small muted">points</span></div></div>';
+      html+='<p class="hint" style="margin-top:0">Pas encore de match cette saison. Reviens après tes premiers matchs de la phase 1 : progression, victoires et perfs s\'afficheront ici.</p>';
+    }else{
+      // Saison 26/27 en cours : mensuel, progression depuis le début de saison, bilan.
+      const men=(c.mensuel!=null?c.mensuel:off);
+      const prog=(c.debut!=null&&men!=null)?Math.round(men-c.debut):null;
+      const k=[];
+      if(men!=null) k.push('<div class="kpi"><span class="lab">points</span><b>'+men+'</b><span class="small muted">mensuel'+(off!=null?' · officiel '+off:'')+'</span></div>');
+      if(prog!=null) k.push('<div class="kpi '+(prog>0?'up':(prog<0?'down':''))+'"><span class="lab">progression</span><b>'+(prog>0?'+':'')+prog+'</b><span class="small muted">phase 1 · 26/27</span></div>');
+      k.push('<div class="kpi"><span class="lab">victoires</span><b>'+(s.winpct!=null?s.winpct+'%':'—')+'</b><span class="small muted">'+s.V+'V · '+s.D+'D · '+s.parties+' partie'+(s.parties>1?'s':'')+'</span></div>');
+      if(s.perfs!=null) k.push('<div class="kpi"><span class="lab">perfs</span><b>'+s.perfs+'</b><span class="small muted">'+(s.contre_perfs||0)+' contre-perf'+((s.contre_perfs||0)>1?'s':'')+'</span></div>');
+      html+='<div class="kpis">'+k.join('')+'</div>';
+      const tl=((f&&f.timeline)||[]).map(x=>x.v).filter(v=>typeof v==='number');
+      if(tl.length>=2) html+=spark(tl);
+    }
     res.innerHTML=html;
   }
 

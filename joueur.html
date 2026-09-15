@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800;1,900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="logo.png">
-<meta property="og:title" content="ACBB Tennis de Table — Récap joueur 2025/2026">
+<meta property="og:title" content="ACBB Tennis de Table — Fiche joueur 2026/2027">
 <meta property="og:description" content="Classement, progression, performances et récap complet de la saison. Trouve ta fiche et partage ton récap !">
 <meta property="og:image" content="https://team.acbb-tt.fr/logo.png">
 <meta property="og:url" content="https://team.acbb-tt.fr/joueur.html">
@@ -364,6 +364,13 @@
   .pill-stat.win b{color:var(--win-lt)}
   .pill-stat.lose b{color:var(--lose-lt)}
   .pill-stat.acc b{color:var(--orange)}
+  /* saison sans match : blocs de récap masqués, encart classement + message */
+  html.empty-season section.xp,html.empty-season section.recap,html.empty-season #views,html.empty-season .modes,html.empty-season .mode,html.empty-season #shareBtn{display:none!important}
+  .empty-season-box{margin:18px 0 26px;padding:22px 24px;border-radius:16px;background:var(--panel-2,#1E1E22);border:1px solid rgba(242,106,27,.45)}
+  .empty-season-box .es-l{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:rgba(246,245,243,.6)}
+  .empty-season-box .es-v{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;font-size:56px;line-height:1;margin:6px 0 10px;color:var(--orange,#F26A1B)}
+  .empty-season-box .es-v span{font-size:18px;color:rgba(246,245,243,.6);margin-left:6px}
+  .empty-season-box p{margin:0;font-size:14px;line-height:1.5;color:rgba(246,245,243,.78);max-width:640px}
 </style>
 <script>
 /* Mode embed (iframe depuis refonte/joueurs.html?lic=…&embed=1) : masque l'en-tête, le bandeau « Signaler » et le pied de page,
@@ -403,7 +410,7 @@
 
 <!-- IDENTITY -->
 <section class="hero">
-  <div class="id-eyebrow">Fiche joueur · Récap 25/26 · Officiel 26/27</div>
+  <div class="id-eyebrow">Fiche joueur · Saison 26/27 · Phase 1</div>
   <h1 class="id-name" id="idName">&nbsp;<br>&nbsp;</h1>
   <button id="shareBtn" class="share-btn" type="button">📤 Partager mon récap</button>
 </section>
@@ -1059,6 +1066,21 @@ async function boot(){
   const scl=document.getElementById('shareClose'); if(scl) scl.addEventListener('click',()=>{document.getElementById('shareOverlay').style.display='none';});
   const ovl=document.getElementById('shareOverlay'); if(ovl) ovl.addEventListener('click',e=>{ if(e.target===ovl) ovl.style.display='none'; });
   setTimeout(()=>preBuildShareImage(0),1000);   // pré-génère l'image (attend html2canvas) -> partage natif 1 tap si possible
+  // Saison 26/27 : aucun match joué → on garde l'identité + le classement officiel, on masque les blocs vides
+  try{
+    const _s=PROFILE&&PROFILE.saison, _c=PROFILE&&PROFILE.classement||{};
+    if(PROFILE && !(_s&&_s.parties>0)){
+      document.documentElement.classList.add('empty-season');
+      const off=(_c.officiel!=null?_c.officiel:_c.mensuel);
+      const hero=document.querySelector('section.hero');
+      if(hero && !document.getElementById('emptySeason')){
+        const d=document.createElement('section'); d.id='emptySeason'; d.className='empty-season-box';
+        d.innerHTML='<div class="es-l">Classement officiel 26/27</div><div class="es-v">'+(off!=null?off:'—')+'<span> pts</span></div>'
+          +'<p>Pas encore de match cette saison. Reviens après tes premiers matchs de la phase 1 : ta progression, tes victoires et tes perfs s\'afficheront ici.</p>';
+        hero.insertAdjacentElement('afterend',d);
+      }
+    }
+  }catch(e){}
   if(window.__EMBED&&window.__sendEmbedHeight){ window.__sendEmbedHeight(); setTimeout(window.__sendEmbedHeight,300); setTimeout(window.__sendEmbedHeight,1500); }
 }
 function miniCurve(vals){
@@ -1109,7 +1131,7 @@ function shareText(){
   var off=(window.__OFF2627||{})[PROFILE&&PROFILE.lic];
   var deb=PROFILE&&PROFILE.classement?PROFILE.classement.debut:null;
   var d=(off!=null&&deb!=null)?(off-deb):null;
-  return 'Mon récap ACBB TT 2025/26 🏓 '+((PROFILE&&PROFILE.prenom)||'')+' '+((PROFILE&&PROFILE.nom)||'')
+  return 'Mon récap ACBB TT 2026/27 🏓 '+((PROFILE&&PROFILE.prenom)||'')+' '+((PROFILE&&PROFILE.nom)||'')
     +(off!=null?' — officiel 26/27 : '+off:'')+(d!=null?' ('+(d>0?'+':'')+d+' sur la saison !)':'')
     +' — Fais ton récap 👉 https://team.acbb-tt.fr/joueurs.html';
 }
