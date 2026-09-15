@@ -126,7 +126,6 @@
   <section class="hero">
     <div>
       <h1 class="h1">Saison <em>2026/27</em></h1>
-      <div class="hsub" id="heroSub">Phase 1 · 20 équipes</div>
     </div>
   </section>
 
@@ -236,7 +235,6 @@
     const first=d[0]; const dt=parseFR(first);
     let sub='Phase 1 · '+nb+' équipes';
     if(dt){ const ven=new Date(dt); ven.setDate(ven.getDate()-1); sub+=' · J1 '+JOURS_L[ven.getDay()]+' '+ven.getDate()+' et '+fmtLong(first); }
-    document.getElementById('heroSub').textContent=sub;
     S.j=currentJ(d);
     buildTabs();
     renderGrid();
