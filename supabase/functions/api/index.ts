@@ -405,7 +405,9 @@ async function exiger(req: Request, role: Role): Promise<Lien> {
   if (!req.headers.get('x-acbb-token')) fail(401, 'jeton_requis');
   const lien = await lienDepuisJeton(req);
   if (!lien) fail(401, 'jeton_invalide');
-  if (lien.role !== role) fail(403, 'role_incorrect');
+  // Un lien sportive rattaché à une équipe (sportive qui est aussi capitaine) ouvre l'espace capitaine de cette équipe.
+  const sportiveCapitaine = role === 'capitaine' && lien.role === 'sportive' && !!lien.equipe;
+  if (lien.role !== role && !sportiveCapitaine) fail(403, 'role_incorrect');
   if (role === 'capitaine' && !lien.equipe) fail(403, 'lien_sans_equipe');
   await toucherLien(lien.id, req);
   return lien;
@@ -630,7 +632,7 @@ async function router(req: Request): Promise<Response> {
     await toucherLien(lien.id, req);
     return lien.role === 'capitaine'
       ? json({ role: 'capitaine', equipe: lien.equipe, nom: lien.nom })
-      : json({ role: 'sportive', nom: lien.nom });
+      : json({ role: 'sportive', nom: lien.nom, equipe: lien.equipe ?? null }); // equipe : la sportive est aussi capitaine de cette équipe
   }
 
   // ── Public ───────────────────────────────────────────────────────────────
@@ -886,7 +888,7 @@ async function router(req: Request): Promise<Response> {
       const nom = texteCourt(body.nom, 60);
       if (!nom) fail(400, 'nom_requis');
       let equipe: string | null = null;
-      if (role === 'capitaine') {
+      if (role === 'capitaine' || (role === 'sportive' && body.equipe)) {   // sportive : équipe optionnelle (elle est aussi capitaine)
         equipe = texteCourt(body.equipe, 4).toUpperCase();
         if (!/^[MF]\d{1,2}$/.test(equipe)) fail(400, 'equipe_invalide');
         if (!(await equipeExiste(equipe))) fail(400, 'equipe_inconnue');
@@ -906,6 +908,24 @@ async function router(req: Request): Promise<Response> {
       const urlLien = `${SITE_URL}/${page}#t=${token}`;
       await journal(acteur, 'sportive', 'lien_genere', { id: data.id, role, equipe, nom, revoques }); // jamais le jeton
       return json({ id: data.id, token, url: urlLien, revoques }); // seule et unique fois où le jeton est renvoyé
+    }
+
+    if (path === '/spo/liens/equipe' && POST) {
+      // Rattache (ou détache avec equipe:null) une équipe à un lien sportive : le porteur voit alors aussi l'espace capitaine.
+      const body = await lireJson(req);
+      const id = entier(body.id, 1, Number.MAX_SAFE_INTEGER);
+      if (!id) fail(400, 'id_invalide');
+      let equipe: string | null = null;
+      if (body.equipe) {
+        equipe = texteCourt(body.equipe, 4).toUpperCase();
+        if (!/^[MF]\d{1,2}$/.test(equipe)) fail(400, 'equipe_invalide');
+        if (!(await equipeExiste(equipe))) fail(400, 'equipe_inconnue');
+      }
+      const { data, error } = await sb.from('liens').update({ equipe }).eq('id', id).eq('role', 'sportive').select('id,nom,equipe');
+      if (error) fail(500, 'ecriture_lien', { detail: error.message });
+      if (!data?.length) fail(404, 'lien_introuvable');
+      await journal(acteur, 'sportive', 'lien_equipe', { id, nom: data[0].nom, equipe });
+      return json({ ok: true, equipe });
     }
 
     if (path === '/spo/liens/revoquer' && POST) {

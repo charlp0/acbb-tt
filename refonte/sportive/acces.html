@@ -76,6 +76,8 @@
   .gatemsg a{color:var(--dim);font-size:12px;text-decoration:none}
   .srverr{background:rgba(242,99,86,.10);border:1px solid rgba(242,99,86,.4);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--lose-lt)}
   .lab .warn{color:var(--warn)}
+  .sn .eqsel{margin-left:8px;width:auto;padding:3px 8px;font-size:11px;min-height:0;display:inline-block;vertical-align:middle}
+  .newl select{width:auto;flex:0 0 auto}
 </style>
 </head><body>
 <div class="wrap">
@@ -112,7 +114,7 @@
         <div class="card cc spo">
           <div class="ch"><span class="ct">Liens sportive</span><span class="lab" id="spoN"></span></div>
           <div class="srs" id="spoList"><span class="small muted">chargement…</span></div>
-          <div class="newl"><input id="spoNom" placeholder="prénom (nouveau lien sportive)" autocomplete="off"><button class="btn xs" id="spoGen" type="button">Générer</button></div>
+          <div class="newl"><input id="spoNom" placeholder="prénom (nouveau lien sportive)" autocomplete="off"><select id="spoEq" title="équipe dont cette personne est aussi capitaine (optionnel)"><option value="">pas capitaine</option></select><button class="btn xs" id="spoGen" type="button">Générer</button></div>
         </div>
         <div class="card cc nais">
           <span class="ct">Dates de naissance</span>
@@ -207,11 +209,13 @@ function renderLiens(){
   document.getElementById('capList').innerHTML=h;
   document.getElementById('capN').textContent=TEAMS.length+' équipes · '+act+' actif'+(act>1?'s':'')+(send?' · '+send+' à envoyer':'')+(gen?' · '+gen+' à générer':'');
   const sh=spo.length?spo.map(l=>{ const mine=!!(ME&&l.actif&&nrmK(l.nom)===nrmK(ME.nom));
-      return '<div class="sr"><span class="sn">'+esc(l.nom)+(mine?'<small>c\'est ton lien</small>':'')+'</span>'
+      const eqSel=l.actif?'<select class="eqsel" data-id="'+l.id+'" data-prev="'+esc(l.equipe||'')+'" title="équipe dont cette personne est aussi capitaine">'+['','M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'].map(t=>'<option value="'+t+'"'+((l.equipe||'')===t?' selected':'')+'>'+(t?'capitaine '+t:'pas capitaine')+'</option>').join('')+'</select>':(l.equipe?'<small>capitaine '+esc(l.equipe)+'</small>':'');
+      return '<div class="sr"><span class="sn">'+esc(l.nom)+(mine?'<small>c\'est ton lien</small>':'')+eqSel+'</span>'
         +'<span class="lab '+(l.actif?'on':'off')+'">'+(l.actif?'actif · '+esc(ago(l.last_used_at))+devBadge(l):'révoqué'+(l.created_at?' · créé '+esc(fmtDT(l.created_at)):''))+'</span>'
         +(l.actif?'<span class="sa"><button class="btn xs" type="button" data-regen="" data-role="sportive" data-nom="'+esc(l.nom)+'">Régénérer</button>'+(mine?'':'<button class="btn xs danger" type="button" data-revoke="'+l.id+'" data-lbl="'+esc(l.nom+' (sportive)')+'">Révoquer</button>')+'</span>':'')+'</div>'; }).join('')
     :'<span class="small muted">aucun lien sportive enregistré</span>';
   document.getElementById('spoList').innerHTML=sh;
+  document.querySelectorAll('#spoList select.eqsel').forEach(sel=>{ sel.onchange=()=>changerEquipe(+sel.dataset.id, sel.value, sel); });
   const spoOn=spo.filter(l=>l.actif).length; document.getElementById('spoN').textContent=spoOn+' actif'+(spoOn>1?'s':'');
   document.querySelectorAll('[data-gen]').forEach(b=>b.onclick=()=>genererPour(b.dataset.gen,b));
   document.querySelectorAll('[data-regen]').forEach(b=>b.onclick=()=>{ const role=b.dataset.role||'capitaine'; const eq=b.dataset.regen||null; if(!confirm('Régénérer le lien de '+b.dataset.nom+(eq?' ('+eq+')':' (sportive)')+' ? L\'ancien lien cessera de fonctionner immédiatement.')) return; generer({role:role,equipe:eq,nom:b.dataset.nom,pre:firstName(b.dataset.nom)},true,b); });
@@ -302,7 +306,10 @@ document.getElementById('waTeam').onchange=fillWaTxt;
 document.getElementById('waCopy').onclick=()=>copyText(document.getElementById('waTxt').value,'message copié — colle-le dans WhatsApp');
 document.getElementById('waClose').onclick=()=>{ document.getElementById('waBox').hidden=true; };
 document.getElementById('revAll').onclick=()=>revoquerTous(document.getElementById('revAll'));
-document.getElementById('spoGen').onclick=()=>{ const n=document.getElementById('spoNom').value.trim(); if(!n){ toast('indique le prénom du lien sportive'); return; } generer({role:'sportive',equipe:null,nom:n,pre:firstName(n)},false,document.getElementById('spoGen')); };
+document.getElementById('spoGen').onclick=()=>{ const n=document.getElementById('spoNom').value.trim(); if(!n){ toast('indique le prénom du lien sportive'); return; } const eq=document.getElementById('spoEq').value||null; generer({role:'sportive',equipe:eq,nom:n,pre:firstName(n)},false,document.getElementById('spoGen')); };
+// liste des équipes pour le rattachement capitaine d'un lien sportive
+(function(){ const sel=document.getElementById('spoEq'); if(!sel) return; ['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'].forEach(t=>{ const o=document.createElement('option'); o.value=t; o.textContent='capitaine '+t; sel.appendChild(o); }); })();
+async function changerEquipe(id,eq,sel){ try{ await api('spo/liens/equipe',{id:id,equipe:eq||null}); toast(eq?'équipe '+eq+' rattachée au lien':'équipe détachée du lien'); await loadLiens(); loadJournal(); }catch(e){ toast('échec : '+e.message); if(sel) sel.value=sel.dataset.prev||''; } }
 
 /* ===== dates de naissance ===== */
 function renderNaiss(){
