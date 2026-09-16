@@ -243,7 +243,20 @@ async function generer(o,remplacer,b){
 }
 function waMsg(o,url){
   const prenom=(o.pre||firstName(o.nom)||'').trim();
-  return 'Bonjour '+prenom+', voici ton lien '+(o.role==='sportive'?'sportive':'capitaine')+' ACBB'+(o.equipe?' ('+o.equipe+')':'')+' : '+url+'\nIl est personnel, ne le partage pas.';
+  if(o.role==='sportive'){
+    return 'Bonjour '+prenom+',\n\nVoici ton lien personnel sportive ACBB : '+url
+      +'\n\nIl t\'ouvre les onglets sportive du nouveau site : compos par journée, suivi des dispos de tout le club, debriefs des capitaines, scoring, poules, contraintes et gestion des accès.'
+      +'\n\nSans ce lien, tu as la vue commune à tous les joueurs. Avec, la partie Sportive apparaît, et tout ce que tu enregistres est signé à ton nom.'
+      +'\n\nLe lien remplace un compte et un mot de passe : garde-le, ne le partage pas.\n\nÀ dispo,\nCharles';
+  }
+  const eq=o.equipe||'';
+  return 'Bonjour '+prenom+',\n\nVoici ton lien personnel capitaine ACBB pour l\'équipe '+eq+' : '+url
+    +'\n\nIl t\'ouvre une vue spéciale sur ton équipe :'
+    +'\n• les dispos de tes joueurs, journée par journée'
+    +'\n• l\'écriture du debrief après chaque match (score, quelques lignes, une photo)'
+    +'\n• les infos sur les équipes adverses (à partir de la J2)'
+    +'\n\nSans ce lien, tu as la vue commune à tous les joueurs. Avec, la partie Capitaine '+eq+' apparaît.'
+    +'\n\nLe lien remplace un compte et un mot de passe : garde-le, ne le partage pas.\n\nÀ dispo,\nCharles';
 }
 function showLink(o,url){
   const wa=waMsg(o,url);
