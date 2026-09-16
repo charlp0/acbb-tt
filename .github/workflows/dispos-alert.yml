@@ -30,6 +30,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Détecter les changements
         id: run
+        env:
+          SUPA_SERVICE_KEY: ${{ secrets.SUPA_SERVICE_KEY }}
         run: |
           set -e
           ARGS=""; [ -n "${{ github.event.inputs.since_id }}" ] && ARGS="--since ${{ github.event.inputs.since_id }}"

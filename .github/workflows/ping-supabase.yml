@@ -4,7 +4,7 @@ name: Backup Supabase (+ anti-pause)
 #    versionné dans le repo (data/backup-supabase/) — commit uniquement si changement.
 # 2) La requête sert aussi de ping anti-pause (projets gratuits pausés après ~1 sem
 #    sans trafic).
-# La clé publishable est publique par design (RLS : select/insert only).
+# Tables fermées au public depuis le 16/09/2026 : la sauvegarde utilise la clé service (secret SUPA_SERVICE_KEY).
 # Restauration : ré-insérer la dernière ligne de chaque table (journaux append-only,
 # la dernière ligne = état courant).
 on:
@@ -25,7 +25,7 @@ jobs:
           mkdir -p data/backup-supabase
           for t in tags_log dispos_log; do
             curl -sf \
-              -H "apikey: sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay" \
+              -H "apikey: ${{ secrets.SUPA_SERVICE_KEY }}" -H "Authorization: Bearer ${{ secrets.SUPA_SERVICE_KEY }}" \
               "https://vhhmageufrcenruywawg.supabase.co/rest/v1/$t?select=*&order=id.asc" \
               -o "/tmp/$t.json" || { echo "⚠️ projet injoignable (pausé ?)"; exit 1; }
             python3 -c "import json;d=json.load(open('/tmp/$t.json'));json.dump(d,open('data/backup-supabase/$t.json','w'),ensure_ascii=False,indent=1);print('$t :',len(d),'lignes')"

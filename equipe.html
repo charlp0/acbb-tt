@@ -1,1395 +1,163 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="robots" content="noindex,nofollow">
-<meta name="viewport" content="width=390">
-<title>ACBB TT — Détail Équipe</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>ACBB TT — Équipes 2026/27</title>
+<meta name="theme-color" content="#0B0B0D">
+<link rel="icon" type="image/png" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0B0B0D">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/style.css">
 <style>
-  :root{
-    --bg:#0B0B0D;
-    --paper:#141416;
-    --panel:#141416;
-    --panel-2:#1E1E22;
-    --line:rgba(255,255,255,0.08);
-    --line-2:rgba(255,255,255,0.16);
-    --ink:#F6F5F3;
-    --ink-2:#D4D3CF;
-    --dim:rgba(246,245,243,0.60);
-    --dimmer:rgba(246,245,243,0.48);
-    --acbb:#F26A1B;
-    --orange:#F26A1B;
-    --win:#3DD68C;
-    --win-bg:rgba(61,214,140,0.12);
-    --win-deep:#22C55E;
-    --warn:#FACC15;
-    --warn-bg:rgba(250,204,21,0.12);
-    --warn-deep:#EAB308;
-    --alert:#FB923C;
-    --alert-bg:rgba(251,146,60,0.14);
-    --alert-deep:#F97316;
-    --lose:#F26356;
-    --lose-bg:rgba(242,99,86,0.12);
-    --lose-deep:#EF4444;
-    --draw:#FACC15;
-    --draw-bg:rgba(250,204,21,0.12);
-  }
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;font-size:14px;line-height:1.35;overscroll-behavior:none}
-  body{min-height:100vh;padding-bottom:32px}
-  .wrap{max-width:1280px;margin:0 auto;position:relative}
-  @media (min-width:900px){
-    .wrap{background:var(--paper);min-height:100vh;border-left:1px solid var(--line);border-right:1px solid var(--line)}
-  }
-  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-feature-settings:"tnum","ss01"}
-  .num{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
-  ::-webkit-scrollbar{display:none}
-
-  /* ===== HEADER ===== */
-  .header{
-    position:sticky;top:0;z-index:50;
-    padding:12px 16px 11px;
-    background:rgba(11,11,13,0.85);
-    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line);
-  }
-  .header-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-0.2px}
-  .logo-img{width:38px;height:38px;border-radius:8px;background:#fff;padding:3px;border:1px solid var(--line-2);object-fit:contain;flex-shrink:0;box-shadow:0 4px 12px rgba(242,106,27,0.18)}
-  .logo-name{font-size:13px;line-height:1;color:var(--ink);letter-spacing:-0.3px}
-  .logo-sub{font-size:9px;color:var(--dim);letter-spacing:0.5px;text-transform:uppercase;margin-top:3px;font-family:"JetBrains Mono",monospace;font-weight:500;white-space:nowrap}
-  .brulage{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:8px 12px;border-radius:99px;
-    background:var(--ink);border:1px solid var(--ink);
-    color:var(--paper);font-size:11px;font-weight:600;letter-spacing:0.3px;
-    text-decoration:none;
-  }
-  .head-actions{display:flex;align-items:center;gap:7px}
-  .head-link{
-    display:inline-flex;align-items:center;gap:5px;
-    padding:8px 11px;border-radius:99px;
-    background:var(--paper);border:1px solid var(--line-2);
-    color:var(--ink);font-size:11px;font-weight:600;letter-spacing:0.2px;
-    text-decoration:none;
-  }
-  .head-link span{font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--dim);font-weight:500;letter-spacing:0.4px;text-transform:uppercase}
-  .back-link{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border-radius:99px;background:var(--panel);border:1px solid var(--line-2);color:var(--ink);font-size:11px;font-weight:600;text-decoration:none}
-  .back-link svg{width:11px;height:11px}
-  .brulage::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--orange);box-shadow:none}
-  .phase-badge{font-size:10px;color:var(--dim);font-weight:600;letter-spacing:0.5px;text-transform:uppercase;display:flex;align-items:center;gap:6px;margin-top:8px}
-  .phase-badge::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--win)}
-
-  /* ===== TEAM SELECTOR — single-row horizontal scroll ===== */
-  .selector{
-    position:sticky;top:71px;z-index:40;
-    padding:12px 0 13px;
-    background:rgba(11,11,13,0.94);
-    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line);
-  }
-  .selector-grid{
-    display:flex;gap:6px;
-    padding:0 12px;
-    overflow-x:auto;overflow-y:visible;
-    scrollbar-width:none;
-    scroll-snap-type:x proximity;
-    -webkit-overflow-scrolling:touch;
-  }
-  .selector-grid::-webkit-scrollbar{display:none}
-  .pill{
-    position:relative;
-    flex:0 0 auto;
-    width:56px;height:64px;
-    border-radius:10px;
-    background:var(--panel);border:1px solid var(--line);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-    padding:8px 4px 9px;
-    font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;
-    color:var(--ink-2);cursor:pointer;
-    transition:all .18s cubic-bezier(.2,.7,.3,1);
-    scroll-snap-align:start;
-  }
-  @media (min-width:900px){
-    .selector-grid{flex-wrap:wrap;gap:8px;padding:0 20px;overflow-x:visible}
-    .pill{width:64px;height:72px}
-  }
-  .pill.f{background:var(--panel-2);border:1px solid var(--line-2)}
-  .pill:hover{color:var(--ink);border-color:var(--line-2)}
-  .pill.active{
-    background:var(--ink);
-    color:var(--paper);border-color:var(--ink);
-    transform:translateY(-1px);
-    box-shadow:0 4px 10px rgba(15,30,51,0.25);
-  }
-  .pill .dot{
-    position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;
-  }
-  .pill .dot.w{background:var(--win);box-shadow:0 0 0 2px rgba(95,122,74,0.18)}
-  .pill .dot.l{background:var(--lose);box-shadow:0 0 0 2px rgba(194,74,44,0.18)}
-  .pill .dot.m{background:linear-gradient(135deg,var(--win) 50%,var(--lose) 50%)}
-  .pill .form{
-    display:flex;justify-content:center;gap:2px;margin-top:1px;
-  }
-  .pill .form i{width:4px;height:4px;border-radius:50%;background:var(--line-2)}
-  .pill .form i.w{background:var(--win)}
-  .pill .form i.l{background:var(--lose)}
-  .pill .form i.d{background:var(--draw)}
-  .pill.active .form i{background:rgba(255,255,255,0.25)}
-  .pill.active .form i.w{background:#86EFAC}
-  .pill.active .form i.l{background:#FCA5A5}
-  .pill .lvl{font-size:9px;color:var(--dim);font-weight:600;letter-spacing:0.3px;line-height:1;text-transform:uppercase}
-  .pill.active .lvl{color:rgba(255,255,255,0.62)}
-
-  /* ===== Pool meta ===== */
-  .pool-meta{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:14px 16px 10px;gap:10px;
-  }
-  .pool-name{font-size:11px;color:var(--dim);font-weight:500;letter-spacing:0.4px;text-transform:uppercase}
-  .pool-level{
-    font-size:9px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;
-    padding:5px 9px;border-radius:5px;
-    background:var(--ink);color:var(--paper);border:1px solid var(--ink);
-    white-space:nowrap;flex-shrink:0;
-  }
-  .pool-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:0 12px}
-  .pool-stat{padding:9px 6px;background:var(--panel);text-align:center}
-  .pool-stat-v{font-family:"JetBrains Mono",monospace;font-size:16px;font-weight:700;color:var(--ink);line-height:1}
-  .pool-stat-l{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-top:4px}
-  @media (min-width:900px){
-    .pool-stats{margin:0 20px;border-radius:14px}
-    .pool-stat{padding:24px 18px 22px;text-align:left}
-    .pool-stat-v{font-size:56px;font-weight:600;letter-spacing:-2px;line-height:0.95}
-    .pool-stat-v span{font-size:18px !important}
-    .pool-stat-l{font-size:10px;margin-top:10px;letter-spacing:0.8px}
-  }
-
-  /* ===== HERO last journée ===== */
-  .hero{
-    margin:14px 12px 0;border-radius:14px;
-    background:var(--paper);
-    border:1px solid var(--line-2);
-    padding:16px 16px 14px;
-    position:relative;overflow:hidden;
-  }
-  .hero::before{content:"";position:absolute;top:-50%;right:-30%;width:300px;height:300px;background:radial-gradient(circle,rgba(27,58,107,0.06) 0%,transparent 70%);}
-  .hero.win{background:linear-gradient(180deg,var(--win-bg) 0%,var(--paper) 75%);border-color:rgba(52,211,153,0.35)}
-  .hero.lose{background:linear-gradient(180deg,var(--lose-bg) 0%,var(--paper) 75%);border-color:rgba(248,113,113,0.35)}
-  .hero-top{display:flex;justify-content:space-between;align-items:baseline;position:relative;z-index:1;gap:10px}
-  .hero-label{font-size:10px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;display:flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0}
-  .hero-label::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange);box-shadow:none}
-  .hero-date{font-size:10px;color:var(--dim);font-family:"JetBrains Mono",monospace;letter-spacing:0.3px;white-space:nowrap;flex-shrink:0}
-  .hero-match{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin-top:14px;position:relative;z-index:1}
-  .hero-team{font-size:12px;font-weight:600;letter-spacing:-0.1px;min-width:0}
-  .hero-team > div:first-child{line-height:1.2;word-break:break-word}
-  .hero-team.away{text-align:right}
-  .hero-team-sub{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:3px;font-weight:600}
-  .hero-team.away .hero-team-sub{justify-content:flex-end}
-  .hero-score{
-    font-family:"JetBrains Mono",monospace;font-weight:800;font-size:34px;letter-spacing:-1px;line-height:1;
-    display:flex;align-items:center;gap:8px;
-  }
-  .hero-score .sep{color:var(--dimmer);font-weight:400}
-  .hero-result{
-    font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
-    padding:3px 8px;border-radius:4px;
-    margin-top:10px;display:inline-block;
-  }
-  .hero-result.w{background:var(--win);color:#fff;border:1px solid var(--win-deep)}
-  .hero-result.l{background:var(--lose);color:#fff;border:1px solid var(--lose-deep)}
-  .hero-mvp{
-    margin-top:14px;padding:10px 12px;border-radius:10px;
-    background:var(--draw-bg);border:1px solid rgba(251,191,36,0.35);
-    display:flex;align-items:center;gap:10px;position:relative;z-index:1;
-  }
-  .hero-mvp-badge{font-size:9px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--draw);display:flex;align-items:center;gap:5px}
-  .hero-mvp-badge::before{content:"★"}
-  .hero-mvp-name{font-size:13px;font-weight:700;margin-top:2px}
-  .hero-mvp-r{margin-left:auto;text-align:right}
-  .hero-mvp-vic{font-family:"JetBrains Mono",monospace;font-size:20px;font-weight:800;color:var(--draw);line-height:1}
-  .hero-mvp-vic-l{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;font-weight:600}
-
-  /* ===== SECTION TITLES ===== */
-  .sec{margin:22px 16px 8px;display:flex;align-items:baseline;justify-content:space-between}
-  .sec-t{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--ink)}
-  .sec-t .num-badge{
-    display:inline-flex;align-items:center;justify-content:center;
-    width:18px;height:18px;border-radius:5px;background:var(--panel-2);
-    font-size:10px;font-weight:700;color:var(--dim);margin-left:6px;font-family:"JetBrains Mono",monospace;
-  }
-  .sec-a{font-size:10px;color:var(--dim);font-weight:600;letter-spacing:0.3px}
-
-  /* ===== CALENDAR strip ===== */
-  .calendar{
-    display:flex;gap:5px;margin:0 12px;
-    overflow-x:auto;-webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-  }
-  .calendar::-webkit-scrollbar{display:none}
-  .cal-cell{
-    flex:0 0 auto;width:74px;
-    aspect-ratio:1/1.4;
-    border-radius:10px;
-    background:var(--paper);border:1px solid var(--line);
-    padding:6px 4px 5px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;
-    text-align:center;position:relative;overflow:hidden;
-  }
-  .cal-opp{overflow:hidden;text-overflow:ellipsis;max-width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-  @media (min-width:768px){
-    .calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:visible}
-    .cal-cell{width:auto;aspect-ratio:1/1.4}
-  }
-  .cal-cell.w{background:var(--win-bg);border-color:rgba(52,211,153,0.35)}
-  .cal-cell.l{background:var(--lose-bg);border-color:rgba(248,113,113,0.35)}
-  .cal-cell.d{background:var(--draw-bg);border-color:rgba(251,191,36,0.35)}
-  .cal-j{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--dim);font-weight:700;letter-spacing:0.3px}
-  .cal-opp{font-size:9px;font-weight:700;color:var(--ink);line-height:1.1;letter-spacing:-0.1px;text-align:center}
-  .cal-r{
-    min-width:38px;height:18px;padding:0 6px;border-radius:5px;
-    display:inline-flex;align-items:center;justify-content:center;
-    font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:800;
-    background:var(--panel-2);color:var(--dim);letter-spacing:-0.2px;
-    white-space:nowrap;
-  }
-  .cal-cell.w .cal-r{background:var(--win);color:#fff}
-  .cal-cell.l .cal-r{background:var(--lose);color:#fff}
-  .cal-cell.d .cal-r{background:var(--draw);color:#fff}
-  .cal-de{position:absolute;top:5px;right:5px;font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:800;letter-spacing:0.4px;color:var(--dim)}
-  .cal-de.h{color:#86EFAC}
-  .cal-de.a{color:var(--acbb)}
-
-  /* ===== Player aggregated stats ===== */
-  .players-agg{margin:0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  .pa-row{
-    display:grid;grid-template-columns:1fr 38px 28px 28px 38px;gap:8px;align-items:center;
-    padding:10px 12px;border-bottom:1px solid var(--line);
-  }
-  .pa-row:last-child{border-bottom:none}
-  .pa-row.head{background:var(--panel-2);padding:8px 12px}
-  .pa-row.head span{font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:var(--dim);font-weight:700}
-  .pa-name{font-size:13px;font-weight:600;letter-spacing:-0.1px;display:flex;align-items:center;gap:8px;min-width:0}
-  .pa-name .rk{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dimmer);font-weight:600;width:14px;flex-shrink:0}
-  .pa-name .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-  .pa-cls{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);text-align:right}
-  .pa-played{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);text-align:right}
-  .pa-vic{
-    font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:800;color:var(--ink);
-    text-align:right;
-  }
-  .pa-pct{
-    font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;text-align:right;
-    color:var(--dim);
-  }
-  .pa-pct.hi{color:#86EFAC}
-  .pa-pct.lo{color:var(--lose)}
-  .pa-bar{
-    height:3px;background:var(--line);
-    grid-column:1 / -1;border-radius:99px;overflow:hidden;margin-top:8px;
-  }
-  .pa-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acbb),var(--draw));border-radius:99px;transition:width 1s cubic-bezier(.2,.7,.3,1)}
-
-  /* ===== Journée cards ===== */
-  .journee{
-    margin:10px 12px 0;border-radius:12px;
-    background:var(--panel);border:1px solid var(--line);
-    overflow:hidden;transition:border-color .2s;
-  }
-  .journee.w{border-left:3px solid var(--win)}
-  .journee.l{border-left:3px solid var(--lose)}
-  .journee.d{border-left:3px solid var(--draw)}
-  .j-head{
-    padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
-    cursor:pointer;user-select:none;
-  }
-  .j-num{
-    display:grid;place-items:center;width:32px;height:32px;border-radius:8px;
-    font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:800;
-    background:var(--panel-2);color:var(--dim);
-  }
-  .journee.w .j-num{background:var(--win);color:#fff}
-  .journee.l .j-num{background:var(--lose);color:#fff}
-  .j-mid{display:flex;flex-direction:column;gap:2px;min-width:0}
-  .j-opp{font-size:13px;font-weight:600;letter-spacing:-0.1px;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .j-tag{font-size:8px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;padding:2px 5px;border-radius:3px;flex-shrink:0}
-  .j-tag.h{background:var(--win-bg);color:#86EFAC;border:1px solid rgba(52,211,153,0.35)}
-  .j-tag.a{background:rgba(242,106,27,0.18);color:var(--acbb);border:1px solid rgba(242,106,27,0.3)}
-  .j-date{font-size:10px;color:var(--dim);font-family:"JetBrains Mono",monospace}
-  .j-score{
-    font-family:"JetBrains Mono",monospace;font-weight:800;font-size:18px;letter-spacing:-0.5px;
-    display:flex;align-items:center;gap:6px;
-  }
-  .j-score .sep{color:var(--dimmer);font-weight:400}
-  .j-score .acbb{color:var(--ink)}
-  .journee.w .j-score .acbb{color:var(--win)}
-  .journee.l .j-score .acbb{color:var(--lose)}
-  .j-score .opp{color:var(--dim)}
-  .j-body{
-    display:none;border-top:1px solid var(--line);
-    background:var(--panel-2);
-  }
-  .journee.expanded .j-body{display:block;animation:slideDown .25s cubic-bezier(.2,.7,.3,1)}
-  @keyframes slideDown{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
-
-  /* lineup duo (ACBB + opponent) inside journée detail */
-  .lineup-head{
-    display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;
-    padding:9px 12px 7px;background:var(--paper);
-  }
-  .lineup-head .side{
-    font-size:9px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink-2);
-    display:flex;align-items:center;gap:6px;
-  }
-  .lineup-head .side .avg{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--dim);letter-spacing:0.2px}
-  .lineup-head .side.right{justify-content:flex-end;text-align:right}
-  .lineup-head .vs{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dimmer);font-weight:700;letter-spacing:0.4px}
-  .lineup-duo{display:grid;grid-template-columns:1fr 1px 1fr;background:var(--paper)}
-  .lineup-duo .divider{background:var(--line)}
-  .lineup-side{display:flex;flex-direction:column}
-  .lineup-side .p-cell{padding:9px 12px;background:var(--paper);display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid var(--line)}
-  .lineup-side .p-cell:first-child{border-top:none}
-  .lineup-side.right .p-cell{text-align:right;flex-direction:row-reverse}
-  .lineup-side .p-name{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
-  .lineup-side .p-nom{font-size:11.5px;font-weight:600;letter-spacing:-0.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
-  .lineup-side .p-cls{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--dim);letter-spacing:0.2px}
-  .lineup-side .p-vic{
-    font-family:"JetBrains Mono",monospace;font-weight:800;font-size:16px;line-height:1;
-    min-width:22px;text-align:center;flex-shrink:0;
-  }
-  .lineup-side .p-vic.v0{color:var(--dimmer)}
-  .lineup-side .p-vic.v1{color:var(--ink)}
-  .lineup-side .p-vic.v2{color:var(--win)}
-  .lineup-side .p-vic.v3{color:var(--draw)}
-  .lineup-side .p-vic.mvp{position:relative}
-  .lineup-side .p-vic.mvp::after{content:"★";position:absolute;font-size:8px;color:var(--draw);top:-3px;right:-9px}
-  .lineup-side.right .p-vic.mvp::after{right:auto;left:-9px}
-  .players{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line)}
-  .p-cell{padding:10px 12px;background:var(--panel);display:flex;justify-content:space-between;align-items:center;gap:8px}
-  .p-name{display:flex;flex-direction:column;gap:2px;min-width:0}
-  .p-nom{font-size:12px;font-weight:600;letter-spacing:-0.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .p-cls{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim)}
-  .p-vic{
-    font-family:"JetBrains Mono",monospace;font-weight:800;font-size:18px;
-    min-width:24px;text-align:right;
-  }
-  .p-vic.v0{color:var(--dimmer)}
-  .p-vic.v1{color:var(--ink)}
-  .p-vic.v2{color:var(--win)}
-  .p-vic.v3{color:var(--draw)}
-  .p-vic.mvp::after{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--orange);margin-left:4px;vertical-align:top;margin-top:6px;box-shadow:none}
-  .j-foot{padding:10px 14px;background:var(--panel-2);display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--dim)}
-  .j-foot .num{color:var(--ink);font-weight:700;margin-left:4px}
-
-  /* ===== Standings ===== */
-  .standings{
-    margin:14px 12px 0;border-radius:12px;
-    background:var(--panel);border:1px solid var(--line);overflow:hidden;
-  }
-  .st-h{display:flex;justify-content:space-between;align-items:center;padding:12px 14px}
-  .st-t{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
-  .st-t .pip{width:6px;height:6px;border-radius:50%;background:var(--acbb)}
-  .st-sub{font-size:10px;color:var(--dim);font-family:"JetBrains Mono",monospace}
-  table.st{width:100%;border-collapse:collapse;font-size:12px}
-  table.st th{font-size:9px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.6px;padding:8px 6px;text-align:center;background:var(--panel-2)}
-  table.st th.l{text-align:left;padding-left:12px}
-  table.st td{padding:9px 6px;text-align:center;border-top:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-weight:600}
-  table.st td.l{text-align:left;padding-left:12px;font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:12px}
-  table.st span.pos{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:800;background:var(--panel-2);color:var(--ink-2)}
-  table.st tr.top1 span.pos{background:var(--win);color:#fff}
-  table.st tr.acbb{background:rgba(27,58,107,0.06);}
-  table.st tr.acbb span.pos{background:var(--acbb);color:#fff}
-  table.st tr.acbb td{color:var(--ink);font-weight:700}
-  table.st tr.danger td{color:var(--lose)}
-  table.st .diff.pos{color:var(--win)}
-  table.st .diff.neg{color:var(--lose)}
-
-  /* ===== Scouting J6/J7 ===== */
-  .scout-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:0 12px}
-  @media (min-width:900px){.scout-grid{grid-template-columns:1fr 1fr;margin:0 20px;gap:14px}}
-  .scout{
-    background:var(--paper);border:1px solid var(--line);border-radius:14px;
-    padding:16px 16px 14px;display:flex;flex-direction:column;gap:12px;
-    position:relative;overflow:hidden;
-  }
-  .scout-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-  .scout-j{
-    display:inline-flex;align-items:center;gap:6px;
-    font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;letter-spacing:0.3px;
-    padding:4px 9px;border-radius:99px;background:var(--ink);color:var(--paper);
-  }
-  .scout-j .de{font-size:9px;padding:2px 5px;border-radius:3px;background:rgba(255,255,255,0.18);letter-spacing:0.4px}
-  .scout-diff{
-    font-size:9px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;
-    padding:4px 9px;border-radius:5px;
-  }
-  .scout-diff.easy{background:var(--win-bg);color:#86EFAC}
-  .scout-diff.med{background:var(--panel-2);color:var(--ink-2)}
-  .scout-diff.hard{background:var(--draw-bg);color:var(--draw)}
-  .scout-diff.vhard{background:var(--lose-bg);color:#FCA5A5}
-  .scout-opp{font-size:20px;font-weight:700;letter-spacing:-0.4px;line-height:1.1}
-  .scout-opp em{font-family:"Saira Condensed",system-ui,sans-serif;font-style:italic;font-weight:400;color:var(--acbb);font-size:0.85em}
-  .scout-stats{display:flex;flex-wrap:wrap;gap:4px;font-family:"JetBrains Mono",monospace;font-size:11px}
-  .scout-stats .chip{padding:3px 8px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line);font-weight:600;letter-spacing:0.2px;color:var(--ink-2)}
-  .scout-stats .chip b{color:var(--ink);font-weight:700}
-  .scout-block{padding-top:12px;border-top:1px solid var(--line)}
-  .scout-block-h{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:8px;display:flex;align-items:center;gap:6px}
-  .scout-block-h .badge{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;color:var(--ink-2);background:var(--panel-2);padding:1px 6px;border-radius:99px;letter-spacing:0.2px;text-transform:none}
-  .lineup-list{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
-  .lineup-list li{list-style:none;padding:7px 12px;background:var(--paper);display:flex;justify-content:space-between;align-items:center;font-size:12px;gap:8px;min-width:0}
-  .lineup-list .nm{font-weight:600;letter-spacing:-0.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
-  .lineup-list .nm.top{color:#86EFAC}
-  .lineup-list .nm.top::before{content:"★ ";color:var(--draw);font-size:10px}
-  .lineup-list .rs{display:flex;gap:6px;align-items:center;font-family:"JetBrains Mono",monospace}
-  .lineup-list .cls{font-size:11px;font-weight:700;color:var(--ink-2)}
-  .lineup-list .count{font-size:10px;color:var(--dim);font-weight:500}
-  .scout-recent{
-    font-size:11.5px;color:var(--ink-2);line-height:1.45;
-  }
-  .scout-recent b{color:var(--ink)}
-  .scout-empty{font-size:11px;color:var(--dim);font-style:italic;padding:6px 0}
-  .footer-note{
-    margin:20px 16px 0;font-size:10px;color:var(--dimmer);
-    letter-spacing:0.3px;text-align:center;
-  }
-
-  /* ===== Animations ===== */
-  .anim-in{animation:fadeUp .35s cubic-bezier(.2,.7,.3,1)}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-  .stagger > *{animation:fadeUp .35s cubic-bezier(.2,.7,.3,1)}
-  .stagger > *:nth-child(1){animation-delay:0ms}
-  .stagger > *:nth-child(2){animation-delay:40ms}
-  .stagger > *:nth-child(3){animation-delay:80ms}
-  .stagger > *:nth-child(4){animation-delay:120ms}
-  .stagger > *:nth-child(5){animation-delay:160ms}
-  .stagger > *:nth-child(6){animation-delay:200ms}
-  .stagger > *:nth-child(7){animation-delay:240ms}
-
-  .gauge{transition:width 1s cubic-bezier(.2,.7,.3,1)}
-
-
-  /* ===== UNIFIED HEADER ===== */
-  .topstack{position:sticky;top:0;z-index:50}
-  .topstack .header{position:static}
-  .topstack .selector{position:static;top:auto}
-  .header{position:sticky;top:0;z-index:50;padding:10px 12px;background:rgba(11,11,13,0.72);backdrop-filter:blur(20px) saturate(1.2);-webkit-backdrop-filter:blur(20px) saturate(1.2);border-bottom:1px solid var(--line)}
-  .header-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);flex-shrink:0}
-  .brand-img{width:34px;height:34px;border-radius:8px;background:#fff;padding:2px;border:1px solid var(--line-2);object-fit:contain;flex-shrink:0}
-  .brand-text{display:none;flex-direction:column;line-height:1}
-  @media (min-width:560px){.brand-text{display:flex}}
-  .brand-name{font-size:12px;font-weight:700;letter-spacing:-0.3px;color:var(--ink)}
-  .brand-sub{font-size:8.5px;color:var(--dim);margin-top:3px;font-family:"JetBrains Mono",monospace;letter-spacing:0.3px;text-transform:uppercase;white-space:nowrap}
-  .nav{display:flex;align-items:center;gap:3px}
-  .nav-link{padding:7px 9px;border-radius:99px;font-size:11px;font-weight:600;color:var(--ink-2);text-decoration:none;white-space:nowrap;letter-spacing:-0.1px;border:1px solid transparent}
-  .nav-link:hover{color:var(--ink);background:rgba(255,255,255,0.04)}
-  .nav-link.active{background:var(--panel-2);color:var(--ink);border-color:var(--line-2)}
-  .nav-cta{display:inline-flex;align-items:center;gap:5px;padding:8px 11px;border-radius:99px;background:var(--orange);color:#fff;border:1px solid var(--orange);font-size:11px;font-weight:700;text-decoration:none;letter-spacing:0.2px;white-space:nowrap}
-  .nav-cta::before{content:"";width:5px;height:5px;border-radius:50%;background:#fff}
-  .nav-cta.active{background:var(--orange);border-color:var(--orange)}
-  .nav-cta.active::before{background:#fff}
-  @media (max-width:420px){
-    .nav-link{padding:7px 8px;font-size:10.5px}
-    .nav-cta{padding:7px 10px;font-size:10.5px}
-    .brand-img{width:32px;height:32px}
+  .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:22px;flex-wrap:wrap}
+  .tpills{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+  .tpills .pill{min-height:36px;min-width:44px;justify-content:center}
+  .tpills .pill.f{color:var(--lose-lt);border-color:rgba(242,99,86,.45)} .tpills .pill.f.on{background:var(--lose);border-color:var(--lose);color:#0B0B0D}
+  .grid2{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;margin-top:18px}
+  .card .ch{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .card .ch .t{font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:800}
+  .rows{display:flex;flex-direction:column;gap:6px}
+  .crow{display:grid;grid-template-columns:30px 78px 58px minmax(0,1fr) 68px;align-items:center;gap:10px;padding:10px 12px}
+  .crow .j{font-family:"JetBrains Mono",monospace;font-weight:800}
+  .crow .opp{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .crow .sc{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:800;text-align:right;white-space:nowrap}
+  .sc.win{color:var(--win)} .sc.lose{color:var(--lose)} .sc.draw{color:var(--warn)}
+  .crow .wait{text-align:right;color:var(--dimmer)}
+  .crow.past{opacity:.85}
+  .tag.dom{color:var(--warn);border-color:rgba(250,204,21,.5)}
+  .tag.c{text-align:center;justify-content:center;display:inline-flex}
+  table.st{width:100%;border-collapse:collapse;font-size:12.5px}
+  .st th{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--dimmer);text-align:right;padding:4px 6px;white-space:nowrap}
+  .st th.l,.st td.l{text-align:left}
+  .st td{padding:8px 6px;border-top:1px solid var(--line);text-align:right;font-family:"JetBrains Mono",monospace;font-size:12px}
+  .st td.l{font-family:"Space Grotesk",system-ui,sans-serif;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0;width:100%}
+  .st td.pos{color:var(--dim)}
+  .st tr.me td{background:rgba(242,106,27,.10)} .st tr.me td.l{color:var(--orange);font-weight:700}
+  .st td.pts{font-weight:800}
+  .empty{font-size:12.5px;color:var(--dim);line-height:1.45}
+  .plist{display:flex;flex-direction:column;gap:5px;margin-top:12px}
+  .plist .card2{display:flex;align-items:center;gap:10px;padding:8px 12px;font-size:13px}
+  .plist .card2 .n{font-family:"JetBrains Mono",monospace;color:var(--dim);width:22px}
+  .plist .card2.me{border-color:rgba(242,106,27,.5);color:var(--orange);font-weight:700}
+  .note{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--warn);background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.35);border-radius:9px;padding:8px 12px;margin-top:14px}
+  @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+  @media(max-width:480px){
+    .crow{grid-template-columns:26px 66px 50px minmax(0,1fr);grid-template-areas:"j d t s" "o o o o";gap:4px 6px;padding:10px 10px}
+    .crow .j{grid-area:j}.crow .dt{grid-area:d}.crow .tag,.crow .ph{grid-area:t}.crow .opp{grid-area:o}.crow .sc,.crow .wait{grid-area:s}
+    .tag.c{padding:2px 5px;font-size:9px}.st .hide-sm{display:none}
   }
 </style>
-<link rel="icon" type="image/png" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">
-<meta name="description" content="Résultats, joueurs et calendrier d'une équipe ACBB Tennis de Table.">
-<meta property="og:title" content="ACBB Tennis de Table — Détail équipe">
-<meta property="og:description" content="Résultats, joueurs et calendrier d'une équipe ACBB Tennis de Table.">
-<meta property="og:image" content="https://team.acbb-tt.fr/logo.png">
-<meta property="og:url" content="https://team.acbb-tt.fr/equipe.html">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="ACBB Tennis de Table">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ACBB Tennis de Table — Détail équipe">
-<meta name="twitter:description" content="Résultats, joueurs et calendrier d'une équipe ACBB Tennis de Table.">
-<meta name="twitter:image" content="https://team.acbb-tt.fr/logo.png">
-<script data-goatcounter="https://acbb-tt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div class="wrap">
+  <div id="hdr" class="hdr"></div>
 
-<div class="topstack">
-<header class="header">
-  <div class="header-row">
-    <a href="accueil.html" class="brand">
-      <img class="brand-img" src="logo.png" alt="ACBB">
-      <div class="brand-text">
-        <div class="brand-name">ACBB TT</div>
-        <div class="brand-sub">Bilan 25/26</div>
-      </div>
-    </a>
-    <nav class="nav">
-      <a href="accueil.html" class="nav-link">Accueil</a>
-      <a href="joueurs.html" class="nav-link">Joueurs</a>
-      <a href="stats.html" class="nav-link">Ch. Équipe 25/26</a>
-    </nav>
-  </div>
-</header>
+  <section class="hero">
+    <div>
+      <h1 class="h1" id="hTitle">Équipes <em>2026/27</em></h1>
+      <div class="hsub" id="hSub">Calendrier et classement de la poule · Phase 1</div>
+    </div>
+    <span class="lab" id="hRight">calendrier FFTT</span>
+  </section>
 
-<nav class="selector">
-  <div class="selector-grid" id="grid"></div>
-</nav>
+  <nav class="tpills" id="tpills" aria-label="Choix de l'équipe"></nav>
+  <div class="note" id="apiNote" hidden></div>
+
+  <section class="grid2">
+    <div class="card">
+      <div class="ch"><span class="t">Calendrier</span><span class="lab" id="calSub">7 journées · Phase 1</span></div>
+      <div class="rows" id="cal"><div class="empty">Chargement…</div></div>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="t">Classement de la poule</span><span class="lab" id="stSub"></span></div>
+      <div id="standings"><div class="empty">Chargement…</div></div>
+    </div>
+  </section>
+
+  <div class="foot">ACBB Tennis de Table · calendrier, poules et classements FFTT</div>
 </div>
 
-<main id="content"></main>
-
-<div class="footer-note">↑ Données championnat FFTT</div>
-
-</div>
-
-<script src="data/site.js"></script>
-<script>
-/* === DATA (replace this block with live data) === */
-// Auto-extracted from uploads/index.html
-    const STANDINGS = window.__SITE.STANDINGS;
-
-const DATA = window.__SITE.DATA;
-
-window.STANDINGS = STANDINGS;
-window.DATA = DATA;
-
-</script>
-<script>
-/* === Shared utils === */
-// Shared helpers for ACBB TT redesigns
-// All variations import this to derive stats from the raw DATA object.
-
-(function (root) {
-  const TEAM_KEYS = ['F1','F2','F3','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17'];
-
-  // Mapping from team key → level meta for selector grouping
-  const LEVEL_META = {
-    'M2':  { short: 'N2', label: 'Nationale 2', tier: 0 },
-    'F1':  { short: 'PN', label: 'Pré-Nationale', tier: 1 },
-    'M3':  { short: 'R2', label: 'Régional 2', tier: 2 },
-    'M4':  { short: 'R3', label: 'Régional 3', tier: 2 },
-    'M5':  { short: 'R3', label: 'Régional 3', tier: 2 },
-    'F2':  { short: 'R1', label: 'Régional 1', tier: 2 },
-    'F3':  { short: 'PR', label: 'Pré-Régional', tier: 3 },
-    'M6':  { short: 'PR', label: 'Pré-Régional', tier: 3 },
-    'M7':  { short: 'PR', label: 'Pré-Régional', tier: 3 },
-    'M8':  { short: 'PR', label: 'Pré-Régional', tier: 3 },
-    'M9':  { short: 'PR', label: 'Pré-Régional', tier: 3 },
-    'M10': { short: 'D1', label: 'Départemental 1', tier: 4 },
-    'M11': { short: 'D1', label: 'Départemental 1', tier: 4 },
-    'M12': { short: 'D2', label: 'Départemental 2', tier: 5 },
-    'M13': { short: 'D2', label: 'Départemental 2', tier: 5 },
-    'M14': { short: 'D2', label: 'Départemental 2', tier: 5 },
-    'M15': { short: 'D2', label: 'Départemental 2', tier: 5 },
-    'M16': { short: 'D2', label: 'Départemental 2', tier: 5 },
-    'M17': { short: 'D2', label: 'Départemental 2', tier: 5 },
-  };
-
-  function getAcbbTeam(poolKey) {
-    const pool = root.DATA[poolKey];
-    if (!pool) return null;
-    return pool.teams.find(t => t.acbb);
-  }
-
-  // Is a team key (e.g. "M2") a Nationale 2 team (uses 8-1 victory scoring vs 25-17 point scoring)
-  function isNat2(poolKey) {
-    return poolKey === 'M2';
-  }
-
-  // Take a journée from the ACBB team; return enriched info
-  function enrichJournee(j, isN2) {
-    const won = j.match_score > j.opp_score;
-    const drawn = j.match_score === j.opp_score;
-    const lost = j.match_score < j.opp_score;
-    const result = won ? 'W' : (lost ? 'L' : 'D');
-    // MVP = player with most victories
-    const ranked = [...j.players].sort((a,b) => b.vic - a.vic);
-    const mvp = ranked[0];
-    const totalVic = j.players.reduce((s,p)=>s+p.vic,0);
-    return { ...j, won, drawn, lost, result, mvp, totalVic };
-  }
-
-  // Aggregated player stats across all journées for ACBB team
-  function aggregatePlayers(acbbTeam) {
-    const stats = {};
-    acbbTeam.journees.forEach(j => {
-      j.players.forEach(p => {
-        if (!p.nom || p.nom === 'Joueur absent') return;
-        const key = p.nom + '|' + p.prenom;
-        if (!stats[key]) stats[key] = {
-          nom: p.nom, prenom: p.prenom, cls: p.cls, vic: 0, played: 0
-        };
-        stats[key].vic += p.vic;
-        stats[key].played += 1;
-        stats[key].cls = p.cls; // latest
-      });
-    });
-    return Object.values(stats).sort((a,b) => b.vic - a.vic);
-  }
-
-  // Build calendar with results merged in
-  function buildCalendar(acbbTeam, isN2) {
-    const cal = acbbTeam.calendar || {};
-    const journeesByNum = {};
-    (acbbTeam.journees || []).forEach(j => { journeesByNum[j.journee] = j; });
-    const out = [];
-    for (let i = 1; i <= 7; i++) {
-      const slot = cal[i] || journeesByNum[i] || null;
-      const j = journeesByNum[i];
-      const opponent = (slot && slot.opponent) || (j && j.opponent) || '—';
-      const domext = (slot && slot.domext) || (j && j.domext) || '—';
-      const played = !!j && (j.match_score != null);
-      let result = null;
-      if (played) {
-        if (j.match_score > j.opp_score) result = 'W';
-        else if (j.match_score < j.opp_score) result = 'L';
-        else result = 'D';
-      }
-      out.push({
-        journee: i,
-        opponent,
-        domext,
-        date: j && j.date,
-        played,
-        result,
-        match_score: j && j.match_score,
-        opp_score: j && j.opp_score,
-        raw: j || null,
-      });
-    }
-    return out;
-  }
-
-  // Pool average classement for ACBB players + opponents (rough avg)
-  function poolAverages(poolKey) {
-    const pool = root.DATA[poolKey];
-    if (!pool) return { acbb: '—', opp: '—' };
-    const acbb = pool.teams.find(t => t.acbb);
-    function avgCls(team) {
-      if (!team) return null;
-      const allCls = [];
-      (team.journees || []).forEach(j => j.players.forEach(p => {
-        if (!p.nom || p.nom === 'Joueur absent') return;
-        const c = typeof p.cls === 'number' ? p.cls : 500;
-        allCls.push(c);
-      }));
-      if (!allCls.length) return null;
-      return Math.round(allCls.reduce((s,v)=>s+v,0) / allCls.length);
-    }
-    const acbbAvg = avgCls(acbb);
-    const oppCls = [];
-    pool.teams.filter(t => !t.acbb).forEach(t => {
-      const a = avgCls(t);
-      if (a) oppCls.push(a);
-    });
-    const oppAvg = oppCls.length ? Math.round(oppCls.reduce((s,v)=>s+v,0)/oppCls.length) : null;
-    return { acbb: acbbAvg || '—', opp: oppAvg || '—' };
-  }
-
-  // Stats summary for ACBB team header
-  function teamSummary(poolKey) {
-    const pool = root.DATA[poolKey];
-    const acbb = pool && pool.teams.find(t => t.acbb);
-    if (!acbb) return { played: 0, wins:0, losses:0, draws:0, ptsFor:0, ptsAg:0 };
-    let wins=0, losses=0, draws=0, pf=0, pa=0;
-    (acbb.journees || []).forEach(j => {
-      if (j.match_score == null) return;
-      pf += j.match_score;
-      pa += j.opp_score;
-      if (j.match_score > j.opp_score) wins++;
-      else if (j.match_score < j.opp_score) losses++;
-      else draws++;
-    });
-    return {
-      played: wins+losses+draws,
-      wins, losses, draws,
-      ptsFor: pf, ptsAg: pa,
-      diff: pf - pa,
-    };
-  }
-
-  // Find ACBB row in standings
-  function findAcbbStanding(poolKey) {
-    const st = root.STANDINGS[poolKey];
-    if (!st) return null;
-    // Match "BOULOGNE BILLAN" prefix
-    return st.find(r => /BOULOGNE BILLAN|BOULOGNE BILLANCOURT/i.test(r.name)) || null;
-  }
-
-  // French short date
-  function shortDate(s) {
-    if (!s) return '—';
-    return s.replace(/\s?\d{4}$/, ''); // strip year
-  }
-
-  // Display classement (numeric or string like "N241")
-  function clsDisplay(c) {
-    if (c == null) return '—';
-    if (typeof c === 'string') {
-      if (c === 'x' || c === '?' || c === '') return '—';
-      return c;
-    }
-    return String(c);
-  }
-
-  function firstName(p) {
-    if (!p) return '—';
-    return p.prenom || p.nom;
-  }
-  function shortName(p) {
-    return (firstName(p)[0] || '') + '. ' + (p.nom || '');
-  }
-
-  // Strip "BOULOGNE BILLANCOURT" prefix from opponent display
-  function shortOpp(name) {
-    if (!name) return '—';
-    return name
-      .replace(/^BOULOGNE BILLAN(COURT)?(\s+AC)?\s*/i, 'ACBB ')
-      .replace(/\s+\(\d+\)$/, '')
-      .trim();
-  }
-
-  // Lookup opponent's lineup for a given journée number (the opponent team also has
-  // its own `journees` entry — find theirs matching the same J number).
-  function getOpponentLineup(poolKey, journeeNum, opponentName) {
-    const pool = root.DATA[poolKey];
-    if (!pool || !opponentName) return null;
-    const opp = pool.teams.find(t => !t.acbb && (t.name === opponentName || t.name.toUpperCase() === opponentName.toUpperCase()));
-    if (!opp) return null;
-    const j = (opp.journees || []).find(x => x.journee === journeeNum);
-    if (!j) return { team: opp, journee: null };
-    return { team: opp, journee: j };
-  }
-
-  // Average classement for a lineup (numeric only, ignoring "N###" or absent players)
-  function lineupAvgCls(players) {
-    if (!players || !players.length) return null;
-    const nums = players
-      .filter(p => p.nom && p.nom !== 'Joueur absent')
-      .map(p => {
-        if (typeof p.cls === 'number') return p.cls;
-        // "N241" etc — treat numeric prefix as ~1700+ ; rough heuristic
-        if (typeof p.cls === 'string' && /^N\d+/i.test(p.cls)) return 1700;
-        return null;
-      })
-      .filter(v => v != null);
-    if (!nums.length) return null;
-    return Math.round(nums.reduce((s,v)=>s+v,0) / nums.length);
-  }
-
-  // Aggregate all ACBB players across ALL teams (whole club) for the phase.
-  // Returns rows with { nom, prenom, cls, vic, played, teams: ['M2','M3'...] }.
-  function aggregateAllClubPlayers() {
-    const stats = {};
-    TEAM_KEYS.forEach(k => {
-      const acbb = getAcbbTeam(k);
-      if (!acbb) return;
-      (acbb.journees || []).forEach(j => {
-        (j.players || []).forEach(p => {
-          if (!p.nom || p.nom === 'Joueur absent') return;
-          const key = (p.nom + '|' + (p.prenom || '')).toUpperCase();
-          if (!stats[key]) stats[key] = {
-            nom: p.nom, prenom: p.prenom || '', cls: p.cls, vic: 0, played: 0, teamCounts: {}
-          };
-          stats[key].vic += (p.vic || 0);
-          stats[key].played += 1;
-          stats[key].cls = p.cls; // most recent record
-          stats[key].teamCounts[k] = (stats[key].teamCounts[k] || 0) + 1;
-        });
-      });
-    });
-    return Object.values(stats).map(s => ({
-      ...s,
-      teams: Object.keys(s.teamCounts).sort((a,b) => {
-        // by tier then by name
-        const ta = (LEVEL_META[a] && LEVEL_META[a].tier) ?? 99;
-        const tb = (LEVEL_META[b] && LEVEL_META[b].tier) ?? 99;
-        return ta - tb || a.localeCompare(b);
-      }),
-      // Wins per match × 100 (max 3 wins per match in a normal 8x4 format; nat2 max 2)
-      // Use vic / (played * 3) as best-of estimate; cap at 100.
-      winRate: s.played ? Math.min(100, Math.round(s.vic / (s.played * 3) * 100)) : 0,
-    }));
-  }
-
-  // Win % for a single player across the journées they played for a given team key
-  // (max wins per match assumed to be 3 in normal format, 2 in Nationale 2)
-  function playerWinRateInTeam(player, teamKey) {
-    const acbb = getAcbbTeam(teamKey);
-    if (!acbb) return { vic: 0, played: 0, max: 0, pct: 0 };
-    const n2 = isNat2(teamKey);
-    const matchMax = n2 ? 2 : 3;
-    let vic = 0, played = 0;
-    (acbb.journees || []).forEach(j => {
-      (j.players || []).forEach(p => {
-        if (p.nom === player.nom && (p.prenom || '') === (player.prenom || '')) {
-          vic += (p.vic || 0);
-          played += 1;
-        }
-      });
-    });
-    return { vic, played, max: played * matchMax, pct: played ? Math.round(vic / (played * matchMax) * 100) : 0 };
-  }
-
-  root.ACBB_UTILS = {
-    TEAM_KEYS, LEVEL_META,
-    getAcbbTeam, isNat2, enrichJournee, aggregatePlayers,
-    buildCalendar, poolAverages, teamSummary, findAcbbStanding,
-    shortDate, clsDisplay, firstName, shortName, shortOpp,
-    getOpponentLineup, lineupAvgCls,
-    aggregateAllClubPlayers, playerWinRateInTeam,
-  };
-  // ====== CLUB-WIDE STATS ======
-
-  // Aggregate club-wide V/N/D, points, GA over the phase
-  function aggregateClubStats() {
-    let wins = 0, draws = 0, losses = 0, ptsFor = 0, ptsAg = 0, matches = 0;
-    TEAM_KEYS.forEach(k => {
-      const acbb = getAcbbTeam(k);
-      if (!acbb) return;
-      (acbb.journees || []).forEach(j => {
-        if (j.match_score == null) return;
-        matches++;
-        ptsFor += j.match_score;
-        ptsAg += j.opp_score;
-        if (j.match_score > j.opp_score) wins++;
-        else if (j.match_score < j.opp_score) losses++;
-        else draws++;
-      });
-    });
-    const all = aggregateAllClubPlayers();
-    return {
-      matches, wins, draws, losses,
-      ptsFor, ptsAg, ga: ptsFor - ptsAg,
-      winPct: matches ? Math.round(wins / matches * 100) : 0,
-      players: all.length,
-    };
-  }
-
-  // Status by position in standings: 1-2 promo, 3-5 safe, 6 watch, 7-8 danger
-  function statusByPosition(poolKey) {
-    const acbb = findAcbbStanding(poolKey);
-    const st = root.STANDINGS[poolKey];
-    if (!acbb || !st) return { pos: null, total: 0, status: 'unknown' };
-    const total = st.length;
-    const pos = acbb.pos;
-    let status;
-    if (pos <= 2) status = 'promo';      // green
-    else if (pos <= 5) status = 'safe';  // yellow soft
-    else if (pos === 6) status = 'watch'; // orange
-    else status = 'danger';              // coral
-    return { pos, total, status, pts: acbb.pts, V: acbb.V, N: acbb.N, D: acbb.D, diff: acbb.diff };
-  }
-
-  // Top players by win rate (min N matches played)
-  function topByWinRate(n, minPlayed) {
-    const all = aggregateAllClubPlayers().filter(p => p.played >= (minPlayed||3));
-    return all.slice().sort((a,b) => b.winRate - a.winRate || b.vic - a.vic).slice(0, n||5);
-  }
-
-  // Top players by absolute volume of victories
-  function topByVolume(n) {
-    return aggregateAllClubPlayers().sort((a,b) => b.vic - a.vic || b.winRate - a.winRate).slice(0, n||5);
-  }
-
-  // Find primary team for a player (the team with most appearances)
-  function primaryTeam(player) {
-    const teams = player.teams || [];
-    if (!teams.length) return null;
-    const counts = player.teamCounts || {};
-    return teams.slice().sort((a,b) => (counts[b]||0) - (counts[a]||0))[0];
-  }
-
-  // V/N/D per journée across the whole club
-  function evolutionByJournee() {
-    const result = {};
-    for (let j = 1; j <= 7; j++) result[j] = { w: 0, d: 0, l: 0, total: 0 };
-    TEAM_KEYS.forEach(k => {
-      const acbb = getAcbbTeam(k);
-      if (!acbb) return;
-      (acbb.journees || []).forEach(j => {
-        if (j.match_score == null) return;
-        const bucket = result[j.journee];
-        if (!bucket) return;
-        bucket.total++;
-        if (j.match_score > j.opp_score) bucket.w++;
-        else if (j.match_score < j.opp_score) bucket.l++;
-        else bucket.d++;
-      });
-    });
-    return result;
-  }
-
-  // Records of the phase: biggest win, biggest loss, MVP (highest cumulative V over phase)
-  function recordsOfPhase() {
-    let bestWin = null, worstLoss = null;
-    TEAM_KEYS.forEach(k => {
-      const acbb = getAcbbTeam(k);
-      if (!acbb) return;
-      (acbb.journees || []).forEach(j => {
-        if (j.match_score == null) return;
-        const margin = j.match_score - j.opp_score;
-        if (margin > 0 && (!bestWin || margin > bestWin.margin)) {
-          bestWin = { team: k, journee: j.journee, date: j.date, score: j.match_score, opp: j.opp_score, opponent: j.opponent, margin };
-        }
-        if (margin < 0 && (!worstLoss || margin < worstLoss.margin)) {
-          worstLoss = { team: k, journee: j.journee, date: j.date, score: j.match_score, opp: j.opp_score, opponent: j.opponent, margin };
-        }
-      });
-    });
-    // MVP = highest win rate, tie-broken by most cumulative V (i.e. 100% with most matches)
-    const allPlayers = aggregateAllClubPlayers();
-    const mvpPlayer = allPlayers.slice().sort((a,b) => b.winRate - a.winRate || b.vic - a.vic || b.played - a.played)[0] || null;
-    const mvp = mvpPlayer ? {
-      nom: mvpPlayer.nom, prenom: mvpPlayer.prenom, cls: mvpPlayer.cls,
-      vic: mvpPlayer.vic, played: mvpPlayer.played, winRate: mvpPlayer.winRate,
-      teams: mvpPlayer.teams, primaryTeam: primaryTeam(mvpPlayer),
-    } : null;
-    return { bestWin, worstLoss, mvp };
-  }
-
-  root.ACBB_UTILS = Object.assign(root.ACBB_UTILS, {
-    aggregateClubStats, statusByPosition, topByWinRate, topByVolume,
-    primaryTeam, evolutionByJournee, recordsOfPhase,
-  });
-})(window);
-
-</script>
+<script src="shared/api.js"></script>
+<script src="shared/report.js" defer></script>
+<script src="shared/nav.js" data-base="."></script>
 <script>
 (function(){
-  const U = window.ACBB_UTILS;
-  const keys = U.TEAM_KEYS;
-  // Read ?team= from URL, fallback F1
-  function getTeamFromUrl(){
-    try{ const p = new URLSearchParams(location.search); const t = (p.get('team')||'').toUpperCase(); return keys.indexOf(t) >= 0 ? t : 'F1'; }catch(e){ return 'F1'; }
+  'use strict';
+  const esc=ACBB.esc;
+  const TEAMS=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
+  const JOURS=['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'];
+  const ACR=new Set(['ASML','ASPN','SCTT','USMT','ESTT','CSTT','ACBB','ASPTT','ASMB','AVTT','TTMC','PPCM','SLTT','ASTT','ESCP','ASGB']);
+  const PART={LE:'Le',LA:'La',LES:'Les',DE:'de',DU:'du',DES:'des',ST:'St',STE:'Ste',SUR:'sur',EN:'en',ET:'et'};
+  function capWord(w){ const u=w.toUpperCase(); if(/^\d+$/.test(w)||!w) return w; if(PART[u]) return PART[u]; if(u.length<=3||ACR.has(u)||!/[AEIOUY]/.test(u)) return u; return u[0]+u.slice(1).toLowerCase(); }
+  function shortName(n){ return String(n||'').trim().split(/\s+/).map(w=>w.split('-').map(capWord).join('-')).join(' '); }
+  function divShort(d){ d=String(d||''); if(/^Pro/i.test(d)) return d.replace(/\s+(Messieurs|Dames)\b/i,'').trim(); return d.replace(/Pré-?Régionale/i,'PR').replace(/Nationale\s*/i,'N').replace(/Régionale\s*/i,'R').replace(/\s*\(\d+\)/,'').replace(/\s+(Messieurs|Dames)\b/i,'').trim(); }
+  function divLabel(p){ return divShort(p.division)+(p.poule?' poule '+p.poule:''); }
+  function parseFR(d){ const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(d||''); return m?new Date(+m[3],+m[2]-1,+m[1]):null; }
+  function fmtDate(d){ const dt=parseFR(d); if(!dt) return d||'à fixer'; return JOURS[dt.getDay()]+' '+d.slice(0,5); }
+  function scoreClass(a,b){ return a>b?'win':(a<b?'lose':'draw'); }
+  function normName(s){ return String(s||'').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
+  function sameTeam(a,b){ a=normName(a); b=normName(b); if(!a||!b) return false; if(a===b) return true; const na=a.match(/(\d+)$/),nb=b.match(/(\d+)$/); const fa=a.split(' ')[0],fb=b.split(' ')[0]; return !!(na&&nb&&na[1]===nb[1]&&fa===fb&&fa.length>=4); }
+  function standingsFor(site,poule){ const st=site&&site.STANDINGS&&site.STANDINGS[poule.acbb]; if(!Array.isArray(st)||!st.length||!poule.teams) return null; const _joue=st.some(r=>(+r.mp||0)>0||(+r.pts||0)>0); if(!_joue) return null; /* avant la J1 : positions masquées, tout s'affiche dès que la FFTT remonte les premiers résultats */ let hits=0; poule.teams.forEach(t=>{ if(st.some(r=>sameTeam(r.name,t.name))) hits++; }); return hits>=Math.max(4,Math.ceil(poule.teams.length*0.6))?st:null; }
+
+  const S={team:null,poules:null,byTeam:{},scores:{},resultats:{},site:null,apiFail:false};
+  const params=new URLSearchParams(location.search);
+  S.team=TEAMS.includes(params.get('t'))?params.get('t'):'M1';
+
+  renderNav({active:'Équipes'});
+  ACBB.api('me').then(me=>{ renderNav({active:'Équipes',role:me&&me.role,team:me&&me.equipe,name:me&&me.nom}); }).catch(()=>{});
+
+  function pills(){
+    document.getElementById('tpills').innerHTML=TEAMS.map(t=>'<a class="pill'+(t[0]==='F'?' f':'')+(t===S.team?' on':'')+'" href="equipe.html?t='+t+'" data-t="'+t+'">'+t+'</a>').join('');
+    document.querySelectorAll('#tpills .pill').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); S.team=a.dataset.t; history.replaceState(null,'','equipe.html?t='+S.team); pills(); render(); }));
   }
-  let current = getTeamFromUrl();
-  function syncUrl(){
-    try{ const u = new URL(location.href); u.searchParams.set('team', current); history.replaceState(null,'',u.toString()); }catch(e){}
+  pills();
+
+  const pPoules=ACBB.json('data/poules2627.json').then(p=>{ S.poules=p; (p.poules||[]).forEach(x=>{ S.byTeam[x.acbb]=x; }); });
+  const pSite=ACBB.json('data/site.json').then(s=>{ S.site=s; }).catch(()=>{});
+  const pRes=ACBB.json('data/resultats2627.json').then(r=>{ if(r&&r.resultats) S.resultats=r.resultats; }).catch(()=>{});
+  const pApi=Promise.allSettled([1,2,3,4,5,6,7].map(j=>ACBB.api('public/journee?j='+j).then(r=>{ const m={}; ((r&&r.items)||[]).forEach(it=>{ m[it.equipe]=it; }); S.scores[j]=m; })));
+
+  pPoules.then(()=>{ render(); pSite.then(render); pRes.then(render); pApi.then(rs=>{ if(rs.some(r=>r.status==='rejected')){ S.apiFail=true; const n=document.getElementById('apiNote'); n.hidden=false; n.textContent='Scores momentanément indisponibles (serveur). Le calendrier reste à jour.'; } render(); }); })
+    .catch(()=>{ document.getElementById('cal').innerHTML='<div class="empty">Calendrier indisponible pour le moment.</div>'; document.getElementById('standings').innerHTML=''; });
+
+  function scoreOf(t,j){ const it=S.scores[j]&&S.scores[j][t]; if(it&&it.score_acbb!=null&&it.score_adv!=null) return [+it.score_acbb,+it.score_adv]; const rr=(S.resultats[t]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null) return [+rr.score_acbb,+rr.score_adv]; return null; }
+
+  function render(){
+    const p=S.byTeam[S.team]; if(!p) return;
+    const acbbTeam=(p.teams||[]).find(t=>t.acbb);
+    document.getElementById('hTitle').innerHTML=esc(S.team)+' <em>· '+esc(divLabel(p))+'</em>';
+    document.getElementById('hSub').textContent=(p.division||'')+(acbbTeam?' · '+shortName(acbbTeam.name):'')+' · '+(p.teams||[]).length+' équipes';
+    const today=new Date(); today.setHours(0,0,0,0);
+    const cal=(p.cal||[]);
+    document.getElementById('calSub').textContent=cal.length+' journée'+(cal.length>1?'s':'')+(S.team==='M1'?' · dates FFTT Pro B':' · Phase 1');
+    document.getElementById('cal').innerHTML=cal.map(c=>{
+      let name=c.oppName||null; if(!name&&c.opp!=null){ const t=(p.teams||[]).find(x=>x.pos===c.opp); name=t?t.name:null; }
+      const dt=parseFR(c.date); const past=dt&&dt<today;
+      const sc=scoreOf(S.team,c.j);
+      let right;
+      if(c.exempt) right='<span class="lab wait">exempte</span>';
+      else if(sc) right='<span class="sc '+scoreClass(sc[0],sc[1])+'">'+sc[0]+' – '+sc[1]+'</span>';
+      else right='<span class="lab wait">'+(past?'en attente':'à venir')+'</span>';
+      return '<div class="card2 crow'+(past?' past':'')+'"><span class="j">J'+c.j+'</span><span class="lab dt">'+esc(fmtDate(c.date))+'</span>'+(c.exempt?'<span class="ph"></span>':'<span class="tag c'+(c.dom?' dom':'')+'">'+(c.dom?'Dom.':'Ext.')+'</span>')+'<span class="opp" title="'+esc(name||'')+'">'+(c.exempt?'Exempte':esc(shortName(name)||'adversaire à confirmer'))+'</span>'+right+'</div>';
+    }).join('')||'<div class="empty">Calendrier non publié.</div>';
+
+    const st=standingsFor(S.site,p);
+    const stEl=document.getElementById('standings'), stSub=document.getElementById('stSub');
+    if(st){
+      stSub.textContent='après '+Math.max.apply(0,st.map(r=>+r.mp||0))+' journée'+(Math.max.apply(0,st.map(r=>+r.mp||0))>1?'s':'');
+      stEl.innerHTML='<div style="overflow-x:auto"><table class="st"><thead><tr><th></th><th class="l">Équipe</th><th>Pts</th><th>J</th><th class="hide-sm">V</th><th class="hide-sm">N</th><th class="hide-sm">D</th><th>+/-</th></tr></thead><tbody>'+
+        st.map(r=>{ const me=acbbTeam&&sameTeam(r.name,acbbTeam.name); const diff=(r.diff!=null?r.diff:((+r.gf||0)-(+r.ga||0))); return '<tr'+(me?' class="me"':'')+'><td class="pos">'+esc(r.pos)+'</td><td class="l" title="'+esc(r.name)+'">'+esc(shortName(r.name))+'</td><td class="pts">'+esc(r.pts)+'</td><td>'+esc(r.mp)+'</td><td class="hide-sm">'+esc(r.V)+'</td><td class="hide-sm">'+esc(r.N)+'</td><td class="hide-sm">'+esc(r.D)+'</td><td>'+(diff>0?'+':'')+diff+'</td></tr>'; }).join('')+
+        '</tbody></table></div>';
+    } else {
+      stSub.textContent=(p.teams||[]).length+' équipes';
+      stEl.innerHTML='<div class="empty">Classement disponible après la J1, dès publication par la FFTT.</div>'+
+        '<div class="lab" style="margin-top:14px">Équipes de la poule · ordre FFTT</div><div class="plist">'+(p.teams||[]).map(t=>'<div class="card2'+(t.acbb?' me':'')+'"><span class="n">'+t.pos+'</span><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+esc(t.name)+'">'+esc(shortName(t.name))+'</span>'+(t.s25&&t.s25.mvt?'<span class="tag" style="margin-left:auto">'+esc(t.s25.mvt)+'</span>':'')+'</div>').join('')+'</div>';
+    }
   }
-  window.addEventListener('popstate', () => { current = getTeamFromUrl(); renderAll(); });
-
-  // Build selector once
-  const grid = document.getElementById('grid');
-  function rebuildSelector(){
-    grid.innerHTML = '';
-    keys.forEach(k => {
-      const acbb = U.getAcbbTeam(k);
-      const isF = k[0] === 'F';
-      const meta = U.LEVEL_META[k];
-      // form
-      const form = (acbb && acbb.journees || [])
-        .filter(j => j.match_score != null)
-        .map(j => j.match_score > j.opp_score ? 'w' : (j.match_score < j.opp_score ? 'l' : 'd'));
-      const wins = form.filter(r=>r==='w').length;
-      const losses = form.filter(r=>r==='l').length;
-      let dotCls = '';
-      if (wins && !losses) dotCls = 'w';
-      else if (losses && !wins) dotCls = 'l';
-      else if (wins && losses) dotCls = 'm';
-
-      const cell = document.createElement('div');
-      cell.className = 'pill' + (isF?' f':'') + (k===current?' active':'');
-      cell.innerHTML = `
-        <span class="lvl">${meta.short}</span>
-        ${dotCls?`<span class="dot ${dotCls}"></span>`:''}
-        <span>${k}</span>
-        <span class="form">${form.map(r=>`<i class="${r}"></i>`).join('')}</span>
-      `;
-      cell.onclick = () => { current = k; syncUrl(); renderAll(); };
-      grid.appendChild(cell);
-    });
-  }
-
-  function renderScouting(poolKey, acbb, isN2){
-    const cal = acbb.calendar || {};
-    const futureJs = [7].filter(j => cal[j]);
-    if (!futureJs.length) return '';
-
-    const pool = window.DATA[poolKey];
-    const st = window.STANDINGS[poolKey] || [];
-    const matchMax = isN2 ? 2 : 3;
-
-    function findOpponentTeam(oppName){
-      return pool.teams.find(t => !t.acbb && (
-        t.name === oppName || t.name.toUpperCase() === oppName.toUpperCase()
-      ));
-    }
-    function findStanding(name){
-      return st.find(s => s.name.toUpperCase() === name.toUpperCase()) || null;
-    }
-    function aggregateLineup(team){
-      const stats = {};
-      (team.journees || []).forEach(j => {
-        (j.players || []).forEach(p => {
-          if (!p.nom || p.nom === 'Joueur absent') return;
-          const key = (p.nom + '|' + (p.prenom||'')).toUpperCase();
-          if (!stats[key]) stats[key] = { nom:p.nom, prenom:p.prenom||'', cls:p.cls, count:0, vic:0 };
-          stats[key].count += 1;
-          stats[key].vic += (p.vic || 0);
-          stats[key].cls = p.cls;
-        });
-      });
-      return Object.values(stats).sort((a,b) => b.count - a.count || b.vic - a.vic);
-    }
-    function avgCls(players){
-      const nums = (players||[]).filter(p => p.nom && p.nom!=='Joueur absent').map(p => {
-        if (typeof p.cls === 'number') return p.cls;
-        if (typeof p.cls === 'string' && /^N\d+/i.test(p.cls)) return 1700;
-        return null;
-      }).filter(v => v != null);
-      if (!nums.length) return null;
-      return Math.round(nums.reduce((s,v)=>s+v,0)/nums.length);
-    }
-    function difficulty(avg, pos, nbTeams){
-      // higher avg + better position = harder
-      if (avg == null) return { cls:'med', label:'Moyenne' };
-      const isTop = pos && pos <= 3;
-      if (avg >= 1300 || isTop) return { cls:'vhard', label:'Très difficile' };
-      if (avg >= 1100) return { cls:'hard', label:'Difficile' };
-      if (avg >= 900) return { cls:'med', label:'Moyenne' };
-      return { cls:'easy', label:'Accessible' };
-    }
-
-    let cards = '';
-    futureJs.forEach(jNum => {
-      const slot = cal[jNum];
-      const oppName = slot.opponent;
-      const domext = slot.domext;
-      const oppTeam = findOpponentTeam(oppName);
-      const oppStanding = findStanding(oppName);
-      const oppJourneesPlayed = (oppTeam && (oppTeam.journees || []).filter(j => j.match_score != null)) || [];
-      const lastJ = oppJourneesPlayed[oppJourneesPlayed.length-1];
-      const lineupAgg = oppTeam ? aggregateLineup(oppTeam) : [];
-      const lineupAvg = lastJ ? avgCls(lastJ.players) : null;
-      const ptsFor = oppJourneesPlayed.reduce((s,j)=>s+(j.match_score||0),0);
-      const ptsAg = oppJourneesPlayed.reduce((s,j)=>s+(j.opp_score||0),0);
-      const avgScore = oppJourneesPlayed.length ? (ptsFor/oppJourneesPlayed.length).toFixed(1) : '—';
-      const diff = difficulty(lineupAvg, oppStanding && oppStanding.pos, st.length);
-      const topScorer = [...lineupAgg].sort((a,b) => b.vic - a.vic)[0];
-
-      // recent lineup display
-      let recentLineup = '';
-      if (lastJ){
-        const won = lastJ.match_score > lastJ.opp_score;
-        recentLineup = `
-          <div class="scout-recent">
-            Dernière compo (J${lastJ.journee}, ${won?'gagné':'perdu'} <b>${lastJ.match_score}-${lastJ.opp_score}</b> vs ${U.shortOpp(lastJ.opponent)}) :
-            <br>${lastJ.players.map(p => `${U.firstName(p)} ${p.nom} <span style="color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:10px">cl.${U.clsDisplay(p.cls)}</span>`).join(' · ')}
-          </div>
-        `;
-      } else {
-        recentLineup = '<div class="scout-empty">Pas de composition récente disponible.</div>';
-      }
-
-      // recurring players (count ≥ 2)
-      const recurring = lineupAgg.filter(p => p.count >= 2);
-      const recurringHtml = recurring.length ? `
-        <ul class="lineup-list">
-          ${recurring.map(p => {
-            const isTop = topScorer && topScorer.nom === p.nom && topScorer.prenom === p.prenom && topScorer.vic > 0;
-            return `<li>
-              <span class="nm${isTop?' top':''}">${U.firstName(p)} ${p.nom}</span>
-              <span class="rs">
-                <span class="cls">${U.clsDisplay(p.cls)}</span>
-                <span class="count">${p.count}×</span>
-              </span>
-            </li>`;
-          }).join('')}
-        </ul>
-      ` : '<div class="scout-empty">Pas assez de données pour identifier des joueurs récurrents.</div>';
-
-      cards += `
-        <div class="scout anim-in">
-          <div class="scout-top">
-            <div class="scout-j">J${jNum} ${domext==='Dom'?'<span class="de">Dom</span>':'<span class="de">Ext</span>'}</div>
-            <span class="scout-diff ${diff.cls}">${diff.label}</span>
-          </div>
-          <div>
-            <div class="scout-opp">${U.shortOpp(oppName)}</div>
-            <div class="scout-stats" style="margin-top:8px">
-              ${oppStanding?`<span class="chip"><b>${oppStanding.pos}</b>ᵉ/${st.length}</span>`:''}
-              ${oppStanding?`<span class="chip">${oppStanding.pts} pts</span>`:''}
-              ${oppStanding?`<span class="chip">${oppStanding.V}/${oppStanding.N}/${oppStanding.D}</span>`:''}
-              ${oppStanding?`<span class="chip">GA <b>${oppStanding.diff>0?'+':''}${oppStanding.diff}</b></span>`:''}
-              ${lineupAvg?`<span class="chip">⌀ <b>${lineupAvg}</b></span>`:''}
-              <span class="chip">Score moy. <b>${avgScore}</b></span>
-            </div>
-          </div>
-          <div class="scout-block">
-            <div class="scout-block-h">Compo récente</div>
-            ${recentLineup}
-          </div>
-          ${recurring.length ? `
-          <div class="scout-block">
-            <div class="scout-block-h">Joueurs récurrents <span class="badge">${recurring.length}</span></div>
-            ${recurringHtml}
-          </div>` : ''}
-          ${topScorer && topScorer.vic > 0 ? `
-          <div class="scout-block">
-            <div class="scout-block-h">Meilleur scoreur</div>
-            <div class="scout-recent"><b>${U.firstName(topScorer)} ${topScorer.nom}</b> · cl. ${U.clsDisplay(topScorer.cls)} · <b>${topScorer.vic}V</b> sur ${topScorer.count} matchs joués</div>
-          </div>` : ''}
-        </div>
-      `;
-    });
-
-    return `
-      <div class="sec anim-in"><div class="sec-t">Scouting prochains matchs<span class="num-badge">${futureJs.length}</span></div><div class="sec-a">J${futureJs.join(' · J')}</div></div>
-      <div class="scout-grid anim-in">${cards}</div>
-    `;
-  }
-
-  function renderAll(){
-    rebuildSelector();
-    document.title = 'ACBB TT — ' + current + ' (' + (window.DATA[current]?.level || 'Équipe') + ')';
-    const c = document.getElementById('content');
-    const acbb = U.getAcbbTeam(current);
-    const pool = window.DATA[current];
-    if (!acbb || !pool){ c.innerHTML = '<div style="padding:40px;text-align:center;color:var(--dim)">Aucune donnée</div>'; return; }
-    const isN2 = U.isNat2(current);
-    const calendar = U.buildCalendar(acbb, isN2);
-    const summary = U.teamSummary(current);
-    const standing = U.findAcbbStanding(current);
-    const aggregated = U.aggregatePlayers(acbb);
-    const avgs = U.poolAverages(current);
-
-    // last played journée
-    const played = acbb.journees.filter(j => j.match_score != null);
-    const last = played[played.length-1];
-    const lastE = last ? U.enrichJournee(last, isN2) : null;
-
-    let html = `
-      <div class="pool-meta anim-in">
-        <div class="pool-name">${pool.pool}</div>
-        <div class="pool-level">${pool.level}</div>
-      </div>
-      <div class="pool-stats anim-in">
-        <div class="pool-stat"><div class="pool-stat-v">${standing?standing.pos:'—'}<span style="font-size:10px;color:var(--dim);font-weight:500">/${pool.teams.length||8}</span></div><div class="pool-stat-l">Position</div></div>
-        <div class="pool-stat"><div class="pool-stat-v">${standing?standing.pts:summary.played*2}</div><div class="pool-stat-l">Points</div></div>
-        <div class="pool-stat"><div class="pool-stat-v">${avgs.acbb}</div><div class="pool-stat-l">Cl. ACBB</div></div>
-        <div class="pool-stat"><div class="pool-stat-v">${avgs.opp}</div><div class="pool-stat-l">Cl. Adv.</div></div>
-      </div>
-    `;
-
-    // Hero last journée
-    if (lastE){
-      const resultCls = lastE.won?'win':lastE.lost?'lose':'';
-      const acbbName = acbb.name;
-      const oppName = lastE.opponent;
-      html += `
-      <div class="sec anim-in"><div class="sec-t">Dernière journée<span class="num-badge">J${lastE.journee}</span></div><div class="sec-a">${U.shortDate(lastE.date)}</div></div>
-      <div class="hero ${resultCls} anim-in">
-        <div class="hero-top">
-          <div class="hero-label">Match ${lastE.won?'gagné':lastE.lost?'perdu':'nul'}</div>
-          <div class="hero-date">${(acbb.calendar && acbb.calendar[lastE.journee] && acbb.calendar[lastE.journee].domext) || 'Dom'} · ${lastE.totalVic}/16 jeux</div>
-        </div>
-        <div class="hero-match">
-          <div class="hero-team">
-            <div>${U.shortOpp(acbbName)}</div>
-            <div class="hero-team-sub">ACBB</div>
-          </div>
-          <div class="hero-score">
-            <span class="acbb">${lastE.match_score}</span><span class="sep">·</span><span>${lastE.opp_score}</span>
-          </div>
-          <div class="hero-team away">
-            <div>${U.shortOpp(oppName)}</div>
-            <div class="hero-team-sub">Adversaire</div>
-          </div>
-        </div>
-        ${lastE.mvp?`
-        <div class="hero-mvp">
-          <div>
-            <div class="hero-mvp-badge">MVP de la journée</div>
-            <div class="hero-mvp-name">${U.firstName(lastE.mvp)} ${lastE.mvp.nom}</div>
-          </div>
-          <div class="hero-mvp-r">
-            <div class="hero-mvp-vic">${lastE.mvp.vic}<span style="font-size:11px;color:var(--dim);font-weight:600">V</span></div>
-            <div class="hero-mvp-vic-l">cl. ${U.clsDisplay(lastE.mvp.cls)}</div>
-          </div>
-        </div>`:''}
-      </div>
-      `;
-    }
-
-    // Calendar strip
-    html += `<div class="sec anim-in"><div class="sec-t">Calendrier<span class="num-badge">7</span></div><div class="sec-a">${summary.played} jouée(s)</div></div>`;
-    html += `<div class="calendar anim-in">`;
-    calendar.forEach(c => {
-      const cls = c.result ? c.result.toLowerCase() : '';
-      const oppShort = U.shortOpp(c.opponent).split(' ').slice(0,2).join(' ');
-      const deTag = c.domext === 'Dom' ? '<span class="cal-de h">DOM</span>' : c.domext === 'Ext' ? '<span class="cal-de a">EXT</span>' : '';
-      const scoreDisp = c.played ? (c.match_score+'-'+c.opp_score) : '·';
-      html += `
-        <div class="cal-cell ${cls}">
-          ${deTag}
-          <div class="cal-j">J${c.journee}</div>
-          <div class="cal-opp">${oppShort.length>11?oppShort.slice(0,9)+'…':oppShort}</div>
-          <div class="cal-r">${scoreDisp}</div>
-        </div>
-      `;
-    });
-    html += `</div>`;
-
-    // Player aggregated
-    html += `<div class="sec anim-in"><div class="sec-t">Joueurs ACBB<span class="num-badge">${aggregated.length}</span></div><div class="sec-a"><a href="joueurs.html" style="color:var(--acbb);text-decoration:none;font-weight:700;letter-spacing:0.2px">Voir tous →</a></div></div>`;
-    html += `<div class="players-agg anim-in">`;
-    const maxVic = Math.max(1, ...aggregated.map(p=>p.vic));
-    const matchMax = isN2 ? 2 : 3;
-    aggregated.slice(0,8).forEach((p,i) => {
-      const pct = p.played ? Math.round(p.vic / (p.played * matchMax) * 100) : 0;
-      const pctCls = pct >= 60 ? 'hi' : (pct <= 25 ? 'lo' : '');
-      html += `
-        <div class="pa-row">
-          <div class="pa-name"><span class="nm">${U.firstName(p)} ${p.nom}</span></div>
-          <div class="pa-cls">${U.clsDisplay(p.cls)}</div>
-          <div class="pa-played">${p.played}j</div>
-          <div class="pa-vic">${p.vic}</div>
-          <div class="pa-pct ${pctCls}">${pct}%</div>
-          <div class="pa-bar"><i class="gauge" style="width:0%" data-w="${(p.vic/maxVic*100).toFixed(0)}%"></i></div>
-        </div>
-      `;
-    });
-    html += `</div>`;
-
-    // Journée cards
-    html += `<div class="sec anim-in"><div class="sec-t">Détail des journées</div><div class="sec-a">Cliquer pour ouvrir</div></div>`;
-    html += `<div class="stagger">`;
-    acbb.journees.forEach((jr) => {
-      const e = U.enrichJournee(jr, isN2);
-      const result = e.won?'w':e.lost?'l':'d';
-      const cal = (acbb.calendar && acbb.calendar[jr.journee]) || {};
-      const dom = cal.domext || jr.domext || (e.opponent ? '—' : '—');
-      html += `
-        <div class="journee ${result}" data-j="${jr.journee}">
-          <div class="j-head" onclick="this.parentNode.classList.toggle('expanded')">
-            <div class="j-num">J${jr.journee}</div>
-            <div class="j-mid">
-              <div class="j-opp">${U.shortOpp(e.opponent)} <span class="j-tag ${dom==='Dom'?'h':'a'}">${dom==='Dom'?'Dom':'Ext'}</span></div>
-              <div class="j-date">${U.shortDate(jr.date)}</div>
-            </div>
-            <div class="j-score"><span class="acbb">${jr.match_score}</span><span class="sep">–</span><span class="opp">${jr.opp_score}</span></div>
-          </div>
-          <div class="j-body">
-            ${(() => {
-              const oppInfo = U.getOpponentLineup(current, jr.journee, e.opponent);
-              const oppJ = oppInfo && oppInfo.journee;
-              const oppPlayers = oppJ ? oppJ.players : [];
-              const acbbAvg = U.lineupAvgCls(jr.players);
-              const oppAvg = U.lineupAvgCls(oppPlayers);
-              // pad opp to 4
-              const oppPad = oppPlayers.slice(0,4);
-              while (oppPad.length < 4) oppPad.push({nom:'—',prenom:'',cls:null,vic:null});
-              const oppMvp = oppPlayers.length ? [...oppPlayers].sort((a,b)=>(b.vic||0)-(a.vic||0))[0] : null;
-              return `
-                <div class="lineup-head">
-                  <div class="side"><span>ACBB</span>${acbbAvg?`<span class="avg">⌀ ${acbbAvg}</span>`:''}</div>
-                  <div class="vs">VS</div>
-                  <div class="side right">${oppAvg?`<span class="avg">⌀ ${oppAvg}</span>`:''}<span>${U.shortOpp(e.opponent)}</span></div>
-                </div>
-                <div class="lineup-duo">
-                  <div class="lineup-side">
-                    ${jr.players.map(p => {
-                      const isMvp = e.mvp && e.mvp.nom === p.nom && e.mvp.prenom === p.prenom && p.vic > 0;
-                      return `
-                        <div class="p-cell">
-                          <div class="p-name">
-                            <span class="p-nom">${U.firstName(p)} ${p.nom}</span>
-                            <span class="p-cls">${U.clsDisplay(p.cls)}</span>
-                          </div>
-                          <div class="p-vic v${Math.min(3,p.vic||0)}${isMvp?' mvp':''}">${p.vic!=null?p.vic:'·'}</div>
-                        </div>
-                      `;
-                    }).join('')}
-                  </div>
-                  <div class="divider"></div>
-                  <div class="lineup-side right">
-                    ${oppPad.map(p => {
-                      const isOppMvp = oppMvp && p.nom === oppMvp.nom && p.prenom === oppMvp.prenom && (p.vic||0) > 0;
-                      return `
-                        <div class="p-cell">
-                          <div class="p-name">
-                            <span class="p-nom">${p.nom !== '—' ? (U.firstName(p) + ' ' + p.nom) : '—'}</span>
-                            <span class="p-cls">${U.clsDisplay(p.cls)}</span>
-                          </div>
-                          <div class="p-vic v${Math.min(3,p.vic||0)}${isOppMvp?' mvp':''}">${p.vic!=null?p.vic:'·'}</div>
-                        </div>
-                      `;
-                    }).join('')}
-                  </div>
-                </div>
-              `;
-            })()}
-            <div class="j-foot">
-              <span>Doubles <span class="num">${jr.doubles}/2</span></span>
-              ${jr.team_pts?`<span>Points équipe <span class="num">${jr.team_pts}</span></span>`:''}
-            </div>
-          </div>
-        </div>
-      `;
-    });
-    html += `</div>`;
-
-    // Standings
-    const st = window.STANDINGS[current];
-    if (st && st.length){
-      const maxJ = Math.max(...st.map(t=>t.mp));
-      html += `
-        <div class="standings anim-in">
-          <div class="st-h">
-            <div class="st-t"><span class="pip"></span>Classement</div>
-            <div class="st-sub">après J${maxJ}</div>
-          </div>
-          <table class="st">
-            <thead><tr><th>#</th><th class="l">Équipe</th><th>Pts</th><th>V/N/D</th><th>+/-</th></tr></thead>
-            <tbody>
-              ${st.map(t => {
-                const cls = [];
-                const isAcbb = /BOULOGNE/i.test(t.name);
-                if (isAcbb) cls.push('acbb');
-                if (t.pos === 1) cls.push('top1');
-                if (t.pos >= st.length-1 && !isAcbb) cls.push('danger');
-                const diff = (t.diff>0?'+':'') + t.diff;
-                const diffCls = t.diff>0?'pos':'neg';
-                return `<tr class="${cls.join(' ')}">
-                  <td><span class="pos">${t.pos}</span></td>
-                  <td class="l">${U.shortOpp(t.name)}</td>
-                  <td>${t.pts}</td>
-                  <td>${t.V}/${t.N}/${t.D}</td>
-                  <td class="diff ${diffCls}">${diff}</td>
-                </tr>`;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-
-    c.innerHTML = html;
-
-    // animate gauges
-    requestAnimationFrame(() => {
-      c.querySelectorAll('.gauge').forEach(g => {
-        const w = g.dataset.w;
-        setTimeout(() => { g.style.width = w; }, 150);
-      });
-    });
-
-    // Auto-scroll calendar to the right so the most recent journées are visible by default
-    requestAnimationFrame(() => {
-      const cal = c.querySelector('.calendar');
-      if (cal && cal.scrollWidth > cal.clientWidth) {
-        cal.scrollLeft = cal.scrollWidth;
-      }
-    });
-  }
-
-  renderAll();
 })();
 </script>
-<script src="report.js" defer></script>
 </body>
 </html>

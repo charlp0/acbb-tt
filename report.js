@@ -1,27 +1,26 @@
-/* ACBB TT — Encart "Signaler une erreur" + modale (formulaire Formspree).
+/* ACBB TT — refonte : encart "Signaler une erreur" + modale (Formspree + copie serveur).
    Auto-injecté sur toutes les pages qui incluent <script src="report.js" defer></script>.
    ⚠️ Remplace ENDPOINT par ton URL Formspree (https://formspree.io/f/xxxxxxx). */
 (function(){
   "use strict";
   var ENDPOINT = "https://formspree.io/f/xjgdopjr";
-  // Copie chaque signalement dans Supabase (append-only, insert seul, lecture réservée service_role).
-  var SB_URL = "https://vhhmageufrcenruywawg.supabase.co";
-  var SB_KEY = "sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay";
+  // Copie chaque signalement côté serveur (fonction Edge `api`, route publique limitée en fréquence).
+  // Aucune table n'est jointe directement depuis le navigateur.
+  var API_URL = "https://vhhmageufrcenruywawg.supabase.co/functions/v1/api/public/signaler";
+  var API_KEY = "sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay"; // clé publique : sert uniquement à joindre la fonction
   function logSupa(form){
     try{
-      fetch(SB_URL+"/rest/v1/signalements_log",{
-        method:"POST",
-        headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY,
-                 "Content-Type":"application/json","Prefer":"return=minimal"},
-        body:JSON.stringify({
-          page:(form.page&&form.page.value||"").slice(0,500),
-          type:(form.type&&form.type.value||"").slice(0,120),
-          message:(form.message&&form.message.value||"").slice(0,4000),
-          email:(form.email&&form.email.value||"").slice(0,200),
-          url:location.href, title:(document.title||"").slice(0,300),
-          ua:(navigator.userAgent||"").slice(0,300)
-        })
-      }).catch(function(){});
+      var body={
+        page:(form.page&&form.page.value||"").slice(0,500),
+        type:(form.type&&form.type.value||"").slice(0,120),
+        message:(form.message&&form.message.value||"").slice(0,4000),
+        email:(form.email&&form.email.value||"").slice(0,200),
+        url:location.href, title:(document.title||"").slice(0,300),
+        ua:(navigator.userAgent||"").slice(0,300)
+      };
+      var hd={"Content-Type":"application/json","apikey":API_KEY,"Authorization":"Bearer "+API_KEY};
+      try{ if(window.ACBB){ hd["x-acbb-token"]=window.ACBB.token(); hd["x-acbb-device"]=window.ACBB.deviceId(); } }catch(e){}
+      fetch(API_URL,{method:"POST",headers:hd,body:JSON.stringify(body)}).catch(function(){});
     }catch(e){}
   }
 

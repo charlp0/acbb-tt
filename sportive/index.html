@@ -1,10 +1,12 @@
 <!DOCTYPE html><html lang="fr"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>ACBB TT — Scoring equipes (interne)</title>
+<title>ACBB TT — Scoring &amp; compos (sportive)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,600;0,700;0,800;1,700&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../shared/style.css">
+<link rel="icon" type="image/png" href="../logo.png">
+<link rel="manifest" href="../../manifest.json">
 <meta name="theme-color" content="#0B0B0D">
 <style>
   :root{
@@ -42,20 +44,6 @@
   @media (min-width:900px){.wrap{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
   ::-webkit-scrollbar{display:none}
 
-  /* HEADER */
-  .header{position:sticky;top:0;z-index:50;padding:12px 16px 11px;background:rgba(11,11,13,0.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-  .header-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .logo{display:flex;align-items:center;gap:10px}
-  .logo-img{width:38px;height:38px;border-radius:8px;background:#fff;padding:3px;border:1px solid var(--line-2);object-fit:contain;flex-shrink:0;box-shadow:0 4px 12px rgba(242,106,27,0.18)}
-  .logo-name{font-size:13px;font-weight:700;letter-spacing:-0.3px;line-height:1}
-  .logo-sub{font-size:9px;color:var(--dim);font-family:"JetBrains Mono",monospace;margin-top:3px;letter-spacing:0.4px;text-transform:uppercase;white-space:nowrap}
-  .head-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-  .head-link{display:inline-flex;align-items:center;gap:5px;padding:8px 11px;border-radius:99px;background:var(--paper);border:1px solid var(--line-2);color:var(--ink);font-size:11px;font-weight:600;text-decoration:none}
-  .head-link span{font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--dim);font-weight:500;letter-spacing:0.4px;text-transform:uppercase}
-  .head-link.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .head-link.active span{color:rgba(255,255,255,0.5)}
-  .brulage{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:99px;background:var(--ink);border:1px solid var(--ink);color:var(--paper);font-size:11px;font-weight:600;text-decoration:none}
-  .brulage::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
 
   /* HERO */
   .hero{padding:28px 20px 12px}
@@ -222,31 +210,6 @@
   .anim-in{animation:fadeUp .35s cubic-bezier(.2,.7,.3,1)}
   @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-  /* ===== UNIFIED HEADER ===== */
-  .topstack{position:sticky;top:0;z-index:50}
-  .topstack .header{position:static}
-  .topstack .selector{position:static;top:auto}
-  .header{position:sticky;top:0;z-index:50;padding:10px 12px;background:rgba(11,11,13,0.72);backdrop-filter:blur(20px) saturate(1.2);-webkit-backdrop-filter:blur(20px) saturate(1.2);border-bottom:1px solid var(--line)}
-  .header-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);flex-shrink:0}
-  .brand-img{width:34px;height:34px;border-radius:8px;background:#fff;padding:2px;border:1px solid var(--line-2);object-fit:contain;flex-shrink:0}
-  .brand-text{display:none;flex-direction:column;line-height:1}
-  @media (min-width:560px){.brand-text{display:flex}}
-  .brand-name{font-size:12px;font-weight:700;letter-spacing:-0.3px;color:var(--ink)}
-  .brand-sub{font-size:8.5px;color:var(--dim);margin-top:3px;font-family:"JetBrains Mono",monospace;letter-spacing:0.3px;text-transform:uppercase;white-space:nowrap}
-  .nav{display:flex;align-items:center;gap:3px}
-  .nav-link{padding:7px 9px;border-radius:99px;font-size:11px;font-weight:600;color:var(--ink-2);text-decoration:none;white-space:nowrap;letter-spacing:-0.1px;border:1px solid transparent}
-  .nav-link:hover{color:var(--ink);background:rgba(255,255,255,0.04)}
-  .nav-link.active{background:var(--panel-2);color:var(--ink);border-color:var(--line-2)}
-  .nav-cta{display:inline-flex;align-items:center;gap:5px;padding:8px 11px;border-radius:99px;background:var(--orange);color:#fff;border:1px solid var(--orange);font-size:11px;font-weight:700;text-decoration:none;letter-spacing:0.2px;white-space:nowrap}
-  .nav-cta::before{content:"";width:5px;height:5px;border-radius:50%;background:#fff}
-  .nav-cta.active{background:var(--orange);border-color:var(--orange)}
-  .nav-cta.active::before{background:#fff}
-  @media (max-width:420px){
-    .nav-link{padding:7px 8px;font-size:10.5px}
-    .nav-cta{padding:7px 10px;font-size:10.5px}
-    .brand-img{width:32px;height:32px}
-  }
 
   .sc-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
   .sc{width:100%;border-collapse:collapse;font-size:12.5px;min-width:560px}
@@ -256,10 +219,6 @@
   .sc th:first-child,.sc td.rk{text-align:center}
   .sc .rk{font-family:"JetBrains Mono",monospace;color:var(--dim);min-width:40px;padding-left:8px;padding-right:8px}
   .mut-badge{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:800;letter-spacing:0.3px;text-transform:uppercase;color:var(--orange);background:rgba(242,106,27,0.14);border:1px solid rgba(242,106,27,0.45);border-radius:99px;padding:1px 6px;margin-left:7px;vertical-align:middle;white-space:nowrap}
-  /* ===== SOUS-NAV ESPACE SPORTIVE ===== */
-  .subnav{display:flex;gap:7px;padding:14px 20px 0}
-  .subnav a{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:9px 14px;border-radius:99px;background:var(--paper);border:1px solid var(--line-2);color:var(--ink-2);text-decoration:none}
-  .subnav a.active{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
   /* ===== MINI TABLEAU ÉQUIPES 26/27 ===== */
   .teams-mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:9px;margin-bottom:26px}
   .tm-card{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:10px 11px;display:flex;flex-direction:column;gap:5px}
@@ -336,75 +295,43 @@
   .ctrl .kval{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:18px;color:var(--orange);min-width:34px;text-align:right}
   .ctrl .hint{font-size:10px;color:var(--dim);font-style:italic}
   .sc-search{flex:1;min-width:200px;padding:10px 13px;border-radius:10px;background:var(--panel);border:1px solid var(--line-2);color:var(--ink);font-size:13px;font-family:inherit}
+  /* ===== refonte : ajustements (en-tête partagé shared/style.css, alertes règlement, historique) ===== */
+  .wrap{padding:0}
+  .hdrwrap{padding:16px 20px 0}
+  .ctrl input[type=range]{width:auto;padding:0;background:transparent;border:0;border-radius:0}
+  .sc-search{width:auto}
+  .savebar{flex-wrap:wrap}
+  .savebar .savenote{flex:1;min-width:170px;max-width:320px;width:auto;background:var(--panel);border:1px solid var(--line-2);border-radius:99px;color:var(--ink);font-family:inherit;font-size:11.5px;padding:8px 12px}
+  .savebar .savenote:focus{border-color:var(--orange)}
+  .savebar .sign{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--orange);white-space:nowrap}
+  .tm-al{display:flex;flex-direction:column;gap:3px;margin-top:6px}
+  .al{font-size:9.5px;line-height:1.35;border-radius:6px;padding:3px 6px;font-family:"JetBrains Mono",monospace}
+  .al.err{background:var(--lose-bg);color:#FCA5A5;border:1px solid rgba(242,99,86,.4)}
+  .al.warn{background:var(--warn-bg);color:var(--warn);border:1px solid rgba(250,204,21,.35)}
+  .al.info{background:rgba(96,165,250,.10);color:#93C5FD;border:1px solid rgba(96,165,250,.3)}
+  .histo{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:6px 12px;max-width:760px;font-family:"JetBrains Mono",monospace;font-size:11px}
+  .histo .hi{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line)}
+  .histo .hi:last-of-type{border-bottom:none}
+  .histo .hn{color:var(--orange);font-weight:800;min-width:40px}
+  .histo .hw{font-weight:700}
+  .histo .hd{color:var(--dim)}
+  .histo .hm{color:var(--ink-2);flex:1;min-width:120px}
+  .histo .tagbtn{margin:8px 0}
+  .denied{padding:60px 20px;max-width:640px}
+  .denied .hero-sub a{color:var(--orange)}
 </style>
-<link rel="icon" type="image/png" href="../logo.png">
 </head><body><div class="wrap">
-<header class="header">
-  <div class="header-row">
-    <a href="../accueil.html" class="brand">
-      <img class="brand-img" src="../logo.png" alt="ACBB">
-      <div class="brand-text">
-        <div class="brand-name">ACBB TT</div>
-        <div class="brand-sub">Outil interne</div>
-      </div>
-    </a>
-    <nav class="nav">
-      <a href="../accueil.html" class="nav-link">Accueil</a>
-      <a href="../joueurs.html" class="nav-link">Joueurs</a>
-      <a href="../stats.html" class="nav-link">Ch. Équipe 25/26</a>
-      <a href="index.html" class="nav-link active">Sportive</a>
-    </nav>
-  </div>
-</header>
-<div id="gate" style="position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px">
-  <div style="max-width:340px;width:100%;text-align:center">
-    <div style="font-family:'Saira Condensed',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:34px;letter-spacing:0.5px;margin-bottom:6px">Espace <span style="color:var(--orange)">Sportive</span></div>
-    <p style="color:var(--dim);font-size:13px;margin-bottom:18px">Outil interne de composition — accès réservé.</p>
-    <input id="gpw" type="password" placeholder="Mot de passe" autocomplete="off"
-      style="width:100%;background:var(--panel-2);border:1px solid var(--line-2);border-radius:99px;color:var(--ink);font-size:15px;font-family:inherit;padding:12px 18px;outline:none;text-align:center">
-    <button id="gbtn" style="margin-top:12px;width:100%;background:var(--orange);border:none;border-radius:99px;color:#0B0B0D;font-size:14px;font-weight:700;font-family:inherit;padding:12px;cursor:pointer">Entrer</button>
-    <p id="gerr" style="color:var(--lose);font-size:12px;margin-top:10px;height:14px"></p>
-    <a href="../accueil.html" style="color:var(--dim);font-size:12px;text-decoration:none">← Retour au site</a>
-  </div>
-</div>
-<script>
-(function(){
-  var g=document.getElementById('gate');
-  function ok(){ g.style.display='none'; try{sessionStorage.setItem('acbb_sportive','1')}catch(e){} }
-  try{ if(sessionStorage.getItem('acbb_sportive')==='1'){ ok(); return; } }catch(e){}
-  document.documentElement.style.overflow='hidden';
-  function unlock(){ document.documentElement.style.overflow=''; ok(); }
-  var GH='359d888f0c14b4835cec5d55404ab307115c4841f77e226ccd592bb943ccdabb'; // SHA-256 du mot de passe
-  async function tryPw(){
-    var err=document.getElementById('gerr'), inp=document.getElementById('gpw');
-    try{ // verrouillage progressif : 5 échecs -> 60 s
-      var L=JSON.parse(localStorage.getItem('acbb_gate_l')||'{"n":0,"t":0}');
-      if(L.n>=5 && Date.now()-L.t<60000){ err.textContent='Trop d\'essais — réessaie dans 1 min'; return; }
-      if(Date.now()-L.t>=60000) L.n=0;
-    }catch(e){ var L={n:0,t:0}; }
-    var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(inp.value.trim()));
-    var h=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
-    if(h===GH){ try{localStorage.removeItem('acbb_gate_l');}catch(e){} unlock(); return; }
-    L.n++; L.t=Date.now(); try{localStorage.setItem('acbb_gate_l',JSON.stringify(L));}catch(e){}
-    err.textContent='Mot de passe incorrect';
-    // journalise l'échec (l'IP est ajoutée côté Supabase, pas ici) — silencieux si la table n'existe pas
-    try{ var _S='https://vhhmageufrcenruywawg.supabase.co',_K='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay';
-    fetch(_S+'/rest/v1/gate_log',{method:'POST',headers:{'apikey':_K,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body:JSON.stringify({page:location.pathname,ua:navigator.userAgent.slice(0,120)})}).catch(function(){}); }catch(e){}
-  }
-  document.getElementById('gbtn').addEventListener('click',tryPw);
-  document.getElementById('gpw').addEventListener('keydown',function(e){ if(e.key==='Enter') tryPw(); });
-  document.getElementById('gpw').focus();
-})();
-</script>
-<nav class="subnav">
-  <a href="index.html" class="active">🎯 Scoring &amp; compos</a>
-  <a href="poules.html">🏆 Poules 26/27</a>
-  <a href="suivi-dispos.html">📊 Suivi des dispos</a>
-  <a href="contraintes.html">📋 Contraintes</a>
-  <a href="journee.html">📅 Compos journée</a>
-  <a href="rentree-2026.html">📽 Rentrée 2026</a>
-</nav>
+<div class="hdrwrap"><div id="hdr"></div></div>
+
+<!-- accès refusé (rôle ≠ sportive) -->
+<section id="denied" class="denied" hidden>
+  <div class="eyebrow">Espace sportive</div>
+  <h1 class="hero-title">Accès <em>réservé.</em></h1>
+  <p class="hero-sub">Cette page est réservée à la sportive. <b>Ouvre ton lien personnel</b> (il contient ton jeton d'accès) pour y accéder. <span id="deniedWhy" style="color:var(--dim)"></span></p>
+  <p style="margin-top:18px"><a href="../index.html" class="tagbtn">← Retour au site</a></p>
+</section>
+
+<div id="app" hidden>
 <div class="hero">
   <div class="eyebrow">Outil interne · Préparation des équipes</div>
   <h1 class="hero-title">Scoring<br><em>composition.</em></h1>
@@ -426,6 +353,8 @@
     <span id="prmSync" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim);white-space:nowrap"></span>
     <div class="savebar" id="saveBar">
       <button id="saveTags" type="button">💾 Enregistrer les tags</button>
+      <input id="saveNote" class="savenote" placeholder="note de version (ex. retrait Mondino)" maxlength="80" autocomplete="off">
+      <span class="sign" id="saveSign"></span>
       <span class="st" id="saveSt"></span>
     </div>
   </div>
@@ -438,17 +367,27 @@
     <span><i style="background:#FACC15"></i> Pas de réponse</span>
     <span><span class="agec" style="background:rgba(242,106,27,.18);color:#F26A1B;border-color:rgba(242,106,27,.55)">C</span> = capitaine</span><span><span class="agec ex">EX</span> = hors UE (1 max par feuille, II.609)</span>
   </div>
+  <div class="legend" style="margin-top:-6px">
+    <span style="color:var(--dim)">Alertes règlement sous chaque carte, recalculées à chaque dépôt :</span>
+    <span><i style="background:var(--lose)"></i> erreur (N1 &lt; 1800 pts · 2 joueurs EX)</span>
+    <span><i style="background:var(--warn)"></i> avertissement (fratries, Mandelmilech ≠ Allegre, EX à confirmer)</span>
+    <span><i style="background:#60A5FA"></i> rappel (Emiliano à domicile)</span>
+    <span style="color:var(--dim)">— l'enregistrement reste possible.</span>
+  </div>
   <div class="teams-mini" id="teamsMini"></div>
   <div class="section-h">Pools de remplacement par division</div>
   <div class="teams-mini" id="poolsMini"></div>
+  <div class="section-h">Historique des enregistrements<span style="margin-left:auto;font-size:10px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--dim)">dernières versions de la compo officielle (tags), signées par le lien</span></div>
+  <div class="histo" id="histo" style="margin-bottom:26px"><div class="tm-sub" style="padding:6px 0">chargement…</div></div>
   <div class="section-h" style="margin-top:22px">Équipes féminines 2026/2027 — compos Laura (hors suivi des dispos)<span id="femSt" style="margin-left:auto;font-size:10px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--dim)"></span></div>
   <div class="tm-sub" style="margin:-10px 0 12px">Glisse une joueuse entre <b>Titulaires</b> et <b>Remplaçantes</b> ou vers une autre équipe : l'enregistrement est immédiat et partagé.</div>
   <div class="teams-mini" id="femMini"></div>
   <div class="section-h">Classement scoring</div>
   <div class="sc-wrap"><table class="sc"><thead><tr><th>#</th><th>Joueur</th><th>Compo&nbsp;26/27</th><th>Officiel&nbsp;26/27</th><th>Ch.&nbsp;équipe&nbsp;M&nbsp;Ph2</th><th>Tendance 4&nbsp;phases</th><th>Score</th><th>Traj.</th></tr></thead><tbody id="tb"></tbody></table></div>
-  <p style="font-size:11px;color:var(--dim);font-style:italic;margin-top:12px">Base = classement officiel 2026/2027 (publié début juillet). Tendance = pente de régression sur les 4 dernières phases du classement officiel (survole pour voir le détail). Trajectoire : ↗ progression (≥+30), ↘ baisse (≤−30). Données API FFTT. Page non listée (accès direct uniquement).</p>
+  <p style="font-size:11px;color:var(--dim);font-style:italic;margin-top:12px">Base = classement officiel 2026/2027 (publié début juillet). Tendance = pente de régression sur les 4 dernières phases du classement officiel (survole pour voir le détail). Trajectoire : ↗ progression (≥+30), ↘ baisse (≤−30). Données API FFTT. Accès par lien personnel (sportive).</p>
 </section>
-</div>
+</div><!-- /app -->
+</div><!-- /wrap -->
 <div id="tagModal">
   <div class="tmbox">
     <h3>Compo <span style="color:var(--orange)">26/27</span></h3>
@@ -462,28 +401,59 @@
     <div class="tmrow"><button type="button" id="tmCancel">Annuler</button><button type="button" class="ok" id="tmOk">Appliquer</button></div>
   </div>
 </div>
+<script src="../shared/api.js"></script>
+<script src="../shared/nav.js" data-base=".."></script>
+<script src="../shared/report.js" defer></script>
 <script src="../data/scoring.js"></script>
 <script>
+/* ===== Accès : le rôle est donné par le serveur (GET /me, jeton du lien personnel porté par shared/api.js).
+   Aucune lecture ni écriture directe de la base : tout passe par la fonction serveur (proxy /spo/rest).
+   Mode test local : ?dev=1 (sur localhost / 127.0.0.1 uniquement) simule {role:'sportive', nom:'Test'} ; les lectures
+   serveur renvoient vide et les écritures sont refusées. Il ne donne accès à rien : les données réelles
+   (tags, dispos, historique) ne viennent que du serveur, jamais de ce mode. ===== */
+const DEV=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)&&new URLSearchParams(location.search).get('dev')==='1';
+const ACTIVE_TAB='🎯 Scoring & compos';
+let ME=null;
+const AUTH=(async function(){
+  let me={role:null};
+  try{ me=DEV?{role:'sportive',nom:'Test'}:await ACBB.api('me'); }catch(e){ me={role:null,err:e.message}; }
+  if(!me||me.role!=='sportive'){
+    renderNav({active:ACTIVE_TAB,role:(me&&me.role)||'',team:(me&&me.equipe)||'',name:(me&&me.nom)||''});
+    document.getElementById('denied').hidden=false;
+    if(me&&me.err) document.getElementById('deniedWhy').textContent='(serveur : '+me.err+')';
+    return null;
+  }
+  ME=me; renderNav({active:ACTIVE_TAB,role:'sportive',name:me.nom, team:(typeof me!=='undefined'&&me&&me.equipe)||null});
+  document.getElementById('app').hidden=false;
+  const s=document.getElementById('saveSign'); if(s) s.textContent='sera signée '+me.nom+(DEV?' (mode dev)':'');
+  return me;
+})();
+/* helpers d'accès serveur : select = même chaîne PostgREST qu'avant (sans le nom de table) ; insert = body sans auteur,
+   le serveur signe « <nom du lien> — <suffixe body.author> » */
+const spoSelect=(table,query)=>DEV?Promise.resolve([]):ACBB.api('spo/rest',{table:table,method:'select',query:query});
+const spoInsert=(table,body)=>DEV?Promise.reject(new Error('mode dev : enregistrement désactivé')):ACBB.api('spo/rest',{table:table,method:'insert',body:body});
+const onAuth=fn=>AUTH.then(me=>me?fn(me):undefined);
+const DATA='../data/';
+const gj=u=>fetch(DATA+u,{cache:'no-cache'}).then(r=>r.ok?r.json():Promise.reject(new Error(u)));
+</script>
+<script>
 const D=(window.__SCORING&&window.__SCORING.players)||[];
-let CAPT_MAP={}; fetch('../data/capitaines.json',{cache:'no-cache'}).then(r=>r.json()).then(j=>{CAPT_MAP=j.capitaines||{};if(typeof render==='function')render();if(typeof renderFem==='function')renderFem();}).catch(()=>{});
+let CAPT_MAP={}; onAuth(()=>gj('capitaines.json')).then(j=>{ if(!j)return; CAPT_MAP=j.capitaines||{};if(typeof render==='function')render();if(typeof renderFem==='function')renderFem();}).catch(()=>{});
 /* badge C = capitaine DE L'ÉQUIPE AFFICHÉE (une joueuse capitaine en F3 ne l'est pas dans son équipe masculine) */
 const isCaptOf=(p,team)=>{const c=CAPT_MAP[team]; const k=String(p.lic||p._k||''); return c?(Array.isArray(c)?c.indexOf(k)>=0:c===k):false;};
 const captBadge=(p,team)=>isCaptOf(p,team)?'<span class="ref-r" title="capitaine de l\'équipe">C</span>':'';
 /* joueurs extra-communautaires (hors UE) : 1 seul par feuille en équipe de 4 (II.609) — data/extra_communautaires.json */
 let EXC={ex:new Set(),conf:new Set()};
-fetch('../data/extra_communautaires.json',{cache:'no-cache'}).then(r=>r.json()).then(j=>{EXC={ex:new Set(Object.values(j.ex||{}).map(String)),conf:new Set(Object.values(j.a_confirmer||{}).map(String))};if(typeof render==='function')render();}).catch(()=>{});
-const exBadge=p=>{const k=String(p.lic||pkey(p)); return EXC.ex.has(k)?'<span class="agec ex" title="nationalité hors UE / EEE / Suisse / RU : 1 seul par feuille (II.609)">EX</span>':(EXC.conf.has(k)?'<span class="agec ex q" title="nationalité hors UE à confirmer">EX?</span>':'');};
+onAuth(()=>gj('extra_communautaires.json')).then(j=>{ if(!j)return; EXC={ex:new Set(Object.values(j.ex||{}).map(String)),conf:new Set(Object.values(j.a_confirmer||{}).map(String))};if(typeof render==='function')render();}).catch(()=>{});
+const exKey=p=>String(p.lic||pkey(p));
+const exBadge=p=>{const k=exKey(p); return EXC.ex.has(k)?'<span class="agec ex" title="nationalité hors UE / EEE / Suisse / RU : 1 seul par feuille (II.609)">EX</span>':(EXC.conf.has(k)?'<span class="agec ex q" title="nationalité hors UE à confirmer">EX?</span>':'');};
 const tb=document.getElementById('tb'), q=document.getElementById('q'), ks=document.getElementById('k'), kv=document.getElementById('kv'), cs=document.getElementById('cap'), cv=document.getElementById('capv');
 function traj(t){return t>=30?'<span class="up">↗</span>':(t<=-30?'<span class="down">↘</span>':'<span class="flat">→</span>');}
 
-/* ===== TAGS COMPO 26/27 (partagés via data/tags.json, commit GitHub) ===== */
-/* Supabase (clé publishable = publique par design ; RLS = lecture + insertion uniquement sur tags_log) */
-const SB_URL='https://vhhmageufrcenruywawg.supabase.co';
-const SB_KEY='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay';
-const SB_HD={'apikey':SB_KEY};   // clé publishable (publique) — l'en-tête apikey suffit
+/* ===== TAGS COMPO 26/27 (journal tags_log via la fonction serveur : la dernière ligne fait foi) ===== */
 let TAGS={}, DIRTY=new Set(), CURKEY=null;
 const pkey=p=>String(p.lic||((p.nom||'')+'|'+(p.pre||'')));
-const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 function draftSave(){try{localStorage.setItem('acbb_tags_draft',JSON.stringify({keys:[...DIRTY],tags:Object.fromEntries([...DIRTY].map(k=>[k,TAGS[k]||null]))}));}catch(e){}}
 function draftLoad(){try{const d=JSON.parse(localStorage.getItem('acbb_tags_draft')||'null');if(!d)return;(d.keys||[]).forEach(k=>{DIRTY.add(k);if(d.tags[k])TAGS[k]=d.tags[k];else delete TAGS[k];});}catch(e){}}
 function tagStr(t){if(!t)return'';return [t.d,(t.r==='T'?'TIT':(t.r==='R'?'REMP':'')),t.e].filter(Boolean).join(' ');}
@@ -521,7 +491,7 @@ function updateSaveBar(){
 /* ---- dispos Phase 1 : couleur des noms (g=titulaire dispo, o=pas de réponse, r=non dispo/remplaçant/peu dispo) ---- */
 let VOTES={}, DISPO_READY=false;
 let AGECAT={};
-fetch('../data/categories.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(j=>{AGECAT=j||{}; renderTeamsMini();}).catch(()=>{});
+onAuth(()=>gj('categories.json')).then(j=>{ if(!j)return; AGECAT=j||{}; renderTeamsMini();}).catch(()=>{});
 const ageBadge=p=>{const c=AGECAT[String(p.lic)]||AGECAT[nrmK(p.nom)+'|'+nrmK(p.pre)]; return c?('<span class="agec'+(c==='S'?' s':'')+'" title="cat. d age">'+c+'</span>'):'';};
 const nrmK=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 const BYSN={};
@@ -543,18 +513,47 @@ function dispoStatus(p){
   if(roles.indexOf('T')<0) return 'o';              // remplaçant/capitaine seul -> orange
   return n>=4?'g':'o';                               // titulaire : ≥4 journées = vert, sinon (≤3) orange
 }
-fetch(SB_URL+'/rest/v1/dispos_log?select=licence,nom,prenom,dispos,n&order=id.asc',{headers:SB_HD})
-  .then(r=>r.ok?r.json():[]).then(rows=>{ rows.forEach(r=>{ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)) VOTES[canonV(r)]=r; }); DISPO_READY=true; renderTeamsMini(); })
+onAuth(()=>spoSelect('dispos_log','select=licence,nom,prenom,dispos,n&order=id.asc'))
+  .then(rows=>{ if(!rows)return; rows.forEach(r=>{ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)) VOTES[canonV(r)]=r; }); DISPO_READY=true; renderTeamsMini(); })
   .catch(()=>{});
 
 let DIVOPP={};
-fetch('../data/teams.json',{cache:'no-cache'}).then(r=>r.json()).then(j=>{
+onAuth(()=>gj('teams.json')).then(j=>{ if(!j)return;
   const acc={};
   (j.teams||[]).forEach(t=>{ if(t.genre!=='M'||!t.opp||!t.n)return;
     (acc[t.short]=acc[t.short]||{s:0,n:0}); acc[t.short].s+=t.opp*t.n; acc[t.short].n+=t.n; });
   Object.keys(acc).forEach(k=>DIVOPP[k]=Math.round(acc[k].s/acc[k].n));
   render();
 }).catch(()=>{});
+
+/* ===== Alertes règlement par carte d'équipe — même logique que checkTeam (Compos journée), appliquée aux titulaires tagués.
+   err = rouge (N1 < 1800 pts II.243 · 2 joueurs hors UE II.609) ; warn = jaune (fratries séparées, Mandelmilech avec un Allegre,
+   statut EX à confirmer) ; info = rappel (Emiliano de préférence à domicile). L'enregistrement reste toujours possible. ===== */
+const INT={allegre:['ALLEGREGUILLAUME|ANTOINE','ALLEGREGUILLAUME|BAPTISTE'],intins:['INTINS|DAVID','INTINS|ARTHUR'],mandel:'MANDELMILECH|ADRIEN',emiliano:'BARVANEGAS|EMILIANO'};
+const shortN=p=>(p.pre?p.pre[0]+'. ':'')+p.nom;
+function whereIsF(f){ const p=D.find(x=>fkey(x)===f); if(!p)return null; const t=TAGS[pkey(p)]; if(!t)return null; if(t.e)return (t.r==='T'?'titulaire ':'remplaçant ')+t.e; if(t.r==='R'&&t.d)return 'pool '+t.d; return null; }
+function teamAlerts(k,tit){
+  const out=[]; const add=(lvl,msg)=>out.push({lvl,msg});
+  if(k==='M2') tit.forEach(p=>{ if(p.men&&p.men<1800) add('err',shortN(p)+' : '+p.men+' pts < 1800 (minimum N1, II.243)'); });
+  const exs=tit.filter(p=>EXC.ex.has(exKey(p))), exq=tit.filter(p=>EXC.conf.has(exKey(p)));
+  if(exs.length>1) add('err','II.609 : '+exs.length+' joueurs hors UE ('+exs.map(shortN).join(', ')+') — 1 seul autorisé par feuille');
+  else if(exs.length+exq.length>1) add('warn','II.609 : '+(exs.length+exq.length)+' hors UE possibles ('+exs.concat(exq).map(shortN).join(', ')+') — statut à confirmer');
+  const has=f=>tit.some(p=>fkey(p)===f);
+  [['allegre','les frères Allegre Guillaume doivent jouer ensemble'],['intins','les deux Intins doivent jouer ensemble']].forEach(([key,msg])=>{
+    const [a,b]=INT[key]; const ha=has(a), hb=has(b);
+    if(ha!==hb){ const w=whereIsF(ha?b:a); add('warn',msg+(w?' (l\'autre est '+w+')':' (l\'autre n\'est pas titulaire tagué)')); }
+  });
+  if(has(INT.mandel)&&(has(INT.allegre[0])||has(INT.allegre[1]))) add('warn','Mandelmilech ne doit jamais jouer avec les frères Allegre Guillaume');
+  if(has(INT.emiliano)) add('info','Emiliano Bar Vanegas : de préférence à domicile — à vérifier journée par journée (Compos journée)');
+  return out;
+}
+const alertsHtml=al=>al.length?'<div class="tm-al">'+al.map(a=>'<div class="al '+a.lvl+'">'+(a.lvl==='err'?'⛔':(a.lvl==='warn'?'⚠':'ℹ'))+' '+esc(a.msg)+'</div>').join('')+'</div>':'';
+function ruleSummary(){ // pour le panneau flottant : équipes en alerte
+  const out=[];
+  Object.keys(TEAMDIV).forEach(k=>{ const tit=D.filter(p=>{const t=TAGS[pkey(p)];return t&&t.e===k&&t.r==='T';}); const al=teamAlerts(k,tit); const e=al.filter(a=>a.lvl==='err').length, w=al.filter(a=>a.lvl==='warn').length; if(e||w) out.push({t:k,e,w}); });
+  return out;
+}
+
 function renderTeamsMini(){
   const el=document.getElementById('teamsMini'); if(!el)return;
   el.innerHTML=Object.keys(TEAMDIV).map(k=>{
@@ -571,7 +570,6 @@ function renderTeamsMini(){
           const pcTitle=e2&&e2.n?e2.v+'V/'+(e2.n-e2.v)+'D en ph2 25/26 (ch. équipe M, simples)':'aucun match ch. équipe M en ph2 25/26';
           const dst=DISPO_READY?dispoStatus(p):'';
           const dsc=dst?(' dsp-'+dst):'';
-          const _vr=voteForP(p);
           const refB=captBadge(p,k)+exBadge(p);
           const dTit=dst?(FORCE_STATUS[fkey(p)]||DISPO_TIP[dst]):'';
           return '<div class="tm-p" draggable="true" data-k="'+esc(pkey(p))+'"><span class="nmn'+dsc+'"'+(dTit?' title="'+esc(dTit)+'"':'')+'>'+ageBadge(p)+refB+esc((p.pre?p.pre[0]+'. ':'')+p.nom)+'</span><span class="pt">'+p.men+'</span><span class="pc '+pcCls+'" title="'+esc(pcTitle)+'">'+pcTxt+'</span></div>';
@@ -584,6 +582,7 @@ function renderTeamsMini(){
       +(DIVOPP[div]?'<span class="vs" title="niveau mensuel moyen des adversaires rencontrés en '+div+' (phase 2 2025/26)">vs '+DIVOPP[div]+'</span>':'')+'</div>'
       +(top4!=null&&tit.length>4?'<div class="tm-top4" title="moyenne des 4 meilleurs titulaires">'+top4+'<span class="u">TOP4</span></div>':'')
       +names
+      +alertsHtml(teamAlerts(k,tit))
       +'</div>';
   }).join('');
   renderPools();
@@ -650,16 +649,16 @@ function renderFem(){
   const st=document.getElementById('femSt'); if(st)st.textContent=FEM_ST;
 }
 function femSave(){
-  let author=localStorage.getItem('acbb_tag_author'); if(!author){author=(prompt('Ton prénom (pour l\'historique des compos) :')||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
   FEM_ST='enregistrement…'; renderFem();
-  fetch(SB_URL+'/rest/v1/scenarios_log',{method:'POST',headers:Object.assign({'Content-Type':'application/json','Prefer':'return=minimal'},SB_HD),body:JSON.stringify({tags:FEM,author:author+' · filles',slot:'fem'})})
-    .then(r=>{ FEM_ST=r.ok?('✓ compos filles enregistrées à '+new Date().toTimeString().slice(0,5)):'⚠ échec enregistrement ('+r.status+')'; renderFem(); })
-    .catch(()=>{ FEM_ST='⚠ échec enregistrement (réseau)'; renderFem(); });
+  // plus d'auteur saisi : le serveur signe « <nom du lien> — filles »
+  spoInsert('scenarios_log',{tags:FEM,author:'filles',slot:'fem'})
+    .then(()=>{ FEM_ST='✓ compos filles enregistrées à '+new Date().toTimeString().slice(0,5)+(ME?' (signé '+ME.nom+')':''); renderFem(); })
+    .catch(e=>{ FEM_ST='⚠ échec enregistrement ('+(e&&e.message||'réseau')+')'; renderFem(); });
 }
-(async function(){   // chargement de la dernière compo filles partagée
-  try{ const g=await fetch(SB_URL+'/rest/v1/scenarios_log?select=tags&slot=eq.fem&order=id.desc&limit=1',{headers:SB_HD}); if(g.ok){const a=await g.json(); if(a.length&&a[0].tags){FEM=a[0].tags;}} }catch(e){}
+onAuth(async function(){   // chargement de la dernière compo filles partagée
+  try{ const a=await spoSelect('scenarios_log','select=tags&slot=eq.fem&order=id.desc&limit=1'); if(a.length&&a[0].tags){FEM=a[0].tags;} }catch(e){}
   renderFem();
-})();
+});
 /* D&D filles : entre titulaires/remplaçantes et entre équipes F1-F3 (type 'fem:' ignoré par le module hommes) */
 document.addEventListener('dragstart',function(ev){
   const el=ev.target.closest?ev.target.closest('.fm-p[data-fk]'):null; if(!el)return;
@@ -696,10 +695,10 @@ function render(){
     const badge=p.mut?' <span class="mut-badge">Mutation '+p.mut+'</span>':'';
     const trj=hasT?traj(p.tend):'<span class="flat">·</span>';
     const e2=p.eq2?('<span class="'+(p.eq2.pct>=50?'up':'down')+'">'+p.eq2.pct+'%</span> <span style="color:var(--dim)">· '+p.eq2.n+'m</span>'):'<span class="flat">—</span>';
-    return '<tr><td class="rk">'+(i+1)+'</td><td class="nm">'+p.pre+' '+p.nom+badge+'</td><td class="tags-cell">'+tagChips(pkey(p))+'</td><td class="num">'+p.men+'</td><td class="num" title="championnat par équipe masculin, phase 2 (simples) : '+(p.eq2?p.eq2.v+'V/'+(p.eq2.n-p.eq2.v)+'D':'aucun match')+'">'+e2+'</td><td class="num '+tc+'" title="'+hist+'">'+ts+'</td><td class="score">'+p.score+'</td><td>'+trj+'</td></tr>';
+    return '<tr><td class="rk">'+(i+1)+'</td><td class="nm">'+esc(p.pre+' '+p.nom)+badge+'</td><td class="tags-cell">'+tagChips(pkey(p))+'</td><td class="num">'+p.men+'</td><td class="num" title="championnat par équipe masculin, phase 2 (simples) : '+(p.eq2?p.eq2.v+'V/'+(p.eq2.n-p.eq2.v)+'D':'aucun match')+'">'+e2+'</td><td class="num '+tc+'" title="'+esc(hist)+'">'+ts+'</td><td class="score">'+p.score+'</td><td>'+trj+'</td></tr>';
   }).join('');
 }
-// paramètres : cache local immédiat + version PARTAGÉE sur Supabase (clé _params du journal)
+// paramètres : cache local immédiat + version PARTAGÉE (clé _params du journal tags_log)
 try{const sp=JSON.parse(localStorage.getItem('acbb_sc_params')||'null');
   if(sp){ if(sp.k!=null) ks.value=sp.k; if(sp.cap!=null) cs.value=sp.cap; }}catch(e){}
 function saveParams(){try{localStorage.setItem('acbb_sc_params',JSON.stringify({k:ks.value,cap:cs.value}));}catch(e){}}
@@ -707,18 +706,17 @@ function applyParams(p){ if(!p)return; if(p.k!=null)ks.value=p.k; if(p.cap!=null
 let _prmT=null;
 function schedParams(){ clearTimeout(_prmT); _prmT=setTimeout(pushParams,2500); }
 async function pushParams(){
+  const el=document.getElementById('prmSync');
   try{
     let remote={};
-    const g=await fetch(SB_URL+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:SB_HD});
-    if(g.ok){const a=await g.json(); if(a.length&&a[0].tags)remote=a[0].tags;}
+    const a=await spoSelect('tags_log','select=tags&order=id.desc&limit=1'); if(a.length&&a[0].tags)remote=a[0].tags;
     remote._params={k:ks.value,cap:cs.value};
-    const put=await fetch(SB_URL+'/rest/v1/tags_log',{method:'POST',headers:{...SB_HD,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body:JSON.stringify({tags:remote,author:(localStorage.getItem('acbb_tag_author')||'anonyme')+' · réglages'})});
-    const el=document.getElementById('prmSync');
-    if(el)el.textContent=put.ok?('réglages partagés ✓ '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})):'réglages non partagés (hors-ligne)';
-  }catch(e){const el=document.getElementById('prmSync'); if(el)el.textContent='réglages non partagés (hors-ligne)';}
+    await spoInsert('tags_log',{tags:remote,author:'réglages'});   // signé « <nom du lien> — réglages »
+    if(el)el.textContent='réglages partagés ✓ '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    loadHisto();
+  }catch(e){ if(el)el.textContent=DEV?'réglages non partagés (mode dev)':'réglages non partagés (hors-ligne)'; }
 }
-ks.addEventListener('input',()=>{saveParams();schedParams();render();}); cs.addEventListener('input',()=>{saveParams();schedParams();render();}); q.addEventListener('input',render); render();
+ks.addEventListener('input',()=>{saveParams();schedParams();render();}); cs.addEventListener('input',()=>{saveParams();schedParams();render();}); q.addEventListener('input',render);
 
 /* équipes 26/27 dans le sélecteur */
 (function(){const e=document.getElementById('tmE');
@@ -743,25 +741,25 @@ document.getElementById('tmOk').addEventListener('click',()=>{
   document.getElementById('tagModal').classList.remove('open');
 });
 
-/* sauvegarde : merge des clés modifiées puis insertion (journal — l'historique des compos est conservé) */
+/* sauvegarde : merge des clés modifiées puis insertion (journal — l'historique des compos est conservé).
+   Plus de prénom demandé : le serveur signe avec le nom du lien ; la note de version (facultative) devient le suffixe. */
 async function saveTags(){
-  const st=document.getElementById('saveSt'), btn=document.getElementById('saveTags');
+  const st=document.getElementById('saveSt'), btn=document.getElementById('saveTags'), noteEl=document.getElementById('saveNote');
   btn.disabled=true; st.textContent='enregistrement…';
   try{
     // merge avec la dernière version partagée (évite d'écraser l'autre éditeur)
     let remote={};
-    const g=await fetch(SB_URL+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:SB_HD});
-    if(g.ok){const a=await g.json(); if(a.length&&a[0].tags)remote=a[0].tags;}
+    const a=await spoSelect('tags_log','select=tags&order=id.desc&limit=1'); if(a.length&&a[0].tags)remote=a[0].tags;
     DIRTY.forEach(k=>{ if(TAGS[k]) remote[k]=TAGS[k]; else delete remote[k]; });
     remote._params={k:ks.value,cap:cs.value};
-    let author=localStorage.getItem('acbb_tag_author');
-    if(!author){author=(prompt('Ton prénom (pour l\'historique des compos) :')||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
-    const put=await fetch(SB_URL+'/rest/v1/tags_log',{method:'POST',headers:{...SB_HD,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({tags:remote,author:author})});
-    if(!put.ok){const t=await put.text();throw new Error('HTTP '+put.status+' '+t.slice(0,140));}
+    const body={tags:remote}; const note=(noteEl.value||'').trim(); if(note) body.author=note;
+    await spoInsert('tags_log',body);
     TAGS={...remote}; delete TAGS._params; DIRTY.clear(); try{localStorage.removeItem('acbb_tags_draft');}catch(e){}
+    noteEl.value='';
     updateSaveBar(); render();
-    st.textContent='✓ Enregistré à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    st.textContent='✓ Enregistré à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+(ME?' — signé '+ME.nom:'');
     document.getElementById('saveBar').classList.add('show'); setTimeout(()=>{if(!DIRTY.size)document.getElementById('saveBar').classList.remove('show');},4000);
+    loadHisto();
   }catch(e){ st.textContent=''; alert('Échec de l\'enregistrement : '+e.message); }
   btn.disabled=false;
 }
@@ -772,22 +770,38 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
   }
 });
 
-/* chargement initial : Supabase (dernière version), repli data/tags.json */
-(async function(){
+/* ===== Historique : dernières versions de tags_log (id, date, auteur signé « Nom — suffixe ») ===== */
+let HISTO_N=12;
+async function loadHisto(more){
+  const el=document.getElementById('histo'); if(!el)return;
+  if(more) HISTO_N+=24;
   try{
-    const g=await fetch(SB_URL+'/rest/v1/tags_log?select=tags&order=id.desc&limit=1',{headers:SB_HD});
-    if(!g.ok)throw 0;
-    const a=await g.json(); if(a.length&&a[0].tags)TAGS=a[0].tags;
+    const rows=await spoSelect('tags_log','select=id,created_at,author&order=id.desc&limit='+HISTO_N);
+    if(!rows.length){ el.innerHTML='<div class="tm-sub" style="padding:6px 0">'+(DEV?'mode dev : historique non chargé (données serveur uniquement)':'aucune version enregistrée')+'</div>'; return; }
+    el.innerHTML=rows.map(r=>{
+      const a=String(r.author||'—'); const m=/^(.*?)\s(?:—|·)\s(.*)$/.exec(a); const who=m?m[1]:a, note=m?m[2]:'';
+      const d=new Date(r.created_at); const ds=isNaN(d)?'':d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}).replace(':','h');
+      return '<div class="hi"><span class="hn">#'+esc(r.id)+'</span><span class="hw">'+esc(who)+'</span><span class="hd">'+ds+'</span>'+(note?'<span class="hm">'+esc(note)+'</span>':'')+'</div>';
+    }).join('')+(rows.length>=HISTO_N?'<button type="button" class="tagbtn" id="histoMore">Voir plus</button>':'');
+    const b=document.getElementById('histoMore'); if(b) b.addEventListener('click',()=>loadHisto(true));
+  }catch(e){ el.innerHTML='<div class="tm-sub" style="padding:6px 0">historique indisponible ('+esc(e.message)+')</div>'; }
+}
+
+/* chargement initial : serveur (dernière version), repli data/tags.json */
+onAuth(async function(){
+  try{
+    const a=await spoSelect('tags_log','select=tags&order=id.desc&limit=1');
+    if(a.length&&a[0].tags)TAGS=a[0].tags; else throw 0;
   }catch(e){
-    try{const r=await fetch('../data/tags.json',{cache:'no-cache'});const j=await r.json();if(j&&j.tags)TAGS=j.tags;}catch(_){ }
+    try{const j=await gj('tags.json');if(j&&j.tags)TAGS=j.tags;}catch(_){ }
   }
   if(TAGS._params){ applyParams(TAGS._params); delete TAGS._params; }
-  draftLoad(); updateSaveBar(); render();
-})();
+  draftLoad(); updateSaveBar(); render(); loadHisto();
+});
 </script>
 <script>
 /* ===== Drag & drop des joueurs (desktop) + panneau d'alertes =====
-   V1 : alimente le circuit d'enregistrement existant (DIRTY -> tags_log).
+   V1 : alimente le circuit d'enregistrement existant (DIRTY -> tags_log via le serveur).
    V2 (détectée par la présence de V2_TAGS) : enregistre dans scenarios_log, jamais dans tags_log. */
 (function(){
   var IS_V2=(typeof V2_TAGS!=='undefined');
@@ -799,6 +813,7 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
    +'border:1px solid rgba(255,255,255,.18);border-radius:13px;padding:13px 15px;'
    +'font-family:"Space Grotesk",system-ui,sans-serif;font-size:12px;color:#F6F5F3;box-shadow:0 10px 30px rgba(0,0,0,.5)}'
    +'#v2Panel .ttl{font-weight:700;margin-bottom:6px}'
+   +'#v2Panel .sig{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--orange);margin-top:8px}'
    +'#v2Panel .btns{margin-top:10px;display:flex;gap:7px;flex-wrap:wrap}'
    +'#v2Panel button{flex:1;min-width:86px;padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.22);'
    +'background:#232328;color:#F6F5F3;font-family:inherit;font-size:11.5px;cursor:pointer;white-space:nowrap}'
@@ -810,14 +825,13 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
   panel.innerHTML='<div class="ttl">'+(IS_V2?'🧪 Scénario — drag &amp; drop':'🎯 Compo — drag &amp; drop')+'</div>'
    +'<div id="v2Last" style="color:var(--dim);min-height:14px"></div>'
    +'<div id="v2Alerts" style="margin-top:7px;display:flex;flex-direction:column;gap:3px;line-height:1.45"></div>'
+   +'<div id="v2Rules" style="margin-top:5px;display:flex;flex-direction:column;gap:3px;line-height:1.45"></div>'
+   +'<div class="sig" id="v2Sig"></div>'
    +'<div class="btns"><button id="v2Undo" type="button">↶ Annuler</button>'
    +(IS_V2?'<button id="v2Reset" type="button">↺ Réinitialiser</button>':'')
    +'<button id="v2Save" class="sv" type="button">💾 Enregistrer</button></div>';
   document.body.appendChild(panel);
-  var gateT=setInterval(function(){
-    var g=document.getElementById('gpw');
-    if(!g||!g.offsetParent){ panel.style.display='block'; refresh(); clearInterval(gateT); }
-  },700);
+  AUTH.then(function(me){ if(!me)return; panel.style.display='block'; document.getElementById('v2Sig').textContent='enregistrement signé « '+me.nom+' »'; refresh(); });
 
   var hist=[];
   var CIBLES={M6:6,M7:6,M8:6,M9:6,M10:5,M11:5};
@@ -842,6 +856,12 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
     document.getElementById('v2Alerts').innerHTML =
       li.length?li.map(function(x){return '<div>'+x+'</div>';}).join('')
       :'<div style="color:#4ADE80">✓ Effectifs conformes (6·6 PR / 6·6·5·5 D1)</div>';
+    // alertes règlement (mêmes règles que sous les cartes)
+    var rs=(typeof ruleSummary==='function')?ruleSummary():[];
+    document.getElementById('v2Rules').innerHTML = rs.length
+      ?rs.map(function(r){return '<div>'+(r.e?'⛔':'⚠')+' '+r.t+' : '+(r.e?r.e+' erreur'+(r.e>1?'s':'')+' règlement':'')+(r.e&&r.w?' · ':'')+(r.w?r.w+' avertissement'+(r.w>1?'s':''):'')+'</div>';}).join('')
+       +'<div style="color:var(--dim)">enregistrement possible, alertes conservées</div>'
+      :'<div style="color:#4ADE80">✓ Règles OK (N1, II.609, contraintes internes)</div>';
     var sv=document.getElementById('v2Save');
     if(sv&&!IS_V2) sv.textContent='💾 Enregistrer'+(DIRTY.size?' ('+DIRTY.size+')':'');
     if(sv&&IS_V2) sv.textContent='💾 Enregistrer le scénario';
@@ -929,16 +949,12 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
       TAGS=JSON.parse(window.__V2BASELINE||JSON.stringify(V2_TAGS)); delete TAGS._params;
       hist=[]; render(); refresh('scénario réinitialisé ↺');
     });
-    function saveScenario(){
-      var author=localStorage.getItem('acbb_tag_author');
-      if(!author){author=(prompt("Ton prénom (pour l'historique) :")||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
-      fetch(SB_URL+'/rest/v1/scenarios_log',{method:'POST',
-        headers:{apikey:SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
-        body:JSON.stringify({tags:TAGS,author:author,slot:(window.__V2SLOT||'v2')})})
-      .then(function(r){ if(!r.ok)throw 0;
+    function saveScenario(){   // signé « <nom du lien> — scénario » par le serveur
+      spoInsert('scenarios_log',{tags:TAGS,author:'scénario',slot:(window.__V2SLOT||'v2')})
+      .then(function(){
         window.__V2BASELINE=JSON.stringify(TAGS);
         refresh('✓ scénario enregistré à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})); })
-      .catch(function(){ refresh('⚠ enregistrement impossible (table scenarios_log absente ?)'); });
+      .catch(function(e){ refresh('⚠ enregistrement impossible ('+(e&&e.message||'serveur')+')'); });
     }
     window.__v2save=saveScenario;
     document.getElementById('v2Save').addEventListener('click',saveScenario);
@@ -947,6 +963,5 @@ document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tag
   }
 })();
 </script>
-<script src="../report.js" defer></script>
 <script data-goatcounter="https://acbb-tt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>
