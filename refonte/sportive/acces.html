@@ -235,7 +235,8 @@ async function generer(o,remplacer,b){
     toast('lien '+(remplacer?'régénéré':'créé')+' — copie-le maintenant, il ne sera plus affiché');
     document.getElementById('spoNom').value='';
     await loadLiens(); loadJournal();
-  }catch(e){ busy(b,false); toast('échec : '+e.message); }
+  }catch(e){ toast('échec : '+e.message); }
+  finally{ busy(b,false); }   // le bouton reprend son libellé (le bouton du bloc sportive n'est pas redessiné par loadLiens)
 }
 function waMsg(o,url){
   const prenom=(o.pre||firstName(o.nom)||'').trim();
@@ -258,7 +259,8 @@ async function revoquer(id,lbl,b){
   if(!confirm('Révoquer le lien de '+lbl+' ? Il cessera de fonctionner immédiatement.')) return;
   busy(b,true,'…');
   try{ await api('spo/liens/revoquer',{id:id}); toast('lien révoqué'); await loadLiens(); loadJournal(); }
-  catch(e){ busy(b,false); toast('échec : '+e.message); }
+  catch(e){ toast('échec : '+e.message); }
+  finally{ busy(b,false); }
 }
 async function revoquerTous(b){
   const on=LIENS.filter(l=>l.role==='capitaine'&&l.actif);
