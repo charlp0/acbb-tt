@@ -203,6 +203,49 @@ async function annuaire(): Promise<Map<string, Identite>> {
   }
   return m;
 }
+/**
+ * Équivalences de clés : un joueur tagué « NOM|Prénom » avant d'avoir sa licence (ex. GUNDOGDU|Kuzey) et sa licence FFTT
+ * (9267939) désignent la même personne. Construit depuis scoring.json (nom, pre, lic, key) et players_index.json (nom, prenom, lic).
+ */
+type Alias = { lics: Set<string>; keys: Set<string> };
+async function aliasIndex(): Promise<{ parNom: Map<string, Alias>; parCle: Map<string, Set<string>>; parLic: Map<string, Set<string>> }> {
+  const [sc, idx] = await Promise.all([getStatic('scoring.json'), getStatic('players_index.json').catch(() => null)]);
+  const parNom = new Map<string, Alias>();          // cleNom -> licences + clés nominatives
+  const parCle = new Map<string, Set<string>>();    // clé (licence ou NOM|Prénom) -> cleNom(s)
+  const parLic = new Map<string, Set<string>>();    // licence -> cleNom(s) (orthographes différentes du prénom)
+  const lie = (cle: string, cn: string) => { const s = parCle.get(cle) ?? new Set<string>(); s.add(cn); parCle.set(cle, s); };
+  const add = (nom: unknown, pre: unknown, lic: unknown, key: unknown) => {
+    const cn = cleNom(nom, pre); if (cn === '|') return;
+    const a = parNom.get(cn) ?? { lics: new Set<string>(), keys: new Set<string>() };
+    const k = `${String(nom ?? '')}|${String(pre ?? '')}`; a.keys.add(k); lie(k, cn);
+    if (key) { a.keys.add(String(key)); lie(String(key), cn); }
+    if (lic) { const l = String(lic); a.lics.add(l); lie(l, cn); const s = parLic.get(l) ?? new Set<string>(); s.add(cn); parLic.set(l, s); }
+    parNom.set(cn, a);
+  };
+  for (const p of sc?.players ?? []) add(p.nom, p.pre, p.lic, p.key);
+  for (const p of (Array.isArray(idx) ? idx : [])) add(p.nom, p.prenom, p.lic, null);
+  return { parNom, parCle, parLic };
+}
+/** Toutes les clés désignant le même joueur que `cle` (elle-même comprise). */
+async function equivalents(cle: string): Promise<string[]> {
+  const { parNom, parCle, parLic } = await aliasIndex();
+  const cns = new Set<string>(parCle.get(cle) ?? []);
+  if (!cns.size && cle.includes('|')) { const [n, p] = cle.split('|'); cns.add(cleNom(n, p)); }
+  const out = new Set<string>([cle]);
+  const vus = new Set<string>();
+  const file = [...cns];
+  while (file.length) {
+    const cn = file.pop()!; if (vus.has(cn)) continue; vus.add(cn);
+    const a = parNom.get(cn); if (!a) continue;
+    a.keys.forEach((k) => out.add(k));
+    a.lics.forEach((l) => { out.add(l); (parLic.get(l) ?? new Set()).forEach((c2) => { if (!vus.has(c2)) file.push(c2); }); });
+  }
+  return [...out];
+}
+async function equipeDuJoueurAlias(cle: string, tags: Json, fem: Json | null): Promise<string | null> {
+  for (const k of await equivalents(cle)) { const e = equipeDuJoueur(k, tags, fem); if (e) return e; }
+  return null;
+}
 function identite(ann: Map<string, Identite>, cle: string, secours?: Partial<Identite> | null): Identite {
   const a = ann.get(cle);
   if (a) return a;
@@ -272,14 +315,19 @@ function cleNom(nom: unknown, prenom: unknown): string {
 async function disposParJoueur(cles: string[], ann?: Map<string, Identite>): Promise<Map<string, DisposRow[]>> {
   const m = new Map<string, DisposRow[]>();
   if (!cles.length) return m;
+  // Chaque clé demandée est étendue à ses équivalences (licence <-> « NOM|Prénom ») ; les lignes trouvées sont
+  // rattachées à la clé d'origine, les 2 plus récentes conservées.
+  const origine = new Map<string, string>();
+  for (const k of cles) for (const e of await equivalents(k)) if (!origine.has(e)) origine.set(e, k);
   const { data, error } = await sb.from('dispos_log')
     .select('id,created_at,licence,nom,prenom,dispos')
-    .in('licence', cles)
+    .in('licence', [...origine.keys()])
     .order('id', { ascending: false });
   if (error) fail(500, 'lecture_dispos', { detail: error.message });
   for (const r of (data ?? []) as DisposRow[]) {
-    const l = m.get(r.licence) ?? [];
-    if (l.length < 2) { l.push(r); m.set(r.licence, l); }
+    const k = origine.get(r.licence) ?? r.licence;
+    const l = m.get(k) ?? [];
+    if (l.length < 2) { l.push(r); m.set(k, l); }
   }
   const manquants = cles.filter((k) => !m.has(k));
   if (manquants.length) {
@@ -626,7 +674,7 @@ async function router(req: Request): Promise<Response> {
       licence: jo.licence,
       nom: id.nom,
       prenom: id.prenom,
-      equipe: equipeDuJoueur(jo.licence, tags, fem),
+      equipe: await equipeDuJoueurAlias(jo.licence, tags, fem),
       dispos: derniere ? disposJ(derniere.dispos) : null,
       saved_at: derniere?.created_at ?? null,
       premiere: jo.premiere,
