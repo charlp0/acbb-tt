@@ -103,7 +103,7 @@
         if(ctx.t!==c.equipe) return;
         var r=ctx.POULES?journeeAdv(ctx.POULES,c.equipe,c.adversaire):null;
         var ab2=absent(A,P,BYKEY); if(!ab2.length) return;
-        if(ctx.j!=null){ if(ctx.adv&&nrmK(ctx.adv)===nrmK(c.adversaire)) add('warn',lst(ab2,court)+' souhaite jouer contre '+c.adversaire+' — pas aligné en '+c.equipe+' ce jour ('+lst(ab2,ou)+')'); }
+        if(ctx.j!=null){ if(P.length&&ctx.adv&&nrmK(ctx.adv)===nrmK(c.adversaire)) add('warn',lst(ab2,court)+' souhaite jouer contre '+c.adversaire+' — pas aligné en '+c.equipe+' ce jour ('+lst(ab2,ou)+')'); }
         else add('info',lst(ab2,court)+' souhaite jouer contre '+c.adversaire+(r?' (J'+r.j+', '+r.date+(r.dom?', domicile':', extérieur')+')':'')+' : à prévoir dans la compo '+c.equipe);
       }
     });
