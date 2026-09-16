@@ -240,6 +240,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="../shared/api.js"></script>
+<script src="../shared/contraintes.js"></script>
 <script src="../shared/nav.js" data-base=".."></script>
 <script>
 /* ===================== CONFIG ===================== */
@@ -264,13 +265,8 @@ const sizeOf=t=>SIZE[t]||4;
 const DIVC={'Pro B':'250,204,21','N1':'242,106,27','N2D':'251,146,60','R1D':'244,114,182','PRD':'244,114,182','R1':'61,214,140','R2':'61,214,140','R3':'61,214,140','PR':'96,165,250','D1':'167,139,250','D2':'148,163,184'};
 const GROUPS=[['all','Toutes',TEAMS],['nat','N1',['M2']],['reg','Régional',['M3','M4','M5']],['pr','PR',['M6','M7']],['d1','D1',['M8','M9','M10','M11']],['d2','D2',['M12','M13','M14','M15','M16','M17']]];
 const FORCE_STATUS={'ARGUT|DANIEL':'blessé — indisponible pour le moment','GRANDJEAN|GUILLAUME':'ne jouera pas cette phase (Charles, 12/09)'};
-/* contraintes internes (clé NOM|PRENOM normalisée) */
-const INT={
-  allegre:['ALLEGREGUILLAUME|ANTOINE','ALLEGREGUILLAUME|BAPTISTE'],
-  intins:['INTINS|DAVID','INTINS|ARTHUR'],
-  mandel:'MANDELMILECH|ADRIEN',
-  emiliano:'BARVANEGAS|EMILIANO'
-};
+/* contraintes internes : liste éditable dans Contraintes (scenarios_log slot « contraintes », module shared/contraintes.js) ; sans ligne enregistrée = règles par défaut */
+let CONTR=ACBB_CONTR.defauts(), CONTR_META=null;
 const EXT=[{key:'NEVES|LOUNA',nom:'NEVES',pre:'Louna',men:1342,ext:'Marly (entente F1)'}];   // joueuses extérieures alignables (clé NOM|PRE)
 const SCALE=250;   // écart de points -> indice de victoire (logistique)
 
@@ -298,8 +294,10 @@ function boot(){
     rest('tags_log','select=id,tags&order=id.desc&limit=1'),
     rest('scenarios_log','select=id,tags&slot=eq.fem&order=id.desc&limit=1'),
     rest('dispos_log','select=licence,nom,prenom,dispos,n,created_at&order=id.asc'),
-    rest('scenarios_log','select=id,slot,tags,author,created_at&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc')
+    rest('scenarios_log','select=id,slot,tags,author,created_at&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc'),
+    rest('scenarios_log',ACBB_CONTR.QUERY)
   ]).then(res=>{
+    const ct=ACBB_CONTR.fromRows(res[10]); CONTR=ct.liste; CONTR_META=ct.meta;
     D=((res[0]&&res[0].players)||[]).concat(EXT.filter(x=>!((res[0]&&res[0].players)||[]).some(p=>pkey(p)===pkey(x))));
     D.forEach(p=>{BYKEY[pkey(p)]=p;BYFK[fkey(p)]=p;const a=nrmK(p.nom),b=nrmK(p.pre);BYSN['SN-'+a+'-'+b]=p;BYSN['SN-'+b+'-'+a]=p;});
     CAT=res[1]||{};
@@ -384,7 +382,7 @@ function bruBadge(k,j,home){ const m=montees(k,j,home); if(!m.length) return '';
 function checkTeam(t,j){
   const issues=[], flags={}; const c=compo(j,t), m=matchOf(t,j); if(!m||m.exempt) return {issues,flags};
   const size=sizeOf(t), n=c.p.length;
-  const add=(lvl,msg,keys)=>{ issues.push({lvl,msg}); (keys||[]).forEach(k=>{ if(!flags[k]||lvl==='err') flags[k]=lvl; }); };
+  const add=(lvl,msg,keys,cid)=>{ issues.push({lvl,msg,cid}); (keys||[]).forEach(k=>{ if(!flags[k]||lvl==='err') flags[k]=lvl; }); };
   if(n<size) add(n?'warn':'info', n?('compo incomplète — '+(size-n)+' place'+(size-n>1?'s':'')+' à pourvoir'):'aucun joueur aligné');
   if(n>size) add('err','trop de joueurs ('+n+'/'+size+')');
   // doublons dans la journée
@@ -415,15 +413,9 @@ function checkTeam(t,j){
   else if(exs.length+exq.length>1) add('warn','II.609 : '+(exs.length+exq.length)+' extra-communautaires possibles ('+exs.concat(exq).map(k=>short(BYKEY[k]||{nom:k})).join(', ')+') — statut à confirmer',exq);
   // dispos
   c.p.forEach(k=>{ const s=dispo(k,j); if(s==='r') add('warn',short(BYKEY[k]||{nom:k})+' : '+dispoTxt(k,j),[k]); else if(s==='y') add('info',short(BYKEY[k]||{nom:k})+' n\'a pas répondu au formulaire',[k]); });
-  // contraintes internes
-  const has=f=>c.p.some(k=>BYKEY[k]&&fkey(BYKEY[k])===f);
-  const alignedElsewhere=f=>TEAMS.some(o=>o!==t&&(COMPOS[j][o]||{p:[]}).p.some(k=>BYKEY[k]&&fkey(BYKEY[k])===f));
-  [['allegre','les frères Allegre-Guillaume doivent jouer ensemble'],['intins','les deux Intins doivent jouer ensemble']].forEach(([key,msg])=>{
-    const [a,b]=INT[key]; const ha=has(a), hb=has(b);
-    if(ha!==hb){ const other=ha?b:a; if(alignedElsewhere(other)) add('warn',msg+' (l\'autre est aligné ailleurs)'); else add('warn',msg+' (un seul aligné)'); }
-  });
-  if(has(INT.mandel)&&(has(INT.allegre[0])||has(INT.allegre[1]))) add('warn','Mandelmilech ne doit jamais jouer avec les frères Allegre');
-  if(has(INT.emiliano)&&!m.dom) add('warn','Emiliano Bar Vanegas à l\'extérieur — à éviter (préférer le domicile)');
+  // contraintes internes (liste éditable dans Contraintes) : où est un joueur attendu mais absent de cette compo ?
+  const ou=cp=>{ for(const o of TEAMS){ if(o!==t&&((COMPOS[j][o]||{}).p||[]).some(k=>ACBB_CONTR.isP(cp,k,BYKEY))) return 'aligné en '+o; } return 'non aligné'; };
+  ACBB_CONTR.check(CONTR,{t,j,P:c.p,dom:!!m.dom,adv:m.opp,BYKEY,POULES,ou}).forEach(i=>add(i.lvl,i.msg,i.keys,i.cid));
   return {issues,flags};
 }
 function lvlOf(issues){ return issues.some(i=>i.lvl==='err')?'err':(issues.some(i=>i.lvl==='warn')?'warn':'ok'); }
@@ -626,10 +618,8 @@ function renderChecker(){
   h+=J===2?line(/règle J2/,'Règle de la 2ᵉ journée (max 1 descente)'):row('na','Règle J2 : uniquement en J2');
   h+=line(/même poule/,'2 équipes ACBB même poule');
   h+=line(/minimum N1/,'N1 ≥ 1800 pts (M2)');
-  h+=line(/Allegre-Guillaume doivent/,'Fratrie Allegre ensemble');
-  h+=line(/Mandelmilech/,'Mandelmilech ≠ Allegre');
-  h+=line(/Intins/,'Les deux Intins ensemble');
-  h+=line(/Emiliano/,'Emiliano à domicile');
+  CONTR.filter(c=>c.type!=='rappel').forEach(c=>{ const e=all.filter(i=>i.cid===c.id&&i.lvl!=='info'); const ts=e.map(i=>i.t).filter((v,i,a)=>a.indexOf(v)===i); h+=e.length?row('warn',ACBB_CONTR.courtLab(c)+' — '+ts.join(', ')):row('ok',ACBB_CONTR.courtLab(c)); });
+  h+='<div class="hint">Contraintes internes gérées dans <a href="contraintes.html" style="color:inherit">Contraintes</a>'+(CONTR_META&&CONTR_META.at?' · liste du '+new Date(CONTR_META.at).toLocaleDateString('fr-FR'):' · règles par défaut')+'.</div>';
   h+=line(/indispo|blessé|ne veut pas/,'Dispos déclarées respectées');
   h+=line(/incomplète|aucun joueur|trop de joueurs/,'Équipes complètes');
   h+=line(/II\.609/,'Extra-communautaires ≤ 1 / feuille (II.609)');
