@@ -47,6 +47,17 @@ def main():
     idx=json.load(open('data/players_index.json'))
     players=idx if isinstance(idx,list) else idx.get('players',[])
     players=[p for p in players if p.get('lic') not in getattr(fb,'EXCLUDE_LIC',set())]   # retire les partis du club
+    # Périmètre « effectif sportive » (16/09/2026) : depuis la bascule 26/27, players_index liste TOUS les licenciés
+    # (567). On garde les compétiteurs : ceux qui ont joué en 25/26 (archive), ceux qui ont déjà joué en 26/27,
+    # et les mutés/nouveaux ajoutés plus bas. Évite d'inonder Scoring & compos de licenciés loisir.
+    try:
+        base={p['lic'] for p in json.load(open('data/archive/2025-2026/players_index.json')) if p.get('lic')}
+    except Exception:
+        base=set()
+    if base:
+        avant=len(players)
+        players=[p for p in players if p.get('lic') in base or (p.get('parties') or 0)>0]
+        print(f"  périmètre sportive : {len(players)} compétiteurs retenus sur {avant} licenciés")
     try: OFF27=json.load(open('data/officiel2627.json')).get('officiel',{})
     except Exception: OFF27={}
     DEPARTS={('SATO','Lautaro'),('LOUET','Sebastien'),('LANGLOIS','Xavier'),('CRENN-ALDEA','Julien')}   # quittent le club été 2026 — retirés de la Sportive uniquement
@@ -111,14 +122,28 @@ def main():
     MUT_LOOKUP=[('COHEN MELKA','Eytan','9258246'),('VERDIER','Mahé','9253816'),('SERGENT','Enzo','9540663'),
                 ('INTINS','Arthur','9248896'),('STEMLER','Grégoire','9254353'),('INTINS','David','5412783'),
                 ('DELORY','Virgile','9241720'),('BENCHAT','Marius','1421042'),('BOUDJADJA','Nassim','9265298'),('BOTELLA','Milo','9411975')]
+    _nk0=lambda x:(x or '')
     MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('ARGUT','Daniel',1600),('PORTOKALLIS','Antonis',1500)]
+    # Clés d'alias : ces joueurs ont été tagués/composés sous « NOM|Prénom » avant d'avoir leur licence FFTT ;
+    # le champ `key` garde cette clé pour que les compos enregistrées continuent de les retrouver (fiche = lic).
+    ALIAS={('GUNDOGDU','Kuzey'):'GUNDOGDU|Kuzey',('BOTELLA','Milo'):'BOTELLA|Milo',('BOTELLA','Milosav'):'BOTELLA|Milo',
+           ('ARGUT','Daniel'):'ARGUT|Daniel',('MICHON','Clément'):'MICHON|Clément',('SHAMS','Navid'):'SHAMS|Navid'}
+    for r in out:
+        k=ALIAS.get((_nk0(r['nom']),_nk0(r['pre'])))
+        if k: r['key']=k
     for nom,pre,lic in MUT_LOOKUP:
+        if any(r.get('lic')==lic for r in out):   # déjà présent via l'effectif FFTT (ex. Botella 9411975) : pas de doublon
+            for r in out:
+                if r.get('lic')==lic and (nom,pre)==('BOTELLA','Milo'): r['pre']='Milo'   # prénom d'usage au club
+            continue
         h=histo(lic); time.sleep(0.1); men=mensuel_of(lic)
         win=[{'l':e['lab'],'pt':e['pt']} for e in h[-WINDOW:]]
         if win and isinstance(men,(int,float)): win[-1]={'l':'Officiel 26/27','pt':round(men)}
         ys=[e['pt'] for e in win]; b=slope(ys)
-        out.append({'lic':lic,'nom':nom,'pre':pre,'men':round(men) if isinstance(men,(int,float)) else (ys[-1] if ys else 500),
-                    'tend':round(b*(len(ys)-1)) if b is not None else 0,'spp':round(b,1) if b is not None else None,'h':win,'mut':'2026/2027'})
+        rec={'lic':lic,'nom':nom,'pre':pre,'men':round(men) if isinstance(men,(int,float)) else (ys[-1] if ys else 500),
+             'tend':round(b*(len(ys)-1)) if b is not None else 0,'spp':round(b,1) if b is not None else None,'h':win,'mut':'2026/2027'}
+        if ALIAS.get((nom,pre)): rec['key']=ALIAS[(nom,pre)]
+        out.append(rec)
     # Nouveaux compétiteurs 26/27 sans données FFTT : 500 pts par défaut, badge « nouveau »
     NEW_HARD=[('MICHON','Clément',500)]   # mail Cyril 11/09/2026 (jeune 2008, inscrit jeudi 20h)
     _nk=lambda x:re.sub(r'[^A-Z0-9]','',unicodedata.normalize('NFD',x or '').encode('ascii','ignore').decode().upper())
