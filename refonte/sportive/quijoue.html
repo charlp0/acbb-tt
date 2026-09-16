@@ -223,7 +223,7 @@ async function start(){
     document.getElementById('gateErr').textContent=gateErrTxt(err,role);
     return;
   }
-  renderNav({active:'📅 Compos journée',role:'sportive',name:me.nom});
+  renderNav({active:'📅 Compos journée',role:'sportive',name:me.nom, team:(typeof me!=='undefined'&&me&&me.equipe)||null});
   document.getElementById('main').hidden=false; boot();
 }
 start();
