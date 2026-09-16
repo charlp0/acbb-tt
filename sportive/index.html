@@ -370,7 +370,7 @@
   <div class="legend" style="margin-top:-6px">
     <span style="color:var(--dim)">Alertes règlement sous chaque carte, recalculées à chaque dépôt :</span>
     <span><i style="background:var(--lose)"></i> erreur (N1 &lt; 1800 pts · 2 joueurs EX)</span>
-    <span><i style="background:var(--warn)"></i> avertissement (fratries, Mandelmilech ≠ Allegre, EX à confirmer)</span>
+    <span><i style="background:var(--warn)"></i> avertissement (contraintes internes, EX à confirmer)</span>
     <span><i style="background:#60A5FA"></i> rappel (Emiliano à domicile)</span>
     <span style="color:var(--dim)">— l'enregistrement reste possible.</span>
   </div>
@@ -402,6 +402,7 @@
   </div>
 </div>
 <script src="../shared/api.js"></script>
+<script src="../shared/contraintes.js"></script>
 <script src="../shared/nav.js" data-base=".."></script>
 <script src="../shared/report.js" defer></script>
 <script src="../data/scoring.js"></script>
@@ -529,22 +530,20 @@ onAuth(()=>gj('teams.json')).then(j=>{ if(!j)return;
 /* ===== Alertes règlement par carte d'équipe — même logique que checkTeam (Compos journée), appliquée aux titulaires tagués.
    err = rouge (N1 < 1800 pts II.243 · 2 joueurs hors UE II.609) ; warn = jaune (fratries séparées, Mandelmilech avec un Allegre,
    statut EX à confirmer) ; info = rappel (Emiliano de préférence à domicile). L'enregistrement reste toujours possible. ===== */
-const INT={allegre:['ALLEGREGUILLAUME|ANTOINE','ALLEGREGUILLAUME|BAPTISTE'],intins:['INTINS|DAVID','INTINS|ARTHUR'],mandel:'MANDELMILECH|ADRIEN',emiliano:'BARVANEGAS|EMILIANO'};
+let CONTR=ACBB_CONTR.defauts();   // contraintes internes : liste éditable dans Contraintes (scenarios_log slot « contraintes »)
+onAuth(()=>spoSelect('scenarios_log',ACBB_CONTR.QUERY)).then(rows=>{ if(!rows)return; CONTR=ACBB_CONTR.fromRows(rows).liste; if(typeof render==='function')render(); }).catch(()=>{});
+const BYK={}; D.forEach(p=>{ BYK[pkey(p)]=p; });
+let POULES_C={}; onAuth(()=>gj('poules2627.json')).then(j=>{ ((j&&j.poules)||[]).forEach(q=>{ POULES_C[q.acbb]=q; }); if(typeof render==='function')render(); }).catch(()=>{});
 const shortN=p=>(p.pre?p.pre[0]+'. ':'')+p.nom;
-function whereIsF(f){ const p=D.find(x=>fkey(x)===f); if(!p)return null; const t=TAGS[pkey(p)]; if(!t)return null; if(t.e)return (t.r==='T'?'titulaire ':'remplaçant ')+t.e; if(t.r==='R'&&t.d)return 'pool '+t.d; return null; }
 function teamAlerts(k,tit){
   const out=[]; const add=(lvl,msg)=>out.push({lvl,msg});
   if(k==='M2') tit.forEach(p=>{ if(p.men&&p.men<1800) add('err',shortN(p)+' : '+p.men+' pts < 1800 (minimum N1, II.243)'); });
   const exs=tit.filter(p=>EXC.ex.has(exKey(p))), exq=tit.filter(p=>EXC.conf.has(exKey(p)));
   if(exs.length>1) add('err','II.609 : '+exs.length+' joueurs hors UE ('+exs.map(shortN).join(', ')+') — 1 seul autorisé par feuille');
   else if(exs.length+exq.length>1) add('warn','II.609 : '+(exs.length+exq.length)+' hors UE possibles ('+exs.concat(exq).map(shortN).join(', ')+') — statut à confirmer');
-  const has=f=>tit.some(p=>fkey(p)===f);
-  [['allegre','les frères Allegre Guillaume doivent jouer ensemble'],['intins','les deux Intins doivent jouer ensemble']].forEach(([key,msg])=>{
-    const [a,b]=INT[key]; const ha=has(a), hb=has(b);
-    if(ha!==hb){ const w=whereIsF(ha?b:a); add('warn',msg+(w?' (l\'autre est '+w+')':' (l\'autre n\'est pas titulaire tagué)')); }
-  });
-  if(has(INT.mandel)&&(has(INT.allegre[0])||has(INT.allegre[1]))) add('warn','Mandelmilech ne doit jamais jouer avec les frères Allegre Guillaume');
-  if(has(INT.emiliano)) add('info','Emiliano Bar Vanegas : de préférence à domicile — à vérifier journée par journée (Compos journée)');
+  // contraintes internes (liste éditable dans Contraintes) : où est un joueur attendu mais absent des titulaires ?
+  const ou=cp=>{ const p=D.find(x=>ACBB_CONTR.isP(cp,pkey(x),BYK)); if(!p) return 'inconnu'; const t=TAGS[pkey(p)]; if(!t) return 'pas tagué'; if(t.e) return (t.r==='T'?'titulaire ':'remplaçant ')+t.e; if(t.r==='R'&&t.d) return 'pool '+t.d; return 'pas titulaire'; };
+  ACBB_CONTR.check(CONTR,{t:k,j:null,P:tit.map(pkey),dom:null,adv:null,BYKEY:BYK,POULES:POULES_C,ou}).forEach(a=>add(a.lvl,a.msg));
   return out;
 }
 const alertsHtml=al=>al.length?'<div class="tm-al">'+al.map(a=>'<div class="al '+a.lvl+'">'+(a.lvl==='err'?'⛔':(a.lvl==='warn'?'⚠':'ℹ'))+' '+esc(a.msg)+'</div>').join('')+'</div>':'';
