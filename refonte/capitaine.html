@@ -268,12 +268,13 @@
 
   /* ---------- rôle ---------- */
   ACBB.api('me').then(me=>{
-    if(!me||me.role!=='capitaine'){
-      if(me&&me.role==='sportive'){ renderNav({active:'',role:'sportive',name:me.nom}); showGate('Page réservée aux capitaines','Ton lien est celui de la sportive : tes onglets sont dans le menu ci-dessus.'); return; }
+    const sportiveCap=!!(me&&me.role==='sportive'&&me.equipe);   // sportive qui est aussi capitaine : même espace, sur son équipe
+    if(!me||(me.role!=='capitaine'&&!sportiveCap)){
+      if(me&&me.role==='sportive'){ renderNav({active:'',role:'sportive',name:me.nom}); showGate('Page réservée aux capitaines','Ton lien sportive n\'est rattaché à aucune équipe. Depuis Accès, associe-lui ton équipe pour ouvrir cet espace.'); return; }
       renderNav({active:''}); showGate('Lien invalide ou révoqué','Ce lien capitaine n\'est plus reconnu. Demande un nouveau lien à la sportive, puis ouvre-le depuis ton téléphone.'); return;
     }
     S.me=me; S.team=me.equipe;
-    renderNav({active:TAB==='poule'?'Ma poule':'Mon équipe',role:'capitaine',team:S.team,name:me.nom});
+    renderNav({active:TAB==='poule'?'Ma poule':'Mon équipe',role:sportiveCap?'sportive':'capitaine',team:S.team,name:me.nom});
     boot();
   }).catch(err=>{
     const code=err&&err.body&&err.body.error;
