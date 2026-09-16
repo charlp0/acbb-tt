@@ -96,6 +96,21 @@ create index if not exists journal_at_idx     on public.journal (at desc);
 create index if not exists journal_action_idx on public.journal (action, at desc);
 comment on table public.journal is 'Journal d''audit des écritures effectuées via la fonction api.';
 
+-- ─── liens_usages : appareils vus par lien (détection de partage) ──────────────
+create table if not exists public.liens_usages (
+  lien_id   bigint      not null references public.liens(id) on delete cascade,
+  device_id text        not null,
+  ip        text,
+  first_at  timestamptz not null default now(),
+  last_at   timestamptz not null default now(),
+  n         int         not null default 1,
+  primary key (lien_id, device_id)
+);
+create index if not exists liens_usages_lien_idx on public.liens_usages (lien_id, last_at desc);
+comment on table public.liens_usages is 'Un enregistrement par (lien, appareil) : permet de voir depuis combien d''appareils un lien personnel est utilisé.';
+alter table public.liens_usages enable row level security;
+revoke all on table public.liens_usages from anon, authenticated;
+
 -- ─── RLS sans policy : verrou total pour tout ce qui n'est pas service_role ──
 alter table public.liens        enable row level security;
 alter table public.naissances   enable row level security;

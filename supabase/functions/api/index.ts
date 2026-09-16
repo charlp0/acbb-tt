@@ -338,9 +338,19 @@ async function lienDepuisJeton(req: Request): Promise<Lien | null> {
   if (error || !data) return null;
   return data as Lien;
 }
-async function toucherLien(id: number): Promise<void> {
-  const { error } = await sb.from('liens').update({ last_used_at: new Date().toISOString() }).eq('id', id);
+async function toucherLien(id: number, req?: Request): Promise<void> {
+  const now = new Date().toISOString();
+  const { error } = await sb.from('liens').update({ last_used_at: now }).eq('id', id);
   if (error) console.error('last_used_at:', error.message);
+  if (!req) return;
+  // Trace (lien, appareil) : permet de repérer un lien personnel utilisé depuis plusieurs appareils.
+  try {
+    const ip = clientIp(req);
+    const dev = deviceId(req, ip);
+    const { data: u } = await sb.from('liens_usages').select('n').eq('lien_id', id).eq('device_id', dev).maybeSingle();
+    if (u) await sb.from('liens_usages').update({ last_at: now, ip, n: (u.n ?? 0) + 1 }).eq('lien_id', id).eq('device_id', dev);
+    else await sb.from('liens_usages').insert({ lien_id: id, device_id: dev, ip });
+  } catch (e) { console.error('liens_usages:', (e as Error).message); }
 }
 /** Exige un jeton valide du rôle demandé. L'équipe vient TOUJOURS du lien, jamais du client. */
 async function exiger(req: Request, role: Role): Promise<Lien> {
@@ -349,7 +359,7 @@ async function exiger(req: Request, role: Role): Promise<Lien> {
   if (!lien) fail(401, 'jeton_invalide');
   if (lien.role !== role) fail(403, 'role_incorrect');
   if (role === 'capitaine' && !lien.equipe) fail(403, 'lien_sans_equipe');
-  await toucherLien(lien.id);
+  await toucherLien(lien.id, req);
   return lien;
 }
 
@@ -569,7 +579,7 @@ async function router(req: Request): Promise<Response> {
     if (!req.headers.get('x-acbb-token')) return json({ role: null });
     const lien = await lienDepuisJeton(req);
     if (!lien) return json({ role: null });
-    await toucherLien(lien.id);
+    await toucherLien(lien.id, req);
     return lien.role === 'capitaine'
       ? json({ role: 'capitaine', equipe: lien.equipe, nom: lien.nom })
       : json({ role: 'sportive', nom: lien.nom });
@@ -810,7 +820,15 @@ async function router(req: Request): Promise<Response> {
     if (path === '/spo/liens' && GET) {
       const { data, error } = await sb.from('liens').select('id,role,equipe,nom,actif,created_at,last_used_at').order('id', { ascending: false });
       if (error) fail(500, 'lecture_liens', { detail: error.message });
-      return json(data ?? []); // jamais token_hash
+      // Appareils et adresses IP distincts vus par lien (détection de partage) — jamais les identifiants eux-mêmes.
+      const { data: us } = await sb.from('liens_usages').select('lien_id,device_id,ip,last_at');
+      const agg = new Map<number, { dev: Set<string>; ips: Set<string>; last: string }>();
+      for (const u of (us ?? []) as Json[]) {
+        const a = agg.get(u.lien_id) ?? { dev: new Set<string>(), ips: new Set<string>(), last: '' };
+        a.dev.add(String(u.device_id)); if (u.ip) a.ips.add(String(u.ip)); if (String(u.last_at) > a.last) a.last = String(u.last_at);
+        agg.set(u.lien_id, a);
+      }
+      return json((data ?? []).map((l: Json) => { const a = agg.get(l.id); return { ...l, appareils: a ? a.dev.size : 0, ips: a ? a.ips.size : 0 }; })); // jamais token_hash
     }
 
     if (path === '/spo/liens/generer' && POST) {
