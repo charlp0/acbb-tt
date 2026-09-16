@@ -33,3 +33,15 @@ alter table if exists public.licences_valides  enable row level security;
 --    where tablename in ('dispos_log','tags_log','scenarios_log','gate_log',
 --                        'signalements_log','licences_valides');
 -- Pour supprimer : drop policy if exists "<policyname>" on public.<table>;
+-- Bascule 16/09/2026 : suppression des règles d'accès public héritées de l'ancien site, puis retrait des droits anon/authenticated.
+drop policy if exists "insertion publique dispos" on public.dispos_log;
+drop policy if exists "lecture publique dispos" on public.dispos_log;
+drop policy if exists "gate_insert" on public.gate_log;
+drop policy if exists "gate_select" on public.gate_log;
+drop policy if exists "lv_select" on public.licences_valides;
+drop policy if exists "scenarios insert public" on public.scenarios_log;
+drop policy if exists "scenarios select public" on public.scenarios_log;
+drop policy if exists "signalements insert public" on public.signalements_log;
+drop policy if exists "insertion publique" on public.tags_log;
+drop policy if exists "lecture publique" on public.tags_log;
+revoke all on table public.dispos_log, public.tags_log, public.scenarios_log, public.gate_log, public.signalements_log, public.licences_valides from anon, authenticated;
