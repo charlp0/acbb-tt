@@ -5,11 +5,11 @@ on:
   # le championnat 2025/2026 n'est plus servi (équipes/matchs vides). Runs programmés
   # désactivés pour éviter des échecs quotidiens. RÉACTIVER À LA REPRISE en décommentant
   # le bloc schedule ci-dessous. Déclenchement manuel toujours possible.
-  # schedule:                  # tous les jours, 4 créneaux
-  #   - cron: '0 6 * * *'      # ~8h Paris
-  #   - cron: '0 11 * * *'     # ~13h Paris
-  #   - cron: '0 17 * * *'     # ~19h Paris
-  #   - cron: '0 21 * * *'     # ~23h Paris
+  schedule:                    # tous les jours, 4 créneaux (réactivé le 16/09/2026, décision Charles)
+    - cron: '0 6 * * *'        # ~8h Paris
+    - cron: '0 11 * * *'       # ~13h Paris
+    - cron: '0 17 * * *'       # ~19h Paris
+    - cron: '0 21 * * *'       # ~23h Paris
   workflow_dispatch:           # déclenchement manuel (bouton "Run workflow" / gh workflow run)
     inputs:
       full:
@@ -52,7 +52,7 @@ jobs:
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
           FFTT_TOP: '0'          # 0 = tout le club ayant joué ≥1 match cette saison
           FFTT_FULL: ${{ github.event.inputs.full || '0' }}   # 1 = rebuild complet (manuel)
-          FFTT_SKIP_IF_FRESH: ${{ github.event_name == 'schedule' && '1' || '0' }}   # créneaux multiples : ignore si déjà à jour aujourd'hui (runs programmés uniquement)
+          FFTT_SKIP_IF_FRESH: '0'   # chaque créneau tourne en incrémental (seuls les joueurs avec de nouveaux matchs sont recalculés)
         run: python3 scripts/fftt_build.py
       - name: Génération data-driven des pages d'équipe (site.json)
         # 26/27 : les poules FFTT ne sont pas encore résolues par fftt_site.py → l'étape ne doit pas bloquer les profils joueurs

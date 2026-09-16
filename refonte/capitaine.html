@@ -236,7 +236,7 @@
      (sameTeam : même club + même numéro, ex. « BOULOGNE BILLAN 11 » ≈ « BOULOGNE BILLANCOURT 11 ») : tant qu'il porte la saison 25/26,
      les noms ne correspondent pas et la carte de scouting reste sur les repères 25/26 de poules2627.json. */
   function matchesPoule(names,poule){ const ts=(poule&&poule.teams)||[]; if(!ts.length||!names.length) return false; let hits=0; ts.forEach(t=>{ if(names.some(n=>sameTeam(n,t.name))) hits++; }); return hits>=Math.max(4,Math.ceil(ts.length*0.6)); }
-  function standingsFor(site,poule){ const st=site&&site.STANDINGS&&poule&&site.STANDINGS[poule.acbb]; if(!Array.isArray(st)||!st.length) return null; return matchesPoule(st.map(r=>r.name),poule)?st:null; }
+  function standingsFor(site,poule){ const st=site&&site.STANDINGS&&poule&&site.STANDINGS[poule.acbb]; if(!Array.isArray(st)||!st.length) return null; const _joue=st.some(r=>(+r.mp||0)>0||(+r.pts||0)>0); if(!_joue) return null; /* avant la J1 : positions masquées, tout s'affiche dès que la FFTT remonte les premiers résultats */ return matchesPoule(st.map(r=>r.name),poule)?st:null; }
   function poolFor(site,poule){ /* DATA de notre clé + celles d'autres équipes ACBB éventuellement dans la même poule (même libellé pool) */
     if(!site||!site.DATA||!poule) return null;
     const own=site.DATA[poule.acbb]; if(!own||!Array.isArray(own.teams)) return null;

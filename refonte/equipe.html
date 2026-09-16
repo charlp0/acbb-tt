@@ -100,7 +100,7 @@
   function scoreClass(a,b){ return a>b?'win':(a<b?'lose':'draw'); }
   function normName(s){ return String(s||'').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
   function sameTeam(a,b){ a=normName(a); b=normName(b); if(!a||!b) return false; if(a===b) return true; const na=a.match(/(\d+)$/),nb=b.match(/(\d+)$/); const fa=a.split(' ')[0],fb=b.split(' ')[0]; return !!(na&&nb&&na[1]===nb[1]&&fa===fb&&fa.length>=4); }
-  function standingsFor(site,poule){ const st=site&&site.STANDINGS&&site.STANDINGS[poule.acbb]; if(!Array.isArray(st)||!st.length||!poule.teams) return null; let hits=0; poule.teams.forEach(t=>{ if(st.some(r=>sameTeam(r.name,t.name))) hits++; }); return hits>=Math.max(4,Math.ceil(poule.teams.length*0.6))?st:null; }
+  function standingsFor(site,poule){ const st=site&&site.STANDINGS&&site.STANDINGS[poule.acbb]; if(!Array.isArray(st)||!st.length||!poule.teams) return null; const _joue=st.some(r=>(+r.mp||0)>0||(+r.pts||0)>0); if(!_joue) return null; /* avant la J1 : positions masquées, tout s'affiche dès que la FFTT remonte les premiers résultats */ let hits=0; poule.teams.forEach(t=>{ if(st.some(r=>sameTeam(r.name,t.name))) hits++; }); return hits>=Math.max(4,Math.ceil(poule.teams.length*0.6))?st:null; }
 
   const S={team:null,poules:null,byTeam:{},scores:{},resultats:{},site:null,apiFail:false};
   const params=new URLSearchParams(location.search);
