@@ -1,140 +1,179 @@
-<!DOCTYPE html><html lang="fr"><head>
-<meta charset="UTF-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
 <title>ACBB TT — Joueurs</title>
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0B0B0D">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="ACBB TT">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800;1,900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/style.css">
 <style>
-  :root{--bg:#0B0B0D;--card:#141416;--panel:#1E1E22;--panel-2:#26262B;--line:rgba(255,255,255,0.08);--line-2:rgba(255,255,255,0.16);
-    --ink:#F6F5F3;--ink-2:#D4D3CF;--dim:rgba(246,245,243,0.60);--dimmer:rgba(246,245,243,0.48);--orange:#F26A1B;--orange-soft:rgba(242,106,27,0.14);
-    --win:#3DD68C;--win-lt:#86EFAC;--lose:#F26356;--lose-lt:#FCA5A5;--gold:#FACC15}
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;font-size:14px;line-height:1.4}
-  .wrap{max-width:1180px;margin:0 auto;padding-bottom:50px}
-  ::-webkit-scrollbar{display:none}
-  .header{position:sticky;top:0;z-index:50;padding:10px 16px;background:rgba(11,11,13,0.72);backdrop-filter:blur(20px) saturate(1.2);-webkit-backdrop-filter:blur(20px) saturate(1.2);border-bottom:1px solid var(--line)}
-  .header-row{display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:1180px;margin:0 auto}
-  .brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
-  .brand img{width:34px;height:34px;border-radius:8px;background:#fff;padding:2px;border:1px solid var(--line-2)}
-  .brand b{font-size:12px;font-weight:700;letter-spacing:-0.3px;display:block}
-  .brand span{font-size:8.5px;color:var(--dim);font-family:"JetBrains Mono",monospace;letter-spacing:0.3px;text-transform:uppercase}
-  .nav{display:flex;gap:3px}
-  .nav a{padding:7px 11px;border-radius:99px;font-size:11px;font-weight:600;color:var(--ink-2);text-decoration:none;border:1px solid transparent}
-  .nav a.active{background:var(--panel-2);color:var(--ink);border-color:var(--line-2)}
-  .hero{padding:26px 16px 6px}
-  .eyebrow{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:6px}
-  .eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
-  h1{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:46px;line-height:1;margin:12px 0 4px;letter-spacing:0.5px}
-  h1 em{color:var(--orange);font-style:italic}
-  .sub{color:var(--dim);font-size:13px}
-  .controls{position:sticky;top:55px;z-index:40;background:rgba(11,11,13,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .search{flex:1;min-width:200px;position:relative}
-  .search input{width:100%;background:var(--panel);border:1px solid var(--line-2);border-radius:99px;color:var(--ink);font-size:14px;font-family:inherit;padding:11px 16px 11px 40px;outline:none}
-  .search input:focus{border-color:var(--orange)}
-  .search::before{content:"⌕";position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:18px}
-  .sortbtn{padding:11px 14px;border-radius:99px;background:var(--panel);border:1px solid var(--line-2);color:var(--ink-2);font-size:11px;font-weight:700;font-family:"JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:0.4px;cursor:pointer;white-space:nowrap}
-  .count{font-size:11px;color:var(--dim);font-family:"JetBrains Mono",monospace;padding:0 4px}
-  .grid{display:grid;grid-template-columns:1fr;gap:8px;padding:14px 16px}
-  @media(min-width:560px){.grid{grid-template-columns:1fr 1fr}}
-  @media(min-width:900px){.grid{grid-template-columns:1fr 1fr 1fr}}
-  .pcard{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-decoration:none;color:var(--ink);transition:transform .12s,border-color .12s}
-  a.pcard:hover{transform:translateY(-1px);border-color:var(--orange);background:linear-gradient(160deg,var(--orange-soft) 0%,var(--card) 70%)}
-  .pcard.mut{cursor:default;border-style:dashed;border-color:rgba(61,214,140,0.35)}
-  .newb{display:inline-block;font-size:9px;font-weight:800;letter-spacing:0.5px;color:var(--win-lt);background:rgba(61,214,140,0.12);border:1px solid rgba(61,214,140,0.4);border-radius:99px;padding:2px 8px}
-  .rk{font-family:"JetBrains Mono",monospace;font-size:20px;font-weight:800;color:var(--orange);min-width:54px;text-align:center;line-height:1}
-  .rk .u{font-size:9px;color:var(--dim);display:block;font-weight:600;margin-top:2px;letter-spacing:0.3px}
-  .pinfo{flex:1;min-width:0}
-  .pname{font-weight:700;font-size:15px;letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .pname .pre{color:var(--dim);font-weight:500}
-  .pmeta{font-size:11px;color:var(--dim);font-family:"JetBrains Mono",monospace;margin-top:3px}
-  .chev{color:var(--dimmer);font-size:18px;font-weight:700}
-  .empty{padding:40px 16px;text-align:center;color:var(--dim)}
+  .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:22px;flex-wrap:wrap}
+  .sbox{margin-top:18px;padding:14px 16px}
+  .srch{position:relative}
+  .srch input{padding:12px 14px 12px 42px;font-size:15px;min-height:48px;border-radius:99px}
+  .srch .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--dim);display:inline-flex}
+  .sug{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--panel-3);border:1px solid var(--line-2);border-radius:12px;overflow:hidden;z-index:30;box-shadow:0 18px 50px rgba(0,0,0,.6)}
+  .sugi{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:14px;padding:12px 14px;min-height:46px;cursor:pointer}
+  .sugi:last-child{border-bottom:0}
+  .sugi:hover,.sugi.sel{background:rgba(242,106,27,.14)}
+  .sugi .pre{color:var(--dim);font-weight:400}
+  .sugi .pts{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-2)}
+  .shorts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}
+  .card .ch{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .card .ch .t{font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:800}
+  .plist{display:flex;flex-direction:column;gap:6px}
+  .pitem{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink);font-family:inherit;font-size:13.5px;cursor:pointer;min-height:44px}
+  .pitem:hover{border-color:var(--orange)}
+  .pitem .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pitem .nm .pre{color:var(--dim);font-weight:500}
+  .pitem .r{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .pitem .pts{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-2)}
+  .pitem .delta{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:800;color:var(--win)}
+  .empty{font-size:12.5px;color:var(--dim);line-height:1.45}
+  .fiche{margin-top:18px}
+  .fh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .fh b{font-size:17px}
+  .fh .acts{display:flex;gap:8px;flex-wrap:wrap}
+  .fh .btn{min-height:40px}
+  .frame{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative}
+  .frame iframe{display:block;width:100%;height:2400px;border:0;background:var(--bg)}
+  .frame .ld{position:absolute;left:0;right:0;top:0;padding:14px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim)}
+  @media(max-width:800px){.shorts{grid-template-columns:1fr}}
 </style>
-</head><body><div class="wrap">
-<header class="header"><div class="header-row">
-  <a class="brand" href="accueil.html"><img src="logo.png" alt="ACBB"><div><b>ACBB TT</b><span>Joueurs</span></div></a>
-  <nav class="nav"><a href="accueil.html">Accueil</a><a href="joueurs.html" class="active">Joueurs</a><a href="stats.html">Ch. Équipe 25/26</a></nav>
-</div></header>
+</head>
+<body>
+<div class="wrap">
+  <div id="hdr" class="hdr"></div>
 
-<section class="hero">
-  <div class="eyebrow">Annuaire · Classements officiels 2026-2027</div>
-  <h1>Les <em>joueurs</em></h1>
-  <div class="sub">Cherche un joueur pour voir sa fiche complète (classement, perfs, par compétition).</div>
-</section>
+  <section class="hero">
+    <div>
+      <h1 class="h1">Les <em>joueurs</em></h1>
+      <div class="hsub">Cherche un joueur : sa fiche complète s'affiche ici (classement, progression, récap 26/27).</div>
+    </div>
+    <span class="lab" id="count"></span>
+  </section>
 
-<div class="controls">
-  <div class="search"><input id="q" type="search" placeholder="Chercher un joueur…" autocomplete="off"></div>
-  <button class="sortbtn" id="sort">Tri : classement</button>
-  <span class="count" id="count"></span>
+  <div class="card sbox">
+    <div class="srch">
+      <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></span>
+      <input id="q" type="search" placeholder="Nom ou prénom…" autocomplete="off" aria-label="Rechercher un joueur" aria-autocomplete="list">
+      <div class="sug" id="sug" role="listbox" hidden></div>
+    </div>
+  </div>
+
+  <section class="shorts" id="shorts">
+    <div class="card">
+      <div class="ch"><span class="t">Derniers consultés</span><span class="lab">sur cet appareil</span></div>
+      <div class="plist" id="recent"><div class="empty">Aucune fiche consultée pour l'instant. Tape un nom ci-dessus.</div></div>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="t">Plus fortes progressions</span><span class="lab">phase 1 · 26/27 · points gagnés depuis le début de saison</span></div>
+      <div class="plist" id="prog"><div class="empty">Chargement…</div></div>
+    </div>
+  </section>
+
+  <section class="fiche" id="fiche" hidden>
+    <div class="fh">
+      <b id="fName"></b>
+      <div class="acts"><button class="btn" id="fClose" type="button">Fermer la fiche</button></div>
+    </div>
+    <div class="frame"><div class="ld" id="fLoad">Chargement de la fiche…</div><iframe id="frame" title="Fiche joueur" loading="eager"></iframe></div>
+  </section>
+
+  <div class="foot">ACBB Tennis de Table · classements et résultats FFTT</div>
 </div>
 
-<div class="grid" id="grid"></div>
-
+<script src="shared/api.js"></script>
+<script src="shared/report.js" defer></script>
+<script src="shared/nav.js" data-base="."></script>
 <script>
-let PLAYERS=[], OFF={}, sortMode=0;
-const off=p=>OFF[p.lic]??p.mensuel??0;
-const SORTS=[
-  {label:'classement', fn:(a,b)=>off(b)-off(a)},
-  {label:'nom', fn:(a,b)=>(a.nom+a.prenom).localeCompare(b.nom+b.prenom)},
-  {label:'parties', fn:(a,b)=>(b.parties||0)-(a.parties||0)},
-];
-const nrm=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
-function render(){
-  const q=nrm(document.getElementById('q').value.trim());
-  let list=PLAYERS.filter(p=>!q || nrm(p.nom+' '+p.prenom).includes(q) || nrm(p.prenom+' '+p.nom).includes(q));
-  list.sort(SORTS[sortMode].fn);
-  document.getElementById('count').textContent=list.length+' joueur'+(list.length>1?'s':'');
-  const g=document.getElementById('grid');
-  if(!list.length){ g.innerHTML='<div class="empty">Aucun joueur trouvé.</div>'; return; }
-  g.innerHTML=list.map(p=>{
-    if(p.mut) // recrue 26/27 : pas encore de fiche -> carte non cliquable
-      return `
-    <div class="pcard mut">
-      <div class="rk">${off(p)||'—'}<span class="u">officiel 26/27</span></div>
-      <div class="pinfo">
-        <div class="pname">${p.nom} <span class="pre">${p.prenom}</span></div>
-        <div class="pmeta"><span class="newb">NOUVEAU · mutation 26/27</span></div>
-      </div>
-    </div>`;
-    return `
-    <a class="pcard" href="joueur.html?lic=${p.lic}">
-      <div class="rk">${off(p)||'—'}<span class="u">officiel 26/27</span></div>
-      <div class="pinfo">
-        <div class="pname">${p.nom} <span class="pre">${p.prenom}</span></div>
-        <div class="pmeta">${p.parties||0} partie${p.parties>1?'s':''} cette saison</div>
-      </div>
-      <span class="chev">›</span>
-    </a>`;}).join('');
-}
-document.getElementById('q').addEventListener('input',render);
-document.getElementById('sort').addEventListener('click',()=>{ sortMode=(sortMode+1)%SORTS.length; document.getElementById('sort').textContent='Tri : '+SORTS[sortMode].label; render(); });
-function loadAnnuaire(){
-  document.getElementById('grid').innerHTML='<div class="empty">Chargement…</div>';
-  // scoring.json = source ESSENTIELLE de l'effectif ; les 2 autres sont optionnels (dégradation propre)
-  var pIndex=fetch('data/players_index.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]);
-  var pOff=fetch('data/officiel2627.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
-  fetch('data/scoring.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw 0;return r.json();})
-    .then(sc=>Promise.all([pIndex,pOff]).then(([d,o])=>{
-      if(o&&o.officiel)OFF=o.officiel;
-      const byLic={}; (d||[]).forEach(p=>{ if(p.lic) byLic[String(p.lic)]=p; });
-      PLAYERS=(sc.players||[]).map(p=>{
-        const ix=p.lic?byLic[String(p.lic)]:null;
-        return {lic:p.lic, nom:p.nom, prenom:p.pre, mensuel:p.men, mut:!!p.mut, parties:ix?ix.parties:0};
-      });
-      render();
-    }))
-    .catch(()=>{ document.getElementById('grid').innerHTML='<div class="empty">Liste momentanément indisponible. <button class="sortbtn" type="button" onclick="loadAnnuaire()" style="margin-left:8px">Réessayer</button></div>'; });
-}
-loadAnnuaire();
+(function(){
+  'use strict';
+  const esc=ACBB.esc;
+  function nrm(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); }
+  const S={players:[],byLic:{}};
+
+  renderNav({active:'Joueurs'});
+  ACBB.api('me').then(me=>{ renderNav({active:'Joueurs',role:me&&me.role,team:me&&me.equipe,name:me&&me.nom}); }).catch(()=>{});
+
+  const q=document.getElementById('q'), sug=document.getElementById('sug');
+  let sel=-1, cur=[];
+
+  Promise.all([ACBB.json('data/players_index.json').catch(()=>[]),ACBB.json('data/scoring.json').catch(()=>null)]).then(([idx,sc])=>{
+    const by={};
+    (idx||[]).forEach(p=>{ if(p.lic) by[String(p.lic)]={lic:String(p.lic),nom:p.nom,prenom:p.prenom,men:p.mensuel,parties:p.parties,debut:p.debut,officiel:p.officiel,fiche:true}; });
+    ((sc&&sc.players)||[]).forEach(p=>{ if(!p.lic) return; const k=String(p.lic); if(by[k]){ if(p.men!=null) by[k].men=p.men; by[k].tend=p.tend; } });
+    S.byLic=by; S.players=Object.values(by);
+    document.getElementById('count').textContent=S.players.length+' joueurs · officiel 26/27';
+    renderRecent(); renderProg();
+    const lic=new URLSearchParams(location.search).get('lic');
+    if(lic){ const p=by[String(lic)]; if(p) show(p); else show({lic:String(lic).replace(/[^0-9A-Za-z]/g,''),nom:'',prenom:''}); }
+  }).catch(()=>{ document.getElementById('prog').innerHTML='<div class="empty">Liste momentanément indisponible.</div>'; });
+
+  function suggest(){
+    const v=nrm(q.value.trim());
+    if(v.length<2||!S.players.length){ sug.hidden=true; cur=[]; return; }
+    const starts=[],inc=[];
+    S.players.forEach(p=>{ const a=nrm(p.nom+' '+p.prenom), b=nrm(p.prenom+' '+p.nom); if(a.startsWith(v)||b.startsWith(v)||nrm(p.nom).startsWith(v)||nrm(p.prenom).startsWith(v)) starts.push(p); else if(a.includes(v)||b.includes(v)) inc.push(p); });
+    const byPts=(x,y)=>(y.men||0)-(x.men||0);
+    cur=starts.sort(byPts).concat(inc.sort(byPts)).slice(0,8); sel=-1;
+    if(!cur.length){ sug.innerHTML='<div class="sugi muted" style="cursor:default">Aucun joueur trouvé</div>'; sug.hidden=false; return; }
+    sug.innerHTML=cur.map((p,i)=>'<button type="button" class="sugi" role="option" data-i="'+i+'">'+esc(p.nom)+' <span class="pre">'+esc(p.prenom)+'</span><span class="pts">'+(p.men!=null?p.men:'')+'</span></button>').join('');
+    sug.hidden=false;
+    sug.querySelectorAll('.sugi[data-i]').forEach(b=>b.addEventListener('click',()=>show(cur[+b.dataset.i])));
+  }
+  q.addEventListener('input',suggest);
+  q.addEventListener('focus',suggest);
+  q.addEventListener('keydown',e=>{
+    if(sug.hidden||!cur.length) return;
+    if(e.key==='ArrowDown'){ e.preventDefault(); sel=Math.min(cur.length-1,sel+1); mark(); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); sel=Math.max(0,sel-1); mark(); }
+    else if(e.key==='Enter'){ e.preventDefault(); show(cur[sel>=0?sel:0]); }
+    else if(e.key==='Escape'){ sug.hidden=true; }
+  });
+  function mark(){ sug.querySelectorAll('.sugi[data-i]').forEach((b,i)=>b.classList.toggle('sel',i===sel)); }
+  document.addEventListener('click',e=>{ if(!e.target.closest('.srch')) sug.hidden=true; });
+
+  /* ---------- raccourcis ---------- */
+  function recents(){ try{ const r=JSON.parse(localStorage.getItem('acbb_recent')||'[]'); return Array.isArray(r)?r:[]; }catch(e){ return []; } }
+  function pushRecent(p){ if(!p||!p.lic||!p.nom) return; try{ const r=recents().filter(x=>x.lic!==p.lic); r.unshift({lic:p.lic,nom:p.nom,prenom:p.prenom}); localStorage.setItem('acbb_recent',JSON.stringify(r.slice(0,6))); }catch(e){} }
+  function item(p,right){ return '<button type="button" class="pitem" data-lic="'+esc(p.lic)+'"><span class="nm">'+esc(p.nom)+' <span class="pre">'+esc(p.prenom)+'</span></span><span class="r">'+right+'</span></button>'; }
+  function bind(el){ el.querySelectorAll('.pitem').forEach(b=>b.addEventListener('click',()=>{ const p=S.byLic[b.dataset.lic]||recents().find(x=>x.lic===b.dataset.lic); if(p) show(p); })); }
+  function renderRecent(){
+    const el=document.getElementById('recent'); const r=recents();
+    if(!r.length){ el.innerHTML='<div class="empty">Aucune fiche consultée pour l\'instant. Tape un nom ci-dessus.</div>'; return; }
+    el.innerHTML=r.map(x=>{ const p=S.byLic[x.lic]||x; return item(p,p.men!=null?'<span class="pts">'+p.men+'</span>':''); }).join(''); bind(el);
+  }
+  function renderProg(){
+    const el=document.getElementById('prog');
+    // Progression de la phase 1 = points mensuels actuels − points au début de la saison 26/27, joueurs ayant joué au moins un match.
+    const list=S.players.filter(p=>p.parties>0&&typeof p.men==='number'&&typeof p.debut==='number').map(p=>({...p,prog:Math.round(p.men-p.debut)})).filter(p=>p.prog>0).sort((a,b)=>b.prog-a.prog).slice(0,8);
+    if(!list.length){ el.innerHTML='<div class="empty">En attente des premiers matchs de la phase 1 : les progressions s\'afficheront ici dès les premières journées.</div>'; return; }
+    el.innerHTML=list.map(p=>item(p,'<span class="pts">'+p.men+'</span><span class="delta">+'+p.prog+'</span>')).join(''); bind(el);
+  }
+
+  /* ---------- fiche embarquée ---------- */
+  const fiche=document.getElementById('fiche'), frame=document.getElementById('frame'), fLoad=document.getElementById('fLoad');
+  function show(p){
+    if(!p||!p.lic) return;
+    sug.hidden=true; q.value='';
+    pushRecent(p); renderRecent();
+    document.getElementById('shorts').hidden=true; fiche.hidden=false;
+    document.getElementById('fName').textContent=(p.prenom||p.nom)?((p.prenom||'')+' '+(p.nom||'')).trim():('Licence '+p.lic);
+    fLoad.hidden=false; frame.style.height='2400px';
+    frame.src='joueur.html?lic='+encodeURIComponent(p.lic)+'&embed=1';
+    history.replaceState(null,'','joueurs.html?lic='+encodeURIComponent(p.lic));
+    fiche.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  frame.addEventListener('load',()=>{ fLoad.hidden=true; });
+  window.addEventListener('message',e=>{ const d=e.data; if(d&&typeof d.acbbHeight==='number'&&d.acbbHeight>200){ frame.style.height=Math.min(20000,Math.round(d.acbbHeight)+24)+'px'; } });
+  document.getElementById('fClose').addEventListener('click',()=>{ fiche.hidden=true; frame.src='about:blank'; document.getElementById('shorts').hidden=false; history.replaceState(null,'','joueurs.html'); q.focus(); });
+})();
 </script>
-</div>
-<script src="report.js" defer></script>
-<script data-goatcounter="https://acbb-tt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-</body></html>
+</body>
+</html>

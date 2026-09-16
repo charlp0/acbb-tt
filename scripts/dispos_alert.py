@@ -4,9 +4,12 @@ signale celles qui touchent une compo enregistrée (scenarios_log j1..j7) d'une 
 et écrit un bloc prêt à coller dans WhatsApp. État : data/dispos_alert_state.json ({last_id}).
 Usage : python3 scripts/dispos_alert.py [--since ID] [--out alert.md]  -> exit 0, imprime CHANGES=<n> sur la dernière ligne."""
 import json, re, sys, unicodedata, urllib.request, datetime, os
-SB = "https://vhhmageufrcenruywawg.supabase.co"; PUB = "sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay"
+import os
+SB = "https://vhhmageufrcenruywawg.supabase.co"
+# Depuis la bascule du 16/09/2026 les tables sont fermées au public : la clé service (secret GitHub SUPA_SERVICE_KEY) est requise.
+PUB = os.environ.get("SUPA_SERVICE_KEY") or "sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-def get(p): return json.load(urllib.request.urlopen(urllib.request.Request(SB + p, headers={'apikey': PUB}), timeout=30))
+def get(p): return json.load(urllib.request.urlopen(urllib.request.Request(SB + p, headers={'apikey': PUB, 'Authorization': 'Bearer '+PUB}), timeout=30))
 args = sys.argv[1:]; since = None; out_path = 'alert.md'
 if '--since' in args: since = int(args[args.index('--since') + 1])
 if '--out' in args: out_path = args[args.index('--out') + 1]

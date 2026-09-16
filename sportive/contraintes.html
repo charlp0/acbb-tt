@@ -1,180 +1,276 @@
 <!DOCTYPE html><html lang="fr"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>ACBB TT — Contraintes compo (interne)</title>
+<title>ACBB TT — Contraintes compo (sportive)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/style.css">
 <link rel="icon" type="image/png" href="../logo.png">
-<link rel="manifest" href="../manifest.json">
+<link rel="manifest" href="../../manifest.json">
 <meta name="theme-color" content="#0B0B0D">
 <style>
-  :root{--bg:#0B0B0D;--paper:#141416;--panel:#1E1E22;--panel-2:#26262B;--line:rgba(255,255,255,0.08);--line-2:rgba(255,255,255,0.16);
-    --ink:#F6F5F3;--ink-2:#D4D3CF;--dim:rgba(246,245,243,0.60);--dimmer:rgba(246,245,243,0.48);--orange:#F26A1B;
-    --win:#3DD68C;--win-lt:#86EFAC;--lose:#F26356;--lose-lt:#FCA5A5;--gold:#FACC15}
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;font-size:14px;line-height:1.4}
-  body{min-height:100vh;padding-bottom:50px}
-  .wrap{max-width:1180px;margin:0 auto}
-  ::-webkit-scrollbar{display:none}
-  .header{position:sticky;top:0;z-index:50;padding:10px 16px;background:rgba(11,11,13,0.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-  .header-row{display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:1180px;margin:0 auto}
-  .brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
-  .brand img{width:34px;height:34px;border-radius:8px;background:#fff;padding:2px;border:1px solid var(--line-2)}
-  .brand b{font-size:12px;font-weight:700;display:block}
-  .brand span{font-size:8.5px;color:var(--dim);font-family:"JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:0.3px}
-  .nav{display:flex;gap:3px}
-  .nav a{padding:7px 11px;border-radius:99px;font-size:11px;font-weight:600;color:var(--ink-2);text-decoration:none;border:1px solid transparent}
-  .nav a.active{background:var(--orange);color:#fff;border-color:var(--orange)}
-  /* sous-nav espace sportive */
-  .subnav{display:flex;gap:7px;padding:14px 16px 0;max-width:1180px;margin:0 auto}
-  .subnav a{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:9px 14px;border-radius:99px;background:var(--paper);border:1px solid var(--line-2);color:var(--ink-2);text-decoration:none}
-  .subnav a.active{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
-  .hero{padding:22px 16px 8px}
-  .eyebrow{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:6px}
-  .eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
-  h1{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:clamp(38px,8vw,56px);line-height:1;margin:10px 0 6px;letter-spacing:0.5px}
-  h1 em{color:var(--orange);font-style:italic}
-  .meta{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--dim)}
-  .sec{padding:20px 16px 4px}
-  .sec-h{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-  .sec-h::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
-  /* matrice */
-  .mx-wrap{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow-x:auto}
-  table.mx{width:100%;min-width:520px;border-collapse:collapse;font-family:"JetBrains Mono",monospace;font-size:12px}
-  .mx th{background:var(--panel);font-size:9.5px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:var(--dim);padding:10px 8px;text-align:center;white-space:nowrap}
-  .mx th:first-child{text-align:left;padding-left:14px}
-  .mx td{padding:9px 8px;text-align:center;border-top:1px solid rgba(255,255,255,0.05)}
-  .mx td:first-child{text-align:left;padding-left:14px;white-space:nowrap}
-  .mx .tn{font-weight:800;font-size:13px}
-  .mx .ts{font-size:9px;color:var(--dim);display:block;margin-top:2px;font-family:"JetBrains Mono",monospace}
-  .cell{display:inline-block;min-width:30px;padding:4px 0;border-radius:8px;font-weight:800;font-size:12.5px}
-  .c-ok{background:rgba(61,214,140,0.15);color:var(--win-lt)}
-  .c-warn{background:rgba(250,204,21,0.14);color:var(--gold)}
-  .c-bad{background:rgba(242,99,86,0.16);color:var(--lose-lt)}
-  .c-zero{background:rgba(242,99,86,0.28);color:#fff}
-  .c-na{color:var(--dimmer)}
-  .legende{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:10.5px;color:var(--ink-2);font-family:"JetBrains Mono",monospace}
-  .legende i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-  /* relance */
-  .rel{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
-  .rel-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:13px 15px}
-  .rel-t{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:14px;margin-bottom:8px}
-  .rel-chip{display:inline-block;font-size:11px;background:var(--panel);border:1px solid var(--line-2);border-radius:99px;padding:3px 10px;margin:0 4px 5px 0}
-  .rel-chip.nolic{border-color:rgba(250,204,21,0.4);color:var(--gold)}
-  .ok-all{color:var(--win-lt);font-size:12px;font-family:"JetBrains Mono",monospace}
-  /* répondants */
-  .rp-wrap{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow-x:auto}
-  table.rp{width:100%;min-width:480px;border-collapse:collapse;font-size:12.5px}
-  .rp th{background:var(--panel);font-size:9.5px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:var(--dim);padding:9px 10px;text-align:left;white-space:nowrap}
-  .rp td{padding:8px 10px;border-top:1px solid rgba(255,255,255,0.05);white-space:nowrap}
-  .rp .num{font-family:"JetBrains Mono",monospace}
-  .dotj{display:inline-block;width:16px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px}
-  .dotj.y{color:var(--win)}
-  .dotj.n{color:var(--dimmer)}
-  .btn{font-family:inherit;font-size:12.5px;font-weight:800;padding:10px 18px;border-radius:99px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);cursor:pointer}
-  .btn:hover{border-color:var(--orange);color:var(--orange)}
-  .warnbox{background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.35);border-radius:12px;padding:11px 14px;font-size:12px;margin-top:12px}
-  #gate{position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
-  .gate-box{max-width:340px;width:100%;text-align:center}
-  .gate-box h2{font-family:'Saira Condensed',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:34px;margin-bottom:6px}
-  .gate-box input{width:100%;background:var(--panel-2);border:1px solid var(--line-2);border-radius:99px;color:var(--ink);font-size:15px;font-family:inherit;padding:12px 18px;outline:none;text-align:center}
-  .gate-box button{margin-top:12px;width:100%;background:var(--orange);border:none;border-radius:99px;color:#0B0B0D;font-size:14px;font-weight:700;font-family:inherit;padding:12px;cursor:pointer}
+  /* Contraintes compo — rendu aligné sur la maquette PropContraintes.dc.html : en-tête .h1 + sous-titre mono + état à droite,
+     lignes .card en grille minmax(0,1.6fr) 150px 240px avec liseré gauche coloré, « s'applique à », coche verte / rappel jaune. */
+  #app{display:flex;flex-direction:column;gap:14px;margin-top:14px}
+  .phead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .phead .tt{display:flex;flex-direction:column;gap:4px;min-width:0}
+  .phead .hsub{margin-top:0}
+  .rules{display:flex;flex-direction:column;gap:10px}
+  .rule{padding:14px 18px;display:grid;grid-template-columns:minmax(0,1.6fr) 150px 240px;gap:14px;align-items:center;border-left:3px solid var(--orange)}
+  @media(max-width:860px){.rule{grid-template-columns:1fr}}
+  .rule.red{border-left-color:var(--lose)}.rule.gold{border-left-color:var(--warn)}.rule.green{border-left-color:var(--win)}.rule.blue{border-left-color:var(--blue)}
+  .rule .rc{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .rule .rt{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .rule .t{font-size:13.5px;font-weight:700}
+  .rule .art{font-size:9px;padding:2px 8px;color:var(--blue);border-color:rgba(96,165,250,.5)}
+  .rule .d{font-size:12px;color:var(--dim);line-height:1.4}
+  .rule .d b{color:var(--ink-2);font-weight:600}
+  .rule .ra{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .rule .teams{font-size:12.5px;line-height:1.35}
+  .rule .teams .q{color:var(--dim)}
+  .rule .teams .none{color:var(--dim)}
+  .rule .rv{display:flex;flex-direction:column;gap:4px;min-width:0}
+  .rule .chk{display:inline-flex;align-items:center;gap:5px;color:var(--win);text-decoration:none}
+  .rule .chk:hover{color:var(--win-lt)}
+  .rule .chk.manual{color:var(--warn)}
+  .rule .st{letter-spacing:.3px;line-height:1.35;white-space:normal}
+  .rule .st.bad{color:var(--lose)}
+  .rule .d code{font-family:"JetBrains Mono",monospace;font-size:11px}
+  .note{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dimmer);line-height:1.5}
+  .denied{padding:60px 0;max-width:640px}
+  .denied p{color:var(--ink-2);font-size:13px;line-height:1.55;margin-top:14px}
+  .denied a.back{display:inline-block;margin-top:18px;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:8px 14px;border-radius:99px;border:1px solid var(--line-2);color:var(--ink-2);text-decoration:none}
 </style>
 </head><body>
-<header class="header"><div class="header-row">
-  <a class="brand" href="../accueil.html"><img src="../logo.png" alt="ACBB"><div><b>ACBB TT</b><span>Espace sportive</span></div></a>
-  <nav class="nav"><a href="../accueil.html">Accueil</a><a href="../joueurs.html">Joueurs</a><a href="../stats.html">Ch. Équipe 25/26</a><a href="index.html" class="active">Sportive</a></nav>
-</div></header>
-
-<div id="gate" style="display:none">
-  <div class="gate-box">
-    <h2>Espace <span style="color:var(--orange)">Sportive</span></h2>
-    <p style="color:var(--dim);font-size:13px;margin-bottom:18px">Outil interne — accès réservé.</p>
-    <input id="gpw" type="password" placeholder="Mot de passe" autocomplete="off">
-    <button id="gbtn" type="button">Entrer</button>
-    <p id="gerr" style="color:var(--lose);font-size:12px;margin-top:10px;height:14px"></p>
-    <a href="../accueil.html" style="color:var(--dim);font-size:12px;text-decoration:none">← Retour au site</a>
-  </div>
-</div>
-
 <div class="wrap">
-<nav class="subnav">
-  <a href="index.html">🎯 Scoring &amp; compos</a>
-  <a href="poules.html">🏆 Poules 26/27</a>
-  <a href="suivi-dispos.html">📊 Suivi des dispos</a>
-  <a href="contraintes.html" class="active">📋 Contraintes</a>
-  <a href="journee.html">📅 Compos journée</a>
-</nav>
-<div class="hero">
-  <div class="eyebrow">Espace sportive · Règles de composition</div>
-  <h1>Contraintes <em>compo.</em></h1>
-  <div class="meta">À respecter pour chaque équipe et chaque journée — vérifiées automatiquement dans la future page de gestion des compos.</div>
-</div>
+<div id="hdr"></div>
 
-<section class="sec">
-  <div class="sec-h">Contraintes internes</div>
-  <div style="display:flex;flex-direction:column;gap:10px;max-width:760px">
-    <div style="background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:12px;padding:14px 16px">
-      <b>1 · Les deux frères Allegre Guillaume dans la même équipe</b>
-      <div style="color:var(--dim);font-size:12px;margin-top:3px">Baptiste &amp; Antoine Allegre Guillaume — organisation des parents (demande de Laura).</div>
-    </div>
-    <div style="background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:12px;padding:14px 16px">
-      <b>2 · Les deux Intins ensemble</b>
-      <div style="color:var(--dim);font-size:12px;margin-top:3px">David &amp; Arthur Intins — même équipe.</div>
-    </div>
-    <div style="background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--lose);border-radius:12px;padding:14px 16px">
-      <b>3 · Mandelmilech jamais avec les frères Allegre</b>
-      <div style="color:var(--dim);font-size:12px;margin-top:3px">Adrien Mandelmilech ne doit pas être aligné dans la même équipe que Baptiste ou Antoine Allegre Guillaume.</div>
-    </div>
-    <div style="background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:14px 16px">
-      <b>4 · Éviter Emiliano en déplacement</b>
-      <div style="color:var(--dim);font-size:12px;margin-top:3px">Emiliano Bar Vanegas : à aligner de préférence uniquement sur les journées à domicile.</div>
-    </div>
-    <div style="background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--win);border-radius:12px;padding:14px 16px">
-      <b>5 · Respecter les règlements nationaux, régionaux et départementaux</b>
-      <div style="color:var(--dim);font-size:12px;margin-top:3px">Notamment : règles de <b>brûlage</b> (un joueur ayant disputé des rencontres dans une équipe supérieure ne peut plus redescendre selon les cas), et règle de la <b>2ᵉ journée</b> (pas 2 joueurs ayant joué la J1 dans une équipe supérieure), certificats/licences valides, joueurs mutés et étrangers par équipe.</div>
-    </div>
-  </div>
+<!-- accès refusé (rôle ≠ sportive) -->
+<section id="denied" class="denied" hidden>
+  <div class="lab" style="color:var(--orange)">Espace sportive</div>
+  <div class="h1" style="margin-top:8px">Accès <em>réservé.</em></div>
+  <p>Cette page est réservée à la sportive. <b>Ouvre ton lien personnel</b> (il contient ton jeton d'accès) pour y accéder. <span id="deniedWhy" style="color:var(--dim)"></span></p>
+  <a class="back" href="../index.html">← Retour au site</a>
 </section>
 
-<section class="sec">
-  <div class="sec-h">Vérification automatique (à venir)</div>
-  <div class="warnbox" style="max-width:760px">
-    🤖 Lors de la mise en place de la <b>page de gestion des compos par journée</b>, chaque contrainte ci-dessus sera contrôlée automatiquement <b>pour chaque équipe et chaque journée</b> (alerte en cas de violation : fratries séparées, Mandelmilech avec un Allegre, Emiliano à l'extérieur, brûlage…).
+<div id="app" hidden>
+<div class="phead">
+  <div class="tt">
+    <div class="h1">Contraintes compo</div>
+    <div class="hsub">Règles internes et règlements FFTT · chaque ligne dit où elle s’applique et si l’outil la vérifie <span id="stateMeta"></span></div>
   </div>
-</section>
+  <span class="lab" style="color:var(--win)" id="stateLab">état mis à jour automatiquement depuis Compos journée</span>
 </div>
 
+<div class="rules">
+  <span class="lab">contraintes internes</span>
+
+  <div class="card rule" data-rule="allegre">
+    <div class="rc"><div class="rt"><span class="t">1 · Les deux frères Allegre Guillaume dans la même équipe</span></div><span class="d">Baptiste et Antoine · organisation des parents, demande de Laura.</span></div>
+    <div class="ra"><span class="lab">s’applique à</span><span class="teams">…</span></div>
+    <div class="rv"><a class="lab chk" href="journee.html"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12.5l5 5L20 7"></path></svg>vérifiée dans Compos journée</a><span class="lab st"></span></div>
+  </div>
+
+  <div class="card rule blue" data-rule="intins">
+    <div class="rc"><div class="rt"><span class="t">2 · Les deux Intins ensemble</span></div><span class="d">David et Arthur · même équipe.</span></div>
+    <div class="ra"><span class="lab">s’applique à</span><span class="teams">…</span></div>
+    <div class="rv"><a class="lab chk" href="journee.html"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12.5l5 5L20 7"></path></svg>vérifiée dans Compos journée</a><span class="lab st"></span></div>
+  </div>
+
+  <div class="card rule red" data-rule="mandel">
+    <div class="rc"><div class="rt"><span class="t">3 · Mandelmilech jamais avec un Allegre Guillaume</span></div><span class="d">Adrien Mandelmilech ne doit pas être aligné dans la même équipe que Baptiste ou Antoine.</span></div>
+    <div class="ra"><span class="lab">s’applique à</span><span class="teams">…</span></div>
+    <div class="rv"><a class="lab chk" href="journee.html"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12.5l5 5L20 7"></path></svg>vérifiée dans Compos journée</a><span class="lab st"></span></div>
+  </div>
+
+  <div class="card rule gold" data-rule="emiliano">
+    <div class="rc"><div class="rt"><span class="t">4 · Éviter Emiliano en déplacement</span></div><span class="d">Emiliano Bar Vanegas : de préférence les journées à domicile seulement (avertissement à l’extérieur).</span></div>
+    <div class="ra"><span class="lab">s’applique à</span><span class="teams">…</span></div>
+    <div class="rv"><a class="lab chk" href="journee.html"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12.5l5 5L20 7"></path></svg>vérifiée dans Compos journée</a><span class="lab st"></span></div>
+  </div>
+
+  <span class="lab" style="margin-top:4px">règlements FFTT · saison 26/27</span>
+
+  <div class="card rule green" data-rule="brulage">
+    <div class="rc"><div class="rt"><span class="t">5 · Brûlage</span><span class="pill art">II.112</span></div><span class="d">Un joueur ayant disputé <b>deux rencontres</b> (ou plus) dans une équipe de numéro inférieur ne peut plus être aligné dans une équipe de numéro supérieur (numérotation séparée messieurs / dames). <b>Règle de la 2ᵉ journée</b> (II.112.1, formule à 4 joueurs) : au plus <b>un</b> joueur ayant disputé la J1 dans une équipe supérieure peut figurer sur la feuille en J2. Une même journée : une seule rencontre par joueur ; deux équipes ACBB dans une même poule : un joueur ne peut pas jouer pour les deux.</span></div>
+    <div class="ra"><span class="lab">s’applique à</span><span class="teams">toutes équipes</span></div>
+    <div class="rv"><a class="lab chk" href="journee.html" title="sur les compos enregistrées J1 → J7"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12.5l5 5L20 7"></path></svg>vérifiée dans Compos journée</a><span class="lab st"></span></div>
+  </div>
+
+  <div class="card rule green" data-rule="n1">
+    <div class="rc"><div class="rt"><span class="t">6 · Nationale 1 : 1800 points minimum</span><span class="pill art">II.243</span></div><span class="d">Chaque joueur aligné en N1 doit avoir <b>au moins 1800 points</b> au classement officiel.</span></div>
+    <div class="ra"><span class="lab">s’applique à</span><span class="teams">…</span></div>
+    <div class="rv"><a class="lab chk" href="journee.html" title="vérifiée aussi dans Scoring &amp; compos"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12.5l5 5L20 7"></path></svg>vérifiée dans Compos journée</a><span class="lab st"></span></div>
+  </div>
+
+  <div class="card rule green" data-rule="ex">
+    <div class="rc"><div class="rt"><span class="t">7 · Un joueur EX par feuille</span><span class="pill art">II.609</span></div><span class="d">En équipe de 4, <b>un seul</b> joueur extra-communautaire (hors UE / EEE / Suisse / Royaume-Uni) par feuille de rencontre. Statuts d’après <code>extra_communautaires.json</code>. <span id="exConf"></span></span></div>
+    <div class="ra"><span class="lab">s’applique à</span><span class="teams">…</span></div>
+    <div class="rv"><a class="lab chk" href="journee.html" title="vérifiée aussi dans Scoring &amp; compos"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12.5l5 5L20 7"></path></svg>vérifiée dans Compos journée</a><span class="lab st"></span></div>
+  </div>
+
+  <div class="card rule green" data-rule="licence">
+    <div class="rc"><div class="rt"><span class="t">8 · Licences et certificats valides</span><span class="pill art">I.203</span></div><span class="d">Licence compétition validée avant la journée, certificat médical ou attestation à jour pour chaque joueur aligné. Joueurs mutés : vérifier la mention sur la licence ; règlements régionaux (IdF) et départementaux (CD92) à consulter en complément.</span></div>
+    <div class="ra"><span class="lab">s’applique à</span><span class="teams">toutes équipes</span></div>
+    <div class="rv"><span class="lab chk manual">rappel, non vérifiable automatiquement</span></div>
+  </div>
+</div>
+
+<div class="note">« s’applique à » = équipe(s) des joueurs concernés dans la compo officielle 26/27, dernière version enregistrée (titulaires ; <span style="color:var(--dim)">grisé</span> = remplaçant, pool de division ou statut à confirmer), mise à jour à l’ouverture · état = alertes relevées sur les compos enregistrées dans Compos journée (brouillon ou finale, dernière version de chaque journée) · règlements sportifs fédéraux, championnat par équipes — numéro d’article indiqué.</div>
+</div><!-- /app -->
+</div><!-- /wrap -->
+
+<script src="../shared/api.js"></script>
+<script src="../shared/nav.js" data-base=".."></script>
+<script src="../shared/report.js" defer></script>
 <script>
 (function(){
-  var SB='https://vhhmageufrcenruywawg.supabase.co', KEY='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay';
-  var g=document.getElementById('gate');
-  function unlocked(){ try{return sessionStorage.getItem('acbb_sportive')==='1';}catch(e){return false;} }
-  function unlock(){ g.style.display='none'; try{sessionStorage.setItem('acbb_sportive','1');}catch(e){} }
-  if(!unlocked()){
-    g.style.display='flex';
-    document.getElementById('gbtn').addEventListener('click',tryPw);
-    document.getElementById('gpw').addEventListener('keydown',function(e){if(e.key==='Enter')tryPw();});
-    document.getElementById('gpw').focus();
+  /* ===== Accès : le rôle est donné par le serveur (GET /me, jeton du lien personnel porté par shared/api.js).
+     Aucune lecture directe de la base : la compo officielle (tags), la compo filles et les compos par journée passent par le proxy /spo/rest.
+     Mode test local : ?dev=1 (sur localhost / 127.0.0.1 uniquement) simule {role:'sportive', nom:'Test'} ; les lectures
+     serveur renvoient vide. Il ne donne accès à rien : les données réelles ne viennent que du serveur. ===== */
+  var DEV=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)&&new URLSearchParams(location.search).get('dev')==='1';
+  var ACTIVE='📋 Contraintes', DATA='../data/';
+  var esc=ACBB.esc;
+  var spoSelect=function(table,query){ return DEV?Promise.resolve([]):ACBB.api('spo/rest',{table:table,method:'select',query:query}); };
+  var gj=function(u){ return fetch(DATA+u,{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}); };
+
+  (async function(){
+    var me={role:null};
+    try{ me=DEV?{role:'sportive',nom:'Test'}:await ACBB.api('me'); }catch(e){ me={role:null,err:e.message}; }
+    if(!me||me.role!=='sportive'){
+      renderNav({active:ACTIVE,role:(me&&me.role)||'',team:(me&&me.equipe)||'',name:(me&&me.nom)||''});
+      document.getElementById('denied').hidden=false;
+      if(me&&me.err) document.getElementById('deniedWhy').textContent='(serveur : '+me.err+')';
+      return;
+    }
+    renderNav({active:ACTIVE,role:'sportive',name:me.nom, team:(typeof me!=='undefined'&&me&&me.equipe)||null});
+    document.getElementById('app').hidden=false;
+    boot();
+  })();
+
+  /* ===== « s'applique à » : équipes des joueurs concernés d'après la compo officielle (tags_log) + compo filles (scenarios_log slot fem) ===== */
+  var nrmK=function(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,''); };
+  var fkey=function(p){ return nrmK(p.nom)+'|'+nrmK(p.pre); };
+  var pkey=function(p){ return String(p.lic||((p.nom||'')+'|'+(p.pre||''))); };
+  var INT={allegre:['ALLEGREGUILLAUME|ANTOINE','ALLEGREGUILLAUME|BAPTISTE'],intins:['INTINS|DAVID','INTINS|ARTHUR'],mandel:['MANDELMILECH|ADRIEN'],emiliano:['BARVANEGAS|EMILIANO']};
+  var ORDER=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3','F4'];
+  var NJ=7, COMPOS={}, POULES={}, BYKEY={}, EXC={ex:[],conf:[]};
+  function boot(){
+    Promise.all([
+      gj('scoring.json'),
+      spoSelect('tags_log','select=tags&order=id.desc&limit=1').catch(function(){return [];}),
+      spoSelect('scenarios_log','select=tags&slot=eq.fem&order=id.desc&limit=1').catch(function(){return [];}),
+      gj('extra_communautaires.json'),
+      spoSelect('scenarios_log','select=id,slot,tags&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc').catch(function(){return [];}),
+      gj('poules2627.json')
+    ]).then(function(res){
+      var players=(res[0]&&res[0].players)||[];
+      players.forEach(function(p){ BYKEY[pkey(p)]=p; });
+      var TAGS=(res[1][0]&&res[1][0].tags)||null; if(TAGS) delete TAGS._params;
+      var FEM=(res[2][0]&&res[2][0].tags)||{};
+      var EXJ=res[3]||{};
+      EXC={ex:Object.values(EXJ.ex||{}).map(String),conf:Object.values(EXJ.a_confirmer||{}).map(String)};
+      var seen={}; (Array.isArray(res[4])?res[4]:[]).forEach(function(r){ if(!r.slot||seen[r.slot]) return; seen[r.slot]=1; var t=Object.assign({},r.tags||{}); delete t._meta; COMPOS[parseInt(r.slot.slice(1),10)]=t; });
+      ((res[5]&&res[5].poules)||[]).forEach(function(q){ POULES[q.acbb]=q; });
+      var conf=Object.keys(EXJ.a_confirmer||{});
+      document.getElementById('exConf').textContent=conf.length?'Statut à confirmer pour '+conf.map(function(n){ return n.split(/\s+/).map(function(w){ return w===w.toUpperCase()&&w.length>1?w.charAt(0)+w.slice(1).toLowerCase():w; }).join(' '); }).join(', ')+'.':'';
+      var st=document.getElementById('stateMeta');
+      if(!TAGS){ st.textContent=DEV?'· mode dev : compo officielle non chargée (données serveur uniquement)':'· compo officielle indisponible : équipes non déterminées'; fillAll(null,null,players,EXJ); }
+      else { st.textContent=''; fillAll(TAGS,FEM,players,EXJ); }
+      fillStates();
+    }).catch(function(e){ document.getElementById('stateMeta').textContent='· erreur : '+e.message; });
   }
-  var GH='359d888f0c14b4835cec5d55404ab307115c4841f77e226ccd592bb943ccdabb';
-  async function tryPw(){
-    var err=document.getElementById('gerr'), inp=document.getElementById('gpw');
-    try{
-      var L=JSON.parse(localStorage.getItem('acbb_gate_l')||'{"n":0,"t":0}');
-      if(L.n>=5 && Date.now()-L.t<60000){ err.textContent='Trop d\'essais — réessaie dans 1 min'; return; }
-      if(Date.now()-L.t>=60000) L.n=0;
-    }catch(e){ var L={n:0,t:0}; }
-    var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(inp.value.trim()));
-    var h=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
-    if(h===GH){ try{localStorage.removeItem('acbb_gate_l');}catch(e){} unlock(); return; }
-    L.n++; L.t=Date.now(); try{localStorage.setItem('acbb_gate_l',JSON.stringify(L));}catch(e){}
-    err.textContent='Mot de passe incorrect';
-    try{ fetch(SB+'/rest/v1/gate_log',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body:JSON.stringify({page:location.pathname,ua:navigator.userAgent.slice(0,120)})}).catch(function(){}); }catch(e){}
+  /* où joue un joueur : titulaire/remplaçant d'une équipe, pool de division, compo filles */
+  function placeOf(p,TAGS,FEM){
+    var k=pkey(p), out=[];
+    var t=TAGS&&TAGS[k]; if(t){ if(t.e) out.push({t:t.e,q:t.r!=='T'}); else if(t.r==='R'&&t.d) out.push({t:'pool '+t.d,q:true}); if(t.e2) out.push({t:t.e2,q:true}); }
+    var f=FEM&&FEM[k]; if(f&&f.e) out.push({t:f.e,q:f.r!=='T'});
+    return out;
+  }
+  function teamsFor(keys,TAGS,FEM,players){
+    var found=[], seen={};
+    keys.forEach(function(f){ var p=players.find(function(x){return fkey(x)===f;}); if(!p) return;
+      placeOf(p,TAGS,FEM).forEach(function(pl){ var id=pl.t+(pl.q?'?':''); if(seen[id])return; seen[id]=1; found.push(pl); }); });
+    found.sort(function(a,b){ var ia=ORDER.indexOf(a.t), ib=ORDER.indexOf(b.t); return (ia<0?99:ia)-(ib<0?99:ib)||a.t.localeCompare(b.t); });
+    return found;
+  }
+  /* rendu « s'applique à » : texte « M8 · M9 · pool D1 » (grisé = remplaçant / pool / à confirmer) */
+  function chips(list,emptyTxt){
+    if(!list||!list.length) return '<span class="none">'+esc(emptyTxt||'aucune équipe (joueurs non tagués)')+'</span>';
+    return list.map(function(x){ return '<span'+(x.q?' class="q" title="remplaçant / pool / à confirmer"':' title="titulaire"')+'>'+esc(x.t)+'</span>'; }).join(' · ');
+  }
+  function setTeams(rule,html){ var el=document.querySelector('.rule[data-rule="'+rule+'"] .teams'); if(el) el.innerHTML=html; }
+  function fillAll(TAGS,FEM,players,EXJ){
+    var unknown=!TAGS;
+    var u=function(){ return '<span class="none">non déterminé</span>'; };
+    // internes
+    setTeams('allegre', unknown?u():chips(teamsFor(INT.allegre,TAGS,FEM,players)));
+    setTeams('intins',  unknown?u():chips(teamsFor(INT.intins,TAGS,FEM,players)));
+    setTeams('mandel',  unknown?u():chips(teamsFor(INT.mandel.concat(INT.allegre),TAGS,FEM,players),'aucune équipe'));
+    setTeams('emiliano',unknown?u():chips(teamsFor(INT.emiliano,TAGS,FEM,players)));
+    // N1 = M2 (Nationale 1 messieurs)
+    setTeams('n1','M2');
+    // hors UE : équipes des joueurs listés (ex + à confirmer en grisé)
+    var exIds=Object.values((EXJ&&EXJ.ex)||{}).map(String), qIds=Object.values((EXJ&&EXJ.a_confirmer)||{}).map(String);
+    var byId=function(id){ return players.find(function(p){ return String(p.lic)===id||pkey(p)===id||(id.indexOf('|')>0&&fkey(p)===nrmK(id.split('|')[0])+'|'+nrmK(id.split('|')[1])); }); };
+    if(unknown){ setTeams('ex',u()); return; }
+    var exT=[], seen={};
+    exIds.forEach(function(id){ var p=byId(id); if(!p)return; placeOf(p,TAGS,FEM).forEach(function(pl){ var k=pl.t; if(seen[k])return; seen[k]=1; exT.push({t:pl.t,q:false}); }); });
+    qIds.forEach(function(id){ var p=byId(id); if(!p)return; placeOf(p,TAGS,FEM).forEach(function(pl){ var k=pl.t+'?'; if(seen[pl.t]||seen[k])return; seen[k]=1; exT.push({t:pl.t,q:true}); }); });
+    exT.sort(function(a,b){ var ia=ORDER.indexOf(a.t), ib=ORDER.indexOf(b.t); return (ia<0?99:ia)-(ib<0?99:ib); });
+    setTeams('ex',chips(exT,'aucun joueur hors UE tagué'));
+  }
+
+  /* ===== état par règle : alertes relevées sur les compos enregistrées (mêmes règles que le vérificateur de Compos journée) ===== */
+  function fillStates(){
+    var composed=Object.keys(COMPOS).map(Number).sort(function(a,b){return a-b;});
+    var sts=document.querySelectorAll('.rule .st');
+    if(!composed.length){
+      Array.prototype.forEach.call(sts,function(el){ el.textContent=DEV?'mode dev : compos non chargées':'aucune journée composée pour l’instant'; });
+      return;
+    }
+    var A={}; var add=function(r,txt){ (A[r]=A[r]||[]).push(txt); };
+    var NUM=function(t){return parseInt(t.slice(1),10);}, GENRE=function(t){return t[0];}, isTeam=function(t){return /^[MF]\d+$/.test(t||'');};
+    var teamsOf=function(j){ return Object.keys(COMPOS[j]||{}).filter(function(t){return t!=='_meta';}); };
+    var calOf=function(t,j){ var P=POULES[t]; return P?((P.cal||[]).filter(function(c){return c.j===j;})[0]||null):null; };
+    var parts=function(k,j){ var out=[]; for(var jj=1;jj<j;jj++) teamsOf(jj).forEach(function(t){ if((((COMPOS[jj][t]||{}).p)||[]).map(String).indexOf(k)>=0) out.push({j:jj,t:t}); }); return out; };
+    var shortN=function(k){ var p=BYKEY[k]; return p?((p.pre||'').charAt(0)+'. '+(p.nom||'')):k; };
+    var has=function(P,f){ return P.some(function(k){ return BYKEY[k]&&fkey(BYKEY[k])===f; }); };
+    composed.forEach(function(j){
+      teamsOf(j).forEach(function(t){
+        var cl=calOf(t,j); if(!cl||cl.exempt) return;                       // équipe exempte ou calendrier inconnu : rien à vérifier
+        var P=(((COMPOS[j][t]||{}).p)||[]).map(String); if(!P.length) return;
+        var tag='J'+j+' '+t;
+        // contraintes internes
+        [['allegre',INT.allegre],['intins',INT.intins]].forEach(function(x){ if(has(P,x[1][0])!==has(P,x[1][1])) add(x[0],tag); });
+        if(has(P,INT.mandel[0])&&(has(P,INT.allegre[0])||has(P,INT.allegre[1]))) add('mandel',tag);
+        if(has(P,INT.emiliano[0])&&!cl.dom) add('emiliano',tag+' (extérieur)');
+        if(isTeam(t)){
+          // brûlage II.112 (numérotation séparée M / F)
+          P.forEach(function(k){ var pr=parts(k,j).filter(function(x){return isTeam(x.t)&&GENRE(x.t)===GENRE(t);}).map(function(x){return NUM(x.t);}).sort(function(a,b){return a-b;});
+            if(pr.length>=2&&NUM(t)>pr[1]) add('brulage',tag+' · '+shortN(k)+' brûlé'); });
+          // règle de la 2e journée (II.112.1)
+          if(j===2){ var desc=P.filter(function(k){ return parts(k,2).some(function(x){return isTeam(x.t)&&GENRE(x.t)===GENRE(t)&&NUM(x.t)<NUM(t);}); }); if(desc.length>1) add('brulage',tag+' · règle J2 ('+desc.length+' joueurs)'); }
+          // deux équipes ACBB dans la même poule
+          ORDER.forEach(function(o){ if(o===t) return; var Po=POULES[o], Pt=POULES[t]; if(!Po||!Pt||Po.poule==null||Po.division!==Pt.division||Po.poule!==Pt.poule) return;
+            P.forEach(function(k){ if(parts(k,j).some(function(x){return x.t===o;})) add('brulage',tag+' · '+shortN(k)+' déjà en '+o+' (même poule)'); }); });
+        }
+        // classement minimum N1
+        if(t==='M2') P.forEach(function(k){ var p=BYKEY[k]; if(p&&p.men&&p.men<1800) add('n1',tag+' · '+shortN(k)+' '+p.men+' pts'); });
+        // extra-communautaires : 1 seul par feuille (II.609)
+        var exs=P.filter(function(k){return EXC.ex.indexOf(k)>=0;}), exq=P.filter(function(k){return EXC.conf.indexOf(k)>=0;});
+        if(exs.length>1) add('ex',tag+' · '+exs.length+' joueurs EX'); else if(exs.length+exq.length>1) add('ex',tag+' · '+(exs.length+exq.length)+' EX possibles (statut à confirmer)');
+      });
+    });
+    var jl=composed.map(function(j){return 'J'+j;}).join(', ')+(composed.length>1?' composées':' composée');
+    Array.prototype.forEach.call(sts,function(el){
+      var r=el.closest('.rule').getAttribute('data-rule'), a=A[r]||[];
+      if(a.length){ el.className='lab st bad'; el.textContent=a.length+' alerte'+(a.length>1?'s':'')+' · '+a.slice(0,3).join(' · ')+(a.length>3?' · +'+(a.length-3):''); el.title=a.join('\n'); }
+      else { el.className='lab st'; el.textContent='aucune alerte · '+jl; el.title=''; }
+    });
   }
 })();
 </script>
-<script src="../report.js" defer></script>
 <script data-goatcounter="https://acbb-tt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>

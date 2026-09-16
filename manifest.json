@@ -2,7 +2,7 @@
   "name": "ACBB Tennis de Table",
   "short_name": "ACBB TT",
   "description": "Le site du club ACBB Tennis de Table : résultats, fiches joueurs, championnat par équipes.",
-  "start_url": "accueil.html",
+  "start_url": "index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0B0B0D",

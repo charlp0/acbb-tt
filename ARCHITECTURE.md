@@ -1,4 +1,4 @@
-# ACBB TT — refonte 2026/27 (`/refonte`)
+# ACBB TT — refonte 2026/27 (bascule à la racine le 16/09/2026 ; `/refonte/*` = redirections qui conservent le jeton)
 
 Site statique GitHub Pages + **une fonction serveur Supabase** (`api`) qui est le seul guichet vers la base.
 Aucune page ne lit ni n'écrit une table directement. La clé publique Supabase sert uniquement à joindre la fonction.

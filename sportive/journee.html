@@ -4,35 +4,26 @@
 <title>ACBB TT — Compos journée (interne)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="manifest" href="../manifest.json">
 <meta name="theme-color" content="#0B0B0D">
 <link rel="icon" type="image/png" href="../logo.png">
+<link rel="stylesheet" href="../shared/style.css">
 <style>
   :root{--bg:#0B0B0D;--paper:#141416;--panel:#141416;--panel-2:#1E1E22;--panel-3:#26262B;--line:rgba(255,255,255,0.08);--line-2:rgba(255,255,255,0.16);--ink:#F6F5F3;--ink-2:#D4D3CF;--dim:rgba(246,245,243,0.60);--dimmer:rgba(246,245,243,0.48);--orange:#F26A1B;--win:#3DD68C;--win-lt:#86EFAC;--warn:#FACC15;--lose:#F26356;--lose-lt:#FCA5A5;--blue:#60A5FA;--violet:#A78BFA}
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;font-size:14px;line-height:1.4}
   body{min-height:100vh;padding-bottom:160px}
   .mono{font-family:"JetBrains Mono",monospace}
-  .wrap{max-width:1440px;margin:0 auto;background:var(--paper);min-height:100vh}
+  .wrap{max-width:1440px;margin:0 auto;background:var(--paper);min-height:100vh;padding:0}
   @media (min-width:900px){.wrap{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
   ::-webkit-scrollbar{display:none}
   a{color:var(--orange)}
-  /* header / nav (identique aux autres pages sportive) */
+  /* en-tête : menu commun (shared/nav.js) dans une barre collante */
   .header{position:sticky;top:0;z-index:50;padding:12px 16px 11px;background:rgba(11,11,13,0.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-  .header-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);flex-shrink:0}
-  .brand-img{width:34px;height:34px;border-radius:8px;background:#fff;padding:2px;border:1px solid var(--line-2);object-fit:contain;flex-shrink:0}
-  .brand-text{display:none;flex-direction:column;line-height:1}
-  @media (min-width:560px){.brand-text{display:flex}}
-  .brand-name{font-size:12px;font-weight:700;letter-spacing:-0.3px;color:var(--ink)}
-  .brand-sub{font-size:8.5px;color:var(--dim);margin-top:3px;font-family:"JetBrains Mono",monospace;letter-spacing:0.3px;text-transform:uppercase;white-space:nowrap}
-  .nav{display:flex;align-items:center;gap:3px}
-  .nav-link{padding:7px 9px;border-radius:99px;font-size:11px;font-weight:600;color:var(--ink-2);text-decoration:none;white-space:nowrap;letter-spacing:-0.1px;border:1px solid transparent}
-  .nav-link:hover{color:var(--ink);background:rgba(255,255,255,0.04)}
-  .nav-link.active{background:var(--panel-2);color:var(--ink);border-color:var(--line-2)}
-  .subnav{display:flex;gap:7px;padding:14px 20px 0;flex-wrap:wrap}
-  .subnav a{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:9px 14px;border-radius:99px;background:var(--paper);border:1px solid var(--line-2);color:var(--ink-2);text-decoration:none}
-  .subnav a.active{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+  .header .hdr{max-width:1408px;margin:0 auto}
+  .gatemsg{max-width:520px;margin:0 auto;padding:70px 20px;text-align:center;color:var(--dim);font-size:13px}
+  .gatemsg .h1{font-size:34px;margin-bottom:10px}
+  .gatemsg a{color:var(--dim);font-size:12px;text-decoration:none}
+  body.locked .hero,body.locked .statebar,body.locked .filters,body.locked .body,body.locked .savebar{display:none!important}
   /* hero */
   .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:20px 20px 6px;flex-wrap:wrap}
   .eyebrow{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange)}
@@ -165,7 +156,7 @@
   .savebar .btns button.sv{background:rgba(242,106,27,.16);border-color:rgba(242,106,27,.55);color:var(--orange);font-weight:700}
   .savebar .btns button:disabled{opacity:.4;cursor:default;border-color:rgba(255,255,255,.14);color:var(--ink)}
   @media (max-width:520px){.savebar{left:10px;right:10px;width:auto;bottom:10px}}
-  .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:70;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;padding:10px 16px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none}
+  .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:70;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;padding:10px 16px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none;border:none;box-shadow:none;font-family:inherit}
   .toast.show{opacity:1}
   /* carte export */
   #cardHost{position:fixed;left:-9999px;top:0}
@@ -184,67 +175,28 @@
   .wa .pl b{font-size:14px;font-weight:700;flex:1} .wa .pl .n{font-family:"JetBrains Mono",monospace;font-size:11px;color:rgba(246,245,243,.5);width:16px}
   .wa .pl .p{font-family:"JetBrains Mono",monospace;font-size:12px;color:#D4D3CF}
   .wa .ft{padding:10px 18px 14px;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:rgba(246,245,243,.5);display:flex;justify-content:space-between}
+  /* neutralisations : la feuille partagée définit .pill/.tag/.lab/.btn de façon générique, on garde le rendu de la page */
+  .statebar .pill{display:inline-block;cursor:default}
+  .rp .tag{padding:0;border:none;border-radius:0}
+  .avgrow .lab{font-weight:400;letter-spacing:0;text-transform:none}
+  /* ajouts refonte : lien poule, compteur de brûlage, bascule « Qui joue où » */
+  .plink{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dimmer);text-decoration:none;border-bottom:1px dotted var(--line-2);white-space:nowrap}
+  .plink:hover{color:var(--orange);border-color:var(--orange)}
+  .agec.bz.y{background:rgba(250,204,21,.16);color:var(--warn);border-color:rgba(250,204,21,.55)}
+  .agec.bz.r{background:rgba(242,99,86,.2);color:var(--lose-lt);border-color:rgba(242,99,86,.6)}
+  .views{display:flex;gap:6px;justify-content:flex-end}
+  .vw{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:700;padding:6px 12px;border-radius:99px;background:var(--paper);border:1px solid var(--line-2);color:var(--ink-2);text-decoration:none;white-space:nowrap}
+  .vw.on{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+  .vw:not(.on):hover{border-color:var(--orange);color:var(--orange)}
 </style>
 </head><body><div class="wrap">
-<header class="header">
-  <div class="header-row">
-    <a href="../accueil.html" class="brand">
-      <img class="brand-img" src="../logo.png" alt="ACBB">
-      <div class="brand-text"><div class="brand-name">ACBB TT</div><div class="brand-sub">Outil interne</div></div>
-    </a>
-    <nav class="nav">
-      <a href="../accueil.html" class="nav-link">Accueil</a>
-      <a href="../joueurs.html" class="nav-link">Joueurs</a>
-      <a href="../stats.html" class="nav-link">Ch. Équipe 25/26</a>
-      <a href="index.html" class="nav-link active">Sportive</a>
-    </nav>
-  </div>
-</header>
-<div id="gate" style="position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px">
-  <div style="max-width:340px;width:100%;text-align:center">
-    <div style="font-family:'Saira Condensed',sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:34px;letter-spacing:0.5px;margin-bottom:6px">Espace <span style="color:var(--orange)">Sportive</span></div>
-    <p style="color:var(--dim);font-size:13px;margin-bottom:18px">Compos par journée — accès réservé.</p>
-    <input id="gpw" type="password" placeholder="Mot de passe" autocomplete="off" style="width:100%;background:var(--panel-2);border:1px solid var(--line-2);border-radius:99px;color:var(--ink);font-size:15px;font-family:inherit;padding:12px 18px;outline:none;text-align:center">
-    <button id="gbtn" style="margin-top:12px;width:100%;background:var(--orange);border:none;border-radius:99px;color:#0B0B0D;font-size:14px;font-weight:700;font-family:inherit;padding:12px;cursor:pointer">Entrer</button>
-    <p id="gerr" style="color:var(--lose);font-size:12px;margin-top:10px;height:14px"></p>
-    <a href="../accueil.html" style="color:var(--dim);font-size:12px;text-decoration:none">← Retour au site</a>
-  </div>
+<header class="header"><div id="hdr"></div></header>
+<div id="gateMsg" class="gatemsg" hidden>
+  <div class="h1">Accès réservé à la <em>sportive</em></div>
+  <p>Accès réservé à la sportive · ouvre ton lien personnel.</p>
+  <p id="gateErr" class="mono" style="font-size:11px;min-height:14px;margin:10px 0"></p>
+  <a href="../index.html">← Retour au site</a>
 </div>
-<script>
-(function(){
-  var g=document.getElementById('gate');
-  function ok(){ g.style.display='none'; try{sessionStorage.setItem('acbb_sportive','1')}catch(e){} }
-  try{ if(sessionStorage.getItem('acbb_sportive')==='1'){ ok(); return; } }catch(e){}
-  document.documentElement.style.overflow='hidden';
-  function unlock(){ document.documentElement.style.overflow=''; ok(); }
-  var GH='359d888f0c14b4835cec5d55404ab307115c4841f77e226ccd592bb943ccdabb';
-  async function tryPw(){
-    var err=document.getElementById('gerr'), inp=document.getElementById('gpw');
-    try{ var L=JSON.parse(localStorage.getItem('acbb_gate_l')||'{"n":0,"t":0}');
-      if(L.n>=5 && Date.now()-L.t<60000){ err.textContent='Trop d\'essais — réessaie dans 1 min'; return; }
-      if(Date.now()-L.t>=60000) L.n=0;
-    }catch(e){ var L={n:0,t:0}; }
-    var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(inp.value.trim()));
-    var h=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
-    if(h===GH){ try{localStorage.removeItem('acbb_gate_l');}catch(e){} try{ window.__deriveDirKey&&window.__deriveDirKey(inp.value.trim()); }catch(e){} unlock(); return; }
-    L.n++; L.t=Date.now(); try{localStorage.setItem('acbb_gate_l',JSON.stringify(L));}catch(e){}
-    err.textContent='Mot de passe incorrect';
-    try{ var _S='https://vhhmageufrcenruywawg.supabase.co',_K='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay';
-    fetch(_S+'/rest/v1/gate_log',{method:'POST',headers:{'apikey':_K,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({page:location.pathname,ua:navigator.userAgent.slice(0,120)})}).catch(function(){}); }catch(e){}
-  }
-  document.getElementById('gbtn').addEventListener('click',tryPw);
-  document.getElementById('gpw').addEventListener('keydown',function(e){ if(e.key==='Enter') tryPw(); });
-  document.getElementById('gpw').focus();
-})();
-</script>
-<nav class="subnav">
-  <a href="index.html">🎯 Scoring &amp; compos</a>
-  <a href="poules.html">🏆 Poules 26/27</a>
-  <a href="suivi-dispos.html">📊 Suivi des dispos</a>
-  <a href="contraintes.html">📋 Contraintes</a>
-  <a href="journee.html" class="active">📅 Compos journée</a>
-  <a href="rentree-2026.html">📽 Rentrée 2026</a>
-</nav>
 
 <div class="hero">
   <div>
@@ -252,7 +204,10 @@
     <div class="h1">Compos <em id="hJ">J—.</em></div>
     <div class="hsub" id="hSub">chargement…</div>
   </div>
-  <div class="jpills" id="jpills"></div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+    <div class="views"><span class="vw on">Par équipe</span><a class="vw" id="quiJoue" href="quijoue.html" title="matrice joueurs × journées : qui change d'équipe, renforts, brûlage">🔀 Qui joue où →</a></div>
+    <div class="jpills" id="jpills"></div>
+  </div>
 </div>
 <div class="statebar" id="statebar"></div>
 <div class="filters" id="filters"></div>
@@ -284,9 +239,21 @@
 <div id="cardHost"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="../shared/api.js"></script>
+<script src="../shared/nav.js" data-base=".."></script>
 <script>
 /* ===================== CONFIG ===================== */
-const SB='https://vhhmageufrcenruywawg.supabase.co', KEY='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay', HD={'apikey':KEY};
+/* Accès aux données : uniquement via la fonction serveur (ACBB.api, jeton du lien personnel). Aucune clé, aucune table lue en direct.
+   ?dev=1 = mode maquette locale : simule côté client un rôle sportive ({role:'sportive',nom:'Test'}) et des réponses vides,
+   n'appelle jamais le serveur et refuse toute écriture — il ne donne accès à rien (le serveur exige toujours un jeton valide). */
+const DEV=new URLSearchParams(location.search).get('dev')==='1';
+let ME=null, LOADERR=null;
+function api(route,body){
+  if(DEV){ if(route==='me') return Promise.resolve({role:'sportive',nom:'Test'}); if(body&&body.method==='insert') return Promise.reject(new Error('mode dev : aucune écriture')); return Promise.resolve([]); }
+  return ACBB.api(route,body);
+}
+const rest=(table,query)=>api('spo/rest',{table:table,method:'select',query:query}).then(r=>Array.isArray(r)?r:((r&&r.rows)||[])).catch(e=>{ LOADERR=LOADERR||e; return []; });
+const authorName=a=>String(a||'').split(/\s[—·-]\s/)[0]||'?';   // « Minh — J1 » (signature serveur) ou « Minh · J1 » (anciennes lignes) -> « Minh »
 const ALL_TEAMS=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
 const TEAMS=['M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17'];   // périmètre de la sportive : M1 et les équipes féminines ne sont pas composées ici
 const NJ=7;
@@ -325,14 +292,13 @@ const toast=m=>{const t=document.getElementById('toast');t.textContent=m;t.class
 /* ===================== CHARGEMENT ===================== */
 function boot(){
   const gj=u=>fetch(u,{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
-  const sb=q=>fetch(SB+'/rest/v1/'+q,{headers:HD}).then(r=>r.ok?r.json():[]).catch(()=>[]);
   Promise.all([
     gj('../data/scoring.json'), gj('../data/categories.json'), gj('../data/capitaines.json'),
     gj('../data/poules2627.json'), gj('../data/salles2627.json'), gj('../data/extra_communautaires.json'),
-    sb('tags_log?select=id,tags&order=id.desc&limit=1'),
-    sb('scenarios_log?select=id,tags&slot=eq.fem&order=id.desc&limit=1'),
-    sb('dispos_log?select=licence,nom,prenom,dispos,n,created_at&order=id.asc'),
-    sb('scenarios_log?select=id,slot,tags,author,created_at&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc')
+    rest('tags_log','select=id,tags&order=id.desc&limit=1'),
+    rest('scenarios_log','select=id,tags&slot=eq.fem&order=id.desc&limit=1'),
+    rest('dispos_log','select=licence,nom,prenom,dispos,n,created_at&order=id.asc'),
+    rest('scenarios_log','select=id,slot,tags,author,created_at&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc')
   ]).then(res=>{
     D=((res[0]&&res[0].players)||[]).concat(EXT.filter(x=>!((res[0]&&res[0].players)||[]).some(p=>pkey(p)===pkey(x))));
     D.forEach(p=>{BYKEY[pkey(p)]=p;BYFK[fkey(p)]=p;const a=nrmK(p.nom),b=nrmK(p.pre);BYSN['SN-'+a+'-'+b]=p;BYSN['SN-'+b+'-'+a]=p;});
@@ -409,7 +375,12 @@ function dirtyTeams(){ const out=[]; TEAMS.forEach(t=>{ const a=JSON.stringify(C
 
 /* ===================== PARTICIPATIONS & RÈGLES ===================== */
 /* participations = compos enregistrées des journées précédentes (prévisionnel, en attendant les feuilles FFTT) */
-function participations(k,j){ const out=[]; for(let jj=1;jj<j;jj++){ const cj=BASE[jj]||{}; Object.keys(cj).forEach(t=>{ if((cj[t].p||[]).indexOf(k)>=0) out.push({j:jj,t:t}); }); } return out; }
+function participations(k,j){ const out=[]; for(let jj=1;jj<j;jj++){ const cj=BASE[jj]||{}; Object.keys(cj).forEach(t=>{ if(t!=='_meta'&&(cj[t].p||[]).indexOf(k)>=0) out.push({j:jj,t:t}); }); } return out; }
+/* montées = journées déjà enregistrées (J1..Jj-1, brouillon ou finale) où le joueur a été aligné dans une équipe supérieure (numéro plus petit, même championnat) à son équipe d'origine */
+function montees(k,j,home){ if(!home||!/^[MF]\d+$/.test(home)) return []; return participations(k,j).filter(x=>/^[MF]\d+$/.test(x.t)&&GENRE(x.t)===GENRE(home)&&NUM(x.t)<NUM(home)).map(x=>'J'+x.j+' '+x.t); }
+function bruBadge(k,j,home){ const m=montees(k,j,home); if(!m.length) return '';
+  const tip='brûlage II.112 : déjà aligné '+m.length+' fois au-dessus de '+home+' ('+m.join(', ')+')'+(m.length>=2?' — 2 matchs en équipe supérieure : retour en '+home+' interdit':' — au 2ᵉ match en équipe supérieure, retour en '+home+' interdit');
+  return '<span class="agec bz '+(m.length>=2?'r':'y')+'" title="'+esc(tip)+'">B'+m.length+'/2</span>'; }
 function checkTeam(t,j){
   const issues=[], flags={}; const c=compo(j,t), m=matchOf(t,j); if(!m||m.exempt) return {issues,flags};
   const size=sizeOf(t), n=c.p.length;
@@ -484,7 +455,8 @@ function renderState(){
   document.getElementById('statebar').innerHTML=
     '<span class="pill g">'+sent+' envoyée'+(sent>1?'s':'')+'</span><span class="pill y">'+valid+' validée'+(valid>1?'s':'')+'</span><span class="pill">'+draft+' brouillon'+(draft>1?'s':'')+'</span>'
     +(errs?'<span class="pill r">⚠ '+errs+' alerte'+(errs>1?'s':'')+' règlement</span>':'')+(warns?'<span class="pill y">'+warns+' à vérifier</span>':'')
-    +'<span class="mono" style="font-size:10px;color:var(--dimmer);margin-left:4px">'+(m?('dernier enregistrement : '+esc(m.author||'')+' · '+new Date(m.at).toLocaleDateString('fr-FR')+' '+new Date(m.at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})):'aucune compo enregistrée pour cette journée')+'</span>'
+    +(LOADERR?'<span class="pill r" title="'+esc(LOADERR.message)+'">⚠ données serveur indisponibles — affichage incomplet</span>':'')
+    +'<span class="mono" style="font-size:10px;color:var(--dimmer);margin-left:4px">'+(m?('dernier enregistrement par '+esc(authorName(m.author))+' · '+new Date(m.at).toLocaleDateString('fr-FR')+' '+new Date(m.at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})):'aucune compo enregistrée pour cette journée')+'</span>'
     +'<span style="flex-grow:1"></span>'
     +'<button class="btn sm" id="fillAll" type="button" title="Pré-remplit les équipes vides avec leurs titulaires disponibles (par ordre de points)">⚡ Proposer les compos vides</button>'
     +'<button class="btn" id="exportDraft" type="button" title="texte brut pour les échanges de la sportive : compos + situation des autres joueurs, sans gras, sans téléphones">📝 Compos draft ('+pl.length+')</button>'
@@ -520,7 +492,7 @@ function pRow(k,t,flags){
   if(!p) return '<div class="pr bad" draggable="true" data-k="'+esc(k)+'" data-t="'+t+'"><span class="dot"></span><span class="nm x">'+esc(k)+'</span><span class="note">joueur inconnu</span><span class="pts"></span><button class="rm" data-rm="'+esc(k)+'" title="retirer">✕</button></div>';
   // équipe d'origine dans le même championnat (dames : compo féminine ; messieurs : compo officielle) — une joueuse F alignée en M n'est pas « hors équipe » en F
   const home=GENRE(t)==='F'?((FEM[k]&&FEM[k].e)||homeTeam(k)):((TAGS[k]&&TAGS[k].e)||homeTeam(k)); let tag='';
-  if(home&&home!==t){ tag='<span class="agec t" title="titulaire de '+esc(home)+' dans la compo officielle — aligné ici en renfort">'+esc(home)+'</span>'; }
+  if(home&&home!==t){ tag='<span class="agec t" title="titulaire de '+esc(home)+' dans la compo officielle — aligné ici en renfort">'+esc(home)+'</span>'+bruBadge(k,J,home); }
   else if(!home){ const tg=TAGS[k]; tag='<span class="agec t" title="'+esc(homeLabel(k)||'hors effectif tagué')+'">'+(tg&&tg.r==='R'?'R':'?')+'</span>'; }
   const cap=isCapt(k,t)?'<span class="agec c" title="capitaine">C</span>':'';
   const txt=dispoTxt(k,J);
@@ -532,7 +504,7 @@ function pRow(k,t,flags){
 function card(t){
   const m=matchOf(t,J), c=compo(J,t), div=TEAMDIV[t]||'', col=DIVC[div]||'242,106,27', hue=teamHue(t);
   const head='<div class="tc-h"><span class="tc-name" style="color:hsl('+hue+',75%,72%)">'+t+'</span><span class="dchip" style="color:rgb('+col+');border-color:rgba('+col+',.5);background:rgba('+col+',.12)">'+esc(div)+'</span>'
-    +(m&&!m.exempt&&m.poule?'<span class="mono" style="font-size:9.5px;color:var(--dimmer)">poule '+esc(m.poule)+'</span>':'')+'<span style="flex-grow:1"></span>';
+    +(POULES[t]&&POULES[t].poule?'<a class="plink" href="poules.html#'+t+'" title="voir la poule de '+t+' dans Poules 26/27">poule '+esc(POULES[t].poule)+' →</a>':'')+'<span style="flex-grow:1"></span>';
   if(!m) return '<div class="tc exempt" data-team="'+t+'">'+head+'</div><div class="rules">calendrier inconnu</div></div>';
   if(m.exempt){ // équipe exempte : ses joueurs restent proposables comme renforts ailleurs (glisser / sélectionner puis toucher une case ＋)
     const usedAll=new Set(); TEAMS.forEach(o=>{ if(playing(o,J)) compo(J,o).p.forEach(k=>usedAll.add(k)); });
@@ -670,7 +642,7 @@ function renderSave(){
   document.getElementById('saveTtl').textContent='📅 Compos J'+J+' — drag & drop';
   const st=document.getElementById('saveSt'); const m=META[J];
   if(d.length){ st.className='stt warn'; st.textContent=d.length+' équipe'+(d.length>1?'s':'')+' modifiée'+(d.length>1?'s':'')+' ('+d.join(', ')+') — brouillon conservé sur cet appareil'; }
-  else { st.className='stt'; st.textContent=m?('✓ Enregistrée · '+esc(m.author||'')+' · '+new Date(m.at).toLocaleDateString('fr-FR')+' '+new Date(m.at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})):'Aucune compo enregistrée pour cette journée'; }
+  else { st.className='stt'; st.textContent=m?('✓ Enregistrée par '+authorName(m.author)+' · '+new Date(m.at).toLocaleDateString('fr-FR')+' '+new Date(m.at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})):'Aucune compo enregistrée pour cette journée'; }
   const pl=TEAMS.filter(t=>playing(t,J)); let errs=0,warns=0,inc=0;
   pl.forEach(t=>{ const r=checkTeam(t,J); if(r.issues.some(i=>i.lvl==='err'))errs++; else if(r.issues.some(i=>i.lvl==='warn'))warns++; if(compo(J,t).p.length<sizeOf(t))inc++; });
   const chk=document.getElementById('saveChk');
@@ -682,16 +654,15 @@ function renderSave(){
 }
 document.getElementById('undoBtn').onclick=()=>{ COMPOS[J]=JSON.parse(JSON.stringify(BASE[J]||{})); SEL=null; try{localStorage.removeItem(draftKey(J));}catch(e){} renderAll(); };
 document.getElementById('saveBtn').onclick=async()=>{
-  let author=localStorage.getItem('acbb_tag_author'); if(!author){author=(prompt('Ton prénom (pour l\'historique des compos) :')||'').trim()||'anonyme';localStorage.setItem('acbb_tag_author',author);}
   const btn=document.getElementById('saveBtn'); btn.disabled=true; btn.textContent='⏳ enregistrement…';
   const payload={}; Object.keys(COMPOS[J]).forEach(t=>{ const c=COMPOS[J][t]; if(c&&((c.p||[]).length||c.note||(c.st&&c.st!=='draft'))) payload[t]={p:c.p||[],st:c.st||'draft',note:c.note||''}; });
-  payload._meta={j:J,saved:new Date().toISOString(),by:author};
+  payload._meta={j:J,saved:new Date().toISOString(),by:(ME&&ME.nom)||''};
   try{
-    const r=await fetch(SB+'/rest/v1/scenarios_log',{method:'POST',headers:Object.assign({'Content-Type':'application/json','Prefer':'return=minimal'},HD),body:JSON.stringify({tags:payload,author:author+' · J'+J,slot:'j'+J})});
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    const rows=await fetch(SB+'/rest/v1/scenarios_log?select=id,slot,tags,author,created_at&slot=eq.j'+J+'&order=id.desc&limit=1',{headers:HD}).then(x=>x.json());
+    // le serveur signe la ligne : author = « <nom du lien> — J<n> »
+    await api('spo/rest',{table:'scenarios_log',method:'insert',body:{tags:payload,slot:'j'+J,author:'J'+J}});
+    const rows=await rest('scenarios_log','select=id,slot,tags,author,created_at&slot=eq.j'+J+'&order=id.desc&limit=1');
     if(rows[0]){ const t=Object.assign({},rows[0].tags); META[J]={id:rows[0].id,author:rows[0].author,at:rows[0].created_at,meta:t._meta||null}; delete t._meta; COMPOS[J]=t; BASE[J]=JSON.parse(JSON.stringify(t)); }
-    try{localStorage.removeItem(draftKey(J));}catch(e){} toast('✓ J'+J+' enregistrée et partagée'); renderAll();
+    try{localStorage.removeItem(draftKey(J));}catch(e){} toast('✓ J'+J+' enregistrée par '+((ME&&ME.nom)||'la sportive')+' et partagée'); renderAll();
   }catch(e){ toast('⚠ échec : '+e.message); }
   btn.disabled=false; renderSave();
 };
@@ -730,7 +701,6 @@ async function loadEnc(){ if(PH_ENC) return PH_ENC; const r=await fetch('../data
 async function deriveKey(pw){ const enc=await loadEnc(); const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
   const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64d(enc.salt),iterations:200000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},true,['decrypt']);
   const raw=new Uint8Array(await crypto.subtle.exportKey('raw',key)); try{ sessionStorage.setItem('acbb_dir_key',btoa(String.fromCharCode(...raw))); }catch(e){} return key; }
-window.__deriveDirKey=pw=>deriveKey(pw).catch(()=>{});
 async function getPhones(){ // null si l'utilisateur renonce
   if(PH) return PH;
   try{
@@ -782,7 +752,21 @@ function exportImg(t){
     const a=document.createElement('a'); a.download='ACBB-'+t+'-J'+J+'.png'; a.href=cv.toDataURL('image/png'); document.body.appendChild(a); a.click(); a.remove(); host.innerHTML='';
   }).catch(()=>{ toast('⚠ export image impossible — utilise le texte'); host.innerHTML=''; });
 }
-boot();
+const gateErrTxt=(err,role)=>err?((err.body&&/jeton_invalide|jeton_requis|role_incorrect/.test(err.body.error||''))?'lien invalide ou révoqué — demande un nouveau lien à la sportive':'serveur : '+err.message):(role==='capitaine'?'ton lien est un lien capitaine':'');
+async function start(){
+  let me=null, err=null;
+  try{ me=await api('me'); }catch(e){ err=e; }
+  const role=(me&&me.role)||'';
+  if(role!=='sportive'){
+    renderNav({active:'📅 Compos journée',role:role,team:me&&me.equipe});
+    document.body.classList.add('locked');
+    document.getElementById('gateMsg').hidden=false;
+    document.getElementById('gateErr').textContent=gateErrTxt(err,role);
+    return;
+  }
+  ME=me; renderNav({active:'📅 Compos journée',role:'sportive',name:me.nom, team:(typeof me!=='undefined'&&me&&me.equipe)||null}); boot();
+}
+start();
 </script>
-<script src="../report.js" defer></script>
+<script src="../shared/report.js" defer></script>
 </body></html>
