@@ -271,7 +271,7 @@ const EXT=[{key:'NEVES|LOUNA',nom:'NEVES',pre:'Louna',men:1342,ext:'Marly (enten
 const SCALE=250;   // écart de points -> indice de victoire (logistique)
 
 /* ===================== ÉTAT ===================== */
-let D=[], BYKEY={}, BYFK={}, BYSN={}, CAT={}, CAPT={}, POULES={}, SALLES={}, TAGS={}, FEM={}, VOTES={};
+let D=[], BYKEY={}, BYFK={}, BYSN={}, ALIASK={}, CAT={}, CAPT={}, POULES={}, SALLES={}, TAGS={}, FEM={}, VOTES={};
 let EXC={ex:new Set(),conf:new Set()};   // extra-communautaires (data/extra_communautaires.json)
 let COMPOS={}, BASE={}, META={};      // COMPOS[j][team]={p:[],st:'draft'|'valid'|'sent',note:''}
 let J=1, FILTER='all', SEL=null, DRAG=null;
@@ -300,19 +300,22 @@ function boot(){
     const ct=ACBB_CONTR.fromRows(res[10]); CONTR=ct.liste; CONTR_META=ct.meta;
     D=((res[0]&&res[0].players)||[]).concat(EXT.filter(x=>!((res[0]&&res[0].players)||[]).some(p=>pkey(p)===pkey(x))));
     D.forEach(p=>{BYKEY[pkey(p)]=p;BYFK[fkey(p)]=p;const a=nrmK(p.nom),b=nrmK(p.pre);BYSN['SN-'+a+'-'+b]=p;BYSN['SN-'+b+'-'+a]=p;});
+    /* clés tolérées pour retrouver un joueur enregistré sous une autre clé (licence, alias « NOM|Prénom », ancienne clé) :
+       tout est ramené à la clé canonique du joueur (pkey) au chargement — sinon la ligne s'affiche « joueur inconnu » */
+    D.forEach(p=>{ [p.lic&&String(p.lic),p.key,(p.nom||'')+'|'+(p.pre||''),fkey(p)].forEach(k=>{ if(k&&!ALIASK[k]) ALIASK[k]=p; }); });
     CAT=res[1]||{};
     CAPT=(res[2]&&res[2].capitaines)||{};
     ((res[3]&&res[3].poules)||[]).forEach(q=>{POULES[q.acbb]=q;});
     SALLES=(res[4]&&res[4].salles)||{};
     const exj=res[5]||{}; EXC={ex:new Set(Object.values(exj.ex||{}).map(String)),conf:new Set(Object.values(exj.a_confirmer||{}).map(String))};
-    TAGS=(res[6][0]&&res[6][0].tags)||{}; delete TAGS._params;
-    FEM=(res[7][0]&&res[7][0].tags)||{};
+    TAGS=canonTags((res[6][0]&&res[6][0].tags)||{});
+    FEM=canonTags((res[7][0]&&res[7][0].tags)||{});
     res[8].forEach(r=>{ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)){ const raw=String(r.licence); let k=raw; if(/^SN-/.test(raw)){const m=BYSN[raw]; if(m&&m.lic)k=String(m.lic);} VOTES[k]=r; } });
     const seen={};
     res[9].forEach(r=>{ if(seen[r.slot])return; seen[r.slot]=1; const j=parseInt(r.slot.slice(1),10); const t=Object.assign({},r.tags||{}); META[j]={id:r.id,author:r.author,at:r.created_at,meta:t._meta||null}; delete t._meta; COMPOS[j]=t; });
-    for(let j=1;j<=NJ;j++){ COMPOS[j]=COMPOS[j]||{}; }
+    for(let j=1;j<=NJ;j++){ COMPOS[j]=canonCompos(COMPOS[j]||{}); }
     BASE=JSON.parse(JSON.stringify(COMPOS));
-    let restored=[]; for(let j=1;j<=NJ;j++){ if(draftRestore(j)) restored.push('J'+j); }
+    let restored=[]; for(let j=1;j<=NJ;j++){ if(draftRestore(j)){ COMPOS[j]=canonCompos(COMPOS[j]); restored.push('J'+j); } }
     if(restored.length) setTimeout(()=>toast('brouillon non enregistré restauré : '+restored.join(', ')),800);
     // journée par défaut : la prochaine à venir (paramètre ?j= prioritaire)
     const qj=parseInt(new URLSearchParams(location.search).get('j')||'0',10);
@@ -322,6 +325,10 @@ function boot(){
 }
 
 /* ===================== HELPERS DONNÉES ===================== */
+/* clé canonique d'une clé quelconque (licence / alias / SN-…) ; inconnue → inchangée */
+function canon(k){ k=String(k); if(BYKEY[k]) return k; const p=ALIASK[k]||BYSN[k]||BYFK[nrmK(k.split('|')[0])+'|'+nrmK(k.split('|')[1]||'')]; return p?pkey(p):k; }
+function canonTags(T){ const out={}; Object.keys(T||{}).forEach(k=>{ if(k==='_params'||k==='_meta') return; const c=canon(k); if(!out[c]||c===k) out[c]=T[k]; }); return out; }   // la clé exacte prime sur un alias
+function canonCompos(C){ Object.keys(C||{}).forEach(t=>{ if(t==='_meta'||!C[t]) return; C[t].p=(C[t].p||[]).map(canon).filter((v,i,a)=>a.indexOf(v)===i); }); return C; }
 function parseDate(s){ const m=/^(\d\d)\/(\d\d)\/(\d{4})$/.exec(s||''); return m?new Date(+m[3],+m[2]-1,+m[1]):null; }
 function calOf(t,j){ const P=POULES[t]; return P?(P.cal||[]).find(c=>c.j===j)||null:null; }
 function jDate(j){ // date de référence : la plus fréquente parmi les équipes (vendredi CD92)

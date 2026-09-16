@@ -126,8 +126,8 @@ def main():
     MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('ARGUT','Daniel',1600),('PORTOKALLIS','Antonis',1500)]
     # Clés d'alias : ces joueurs ont été tagués/composés sous « NOM|Prénom » avant d'avoir leur licence FFTT ;
     # le champ `key` garde cette clé pour que les compos enregistrées continuent de les retrouver (fiche = lic).
-    ALIAS={('GUNDOGDU','Kuzey'):'GUNDOGDU|Kuzey',('BOTELLA','Milo'):'BOTELLA|Milo',('BOTELLA','Milosav'):'BOTELLA|Milo',
-           ('ARGUT','Daniel'):'ARGUT|Daniel',('MICHON','Clément'):'MICHON|Clément',('SHAMS','Navid'):'SHAMS|Navid'}
+    # (Botella 9411975 : licence FFTT connue → sa clé est la licence, comme dans Scoring et les compos enregistrées ; pas d'alias)
+    ALIAS={('GUNDOGDU','Kuzey'):'GUNDOGDU|Kuzey',('ARGUT','Daniel'):'ARGUT|Daniel',('MICHON','Clément'):'MICHON|Clément',('SHAMS','Navid'):'SHAMS|Navid'}
     for r in out:
         k=ALIAS.get((_nk0(r['nom']),_nk0(r['pre'])))
         if k: r['key']=k
