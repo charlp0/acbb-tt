@@ -423,7 +423,7 @@ const AUTH=(async function(){
     if(me&&me.err) document.getElementById('deniedWhy').textContent='(serveur : '+me.err+')';
     return null;
   }
-  ME=me; renderNav({active:ACTIVE_TAB,role:'sportive',name:me.nom});
+  ME=me; renderNav({active:ACTIVE_TAB,role:'sportive',name:me.nom, team:(typeof me!=='undefined'&&me&&me.equipe)||null});
   document.getElementById('app').hidden=false;
   const s=document.getElementById('saveSign'); if(s) s.textContent='sera signée '+me.nom+(DEV?' (mode dev)':'');
   return me;

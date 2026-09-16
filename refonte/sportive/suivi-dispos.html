@@ -161,7 +161,7 @@
         document.getElementById('gateMsg').hidden=false;
         document.getElementById('gateErr').textContent=gateErrTxt(r.err,role); return;
       }
-      renderNav({active:'📊 Suivi des dispos',role:'sportive',name:me.nom});
+      renderNav({active:'📊 Suivi des dispos',role:'sportive',name:me.nom, team:(typeof me!=='undefined'&&me&&me.equipe)||null});
       document.getElementById('main').hidden=false; boot();
     });
   }
