@@ -97,6 +97,17 @@ async function sha256Hex(s: string): Promise<string> {
 }
 const hashJeton = (jeton: string) => sha256Hex(`${PEPPER}:${jeton}`);
 const hashDate = (licence: string, dob: string) => sha256Hex(`${PEPPER}:${licence}:${dob}`);
+/** Dates à ± `n` jours autour de `iso` (AAAA-MM-JJ), `iso` incluse.
+ *  Tolérance pour le décalage d'un jour des dates de naissance exportées d'Assoconnect
+ *  (fichier des inscriptions) : la saisie du joueur est acceptée si elle tombe à ±1 jour de la référence.
+ *  Fenêtre volontairement étroite (3 dates) : la limitation du nombre d'essais protège toujours du forçage. */
+function datesProches(iso: string, n = 1): string[] {
+  const [y, m, d] = iso.split('-').map(Number);
+  const base = Date.UTC(y, m - 1, d);
+  const out: string[] = [];
+  for (let k = -n; k <= n; k++) out.push(new Date(base + k * 86400000).toISOString().slice(0, 10));
+  return out;
+}
 
 /** 24 octets aléatoires en base64url (32 caractères, compatibles avec le client `#t=`). */
 function jetonAleatoire(): string {
@@ -460,8 +471,10 @@ async function verifierJoueur(req: Request, body: Json): Promise<Joueur> {
   const connues: string[] = (dev ?? []).map((r: Json) => String(r.licence));
   if (!connues.includes(licence) && connues.length >= MAX_LICENCES_PAR_APPAREIL) fail(403, 'appareil_limite');
 
-  // 4) Date de naissance (hash).
+  // 4) Date de naissance (hash). Tolérance ±1 jour : les dates du fichier d'inscription (export Assoconnect)
+  //    sont décalées d'un jour ; on accepte donc la saisie si elle correspond à la référence à ±1 jour près.
   const h = await hashDate(licence, dob);
+  const hProches = await Promise.all(datesProches(dob, 1).map((iso) => hashDate(licence, iso)));
   const { data: n } = await sb.from('naissances').select('hash,source').eq('licence', licence).maybeSingle();
   let premiere = false;
   let ok = false;
@@ -470,12 +483,12 @@ async function verifierJoueur(req: Request, body: Json): Promise<Joueur> {
     const { error } = await sb.from('naissances').insert({ licence, hash: h, source: 'saisie' });
     if (!error) { premiere = true; ok = true; }
     else {
-      // Insertion concurrente : on relit et on compare.
+      // Insertion concurrente : on relit et on compare (à ±1 jour).
       const { data: n2 } = await sb.from('naissances').select('hash').eq('licence', licence).maybeSingle();
-      ok = !!n2 && n2.hash === h;
+      ok = !!n2 && hProches.includes(n2.hash);
     }
   } else {
-    ok = n.hash === h;
+    ok = hProches.includes(n.hash);
   }
   if (!ok) {
     await tentative(ip, licence, false);
