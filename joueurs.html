@@ -72,7 +72,7 @@
       <div class="plist" id="recent"><div class="empty">Aucune fiche consultée pour l'instant. Tape un nom ci-dessus.</div></div>
     </div>
     <div class="card">
-      <div class="ch"><span class="t">Plus fortes progressions</span><span class="lab">phase 1 · 26/27 · points gagnés depuis le début de saison</span></div>
+      <div class="ch"><span class="t">Plus fortes progressions</span><span class="lab">phase 1 · 26/27 · points gagnés en match depuis le début de saison</span></div>
       <div class="plist" id="prog"><div class="empty">Chargement…</div></div>
     </div>
   </section>
@@ -106,7 +106,7 @@
 
   Promise.all([ACBB.json('data/players_index.json').catch(()=>[]),ACBB.json('data/scoring.json').catch(()=>null)]).then(([idx,sc])=>{
     const by={};
-    (idx||[]).forEach(p=>{ if(p.lic) by[String(p.lic)]={lic:String(p.lic),nom:p.nom,prenom:p.prenom,men:p.mensuel,parties:p.parties,debut:p.debut,officiel:p.officiel,fiche:true}; });
+    (idx||[]).forEach(p=>{ if(p.lic) by[String(p.lic)]={lic:String(p.lic),nom:p.nom,prenom:p.prenom,men:p.mensuel,parties:p.parties,debut:p.debut,officiel:p.officiel,solde:p.solde,fiche:true}; });
     ((sc&&sc.players)||[]).forEach(p=>{ if(!p.lic) return; const k=String(p.lic); if(by[k]){ if(p.men!=null) by[k].men=p.men; by[k].tend=p.tend; } });
     S.byLic=by; S.players=Object.values(by);
     document.getElementById('count').textContent=S.players.length+' joueurs · officiel 26/27';
@@ -151,10 +151,11 @@
   }
   function renderProg(){
     const el=document.getElementById('prog');
-    // Progression de la phase 1 = points mensuels actuels − points au début de la saison 26/27, joueurs ayant joué au moins un match.
-    const list=S.players.filter(p=>p.parties>0&&typeof p.men==='number'&&typeof p.debut==='number').map(p=>({...p,prog:Math.round(p.men-p.debut)})).filter(p=>p.prog>0).sort((a,b)=>b.prog-a.prog).slice(0,8);
+    // Progression de la phase 1 = points nets gagnés en match depuis le début de saison (au réel / estimés),
+    // et non mensuel − début : le classement mensuel FFTT ne bascule qu'à la prochaine parution.
+    const list=S.players.filter(p=>p.parties>0&&typeof p.solde==='number').map(p=>({...p,prog:Math.round(p.solde)})).filter(p=>p.prog>0).sort((a,b)=>b.prog-a.prog).slice(0,8);
     if(!list.length){ el.innerHTML='<div class="empty">En attente des premiers matchs de la phase 1 : les progressions s\'afficheront ici dès les premières journées.</div>'; return; }
-    el.innerHTML=list.map(p=>item(p,'<span class="pts">'+p.men+'</span><span class="delta">+'+p.prog+'</span>')).join(''); bind(el);
+    el.innerHTML=list.map(p=>item(p,'<span class="pts">'+(p.men!=null?p.men:'')+'</span><span class="delta">+'+p.prog+'</span>')).join(''); bind(el);
   }
 
   /* ---------- fiche embarquée ---------- */
