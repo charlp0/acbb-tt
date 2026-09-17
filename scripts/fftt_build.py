@@ -254,7 +254,11 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
                       'debut':round(base26) if base26 is not None else None,'avenir':avenir},
         'timeline':timeline,
         'saison':{'V':V,'D':D,'parties':tot,'winpct':round(100*V/tot) if tot else 0,
-                  'perfs':perfs,'contre_perfs':cperfs,'best':best,'worst':worst},
+                  'perfs':perfs,'contre_perfs':cperfs,
+                  # solde = points nets gagnés/perdus en match depuis le début de saison (homologués au réel,
+                  # estimés sinon) ; sert la carte « Plus fortes progressions » tant que le mensuel FFTT n'a pas basculé.
+                  'solde':round(sum(c['pg']+c['pl'] for c in comps.values() if c['key']!='autre'),1),
+                  'best':best,'worst':worst},
         'competitions':sorted([c for c in comps.values() if c['key']!='autre'], key=lambda c:-(c['V']+c['D'])),
         'team_levels':team_levels,
     }
@@ -360,6 +364,7 @@ def main():
             index.append({'lic':lic,'nom':nom,'prenom':prenom,
                           'mensuel':prof['classement']['mensuel'],'parties':prof['saison']['parties'],
                           'officiel':prof['classement']['officiel'],'debut':prof['classement']['debut'],
+                          'solde':prof['saison'].get('solde',0),
                           'V':prof['saison']['V'],'D':prof['saison']['D']})
             profiles.append(prof); kept+=1
             flag='=' if unchanged else '↻'
