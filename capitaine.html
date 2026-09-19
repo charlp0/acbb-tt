@@ -380,7 +380,11 @@
   document.getElementById('debBold').addEventListener('click',function(){
     const ta=document.getElementById('debTxt'), a=ta.selectionStart, b=ta.selectionEnd, v=ta.value;
     if(a===b){ ta.value=v.slice(0,a)+'**'+v.slice(b); ta.selectionStart=ta.selectionEnd=a+1; }
-    else { const sel=v.slice(a,b), deja=/^\*[^*]+\*$/.test(sel), rep=deja?sel.slice(1,-1):'*'+sel+'*';
+    else { const sel=v.slice(a,b);
+      /* les espaces de début/fin restent en dehors des étoiles, sinon le gras déborde sur l'espace */
+      const av=sel.match(/^\s*/)[0], ap=sel.match(/\s*$/)[0], coeur=sel.slice(av.length, sel.length-ap.length);
+      if(!coeur){ ta.focus(); return; }
+      const deja=/^\*[^*]+\*$/.test(coeur), rep=av+(deja?coeur.slice(1,-1):'*'+coeur+'*')+ap;
       ta.value=v.slice(0,a)+rep+v.slice(b); ta.selectionStart=a; ta.selectionEnd=a+rep.length; }
     ta.focus();
   });
