@@ -20,6 +20,11 @@
   }
   function toast(msg,ms){ let t=document.querySelector('.toast'); if(!t){ t=document.createElement('div'); t.className='toast'; document.body.appendChild(t);} t.textContent=msg; t.hidden=false; clearTimeout(t._h); t._h=setTimeout(()=>{t.hidden=true},ms||2600); }
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  /* Score d'une rencontre : le club raisonne en PARTIES GAGNÉES (14 – 0), la FFTT publie des
+     POINTS DE RENCONTRE (28 – 14 = 14 + parties, total 42 en formule 4 joueurs). On convertit donc les
+     scores venant des feuilles FFTT ; tout score dont le total n'est pas 42 est laissé tel quel. */
+  function parties(a,b){ a=+a; b=+b; if(!isFinite(a)||!isFinite(b)) return null;
+    return (a+b===42&&a>=14&&b>=14)?[a-14,b-14]:[a,b]; }
   async function json(path){ const r=await fetch(path,{cache:'no-cache'}); if(!r.ok) throw new Error(path); return r.json(); }
-  window.ACBB={api,upload,token,deviceId,toast,esc,json,API};
+  window.ACBB={api,upload,token,deviceId,toast,esc,json,parties,API};
 })();

@@ -175,6 +175,7 @@
               <span class="vs">–</span>
               <div><input id="scB" type="number" inputmode="numeric" min="0" max="30" placeholder="–" aria-label="Score adversaire"><span class="lab" id="scBLab">Adversaire</span></div>
             </div>
+            <span class="lab" id="scHint" style="display:block;margin:-4px 0 10px;color:var(--dimmer);text-transform:none;letter-spacing:0;font-weight:600">Score en <b style="color:var(--ink-2)">parties gagnées</b> (ex. 14 – 0), total 14. Dès que la FFTT publie la feuille, le score officiel prend le relais.</span>
             <label class="lab" for="debTxt">Ton debrief</label>
             <textarea id="debTxt" placeholder="Le match en quelques lignes : les faits marquants, les perfs, l'ambiance…"></textarea>
             <span class="lab">Photo (jpg, png ou webp, 5 Mo max.)</span>
@@ -347,8 +348,11 @@
     document.getElementById('debMatch').textContent=m?(fmtDate(m.date)+' · '+(m.exempt?'exempte':shortName(m.opp)+' · '+(m.dom?'domicile':'extérieur'))):'';
     document.getElementById('scBLab').textContent=m&&m.opp&&!m.exempt?shortName(m.opp):'Adversaire';
     const d=debFor(S.j);
-    document.getElementById('scA').value=d&&d.score_acbb!=null?d.score_acbb:'';
-    document.getElementById('scB').value=d&&d.score_adv!=null?d.score_adv:'';
+    /* pré-remplissage : score officiel FFTT s'il existe, sinon ce que le capitaine avait saisi */
+    var off=null; try{ off=siteScore(matchOf(S.poule,S.j)); }catch(e){}
+    document.getElementById('scA').value=(off?off[0]:(d&&d.score_acbb!=null?d.score_acbb:''));
+    document.getElementById('scB').value=(off?off[1]:(d&&d.score_adv!=null?d.score_adv:''));
+    var sh=document.getElementById('scHint'); if(sh&&off) sh.innerHTML='Score officiel FFTT repris automatiquement, en parties gagnées. Tu peux le corriger si la feuille est erronée.';
     document.getElementById('debTxt').value=d?(d.texte||''):'';
     document.getElementById('debSave').textContent=d?'Modifier le debrief':'Enregistrer le debrief';
     const prev=document.getElementById('phPrev'), st=document.getElementById('phState');
@@ -404,7 +408,7 @@
   function siteScore(m){ /* rencontre retrouvée par le nom de l'adversaire (pas par le numéro de journée, qui peut différer du calendrier club) */
     if(!m||!m.opp||m.exempt) return null; const pools=sitePools(); if(!pools) return null;
     const acbb=(S.poule.teams||[]).find(t=>t.acbb)||null;
-    for(const d of pools){ const me=d.teams.find(t=>t.acbb)||(acbb?d.teams.find(t=>sameTeam(t.name,acbb.name)):null); const jj=me?(me.journees||[]).find(x=>sameTeam(x.opponent,m.opp)&&x.match_score!=null&&x.opp_score!=null):null; if(jj) return [+jj.match_score,+jj.opp_score]; }
+    for(const d of pools){ const me=d.teams.find(t=>t.acbb)||(acbb?d.teams.find(t=>sameTeam(t.name,acbb.name)):null); const jj=me?(me.journees||[]).find(x=>sameTeam(x.opponent,m.opp)&&x.match_score!=null&&x.opp_score!=null):null; if(jj) return ACBB.parties(jj.match_score,jj.opp_score); }
     return null;
   }
   function renderPoule(){
