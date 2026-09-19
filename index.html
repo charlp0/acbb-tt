@@ -250,7 +250,8 @@
   pSite.then(st=>{ if(!st||!st.DATA) return;
     Object.keys(st.DATA).forEach(k=>{ ((st.DATA[k]||{}).teams||[]).forEach(t=>{ if(!t.acbb) return;
       (t.journees||[]).forEach(j=>{ if(j.match_score==null||j.opp_score==null) return;
-        (S.fftt[k]=S.fftt[k]||[]).push({j:j.journee,score_acbb:j.match_score,score_adv:j.opp_score}); }); }); });
+        const pr=ACBB.parties(j.match_score,j.opp_score); if(!pr) return;
+        (S.fftt[k]=S.fftt[k]||[]).push({j:j.journee,score_acbb:pr[0],score_adv:pr[1]}); }); }); });
     renderGrid(); });
 
   Promise.all([pIdx,pSc]).then(([idx,sc])=>{
@@ -290,8 +291,12 @@
       const cls=t==='M1'?'pro':(t[0]==='F'?'f':'');
       const it=items[t]||null;
       let sa=null,sb=null;
-      if(it&&it.score_acbb!=null&&it.score_adv!=null){ sa=+it.score_acbb; sb=+it.score_adv; }
-      else { const rr=(S.resultats[t]||[]).find(x=>x.j===j)||(S.fftt[t]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null){ sa=+rr.score_acbb; sb=+rr.score_adv; } }
+      /* priorité au score officiel FFTT (converti en parties gagnées, cf. ACBB.parties) ;
+         le score saisi dans le debrief ne sert qu'avant publication de la feuille. */
+      const ff=(S.fftt[t]||[]).find(x=>x.j===j);
+      if(ff){ sa=+ff.score_acbb; sb=+ff.score_adv; }
+      else if(it&&it.score_acbb!=null&&it.score_adv!=null){ sa=+it.score_acbb; sb=+it.score_adv; }
+      else { const rr=(S.resultats[t]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null){ sa=+rr.score_acbb; sb=+rr.score_adv; } }
       let top='<div class="tc-top"><span class="tc-team '+cls+'">'+t+'</span><span class="lab">'+esc(divLabel(poule))+(m&&!m.exempt?(' · '+(m.dom?'dom.':'ext.')):'')+'</span><span class="lab tc-date">'+esc(m?fmtDate(m.date):'à fixer')+'</span></div>';
       let mid,bot;
       if(!m){ mid='<div class="tc-mid"><span class="tc-opp muted">Pas de rencontre programmée</span></div>'; bot='<div class="tc-empty">calendrier en attente</div>'; }

@@ -231,11 +231,13 @@
       if(Array.isArray(v)) v.forEach(function(m){ put(t,m.j||m.journee,(m.acbb!=null?m.acbb:m.score_acbb),(m.adv!=null?m.adv:m.score_adv)); });
       else if(v&&typeof v==='object') Object.keys(v).forEach(function(j){ var m=v[j]||{}; put(t,parseInt(String(j).replace(/\D/g,''),10),(m.acbb!=null?m.acbb:(m.score_acbb!=null?m.score_acbb:m.a)),(m.adv!=null?m.adv:(m.score_adv!=null?m.score_adv:m.b))); });
     });
-    // scores officiels FFTT (feuilles de rencontre) : base fiable même sans debrief saisi
+    (pubs||[]).forEach(function(p){ ((p&&p.items)||[]).forEach(function(it){ put(it.equipe,it.journee,it.score_acbb,it.score_adv); }); });   // debriefs : utiles avant publication FFTT
+    // scores officiels FFTT (feuilles de rencontre) : prioritaires, convertis en parties gagnées
+    // (le club note 14 – 0, la FFTT publie 28 – 14) — cf. ACBB.parties.
     var SD=(site&&site.DATA)||{};
     Object.keys(SD).forEach(function(k){ (SD[k].teams||[]).forEach(function(t){ if(!t.acbb) return;
-      (t.journees||[]).forEach(function(j){ if(j.match_score!=null) put(k,j.journee,j.match_score,j.opp_score); }); }); });
-    (pubs||[]).forEach(function(p){ ((p&&p.items)||[]).forEach(function(it){ put(it.equipe,it.journee,it.score_acbb,it.score_adv); }); });   // les debriefs priment (plus frais)
+      (t.journees||[]).forEach(function(j){ if(j.match_score==null) return;
+        var pr=ACBB.parties(j.match_score,j.opp_score); if(pr) put(k,j.journee,pr[0],pr[1]); }); }); });
   }
 
   /* ===== Niveau réel 26/27 (feuilles de rencontre FFTT, data/site.json) =====
