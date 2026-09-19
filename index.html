@@ -217,6 +217,9 @@
   function nrm(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); }
   function currentJ(dates){ const today=new Date(); today.setHours(0,0,0,0); let cur=1; (dates||[]).forEach((d,i)=>{ const dt=parseFR(d); if(dt){ const open=new Date(dt); open.setDate(open.getDate()-3); if(open<=today) cur=i+1; } }); return cur; }
   function matchOf(poule,j){ if(!poule) return null; const c=(poule.cal||[]).find(x=>x.j===j); if(!c) return null; let t=null,name=c.oppName||null; if(!name&&c.opp!=null){ t=(poule.teams||[]).find(x=>x.pos===c.opp)||null; name=t?t.name:null; } return {j:j,date:c.date,dom:!!c.dom,exempt:!!c.exempt,opp:name,oppTeam:t}; }
+  /* Gras dans les debriefs : le capitaine entoure le mot d'étoiles, comme sur WhatsApp (*comme ça*).
+     On échappe TOUJOURS le texte avant de convertir : rien d'autre que <b> ne peut en sortir. */
+  const rich=s=>esc(s||'').replace(/\*([^*\n]+)\*/g,'<b>$1</b>');
   function scoreClass(a,b){ return a>b?'win':(a<b?'lose':'draw'); }
 
   const S={poules:null,byTeam:{},players:[],scoresJ:{},resultats:{},fftt:{},j:1,me:{role:null}};
@@ -309,7 +312,7 @@
         const sc=(sa!=null)?'<span class="tc-score '+scoreClass(sa,sb)+'">'+sa+' – '+sb+'</span>':'<span class="tc-wait">à venir</span>';
         mid='<div class="tc-mid"><span class="tc-opp" title="'+esc(m.opp||'')+'">'+esc(shortName(m.opp)||'adversaire à confirmer')+'</span>'+sc+'</div>';
         if(it&&it.publie&&(it.texte||it.photo_url)){
-          bot='<div class="tc-deb">'+(it.photo_url?'<img class="tc-thumb" src="'+esc(it.photo_url)+'" data-full="'+esc(it.photo_url)+'" data-cap="'+esc(t+' · J'+j+(m.opp?' · '+shortName(m.opp):'')+(it.auteur?' · photo du debrief de '+it.auteur:''))+'" alt="Photo '+t+' J'+j+' (cliquer pour agrandir)" loading="lazy">':'')+'<div><p>'+esc(it.texte||'')+'</p>'+((it.texte||'').length>260?'<button type="button" class="tc-more">lire la suite</button>':'')+'</div></div>'+(it.auteur?'<span class="lab tc-by">debrief de '+esc(it.auteur)+'</span>':'');
+          bot='<div class="tc-deb">'+(it.photo_url?'<img class="tc-thumb" src="'+esc(it.photo_url)+'" data-full="'+esc(it.photo_url)+'" data-cap="'+esc(t+' · J'+j+(m.opp?' · '+shortName(m.opp):'')+(it.auteur?' · photo du debrief de '+it.auteur:''))+'" alt="Photo '+t+' J'+j+' (cliquer pour agrandir)" loading="lazy">':'')+'<div><p>'+rich(it.texte||'')+'</p>'+((it.texte||'').length>260?'<button type="button" class="tc-more">lire la suite</button>':'')+'</div></div>'+(it.auteur?'<span class="lab tc-by">debrief de '+esc(it.auteur)+'</span>':'');
         } else bot='<div class="tc-empty">Debrief en attente.</div>';
       }
       return '<article class="card tcard">'+top+mid+bot+'</article>';
