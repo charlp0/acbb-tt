@@ -404,11 +404,15 @@
   }
   /* score d'une journée : saisie du capitaine (cap/poule) → resultats2627.json → feuille FFTT 26/27 de site.json (si la poule correspond) */
   function scoreOf(j){ if(S.capRes[j]) return S.capRes[j]; const rr=(S.resultats[S.team]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null) return [+rr.score_acbb,+rr.score_adv]; return siteScore(matchOf(S.poule,j)); }
+  /* Points de rencontre FFTT (28 – 14, total 42) -> parties gagnées (14 – 0), l'unité du club.
+     Défini ici et pas seulement dans shared/api.js : ce fichier peut être en cache chez le visiteur. */
+  function toParties(a,b){ a=+a; b=+b; if(!isFinite(a)||!isFinite(b)) return null;
+    return (a+b===42&&a>=14&&b>=14)?[a-14,b-14]:[a,b]; }
   function sitePools(){ if(S.poolsFor!==S.site){ S.poolsFor=S.site; S.pools=poolFor(S.site,S.poule); } return S.pools||null; }
   function siteScore(m){ /* rencontre retrouvée par le nom de l'adversaire (pas par le numéro de journée, qui peut différer du calendrier club) */
     if(!m||!m.opp||m.exempt) return null; const pools=sitePools(); if(!pools) return null;
     const acbb=(S.poule.teams||[]).find(t=>t.acbb)||null;
-    for(const d of pools){ const me=d.teams.find(t=>t.acbb)||(acbb?d.teams.find(t=>sameTeam(t.name,acbb.name)):null); const jj=me?(me.journees||[]).find(x=>sameTeam(x.opponent,m.opp)&&x.match_score!=null&&x.opp_score!=null):null; if(jj) return ACBB.parties(jj.match_score,jj.opp_score); }
+    for(const d of pools){ const me=d.teams.find(t=>t.acbb)||(acbb?d.teams.find(t=>sameTeam(t.name,acbb.name)):null); const jj=me?(me.journees||[]).find(x=>sameTeam(x.opponent,m.opp)&&x.match_score!=null&&x.opp_score!=null):null; if(jj) return toParties(jj.match_score,jj.opp_score); }
     return null;
   }
   function renderPoule(){

@@ -233,11 +233,11 @@
     });
     (pubs||[]).forEach(function(p){ ((p&&p.items)||[]).forEach(function(it){ put(it.equipe,it.journee,it.score_acbb,it.score_adv); }); });   // debriefs : utiles avant publication FFTT
     // scores officiels FFTT (feuilles de rencontre) : prioritaires, convertis en parties gagnées
-    // (le club note 14 – 0, la FFTT publie 28 – 14) — cf. ACBB.parties.
+    // (le club note 14 – 0, la FFTT publie 28 – 14) — cf. toParties().
     var SD=(site&&site.DATA)||{};
     Object.keys(SD).forEach(function(k){ (SD[k].teams||[]).forEach(function(t){ if(!t.acbb) return;
       (t.journees||[]).forEach(function(j){ if(j.match_score==null) return;
-        var pr=ACBB.parties(j.match_score,j.opp_score); if(pr) put(k,j.journee,pr[0],pr[1]); }); }); });
+        var pr=toParties(j.match_score,j.opp_score); if(pr) put(k,j.journee,pr[0],pr[1]); }); }); });
   }
 
   /* ===== Niveau réel 26/27 (feuilles de rencontre FFTT, data/site.json) =====
@@ -287,6 +287,11 @@
     if(!hit&&lw) Object.keys(m).forEach(function(kk){ var o=m[kk]; if(!hit&&o._lw===lw&&o._tn===tn) hit=o; });
     return hit;
   }
+
+  /* Points de rencontre FFTT (28 – 14, total 42) -> parties gagnées (14 – 0), l'unité du club.
+     Défini ici et pas seulement dans shared/api.js : ce fichier peut être en cache chez le visiteur. */
+  var toParties=function(a,b){ a=+a; b=+b; if(!isFinite(a)||!isFinite(b)) return null;
+    return (a+b===42&&a>=14&&b>=14)?[a-14,b-14]:[a,b]; };
 
   /* ===== helpers ===== */
   var norm=function(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,''); };

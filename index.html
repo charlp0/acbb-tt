@@ -220,6 +220,10 @@
   function scoreClass(a,b){ return a>b?'win':(a<b?'lose':'draw'); }
 
   const S={poules:null,byTeam:{},players:[],scoresJ:{},resultats:{},fftt:{},j:1,me:{role:null}};
+  /* Points de rencontre FFTT (28 – 14, total 42) -> parties gagnées (14 – 0), l'unité du club.
+     Défini ici et pas seulement dans shared/api.js : ce fichier peut être en cache chez le visiteur. */
+  const toParties=(a,b)=>{ a=+a; b=+b; if(!isFinite(a)||!isFinite(b)) return null;
+    return (a+b===42&&a>=14&&b>=14)?[a-14,b-14]:[a,b]; };
 
   /* ---------- en-tête + rôle ---------- */
   renderNav({active:'Accueil'});
@@ -250,7 +254,7 @@
   pSite.then(st=>{ if(!st||!st.DATA) return;
     Object.keys(st.DATA).forEach(k=>{ ((st.DATA[k]||{}).teams||[]).forEach(t=>{ if(!t.acbb) return;
       (t.journees||[]).forEach(j=>{ if(j.match_score==null||j.opp_score==null) return;
-        const pr=ACBB.parties(j.match_score,j.opp_score); if(!pr) return;
+        const pr=toParties(j.match_score,j.opp_score); if(!pr) return;
         (S.fftt[k]=S.fftt[k]||[]).push({j:j.journee,score_acbb:pr[0],score_adv:pr[1]}); }); }); });
     renderGrid(); });
 
@@ -291,7 +295,7 @@
       const cls=t==='M1'?'pro':(t[0]==='F'?'f':'');
       const it=items[t]||null;
       let sa=null,sb=null;
-      /* priorité au score officiel FFTT (converti en parties gagnées, cf. ACBB.parties) ;
+      /* priorité au score officiel FFTT (converti en parties gagnées, cf. toParties()) ;
          le score saisi dans le debrief ne sert qu'avant publication de la feuille. */
       const ff=(S.fftt[t]||[]).find(x=>x.j===j);
       if(ff){ sa=+ff.score_acbb; sb=+ff.score_adv; }
