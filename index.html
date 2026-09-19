@@ -219,7 +219,7 @@
   function matchOf(poule,j){ if(!poule) return null; const c=(poule.cal||[]).find(x=>x.j===j); if(!c) return null; let t=null,name=c.oppName||null; if(!name&&c.opp!=null){ t=(poule.teams||[]).find(x=>x.pos===c.opp)||null; name=t?t.name:null; } return {j:j,date:c.date,dom:!!c.dom,exempt:!!c.exempt,opp:name,oppTeam:t}; }
   function scoreClass(a,b){ return a>b?'win':(a<b?'lose':'draw'); }
 
-  const S={poules:null,byTeam:{},players:[],scoresJ:{},resultats:{},j:1,me:{role:null}};
+  const S={poules:null,byTeam:{},players:[],scoresJ:{},resultats:{},fftt:{},j:1,me:{role:null}};
 
   /* ---------- en-tête + rôle ---------- */
   renderNav({active:'Accueil'});
@@ -230,6 +230,9 @@
   const pIdx=ACBB.json('data/players_index.json').catch(()=>[]);
   const pSc=ACBB.json('data/scoring.json').catch(()=>null);
   const pRes=ACBB.json('data/resultats2627.json').catch(()=>null);
+  /* scores officiels FFTT (feuilles de rencontre, data/site.json) : la carte d'équipe affiche le résultat
+     dès sa publication par la fédération, sans attendre le debrief du capitaine. Pro B (M1) : non couvert ici. */
+  const pSite=ACBB.json('data/site.json').catch(()=>null);
 
   pPoules.then(p=>{
     const d=p.dates||[];
@@ -244,6 +247,11 @@
   }).catch(()=>{ document.getElementById('tgrid').innerHTML='<div class="tc-empty">Calendrier indisponible pour le moment.</div>'; });
 
   pRes.then(r=>{ if(r&&r.resultats) S.resultats=r.resultats; renderGrid(); });
+  pSite.then(st=>{ if(!st||!st.DATA) return;
+    Object.keys(st.DATA).forEach(k=>{ ((st.DATA[k]||{}).teams||[]).forEach(t=>{ if(!t.acbb) return;
+      (t.journees||[]).forEach(j=>{ if(j.match_score==null||j.opp_score==null) return;
+        (S.fftt[k]=S.fftt[k]||[]).push({j:j.journee,score_acbb:j.match_score,score_adv:j.opp_score}); }); }); });
+    renderGrid(); });
 
   Promise.all([pIdx,pSc]).then(([idx,sc])=>{
     const by={};
@@ -283,7 +291,7 @@
       const it=items[t]||null;
       let sa=null,sb=null;
       if(it&&it.score_acbb!=null&&it.score_adv!=null){ sa=+it.score_acbb; sb=+it.score_adv; }
-      else { const rr=(S.resultats[t]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null){ sa=+rr.score_acbb; sb=+rr.score_adv; } }
+      else { const rr=(S.resultats[t]||[]).find(x=>x.j===j)||(S.fftt[t]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null){ sa=+rr.score_acbb; sb=+rr.score_adv; } }
       let top='<div class="tc-top"><span class="tc-team '+cls+'">'+t+'</span><span class="lab">'+esc(divLabel(poule))+(m&&!m.exempt?(' · '+(m.dom?'dom.':'ext.')):'')+'</span><span class="lab tc-date">'+esc(m?fmtDate(m.date):'à fixer')+'</span></div>';
       let mid,bot;
       if(!m){ mid='<div class="tc-mid"><span class="tc-opp muted">Pas de rencontre programmée</span></div>'; bot='<div class="tc-empty">calendrier en attente</div>'; }

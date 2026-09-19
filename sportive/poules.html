@@ -51,6 +51,9 @@
   .pt .mvt.promu{color:var(--win-lt,#86EFAC);background:rgba(61,214,140,.12);border:1px solid rgba(61,214,140,.4)}
   .pt .mvt.descendu{color:#FCA5A5;background:rgba(242,99,86,.12);border:1px solid rgba(242,99,86,.4)}
   .avgbar{display:inline-block;height:5px;border-radius:3px;background:linear-gradient(90deg,rgba(242,106,27,0.55),var(--orange));vertical-align:2px;margin-left:8px}
+  .pt .avg.a26{color:var(--win-lt)}
+  .avgbar.a26bar{background:linear-gradient(90deg,rgba(61,214,140,0.45),var(--win))}
+  .p-badge.p-avg{background:rgba(61,214,140,0.12);border-color:rgba(61,214,140,0.4);color:var(--win-lt)}
   .tag27{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;background:rgba(61,214,140,0.12);border:1px solid rgba(61,214,140,0.4);color:var(--win-lt);margin-left:8px}
   .cal{display:flex;gap:8px;overflow-x:auto;padding:12px 14px;border-top:1px solid var(--line);background:rgba(255,255,255,0.02)}
   .cal-j{flex:0 0 auto;min-width:118px;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;padding:9px 11px}
@@ -68,7 +71,10 @@
     .pt .avg{font-size:13px}
     .pt .prov{font-size:10px;white-space:normal}
     .avgbar{display:none}
-    .tag27{display:block;width:max-content;margin:4px 0 0}
+    .pt .avg.a26{color:var(--win-lt)}
+  .avgbar.a26bar{background:linear-gradient(90deg,rgba(61,214,140,0.45),var(--win))}
+  .p-badge.p-avg{background:rgba(61,214,140,0.12);border-color:rgba(61,214,140,0.4);color:var(--win-lt)}
+  .tag27{display:block;width:max-content;margin:4px 0 0}
   }
   .grp-h{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:clamp(24px,5vw,32px);letter-spacing:0.5px;color:var(--orange);margin:26px 0 14px;padding-top:8px;border-top:1px solid var(--line)}
   .grp-h:first-child{margin-top:2px;border-top:none;padding-top:0}
@@ -142,7 +148,7 @@
 <section class="sec" id="poules"><div class="meta">chargement…</div></section>
 
 <div class="note" id="foot" hidden>
-  <b>Niveau ph2 25/26</b> = moyenne des points <b>officiels</b> des joueurs alignés par l'équipe en phase 2 2025/26
+  <b>Niveau 26/27</b> = moyenne des points des joueurs <b>réellement alignés</b> par l'équipe depuis la J1 (feuilles de rencontre FFTT) ; <b>poule hors ACBB</b> = moyenne de ces niveaux sur toutes les équipes de la poule sauf la nôtre. <b>Niveau ph2 25/26</b> = moyenne des points <b>officiels</b> des joueurs alignés par l'équipe en phase 2 2025/26
   (compos archivées, 7 rencontres). <b>—</b> : équipe absente des divisions archivées (ex-R1 Messieurs, PN M,
   ou départemental hors 92) — niveau inconnu. La colonne « 25/26 » rappelle l'identité, la division et le classement final de
   l'équipe la saison passée : <b>ex-…</b> signale une équipe renumérotée par le CD92 avec les montées/descentes (table de correspondance
@@ -202,7 +208,8 @@
       gj('salles2627.json'),
       gj('resultats2627.json'),
       gj('archive/2025-2026/acbb-vs.json'),
-      Promise.all(pubs)
+      Promise.all(pubs),
+      gj('site.json')
     ]).then(function(res){
       if(!res[0]) throw new Error('poules2627.json introuvable');
       POULES=res[0];
@@ -210,12 +217,13 @@
       PLAYERS=(res[2]&&res[2].players)||[];
       SALLES=(res[3]&&res[3].salles)||{};
       HIST=(res[5]&&res[5].rencontres)||[];
-      buildResults(res[4],res[6]);
+      buildL26(res[7]);
+      buildResults(res[4],res[6],res[7]);
       render(POULES,TAGS,PLAYERS);
     }).catch(function(e){ document.getElementById('poules').innerHTML='<div class="meta">Erreur de chargement : '+esc(e.message)+'</div>'; });
   }
   /* RES[equipe][j] = {a:score ACBB, b:score adverse} — source 1 : /public/journee (debriefs capitaines) ; source 2 : resultats2627.json (FFTT) */
-  function buildResults(fftt,pubs){
+  function buildResults(fftt,pubs,site){
     RES={};
     var put=function(t,j,a,b){ if(!t||!j)return; if(a==null||b==null||a===''||b==='')return; a=+a; b=+b; if(isNaN(a)||isNaN(b))return; (RES[t]=RES[t]||{})[j]={a:a,b:b}; };
     var R=(fftt&&fftt.resultats)||{};
@@ -223,7 +231,59 @@
       if(Array.isArray(v)) v.forEach(function(m){ put(t,m.j||m.journee,(m.acbb!=null?m.acbb:m.score_acbb),(m.adv!=null?m.adv:m.score_adv)); });
       else if(v&&typeof v==='object') Object.keys(v).forEach(function(j){ var m=v[j]||{}; put(t,parseInt(String(j).replace(/\D/g,''),10),(m.acbb!=null?m.acbb:(m.score_acbb!=null?m.score_acbb:m.a)),(m.adv!=null?m.adv:(m.score_adv!=null?m.score_adv:m.b))); });
     });
+    // scores officiels FFTT (feuilles de rencontre) : base fiable même sans debrief saisi
+    var SD=(site&&site.DATA)||{};
+    Object.keys(SD).forEach(function(k){ (SD[k].teams||[]).forEach(function(t){ if(!t.acbb) return;
+      (t.journees||[]).forEach(function(j){ if(j.match_score!=null) put(k,j.journee,j.match_score,j.opp_score); }); }); });
     (pubs||[]).forEach(function(p){ ((p&&p.items)||[]).forEach(function(it){ put(it.equipe,it.journee,it.score_acbb,it.score_adv); }); });   // les debriefs priment (plus frais)
+  }
+
+  /* ===== Niveau réel 26/27 (feuilles de rencontre FFTT, data/site.json) =====
+     Pour chaque équipe de chaque poule : moyenne des points des joueurs qu'elle a réellement alignés
+     depuis la J1, effectif vu, et moyenne de la dernière journée. POOLAVG = moyenne de la poule
+     SANS l'ACBB (repère « niveau de la poule »). Remplace progressivement les repères 25/26. */
+  var L26={}, POOLAVG={};
+  function buildL26(site){
+    L26={}; POOLAVG={};
+    var D=(site&&site.DATA)||{};
+    Object.keys(D).forEach(function(k){
+      var per={}, vals=[];
+      (D[k].teams||[]).forEach(function(t){
+        var pts=[], roster={}, last=null, nj=0;
+        (t.journees||[]).forEach(function(j){
+          if(j.match_score==null) return;                       // journée non jouée
+          var nums=[];
+          (j.players||[]).forEach(function(pl){
+            if(typeof pl.cls!=='number') return;                // « N500 » / absent : hors moyenne
+            nums.push(pl.cls);
+            var nm=((pl.nom||'')+' '+(pl.prenom||'')).trim(), r=roster[nm]||(roster[nm]={nom:nm,cls:pl.cls,vic:0,n:0});
+            if(pl.cls>r.cls) r.cls=pl.cls; r.vic+=(pl.vic||0); r.n++;
+          });
+          if(!nums.length) return;
+          nj++; pts=pts.concat(nums);
+          last={j:j.journee,avg:Math.round(nums.reduce(function(a,b){return a+b;},0)/nums.length)};
+        });
+        if(!pts.length) return;
+        var o={avg:Math.round(pts.reduce(function(a,b){return a+b;},0)/pts.length),n:pts.length,nj:nj,
+               last:last,acbb:!!t.acbb,roster:roster,name:t.name,
+               _ck:clubKey(t.name),_tn:teamNum(t.name),_lw:longWord(t.name)};
+        per[norm(t.name)]=o;
+        if(!t.acbb) vals.push(o.avg);
+      });
+      L26[k]=per;
+      if(vals.length) POOLAVG[k]=Math.round(vals.reduce(function(a,b){return a+b;},0)/vals.length);
+    });
+  }
+  /* rapprochement de nom : exact, sinon même club + même numéro d'équipe (libellés PDF vs FFTT) */
+  function l26For(P,t){
+    var m=L26[P.acbb]; if(!m) return null;
+    var k=norm(t.name); if(m[k]) return m[k];
+    var ck=clubKey(t.name), tn=teamNum(t.name), lw=longWord(t.name), hit=null;
+    Object.keys(m).forEach(function(kk){ var o=m[kk]; if(!hit&&o._ck===ck&&o._tn===tn) hit=o; });
+    // libellés inversés entre le PDF des poules et la FFTT (« USM MALAKOFF 6 » / « MALAKOFF USM 6 ») :
+    // repli sur le mot distinctif du club + le numéro d'équipe.
+    if(!hit&&lw) Object.keys(m).forEach(function(kk){ var o=m[kk]; if(!hit&&o._lw===lw&&o._tn===tn) hit=o; });
+    return hit;
   }
 
   /* ===== helpers ===== */
@@ -274,15 +334,23 @@
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeFiche(); });
   function openFiche(pi,pos){
     var P=POULES.poules[pi]; var t=(P.teams||[]).find(function(x){return x.pos===pos;}); if(!t) return;
-    var s=t.s25||null;
+    var s=t.s25||null, o26=l26For(P,t);
     var h='<div class="f-top"><div><div class="eyebrow">fiche adversaire · '+esc(P.division)+(P.poule!=null?' · poule '+P.poule:'')+'</div>'
       +'<div class="f-name">'+esc(t.name)+'</div>'
       +'<div class="f-sub">dépt '+esc(t.dept||'—')+' · '+t.pos+'ᵉ de la poule (ordre officiel) · ACBB → '+esc(P.acbb)+'</div></div>'
       +'<button type="button" class="f-close" id="fClose">fermer ✕</button></div>';
     h+='<div class="f-kpis">'
+      +'<div class="f-kpi"><b'+(o26?' style="color:var(--win-lt)"':'')+'>'+(o26?o26.avg:'—')+'</b><span>moy. 26/27 réelle</span></div>'
       +'<div class="f-kpi"><b>'+(s?s.avg:'—')+'</b><span>moy. 25/26</span></div>'
-      +'<div class="f-kpi"><b>'+(s&&s.ceil?s.ceil+(s.vivier?'<sup style="font-size:9px;color:var(--orange)"> club</sup>':''):'—')+'</b><span>plafond</span></div>'
+      +'<div class="f-kpi"><b>'+(s&&s.ceil?s.ceil+(s.vivier?'<sup style="font-size:9px;color:var(--orange)"> club</sup>':''):'—')+'</b><span>plafond 25/26</span></div>'
+      +'<div class="f-kpi"><b>'+(POOLAVG[P.acbb]!=null?POOLAVG[P.acbb]:'—')+'</b><span>poule hors ACBB</span></div>'
       +'</div>';
+    if(o26) h+='<div class="f-sub">26/27 : <b style="color:var(--ink-2)">'+o26.nj+' journée'+(o26.nj>1?'s':'')+' jouée'+(o26.nj>1?'s':'')+'</b> · '+Object.keys(o26.roster).length+' joueurs alignés'+(o26.last?' · dernière compo : <b style="color:var(--ink-2)">'+o26.last.avg+'</b> (J'+o26.last.j+')':'')+(POOLAVG[P.acbb]!=null?' · <span style="color:'+(o26.avg>=POOLAVG[P.acbb]?'var(--lose)':'var(--win-lt)')+'">'+(o26.avg>=POOLAVG[P.acbb]?'+':'')+(o26.avg-POOLAVG[P.acbb])+' vs la poule</span>':'')+'</div>';
+    if(o26){
+      var ros=Object.keys(o26.roster).map(function(k){return o26.roster[k];}).sort(function(a,b){return b.cls-a.cls;});
+      h+='<div class="f-h">Joueurs alignés en 26/27 <span style="font-weight:600;letter-spacing:0;text-transform:none;color:var(--dim)">points · victoires</span></div>';
+      h+=ros.map(function(x){ return '<div class="f-row"><span>'+esc(x.nom)+(x.n>1?' <span style="color:var(--dimmer);font-size:10px">'+x.n+' feuilles</span>':'')+'</span><span class="num">'+x.cls+(x.vic?' · '+x.vic+'V':'')+'</span></div>'; }).join('');
+    }
     if(s) h+='<div class="f-sub">25/26 : '+(s.src&&norm(s.src)!==norm(t.name)?'<span style="color:var(--orange)">ex-'+esc(s.src)+'</span> · ':'')+'<b style="color:var(--ink-2)">'+esc(s.div)+'</b> · '+s.rank+'ᵉ'+(s.mvt?' · '+(s.mvt==='promu'?'↑ promu':'↓ descendu'):'')+(s.nm?' · '+s.nm+' joueurs vus':'')+(s.vivier?' · vivier club : '+esc(s.vivier.join(', ')):'')+'</div>';
     else h+='<div class="f-sub">équipe absente des divisions archivées 25/26 — niveau inconnu</div>';
     if(s&&s.top&&s.top.length){
@@ -334,6 +402,9 @@
     html+='<div class="grp-h">'+G.titre+' <span>'+G.liste.length+' poule'+(G.liste.length>1?'s':'')+'</span></div>';
     G.liste.forEach(function(P){
       var pi=idx(P);
+      var k26=P.teams.map(function(t){return l26For(P,t);}).filter(function(o){return o;});
+      var max26=k26.length?Math.max.apply(null,k26.map(function(o){return o.avg;})):1;
+      var min26=k26.length?Math.min.apply(null,k26.map(function(o){return o.avg;})):0;
       var known=P.teams.filter(function(t){return t.s25;});
       var maxAvg=known.length?Math.max.apply(null,known.map(function(t){return t.s25.avg;})):1;
       var minAvg=known.length?Math.min.apply(null,known.map(function(t){return t.s25.avg;})):0;
@@ -341,11 +412,13 @@
 
       var rows=P.teams.map(function(t){
         var s=t.s25, w=s?Math.round(24+56*(s.avg-minAvg)/Math.max(1,maxAvg-minAvg)):0;
+        var o26=l26For(P,t), w26=o26?Math.round(24+56*(o26.avg-min26)/Math.max(1,max26-min26)):0;
         var nameCell=t.acbb?esc(t.name):'<button type="button" class="tlink" data-p="'+pi+'" data-pos="'+t.pos+'" title="ouvrir la fiche adversaire">'+esc(t.name)+'</button>';
         return '<tr'+(t.acbb?' class="me"':'')+'>'
           +'<td class="pos">'+t.pos+'</td>'
           +'<td class="tname">'+nameCell+(t.acbb&&a27!=null?'<span class="tag27" title="moyenne officiel 26/27 des titulaires tagués ('+esc(P.acbb)+')">tit. 26/27 : '+a27+'</span>':'')+'</td>'
           +'<td class="dept">'+esc(t.dept)+'</td>'
+          +'<td class="r">'+(o26?'<span class="avg a26" title="'+esc(o26.nj+' journée'+(o26.nj>1?'s':'')+' jouée'+(o26.nj>1?'s':'')+' · '+o26.n+' joueurs alignés'+(o26.last?' · dernière compo '+o26.last.avg:''))+'">'+o26.avg+'</span><span class="avgbar a26bar" style="width:'+w26+'px"></span>':'<span class="na">—</span>')+'</td>'
           +'<td class="r">'+(s?'<span class="avg">'+s.avg+'</span><span class="avgbar" style="width:'+w+'px"></span>':'<span class="na">—</span>')+'</td>'
           +'<td class="r">'+(s&&s.ceil?'<span class="ceil'+(s.vivier?' viv':'')+'" title="'+esc((s.top||[]).map(function(x){return x[0]+' '+x[1];}).join(' · ')+(s.vivier?' — vivier club : joueurs de '+s.vivier.join(', ')+' (25/26)':''))+'">'+s.ceil+(s.vivier?'<sup>club</sup>':'')+'</span>':'<span class="na">—</span>')+'</td>'
           +'<td class="prov">'+(s?((s.src&&numOf(s.src)!==numOf(t.name))?'<span class="ex" title="nom de l\'équipe en 2025/26 (renumérotation CD92)">ex-'+esc(s.src)+'</span> · ':'')+'<b>'+esc(s.div)+'</b> · '+s.rank+'ᵉ'+(s.mvt?' <span class="mvt '+s.mvt+'">'+(s.mvt==='promu'?'↑ promu':'↓ descendu')+'</span>':''):'<span class="na">—</span>')+'</td>'
@@ -366,15 +439,17 @@
             +'<div class="opp" style="color:var(--dimmer)">repos</div></div>';
         return '<div class="cal-j'+rep+'"><div class="jt">J'+c.j+'<span class="dt">'+esc(shortDate(c.date))+'</span></div>'
           +'<span class="lieu '+(c.dom?'dom':'ext')+'">'+(c.dom?'DOM':'EXT')+'</span>'
-          +'<div class="opp">'+(o.acbb?esc(o.name):'<button type="button" class="tlink" data-p="'+pi+'" data-pos="'+o.pos+'" style="font-size:inherit">'+esc(o.name||'?')+'</button>')+(o.s25?' <span style="color:var(--dimmer);font-family:JetBrains Mono,monospace;font-size:10px" title="niveau moyen 25/26 · plafond">('+o.s25.avg+(o.s25.ceil?' · <span style=\'color:var(--dim)\'>↑'+o.s25.ceil+'</span>':'')+')</span>':'')+'</div>'
+          +'<div class="opp">'+(o.acbb?esc(o.name):'<button type="button" class="tlink" data-p="'+pi+'" data-pos="'+o.pos+'" style="font-size:inherit">'+esc(o.name||'?')+'</button>')+(function(){ var q=l26For(P,o); if(q) return ' <span style="color:var(--win-lt);font-family:JetBrains Mono,monospace;font-size:10px" title="niveau moyen réel 26/27 (compos alignées)">('+q.avg+')</span>';
+             return o.s25?' <span style="color:var(--dimmer);font-family:JetBrains Mono,monospace;font-size:10px" title="niveau moyen 25/26 · plafond">('+o.s25.avg+(o.s25.ceil?' · <span style=\'color:var(--dim)\'>↑'+o.s25.ceil+'</span>':'')+')</span>':''; })()+'</div>'
           +statusHtml(P.acbb,c)+'</div>';
       }).join('');
 
       html+='<div class="pcard" id="pool-'+esc(P.acbb)+'">'
         +'<div class="p-head"><div class="p-title">'+esc(P.division)+(P.poule!=null?'<small>Poule '+P.poule+'</small>':'<small>championnat unique · aller J1-J11</small>')+'</div>'
-        +'<span class="p-badge">ACBB → '+esc(P.acbb)+'</span></div>'
+        +'<span class="p-badge">ACBB → '+esc(P.acbb)+'</span>'
+        +(POOLAVG[P.acbb]!=null?'<span class="p-badge p-avg" title="moyenne des niveaux 26/27 de toutes les équipes de la poule SAUF l\'ACBB, d\'après les compos réellement alignées">poule hors ACBB : '+POOLAVG[P.acbb]+'</span>':'')+'</div>'
         +'<div class="pt-wrap"><table class="pt">'
-        +'<thead><tr><th>#</th><th>Équipe <span style="font-weight:600;letter-spacing:0;text-transform:none">· ↗ fiche</span></th><th>Dépt</th><th class="r">Niveau ph2 25/26</th><th class="r" title="moyenne des 4 meilleurs joueurs alignés au moins une fois en phase 2 25/26">Plafond</th><th>25/26 (identité · div · clt)</th></tr></thead>'
+        +'<thead><tr><th>#</th><th>Équipe <span style="font-weight:600;letter-spacing:0;text-transform:none">· ↗ fiche</span></th><th>Dépt</th><th class="r" title="moyenne des points des joueurs réellement alignés depuis la J1 (feuilles FFTT)">Niveau 26/27</th><th class="r">Niveau ph2 25/26</th><th class="r" title="moyenne des 4 meilleurs joueurs alignés au moins une fois en phase 2 25/26">Plafond</th><th>25/26 (identité · div · clt)</th></tr></thead>'
         +'<tbody>'+rows+'</tbody></table></div>'
         +'<div class="cal-leg"><span>Calendrier '+esc(P.acbb)+' · statut journée par journée :</span><span><i style="background:var(--win)"></i>joué (score ACBB – adverse)</span><span><i style="background:var(--dimmer)"></i>à venir</span><span><i style="background:var(--gold)"></i>joué, score en attente</span><span><i style="background:#FB923C"></i>reporté</span></div>'
         +'<div class="cal" style="border-top:none">'+cal+'</div>'
