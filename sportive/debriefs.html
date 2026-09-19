@@ -121,6 +121,9 @@ function api(route,body){
 }
 const rowsOf=r=>Array.isArray(r)?r:((r&&(r.items||r.rows))||[]);
 const esc=ACBB.esc, toast=ACBB.toast;
+/* Gras dans les debriefs : le capitaine entoure le mot d'étoiles, comme sur WhatsApp (*comme ça*).
+   Le texte est TOUJOURS échappé avant conversion : rien d'autre que <b> ne peut en sortir. */
+const rich=s=>esc(s||'').replace(/\*([^*\n]+)\*/g,'<b>$1</b>');
 const NJ=7, JOURNAL_LIMIT=300;
 const ALL=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
 const TEAMDIV={M1:'Pro B',M2:'N1',M3:'R1',M4:'R2',M5:'R3',M6:'PR',M7:'PR',M8:'D1',M9:'D1',M10:'D1',M11:'D1',M12:'D2',M13:'D2',M14:'D2',M15:'D2',M16:'D2',M17:'D2',F1:'N2D',F2:'R1D',F3:'PRD'};
@@ -201,14 +204,14 @@ function renderList(){
     const texte=st==='pub'?(r.texte_final||r.texte||''):(r.texte||'');
     const nch=c?nChanges(r.texte,c.texte):0;
     const corr=c?'<div class="card2 corr"><div class="corr-h"><span class="lab" style="color:var(--win)">après correction des coquilles · '+(nch?nch+' changement'+(nch>1?'s':''):'aucun changement')+'</span><span class="lab r">ton et phrases inchangés · '+(c.keep?'sera publiée':'l\'original sera publié')+'</span></div>'
-      +'<div class="txt">'+esc(c.texte)+'</div>'
+      +'<div class="txt">'+rich(c.texte)+'</div>'
       +'<div class="acts"><button class="btn xs'+(c.keep?' primary':'')+'" data-keep="'+r.id+'">Garder la version corrigée</button><button class="btn xs'+(!c.keep?' primary':'')+'" data-orig="'+r.id+'">Revenir à l\'original</button></div></div>':'';
     return '<div class="card db" data-id="'+r.id+'" style="border-color:'+teamBorder(r.equipe)+'">'
       +'<div class="db-h"><span class="tn" style="color:'+teamCol(r.equipe)+'" title="'+esc(TEAMDIV[r.equipe]||shortDiv(m&&m.division)||'')+'">'+esc(r.equipe)+'</span>'
       +'<span class="lab">J'+esc(r.journee||J)+' · '+(m&&!m.exempt?esc(m.opp)+' · '+(m.dom?'domicile':'extérieur'):'adversaire inconnu')+'</span>'
       +(hasScore?'<span class="score">'+esc(sa)+' – '+esc(sd)+'</span>':'<span class="lab">score non saisi</span>')+stTag+'</div>'
       +(st==='ren'&&r.renvoye_message?'<div class="card2 msg">message envoyé au capitaine : '+esc(r.renvoye_message)+'</div>':'')
-      +'<div class="db-b">'+photoHtml(r)+'<div class="db-t"><span class="txt">'+esc(texte)+'</span><span class="lab">écrit par '+esc(r.auteur||'?')+(r.created_at?' · '+fmtDT(r.created_at):'')+'</span>'
+      +'<div class="db-b">'+photoHtml(r)+'<div class="db-t"><span class="txt">'+rich(texte)+'</span><span class="lab">écrit par '+esc(r.auteur||'?')+(r.created_at?' · '+fmtDT(r.created_at):'')+'</span>'
       +(r.visible_club===false?'<span class="lab" style="color:var(--warn)">le capitaine ne souhaite pas de diffusion au club</span>':'')+'</div></div>'
       +corr
       +'<div class="acts">'

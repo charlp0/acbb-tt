@@ -63,6 +63,10 @@
   .ditem:hover{border-color:rgba(96,165,250,.6)}
   .ditem .j{font-family:"JetBrains Mono",monospace;font-weight:800}
   .ditem .sc{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:13px}
+.dlbl{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .gras{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:800;width:26px;height:24px;line-height:1;padding:0;border-radius:6px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink);cursor:pointer}
+  .gras:hover{border-color:var(--orange);color:var(--orange)}
+  .ghint{color:var(--dimmer);text-transform:none;letter-spacing:0;font-weight:600}
   .ditem .tx{font-size:12px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .sc.win{color:var(--win)} .sc.lose{color:var(--lose)} .sc.draw{color:var(--warn)}
   .compo{font-size:12.5px;color:var(--dim);line-height:1.45}
@@ -176,7 +180,7 @@
               <div><input id="scB" type="number" inputmode="numeric" min="0" max="30" placeholder="–" aria-label="Score adversaire"><span class="lab" id="scBLab">Adversaire</span></div>
             </div>
             <span class="lab" id="scHint" style="display:block;margin:-4px 0 10px;color:var(--dimmer);text-transform:none;letter-spacing:0;font-weight:600">Score en <b style="color:var(--ink-2)">parties gagnées</b> (ex. 14 – 0), total 14. Dès que la FFTT publie la feuille, le score officiel prend le relais.</span>
-            <label class="lab" for="debTxt">Ton debrief</label>
+            <div class="dlbl"><label class="lab" for="debTxt">Ton debrief</label><button type="button" class="gras" id="debBold" title="Mettre en gras (entoure le texte d'étoiles)">G</button><span class="lab ghint">gras : *entoure le mot d'étoiles*</span></div>
             <textarea id="debTxt" placeholder="Le match en quelques lignes : les faits marquants, les perfs, l'ambiance…"></textarea>
             <span class="lab">Photo (jpg, png ou webp, 5 Mo max.)</span>
             <div class="photo">
@@ -372,7 +376,15 @@
     try{ const r=await ACBB.upload('cap/photo',f,{journee:String(S.j)}); S.photoPath=(r&&r.photo_path)||null; st.textContent='Photo envoyée. Enregistre le debrief pour la rattacher.'; }
     catch(err){ S.photoPath=null; st.textContent='Photo non envoyée ('+esc(err&&err.message||'serveur indisponible')+'). Tu peux enregistrer le debrief sans photo.'; }
   });
-  document.getElementById('debForm').addEventListener('submit',async e=>{
+  /* Gras : encadre la sélection d'étoiles (ou les retire si déjà en gras) ; sans sélection, pose « ** » et place le curseur au milieu. */
+  document.getElementById('debBold').addEventListener('click',function(){
+    const ta=document.getElementById('debTxt'), a=ta.selectionStart, b=ta.selectionEnd, v=ta.value;
+    if(a===b){ ta.value=v.slice(0,a)+'**'+v.slice(b); ta.selectionStart=ta.selectionEnd=a+1; }
+    else { const sel=v.slice(a,b), deja=/^\*[^*]+\*$/.test(sel), rep=deja?sel.slice(1,-1):'*'+sel+'*';
+      ta.value=v.slice(0,a)+rep+v.slice(b); ta.selectionStart=a; ta.selectionEnd=a+rep.length; }
+    ta.focus();
+  });
+    document.getElementById('debForm').addEventListener('submit',async e=>{
     e.preventDefault();
     const err=document.getElementById('debErr'); err.hidden=true;
     const a=document.getElementById('scA').value.trim(), b=document.getElementById('scB').value.trim(), txt=document.getElementById('debTxt').value.trim();
