@@ -329,6 +329,7 @@ function boot(){
     res[10].forEach(r=>{ if(seen[r.slot])return; seen[r.slot]=1; const j=parseInt(r.slot.slice(1),10); const t=Object.assign({},r.tags||{}); META[j]={id:r.id,author:r.author,at:r.created_at,meta:t._meta||null}; delete t._meta; COMPOS[j]=t; });
     for(let j=1;j<=NJ;j++){ COMPOS[j]=canonCompos(COMPOS[j]||{}); }
     BASE=JSON.parse(JSON.stringify(COMPOS));
+    buildReel();
     let restored=[]; for(let j=1;j<=NJ;j++){ if(draftRestore(j)){ COMPOS[j]=canonCompos(COMPOS[j]); restored.push('J'+j); } }
     if(restored.length) setTimeout(()=>toast('brouillon non enregistré restauré : '+restored.join(', ')),800);
     // journée par défaut : la prochaine à venir (paramètre ?j= prioritaire)
@@ -402,8 +403,50 @@ function compo(j,t){ const c=COMPOS[j][t]||(COMPOS[j][t]={p:[],st:'draft',note:'
 function dirtyTeams(){ const out=[]; TEAMS.forEach(t=>{ const a=JSON.stringify(COMPOS[J][t]||null), b=JSON.stringify(BASE[J][t]||null); if(a!==b && !(a==='null'&&b&&JSON.parse(b).p.length===0) && !(b==='null'&&COMPOS[J][t]&&!COMPOS[J][t].p.length&&COMPOS[J][t].st==='draft'&&!COMPOS[J][t].note)) out.push(t); }); return out; }
 
 /* ===================== PARTICIPATIONS & RÈGLES ===================== */
-/* participations = compos enregistrées des journées précédentes (prévisionnel, en attendant les feuilles FFTT) */
-function participations(k,j){ const out=[]; for(let jj=1;jj<j;jj++){ const cj=BASE[jj]||{}; Object.keys(cj).forEach(t=>{ if(t!=='_meta'&&(cj[t].p||[]).indexOf(k)>=0) out.push({j:jj,t:t}); }); } return out; }
+/* Participations : la FEUILLE DE RENCONTRE FFTT fait foi dès qu'elle existe. Nos compos enregistrées
+   restent du prévisionnel — à la J1, 6 équipes ont finalement aligné autre chose que le plan, et le
+   brûlage calculé sur le plan aurait été faux. Repli sur la compo enregistrée équipe par équipe. */
+let REEL={};              // REEL[journée][équipe] = clés des joueurs réellement alignés
+function buildReel(){
+  REEL={};
+  const D=(SITE&&SITE.DATA)||{};
+  Object.keys(D).forEach(k=>{
+    const t=(D[k].teams||[]).find(x=>x.acbb); if(!t) return;
+    (t.journees||[]).forEach(j=>{
+      if(j.match_score==null) return;
+      const cles=[];
+      (j.players||[]).forEach(p=>{
+        if(!p.nom||p.nom==='Joueur absent') return;
+        const m=BYFK[nrmK(p.nom)+'|'+nrmK(p.prenom)]||BYSN['SN-'+nrmK(p.nom)+'-'+nrmK(p.prenom)]||BYSN['SN-'+nrmK(p.prenom)+'-'+nrmK(p.nom)];
+        if(m) cles.push(pkey(m));
+      });
+      if(cles.length) (REEL[+j.journee]=REEL[+j.journee]||{})[k]=cles;
+    });
+  });
+}
+function participations(k,j){
+  const out=[];
+  for(let jj=1;jj<j;jj++){
+    const r=REEL[jj]||{}, cj=BASE[jj]||{}, vus={};
+    Object.keys(r).forEach(t=>{ vus[t]=1; if(r[t].indexOf(k)>=0) out.push({j:jj,t:t,reel:true}); });
+    Object.keys(cj).forEach(t=>{ if(t==='_meta'||vus[t]) return; if((cj[t].p||[]).indexOf(k)>=0) out.push({j:jj,t:t}); });
+  }
+  return out;
+}
+/* écarts entre notre plan et la feuille officielle, journée par journée */
+function ecartsPlan(){
+  const out=[];
+  Object.keys(REEL).map(Number).sort((a,b)=>a-b).forEach(jj=>{
+    const diff=[];
+    Object.keys(REEL[jj]).forEach(t=>{
+      const plan=((BASE[jj]||{})[t]||{}).p; if(!plan||!plan.length) return;
+      const a=plan.slice().sort().join(','), b=REEL[jj][t].slice().sort().join(',');
+      if(a!==b) diff.push(t);
+    });
+    if(diff.length) out.push({j:jj,teams:diff});
+  });
+  return out;
+}
 /* montées = journées déjà enregistrées (J1..Jj-1, brouillon ou finale) où le joueur a été aligné dans une équipe supérieure (numéro plus petit, même championnat) à son équipe d'origine */
 function montees(k,j,home){ if(!home||!/^[MF]\d+$/.test(home)) return []; return participations(k,j).filter(x=>/^[MF]\d+$/.test(x.t)&&GENRE(x.t)===GENRE(home)&&NUM(x.t)<NUM(home)).map(x=>'J'+x.j+' '+x.t); }
 function bruBadge(k,j,home){ const m=montees(k,j,home); if(!m.length) return '';
@@ -675,7 +718,10 @@ function renderChecker(){
   h+=line(/incomplète|aucun joueur|trop de joueurs/,'Équipes complètes');
   h+=line(/II\.609/,'Extra-communautaires ≤ 1 / feuille (II.609)');
   h+=row('na','Mutés : illimités (II.610)');
-  h+='<div class="hint">Participations = compos <b>enregistrées</b> des journées précédentes (prévisionnel). Quand les feuilles FFTT seront disponibles, elles prendront le relais.</div>';
+  const jr=Object.keys(REEL).map(Number).sort((a,b)=>a-b), ec=ecartsPlan();
+  h+='<div class="hint">Participations : '+(jr.length?'<b>feuilles FFTT</b> pour J'+jr.join(', J')+(jr.length<J-1?' et compos enregistrées pour le reste':''):'compos <b>enregistrées</b> (aucune feuille FFTT encore disponible)')+'.'
+    +(ec.length?'<br><span style="color:var(--warn)">⚠ compo finalement différente du plan : '+ec.map(x=>'J'+x.j+' → '+x.teams.join(', ')).join(' · ')+'. Le brûlage tient compte de la feuille, pas du plan.</span>':'')
+    +'</div>';
   document.getElementById('chkList').innerHTML=h;
 }
 function renderSave(){
