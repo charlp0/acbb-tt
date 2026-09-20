@@ -406,7 +406,7 @@ function dirtyTeams(){ const out=[]; TEAMS.forEach(t=>{ const a=JSON.stringify(C
 /* Participations : la FEUILLE DE RENCONTRE FFTT fait foi dès qu'elle existe. Nos compos enregistrées
    restent du prévisionnel — à la J1, 6 équipes ont finalement aligné autre chose que le plan, et le
    brûlage calculé sur le plan aurait été faux. Repli sur la compo enregistrée équipe par équipe. */
-let REEL={};              // REEL[journée][équipe] = clés des joueurs réellement alignés
+let REEL={}, RSC={};      // REEL[journée][équipe] = joueurs réellement alignés · RSC = score officiel (parties)
 /* Un nom de feuille FFTT vers notre clé joueur. La feuille porte l'état civil, nous parfois le prénom
    d'usage (« BOTELLA Milosav » sur la feuille, « Milo » chez nous) : on tolère donc un prénom qui
    commence pareil, puis le nom seul s'il est unique dans l'effectif. */
@@ -432,7 +432,9 @@ function buildReel(){
         if(!p.nom||p.nom==='Joueur absent') return;
         const c=cleFeuille(p.nom,p.prenom); if(c) cles.push(c);
       });
-      if(cles.length) (REEL[+j.journee]=REEL[+j.journee]||{})[k]=cles;
+      if(cles.length){ (REEL[+j.journee]=REEL[+j.journee]||{})[k]=cles;
+        const a=+j.match_score, b=+j.opp_score;
+        (RSC[+j.journee]=RSC[+j.journee]||{})[k]=(a+b===42&&a>=14&&b>=14)?[a-14,b-14]:[a,b]; }
     });
   });
 }
@@ -465,7 +467,9 @@ function bruBadge(k,j,home){ const m=montees(k,j,home); if(!m.length) return '';
   const tip='brûlage II.112 : déjà aligné '+m.length+' fois au-dessus de '+home+' ('+m.join(', ')+')'+(m.length>=2?' — 2 matchs en équipe supérieure : retour en '+home+' interdit':' — au 2ᵉ match en équipe supérieure, retour en '+home+' interdit');
   return '<span class="agec bz '+(m.length>=2?'r':'y')+'" title="'+esc(tip)+'">B'+m.length+'/2</span>'; }
 function checkTeam(t,j){
-  const issues=[], flags={}; const c=compo(j,t), m=matchOf(t,j); if(!m||m.exempt) return {issues,flags};
+  const issues=[], flags={}; const m=matchOf(t,j); if(!m||m.exempt) return {issues,flags};
+  const _rl=(REEL[j]||{})[t]||null;                       // journée jouée : les règles s'apprécient sur la feuille
+  const c=_rl?{p:_rl,st:'sent',note:''}:compo(j,t);
   const size=sizeOf(t), n=c.p.length;
   const add=(lvl,msg,keys,cid)=>{ issues.push({lvl,msg,cid}); (keys||[]).forEach(k=>{ if(!flags[k]||lvl==='err') flags[k]=lvl; }); };
   if(n<size) add(n?'warn':'info', n?('compo incomplète — '+(size-n)+' place'+(size-n>1?'s':'')+' à pourvoir'):'aucun joueur aligné');
@@ -564,6 +568,16 @@ function usedSameDate(t){ // joueurs déjà alignés dans une autre équipe joua
   TEAMS.forEach(o=>{ if(o===t||!playing(o,J))return; const mo=matchOf(o,J); if(mo.date===(m&&m.date)||GENRE(o)===GENRE(t)) compo(J,o).p.forEach(k=>used.add(k)); });
   return used;
 }
+/* Ligne de joueur d'une journée DÉJÀ JOUÉE : on affiche la feuille officielle, sans glisser-déposer
+   ni bouton de retrait, pour qu'une consultation ne puisse jamais modifier la compo enregistrée. */
+function pRowReel(k,t){
+  const p=BYKEY[k];
+  if(!p) return '<div class="pr"><span class="dot"></span><span class="nm x">'+esc(k)+'</span></div>';
+  const home=GENRE(t)==='F'?((FEM[k]&&FEM[k].e)||homeTeam(k)):((TAGS[k]&&TAGS[k].e)||homeTeam(k));
+  const tag=(home&&home!==t)?'<span class="agec t" title="titulaire de '+esc(home)+' — aligné ici en renfort">'+esc(home)+'</span>':'';
+  return '<div class="pr" title="joueur aligné sur la feuille officielle"><span class="dot g"></span>'+catBadge(k)+exBadge(k)+tag
+    +'<span class="nm">'+esc(short(p))+'</span><span class="pts">'+(p.men||'—')+'</span></div>';
+}
 function pRow(k,t,flags){
   const p=BYKEY[k]; const s=dispo(k,J); const lvl=flags[k];
   if(!p) return '<div class="pr bad" draggable="true" data-k="'+esc(k)+'" data-t="'+t+'"><span class="dot"></span><span class="nm x">'+esc(k)+'</span><span class="note">joueur inconnu</span><span class="pts"></span><button class="rm" data-rm="'+esc(k)+'" title="retirer">✕</button></div>';
@@ -594,9 +608,11 @@ function card(t){
       +'<div class="others"><div class="ot">Joueurs de '+t+' disponibles comme renforts · '+nD+' dispo'+(nD>1?'s':'')+' non aligné'+(nD>1?'s':'')+'</div><div class="ol">'+(chips||'<span style="font-size:11px;color:var(--dimmer)">aucun titulaire</span>')+'</div></div></div>'; }
   const r=checkTeam(t,J), lvl=lvlOf(r.issues);
   const stLbl={draft:'BROUILLON',valid:'VALIDÉE',sent:'ENVOYÉE ✓'}[c.st]||'BROUILLON';
-  const rows=c.p.map(k=>pRow(k,t,r.flags)).join('');
-  const size=sizeOf(t); let slots=''; for(let i=c.p.length;i<size;i++) slots+='<div class="slot" data-slot="'+t+'">＋ Glisser un joueur ou un remplaçant ici</div>';
-  const known=c.p.map(k=>(BYKEY[k]||{}).men).filter(Boolean); const avg=known.length?Math.round(known.reduce((a,b)=>a+b,0)/known.length):null;
+  const reel=(REEL[J]||{})[t]||null;      // feuille officielle FFTT de cette journée
+  const rows=reel?reel.map(k=>pRowReel(k,t)).join(''):c.p.map(k=>pRow(k,t,r.flags)).join('');
+  const size=sizeOf(t); let slots='';
+  if(!reel) for(let i=c.p.length;i<size;i++) slots+='<div class="slot" data-slot="'+t+'">＋ Glisser un joueur ou un remplaçant ici</div>';
+  const known=(reel||c.p).map(k=>(BYKEY[k]||{}).men).filter(Boolean); const avg=known.length?Math.round(known.reduce((a,b)=>a+b,0)/known.length):null;
   let pctH='';
   if(avg&&m.oppAvg){ const pct=Math.round(100/(1+Math.pow(10,(m.oppAvg-avg)/SCALE))); const col2=pct>=60?'#3DD68C':(pct>=45?'#FACC15':'#F26356');
     pctH='<div class="avgrow"><span class="lab">moy <b>'+avg+'</b> vs <b style="color:'+(m.oppAvg>avg?'var(--lose-lt)':'var(--win-lt)')+'">'+m.oppAvg+'</b></span><div class="bar"><i style="width:'+pct+'%;background:linear-gradient(90deg,#F26356,'+col2+')"></i></div><span class="pct" style="color:'+col2+'" title="indice de victoire (estimation : moyenne alignée 25/26 de l\'adversaire)">'+pct+'%</span></div>'; }
@@ -620,10 +636,25 @@ function card(t){
   const alerts=shown.map(i=>'<div class="alert '+i.lvl+'">'+(i.lvl==='err'?'⛔':'⚠')+' <span>'+esc(i.msg)+'</span></div>').join('');
   const ruleLine='<div class="rules">'+(shown.length?'':'✓ règles OK')+(infos.length?(shown.length?'':' · ')+infos.map(i=>i.msg).join(' · '):'')+(J>1?' · brûlage calculé sur les compos enregistrées '+(J>2?'J1→J'+(J-1):'J1'):'')+'</div>';
   const cap=CAPT[t]; const capName=cap?[].concat(cap).map(k=>BYKEY[k]?short(BYKEY[k]):k).join(', '):'';
-  return '<div class="tc '+lvl+'" data-team="'+t+'">'+head+'<span class="st '+c.st+'" data-st="'+t+'" title="cliquer pour changer : brouillon → validée → envoyée">'+stLbl+'</span></div>'
-    +oppLine+'<div class="plist" data-team="'+t+'">'+rows+slots+'</div>'+pctH+othersH+alerts+ruleLine
+  /* Journée déjà jouée : on montre la feuille officielle, en lecture seule. La compo enregistrée
+     n'est ni modifiée ni écrasée — elle reste consultable en dessous si elle différait. */
+  const sc=(RSC[J]||{})[t]||null;
+  const stH=reel
+    ? '<span class="st sent" title="composition réellement alignée, lue sur la feuille de rencontre FFTT">FEUILLE OFFICIELLE'+(sc?' · '+sc[0]+'–'+sc[1]:'')+'</span>'
+    : '<span class="st '+c.st+'" data-st="'+t+'" title="cliquer pour changer : brouillon → validée → envoyée">'+stLbl+'</span>';
+  let planH='';
+  if(reel){
+    const plan=(c.p||[]), a=plan.slice().sort().join(','), b=reel.slice().sort().join(',');
+    planH = plan.length && a!==b
+      ? '<div class="others"><div class="ot" style="color:var(--warn)">Notre plan était différent</div><div class="ol">'
+        + plan.map(k=>'<span class="oc'+(reel.indexOf(k)<0?' off':'')+'" title="'+(reel.indexOf(k)<0?'prévu mais pas aligné':'aligné comme prévu')+'"><span class="nm">'+esc(short(BYKEY[k]||{nom:k}))+'</span></span>').join('')
+        + '</div></div>'
+      : (plan.length ? '<div class="others"><div class="ot">Conforme au plan enregistré</div></div>' : '');
+  }
+  return '<div class="tc '+lvl+'" data-team="'+t+'">'+head+stH+'</div>'
+    +oppLine+'<div class="plist"'+(reel?'':' data-team="'+t+'"')+'>'+rows+slots+'</div>'+pctH+(reel?planH:othersH)+alerts+ruleLine
     +'<textarea data-note="'+t+'" rows="1" placeholder="note pour le capitaine (RDV, covoiturage…)">'+esc(c.note||'')+'</textarea>'
-    +'<div class="acts"><button class="btn sm" data-prop="'+t+'" type="button">⚡ Proposer</button><button class="btn sm" data-wa="'+t+'" type="button">📋 Texte WhatsApp</button><button class="btn sm" data-img="'+t+'" type="button">📸 Carte image</button>'
+    +'<div class="acts">'+(reel?'':'<button class="btn sm" data-prop="'+t+'" type="button">⚡ Proposer</button>')<button class="btn sm" data-wa="'+t+'" type="button">📋 Texte WhatsApp</button><button class="btn sm" data-img="'+t+'" type="button">📸 Carte image</button>'
     +(capName?'<span class="mono" style="font-size:10px;color:var(--dimmer);margin-left:auto">C : '+esc(capName)+'</span>':'')+'</div></div>';
 }
 function renderGrid(){
