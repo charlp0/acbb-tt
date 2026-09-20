@@ -67,6 +67,7 @@
   .gras{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:800;width:26px;height:24px;line-height:1;padding:0;border-radius:6px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink);cursor:pointer}
   .gras:hover{border-color:var(--orange);color:var(--orange)}
   .ghint{color:var(--dimmer);text-transform:none;letter-spacing:0;font-weight:600}
+.nnum{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:800;padding:1px 5px;border-radius:99px;background:rgba(250,204,21,0.14);border:1px solid rgba(250,204,21,0.45);color:var(--gold);margin-left:4px}
   .ditem .tx{font-size:12px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .sc.win{color:var(--win)} .sc.lose{color:var(--lose)} .sc.draw{color:var(--warn)}
   .compo{font-size:12.5px;color:var(--dim);line-height:1.45}
@@ -492,6 +493,9 @@
     return {cls:'win',label:'Accessible'};
   }
   function clsDisplay(c){ if(c==null) return '—'; if(typeof c==='string') return (c==='x'||c==='?'||c==='')?'—':c; return String(c); }
+  /* Un joueur numéroté a un n° national EN PLUS de ses points (« N°254- M 2480pts ») : on affiche
+     les points, et le n° en repère — c'est ainsi que les joueurs se situent entre eux. */
+  function clsTxt(p){ const v=esc(clsDisplay(p&&p.cls)); return (p&&p.num)?v+' <span class="nnum" title="joueur numéroté : '+p.num+'ᵉ français">N'+esc(p.num)+'</span>':v; }
   function personName(n){ return String(n||'').trim().split(/\s+/).map(w=>w.split('-').map(x=>{ const u=x.toUpperCase(); if(!x) return x; if(PART[u]) return PART[u]; return u[0]+u.slice(1).toLowerCase(); }).join('-')).join(' '); } /* noms de joueurs : pas de règle acronyme (GAO → Gao) */
   function playerLabel(p){ const f=p&&p.prenom?String(p.prenom).trim():''; const n=personName(p&&p.nom||''); return f?f+' '+n:n; }
   function shortOpp(name){ const s=String(name||'').replace(/\s+\(\d+\)$/,''); const r=s.replace(/^BOULOGNE[ -]BILLAN(COURT)?(\s+AC)?\s*/i,'ACBB '); return r!==s?r.trim():shortName(s); }
@@ -539,13 +543,13 @@
       if(!od) h+='<div class="empty" style="margin-top:6px">Pas encore de feuille de match 26/27 pour cette équipe.</div>';
       else if(lastJ&&realPlayers(lastJ.players).length){
         const r=+lastJ.match_score>+lastJ.opp_score?'gagné':(+lastJ.match_score<+lastJ.opp_score?'perdu':'nul');
-        h+='<div class="lineup"><span class="small muted">J'+esc(lastJ.journee)+' · '+r+' <b class="sc '+scoreClass(+lastJ.match_score,+lastJ.opp_score)+'">'+esc(lastJ.match_score)+' – '+esc(lastJ.opp_score)+'</b> vs '+esc(shortOpp(lastJ.opponent))+'</span><br>'+realPlayers(lastJ.players).map(p=>esc(playerLabel(p))+' <span class="cl">cl. '+esc(clsDisplay(p.cls))+'</span>').join(' · ')+'</div>';
+        h+='<div class="lineup"><span class="small muted">J'+esc(lastJ.journee)+' · '+r+' <b class="sc '+scoreClass(+lastJ.match_score,+lastJ.opp_score)+'">'+esc(lastJ.match_score)+' – '+esc(lastJ.opp_score)+'</b> vs '+esc(shortOpp(lastJ.opponent))+'</span><br>'+realPlayers(lastJ.players).map(p=>esc(playerLabel(p))+' <span class="cl">cl. '+clsTxt(p)+'</span>').join(' · ')+'</div>';
       } else h+='<div class="empty" style="margin-top:6px">Pas de composition récente disponible.</div>';
       h+='</div>';
       if(recurring.length){
-        h+='<div class="sblock"><span class="lab">Joueurs récurrents <span class="n">'+recurring.length+'</span></span><div class="seen">'+recurring.map(p=>{ const isTop=!!(top&&top.vic>0&&top.nom===p.nom&&top.prenom===p.prenom); return '<div class="card2'+(isTop?' top':'')+'"><span class="nm">'+esc(playerLabel(p))+(isTop?'<span class="tag win">meilleur</span>':'')+'</span><span class="rs"><span class="pt">'+esc(clsDisplay(p.cls))+'</span><span class="ct">'+p.count+' feuilles</span></span></div>'; }).join('')+'</div></div>';
+        h+='<div class="sblock"><span class="lab">Joueurs récurrents <span class="n">'+recurring.length+'</span></span><div class="seen">'+recurring.map(p=>{ const isTop=!!(top&&top.vic>0&&top.nom===p.nom&&top.prenom===p.prenom); return '<div class="card2'+(isTop?' top':'')+'"><span class="nm">'+esc(playerLabel(p))+(isTop?'<span class="tag win">meilleur</span>':'')+'</span><span class="rs"><span class="pt">'+clsTxt(p)+'</span><span class="ct">'+p.count+' feuilles</span></span></div>'; }).join('')+'</div></div>';
       }
-      if(top&&top.vic>0) h+='<div class="sblock"><span class="lab">Meilleur joueur</span><div class="card2" style="margin-top:6px;font-size:13px"><b>'+esc(playerLabel(top))+'</b> · cl. '+esc(clsDisplay(top.cls))+' · <b>'+top.vic+' victoire'+(top.vic>1?'s':'')+'</b> en '+top.count+' feuille'+(top.count>1?'s':'')+' de match</div></div>';
+      if(top&&top.vic>0) h+='<div class="sblock"><span class="lab">Meilleur joueur</span><div class="card2" style="margin-top:6px;font-size:13px"><b>'+esc(playerLabel(top))+'</b> · cl. '+clsTxt(top)+' · <b>'+top.vic+' victoire'+(top.vic>1?'s':'')+'</b> en '+top.count+' feuille'+(top.count>1?'s':'')+' de match</div></div>';
       if(played.length){
         h+='<div class="sblock"><span class="lab">Résultats 26/27 · journée par journée</span><div class="slist">'+played.map(j=>{ const us=!!(acbbTeam&&sameTeam(j.opponent,acbbTeam.name)); return '<div class="card2 res'+(us?' us':'')+'"><span class="j">J'+esc(j.journee)+'</span><span class="dt">'+esc(fmtD26(j.date))+'</span><span class="o" title="'+esc(j.opponent)+'">'+esc(shortOpp(j.opponent))+'</span><span class="sc '+scoreClass(+j.match_score,+j.opp_score)+'">'+esc(j.match_score)+' – '+esc(j.opp_score)+'</span></div>'; }).join('')+'</div></div>';
       }
