@@ -26,7 +26,12 @@ eq = fb.get(f"xml_equipe.php?numclu={fb.CLUB}&type=A")
 lien = None
 for b in re.findall(r'<equipe>(.*?)</equipe>', eq, re.S):
     lib = tg(b, 'libequipe'); ldiv = tg(b, 'libdivision')
-    if meta.get(cible, '') and meta[cible].split(' Poule')[0].split('_')[-1].strip() not in ldiv: continue
+    # filtre strict : bonne division ET bon genre (sinon « Nationale 2 » attrape aussi les dames)
+    want = meta.get(cible, '')
+    if want and want.split(' Poule')[0].split('_')[-1].strip() not in ldiv: continue
+    if cible.startswith('M') and 'Dames' in ldiv: continue
+    if cible.startswith('F') and 'Dames' not in ldiv: continue
+    print('  équipe retenue :', lib, '|', ldiv)
     lienD = tg(b, 'liendivision')
     if not lienD: continue
     cal = fb.get("xml_result_equ.php?" + html.unescape(lienD))
