@@ -407,6 +407,19 @@ function dirtyTeams(){ const out=[]; TEAMS.forEach(t=>{ const a=JSON.stringify(C
    restent du prévisionnel — à la J1, 6 équipes ont finalement aligné autre chose que le plan, et le
    brûlage calculé sur le plan aurait été faux. Repli sur la compo enregistrée équipe par équipe. */
 let REEL={};              // REEL[journée][équipe] = clés des joueurs réellement alignés
+/* Un nom de feuille FFTT vers notre clé joueur. La feuille porte l'état civil, nous parfois le prénom
+   d'usage (« BOTELLA Milosav » sur la feuille, « Milo » chez nous) : on tolère donc un prénom qui
+   commence pareil, puis le nom seul s'il est unique dans l'effectif. */
+function cleFeuille(nom,pre){
+  const a=nrmK(nom), b=nrmK(pre);
+  let m=BYFK[a+'|'+b]||BYSN['SN-'+a+'-'+b]||BYSN['SN-'+b+'-'+a];
+  if(m) return pkey(m);
+  const meme=D.filter(x=>nrmK(x.nom)===a);
+  const pref=meme.filter(x=>{ const c=nrmK(x.pre); return c&&b&&(c.indexOf(b)===0||b.indexOf(c)===0); });
+  if(pref.length===1) return pkey(pref[0]);
+  if(meme.length===1) return pkey(meme[0]);
+  return null;
+}
 function buildReel(){
   REEL={};
   const D=(SITE&&SITE.DATA)||{};
@@ -417,8 +430,7 @@ function buildReel(){
       const cles=[];
       (j.players||[]).forEach(p=>{
         if(!p.nom||p.nom==='Joueur absent') return;
-        const m=BYFK[nrmK(p.nom)+'|'+nrmK(p.prenom)]||BYSN['SN-'+nrmK(p.nom)+'-'+nrmK(p.prenom)]||BYSN['SN-'+nrmK(p.prenom)+'-'+nrmK(p.nom)];
-        if(m) cles.push(pkey(m));
+        const c=cleFeuille(p.nom,p.prenom); if(c) cles.push(c);
       });
       if(cles.length) (REEL[+j.journee]=REEL[+j.journee]||{})[k]=cles;
     });
