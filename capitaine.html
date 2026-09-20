@@ -500,10 +500,21 @@
   function playerLabel(p){ const f=p&&p.prenom?String(p.prenom).trim():''; const n=personName(p&&p.nom||''); return f?f+' '+n:n; }
   function shortOpp(name){ const s=String(name||'').replace(/\s+\(\d+\)$/,''); const r=s.replace(/^BOULOGNE[ -]BILLAN(COURT)?(\s+AC)?\s*/i,'ACBB '); return r!==s?r.trim():shortName(s); }
   function fmtD26(d){ return String(d||'').replace(/\s?\d{4}$/,''); }
-  function avgScore(played){ if(!played.length) return null; return (played.reduce((s,j)=>s+(+j.match_score||0),0)/played.length).toFixed(1).replace('.',','); }
-  function block2526(t,s,ours){
-    if(!s) return '<div class="empty" style="margin-top:8px">Pas de données de niveau 25/26 pour cette équipe.</div>';
-    let h='<div class="kpis" style="margin-top:8px"><div class="kpi"><span class="lab">moyenne 25/26</span><b>'+(s.avg!=null?s.avg:'–')+'</b>'+(ours&&ours.avg!=null?'<span class="small muted">nous : '+ours.avg+'</span>':'')+'</div><div class="kpi"><span class="lab">plafond 25/26</span><b>'+(s.ceil!=null?s.ceil:'–')+'</b>'+(ours&&ours.ceil!=null?'<span class="small muted">nous : '+ours.ceil+'</span>':'')+'</div><div class="kpi"><span class="lab">saison 25/26</span><b style="font-size:14px;line-height:1.3;margin-top:3px">'+esc(s.div||'–')+(s.rank?' · '+s.rank+'<sup>'+(s.rank===1?'er':'e')+'</sup>':'')+'</b>'+(s.mvt?'<span class="small" style="color:var(--warn)">'+esc(s.mvt)+'</span>':'')+'</div></div>';
+  /* Niveau réel de l'adversaire : moyenne des points de TOUS les joueurs qu'il a alignés sur les
+     journées déjà jouées (J1 → aujourd'hui). Remplace le repère 25/26, qui décrit l'équipe de l'an dernier. */
+  function avgPlayed(played){
+    const n=[]; (played||[]).forEach(j=>realPlayers(j.players).forEach(p=>{ if(typeof p.cls==='number') n.push(p.cls); }));
+    return n.length?Math.round(n.reduce((a,b)=>a+b,0)/n.length):null;
+  }
+  function avgScore(played){ if(!played.length) return null;
+    const v=played.map(j=>{ const pr=toParties(j.match_score,j.opp_score); return pr?pr[0]:null; }).filter(x=>x!=null);
+    return v.length?(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1).replace('.',','):null; }
+  function block2526(t,s,ours,avg26,njoue){
+    if(!s&&avg26==null) return '<div class="empty" style="margin-top:8px">Pas encore de feuille 26/27, et pas de repère 25/26 pour cette équipe.</div>';
+    let h='<div class="kpis" style="margin-top:8px">'
+      +'<div class="kpi"><span class="lab">moyenne 26/27</span><b'+(avg26!=null?' style="color:var(--win-lt)"':'')+'>'+(avg26!=null?avg26:'–')+'</b>'+(njoue?'<span class="small muted">'+njoue+' journée'+(njoue>1?'s':'')+' jouée'+(njoue>1?'s':'')+'</span>':'<span class="small muted">pas encore jouée</span>')+'</div>';
+    if(!s) return h+'</div><div class="small muted" style="margin-top:8px">Pas de repère 25/26 pour cette équipe.</div>';
+    h+='<div class="kpi"><span class="lab">moyenne 25/26 (rappel)</span><b>'+(s.avg!=null?s.avg:'–')+'</b>'+(ours&&ours.avg!=null?'<span class="small muted">nous : '+ours.avg+'</span>':'')+'</div><div class="kpi"><span class="lab">plafond 25/26</span><b>'+(s.ceil!=null?s.ceil:'–')+'</b>'+(ours&&ours.ceil!=null?'<span class="small muted">nous : '+ours.ceil+'</span>':'')+'</div><div class="kpi"><span class="lab">saison 25/26</span><b style="font-size:14px;line-height:1.3;margin-top:3px">'+esc(s.div||'–')+(s.rank?' · '+s.rank+'<sup>'+(s.rank===1?'er':'e')+'</sup>':'')+'</b>'+(s.mvt?'<span class="small" style="color:var(--warn)">'+esc(s.mvt)+'</span>':'')+'</div></div>';
     if(s.src&&normName(s.src)!==normName(t.name)) h+='<div class="small muted" style="margin-top:8px">Équipe issue de « '+esc(shortName(s.src))+' » la saison dernière.</div>';
     const top=(s.top||[]).filter(x=>Array.isArray(x)&&x[0]);
     h+='<div class="lab" style="margin-top:14px">Joueurs vus en 25/26'+(s.nm?' · '+s.nm+' feuilles':'')+'</div>';
@@ -519,11 +530,12 @@
     const played=od?od.journees.filter(j=>j.match_score!=null&&j.opp_score!=null):[];
     const lastJ=played.length?played[played.length-1]:null;
     const lastAvg=lastJ?avgCls(lastJ.players):null;
+    const avg26=avgPlayed(played);          // moyenne sur toutes les journées déjà jouées
     const agg=od?aggregateLineup(od.journees):[];
     const recurring=agg.filter(p=>p.count>=2);
     const top=agg.slice().sort((a,b)=>b.vic-a.vic)[0]||null;
     const rk=st?st.find(r=>sameTeam(r.name,t.name)):null;
-    const diff=difficulty(lastAvg,(rk&&(+rk.mp||0)>0)?+rk.pos:null);   // la place ne compte qu'après au moins un match joué (avant J1, tout le monde est 1er ex æquo)
+    const diff=difficulty(avg26!=null?avg26:lastAvg,(rk&&(+rk.mp||0)>0)?+rk.pos:null);   // la place ne compte qu'après au moins un match joué (avant J1, tout le monde est 1er ex æquo)
     const vsAll=acbbTeam?played.filter(j=>sameTeam(j.opponent,acbbTeam.name)):[];
     const vsUs=vsAll.find(j=>+j.journee===m.j)||vsAll[0]||null;
     const sc=scoreOf(m.j)||(vsUs?[+vsUs.opp_score,+vsUs.match_score]:null); /* dernier repli : la feuille adverse, score inversé */
@@ -532,7 +544,8 @@
     h+='<div class="h2">'+esc(shortName(t.name))+'</div>';
     const chips=[];
     if(rk){ const d=rk.diff!=null?+rk.diff:((+rk.gf||0)-(+rk.ga||0)); chips.push('<span class="chip" title="place au classement"><b>'+ordinal(+rk.pos)+'</b>/'+st.length+'</span>','<span class="chip"><b>'+esc(rk.pts)+'</b> pts</span>','<span class="chip" title="victoires / nuls / défaites">'+esc(rk.V)+'/'+esc(rk.N)+'/'+esc(rk.D)+'</span>','<span class="chip" title="parties gagnées moins parties perdues">GA <b>'+(d>0?'+':'')+d+'</b></span>'); }
-    if(lastAvg!=null) chips.push('<span class="chip" title="classement moyen de la dernière compo">⌀ <b>'+lastAvg+'</b></span>');
+    if(avg26!=null) chips.push('<span class="chip" title="classement moyen des joueurs alignés sur les journées déjà jouées">⌀ <b>'+avg26+'</b></span>');
+    else if(lastAvg!=null) chips.push('<span class="chip" title="classement moyen de la dernière compo">⌀ <b>'+lastAvg+'</b></span>');
     const asc=avgScore(played); if(asc!=null) chips.push('<span class="chip" title="score moyen marqué par match">Score moy. <b>'+asc+'</b></span>');
     if(chips.length) h+='<div class="chips">'+chips.join('')+'</div>';
 
@@ -553,10 +566,10 @@
       if(played.length){
         h+='<div class="sblock"><span class="lab">Résultats 26/27 · journée par journée</span><div class="slist">'+played.map(j=>{ const us=!!(acbbTeam&&sameTeam(j.opponent,acbbTeam.name)); return '<div class="card2 res'+(us?' us':'')+'"><span class="j">J'+esc(j.journee)+'</span><span class="dt">'+esc(fmtD26(j.date))+'</span><span class="o" title="'+esc(j.opponent)+'">'+esc(shortOpp(j.opponent))+'</span><span class="sc '+scoreClass(+j.match_score,+j.opp_score)+'">'+esc(j.match_score)+' – '+esc(j.opp_score)+'</span></div>'; }).join('')+'</div></div>';
       }
-      if(s) h+='<details class="sblock"><summary class="lab">Repères saison 25/26</summary>'+block2526(t,s,ours)+'</details>';
+      h+='<details class="sblock"><summary class="lab">Niveau : 26/27 joué vs repères 25/26</summary>'+block2526(t,s,ours,avg26,played.length)+'</details>';
     } else {
       h+='<div class="band">Saison 25/26 · le scouting 26/27 se remplit après la J1</div>';
-      h+=block2526(t,s,ours);
+      h+=block2526(t,s,ours,avg26,played.length);
     }
     el.innerHTML=h;
   }
