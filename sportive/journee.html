@@ -654,7 +654,7 @@ function card(t){
   return '<div class="tc '+lvl+'" data-team="'+t+'">'+head+stH+'</div>'
     +oppLine+'<div class="plist"'+(reel?'':' data-team="'+t+'"')+'>'+rows+slots+'</div>'+pctH+(reel?planH:othersH)+alerts+ruleLine
     +'<textarea data-note="'+t+'" rows="1" placeholder="note pour le capitaine (RDV, covoiturage…)">'+esc(c.note||'')+'</textarea>'
-    +'<div class="acts">'+(reel?'':'<button class="btn sm" data-prop="'+t+'" type="button">⚡ Proposer</button>')<button class="btn sm" data-wa="'+t+'" type="button">📋 Texte WhatsApp</button><button class="btn sm" data-img="'+t+'" type="button">📸 Carte image</button>'
+    +'<div class="acts">'+(reel?'':'<button class="btn sm" data-prop="'+t+'" type="button">⚡ Proposer</button>')+'<button class="btn sm" data-wa="'+t+'" type="button">📋 Texte WhatsApp</button><button class="btn sm" data-img="'+t+'" type="button">📸 Carte image</button>'
     +(capName?'<span class="mono" style="font-size:10px;color:var(--dimmer);margin-left:auto">C : '+esc(capName)+'</span>':'')+'</div></div>';
 }
 function renderGrid(){
