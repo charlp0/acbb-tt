@@ -185,7 +185,11 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
         date=tag(b,'date'); opp=tag(b,'nom'); ocls=tag(b,'classement'); epr=tag(b,'epreuve')
         if date and dn(date)<SEASON_START: continue      # sécurité : uniquement la saison courante
         won = tag(b,'victoire')=='V'; coef=float(tag(b,'coefchamp') or 1); idp=tag(b,'idpartie')
-        if ' - ' in ocls: ocls=ocls.split(' - ')[-1]   # joueurs nationaux : "N95 - 2846" -> points = 2846
+        # joueurs numérotés : "N95 - 2846" ou "N°254- M 2480pts" -> on veut les POINTS (2846 / 2480),
+        # jamais le n° national. On lit « …pts » en priorité, sinon la partie après le tiret.
+        mpts=re.search(r'(\d+)\s*pts', ocls, re.I)
+        if mpts: ocls=mpts.group(1)
+        elif ' - ' in ocls: ocls=ocls.split(' - ')[-1]
         try: ocls=int(re.sub(r'\D','',ocls) or 0)
         except: ocls=0
         my=mensuel_at(date) or base_level

@@ -34,10 +34,25 @@ def splitnom(full):
     parts=full.split();
     return (' '.join(parts[:-1]), parts[-1]) if len(parts)>1 else (full,'')
 def parse_cls(x):
-    x=x or ''
-    m=re.match(r'\s*N\d+', x)
-    if m: return m.group(0).strip()
-    d=re.search(r'\d+', x); return int(d.group(0)) if d else 'x'
+    """Classement d'un joueur sur une feuille de rencontre -> POINTS (entier).
+
+    Formats FFTT constatés (relevé du 20/09/2026 sur nos 20 poules) :
+      « M 1537pts » / « F 1530pts »   -> joueur classé aux points
+      « N°254- M 2480pts »            -> joueur NUMÉROTÉ : n° national ET points
+    Le piège : lire le premier nombre donne 254 (le n° national) au lieu de 2480.
+    On cherche donc d'abord « …pts »."""
+    x = x or ''
+    m = re.search(r'(\d+)\s*pts', x, re.I)
+    if m: return int(m.group(1))
+    m = re.match(r'\s*N°?\s*(\d+)', x)          # forme sans points : on garde « N254 » en texte
+    if m: return 'N' + m.group(1)
+    d = re.search(r'\d+', x)
+    return int(d.group(0)) if d else 'x'
+
+def parse_num(x):
+    """N° national d'un joueur numéroté (« N°254- M 2480pts » -> 254), sinon None."""
+    m = re.search(r'N°\s*(\d+)', x or '')
+    return int(m.group(1)) if m else None
 
 def fetch_renc(lien):
     """feuille -> { nrm(nom équipe) : (lineup, doubles) }. La feuille a SA propre orientation
@@ -47,8 +62,8 @@ def fetch_renc(lien):
     A={}; B={}
     for jb in re.findall(r'<joueur>(.*?)</joueur>', r, re.S):
         na,ca,nb,cb=tg(jb,'xja'),tg(jb,'xca'),tg(jb,'xjb'),tg(jb,'xcb')
-        if na and ' et ' not in na: A.setdefault(na,{'nom':splitnom(na)[0],'prenom':splitnom(na)[1],'cls':parse_cls(ca),'vic':0})
-        if nb and ' et ' not in nb: B.setdefault(nb,{'nom':splitnom(nb)[0],'prenom':splitnom(nb)[1],'cls':parse_cls(cb),'vic':0})
+        if na and ' et ' not in na: A.setdefault(na,dict({'nom':splitnom(na)[0],'prenom':splitnom(na)[1],'cls':parse_cls(ca),'vic':0}, **({'num':parse_num(ca)} if parse_num(ca) else {})))
+        if nb and ' et ' not in nb: B.setdefault(nb,dict({'nom':splitnom(nb)[0],'prenom':splitnom(nb)[1],'cls':parse_cls(cb),'vic':0}, **({'num':parse_num(cb)} if parse_num(cb) else {})))
     dA=dB=0
     for p in re.findall(r'<partie>(.*?)</partie>', r, re.S):
         ja,jbn=tg(p,'ja'),tg(p,'jb'); sa,sb=tg(p,'scorea'),tg(p,'scoreb')

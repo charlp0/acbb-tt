@@ -54,6 +54,7 @@
   .pt .avg.a26{color:var(--win-lt)}
   .avgbar.a26bar{background:linear-gradient(90deg,rgba(61,214,140,0.45),var(--win))}
   .p-badge.p-avg{background:rgba(61,214,140,0.12);border-color:rgba(61,214,140,0.4);color:var(--win-lt)}
+.nnum{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:800;padding:1px 5px;border-radius:99px;background:rgba(250,204,21,0.14);border:1px solid rgba(250,204,21,0.45);color:var(--gold)}
   .tag27{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;background:rgba(61,214,140,0.12);border:1px solid rgba(61,214,140,0.4);color:var(--win-lt);margin-left:8px}
   .cal{display:flex;gap:8px;overflow-x:auto;padding:12px 14px;border-top:1px solid var(--line);background:rgba(255,255,255,0.02)}
   .cal-j{flex:0 0 auto;min-width:118px;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;padding:9px 11px}
@@ -74,6 +75,7 @@
     .pt .avg.a26{color:var(--win-lt)}
   .avgbar.a26bar{background:linear-gradient(90deg,rgba(61,214,140,0.45),var(--win))}
   .p-badge.p-avg{background:rgba(61,214,140,0.12);border-color:rgba(61,214,140,0.4);color:var(--win-lt)}
+.nnum{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:800;padding:1px 5px;border-radius:99px;background:rgba(250,204,21,0.14);border:1px solid rgba(250,204,21,0.45);color:var(--gold)}
   .tag27{display:block;width:max-content;margin:4px 0 0}
   }
   .grp-h{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:clamp(24px,5vw,32px);letter-spacing:0.5px;color:var(--orange);margin:26px 0 14px;padding-top:8px;border-top:1px solid var(--line)}
@@ -258,8 +260,8 @@
           (j.players||[]).forEach(function(pl){
             if(typeof pl.cls!=='number') return;                // « N500 » / absent : hors moyenne
             nums.push(pl.cls);
-            var nm=((pl.nom||'')+' '+(pl.prenom||'')).trim(), r=roster[nm]||(roster[nm]={nom:nm,cls:pl.cls,vic:0,n:0});
-            if(pl.cls>r.cls) r.cls=pl.cls; r.vic+=(pl.vic||0); r.n++;
+            var nm=((pl.nom||'')+' '+(pl.prenom||'')).trim(), r=roster[nm]||(roster[nm]={nom:nm,cls:pl.cls,num:pl.num||null,vic:0,n:0});
+            if(pl.cls>r.cls) r.cls=pl.cls; if(pl.num) r.num=pl.num; r.vic+=(pl.vic||0); r.n++;
           });
           if(!nums.length) return;
           nj++; pts=pts.concat(nums);
@@ -356,7 +358,7 @@
     if(o26){
       var ros=Object.keys(o26.roster).map(function(k){return o26.roster[k];}).sort(function(a,b){return b.cls-a.cls;});
       h+='<div class="f-h">Joueurs alignés en 26/27 <span style="font-weight:600;letter-spacing:0;text-transform:none;color:var(--dim)">points · victoires</span></div>';
-      h+=ros.map(function(x){ return '<div class="f-row"><span>'+esc(x.nom)+(x.n>1?' <span style="color:var(--dimmer);font-size:10px">'+x.n+' feuilles</span>':'')+'</span><span class="num">'+x.cls+(x.vic?' · '+x.vic+'V':'')+'</span></div>'; }).join('');
+      h+=ros.map(function(x){ return '<div class="f-row"><span>'+esc(x.nom)+(x.n>1?' <span style="color:var(--dimmer);font-size:10px">'+x.n+' feuilles</span>':'')+'</span><span class="num">'+(x.num?'<span class="nnum" title="joueur numéroté : '+x.num+'ᵉ français">N'+x.num+'</span> ':'')+x.cls+(x.vic?' · '+x.vic+'V':'')+'</span></div>'; }).join('');
     }
     if(s) h+='<div class="f-sub">25/26 : '+(s.src&&norm(s.src)!==norm(t.name)?'<span style="color:var(--orange)">ex-'+esc(s.src)+'</span> · ':'')+'<b style="color:var(--ink-2)">'+esc(s.div)+'</b> · '+s.rank+'ᵉ'+(s.mvt?' · '+(s.mvt==='promu'?'↑ promu':'↓ descendu'):'')+(s.nm?' · '+s.nm+' joueurs vus':'')+(s.vivier?' · vivier club : '+esc(s.vivier.join(', ')):'')+'</div>';
     else h+='<div class="f-sub">équipe absente des divisions archivées 25/26 — niveau inconnu</div>';
