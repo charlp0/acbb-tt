@@ -1,0 +1,24 @@
+name: Diagnostic FFTT (manuel)
+
+# Outil ponctuel : affiche la structure brute d'une feuille de rencontre FFTT,
+# pour vérifier comment la fédération encode le classement (points vs numéro national).
+# Aucune écriture, aucun commit : uniquement de l'affichage dans le log du run.
+on:
+  workflow_dispatch:
+    inputs:
+      poule:
+        description: 'Clé ACBB de la poule à inspecter (ex. M2, M3)'
+        default: 'M2'
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install requests
+      - env:
+          FFTT_ID: ${{ secrets.FFTT_ID }}
+          FFTT_PWD: ${{ secrets.FFTT_PWD }}
+        run: python3 scripts/fftt_dump_renc.py "${{ github.event.inputs.poule }}"
