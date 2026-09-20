@@ -170,6 +170,7 @@
 <aside id="fiche" aria-label="Fiche adversaire" aria-hidden="true"></aside>
 
 <script src="../shared/api.js"></script>
+<script src="../shared/scouting.js"></script>
 <script src="../shared/nav.js" data-base=".."></script>
 <script src="../shared/report.js" defer></script>
 <script>
@@ -219,7 +220,7 @@
       PLAYERS=(res[2]&&res[2].players)||[];
       SALLES=(res[3]&&res[3].salles)||{};
       HIST=(res[5]&&res[5].rencontres)||[];
-      buildL26(res[7]);
+      SITE=res[7]; buildL26(res[7]);
       buildResults(res[4],res[6],res[7]);
       render(POULES,TAGS,PLAYERS);
     }).catch(function(e){ document.getElementById('poules').innerHTML='<div class="meta">Erreur de chargement : '+esc(e.message)+'</div>'; });
@@ -246,7 +247,7 @@
      Pour chaque équipe de chaque poule : moyenne des points des joueurs qu'elle a réellement alignés
      depuis la J1, effectif vu, et moyenne de la dernière journée. POOLAVG = moyenne de la poule
      SANS l'ACBB (repère « niveau de la poule »). Remplace progressivement les repères 25/26. */
-  var L26={}, POOLAVG={};
+  var SITE=null, L26={}, POOLAVG={};
   function buildL26(site){
     L26={}; POOLAVG={};
     var D=(site&&site.DATA)||{};
@@ -355,11 +356,9 @@
       +'<div class="f-kpi"><b>'+(POOLAVG[P.acbb]!=null?POOLAVG[P.acbb]:'—')+'</b><span>poule hors ACBB</span></div>'
       +'</div>';
     if(o26) h+='<div class="f-sub">26/27 : <b style="color:var(--ink-2)">'+o26.nj+' journée'+(o26.nj>1?'s':'')+' jouée'+(o26.nj>1?'s':'')+'</b> · '+Object.keys(o26.roster).length+' joueurs alignés'+(o26.last?' · dernière compo : <b style="color:var(--ink-2)">'+o26.last.avg+'</b> (J'+o26.last.j+')':'')+(POOLAVG[P.acbb]!=null?' · <span style="color:'+(o26.avg>=POOLAVG[P.acbb]?'var(--lose)':'var(--win-lt)')+'">'+(o26.avg>=POOLAVG[P.acbb]?'+':'')+(o26.avg-POOLAVG[P.acbb])+' vs la poule</span>':'')+'</div>';
-    if(o26){
-      var ros=Object.keys(o26.roster).map(function(k){return o26.roster[k];}).sort(function(a,b){return b.cls-a.cls;});
-      h+='<div class="f-h">Joueurs alignés en 26/27 <span style="font-weight:600;letter-spacing:0;text-transform:none;color:var(--dim)">points · victoires</span></div>';
-      h+=ros.map(function(x){ return '<div class="f-row"><span>'+esc(x.nom)+(x.n>1?' <span style="color:var(--dimmer);font-size:10px">'+x.n+' feuilles</span>':'')+'</span><span class="num">'+(x.num?'<span class="nnum" title="joueur numéroté : '+x.num+'ᵉ français">N'+x.num+'</span> ':'')+x.cls+(x.vic?' · '+x.vic+'V':'')+'</span></div>'; }).join('');
-    }
+    /* scouting 26/27 complet (compo récente, meilleur joueur, joueurs récurrents, résultats) :
+       même rendu que la popup de Compos journée, via le module partagé shared/scouting.js */
+    if(window.ACBB_SCOUT){ ACBB_SCOUT.css(); h+=ACBB_SCOUT.html({site:SITE,poule:P,team:t,acbbTeam:(P.teams||[]).filter(function(x){return x.acbb;})[0]||null}); }
     if(s) h+='<div class="f-sub">25/26 : '+(s.src&&norm(s.src)!==norm(t.name)?'<span style="color:var(--orange)">ex-'+esc(s.src)+'</span> · ':'')+'<b style="color:var(--ink-2)">'+esc(s.div)+'</b> · '+s.rank+'ᵉ'+(s.mvt?' · '+(s.mvt==='promu'?'↑ promu':'↓ descendu'):'')+(s.nm?' · '+s.nm+' joueurs vus':'')+(s.vivier?' · vivier club : '+esc(s.vivier.join(', ')):'')+'</div>';
     else h+='<div class="f-sub">équipe absente des divisions archivées 25/26 — niveau inconnu</div>';
     if(s&&s.top&&s.top.length){

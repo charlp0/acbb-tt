@@ -156,6 +156,16 @@
   .savebar .btns button.sv{background:rgba(242,106,27,.16);border-color:rgba(242,106,27,.55);color:var(--orange);font-weight:700}
   .savebar .btns button:disabled{opacity:.4;cursor:default;border-color:rgba(255,255,255,.14);color:var(--ink)}
   @media (max-width:520px){.savebar{left:10px;right:10px;width:auto;bottom:10px}}
+.scbg{position:fixed;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(3px);z-index:80}
+  .scpop{position:fixed;z-index:81;right:0;top:0;bottom:0;width:min(460px,94vw);background:var(--panel);border-left:1px solid var(--line-2);box-shadow:-18px 0 50px rgba(0,0,0,.55);overflow-y:auto;padding:18px 20px 30px;transform:translateX(100%);transition:transform .18s ease}
+  .scpop.open{transform:none}
+  .scpop .sch{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:2px}
+  .scpop .scname{font-family:"Saira Condensed",sans-serif;font-weight:800;font-style:italic;font-size:26px;line-height:1.05;letter-spacing:.2px}
+  .scpop .scsub{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+  .scpop .scx{background:none;border:1px solid var(--line-2);border-radius:99px;color:var(--dim);font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;padding:5px 10px;cursor:pointer;white-space:nowrap}
+  .scpop .scx:hover{color:var(--ink);border-color:var(--orange)}
+  .oppbtn{background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer;text-align:left;border-bottom:1px dotted rgba(255,255,255,.35)}
+  .oppbtn:hover{color:var(--orange)}
   .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:70;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;padding:10px 16px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none;border:none;box-shadow:none;font-family:inherit}
   .toast.show{opacity:1}
   /* carte export */
@@ -239,8 +249,11 @@
 <div id="cardHost"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<div class="scbg" id="scBg" hidden></div>
+<aside class="scpop" id="scPop" hidden aria-label="Scouting adversaire"></aside>
 <script src="../shared/api.js"></script>
 <script src="../shared/contraintes.js"></script>
+<script src="../shared/scouting.js"></script>
 <script src="../shared/nav.js" data-base=".."></script>
 <script>
 /* ===================== CONFIG ===================== */
@@ -271,7 +284,7 @@ const EXT=[{key:'NEVES|LOUNA',nom:'NEVES',pre:'Louna',men:1342,ext:'Marly (enten
 const SCALE=250;   // écart de points -> indice de victoire (logistique)
 
 /* ===================== ÉTAT ===================== */
-let D=[], BYKEY={}, BYFK={}, BYSN={}, ALIASK={}, CAT={}, CAPT={}, POULES={}, SALLES={}, TAGS={}, FEM={}, VOTES={};
+let SITE=null, D=[], BYKEY={}, BYFK={}, BYSN={}, ALIASK={}, CAT={}, CAPT={}, POULES={}, SALLES={}, TAGS={}, FEM={}, VOTES={};
 let EXC={ex:new Set(),conf:new Set()};   // extra-communautaires (data/extra_communautaires.json)
 let COMPOS={}, BASE={}, META={};      // COMPOS[j][team]={p:[],st:'draft'|'valid'|'sent',note:''}
 let J=1, FILTER='all', SEL=null, DRAG=null;
@@ -290,14 +303,15 @@ function boot(){
   const gj=u=>fetch(u,{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
   Promise.all([
     gj('../data/scoring.json'), gj('../data/categories.json'), gj('../data/capitaines.json'),
-    gj('../data/poules2627.json'), gj('../data/salles2627.json'), gj('../data/extra_communautaires.json'),
+    gj('../data/poules2627.json'), gj('../data/salles2627.json'), gj('../data/extra_communautaires.json'), gj('../data/site.json'),
     rest('tags_log','select=id,tags&order=id.desc&limit=1'),
     rest('scenarios_log','select=id,tags&slot=eq.fem&order=id.desc&limit=1'),
     rest('dispos_log','select=licence,nom,prenom,dispos,n,created_at&order=id.asc'),
     rest('scenarios_log','select=id,slot,tags,author,created_at&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc'),
     rest('scenarios_log',ACBB_CONTR.QUERY)
   ]).then(res=>{
-    const ct=ACBB_CONTR.fromRows(res[10]); CONTR=ct.liste; CONTR_META=ct.meta;
+    const ct=ACBB_CONTR.fromRows(res[11]); CONTR=ct.liste; CONTR_META=ct.meta;
+    SITE=res[6]||null;
     D=((res[0]&&res[0].players)||[]).concat(EXT.filter(x=>!((res[0]&&res[0].players)||[]).some(p=>pkey(p)===pkey(x))));
     D.forEach(p=>{BYKEY[pkey(p)]=p;BYFK[fkey(p)]=p;const a=nrmK(p.nom),b=nrmK(p.pre);BYSN['SN-'+a+'-'+b]=p;BYSN['SN-'+b+'-'+a]=p;});
     /* clés tolérées pour retrouver un joueur enregistré sous une autre clé (licence, alias « NOM|Prénom », ancienne clé) :
@@ -308,11 +322,11 @@ function boot(){
     ((res[3]&&res[3].poules)||[]).forEach(q=>{POULES[q.acbb]=q;});
     SALLES=(res[4]&&res[4].salles)||{};
     const exj=res[5]||{}; EXC={ex:new Set(Object.values(exj.ex||{}).map(String)),conf:new Set(Object.values(exj.a_confirmer||{}).map(String))};
-    TAGS=canonTags((res[6][0]&&res[6][0].tags)||{});
-    FEM=canonTags((res[7][0]&&res[7][0].tags)||{});
-    res[8].forEach(r=>{ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)){ const raw=String(r.licence); let k=raw; if(/^SN-/.test(raw)){const m=BYSN[raw]; if(m&&m.lic)k=String(m.lic);} VOTES[k]=r; } });
+    TAGS=canonTags((res[7][0]&&res[7][0].tags)||{});
+    FEM=canonTags((res[8][0]&&res[8][0].tags)||{});
+    res[9].forEach(r=>{ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)){ const raw=String(r.licence); let k=raw; if(/^SN-/.test(raw)){const m=BYSN[raw]; if(m&&m.lic)k=String(m.lic);} VOTES[k]=r; } });
     const seen={};
-    res[9].forEach(r=>{ if(seen[r.slot])return; seen[r.slot]=1; const j=parseInt(r.slot.slice(1),10); const t=Object.assign({},r.tags||{}); META[j]={id:r.id,author:r.author,at:r.created_at,meta:t._meta||null}; delete t._meta; COMPOS[j]=t; });
+    res[10].forEach(r=>{ if(seen[r.slot])return; seen[r.slot]=1; const j=parseInt(r.slot.slice(1),10); const t=Object.assign({},r.tags||{}); META[j]={id:r.id,author:r.author,at:r.created_at,meta:t._meta||null}; delete t._meta; COMPOS[j]=t; });
     for(let j=1;j<=NJ;j++){ COMPOS[j]=canonCompos(COMPOS[j]||{}); }
     BASE=JSON.parse(JSON.stringify(COMPOS));
     let restored=[]; for(let j=1;j<=NJ;j++){ if(draftRestore(j)){ COMPOS[j]=canonCompos(COMPOS[j]); restored.push('J'+j); } }
@@ -346,7 +360,16 @@ function matchOf(t,j){
   const home=(SALLES[t]&&SALLES[t].home)||'SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT';
   let venue=S.venue||(cl.dom?home:'');
   venue=venue.replace(/\s*digicode[^0-9]*\d+\s*/i,' ').replace(/\s+/g,' ').trim();
-  return {exempt:false,date:cl.date,dom:!!cl.dom,opp:name,oppAvg:(opp&&opp.s25&&opp.s25.avg)||null,oppRank:(opp&&opp.s25)?opp.s25.rank:null,venue:venue,division:P.division,poule:P.poule};
+  /* niveau adverse : moyenne des joueurs réellement alignés depuis la J1 (site.json) ; à défaut seulement,
+     le repère 25/26 — qui décrit l'équipe de la saison passée et peut être très loin de la réalité. */
+  let oAvg=null, oSrc='';
+  if(window.ACBB_SCOUT&&SITE&&SITE.DATA&&SITE.DATA[t]){
+    const tt=(SITE.DATA[t].teams||[]).find(x=>ACBB_SCOUT.sameTeam(x.name,name));
+    const n=tt?ACBB_SCOUT.niveau(ACBB_SCOUT.jouees(tt)):null;
+    if(n!=null){ oAvg=n; oSrc='26/27'; }
+  }
+  if(oAvg==null&&opp&&opp.s25&&opp.s25.avg){ oAvg=opp.s25.avg; oSrc='25/26'; }
+  return {exempt:false,date:cl.date,dom:!!cl.dom,opp:name,oppAvg:oAvg,oppAvgSrc:oSrc,oppRank:(opp&&opp.s25)?opp.s25.rank:null,venue:venue,division:P.division,poule:P.poule,oppTeam:opp||null};
 }
 function playing(t,j){ const m=matchOf(t,j); return !!(m&&!m.exempt); }
 function titulaires(t){ const g=GENRE(t); if(g==='F') return Object.keys(FEM).filter(k=>FEM[k].e===t&&FEM[k].r==='T'); return Object.keys(TAGS).filter(k=>TAGS[k].e===t&&TAGS[k].r==='T'); }
@@ -524,8 +547,8 @@ function card(t){
     pctH='<div class="avgrow"><span class="lab">moy <b>'+avg+'</b> vs <b style="color:'+(m.oppAvg>avg?'var(--lose-lt)':'var(--win-lt)')+'">'+m.oppAvg+'</b></span><div class="bar"><i style="width:'+pct+'%;background:linear-gradient(90deg,#F26356,'+col2+')"></i></div><span class="pct" style="color:'+col2+'" title="indice de victoire (estimation : moyenne alignée 25/26 de l\'adversaire)">'+pct+'%</span></div>'; }
   else pctH='<div class="avgrow"><span class="lab">moy <b>'+(avg||'—')+'</b></span><div class="bar"></div><span class="pct" style="color:var(--dimmer)">'+c.p.length+'/'+size+'</span></div>';
   const oppLine='<div class="match">'+(m.dom?'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#86EFAC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9h14v-9"/></svg>':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14l-1.5-4.5a2 2 0 0 0-1.9-1.5H8.4a2 2 0 0 0-1.9 1.5L5 17z"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg>')
-    +'<div class="m1">'+esc(m.opp)+' <span>· '+(m.dom?'Domicile':'Extérieur')+' · '+fmtD(m.date)+'</span></div>'
-    +(m.oppAvg?'<span class="mono" style="font-size:11px;color:'+(m.oppAvg>(avg||0)?'#FCA5A5':'#86EFAC')+'" title="moyenne alignée 25/26'+(m.oppRank?' · '+m.oppRank+'ᵉ':'')+'">≈'+m.oppAvg+'</span>':'<span class="mono" style="font-size:10px;color:var(--dimmer)">nouveau / sans repère</span>')
+    +'<div class="m1"><button type="button" class="oppbtn" data-scout="'+esc(t)+'" title="voir le scouting de cet adversaire">'+esc(m.opp)+'</button> <span>· '+(m.dom?'Domicile':'Extérieur')+' · '+fmtD(m.date)+'</span></div>'
+    +(m.oppAvg?'<span class="mono" style="font-size:11px;color:'+(m.oppAvg>(avg||0)?'#FCA5A5':'#86EFAC')+'" title="niveau adverse ('+(m.oppAvgSrc||'25/26')+')'+(m.oppRank?' · '+m.oppRank+'ᵉ':'')+'">≈'+m.oppAvg+'</span>':'<span class="mono" style="font-size:10px;color:var(--dimmer)">nouveau / sans repère</span>')
     +(m.venue&&!m.dom?'<div class="venue" title="'+esc(m.venue)+'">📍 '+esc(m.venue)+'</div>':'')+'</div>';
   // autres joueurs de l'équipe (titulaires + remplaçantes pour les dames) non alignés : dispo en couleur, indispo / sans réponse grisés
   const usedAll=new Set(); TEAMS.forEach(o=>{ if(playing(o,J)) compo(J,o).p.forEach(k=>usedAll.add(k)); });
@@ -614,6 +637,27 @@ function renderRail(){
   rc.ondrop=e=>{ e.preventDefault(); rc.classList.remove('over'); if(DRAG&&DRAG.from){ const c=compo(J,DRAG.from); c.p=c.p.filter(k=>k!==DRAG.k); if(c.st==='sent')c.st='valid'; DRAG=null; renderAll(); } };
   rc.onclick=e=>{ if(SEL&&SEL.from&&!e.target.closest('.rp')&&!e.target.closest('input')){ const c=compo(J,SEL.from); c.p=c.p.filter(k=>k!==SEL.k); SEL=null; renderAll(); } };
 }
+/* Popup de scouting : même fiche que la page Poules (module shared/scouting.js), ouverte au clic
+   sur l'adversaire — on reste sur la page de composition, on ne navigue pas ailleurs. */
+function openScout(team){
+  const m=matchOf(team,J), P=POULES[team];
+  if(!m||m.exempt||!P) return;
+  const t=(P.teams||[]).find(x=>window.ACBB_SCOUT&&ACBB_SCOUT.sameTeam(x.name,m.opp))||null;
+  const pop=document.getElementById('scPop'), bg=document.getElementById('scBg');
+  ACBB_SCOUT.css();
+  pop.innerHTML='<div class="sch"><div><div class="scname">'+esc(m.opp||'')+'</div>'
+    +'<div class="scsub">'+esc(P.division||'')+(P.poule!=null?' · poule '+P.poule:'')+' · J'+J+' '+(m.dom?'domicile':'extérieur')+' · '+esc(fmtD(m.date))+' · face à '+esc(team)+'</div></div>'
+    +'<button type="button" class="scx" id="scClose">fermer ✕</button></div>'
+    +(t?ACBB_SCOUT.html({site:SITE,poule:P,team:t,acbbTeam:(P.teams||[]).find(x=>x.acbb)||null})
+       :'<div class="sc-empty">Adversaire non retrouvé dans la poule.</div>');
+  bg.hidden=false; pop.hidden=false; requestAnimationFrame(()=>pop.classList.add('open'));
+  document.getElementById('scClose').onclick=closeScout;
+}
+function closeScout(){ const pop=document.getElementById('scPop'); pop.classList.remove('open'); document.getElementById('scBg').hidden=true; setTimeout(()=>{pop.hidden=true;},180); }
+document.getElementById('scBg').addEventListener('click',closeScout);
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!document.getElementById('scPop').hidden) closeScout(); });
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-scout]'); if(b){ e.preventDefault(); e.stopPropagation(); openScout(b.dataset.scout); } });
+
 function renderChecker(){
   const ts=TEAMS.filter(t=>playing(t,J)); const all=[]; ts.forEach(t=>checkTeam(t,J).issues.forEach(i=>all.push(Object.assign({t},i))));
   const row=(lvl,txt)=>'<div class="chk '+lvl+'"><i>'+(lvl==='ok'?'✓':(lvl==='err'?'✗':(lvl==='warn'?'!':'–')))+'</i><span>'+txt+'</span></div>';
