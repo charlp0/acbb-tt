@@ -220,6 +220,21 @@
   /* Gras dans les debriefs : le capitaine entoure le mot d'étoiles, comme sur WhatsApp (*comme ça*).
      On échappe TOUJOURS le texte avant de convertir : rien d'autre que <b> ne peut en sortir. */
   const rich=s=>esc(s||'').replace(/\*([^*\n]+)\*/g,'<b>$1</b>');
+  /* Le texte du debrief est coupé à 6 lignes par la CSS : on n'affiche « lire la suite » que si le texte
+     déborde RÉELLEMENT (mesure après rendu), et plus selon un nombre de caractères — un texte court mais
+     sur 7 lignes restait tronqué sans bouton (cas M6, 260 caractères pile). */
+  function majSuite(){
+    document.querySelectorAll('#tgrid .tc-deb p').forEach(p=>{
+      const b=p.nextElementSibling;
+      if(!b||!b.classList.contains('tc-more')) return;
+      if(p.classList.contains('open')) return;              // déjà déplié : le bouton reste (« réduire »)
+      b.hidden = p.scrollHeight <= p.clientHeight+1;
+    });
+  }
+  let majT=null;
+  addEventListener('resize',()=>{ clearTimeout(majT); majT=setTimeout(majSuite,150); });
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(majSuite);   // la police change la hauteur des lignes
+
   function scoreClass(a,b){ return a>b?'win':(a<b?'lose':'draw'); }
 
   const S={poules:null,byTeam:{},players:[],scoresJ:{},resultats:{},fftt:{},j:1,me:{role:null}};
@@ -312,7 +327,7 @@
         const sc=(sa!=null)?'<span class="tc-score '+scoreClass(sa,sb)+'">'+sa+' – '+sb+'</span>':'<span class="tc-wait">à venir</span>';
         mid='<div class="tc-mid"><span class="tc-opp" title="'+esc(m.opp||'')+'">'+esc(shortName(m.opp)||'adversaire à confirmer')+'</span>'+sc+'</div>';
         if(it&&it.publie&&(it.texte||it.photo_url)){
-          bot='<div class="tc-deb">'+(it.photo_url?'<img class="tc-thumb" src="'+esc(it.photo_url)+'" data-full="'+esc(it.photo_url)+'" data-cap="'+esc(t+' · J'+j+(m.opp?' · '+shortName(m.opp):'')+(it.auteur?' · photo du debrief de '+it.auteur:''))+'" alt="Photo '+t+' J'+j+' (cliquer pour agrandir)" loading="lazy">':'')+'<div><p>'+rich(it.texte||'')+'</p>'+((it.texte||'').length>260?'<button type="button" class="tc-more">lire la suite</button>':'')+'</div></div>'+(it.auteur?'<span class="lab tc-by">debrief de '+esc(it.auteur)+'</span>':'');
+          bot='<div class="tc-deb">'+(it.photo_url?'<img class="tc-thumb" src="'+esc(it.photo_url)+'" data-full="'+esc(it.photo_url)+'" data-cap="'+esc(t+' · J'+j+(m.opp?' · '+shortName(m.opp):'')+(it.auteur?' · photo du debrief de '+it.auteur:''))+'" alt="Photo '+t+' J'+j+' (cliquer pour agrandir)" loading="lazy">':'')+'<div><p>'+rich(it.texte||'')+'</p>'+(it.texte?'<button type="button" class="tc-more" hidden>lire la suite</button>':'')+'</div></div>'+(it.auteur?'<span class="lab tc-by">debrief de '+esc(it.auteur)+'</span>':'');
         } else bot='<div class="tc-empty">Debrief en attente.</div>';
       }
       return '<article class="card tcard">'+top+mid+bot+'</article>';
@@ -320,6 +335,7 @@
     document.getElementById('tgrid').innerHTML=html||'<div class="tc-empty">Aucune équipe.</div>';
     // « lire la suite » : déplie le texte du debrief dans la carte
     document.querySelectorAll('#tgrid .tc-more').forEach(b=>b.addEventListener('click',()=>{ const p=b.previousElementSibling; const open=p.classList.toggle('open'); b.textContent=open?'réduire':'lire la suite'; }));
+    majSuite();
   }
 
   /* ---------- recherche joueur ---------- */
