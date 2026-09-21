@@ -375,7 +375,10 @@
     try{ prev.src=URL.createObjectURL(f); prev.hidden=false; }catch(x){}
     st.textContent='Envoi de la photo…';
     try{ const r=await ACBB.upload('cap/photo',f,{journee:String(S.j)}); S.photoPath=(r&&r.photo_path)||null; st.textContent='Photo envoyée. Enregistre le debrief pour la rattacher.'; }
-    catch(err){ S.photoPath=null; st.textContent='Photo non envoyée ('+esc(err&&err.message||'serveur indisponible')+'). Tu peux enregistrer le debrief sans photo.'; }
+    catch(err){ S.photoPath=null; const c=err&&err.message;
+      st.textContent=(c==='jeton_requis'||c==='jeton_invalide')
+        ? "Ton lien personnel n'est plus reconnu par ce navigateur : rouvre-le depuis ton message, puis rajoute la photo. Ton texte reste dans le champ."
+        : 'Photo non envoyée ('+esc(c||'serveur indisponible')+'). Tu peux enregistrer le debrief sans photo.'; }
   });
   /* Gras : encadre la sélection d'étoiles (ou les retire si déjà en gras) ; sans sélection, pose « ** » et place le curseur au milieu. */
   document.getElementById('debBold').addEventListener('click',function(){
@@ -399,7 +402,9 @@
     if(S.photoPath) body.photo_path=S.photoPath;
     const btn=document.getElementById('debSave'); btn.disabled=true; btn.textContent='Enregistrement…';
     try{ await ACBB.api('cap/debrief',body); ACBB.toast(debFor(S.j)?'Debrief modifié':'Debrief enregistré'); S.photoPath=null; loadDebriefs(); }
-    catch(x){ err.hidden=false; err.textContent=x&&x.status?'Enregistrement refusé ('+(x.body&&x.body.error||x.status)+').':'Serveur indisponible : le debrief n\'a pas été enregistré. Réessaie dans quelques minutes.'; }
+    catch(x){ err.hidden=false; const c=x&&x.body&&x.body.error;
+      if(c==='jeton_requis'||c==='jeton_invalide'){ err.textContent="Ton lien personnel n'est plus reconnu par ce navigateur. Rouvre-le depuis ton message puis réessaie : ton texte reste dans le champ, rien n'est perdu."; }
+      else err.textContent=x&&x.status?'Enregistrement refusé ('+(x.body&&x.body.error||x.status)+').':'Serveur indisponible : le debrief n\'a pas été enregistré. Réessaie dans quelques minutes.'; }
     finally{ btn.disabled=false; btn.textContent=debFor(S.j)?'Modifier le debrief':'Enregistrer le debrief'; }
   });
   function renderDebList(){

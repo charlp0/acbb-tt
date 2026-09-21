@@ -3,8 +3,28 @@
 (function(){
   const API='https://vhhmageufrcenruywawg.supabase.co/functions/v1/api';
   const ANON='sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay'; // clé publique : sert uniquement à joindre la fonction, elle n'ouvre aucune table
-  function deviceId(){ try{ let d=localStorage.getItem('acbb_device'); if(!d){ d=crypto.randomUUID(); localStorage.setItem('acbb_device',d);} return d; }catch(e){ return 'nodevice'; } }
-  function token(){ try{ const h=location.hash.match(/(?:^#|[#&])t=([A-Za-z0-9_-]{16,})/); if(h){ localStorage.setItem('acbb_token',h[1]); history.replaceState(null,'',location.pathname+location.search); } return localStorage.getItem('acbb_token')||''; }catch(e){ return ''; } }
+  /* Jeton et identifiant d'appareil sont gardés EN MÉMOIRE pour toute la durée de la page.
+     Ils restent recopiés dans localStorage, mais ne dépendent plus de lui : le navigateur intégré
+     de WhatsApp (et les modes privés) peuvent vider le stockage pendant qu'un onglet est ouvert,
+     et chaque envoi partait alors sans jeton — un capitaine perdait l'enregistrement de son debrief
+     après coup, alors que la page s'était bien ouverte (cas German Rodriguez, 21/09/2026). */
+  let TOK='', DEV='';
+  function deviceId(){
+    if(DEV) return DEV;
+    try{ DEV=localStorage.getItem('acbb_device')||''; }catch(e){}
+    if(!DEV){ try{ DEV=crypto.randomUUID(); }catch(e){ DEV='dev-'+Math.random().toString(36).slice(2)+Date.now().toString(36); } }
+    try{ localStorage.setItem('acbb_device',DEV); }catch(e){}
+    return DEV;
+  }
+  function token(){
+    try{
+      const h=location.hash.match(/(?:^#|[#&])t=([A-Za-z0-9_-]{16,})/);
+      if(h){ TOK=h[1]; try{ localStorage.setItem('acbb_token',TOK); }catch(e){}
+             try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
+    }catch(e){}
+    if(!TOK){ try{ TOK=localStorage.getItem('acbb_token')||''; }catch(e){} }
+    return TOK;
+  }
   async function api(route, body, opts){
     opts=opts||{};
     const h={'Content-Type':'application/json','apikey':ANON,'Authorization':'Bearer '+ANON,'x-acbb-token':token(),'x-acbb-device':deviceId()};
