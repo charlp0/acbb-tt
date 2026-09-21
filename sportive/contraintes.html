@@ -254,7 +254,11 @@
   function ruleCard(c,i){
     var T=C.TYPES[c.type]||{}, col=T.col||'orange';
     var who=(c.par?'ajoutée par '+c.par:'')+(c.le?(c.par?' le ':'le ')+fmtD(c.le):'')+(c.modif&&c.modif.par?' · modifiée par '+c.modif.par+(c.modif.le?' le '+fmtD(c.modif.le):''):'');
-    var note=c.type==='rappel'?(c.note?'':''):(c.note?esc(c.note):'<i style="color:var(--dimmer)">sans commentaire</i>');
+    /* un rappel peut porter un titre court ET un commentaire détaillé : on affiche le commentaire
+       dès qu'il apporte autre chose que le titre (sinon on ne répéterait que le titre). */
+    var note=c.type==='rappel'
+      ? ((c.note&&c.note!==c.titre)?esc(c.note):'')
+      : (c.note?esc(c.note):'<i style="color:var(--dimmer)">sans commentaire</i>');
     return '<div class="card rule '+col+'" data-rule="'+esc(c.id)+'">'
       +'<div class="rc"><div class="rt"><span class="t">'+(i+1)+' · '+esc(C.titre(c))+'</span><span class="pill art typ">'+esc(T.lab||c.type)+'</span></div>'
       +'<span class="d">'+note+matchInfo(c)+(who?' <span class="who">· '+esc(who)+'</span>':'')+'</span>'
