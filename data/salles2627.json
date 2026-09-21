@@ -1,6 +1,6 @@
 {
  "maj": "21/09/2026",
- "source": "CD92 poules phase 1 v03/09/2026 + N2D FFTT + N2D lieux domicile : mail Cyril Camion 20/09/2026 (03/10 Boulogne, 21/11 Marly, 12/12 Boulogne)",
+ "source": "CD92 poules phase 1 v03/09/2026 + N2D FFTT + N2D lieux domicile : mail Cyril Camion 20/09/2026 (03/10 Boulogne, 21/11 Marly — gymnase des Maigrets (Charles, 21/09/2026), 12/12 Boulogne)",
  "salles": {
   "M6": {
    "division": "Pré-Regionale Messieurs",
@@ -765,7 +765,7 @@
      "date": "21/11/2026",
      "dom": true,
      "opp": "VALENCIENNES USTT 1",
-     "venue": "Marly — salle à confirmer (entente N2 Dames)"
+     "venue": "Gymnase des Maigrets Chemin des Maigrets 78160 MARLY-LE-ROI"
     },
     {
      "j": 6,
