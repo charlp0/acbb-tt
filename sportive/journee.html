@@ -166,6 +166,8 @@
   .scpop .scx:hover{color:var(--ink);border-color:var(--orange)}
   .oppbtn{background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer;text-align:left;border-bottom:1px dotted rgba(255,255,255,.35)}
   .oppbtn:hover{color:var(--orange)}
+.capwarn{margin-top:10px;padding:9px 13px;border-radius:10px;background:rgba(242,99,86,.10);border:1px solid rgba(242,99,86,.45);color:var(--lose-lt);font-size:12.5px;line-height:1.45}
+  .capwarn b{color:var(--ink)}
   .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:70;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;padding:10px 16px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none;border:none;box-shadow:none;font-family:inherit}
   .toast.show{opacity:1}
   /* carte export */
@@ -213,6 +215,7 @@
     <div class="eyebrow">Espace sportive · Phase 1 · 2026/2027</div>
     <div class="h1">Compos <em id="hJ">J—.</em></div>
     <div class="hsub" id="hSub">chargement…</div>
+    <div class="capwarn" id="capWarn" hidden></div>
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
     <div class="views"><span class="vw on">Par équipe</span><a class="vw" id="quiJoue" href="quijoue.html" title="matrice joueurs × journées : qui change d'équipe, renforts, brûlage">🔀 Qui joue où →</a></div>
@@ -513,7 +516,41 @@ function lvlOf(issues){ return issues.some(i=>i.lvl==='err')?'err':(issues.some(
 function draftKey(j){ return 'acbb_journee_draft_j'+j; }
 function draftSave(){ try{ const d=dirtyTeams(); if(d.length) localStorage.setItem(draftKey(J),JSON.stringify({at:Date.now(),compos:COMPOS[J]})); else localStorage.removeItem(draftKey(J)); }catch(e){} }
 function draftRestore(j){ try{ const raw=localStorage.getItem(draftKey(j)); if(!raw)return false; const d=JSON.parse(raw); const baseAt=META[j]?new Date(META[j].at).getTime():0; if(d.at<baseAt){ localStorage.removeItem(draftKey(j)); return false; } COMPOS[j]=d.compos; return true; }catch(e){ return false; } }
-function renderAll(){ renderHero(); renderState(); renderFilters(); renderGrid(); renderRail(); renderChecker(); renderSave(); draftSave(); }
+function renderAll(){ renderHero(); renderCapacite(); renderState(); renderFilters(); renderGrid(); renderRail(); renderChecker(); renderSave(); draftSave(); }
+/* Capacité du sous-sol piscine : 5 rencontres au maximum le même jour. Au-delà, la sportive doit
+   basculer des équipes à Bartholdi (règle rappelée par Charles le 22/09/2026). On compte TOUTES les
+   équipes du club à domicile ce jour-là — messieurs, dames, régional — pas seulement M2→M17. */
+const CAP_PISCINE=5;
+function auPiscineParDate(){
+  const m={};
+  Object.keys(POULES).forEach(t=>{
+    const P=POULES[t]; if(!P) return;
+    (P.cal||[]).forEach(c=>{
+      if(c.exempt||!c.dom||!c.date) return;
+      const s=SALLES[t]||{}; let v='';
+      (s.cal||[]).forEach(x=>{ if(x.j===c.j&&x.venue) v=x.venue; });
+      if(!v) v=s.home||'';
+      const up=String(v).toUpperCase();
+      if(up.indexOf('PISCINE')<0&&up.indexOf('VIEUX PONT')<0) return;   // Bartholdi, Numérique, extérieur
+      (m[c.date]=m[c.date]||[]).push(t);
+    });
+  });
+  return m;
+}
+function renderCapacite(){
+  const el=document.getElementById('capWarn'); if(!el) return;
+  const parDate=auPiscineParDate();
+  const dates={}; Object.keys(POULES).forEach(t=>{ const c=(POULES[t].cal||[]).find(x=>x.j===J&&!x.exempt&&x.dom&&x.date); if(c) dates[c.date]=1; });
+  const pbs=Object.keys(dates).filter(d=>(parDate[d]||[]).length>CAP_PISCINE)
+    .sort((a,b)=>(parseDate(a)||0)-(parseDate(b)||0));
+  if(!pbs.length){ el.hidden=true; return; }
+  el.hidden=false;
+  el.innerHTML=pbs.map(d=>{
+    const l=parDate[d].sort((a,b)=>a[0]===b[0]?(+a.slice(1))-(+b.slice(1)):a[0].localeCompare(b[0]));
+    return '⚠ <b>'+fmtD(d)+'</b> : '+l.length+' équipes à domicile au sous-sol piscine (<b>'+CAP_PISCINE+' maximum</b>) — '+l.join(', ')
+      +'. Il faut en basculer '+(l.length-CAP_PISCINE)+' à Bartholdi.';
+  }).join('<br>');
+}
 function renderHero(){
   document.getElementById('hJ').textContent='J'+J+'.';
   const dates={}; let play=0, ex=0;
