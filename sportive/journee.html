@@ -527,11 +527,16 @@ function auPiscineParDate(){
     const P=POULES[t]; if(!P) return;
     (P.cal||[]).forEach(c=>{
       if(c.exempt||!c.dom||!c.date) return;
-      const s=SALLES[t]||{}; let v='';
-      (s.cal||[]).forEach(x=>{ if(x.j===c.j&&x.venue) v=x.venue; });
-      if(!v) v=s.home||'';
-      const up=String(v).toUpperCase();
-      if(up.indexOf('PISCINE')<0&&up.indexOf('VIEUX PONT')<0) return;   // Bartholdi, Numérique, extérieur
+      const s=SALLES[t]||{}; let e=null;
+      (s.cal||[]).forEach(x=>{ if(x.j===c.j) e=x; });
+      /* le champ « salle » dit le côté réellement occupé : Grand côté / Petit côté = sous-sol piscine,
+         Bartholdi et gymnase du Numérique ne consomment pas la capacité. */
+      const sa=String((e&&e.salle)||'').toLowerCase();
+      if(sa){ if(sa.indexOf('côté')<0&&sa.indexOf('cote')<0) return; }
+      else {
+        let v=(e&&e.venue)||s.home||''; const up=String(v).toUpperCase();
+        if(up.indexOf('PISCINE')<0&&up.indexOf('VIEUX PONT')<0) return;
+      }
       (m[c.date]=m[c.date]||[]).push(t);
     });
   });
@@ -548,7 +553,7 @@ function renderCapacite(){
   el.innerHTML=pbs.map(d=>{
     const l=parDate[d].sort((a,b)=>a[0]===b[0]?(+a.slice(1))-(+b.slice(1)):a[0].localeCompare(b[0]));
     return '⚠ <b>'+fmtD(d)+'</b> : '+l.length+' équipes à domicile au sous-sol piscine (<b>'+CAP_PISCINE+' maximum</b>) — '+l.join(', ')
-      +'. Il faut en basculer '+(l.length-CAP_PISCINE)+' à Bartholdi.';
+      +'. Il faut en basculer '+(l.length-CAP_PISCINE)+' à Bartholdi (champ « salle » du fichier des salles).';
   }).join('<br>');
 }
 function renderHero(){
