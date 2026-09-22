@@ -370,7 +370,7 @@ function matchOf(t,j){
     if(n!=null){ oAvg=n; oSrc='26/27'; }
   }
   if(oAvg==null&&opp&&opp.s25&&opp.s25.avg){ oAvg=opp.s25.avg; oSrc='25/26'; }
-  return {exempt:false,date:cl.date,dom:!!cl.dom,opp:name,oppAvg:oAvg,oppAvgSrc:oSrc,oppRank:(opp&&opp.s25)?opp.s25.rank:null,venue:venue,division:P.division,poule:P.poule,oppTeam:opp||null};
+  return {exempt:false,date:cl.date,dom:!!cl.dom,opp:name,oppAvg:oAvg,oppAvgSrc:oSrc,oppRank:(opp&&opp.s25)?opp.s25.rank:null,venue:venue,salle:S.salle||'',division:P.division,poule:P.poule,oppTeam:opp||null};
 }
 function playing(t,j){ const m=matchOf(t,j); return !!(m&&!m.exempt); }
 function titulaires(t){ const g=GENRE(t); if(g==='F') return Object.keys(FEM).filter(k=>FEM[k].e===t&&FEM[k].r==='T'); return Object.keys(TAGS).filter(k=>TAGS[k].e===t&&TAGS[k].r==='T'); }
@@ -620,7 +620,9 @@ function card(t){
   const oppLine='<div class="match">'+(m.dom?'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#86EFAC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9h14v-9"/></svg>':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14l-1.5-4.5a2 2 0 0 0-1.9-1.5H8.4a2 2 0 0 0-1.9 1.5L5 17z"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg>')
     +'<div class="m1"><button type="button" class="oppbtn" data-scout="'+esc(t)+'" title="voir le scouting de cet adversaire">'+esc(m.opp)+'</button> <span>· '+(m.dom?'Domicile':'Extérieur')+' · '+fmtD(m.date)+'</span></div>'
     +(m.oppAvg?'<span class="mono" style="font-size:11px;color:'+(m.oppAvg>(avg||0)?'#FCA5A5':'#86EFAC')+'" title="niveau adverse ('+(m.oppAvgSrc||'25/26')+')'+(m.oppRank?' · '+m.oppRank+'ᵉ':'')+'">≈'+m.oppAvg+'</span>':'<span class="mono" style="font-size:10px;color:var(--dimmer)">nouveau / sans repère</span>')
-    +(m.venue&&!m.dom?'<div class="venue" title="'+esc(m.venue)+'">📍 '+esc(m.venue)+'</div>':'')+'</div>';
+    +(m.dom
+        ? (m.salle?'<div class="venue" title="répartition des salles du planning de phase">📍 '+esc(m.salle)+'</div>':'')
+        : (m.venue?'<div class="venue" title="'+esc(m.venue)+'">📍 '+esc(m.venue)+'</div>':''))+'</div>';
   // autres joueurs de l'équipe (titulaires + remplaçantes pour les dames) non alignés : dispo en couleur, indispo / sans réponse grisés
   const usedAll=new Set(); TEAMS.forEach(o=>{ if(playing(o,J)) compo(J,o).p.forEach(k=>usedAll.add(k)); });
   const others=(GENRE(t)==='F'?titulaires(t).concat(remplacantsF(t)):titulaires(t)).filter(k=>BYKEY[k]&&c.p.indexOf(k)<0)
@@ -809,7 +811,8 @@ async function waText(t,j,opts){
   const ph=renforts.length?await getPhones():null;
   let s='🏓 ACBB TT — '+t+' · J'+j+' ('+div+(m.poule?' poule '+m.poule:'')+')\n';
   s+='📅 '+fmtD(m.date)+' · '+(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp)+'\n';
-  if(withVenue&&m.venue) s+='📍 '+m.venue+'\n';
+  if(withVenue&&m.dom&&m.salle) s+='📍 '+m.salle+'\n';
+  else if(withVenue&&m.venue) s+='📍 '+m.venue+'\n';
   s+='\n👥 Compo :\n'+sorted.map((k,i)=>{ const p=BYKEY[k]; const nm=p?full(p):k; const o=origin(k); const ren=o&&o!==t; return (i+1)+'. '+(ren?'*'+nm+'* ('+o+')':nm)+(p?' ('+(p.men||'—')+')':''); }).join('\n');
   if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
   if(renforts.length){

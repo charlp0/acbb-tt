@@ -334,7 +334,8 @@
     var c=cal.find(function(x){ return (x.opp===t.pos)||(x.oppName&&norm(x.oppName)===norm(t.name)); });
     if(c&&!c.dom&&S){ var sc=(S.cal||[]).find(function(x){return x.j===c.j;}); if(sc&&sc.venue) return {venue:sc.venue.replace(/\s*digicode[^0-9]*\d+\s*/i,' ').replace(/\s+/g,' ').trim(),j:c.j,date:c.date}; }
     if(S){ var byOpp=(S.cal||[]).find(function(x){ return !x.dom&&x.opp&&(clubKey(x.opp)===clubKey(t.name)||(x.opp&&norm(x.opp)===norm(t.name))); }); if(byOpp&&byOpp.venue) return {venue:byOpp.venue.replace(/\s*digicode[^0-9]*\d+\s*/i,' ').replace(/\s+/g,' ').trim(),j:byOpp.j,date:byOpp.date}; }
-    return c&&c.dom?{home:true,j:c.j,date:c.date}:null;
+    if(c&&c.dom){ var sh=S?(S.cal||[]).find(function(x){return x.j===c.j;}):null; return {home:true,j:c.j,date:c.date,salle:sh&&sh.salle||''}; }
+    return null;
   }
 
   /* ===== fiche adversaire ===== */
@@ -369,7 +370,7 @@
     if(sal&&sal.venue){
       h+='<div class="f-h">Salle · déplacement J'+sal.j+'</div><div class="f-salle">'+esc(sal.venue)+'<br><span style="color:var(--dim);font-size:11px">'+esc(sal.date||'')+'</span><br><a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(sal.venue)+'" target="_blank" rel="noopener">Itinéraire ↗</a></div>';
     }else if(sal&&sal.home){
-      h+='<div class="f-h">Salle</div><div class="f-salle">Rencontre à domicile (J'+sal.j+') — salle ACBB.</div>';
+      h+='<div class="f-h">Salle</div><div class="f-salle">Rencontre à domicile (J'+sal.j+')'+(sal.salle?' — <b style="color:var(--ink-2)">'+esc(sal.salle)+'</b>':' — salle ACBB')+'.</div>';
     }
     var hist=histFor(t);
     if(hist.length){
