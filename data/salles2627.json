@@ -1,6 +1,6 @@
 {
- "maj": "21/09/2026",
- "source": "CD92 poules phase 1 v03/09/2026 + N2D FFTT + N2D lieux domicile : mail Cyril Camion 20/09/2026 (03/10 Boulogne, 21/11 Marly — gymnase des Maigrets (Charles, 21/09/2026), 12/12 Boulogne)",
+ "maj": "22/09/2026",
+ "source": "CD92 poules phase 1 v03/09/2026 + N2D FFTT + N2D lieux domicile : mail Cyril Camion 20/09/2026 (03/10 Boulogne, 21/11 Marly — gymnase des Maigrets (Charles, 21/09/2026), 12/12 Boulogne) + équipes complétées 22/09/2026 (Charles : à domicile = sous-sol piscine, sauf M1 au gymnase du Numérique)",
  "salles": {
   "M6": {
    "division": "Pré-Regionale Messieurs",
@@ -778,6 +778,347 @@
      "date": "12/12/2026",
      "dom": true,
      "opp": "AC PLERIN 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    }
+   ]
+  },
+  "M1": {
+   "division": "Pro B Messieurs",
+   "poule": null,
+   "home": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "mar. 22/09",
+     "dom": false,
+     "opp": "?"
+    },
+    {
+     "j": 2,
+     "date": "mar. 29/09",
+     "dom": true,
+     "opp": "?",
+     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT"
+    },
+    {
+     "j": 3,
+     "date": "ven. 23/10",
+     "dom": false,
+     "opp": "?"
+    },
+    {
+     "j": 4,
+     "date": "dim. 08/11",
+     "dom": true,
+     "opp": "?",
+     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT"
+    },
+    {
+     "j": 5,
+     "date": "ven. 11/12",
+     "dom": false,
+     "opp": "?"
+    },
+    {
+     "j": 6,
+     "date": "ven. 18/12",
+     "dom": true,
+     "opp": "?",
+     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT"
+    },
+    {
+     "j": 7,
+     "date": "à fixer",
+     "dom": false,
+     "opp": "?"
+    },
+    {
+     "j": 8,
+     "date": "à fixer",
+     "dom": true,
+     "opp": "?",
+     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT"
+    },
+    {
+     "j": 9,
+     "date": "à fixer",
+     "dom": false,
+     "opp": "?"
+    },
+    {
+     "j": 10,
+     "date": "à fixer",
+     "dom": true,
+     "opp": "?",
+     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT"
+    },
+    {
+     "j": 11,
+     "date": "à fixer",
+     "dom": false,
+     "opp": "?"
+    }
+   ]
+  },
+  "M2": {
+   "division": "Nationale 1 Messieurs",
+   "poule": 2,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "dom": true,
+     "opp": "SAINT QUENTIN TT 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "dom": false,
+     "opp": "BORDEAUX CAM 1"
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "dom": true,
+     "opp": "ISTRES TT 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "dom": true,
+     "opp": "AVION TT 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "dom": false,
+     "opp": "DOUAI TT 1"
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "dom": true,
+     "opp": "NICE CAVIGAL 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "dom": false,
+     "opp": "4S TOURS 2"
+    }
+   ]
+  },
+  "F2": {
+   "division": "Régionale 1 Dames",
+   "poule": 2,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "dom": false,
+     "opp": "ATT XV 1"
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "dom": true,
+     "opp": "ESP REUILLY 2",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "dom": false,
+     "opp": "SQY PING 2"
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "dom": false,
+     "opp": "PALAISEAU US 2"
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "dom": true,
+     "opp": "BRETIGNY CS 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "dom": false,
+     "opp": "SAINT MAUR VGA US 2"
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "dom": true,
+     "opp": "IVRY US TT 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    }
+   ]
+  },
+  "M3": {
+   "division": "Régionale 1 Messieurs",
+   "poule": 4,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "dom": true,
+     "opp": "CHATILLON TTM 2",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "dom": false,
+     "opp": "COMBS SENART TT 2"
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "dom": true,
+     "opp": "JOSASSIEN TT 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "dom": true,
+     "opp": "BEAUCHAMP CTT 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "dom": false,
+     "opp": "LEVALLOIS SPORT 6"
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "dom": true,
+     "opp": "MEUDON AS 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "dom": false,
+     "opp": "NOISY LE GRAND 3"
+    }
+   ]
+  },
+  "M4": {
+   "division": "Régionale 2 Messieurs",
+   "poule": 3,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "dom": true,
+     "opp": "VERSAILLES SCTT 3",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "dom": false,
+     "opp": "THIAIS AS TT 3"
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "dom": true,
+     "opp": "CHESNAY 78 AS 4",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "dom": true,
+     "opp": "PARIS IX ATT 2",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "dom": false,
+     "opp": "LAGNY SMTT 1"
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "dom": true,
+     "opp": "MENUCOURT 1",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "dom": false,
+     "opp": "MONTMAGNY-GROSLAY 1"
+    }
+   ]
+  },
+  "M5": {
+   "division": "Régionale 3 Messieurs",
+   "poule": 1,
+   "home": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+   "cal": [
+    {
+     "j": 1,
+     "date": "19/09/2026",
+     "dom": false,
+     "opp": "ATT XV 1"
+    },
+    {
+     "j": 2,
+     "date": "03/10/2026",
+     "dom": true,
+     "opp": "PARIS US 2",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 3,
+     "date": "17/10/2026",
+     "dom": false,
+     "opp": "STAINS ES-PIERREFITTE AS 1"
+    },
+    {
+     "j": 4,
+     "date": "07/11/2026",
+     "dom": false,
+     "opp": "PONTAULT UMS TT 5"
+    },
+    {
+     "j": 5,
+     "date": "21/11/2026",
+     "dom": true,
+     "opp": "VINCENNOIS TT 2",
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+    },
+    {
+     "j": 6,
+     "date": "05/12/2026",
+     "dom": false,
+     "opp": "PING PARIS 14 1"
+    },
+    {
+     "j": 7,
+     "date": "12/12/2026",
+     "dom": true,
+     "opp": "VITRY ES 1",
      "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
     }
    ]
