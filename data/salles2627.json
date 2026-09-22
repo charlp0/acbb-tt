@@ -1,6 +1,6 @@
 {
  "maj": "22/09/2026",
- "source": "CD92 poules phase 1 v03/09/2026 + N2D FFTT + N2D lieux domicile : mail Cyril Camion 20/09/2026 (03/10 Boulogne, 21/11 Marly — gymnase des Maigrets (Charles, 21/09/2026), 12/12 Boulogne) + équipes complétées 22/09/2026 (Charles : à domicile = sous-sol piscine, sauf M1 au gymnase du Numérique)",
+ "source": "CD92 poules phase 1 v03/09/2026 + N2D FFTT + N2D lieux domicile : mail Cyril Camion 20/09/2026 (03/10 Boulogne, 21/11 Marly — gymnase des Maigrets (Charles, 21/09/2026), 12/12 Boulogne) + équipes complétées 22/09/2026 (Charles : à domicile = sous-sol piscine, sauf M1 au gymnase du Numérique) + répartition des salles (grand côté / petit côté / Bartholdi / Numérique) reprise du planning Excel « EQUIPES 2026-2027 1ère phase »",
  "salles": {
   "M6": {
    "division": "Pré-Regionale Messieurs",
@@ -12,7 +12,8 @@
      "date": "18/09/2026",
      "dom": true,
      "opp": "SCEAUX T.T. 2",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 2,
@@ -26,7 +27,8 @@
      "date": "16/10/2026",
      "dom": true,
      "opp": "MALAKOFF USM 4",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 4,
@@ -40,7 +42,8 @@
      "date": "20/11/2026",
      "dom": true,
      "opp": "COURBEVOIE STT 9",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 6,
@@ -54,7 +57,8 @@
      "date": "11/12/2026",
      "dom": true,
      "opp": "ASNIERES TT 4",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     }
    ]
   },
@@ -75,7 +79,8 @@
      "date": "02/10/2026",
      "dom": true,
      "opp": "TTMC CHATILLON 5",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 3,
@@ -89,7 +94,8 @@
      "date": "06/11/2026",
      "dom": true,
      "opp": "BOIS COLOMBES S 5",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 5,
@@ -103,7 +109,8 @@
      "date": "04/12/2026",
      "dom": true,
      "opp": "LEVALLOIS SPORT 11",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 7,
@@ -131,7 +138,8 @@
      "date": "02/10/2026",
      "dom": true,
      "opp": "AS FONTENAY TT 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 3,
@@ -145,7 +153,8 @@
      "date": "06/11/2026",
      "dom": true,
      "opp": "BOIS COLOMBES S 7",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 5,
@@ -159,7 +168,8 @@
      "date": "04/12/2026",
      "dom": true,
      "opp": "LEVALLOIS SPORT 13",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 7,
@@ -180,7 +190,8 @@
      "date": "18/09/2026",
      "dom": true,
      "opp": "RUEIL ATHLETIC 8",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 2,
@@ -194,7 +205,8 @@
      "date": "16/10/2026",
      "dom": true,
      "opp": "SM MONTROUGE 3",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 4,
@@ -208,14 +220,16 @@
      "date": "20/11/2026",
      "dom": true,
      "opp": "TTMC CHATILLON 7",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 6,
      "date": "04/12/2026",
      "dom": true,
      "opp": "NANTERRE ES 3",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Bartholdi"
     },
     {
      "j": 7,
@@ -243,7 +257,8 @@
      "date": "02/10/2026",
      "dom": true,
      "opp": "PLESSIS ROBINS. 4",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 3,
@@ -257,7 +272,8 @@
      "date": "06/11/2026",
      "dom": true,
      "opp": "STADE DE VANVES 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 5,
@@ -278,7 +294,8 @@
      "date": "11/12/2026",
      "dom": true,
      "opp": "NANTERRE ES 2",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     }
    ]
   },
@@ -299,7 +316,8 @@
      "date": "02/10/2026",
      "dom": true,
      "opp": "PUTEAUX TT CSM 3",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 3,
@@ -320,7 +338,8 @@
      "date": "20/11/2026",
      "dom": true,
      "opp": "MEUDON AS 3",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 6,
@@ -334,7 +353,8 @@
      "date": "11/12/2026",
      "dom": true,
      "opp": "RUEIL ATHLETIC 11",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     }
    ]
   },
@@ -348,7 +368,8 @@
      "date": "18/09/2026",
      "dom": true,
      "opp": "PLESSIS ROBINS. 7",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 2,
@@ -362,14 +383,13 @@
      "date": "16/10/2026",
      "dom": true,
      "opp": "BOURG LA REINE 3",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Bartholdi"
     },
     {
      "j": 4,
      "date": "06/11/2026",
-     "dom": true,
-     "opp": "Exempt",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "exempt": true
     },
     {
      "j": 5,
@@ -383,7 +403,8 @@
      "date": "04/12/2026",
      "dom": true,
      "opp": "ANTONY SPORT TT 6",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 7,
@@ -411,7 +432,8 @@
      "date": "02/10/2026",
      "dom": true,
      "opp": "MALAKOFF USM 5",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Petit côté"
     },
     {
      "j": 3,
@@ -425,14 +447,13 @@
      "date": "06/11/2026",
      "dom": true,
      "opp": "AS FONTENAY TT 3",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 5,
      "date": "20/11/2026",
-     "dom": false,
-     "opp": "Exempt",
-     "venue": "?"
+     "exempt": true
     },
     {
      "j": 6,
@@ -446,7 +467,8 @@
      "date": "11/12/2026",
      "dom": true,
      "opp": "CS Clichy TT 5",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Petit côté"
     }
    ]
   },
@@ -460,7 +482,8 @@
      "date": "18/09/2026",
      "dom": true,
      "opp": "VOLTIGEURS 2",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Bartholdi"
     },
     {
      "j": 2,
@@ -474,14 +497,13 @@
      "date": "16/10/2026",
      "dom": true,
      "opp": "Courbevoie STT 14",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 4,
      "date": "06/11/2026",
-     "dom": true,
-     "opp": "Exempt",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "exempt": true
     },
     {
      "j": 5,
@@ -495,7 +517,8 @@
      "date": "04/12/2026",
      "dom": true,
      "opp": "ASNIERES TT 10",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 7,
@@ -514,9 +537,7 @@
     {
      "j": 1,
      "date": "18/09/2026",
-     "dom": true,
-     "opp": "Exempt",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "exempt": true
     },
     {
      "j": 2,
@@ -530,7 +551,8 @@
      "date": "16/10/2026",
      "dom": true,
      "opp": "PLESSIS ROBINS. 5",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Bartholdi"
     },
     {
      "j": 4,
@@ -544,7 +566,8 @@
      "date": "20/11/2026",
      "dom": true,
      "opp": "Courbevoie STT 13",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 6,
@@ -558,7 +581,8 @@
      "date": "11/12/2026",
      "dom": true,
      "opp": "MALAKOFF USM 6",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     }
    ]
   },
@@ -572,7 +596,8 @@
      "date": "18/09/2026",
      "dom": true,
      "opp": "CLAMART CSM 7",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 2,
@@ -586,14 +611,13 @@
      "date": "16/10/2026",
      "dom": true,
      "opp": "CHATENAY ASVTT 6",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Petit côté"
     },
     {
      "j": 4,
      "date": "06/11/2026",
-     "dom": true,
-     "opp": "Exempt",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "exempt": true
     },
     {
      "j": 5,
@@ -607,7 +631,8 @@
      "date": "04/12/2026",
      "dom": true,
      "opp": "ANTONY SPORT TT 8",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Petit côté"
     },
     {
      "j": 7,
@@ -628,7 +653,8 @@
      "date": "18/09/2026",
      "dom": true,
      "opp": "RUEIL ATHLETIC 16",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Petit côté"
     },
     {
      "j": 2,
@@ -642,7 +668,8 @@
      "date": "16/10/2026",
      "dom": true,
      "opp": "BOIS COLOMBES S 8",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 4,
@@ -656,14 +683,13 @@
      "date": "20/11/2026",
      "dom": true,
      "opp": "COLOMBIENNE ES 4",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Petit côté"
     },
     {
      "j": 6,
      "date": "04/12/2026",
-     "dom": true,
-     "opp": "Exempt",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "exempt": true
     },
     {
      "j": 7,
@@ -691,7 +717,8 @@
      "date": "03/10/2026",
      "dom": true,
      "opp": "CLAMART CSM 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 3,
@@ -712,7 +739,8 @@
      "date": "21/11/2026",
      "dom": true,
      "opp": "NANTERRE ES (1)",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 6,
@@ -726,7 +754,8 @@
      "date": "12/12/2026",
      "dom": true,
      "opp": "TTMC CHATILLON 2",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     }
    ]
   },
@@ -746,7 +775,8 @@
      "date": "03/10/2026",
      "dom": true,
      "opp": "MAIZIERES LES METZ 2",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 3,
@@ -778,7 +808,8 @@
      "date": "12/12/2026",
      "dom": true,
      "opp": "AC PLERIN 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     }
    ]
   },
@@ -798,7 +829,8 @@
      "date": "mar. 29/09",
      "dom": true,
      "opp": "?",
-     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT"
+     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT",
+     "salle": "Gymnase du Numérique"
     },
     {
      "j": 3,
@@ -811,7 +843,8 @@
      "date": "dim. 08/11",
      "dom": true,
      "opp": "?",
-     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT"
+     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT",
+     "salle": "Gymnase du Numérique"
     },
     {
      "j": 5,
@@ -824,7 +857,8 @@
      "date": "ven. 18/12",
      "dom": true,
      "opp": "?",
-     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT"
+     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT",
+     "salle": "Gymnase du Numérique"
     },
     {
      "j": 7,
@@ -837,7 +871,8 @@
      "date": "à fixer",
      "dom": true,
      "opp": "?",
-     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT"
+     "venue": "Gymnase du Numérique 92100 BOULOGNE-BILLANCOURT",
+     "salle": "Gymnase du Numérique"
     },
     {
      "j": 9,
@@ -870,7 +905,8 @@
      "date": "19/09/2026",
      "dom": true,
      "opp": "SAINT QUENTIN TT 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 2,
@@ -883,14 +919,16 @@
      "date": "17/10/2026",
      "dom": true,
      "opp": "ISTRES TT 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 4,
      "date": "07/11/2026",
      "dom": true,
      "opp": "AVION TT 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 5,
@@ -903,7 +941,8 @@
      "date": "05/12/2026",
      "dom": true,
      "opp": "NICE CAVIGAL 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 7,
@@ -929,7 +968,8 @@
      "date": "03/10/2026",
      "dom": true,
      "opp": "ESP REUILLY 2",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 3,
@@ -948,7 +988,8 @@
      "date": "21/11/2026",
      "dom": true,
      "opp": "BRETIGNY CS 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 6,
@@ -961,7 +1002,8 @@
      "date": "12/12/2026",
      "dom": true,
      "opp": "IVRY US TT 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     }
    ]
   },
@@ -975,7 +1017,8 @@
      "date": "19/09/2026",
      "dom": true,
      "opp": "CHATILLON TTM 2",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 2,
@@ -988,14 +1031,16 @@
      "date": "17/10/2026",
      "dom": true,
      "opp": "JOSASSIEN TT 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 4,
      "date": "07/11/2026",
      "dom": true,
      "opp": "BEAUCHAMP CTT 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 5,
@@ -1008,7 +1053,8 @@
      "date": "05/12/2026",
      "dom": true,
      "opp": "MEUDON AS 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 7,
@@ -1028,7 +1074,8 @@
      "date": "19/09/2026",
      "dom": true,
      "opp": "VERSAILLES SCTT 3",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 2,
@@ -1041,14 +1088,16 @@
      "date": "17/10/2026",
      "dom": true,
      "opp": "CHESNAY 78 AS 4",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 4,
      "date": "07/11/2026",
      "dom": true,
      "opp": "PARIS IX ATT 2",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 5,
@@ -1061,7 +1110,8 @@
      "date": "05/12/2026",
      "dom": true,
      "opp": "MENUCOURT 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 7,
@@ -1087,7 +1137,8 @@
      "date": "03/10/2026",
      "dom": true,
      "opp": "PARIS US 2",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 3,
@@ -1106,7 +1157,8 @@
      "date": "21/11/2026",
      "dom": true,
      "opp": "VINCENNOIS TT 2",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     },
     {
      "j": 6,
@@ -1119,7 +1171,8 @@
      "date": "12/12/2026",
      "dom": true,
      "opp": "VITRY ES 1",
-     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT"
+     "venue": "SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT",
+     "salle": "Grand côté"
     }
    ]
   }
