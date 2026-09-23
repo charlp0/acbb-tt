@@ -297,7 +297,15 @@ const nrmK=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().repl
 const pkey=p=>String(p.key||p.lic||((p.nom||'')+'|'+(p.pre||'')));
 const fkey=p=>nrmK(p.nom)+'|'+nrmK(p.pre);
 const NUM=t=>parseInt(t.slice(1),10), GENRE=t=>t[0];
-const short=p=>(p.pre||'').charAt(0)+'. '+(p.nom||'');
+/* Nom court. Prénom composé (Jean-Serge, Marie-Laure, Mohamed Sofiane…) : initiales accolées et
+   sans point — « JS BOITEAU » — car « J. BOITEAU » ne distingue pas les nombreux Jean-. Prénom
+   simple : inchangé, « M. BENCHAT ». */
+const short=p=>{
+  const pre=String(p.pre||'').trim(), parts=pre.split(/[-\s]+/).filter(Boolean);
+  const ini=parts.length>1 ? parts.map(x=>x.charAt(0).toUpperCase()).join('')+' '
+                           : (pre?pre.charAt(0)+'. ':'');
+  return ini+(p.nom||'');
+};
 const full=p=>(p.pre||'')+' '+(p.nom||'');
 const toast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2600);};
 
