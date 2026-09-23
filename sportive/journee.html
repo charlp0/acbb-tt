@@ -86,6 +86,9 @@
   .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--panel-3)}
   .tk{display:inline-flex;gap:2px;align-items:flex-end;flex-shrink:0;margin-left:4px;cursor:help}
   .tk i{display:block;width:4px;height:9px;border-radius:1px;background:var(--panel-3);opacity:.9}
+  .mj{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;margin-left:5px;padding:1px 4px;border-radius:99px;background:rgba(61,214,140,.12);border:1px solid rgba(61,214,140,.35);color:var(--win-lt);cursor:help;flex-shrink:0}
+  .mj.zero{background:rgba(255,255,255,.05);border-color:var(--line-2);color:var(--dim)}
+  .oc .mj,.rp .mj{font-size:8.5px;padding:0 3px}
   .tk i.g{background:#4ADE80}.tk i.r{background:#F87171}.tk i.y{background:#3a3a40}
   .tk i.cur{height:12px;outline:1px solid rgba(246,245,243,.7);outline-offset:1px}
   .oc .tk i{width:3px;height:7px}.oc .tk i.cur{height:9px}
@@ -403,7 +406,15 @@ function ticks(k){ // 7 traits : vert dispo, rouge indispo, gris sans réponse ;
   let h='', tip=[];
   for(let j=1;j<=NJ;j++){ let st='y'; if(forced||noPlay) st='r'; else if(v) st=(v.dispos&&v.dispos['j'+j])?'g':'r'; h+='<i class="'+st+(j===J?' cur':'')+'"></i>'; tip.push('J'+j+' '+(st==='g'?'✓':(st==='r'?'✗':'?'))); }
   const n=v?(v.n!=null?v.n:'?'):'?';
-  return '<span class="tk" title="dispos déclarées : '+tip.join(' · ')+(v?' — '+n+' journée(s) sur 7':' — pas de réponse au formulaire')+'">'+h+'</span>';
+  return '<span class="tk" title="dispos déclarées : '+tip.join(' · ')+(v?' — '+n+' journée(s) sur 7':' — pas de réponse au formulaire')+'">'+h+'</span>'+joues(k);
+}
+/* Compteur de matchs déjà joués, à côté des traits de dispos : « 1/1 » en préparant la J2 signifie
+   une rencontre disputée sur une journée écoulée. Source : les feuilles FFTT (cf. participations). */
+function joues(k){
+  if(J<=1) return '';                       // aucune journée écoulée
+  const parts=participations(k,J), tot=J-1, n=parts.length;
+  const det=n?parts.map(x=>'J'+x.j+' '+x.t).join(' · '):'aucune rencontre disputée';
+  return '<span class="mj'+(n?'':' zero')+'" title="'+esc(n+' match'+(n>1?'s':'')+' joué'+(n>1?'s':'')+' sur '+tot+' journée'+(tot>1?'s':'')+' écoulée'+(tot>1?'s':'')+' — '+det)+'">'+n+'/'+tot+'</span>';
 }
 function dispoTxt(k,j){ const p=BYKEY[k]; const s=dispo(k,j); if(s==='g') return ''; if(p&&FORCE_STATUS[fkey(p)]) return FORCE_STATUS[fkey(p)]; if(s==='y') return 'pas répondu'; const v=p&&voteFor(p); if(v&&((v.dispos||{}).roles||[]).indexOf('N')>=0) return 'ne veut pas jouer'; return 'indispo J'+j; }
 function isCapt(k,t){ const c=CAPT[t]; if(!c) return false; return Array.isArray(c)?c.indexOf(k)>=0:c===k; }
