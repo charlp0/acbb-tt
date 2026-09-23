@@ -30,6 +30,37 @@
     var fa = a.split(' ')[0], fb = b.split(' ')[0];
     return fa === fb || fa.indexOf(fb) === 0 || fb.indexOf(fa) === 0;
   }
+  /* Les libellés d'équipe diffèrent entre le PDF des poules et la FFTT : « USM MALAKOFF 5 » vs
+     « MALAKOFF USM 5 », « CS CLICHY TT 1 » vs « CLICHY CS 1 ». On retrouve l'équipe par le numéro
+     ET un mot distinctif commun (on ignore les sigles et mots génériques), à condition qu'une seule
+     équipe corresponde. Sans ça, le site retombait sur le repère 25/26 pour 10 adversaires. */
+  var GENERIQUE = { TT:1, TTM:1, TTMC:1, ASTT:1, CS:1, CSM:1, US:1, USM:1, AS:1, ASV:1, ASVTT:1, ES:1,
+                    SC:1, SCTT:1, STT:1, SPORT:1, SPORTS:1, SPORTIF:1, SPORTING:1, CLUB:1, TENNIS:1,
+                    TABLE:1, SAINT:1, SAINTE:1, PING:1, ATT:1, UMS:1, ASPN:1 };
+  function numeroEq(n) { var m = norm(n).match(/(\d+)$/); return m ? m[1] : null; }
+  function motsEq(n) {
+    return norm(n).replace(/\s*\d+$/, '').split(' ').filter(function (w) { return w.length >= 4 && !GENERIQUE[w]; });
+  }
+  function trouverEquipe(teams, nom) {
+    teams = teams || [];
+    var k = norm(nom);
+    var hit = teams.filter(function (t) { return norm(t.name) === k; })[0];
+    if (hit) return hit;
+    hit = teams.filter(function (t) { return sameTeam(t.name, nom); })[0];
+    if (hit) return hit;
+    var num = numeroEq(nom), ms = motsEq(nom);
+    if (!num || !ms.length) return null;
+    var c = teams.filter(function (t) {
+      if (numeroEq(t.name) !== num) return false;
+      var tm = motsEq(t.name);
+      return ms.some(function (w) { return tm.indexOf(w) >= 0; });
+    });
+    /* On s'arrête là volontairement : ignorer le numéro d'équipe rapprocherait « COURBEVOIE STT 5 »
+       de « COURBEVOIE STT 4 », deux équipes différentes du même club. Trois adversaires restent non
+       résolus (numéro divergent entre le PDF des poules et la FFTT) et gardent le repère 25/26,
+       ce qui est préférable à un niveau 26/27 faux. */
+    return c.length === 1 ? c[0] : null;
+  }
   var reels = function (ps) { return (ps || []).filter(function (p) { return p && p.nom && p.nom !== 'Joueur absent'; }); };
   var nom = function (p) { return ((p.prenom || '') + ' ' + (p.nom || '')).trim(); };
   /* points affichés : ceux du joueur ; un numéroté porte en plus son n° national */
@@ -79,14 +110,15 @@
   function contexte(site, poule, team) {
     var D = site && site.DATA && poule ? site.DATA[poule.acbb] : null;
     if (!D) return { js: [], poule: null, rang: null };
-    var cible = null, vals = [];
+    var vals = [];
+    var tc = trouverEquipe(D.teams || [], team && team.name);
+    var cible = tc ? { t: tc, js: jouees(tc), n: niveau(jouees(tc)) } : null;
     (D.teams || []).forEach(function (t) {
-      var js = jouees(t), n = niveau(js);
-      if (sameTeam(t.name, team && team.name)) cible = { t: t, js: js, n: n };
+      var n = niveau(jouees(t));
       if (n != null && !t.acbb) vals.push(n);
     });
     var st = site.STANDINGS && site.STANDINGS[poule.acbb];
-    var rg = Array.isArray(st) ? st.filter(function (r) { return sameTeam(r.name, team && team.name); })[0] : null;
+    var rg = Array.isArray(st) ? trouverEquipe(st, team && team.name) : null;
     return {
       js: cible ? cible.js : [],
       niveau: cible ? cible.n : null,
@@ -171,5 +203,5 @@
     return out;
   }
 
-  window.ACBB_SCOUT = { css: css, html: html, sameTeam: sameTeam, niveau: niveau, jouees: jouees, parties: parties };
+  window.ACBB_SCOUT = { css: css, html: html, sameTeam: sameTeam, trouverEquipe: trouverEquipe, niveau: niveau, jouees: jouees, parties: parties };
 })();
