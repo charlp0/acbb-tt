@@ -1165,7 +1165,8 @@
      "name": "PARIS US 2",
      "dept": "75",
      "acbb": false,
-     "s25": null
+     "s25": null,
+     "fftt": "PARIS US 2 1"
     },
     {
      "pos": 2,
@@ -1560,7 +1561,8 @@
        ]
       ],
       "mvt": null
-     }
+     },
+     "fftt": "COURBEVOIE STT 4"
     },
     {
      "pos": 5,
@@ -1600,7 +1602,8 @@
      "name": "BOIS COLOMBES S 3",
      "dept": "92",
      "acbb": false,
-     "s25": null
+     "s25": null,
+     "fftt": "BCS TT 3"
     },
     {
      "pos": 7,
@@ -5269,5 +5272,6 @@
     }
    ]
   }
- ]
+ ],
+ "note_fftt": "Le champ 'fftt' donne le libellé FFTT quand il diffère de celui du PDF des poules (nom inversé ou numéro d'équipe renuméroté) ; il sert au rapprochement avec site.json, l'affichage garde le nom lisible."
 }

@@ -379,7 +379,7 @@ function matchOf(t,j){
      le repère 25/26 — qui décrit l'équipe de la saison passée et peut être très loin de la réalité. */
   let oAvg=null, oSrc='';
   if(window.ACBB_SCOUT&&SITE&&SITE.DATA&&SITE.DATA[t]){
-    const tt=ACBB_SCOUT.trouverEquipe(SITE.DATA[t].teams||[],name);
+    const tt=ACBB_SCOUT.trouverEquipe(SITE.DATA[t].teams||[],(opp&&opp.fftt)||name);
     const n=tt?ACBB_SCOUT.niveau(ACBB_SCOUT.jouees(tt)):null;
     if(n!=null){ oAvg=n; oSrc='26/27'; }
   }
