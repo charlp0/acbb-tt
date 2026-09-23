@@ -170,7 +170,7 @@
 <aside id="fiche" aria-label="Fiche adversaire" aria-hidden="true"></aside>
 
 <script src="../shared/api.js"></script>
-<script src="../shared/scouting.js"></script>
+<script src="../shared/scouting.js?v=3"></script>
 <script src="../shared/nav.js" data-base=".."></script>
 <script src="../shared/report.js" defer></script>
 <script>
@@ -280,15 +280,13 @@
     });
   }
   /* rapprochement de nom : exact, sinon même club + même numéro d'équipe (libellés PDF vs FFTT) */
+  /* Rapprochement délégué au module commun (shared/scouting.js) pour que la colonne « Niveau 26/27 »,
+     la fiche adversaire et la popup de Compos journée trouvent exactement les mêmes équipes.
+     Le champ « fftt » d'une équipe porte le libellé fédéral quand il diffère du PDF des poules. */
   function l26For(P,t){
-    var m=L26[P.acbb]; if(!m) return null;
-    var k=norm(t.name); if(m[k]) return m[k];
-    var ck=clubKey(t.name), tn=teamNum(t.name), lw=longWord(t.name), hit=null;
-    Object.keys(m).forEach(function(kk){ var o=m[kk]; if(!hit&&o._ck===ck&&o._tn===tn) hit=o; });
-    // libellés inversés entre le PDF des poules et la FFTT (« USM MALAKOFF 6 » / « MALAKOFF USM 6 ») :
-    // repli sur le mot distinctif du club + le numéro d'équipe.
-    if(!hit&&lw) Object.keys(m).forEach(function(kk){ var o=m[kk]; if(!hit&&o._lw===lw&&o._tn===tn) hit=o; });
-    return hit;
+    var m=L26[P.acbb]; if(!m||!window.ACBB_SCOUT) return null;
+    var liste=Object.keys(m).map(function(k){ return m[k]; });
+    return ACBB_SCOUT.trouverEquipe(liste, (t&&(t.fftt||t.name))||'') || null;
   }
 
   /* Points de rencontre FFTT (28 – 14, total 42) -> parties gagnées (14 – 0), l'unité du club.
