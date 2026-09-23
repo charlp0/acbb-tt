@@ -111,14 +111,16 @@
     var D = site && site.DATA && poule ? site.DATA[poule.acbb] : null;
     if (!D) return { js: [], poule: null, rang: null };
     var vals = [];
-    var tc = trouverEquipe(D.teams || [], team && team.name);
+    /* team.fftt : libellé FFTT quand il diffère du PDF des poules (cf. note_fftt de poules2627.json) */
+    var nomFftt = (team && (team.fftt || team.name)) || '';
+    var tc = trouverEquipe(D.teams || [], nomFftt);
     var cible = tc ? { t: tc, js: jouees(tc), n: niveau(jouees(tc)) } : null;
     (D.teams || []).forEach(function (t) {
       var n = niveau(jouees(t));
       if (n != null && !t.acbb) vals.push(n);
     });
     var st = site.STANDINGS && site.STANDINGS[poule.acbb];
-    var rg = Array.isArray(st) ? trouverEquipe(st, team && team.name) : null;
+    var rg = Array.isArray(st) ? trouverEquipe(st, nomFftt) : null;
     return {
       js: cible ? cible.js : [],
       niveau: cible ? cible.n : null,
