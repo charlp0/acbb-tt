@@ -34,12 +34,12 @@
   .prow .nm .tag.cap{color:var(--orange);border-color:rgba(242,106,27,.6)}
   .prow .sub{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dimmer);margin-top:2px;letter-spacing:.2px}
   .prow .sub.recent{color:var(--warn)} .prow .sub.never{color:var(--lose-lt)}
-  .ticks .tick{width:10px;height:18px}
-  /* journée déjà disputée : la case porte l'équipe alignée, ou NJ */
-  .ticks .tick.done,.ticks .tick.elsew,.ticks .tick.nj{width:30px;height:18px;border-radius:4px;font-family:"JetBrains Mono",monospace;font-size:8.5px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;letter-spacing:.2px;cursor:help}
-  .ticks .tick.done{background:rgba(61,214,140,.18);border:1px solid rgba(61,214,140,.55);color:var(--win-lt)}
-  .ticks .tick.elsew{background:rgba(96,165,250,.16);border:1px solid rgba(96,165,250,.5);color:var(--blue)}
-  .ticks .tick.nj{background:rgba(255,255,255,.05);border:1px solid var(--line-2);color:var(--dim)}
+  /* Une seule série de cases : la couleur reste TOUJOURS celle de la disponibilité déclarée
+     (vert dispo, rouge absent, gris sans réponse). Sur cette page elles sont simplement plus
+     larges, pour qu'une journée déjà disputée puisse porter, écrite en noir par-dessus,
+     l'équipe où le joueur a été aligné — ou NJ s'il n'a pas joué. */
+  .ticks .tick{width:30px;height:20px;border-radius:4px;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;letter-spacing:.2px;display:inline-flex;align-items:center;justify-content:center;color:#0B0B0D}
+  .ticks .tick.off{color:var(--ink-2)}   /* sur le gris, du noir ne se lirait pas */
   .mj{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;margin-left:7px;padding:1px 5px;border-radius:99px;background:rgba(61,214,140,.12);border:1px solid rgba(61,214,140,.35);color:var(--win-lt);cursor:help;flex-shrink:0;vertical-align:middle}
   .mj.zero{background:rgba(255,255,255,.05);border-color:var(--line-2);color:var(--dim)}
   .venus{font-size:11.5px;color:var(--dim);padding:8px 12px;line-height:1.6}
@@ -171,7 +171,7 @@
     <section class="grid2" id="tabEquipe" hidden>
       <div class="col">
         <div class="card">
-          <div class="ch"><span class="t">Dispos de l'équipe</span><span class="legend">J1 à J7 · journées jouées : équipe alignée ou NJ (non joué) · journées à venir : vert dispo · rouge absent · gris sans réponse</span></div>
+          <div class="ch"><span class="t">Dispos de l'équipe</span><span class="legend">J1 à J7 · vert dispo · rouge absent · gris sans réponse · journée jouée : équipe alignée, ou NJ si non joué</span></div>
           <div class="rows" id="dispos"><div class="empty">Chargement…</div></div>
           <div class="lab" style="margin-top:12px">Seule ton équipe est visible. Les autres dispos du club restent côté sportive.</div>
         </div>
@@ -412,23 +412,24 @@
          s'est passé : l'équipe où le joueur a été aligné, ou « NJ » s'il n'a pas joué. Les journées à
          venir gardent la couleur de la disponibilité déclarée. */
       const ticks=[1,2,3,4,5,6,7].map(j=>{
+        const v=p.dispos?p.dispos['j'+j]:undefined;
+        const cls=v===true?'':(v===false?' no':' off');          // la couleur ne bouge pas
+        const dsp=v===true?'dispo':(v===false?'absent':'sans réponse');
         const f=fait[j];
         if(f){
-          const cls=f.t?(f.t===S.team?' done':' elsew'):' nj';
-          const lab=f.t?f.t:'NJ';
-          const tip='J'+j+' · '+(f.t?(f.t===S.team?'a joué avec '+S.team:'a joué en '+f.t+(f.tous.length>1?' (et '+f.tous.filter(x=>x!==f.t).join(', ')+')':'')):'n\'a pas joué');
-          return '<span class="tick'+cls+'" title="'+esc(tip)+'">'+esc(lab)+'</span>';
+          const autres=f.tous.filter(x=>x!==f.t);
+          const quoi=f.t?('a joué en '+f.t+(autres.length?' (et '+autres.join(', ')+')':'')):'n\'a pas joué';
+          return '<span class="tick'+cls+'" title="'+esc('J'+j+' · '+quoi+' · disponibilité déclarée : '+dsp)+'">'+esc(f.t||'NJ')+'</span>';
         }
-        const v=p.dispos?p.dispos['j'+j]:undefined;
-        return '<span class="tick'+(v===true?'':(v===false?' no':' off'))+'" title="J'+j+' · '+(v===true?'dispo':(v===false?'absent':'sans réponse'))+'"></span>';
+        return '<span class="tick'+cls+'" title="J'+j+' · '+dsp+'"></span>';
       }).join('');
-      let cpt='', ail='';
+      // pas d'étiquette « J1 en M9 » à côté du nom : la case de la journée porte déjà l'équipe
+      let cpt='';
       if(pc&&pc.total){
         const det=pc.ailleurs.length?(' · dont '+pc.ailleurs.map(x=>'la J'+x.j+' en '+x.t).join(', ')):'';
         cpt='<span class="mj'+(pc.joue?'':' zero')+'" title="'+esc(pc.joue+' rencontre'+(pc.joue>1?'s':'')+' disputée'+(pc.joue>1?'s':'')+' sur '+pc.total+' journée'+(pc.total>1?'s':'')+' déjà jouée'+(pc.total>1?'s':'')+' par '+S.team+det+' — d\'après les feuilles officielles')+'">'+pc.joue+'/'+pc.total+'</span>';
-        pc.ailleurs.forEach(x=>{ ail+='<span class="tag blue" title="'+esc('a joué la J'+x.j+' en '+x.t)+'">J'+x.j+' en '+x.t+'</span>'; });
       }
-      return '<div class="card2 prow"><span class="dot" style="background:'+(has?'var(--win)':'var(--warn)')+'"></span><div><div class="nm">'+esc((p.prenom||'')+' '+(p.nom||''))+(isCap(p.licence)?'<span class="tag cap">C</span>':'')+(p.statut==='renfort'?'<span class="tag blue">renfort</span>':'')+ail+'</div><div class="sub '+cls+'">'+esc(sub)+'</div></div><span class="ticks">'+ticks+cpt+'</span></div>';
+      return '<div class="card2 prow"><span class="dot" style="background:'+(has?'var(--win)':'var(--warn)')+'"></span><div><div class="nm">'+esc((p.prenom||'')+' '+(p.nom||''))+(isCap(p.licence)?'<span class="tag cap">C</span>':'')+(p.statut==='renfort'?'<span class="tag blue">renfort</span>':'')+'</div><div class="sub '+cls+'">'+esc(sub)+'</div></div><span class="ticks">'+ticks+cpt+'</span></div>';
     }).join('');
     const vs=venus();
     if(vs.length) el.innerHTML+='<div class="card2 venus">Sont venus renforcer '+esc(S.team)+' : '
