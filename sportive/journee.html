@@ -281,6 +281,20 @@ const TEAMDIV={M1:'Pro B',M2:'N1',M3:'R1',M4:'R2',M5:'R3',M6:'PR',M7:'PR',M8:'D1
 const POOLDIV={M3:'R1-R3',M4:'R1-R3',M5:'R1-R3',M6:'PR',M7:'PR',M8:'D1',M9:'D1',M10:'D1',M11:'D1',M12:'D2',M13:'D2',M14:'D2',M15:'D2',M16:'D2',M17:'D2'};
 const SIZE={M1:3};               // Pro B = 3 joueurs ; toutes les autres équipes = 4 (formule ACBB)
 const sizeOf=t=>SIZE[t]||4;
+/* Classements minimums par division — liste officielle transmise par Xavier Cassagnou (26/09/2026).
+   Deux formes : « tous les joueurs à X points » dans les championnats nationaux, et « au moins n
+   joueurs à X points » en pré-national et en régional. Les divisions absentes de cette table (R3, PR,
+   D1, D2) n'ont pas de plancher. Le classement retenu est le classement officiel de la saison. */
+const MINI={
+  'N1' :{pts:1800},           // N1 Messieurs : 1800 points            -> M2
+  'N2' :{pts:1600},           // N2 Messieurs : 1600 points
+  'N3' :{pts:1400},           // N3 Messieurs : 1400 points
+  'PN' :{pts:1100,n:3},       // PN Messieurs : au moins 3 joueurs à 1100 points
+  'R1' :{pts:900 ,n:3},       // R1 Messieurs : au moins 3 joueurs à 900 points   -> M3
+  'R2' :{pts:700 ,n:3},       // R2 Messieurs : au moins 3 joueurs à 700 points   -> M4
+  'N1D':{pts:1100},           // N1 Dames : 1100 points
+  'N2D':{pts:900 ,n:2}        // N2 Dames : au moins 2 joueuses à 900 points      -> F1
+};
 const DIVC={'Pro B':'250,204,21','N1':'242,106,27','N2D':'251,146,60','R1D':'244,114,182','PRD':'244,114,182','R1':'61,214,140','R2':'61,214,140','R3':'61,214,140','PR':'96,165,250','D1':'167,139,250','D2':'148,163,184'};
 const GROUPS=[['all','Toutes',TEAMS],['nat','N1',['M2']],['reg','Régional',['M3','M4','M5']],['pr','PR',['M6','M7']],['d1','D1',['M8','M9','M10','M11']],['d2','D2',['M12','M13','M14','M15','M16','M17']]];
 const FORCE_STATUS={'ARGUT|DANIEL':'blessé — indisponible pour le moment'};
@@ -521,7 +535,26 @@ function checkTeam(t,j){
   TEAMS.forEach(o=>{ if(o===t)return; const Po=POULES[o],Pt=POULES[t]; if(!Po||!Pt||Po.division!==Pt.division||Po.poule!==Pt.poule)return;
     c.p.forEach(k=>{ if(participations(k,j).some(x=>x.t===o)) add('err',short(BYKEY[k]||{nom:k})+' a déjà joué en '+o+' (même poule) — interdit',[k]); }); });
   // classement minimum N1
-  if(t==='M2') c.p.forEach(k=>{ const p=BYKEY[k]; if(p&&p.men&&p.men<1800) add('err',short(p)+' : '+p.men+' pts < 1800 (minimum N1)',[k]); });
+  const _div=TEAMDIV[t]||'', _mini=MINI[_div];
+  if(_mini&&n){
+    if(!_mini.n){                                   // national : le plancher vaut pour CHAQUE joueur
+      c.p.forEach(k=>{ const p=BYKEY[k]; if(p&&p.men&&p.men<_mini.pts) add('err',short(p)+' : '+p.men+' pts — classement minimum '+_div+' : '+_mini.pts+' pts',[k]); });
+    } else {                                        // pré-national / régional : au moins n joueurs au-dessus
+      const hauts=c.p.filter(k=>{ const p=BYKEY[k]; return p&&p.men>=_mini.pts; });
+      // un joueur sans classement chez nous (joueuse d'une entente, licence toute neuve) n'est pas
+      // « en dessous » : on ne sait pas. Il ne doit donc jamais provoquer une erreur ferme.
+      const flous=c.p.filter(k=>{ const p=BYKEY[k]; return !p||!p.men; });
+      const reste=Math.max(0,size-n);               // places encore à pourvoir
+      const bas=c.p.filter(k=>hauts.indexOf(k)<0&&flous.indexOf(k)<0);
+      if(hauts.length<_mini.n){
+        const lbl='classement minimum '+_div+' : '+hauts.length+' joueur'+(hauts.length>1?'s':'')+' à '+_mini.pts+' pts ou plus, il en faut '+_mini.n;
+        if(hauts.length+reste+flous.length<_mini.n) add('err',lbl,bas);
+        else if(flous.length&&hauts.length+reste>=_mini.n&&hauts.length+flous.length>=_mini.n)
+          add('warn',lbl+' — classement inconnu pour '+flous.map(k=>short(BYKEY[k]||{nom:k})).join(', '),flous);
+        else add('warn',lbl+' — les '+reste+' place'+(reste>1?'s':'')+' restante'+(reste>1?'s':'')+' doi'+(reste>1?'vent':'t')+' les atteindre',[]);
+      }
+    }
+  }
   // étrangers extra-communautaires : 1 seul par feuille en équipe de 4 (II.609)
   const exs=c.p.filter(isEx), exq=c.p.filter(isExQ);
   if(exs.length>1) add('err','II.609 : '+exs.length+' joueurs extra-communautaires ('+exs.map(k=>short(BYKEY[k]||{nom:k})).join(', ')+') — 1 seul autorisé par feuille',exs);
@@ -821,7 +854,8 @@ function renderChecker(){
   h+=line(/brûlé/,'Brûlage II.112 (2 matchs → éq. sup.)');
   h+=J===2?line(/règle J2/,'Règle de la 2ᵉ journée (max 1 descente)'):row('na','Règle J2 : uniquement en J2');
   h+=line(/même poule/,'2 équipes ACBB même poule');
-  h+=line(/minimum N1/,'N1 ≥ 1800 pts (M2)');
+  const tMini=ts.filter(t=>MINI[TEAMDIV[t]]);
+  h+=line(/classement minimum/,'Classement minimum par division'+(tMini.length?' ('+tMini.join(', ')+')':''));
   CONTR.filter(c=>c.type!=='rappel').forEach(c=>{ const e=all.filter(i=>i.cid===c.id&&i.lvl!=='info'); const ts=e.map(i=>i.t).filter((v,i,a)=>a.indexOf(v)===i); h+=e.length?row('warn',ACBB_CONTR.courtLab(c)+' — '+ts.join(', ')):row('ok',ACBB_CONTR.courtLab(c)); });
   h+='<div class="hint">Contraintes internes gérées dans <a href="contraintes.html" style="color:inherit">Contraintes</a>'+(CONTR_META&&CONTR_META.at?' · liste du '+new Date(CONTR_META.at).toLocaleDateString('fr-FR'):' · règles par défaut')+'.</div>';
   h+=line(/indispo|blessé|ne veut pas/,'Dispos déclarées respectées');
