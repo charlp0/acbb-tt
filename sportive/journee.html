@@ -996,7 +996,29 @@ function freeText(j){ // titulaires (compo officielle, hors pools) disponibles �
   });
   return total?out+'\n\n'+total+' joueur'+(total>1?'s':'')+' — pools de remplacement non inclus':out+'\naucun titulaire disponible non engagé';
 }
-function copy(txt){ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>toast('📋 copié — colle dans WhatsApp'),()=>prompt('Copie ce texte :',txt)); } else prompt('Copie ce texte :',txt); }
+/* Copie presse-papier. Le repli passait par prompt(), dont le champ est une LIGNE UNIQUE : un export
+   groupé de 17 équipes y arrive tronqué et sans retours à la ligne. On replie donc sur un textarea
+   caché + execCommand('copy'), qui préserve le texte tel quel. En dernier recours seulement, on
+   affiche le textarea pour que la sélection se fasse à la main. */
+function copy(txt){
+  const repli=()=>{
+    const ta=document.createElement('textarea');
+    ta.value=txt; ta.setAttribute('readonly','');
+    ta.style.cssText='position:fixed;left:0;top:0;width:1px;height:1px;opacity:0';
+    document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,txt.length);
+    let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+    if(ok) toast('📋 copié — colle dans WhatsApp');
+    else { const z=document.createElement('textarea');
+      z.value=txt; z.style.cssText='position:fixed;inset:6% 5%;z-index:9999;width:90%;height:88%;padding:12px;font:12px/1.5 monospace';
+      document.body.appendChild(z); z.select();
+      toast('copie impossible automatiquement — le texte est sélectionné, fais Cmd+C puis Échap');
+      z.onkeydown=e=>{ if(e.key==='Escape') document.body.removeChild(z); };
+    }
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(()=>toast('📋 copié — colle dans WhatsApp'),repli);
+  else repli();
+}
 function exportImg(t){
   const m=matchOf(t,J), c=compo(J,t); if(!m||m.exempt)return;
   const sorted=c.p.slice().sort((a,b)=>((BYKEY[b]||{}).men||0)-((BYKEY[a]||{}).men||0));
