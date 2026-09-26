@@ -957,25 +957,21 @@ async function waText(t,j,opts){
   if(away.length) s+='\n\n🔀 Joueurs de '+t+' qui jouent ailleurs cette journée :\n'+away.map(k=>'• '+full(BYKEY[k])+' jouera en '+where(k)).join('\n');
   return s;
 }
-/* ===== ANNUAIRE TÉLÉPHONIQUE CHIFFRÉ (data/phones.enc.json, AES-GCM, clé dérivée du mot de passe sportive) ===== */
-let PH=null, PH_ENC=null;
-const GH_HASH='359d888f0c14b4835cec5d55404ab307115c4841f77e226ccd592bb943ccdabb';
-const b64d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
-async function loadEnc(){ if(PH_ENC) return PH_ENC; const r=await fetch('../data/phones.enc.json',{cache:'no-cache'}); if(!r.ok) throw new Error('annuaire absent'); PH_ENC=await r.json(); return PH_ENC; }
-async function deriveKey(pw){ const enc=await loadEnc(); const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
-  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64d(enc.salt),iterations:200000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},true,['decrypt']);
-  const raw=new Uint8Array(await crypto.subtle.exportKey('raw',key)); try{ sessionStorage.setItem('acbb_dir_key',btoa(String.fromCharCode(...raw))); }catch(e){} return key; }
-async function getPhones(){ // null si l'utilisateur renonce
+/* ===== ANNUAIRE TÉLÉPHONIQUE =====
+   L'annuaire vivait chiffré dans le dépôt public (data/phones.enc.json) et la page demandait un
+   mot de passe pour le déchiffrer. Depuis que l'espace sportive est protégé par des liens d'accès
+   personnels, ce mot de passe faisait double emploi. Les numéros sont donc sortis du site public :
+   ils sont dans scenarios_log (slot « annuaire »), table sous RLS que seule la fonction Edge lit,
+   et seulement pour un porteur de lien sportive — le même contrôle que le reste de cet espace.
+   Mise à jour : scripts/push_annuaire.py, depuis le fichier tenu hors dépôt. */
+let PH=null;
+async function getPhones(){
   if(PH) return PH;
-  try{
-    const enc=await loadEnc(); let key=null;
-    try{ const raw=sessionStorage.getItem('acbb_dir_key'); if(raw) key=await crypto.subtle.importKey('raw',b64d(raw),{name:'AES-GCM'},false,['decrypt']); }catch(e){}
-    if(!key){ const pw=prompt('Mot de passe sportive (pour déchiffrer les numéros de téléphone) :'); if(pw==null) return null;
-      const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(pw.trim())); const h=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-      if(h!==GH_HASH){ toast('mot de passe incorrect'); return null; } key=await deriveKey(pw.trim()); }
-    const plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(enc.iv)},key,b64d(enc.ct));
-    PH=JSON.parse(new TextDecoder().decode(plain)); return PH;
-  }catch(e){ toast('annuaire indisponible ('+e.message+')'); return null; }
+  const rows=await rest('scenarios_log','select=tags&slot=eq.annuaire&order=id.desc&limit=1');
+  const t=rows&&rows[0]&&rows[0].tags;
+  if(!t||!t.phones){ toast('annuaire indisponible'); return null; }
+  PH={phones:t.phones||{},extra:t.extra||{},built:t.built||''};
+  return PH;
 }
 const phoneKey=k=>{ const p=BYKEY[k]; return p?nrmK(p.nom)+'|'+nrmK(p.pre):''; };
 const fmtTel=t=>t&&/^\d{10}$/.test(t)?t.replace(/(\d{2})(?=\d)/g,'$1 '):t;
