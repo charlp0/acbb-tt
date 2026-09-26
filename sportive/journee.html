@@ -403,14 +403,15 @@ function matchOf(t,j){
   venue=venue.replace(/\s*digicode[^0-9]*\d+\s*/i,' ').replace(/\s+/g,' ').trim();
   /* niveau adverse : moyenne des joueurs réellement alignés depuis la J1 (site.json) ; à défaut seulement,
      le repère 25/26 — qui décrit l'équipe de la saison passée et peut être très loin de la réalité. */
-  let oAvg=null, oSrc='';
+  let oAvg=null, oSrc='', oJs=[];
   if(window.ACBB_SCOUT&&SITE&&SITE.DATA&&SITE.DATA[t]){
     const tt=ACBB_SCOUT.trouverEquipe(SITE.DATA[t].teams||[],(opp&&opp.fftt)||name);
-    const n=tt?ACBB_SCOUT.niveau(ACBB_SCOUT.jouees(tt)):null;
-    if(n!=null){ oAvg=n; oSrc='26/27'; }
+    const js=tt?ACBB_SCOUT.jouees(tt):null;
+    const n=js?ACBB_SCOUT.niveau(js):null;
+    if(n!=null){ oAvg=n; oSrc='26/27'; oJs=js.map(x=>+x.journee); }   // journées qui fondent la moyenne
   }
   if(oAvg==null&&opp&&opp.s25&&opp.s25.avg){ oAvg=opp.s25.avg; oSrc='25/26'; }
-  return {exempt:false,date:cl.date,dom:!!cl.dom,opp:name,oppAvg:oAvg,oppAvgSrc:oSrc,oppRank:(opp&&opp.s25)?opp.s25.rank:null,venue:venue,salle:S.salle||'',division:P.division,poule:P.poule,oppTeam:opp||null};
+  return {exempt:false,date:cl.date,dom:!!cl.dom,opp:name,oppAvg:oAvg,oppAvgSrc:oSrc,oppAvgJ:oJs,oppRank:(opp&&opp.s25)?opp.s25.rank:null,venue:venue,salle:S.salle||'',division:P.division,poule:P.poule,oppTeam:opp||null};
 }
 function playing(t,j){ const m=matchOf(t,j); return !!(m&&!m.exempt); }
 function titulaires(t){ const g=GENRE(t); if(g==='F') return Object.keys(FEM).filter(k=>FEM[k].e===t&&FEM[k].r==='T'); return Object.keys(TAGS).filter(k=>TAGS[k].e===t&&TAGS[k].r==='T'); }
@@ -932,6 +933,17 @@ async function waText(t,j,opts){
   s+='📅 '+fmtD(m.date)+' · '+(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp)+'\n';
   if(withVenue&&m.dom&&m.salle) s+='📍 '+m.salle+'\n';
   else if(withVenue&&m.venue) s+='📍 '+m.venue+'\n';
+  /* niveau adverse : moyenne des joueurs que l'adversaire a RÉELLEMENT alignés depuis la J1. On date
+     la source, sinon le capitaine ne sait pas si le chiffre décrit l'équipe de cette saison ou celle
+     d'avant — l'écart peut être énorme après des montées ou des départs. */
+  if(m.oppAvg){
+    const js=m.oppAvgJ||[];
+    const quand=js.length===0?'' : js.length===1?('la J'+js[0])
+              : js.length===2?('les J'+js[0]+' et J'+js[1])
+              : ('les J'+js[0]+' à J'+js[js.length-1]);
+    s+='🎯 Niveau adverse ≈ '+m.oppAvg+' de moyenne ('+(m.oppAvgSrc==='26/27'&&quand
+        ? "d'après "+quand : 'repère 25/26, pas encore de feuille cette saison')+')\n';
+  }
   s+='\n👥 Compo :\n'+sorted.map((k,i)=>{ const p=BYKEY[k]; const nm=p?full(p):k; const o=origin(k); const ren=o&&o!==t; return (i+1)+'. '+(ren?'*'+nm+'* ('+o+')':nm)+(p?' ('+(p.men||'—')+')':''); }).join('\n');
   if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
   if(renforts.length){
