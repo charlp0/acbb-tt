@@ -35,6 +35,11 @@
   .prow .sub{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dimmer);margin-top:2px;letter-spacing:.2px}
   .prow .sub.recent{color:var(--warn)} .prow .sub.never{color:var(--lose-lt)}
   .ticks .tick{width:10px;height:18px}
+  /* journée déjà disputée : la case porte l'équipe alignée, ou NJ */
+  .ticks .tick.done,.ticks .tick.elsew,.ticks .tick.nj{width:30px;height:18px;border-radius:4px;font-family:"JetBrains Mono",monospace;font-size:8.5px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;letter-spacing:.2px;cursor:help}
+  .ticks .tick.done{background:rgba(61,214,140,.18);border:1px solid rgba(61,214,140,.55);color:var(--win-lt)}
+  .ticks .tick.elsew{background:rgba(96,165,250,.16);border:1px solid rgba(96,165,250,.5);color:var(--blue)}
+  .ticks .tick.nj{background:rgba(255,255,255,.05);border:1px solid var(--line-2);color:var(--dim)}
   .mj{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;margin-left:7px;padding:1px 5px;border-radius:99px;background:rgba(61,214,140,.12);border:1px solid rgba(61,214,140,.35);color:var(--win-lt);cursor:help;flex-shrink:0;vertical-align:middle}
   .mj.zero{background:rgba(255,255,255,.05);border-color:var(--line-2);color:var(--dim)}
   .venus{font-size:11.5px;color:var(--dim);padding:8px 12px;line-height:1.6}
@@ -166,7 +171,7 @@
     <section class="grid2" id="tabEquipe" hidden>
       <div class="col">
         <div class="card">
-          <div class="ch"><span class="t">Dispos de l'équipe</span><span class="legend">J1 à J7 · vert dispo · rouge absent · gris sans réponse</span></div>
+          <div class="ch"><span class="t">Dispos de l'équipe</span><span class="legend">J1 à J7 · journées jouées : équipe alignée ou NJ (non joué) · journées à venir : vert dispo · rouge absent · gris sans réponse</span></div>
           <div class="rows" id="dispos"><div class="empty">Chargement…</div></div>
           <div class="lab" style="margin-top:12px">Seule ton équipe est visible. Les autres dispos du club restent côté sportive.</div>
         </div>
@@ -356,13 +361,20 @@
     const moi={n:nkC(joueur.nom),p:nkC(joueur.prenom)};
     const mien=F[S.team]||{};
     const jsMoi=Object.keys(mien).map(Number).sort((a,b)=>a-b);
-    let avec=0; jsMoi.forEach(j=>{ if((mien[j]||[]).some(x=>memeJ(moi,x))) avec++; });
-    const ailleurs=[];
-    Object.keys(F).forEach(t=>{ if(t===S.team) return;
-      Object.keys(F[t]).forEach(j=>{ if((F[t][j]||[]).some(x=>memeJ(moi,x))) ailleurs.push({j:+j,t:t}); });
+    /* Une ligne par journée déjà disputée par l'équipe : dans quelle équipe du club le joueur a-t-il
+       été aligné ce jour-là ? Null s'il n'a joué nulle part. Le compteur additionne les journées où
+       il A JOUÉ, chez nous OU ailleurs : un joueur parti renforcer une autre équipe n'a pas chômé,
+       et l'afficher à zéro donnerait une image fausse de sa saison. */
+    const jours=jsMoi.map(j=>{
+      const ou=[];
+      Object.keys(F).forEach(t=>{ if((F[t][j]||[]).some(x=>memeJ(moi,x))) ou.push(t); });
+      const t=ou.indexOf(S.team)>=0?S.team:(ou[0]||null);
+      return {j:j,t:t,tous:ou};
     });
-    ailleurs.sort((a,b)=>a.j-b.j);
-    return {avec:avec,total:jsMoi.length,ailleurs:ailleurs};
+    const joue=jours.filter(x=>x.t).length;
+    const avec=jours.filter(x=>x.t===S.team).length;
+    const ailleurs=jours.filter(x=>x.t&&x.t!==S.team).map(x=>({j:x.j,t:x.t}));
+    return {joue:joue,avec:avec,total:jsMoi.length,ailleurs:ailleurs,jours:jours};
   }
   /* Ceux qui sont venus nous aider : présents sur NOS feuilles sans appartenir à l'effectif.
      On montre les deux sens de la rotation — sinon le capitaine ne verrait que ce qu'il perd. */
@@ -394,12 +406,26 @@
       let sub,cls='';
       if(has){ sub='MAJ '+fmtTs(p.saved_at)+((p.changes||[]).length?' · '+p.changes.join(' · '):''); if(recent) cls='recent'; }
       else { sub='jamais saisi'; cls='never'; }
-      const ticks=[1,2,3,4,5,6,7].map(j=>{ const v=p.dispos?p.dispos['j'+j]:undefined; return '<span class="tick'+(v===true?'':(v===false?' no':' off'))+'" title="J'+j+' · '+(v===true?'dispo':(v===false?'absent':'sans réponse'))+'"></span>'; }).join('');
       const pc=parcours(p);
+      const fait={}; if(pc) pc.jours.forEach(x=>{ fait[x.j]=x; });
+      /* Une journée DÉJÀ DISPUTÉE par l'équipe n'affiche plus une disponibilité — elle affiche ce qui
+         s'est passé : l'équipe où le joueur a été aligné, ou « NJ » s'il n'a pas joué. Les journées à
+         venir gardent la couleur de la disponibilité déclarée. */
+      const ticks=[1,2,3,4,5,6,7].map(j=>{
+        const f=fait[j];
+        if(f){
+          const cls=f.t?(f.t===S.team?' done':' elsew'):' nj';
+          const lab=f.t?f.t:'NJ';
+          const tip='J'+j+' · '+(f.t?(f.t===S.team?'a joué avec '+S.team:'a joué en '+f.t+(f.tous.length>1?' (et '+f.tous.filter(x=>x!==f.t).join(', ')+')':'')):'n\'a pas joué');
+          return '<span class="tick'+cls+'" title="'+esc(tip)+'">'+esc(lab)+'</span>';
+        }
+        const v=p.dispos?p.dispos['j'+j]:undefined;
+        return '<span class="tick'+(v===true?'':(v===false?' no':' off'))+'" title="J'+j+' · '+(v===true?'dispo':(v===false?'absent':'sans réponse'))+'"></span>';
+      }).join('');
       let cpt='', ail='';
       if(pc&&pc.total){
-        const det=pc.ailleurs.length?(' · a joué '+pc.ailleurs.map(x=>'la J'+x.j+' en '+x.t).join(', ')):'';
-        cpt='<span class="mj'+(pc.avec?'':' zero')+'" title="'+esc(pc.avec+' rencontre'+(pc.avec>1?'s':'')+' avec '+S.team+' sur '+pc.total+' disputée'+(pc.total>1?'s':'')+' par l\'équipe'+det+' — d\'après les feuilles officielles')+'">'+pc.avec+'/'+pc.total+'</span>';
+        const det=pc.ailleurs.length?(' · dont '+pc.ailleurs.map(x=>'la J'+x.j+' en '+x.t).join(', ')):'';
+        cpt='<span class="mj'+(pc.joue?'':' zero')+'" title="'+esc(pc.joue+' rencontre'+(pc.joue>1?'s':'')+' disputée'+(pc.joue>1?'s':'')+' sur '+pc.total+' journée'+(pc.total>1?'s':'')+' déjà jouée'+(pc.total>1?'s':'')+' par '+S.team+det+' — d\'après les feuilles officielles')+'">'+pc.joue+'/'+pc.total+'</span>';
         pc.ailleurs.forEach(x=>{ ail+='<span class="tag blue" title="'+esc('a joué la J'+x.j+' en '+x.t)+'">J'+x.j+' en '+x.t+'</span>'; });
       }
       return '<div class="card2 prow"><span class="dot" style="background:'+(has?'var(--win)':'var(--warn)')+'"></span><div><div class="nm">'+esc((p.prenom||'')+' '+(p.nom||''))+(isCap(p.licence)?'<span class="tag cap">C</span>':'')+(p.statut==='renfort'?'<span class="tag blue">renfort</span>':'')+ail+'</div><div class="sub '+cls+'">'+esc(sub)+'</div></div><span class="ticks">'+ticks+cpt+'</span></div>';
