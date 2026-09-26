@@ -28,7 +28,7 @@
   .rule .t{font-size:13.5px;font-weight:700}
   .rule .art{font-size:9px;padding:2px 8px;color:var(--blue);border-color:rgba(96,165,250,.5)}
   .rule .typ{color:var(--dim);border-color:var(--line-2)}
-  .rule .d{font-size:12px;color:var(--dim);line-height:1.4}
+  .rule .d{font-size:12px;color:var(--dim);line-height:1.4;white-space:pre-line}
   .rule .d b{color:var(--ink-2);font-weight:600}
   .rule .d .who{color:var(--dimmer)}
   .rule .ra{display:flex;flex-direction:column;gap:2px;min-width:0}
@@ -107,7 +107,7 @@
     <div class="edh"><span class="lab" id="edTitle" style="color:var(--orange)">nouvelle contrainte</span><button class="lnk" id="edCancel" type="button">annuler</button></div>
     <div class="edg">
       <label class="fld"><span class="lab">type</span><select id="edType"></select><span class="hint" id="edHelp"></span></label>
-      <label class="fld"><span class="lab" id="labNote">commentaire · qui l’a demandé</span><input id="edNote" placeholder="ex. demande de Minh, WhatsApp 16/09" maxlength="240" autocomplete="off"><span class="hint">affiché sous la contrainte ; la signature (ton prénom, la date) est ajoutée automatiquement.</span></label>
+      <label class="fld wide"><span class="lab" id="labNote">commentaire · qui l’a demandé</span><textarea id="edNote" rows="3" placeholder="ex. demande de Minh, WhatsApp 16/09" maxlength="1000"></textarea><span class="hint">affiché sous la contrainte ; la signature (ton prénom, la date) est ajoutée automatiquement. Les retours à la ligne sont conservés — utile pour un rappel de règlement en plusieurs points.</span></label>
       <div class="fld" id="fA"><span class="lab" id="labA">joueur(s)</span><div class="chips" id="chA"></div><div class="ac"><input id="qA" placeholder="tape un nom ou un prénom…" autocomplete="off"><div class="sug" id="sA" hidden></div></div></div>
       <div class="fld" id="fB" hidden><span class="lab">groupe B — jamais avec</span><div class="chips" id="chB"></div><div class="ac"><input id="qB" placeholder="tape un nom ou un prénom…" autocomplete="off"><div class="sug" id="sB" hidden></div></div></div>
       <div class="fld two wide" id="fAdv" hidden><label><span class="lab">équipe ACBB</span><select id="edTeam"></select></label><label><span class="lab">adversaire (dans sa poule)</span><select id="edAdv"></select></label><span class="hint" id="edMatch"></span></div>
