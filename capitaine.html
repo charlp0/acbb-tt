@@ -35,6 +35,10 @@
   .prow .sub{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dimmer);margin-top:2px;letter-spacing:.2px}
   .prow .sub.recent{color:var(--warn)} .prow .sub.never{color:var(--lose-lt)}
   .ticks .tick{width:10px;height:18px}
+  .mj{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;margin-left:7px;padding:1px 5px;border-radius:99px;background:rgba(61,214,140,.12);border:1px solid rgba(61,214,140,.35);color:var(--win-lt);cursor:help;flex-shrink:0;vertical-align:middle}
+  .mj.zero{background:rgba(255,255,255,.05);border-color:var(--line-2);color:var(--dim)}
+  .venus{font-size:11.5px;color:var(--dim);padding:8px 12px;line-height:1.6}
+  .venus b{color:var(--ink-2);font-weight:700}
   .legend{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dimmer);letter-spacing:.3px;text-transform:uppercase;font-weight:700}
   .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
   .acts .btn{min-height:44px}
@@ -293,7 +297,7 @@
     try{ S.poules=await ACBB.json('data/poules2627.json'); }catch(e){ showGate('Données indisponibles','Le calendrier des poules n\'a pas pu être chargé.'); return; }
     S.poule=(S.poules.poules||[]).find(p=>p.acbb===S.team)||null;
     ACBB.json('data/capitaines.json').then(c=>{ S.caps=(c&&c.capitaines)||{}; if(TAB==='equipe') renderDispos(); }).catch(()=>{ S.caps={}; });
-    ACBB.json('data/site.json').then(s=>{ S.site=s; if(TAB==='poule') renderPoule(); }).catch(()=>{});
+    ACBB.json('data/site.json').then(s=>{ S.site=s; S.feuilles=null; if(TAB==='poule') renderPoule(); else if(S.dispos) renderDispos(); }).catch(()=>{});
     ACBB.json('data/resultats2627.json').then(r=>{ if(r&&r.resultats) S.resultats=r.resultats; if(TAB==='poule') renderPoule(); }).catch(()=>{});
     gate.hidden=true; document.getElementById('app').hidden=false;
     S.j=currentJ(S.poule&&S.poule.cal);
@@ -321,6 +325,61 @@
       document.getElementById('dispos').innerHTML='<div class="empty">'+(err&&err.status?'Dispos indisponibles (erreur '+err.status+').':'Serveur indisponible : les dispos de l\'équipe ne peuvent pas être affichées pour le moment.')+'</div>';
     });
   }
+  /* ===== Parcours réel des joueurs, d'après les FEUILLES FFTT (data/site.json) =====
+     La compo prévue n'entre jamais dans ce calcul : elle peut encore changer, et à la J1 six équipes
+     du club ont finalement aligné autre chose que le plan. C'est la même source que l'espace sportive,
+     pour que le capitaine et la commission lisent le même chiffre. Seules les journées terminées
+     comptent, et le dénominateur est le nombre de rencontres DISPUTÉES PAR L'ÉQUIPE : une journée
+     d'exemption ne doit pas peser contre un joueur. */
+  const nkC=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z]/g,'');
+  /* La feuille porte l'état civil, nous parfois le prénom d'usage (« BOTELLA Milosav » / « Milo ») :
+     on accepte donc un prénom qui commence pareil. */
+  function memeJ(a,b){ if(a.n!==b.n) return false; if(a.p===b.p) return true;
+    return !!a.p&&!!b.p&&(a.p.indexOf(b.p)===0||b.p.indexOf(a.p)===0); }
+  function feuilles(){
+    if(S.feuilles) return S.feuilles;
+    const D=(S.site&&S.site.DATA)||null; if(!D) return null;
+    const out={};
+    Object.keys(D).forEach(k=>{
+      const t=((D[k]||{}).teams||[]).find(x=>x&&x.acbb); if(!t) return;
+      (t.journees||[]).forEach(j=>{
+        if(j.match_score==null) return;
+        const l=(j.players||[]).filter(x=>x.nom&&x.nom!=='Joueur absent')
+          .map(x=>({n:nkC(x.nom),p:nkC(x.prenom),nom:x.nom,prenom:x.prenom||''}));
+        if(l.length) (out[k]=out[k]||{})[+j.journee]=l;
+      });
+    });
+    return (S.feuilles=out);
+  }
+  function parcours(joueur){
+    const F=feuilles(); if(!F) return null;
+    const moi={n:nkC(joueur.nom),p:nkC(joueur.prenom)};
+    const mien=F[S.team]||{};
+    const jsMoi=Object.keys(mien).map(Number).sort((a,b)=>a-b);
+    let avec=0; jsMoi.forEach(j=>{ if((mien[j]||[]).some(x=>memeJ(moi,x))) avec++; });
+    const ailleurs=[];
+    Object.keys(F).forEach(t=>{ if(t===S.team) return;
+      Object.keys(F[t]).forEach(j=>{ if((F[t][j]||[]).some(x=>memeJ(moi,x))) ailleurs.push({j:+j,t:t}); });
+    });
+    ailleurs.sort((a,b)=>a.j-b.j);
+    return {avec:avec,total:jsMoi.length,ailleurs:ailleurs};
+  }
+  /* Ceux qui sont venus nous aider : présents sur NOS feuilles sans appartenir à l'effectif.
+     On montre les deux sens de la rotation — sinon le capitaine ne verrait que ce qu'il perd. */
+  function venus(){
+    const F=feuilles(); if(!F||!F[S.team]) return [];
+    // on compare aux SEULS titulaires : un renfort déjà connu de l'API est filtré de la liste
+    // principale, il doit donc apparaître ici, sinon il ne serait visible nulle part.
+    const miens=((S.dispos&&S.dispos.joueurs)||[]).filter(p=>p.statut!=='renfort').map(p=>({n:nkC(p.nom),p:nkC(p.prenom)}));
+    const par={};
+    Object.keys(F[S.team]).forEach(j=>{
+      (F[S.team][j]||[]).forEach(x=>{
+        if(miens.some(m=>memeJ(m,x))) return;
+        const c=x.n+'|'+x.p; (par[c]=par[c]||{nom:x.nom,prenom:x.prenom,js:[]}).js.push(+j);
+      });
+    });
+    return Object.keys(par).map(c=>par[c]).sort((a,b)=>String(a.nom).localeCompare(String(b.nom),'fr'));
+  }
   function isCap(lic){ const c=S.caps&&S.caps[S.team]; if(!c) return false; return Array.isArray(c)?c.map(String).includes(String(lic)):String(c)===String(lic); }
   function renderDispos(){
     const d=S.dispos; if(!d) return;
@@ -336,8 +395,18 @@
       if(has){ sub='MAJ '+fmtTs(p.saved_at)+((p.changes||[]).length?' · '+p.changes.join(' · '):''); if(recent) cls='recent'; }
       else { sub='jamais saisi'; cls='never'; }
       const ticks=[1,2,3,4,5,6,7].map(j=>{ const v=p.dispos?p.dispos['j'+j]:undefined; return '<span class="tick'+(v===true?'':(v===false?' no':' off'))+'" title="J'+j+' · '+(v===true?'dispo':(v===false?'absent':'sans réponse'))+'"></span>'; }).join('');
-      return '<div class="card2 prow"><span class="dot" style="background:'+(has?'var(--win)':'var(--warn)')+'"></span><div><div class="nm">'+esc((p.prenom||'')+' '+(p.nom||''))+(isCap(p.licence)?'<span class="tag cap">C</span>':'')+(p.statut==='renfort'?'<span class="tag blue">renfort</span>':'')+'</div><div class="sub '+cls+'">'+esc(sub)+'</div></div><span class="ticks">'+ticks+'</span></div>';
+      const pc=parcours(p);
+      let cpt='', ail='';
+      if(pc&&pc.total){
+        const det=pc.ailleurs.length?(' · a joué '+pc.ailleurs.map(x=>'la J'+x.j+' en '+x.t).join(', ')):'';
+        cpt='<span class="mj'+(pc.avec?'':' zero')+'" title="'+esc(pc.avec+' rencontre'+(pc.avec>1?'s':'')+' avec '+S.team+' sur '+pc.total+' disputée'+(pc.total>1?'s':'')+' par l\'équipe'+det+' — d\'après les feuilles officielles')+'">'+pc.avec+'/'+pc.total+'</span>';
+        pc.ailleurs.forEach(x=>{ ail+='<span class="tag blue" title="'+esc('a joué la J'+x.j+' en '+x.t)+'">J'+x.j+' en '+x.t+'</span>'; });
+      }
+      return '<div class="card2 prow"><span class="dot" style="background:'+(has?'var(--win)':'var(--warn)')+'"></span><div><div class="nm">'+esc((p.prenom||'')+' '+(p.nom||''))+(isCap(p.licence)?'<span class="tag cap">C</span>':'')+(p.statut==='renfort'?'<span class="tag blue">renfort</span>':'')+ail+'</div><div class="sub '+cls+'">'+esc(sub)+'</div></div><span class="ticks">'+ticks+cpt+'</span></div>';
     }).join('');
+    const vs=venus();
+    if(vs.length) el.innerHTML+='<div class="card2 venus">Sont venus renforcer '+esc(S.team)+' : '
+      +vs.map(v=>'<b>'+esc(((v.prenom||'')+' '+v.nom).trim())+'</b> ('+v.js.map(j=>'J'+j).join(', ')+')').join(', ')+'.</div>';
   }
 
   /* ================= Mon équipe : debrief ================= */
