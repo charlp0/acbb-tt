@@ -283,7 +283,7 @@ const SIZE={M1:3};               // Pro B = 3 joueurs ; toutes les autres équip
 const sizeOf=t=>SIZE[t]||4;
 const DIVC={'Pro B':'250,204,21','N1':'242,106,27','N2D':'251,146,60','R1D':'244,114,182','PRD':'244,114,182','R1':'61,214,140','R2':'61,214,140','R3':'61,214,140','PR':'96,165,250','D1':'167,139,250','D2':'148,163,184'};
 const GROUPS=[['all','Toutes',TEAMS],['nat','N1',['M2']],['reg','Régional',['M3','M4','M5']],['pr','PR',['M6','M7']],['d1','D1',['M8','M9','M10','M11']],['d2','D2',['M12','M13','M14','M15','M16','M17']]];
-const FORCE_STATUS={'ARGUT|DANIEL':'blessé — indisponible pour le moment','GRANDJEAN|GUILLAUME':'ne jouera pas cette phase (Charles, 12/09)'};
+const FORCE_STATUS={'ARGUT|DANIEL':'blessé — indisponible pour le moment'};
 /* contraintes internes : liste éditable dans Contraintes (scenarios_log slot « contraintes », module shared/contraintes.js) ; sans ligne enregistrée = règles par défaut */
 let CONTR=ACBB_CONTR.defauts(), CONTR_META=null;
 const EXT=[{key:'NEVES|LOUNA',nom:'NEVES',pre:'Louna',men:1342,ext:'Marly (entente F1)'}];   // joueuses extérieures alignables (clé NOM|PRE)
@@ -967,4 +967,5 @@ async function start(){
 start();
 </script>
 <script src="../shared/report.js" defer></script>
+<script src="../shared/track.js?v=1" defer></script>
 </body></html>

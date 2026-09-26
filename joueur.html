@@ -988,7 +988,7 @@ function fillHero(){const c=PROFILE.classement;
   const xd=document.querySelector('.xp-delta'); if(xd)xd.innerHTML=hasBase?('<span>'+fmtPts(dOff)+' officiel</span>'+(fut?'<span class="soft">'+fmtPts(dAv)+' à venir</span>':'')):'<span class="soft">Pas d\'historique cette saison</span>';
   document.title='ACBB TT — '+(PROFILE.prenom||'')+' '+(PROFILE.nom||'');
   // GoatCounter en mode manuel : compter avec le vrai nom du joueur (sinon titre par défaut)
-  (function send(){ if(window.goatcounter&&window.goatcounter.count){ window.goatcounter.count({path:location.pathname+location.search,title:document.title}); } else setTimeout(send,200); })();
+  (function send(n){ n=n||0; if(window.ACBB_TRACK) return ACBB_TRACK.compter(); if(n<50) setTimeout(function(){send(n+1);},200); })();
 }
 function computeExtra(p){
   const ms=[]; (p.competitions||[]).forEach(c=>(c.matches||[]).forEach(m=>ms.push(Object.assign({comp:c.label},m))));
@@ -1193,7 +1193,7 @@ boot();
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="report.js" defer></script>
-<script>window.goatcounter={no_onload:true};</script>
-<script data-goatcounter="https://acbb-tt.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>window.ACBB_TRACK_MANUAL=true;</script>
+<script src="shared/track.js?v=1"></script>
 </body>
 </html>
