@@ -265,7 +265,14 @@
       +'<span class="d">'+note+matchInfo(c)+(who?' <span class="who">· '+esc(who)+'</span>':'')+'</span>'
       +'<div class="acts"><button class="lnk" type="button" data-edit="'+esc(c.id)+'">modifier</button><button class="lnk red" type="button" data-del="'+esc(c.id)+'">supprimer</button></div></div>'
       +'<div class="ra"><span class="lab">s’applique à</span><span class="teams">…</span></div>'
-      +'<div class="rv">'+(c.type==='rappel'?'<span class="lab chk manual">rappel, non vérifié automatiquement</span>':'<a class="lab chk" href="journee.html">'+SVG+'vérifiée dans Compos journée</a><span class="lab st"></span>')+'</div>'
+      /* un rappel peut être vérifié automatiquement sans passer par le moteur de contraintes : les règles
+         de règlement (classements minimums, 2 joueuses max en régional) sont codées dans Compos journée.
+         Le champ `auto` porte alors le périmètre. Pas de pastille d'état : fillStates() ne sait pas les
+         évaluer, elle afficherait « aucune alerte » sans avoir rien vérifié. */
+      +'<div class="rv">'+(c.type==='rappel'
+          ? (c.auto?'<a class="lab chk" href="journee.html" title="'+esc(c.auto)+'">'+SVG+'vérifiée dans Compos journée</a>'
+                   :'<span class="lab chk manual">rappel, non vérifié automatiquement</span>')
+          : '<a class="lab chk" href="journee.html">'+SVG+'vérifiée dans Compos journée</a><span class="lab st"></span>')+'</div>'
       +'</div>';
   }
   function renderList(){
