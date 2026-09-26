@@ -285,6 +285,16 @@ const sizeOf=t=>SIZE[t]||4;
    Deux formes : « tous les joueurs à X points » dans les championnats nationaux, et « au moins n
    joueurs à X points » en pré-national et en régional. Les divisions absentes de cette table (R3, PR,
    D1, D2) n'ont pas de plancher. Le classement retenu est le classement officiel de la saison. */
+/* Maximum de joueuses en équipe masculine RÉGIONALE (R1, R2, R3 — soit M3, M4, M5).
+   Règle transmise par Xavier Cassagnou (checklist du 26/09/2026). Elle relève des règlements
+   régionaux d'Île-de-France, que nous n'avons pas au format texte : le corpus national dit
+   seulement (II.307) que les féminines sont admises en championnat masculin, au classement
+   minimum de la division. Le pré-régional (M6, M7) est départemental, il n'est pas concerné. */
+const REG_M={R1:1,R2:1,R3:1}, MAX_F_REG=2;
+/* Sexe : data/sexes.json (export licences du club, colonne « Sexe » ; régénéré depuis l'API FFTT
+   par scripts/fftt_categories.py). À défaut, une joueuse inscrite à l'effectif féminin compte
+   comme telle. Un joueur inconnu des deux n'est jamais compté comme une femme. */
+const estF=k=>{ const p=BYKEY[k], lic=p&&p.lic&&String(p.lic); if(lic&&SEXE[lic]) return SEXE[lic]==='F'; return !!(FEM[k]&&FEM[k].e); };
 const MINI={
   'N1' :{pts:1800},           // N1 Messieurs : 1800 points            -> M2
   'N2' :{pts:1600},           // N2 Messieurs : 1600 points
@@ -304,7 +314,7 @@ const EXT=[{key:'NEVES|LOUNA',nom:'NEVES',pre:'Louna',men:1342,ext:'Marly (enten
 const SCALE=250;   // écart de points -> indice de victoire (logistique)
 
 /* ===================== ÉTAT ===================== */
-let SITE=null, D=[], BYKEY={}, BYFK={}, BYSN={}, ALIASK={}, CAT={}, CAPT={}, POULES={}, SALLES={}, TAGS={}, FEM={}, VOTES={};
+let SITE=null, D=[], BYKEY={}, BYFK={}, BYSN={}, ALIASK={}, CAT={}, SEXE={}, CAPT={}, POULES={}, SALLES={}, TAGS={}, FEM={}, VOTES={};
 let EXC={ex:new Set(),conf:new Set()};   // extra-communautaires (data/extra_communautaires.json)
 let COMPOS={}, BASE={}, META={};      // COMPOS[j][team]={p:[],st:'draft'|'valid'|'sent',note:''}
 let J=1, FILTER='all', SEL=null, DRAG=null;
@@ -336,7 +346,8 @@ function boot(){
     rest('scenarios_log','select=id,tags&slot=eq.fem&order=id.desc&limit=1'),
     rest('dispos_log','select=licence,nom,prenom,dispos,n,created_at&order=id.asc'),
     rest('scenarios_log','select=id,slot,tags,author,created_at&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc'),
-    rest('scenarios_log',ACBB_CONTR.QUERY)
+    rest('scenarios_log',ACBB_CONTR.QUERY),
+    gj('../data/sexes.json')
   ]).then(res=>{
     const ct=ACBB_CONTR.fromRows(res[11]); CONTR=ct.liste; CONTR_META=ct.meta;
     SITE=res[6]||null;
@@ -346,6 +357,7 @@ function boot(){
        tout est ramené à la clé canonique du joueur (pkey) au chargement — sinon la ligne s'affiche « joueur inconnu » */
     D.forEach(p=>{ [p.lic&&String(p.lic),p.key,(p.nom||'')+'|'+(p.pre||''),fkey(p)].forEach(k=>{ if(k&&!ALIASK[k]) ALIASK[k]=p; }); });
     CAT=res[1]||{};
+    SEXE=res[12]||{};
     CAPT=(res[2]&&res[2].capitaines)||{};
     ((res[3]&&res[3].poules)||[]).forEach(q=>{POULES[q.acbb]=q;});
     SALLES=(res[4]&&res[4].salles)||{};
@@ -554,6 +566,11 @@ function checkTeam(t,j){
         else add('warn',lbl+' — les '+reste+' place'+(reste>1?'s':'')+' restante'+(reste>1?'s':'')+' doi'+(reste>1?'vent':'t')+' les atteindre',[]);
       }
     }
+  }
+  if(GENRE(t)==='M'&&REG_M[_div]){
+    const elles=c.p.filter(estF);
+    if(elles.length>MAX_F_REG) add('err',elles.length+' joueuses alignées — maximum '+MAX_F_REG+' en régional messieurs ('+_div+')',elles);
+    else if(elles.length===MAX_F_REG) add('info',MAX_F_REG+' joueuses en régional messieurs : maximum atteint');
   }
   // étrangers extra-communautaires : 1 seul par feuille en équipe de 4 (II.609)
   const exs=c.p.filter(isEx), exq=c.p.filter(isExQ);
@@ -856,6 +873,9 @@ function renderChecker(){
   h+=line(/même poule/,'2 équipes ACBB même poule');
   const tMini=ts.filter(t=>MINI[TEAMDIV[t]]);
   h+=line(/classement minimum/,'Classement minimum par division'+(tMini.length?' ('+tMini.join(', ')+')':''));
+  const tReg=ts.filter(t=>GENRE(t)==='M'&&REG_M[TEAMDIV[t]]);
+  h+=tReg.length?line(/en régional messieurs/,'2 joueuses max en régional messieurs ('+tReg.join(', ')+')')
+                :row('na','2 joueuses max en régional : aucune équipe régionale ce jour');
   CONTR.filter(c=>c.type!=='rappel').forEach(c=>{ const e=all.filter(i=>i.cid===c.id&&i.lvl!=='info'); const ts=e.map(i=>i.t).filter((v,i,a)=>a.indexOf(v)===i); h+=e.length?row('warn',ACBB_CONTR.courtLab(c)+' — '+ts.join(', ')):row('ok',ACBB_CONTR.courtLab(c)); });
   h+='<div class="hint">Contraintes internes gérées dans <a href="contraintes.html" style="color:inherit">Contraintes</a>'+(CONTR_META&&CONTR_META.at?' · liste du '+new Date(CONTR_META.at).toLocaleDateString('fr-FR'):' · règles par défaut')+'.</div>';
   h+=line(/indispo|blessé|ne veut pas/,'Dispos déclarées respectées');
