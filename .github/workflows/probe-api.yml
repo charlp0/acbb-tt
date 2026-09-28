@@ -1,6 +1,11 @@
 name: Sonde API FFTT (one-shot)
 on:
   workflow_dispatch:
+    inputs:
+      script:
+        description: "Script de sonde à exécuter"
+        required: false
+        default: "scripts/probe_partie.py"
 permissions:
   contents: read
 jobs:
@@ -15,4 +20,4 @@ jobs:
         env:
           FFTT_ID: ${{ secrets.FFTT_ID }}
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
-        run: python3 scripts/probe_partie.py
+        run: python3 "${{ github.event.inputs.script || 'scripts/probe_partie.py' }}"
