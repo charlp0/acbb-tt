@@ -414,6 +414,10 @@ function matchOf(t,j){
   return {exempt:false,date:cl.date,dom:!!cl.dom,opp:name,oppAvg:oAvg,oppAvgSrc:oSrc,oppAvgJ:oJs,oppRank:(opp&&opp.s25)?opp.s25.rank:null,venue:venue,salle:S.salle||'',division:P.division,poule:P.poule,oppTeam:opp||null};
 }
 function playing(t,j){ const m=matchOf(t,j); return !!(m&&!m.exempt); }
+/* Une feuille de rencontre est due dès que l'équipe figure au calendrier, EXEMPTION COMPRISE :
+   le règlement l'exige, et les joueurs qui y sont inscrits comptent comme ayant participé. C'est
+   ce périmètre qu'il faut utiliser pour les doublons, le rail et les compteurs — pas playing(). */
+const aFeuille=(t,j)=>!!matchOf(t,j);
 function titulaires(t){ const g=GENRE(t); if(g==='F') return Object.keys(FEM).filter(k=>FEM[k].e===t&&FEM[k].r==='T'); return Object.keys(TAGS).filter(k=>TAGS[k].e===t&&TAGS[k].r==='T'); }
 function remplacantsF(t){ return Object.keys(FEM).filter(k=>FEM[k].e===t&&FEM[k].r==='R'); }
 function pool(div){ return Object.keys(TAGS).filter(k=>TAGS[k].r==='R'&&!TAGS[k].e&&TAGS[k].d===div); }
@@ -520,16 +524,21 @@ function bruBadge(k,j,home){ const m=montees(k,j,home); if(!m.length) return '';
   const tip='brûlage II.112 : déjà aligné '+m.length+' fois au-dessus de '+home+' ('+m.join(', ')+')'+(m.length>=2?' — 2 matchs en équipe supérieure : retour en '+home+' interdit':' — au 2ᵉ match en équipe supérieure, retour en '+home+' interdit');
   return '<span class="agec bz '+(m.length>=2?'r':'y')+'" title="'+esc(tip)+'">B'+m.length+'/2</span>'; }
 function checkTeam(t,j){
-  const issues=[], flags={}; const m=matchOf(t,j); if(!m||m.exempt) return {issues,flags};
+  /* Une équipe EXEMPTE est vérifiée elle aussi : le règlement impose d'envoyer une feuille de
+     rencontre, et les joueurs qui y figurent comptent comme ayant participé — donc brûlage et
+     interdiction de jouer ailleurs le même jour s'appliquent. Seules les règles qui ont besoin
+     d'un adversaire ou d'un lieu sont écartées. */
+  const issues=[], flags={}; const m=matchOf(t,j); if(!m) return {issues,flags};
   const _rl=(REEL[j]||{})[t]||null;                       // journée jouée : les règles s'apprécient sur la feuille
   const c=_rl?{p:_rl,st:'sent',note:''}:compo(j,t);
   const size=sizeOf(t), n=c.p.length;
   const add=(lvl,msg,keys,cid)=>{ issues.push({lvl,msg,cid}); (keys||[]).forEach(k=>{ if(!flags[k]||lvl==='err') flags[k]=lvl; }); };
-  if(n<size) add(n?'warn':'info', n?('compo incomplète — '+(size-n)+' place'+(size-n>1?'s':'')+' à pourvoir'):'aucun joueur aligné');
+  if(n<size) add(n?'warn':'info', n?('compo incomplète — '+(size-n)+' place'+(size-n>1?'s':'')+' à pourvoir')
+    :(m.exempt?'feuille d\'exemption non saisie — le règlement impose de l\'envoyer quand même':'aucun joueur aligné'));
   if(n>size) add('err','trop de joueurs ('+n+'/'+size+')');
   // doublons dans la journée
   c.p.forEach(k=>{
-    TEAMS.forEach(o=>{ if(o===t)return; const co=COMPOS[j][o]; if(!co||co.p.indexOf(k)<0)return; const mo=matchOf(o,j); if(!mo||mo.exempt)return;
+    TEAMS.forEach(o=>{ if(o===t)return; const co=COMPOS[j][o]; if(!co||co.p.indexOf(k)<0)return; const mo=matchOf(o,j); if(!mo)return;   // équipe exempte comprise : y figurer vaut participation
       const p=BYKEY[k]||{nom:k}; const same=mo.date===m.date;
       const sat=d=>{const x=parseDate(d);return x&&x.getDay()===6;};
       if(same) add('err',short(p)+' aligné aussi en '+o+' le même jour (1 rencontre par joueur et par journée)',[k]);
@@ -581,7 +590,9 @@ function checkTeam(t,j){
   c.p.forEach(k=>{ const s=dispo(k,j); if(s==='r') add('warn',short(BYKEY[k]||{nom:k})+' : '+dispoTxt(k,j),[k]); else if(s==='y') add('info',short(BYKEY[k]||{nom:k})+' n\'a pas répondu au formulaire',[k]); });
   // contraintes internes (liste éditable dans Contraintes) : où est un joueur attendu mais absent de cette compo ?
   const ou=cp=>{ for(const o of TEAMS){ if(o!==t&&((COMPOS[j][o]||{}).p||[]).some(k=>ACBB_CONTR.isP(cp,k,BYKEY))) return 'aligné en '+o; } return 'non aligné'; };
-  ACBB_CONTR.check(CONTR,{t,j,P:c.p,dom:!!m.dom,adv:m.opp,BYKEY,POULES,ou}).forEach(i=>add(i.lvl,i.msg,i.keys,i.cid));
+  // une exemption n'a ni adversaire ni lieu : on n'évalue que les contraintes qui s'en passent
+  const _ctr=m.exempt?CONTR.filter(x=>x.type==='ensemble'||x.type==='separes'):CONTR;
+  ACBB_CONTR.check(_ctr,{t,j,P:c.p,dom:!!m.dom,adv:m.opp,BYKEY,POULES,ou}).forEach(i=>add(i.lvl,i.msg,i.keys,i.cid));
   return {issues,flags};
 }
 function lvlOf(issues){ return issues.some(i=>i.lvl==='err')?'err':(issues.some(i=>i.lvl==='warn')?'warn':'ok'); }
@@ -646,7 +657,7 @@ function renderHero(){
   document.querySelectorAll('.jp').forEach(el=>el.onclick=()=>{ if(dirtyTeams().length&&!confirm('Des modifications de J'+J+' ne sont pas enregistrées. Changer de journée quand même ?'))return; J=+el.dataset.j; SEL=null; history.replaceState(null,'','?j='+J); renderAll(); });
 }
 function renderState(){
-  const pl=TEAMS.filter(t=>playing(t,J)); let sent=0,valid=0,draft=0,errs=0,warns=0;
+  const pl=TEAMS.filter(t=>aFeuille(t,J)); let sent=0,valid=0,draft=0,errs=0,warns=0;
   pl.forEach(t=>{ const c=compo(J,t); if(c.st==='sent')sent++; else if(c.st==='valid')valid++; else draft++; const r=checkTeam(t,J); if(r.issues.some(i=>i.lvl==='err'))errs++; else if(r.issues.some(i=>i.lvl==='warn'))warns++; });
   const m=META[J];
   document.getElementById('statebar').innerHTML=
@@ -713,15 +724,37 @@ function card(t){
   const head='<div class="tc-h"><span class="tc-name" style="color:hsl('+hue+',75%,72%)">'+t+'</span><span class="dchip" style="color:rgb('+col+');border-color:rgba('+col+',.5);background:rgba('+col+',.12)">'+esc(div)+'</span>'
     +(POULES[t]&&POULES[t].poule?'<a class="plink" href="poules.html#'+t+'" title="voir la poule de '+t+' dans Poules 26/27">poule '+esc(POULES[t].poule)+' →</a>':'')+'<span style="flex-grow:1"></span>';
   if(!m) return '<div class="tc exempt" data-team="'+t+'">'+head+'</div><div class="rules">calendrier inconnu</div></div>';
-  if(m.exempt){ // équipe exempte : ses joueurs restent proposables comme renforts ailleurs (glisser / sélectionner puis toucher une case ＋)
-    const usedAll=new Set(); TEAMS.forEach(o=>{ if(playing(o,J)) compo(J,o).p.forEach(k=>usedAll.add(k)); });
-    const pl=titulaires(t).filter(k=>BYKEY[k]).sort((a,b)=>{const o={g:0,y:1,r:2};const d=o[dispo(a,J)]-o[dispo(b,J)];return d||((BYKEY[b].men||0)-(BYKEY[a].men||0));});
-    const nD=pl.filter(k=>dispo(k,J)==='g'&&!usedAll.has(k)).length;
-    const chips=pl.map(k=>{ const p=BYKEY[k], st=dispo(k,J), elsewhere=TEAMS.find(o=>o!==t&&playing(o,J)&&compo(J,o).p.indexOf(k)>=0);
-      const cls=st==='r'?' off':(elsewhere?' unk':''); const tip=elsewhere?('déjà aligné en '+elsewhere):(st==='g'?'dispo — sélectionner puis toucher une case ＋ dans une autre équipe':dispoTxt(k,J));
-      return '<span class="oc'+cls+'" draggable="'+(st!=='r')+'" data-k="'+esc(k)+'" data-ex="1" title="'+esc(tip)+'"><span class="dot '+st+'"></span>'+exBadge(k)+'<span class="nm">'+esc(short(p))+'</span>'+ticks(k,GENRE(t))+'<span class="pts">'+(p.men||'—')+'</span>'+(elsewhere?'<span class="pts" style="color:var(--warn)">'+elsewhere+'</span>':'')+'</span>'; }).join('');
-    return '<div class="tc" data-team="'+t+'" style="opacity:.85">'+head+'<span class="st">EXEMPTE</span></div><div class="rules">'+fmtD(m.date)+' · pas de rencontre pour '+t+' en J'+J+'</div>'
-      +'<div class="others"><div class="ot">Joueurs de '+t+' disponibles comme renforts · '+nD+' dispo'+(nD>1?'s':'')+' non aligné'+(nD>1?'s':'')+'</div><div class="ol">'+(chips||'<span style="font-size:11px;color:var(--dimmer)">aucun titulaire</span>')+'</div></div></div>'; }
+  if(m.exempt){
+    /* ÉQUIPE EXEMPTE — le règlement (art. c, rappelé par Xavier Cassagnou le 26/09/2026) impose
+       d'envoyer quand même une feuille de rencontre avec une composition, dans les délais. Les
+       joueurs qui y figurent sont considérés comme AYANT PARTICIPÉ à ce tour : brûlage, et
+       interdiction de jouer dans une autre équipe la même journée. Sans feuille envoyée, ce sont
+       les joueurs de la journée PRÉCÉDENTE qui sont réputés avoir joué, avec les conséquences que
+       cela implique. La carte est donc composable exactement comme les autres. */
+    const rE=checkTeam(t,J), lvlE=lvlOf(rE.issues);
+    const sizeE=sizeOf(t);
+    const rowsE=c.p.map(k=>pRow(k,t,rE.flags)).join('');
+    let slotsE=''; for(let i=c.p.length;i<sizeE;i++) slotsE+='<div class="slot" data-slot="'+t+'">＋ Glisser un joueur ou un remplaçant ici</div>';
+    const stLblE={draft:'BROUILLON',valid:'VALIDÉE',sent:'ENVOYÉE ✓'}[c.st]||'BROUILLON';
+    const usedAll=new Set(); TEAMS.forEach(o=>{ if(o!==t) compo(J,o).p.forEach(k=>usedAll.add(k)); });
+    const othersE_l=titulaires(t).filter(k=>BYKEY[k]&&c.p.indexOf(k)<0)
+      .sort((a,b)=>{const o={g:0,y:1,r:2};const d=o[dispo(a,J)]-o[dispo(b,J)];return d||((BYKEY[b].men||0)-(BYKEY[a].men||0));});
+    const nDE=othersE_l.filter(k=>dispo(k,J)==='g').length;
+    const othersE='<div class="others"><div class="ot">Autres joueurs de l\'équipe (dépose ici pour retirer) · '+(othersE_l.length?nDE+' dispo'+(nDE>1?'s':''):'tous inscrits')+'</div><div class="ol">'+(othersE_l.length?othersE_l.map(k=>{
+        const p=BYKEY[k], st=dispo(k,J), elsewhere=usedAll.has(k)?TEAMS.find(o=>o!==t&&compo(J,o).p.indexOf(k)>=0):null;
+        const cls=st==='r'?' off':(elsewhere?' unk':'');
+        const tip=elsewhere?('déjà inscrit en '+elsewhere):(st==='g'?'dispo — cliquer pour inscrire sur la feuille':dispoTxt(k,J));
+        return '<span class="oc'+cls+'" draggable="'+(st!=='r')+'" data-k="'+esc(k)+'" data-ot="'+t+'" title="'+esc(tip)+'"><span class="dot '+st+'"></span>'+exBadge(k)+'<span class="nm">'+esc(short(p))+'</span>'+ticks(k,GENRE(t))+'<span class="pts">'+(p.men||'—')+'</span>'+(elsewhere?'<span class="pts" style="color:var(--warn)">'+elsewhere+'</span>':'')+'</span>';
+      }).join(''):'<span style="font-size:11px;color:var(--dimmer)">tout l\'effectif est inscrit</span>')+'</div></div>';
+    const shownE=rE.issues.filter(i=>i.lvl!=='info'), infosE=rE.issues.filter(i=>i.lvl==='info');
+    const alertsE=shownE.map(i=>'<div class="alert '+i.lvl+'">'+(i.lvl==='err'?'⛔':'⚠')+' <span>'+esc(i.msg)+'</span></div>').join('');
+    return '<div class="tc '+lvlE+'" data-team="'+t+'">'+head+'<span class="st '+c.st+'" data-st="'+t+'" title="cliquer pour changer : brouillon → validée → envoyée">'+stLblE+'</span></div>'
+      +'<div class="rules">'+fmtD(m.date)+' · <b>exempte</b> — la feuille de rencontre doit quand même être envoyée (CD92 : s.pietu.cd92@orange.fr). Les joueurs inscrits comptent comme ayant participé à cette journée.</div>'
+      +'<div class="plist" data-team="'+t+'">'+rowsE+slotsE+'</div>'
+      +othersE+alertsE
+      +'<div class="rules">'+(shownE.length?'':'✓ règles OK')+(infosE.length?(shownE.length?'':' · ')+infosE.map(i=>i.msg).join(' · '):'')+'</div>'
+      +'<textarea data-note="'+t+'" rows="1" placeholder="note (date d\'envoi de la feuille…)">'+esc(c.note||'')+'</textarea></div>';
+  }
   const r=checkTeam(t,J), lvl=lvlOf(r.issues);
   const stLbl={draft:'BROUILLON',valid:'VALIDÉE',sent:'ENVOYÉE ✓'}[c.st]||'BROUILLON';
   const reel=(REEL[J]||{})[t]||null;      // feuille officielle FFTT de cette journée
@@ -740,12 +773,12 @@ function card(t){
         ? (m.salle?'<div class="venue" title="répartition des salles du planning de phase">📍 '+esc(m.salle)+'</div>':'')
         : (m.venue?'<div class="venue" title="'+esc(m.venue)+'">📍 '+esc(m.venue)+'</div>':''))+'</div>';
   // autres joueurs de l'équipe (titulaires + remplaçantes pour les dames) non alignés : dispo en couleur, indispo / sans réponse grisés
-  const usedAll=new Set(); TEAMS.forEach(o=>{ if(playing(o,J)) compo(J,o).p.forEach(k=>usedAll.add(k)); });
+  const usedAll=new Set(); TEAMS.forEach(o=>{ if(aFeuille(o,J)) compo(J,o).p.forEach(k=>usedAll.add(k)); });
   const others=(GENRE(t)==='F'?titulaires(t).concat(remplacantsF(t)):titulaires(t)).filter(k=>BYKEY[k]&&c.p.indexOf(k)<0)
     .sort((a,b)=>{const o={g:0,y:1,r:2};const d=o[dispo(a,J)]-o[dispo(b,J)];return d||((BYKEY[b].men||0)-(BYKEY[a].men||0));});
   const nDisp=others.filter(k=>dispo(k,J)==='g').length;
   const othersH='<div class="others"><div class="ot">Autres joueurs de l\'équipe (dépose ici pour retirer) · '+(others.length?nDisp+' dispo'+(nDisp>1?'s':''):'tous alignés')+'</div><div class="ol">'+(others.length?others.map(k=>{
-      const p=BYKEY[k], st=dispo(k,J), elsewhere=usedAll.has(k)?TEAMS.find(o=>o!==t&&playing(o,J)&&compo(J,o).p.indexOf(k)>=0):null;
+      const p=BYKEY[k], st=dispo(k,J), elsewhere=usedAll.has(k)?TEAMS.find(o=>o!==t&&aFeuille(o,J)&&compo(J,o).p.indexOf(k)>=0):null;
       const cls=st==='r'?' off':(elsewhere?' unk':'');
       const tip=elsewhere?('déjà aligné en '+elsewhere):(st==='g'?'dispo — cliquer pour aligner':dispoTxt(k,J));
       return '<span class="oc'+cls+'" draggable="'+(st!=='r')+'" data-k="'+esc(k)+'" data-ot="'+t+'" title="'+esc(tip)+'"><span class="dot '+st+'"></span>'+exBadge(k)+'<span class="nm">'+esc(short(p))+'</span>'+ticks(k,GENRE(t))+'<span class="pts">'+(p.men||'—')+'</span>'+(elsewhere?'<span class="pts" style="color:var(--warn)">'+elsewhere+'</span>':'')+'</span>';
@@ -808,8 +841,8 @@ function place(sel,t){
   SEL=null; renderAll();
 }
 function renderRail(){
-  const ts=visibleTeams().filter(t=>playing(t,J)); const q=nrmK(document.getElementById('q').value||'');
-  const used=new Set(), usedF=new Set(), where={}; TEAMS.forEach(t=>{ if(playing(t,J)) compo(J,t).p.forEach(k=>{ used.add(k); (where[k]=where[k]||[]).push(t); if(GENRE(t)==='F') usedF.add(k); }); });
+  const ts=visibleTeams().filter(t=>aFeuille(t,J)); const q=nrmK(document.getElementById('q').value||'');
+  const used=new Set(), usedF=new Set(), where={}; TEAMS.forEach(t=>{ if(aFeuille(t,J)) compo(J,t).p.forEach(k=>{ used.add(k); (where[k]=where[k]||[]).push(t); if(GENRE(t)==='F') usedF.add(k); }); });
   const rp=(k,tag,g)=>{ const p=BYKEY[k]; if(!p)return''; const s=dispo(k,J); const txt=dispoTxt(k,J);
     const sub=[txt, (tag&&/aussi/.test(tag))?tag.replace(/^.*aussi/,'aussi'):''].filter(Boolean).join(' · ');   // l'état seul : la division est déjà dans le titre de section
     return '<div class="rp'+(s==='g'?' ok':(s==='r'?' dimmer':''))+(SEL&&SEL.k===k&&!SEL.from?' sel':'')+'" draggable="true" data-k="'+esc(k)+'" title="'+esc(homeLabel(k))+'"><span class="dot '+s+'"></span>'+catBadge(k)+exBadge(k)+'<div class="rpm"><span class="nm">'+esc(short(p))+'</span>'+(sub?'<span class="tag">'+esc(sub)+'</span>':'')+'</div>'+ticks(k,g)+'<span class="pts">'+(p.men||'—')+'</span></div>'; };
@@ -863,7 +896,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!document.getEleme
 document.addEventListener('click',e=>{ const b=e.target.closest('[data-scout]'); if(b){ e.preventDefault(); e.stopPropagation(); openScout(b.dataset.scout); } });
 
 function renderChecker(){
-  const ts=TEAMS.filter(t=>playing(t,J)); const all=[]; ts.forEach(t=>checkTeam(t,J).issues.forEach(i=>all.push(Object.assign({t},i))));
+  const ts=TEAMS.filter(t=>aFeuille(t,J)); const all=[]; ts.forEach(t=>checkTeam(t,J).issues.forEach(i=>all.push(Object.assign({t},i))));
   const row=(lvl,txt)=>'<div class="chk '+lvl+'"><i>'+(lvl==='ok'?'✓':(lvl==='err'?'✗':(lvl==='warn'?'!':'–')))+'</i><span>'+txt+'</span></div>';
   const cnt=(re)=>all.filter(i=>re.test(i.msg));
   const line=(re,label)=>{ const e=cnt(re); const bad=e.filter(i=>i.lvl==='err'), w=e.filter(i=>i.lvl==='warn'); return bad.length?row('err',label+' — '+bad.map(i=>i.t).filter((v,i,a)=>a.indexOf(v)===i).join(', ')):(w.length?row('warn',label+' — '+w.map(i=>i.t).filter((v,i,a)=>a.indexOf(v)===i).join(', ')):row('ok',label)); };
@@ -895,7 +928,7 @@ function renderSave(){
   const st=document.getElementById('saveSt'); const m=META[J];
   if(d.length){ st.className='stt warn'; st.textContent=d.length+' équipe'+(d.length>1?'s':'')+' modifiée'+(d.length>1?'s':'')+' ('+d.join(', ')+') — brouillon conservé sur cet appareil'; }
   else { st.className='stt'; st.textContent=m?('✓ Enregistrée par '+authorName(m.author)+' · '+new Date(m.at).toLocaleDateString('fr-FR')+' '+new Date(m.at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})):'Aucune compo enregistrée pour cette journée'; }
-  const pl=TEAMS.filter(t=>playing(t,J)); let errs=0,warns=0,inc=0;
+  const pl=TEAMS.filter(t=>aFeuille(t,J)); let errs=0,warns=0,inc=0;
   pl.forEach(t=>{ const r=checkTeam(t,J); if(r.issues.some(i=>i.lvl==='err'))errs++; else if(r.issues.some(i=>i.lvl==='warn'))warns++; if(compo(J,t).p.length<sizeOf(t))inc++; });
   const chk=document.getElementById('saveChk');
   if(errs){ chk.className='stt err'; chk.textContent='⛔ '+errs+' équipe'+(errs>1?'s':'')+' en infraction (règlement)'; }
