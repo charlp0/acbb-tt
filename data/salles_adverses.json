@@ -1,0 +1,1006 @@
+{
+ "maj": "2026-09-28",
+ "salles": {
+  "ANTONY SPORT TT 5": {
+   "adresse": "Rue de l'Annapurna",
+   "club": "ANTONY SP TENNIS DE TABLE",
+   "cp": "92160",
+   "lat": "48.736346",
+   "lon": "2.285273",
+   "num": "08920031",
+   "salle": "COMPLEXE SPORTIF ERIC TABARLY",
+   "ville": "ANTONY"
+  },
+  "ANTONY SPORT TT 6": {
+   "adresse": "Rue de l'Annapurna",
+   "club": "ANTONY SP TENNIS DE TABLE",
+   "cp": "92160",
+   "lat": "48.736346",
+   "lon": "2.285273",
+   "num": "08920031",
+   "salle": "COMPLEXE SPORTIF ERIC TABARLY",
+   "ville": "ANTONY"
+  },
+  "ANTONY SPORT TT 8": {
+   "adresse": "Rue de l'Annapurna",
+   "club": "ANTONY SP TENNIS DE TABLE",
+   "cp": "92160",
+   "lat": "48.736346",
+   "lon": "2.285273",
+   "num": "08920031",
+   "salle": "COMPLEXE SPORTIF ERIC TABARLY",
+   "ville": "ANTONY"
+  },
+  "ASNIERES TT 10": {
+   "adresse": "30 Avenue de la Lauziere",
+   "club": "ASNIERES TT",
+   "cp": "92600",
+   "lat": "48.908245",
+   "lon": "2.276299",
+   "num": "08920646",
+   "salle": "GYMNASE des Bruyeres",
+   "ville": "ASNIERES SUR SEINE"
+  },
+  "ASNIERES TT 4": {
+   "adresse": "30 Avenue de la Lauziere",
+   "club": "ASNIERES TT",
+   "cp": "92600",
+   "lat": "48.908245",
+   "lon": "2.276299",
+   "num": "08920646",
+   "salle": "GYMNASE des Bruyeres",
+   "ville": "ASNIERES SUR SEINE"
+  },
+  "ASNIERES TT 5": {
+   "adresse": "30 Avenue de la Lauziere",
+   "club": "ASNIERES TT",
+   "cp": "92600",
+   "lat": "48.908245",
+   "lon": "2.276299",
+   "num": "08920646",
+   "salle": "GYMNASE des Bruyeres",
+   "ville": "ASNIERES SUR SEINE"
+  },
+  "ASNIERES TT 9": {
+   "adresse": "30 Avenue de la Lauziere",
+   "club": "ASNIERES TT",
+   "cp": "92600",
+   "lat": "48.908245",
+   "lon": "2.276299",
+   "num": "08920646",
+   "salle": "GYMNASE des Bruyeres",
+   "ville": "ASNIERES SUR SEINE"
+  },
+  "BEAUCHAMP CTT 1": {
+   "adresse": "25 avenue Curnonsky",
+   "club": "BEAUCHAMP CTT",
+   "cp": "95250",
+   "lat": "49.015031",
+   "lon": "2.186343",
+   "num": "08950553",
+   "salle": "Salle Jean-Philippe GATIEN",
+   "ville": "BEAUCHAMP"
+  },
+  "BOIS COLOMBES S 10": {
+   "adresse": "Av du Reverend Pere C Cloarec",
+   "club": "BOIS COLOMBES SPORTS",
+   "cp": "92270",
+   "lat": "48.913108",
+   "lon": "2.266965",
+   "num": "08920075",
+   "salle": "Gymnase Charles Coste",
+   "ville": "Bois-Colombes"
+  },
+  "BOIS COLOMBES S 3": {
+   "adresse": "Av du Reverend Pere C Cloarec",
+   "club": "BOIS COLOMBES SPORTS",
+   "cp": "92270",
+   "lat": "48.913108",
+   "lon": "2.266965",
+   "num": "08920075",
+   "salle": "Gymnase Charles Coste",
+   "ville": "Bois-Colombes"
+  },
+  "BOIS COLOMBES S 5": {
+   "adresse": "Av du Reverend Pere C Cloarec",
+   "club": "BOIS COLOMBES SPORTS",
+   "cp": "92270",
+   "lat": "48.913108",
+   "lon": "2.266965",
+   "num": "08920075",
+   "salle": "Gymnase Charles Coste",
+   "ville": "Bois-Colombes"
+  },
+  "BOIS COLOMBES S 6": {
+   "adresse": "Av du Reverend Pere C Cloarec",
+   "club": "BOIS COLOMBES SPORTS",
+   "cp": "92270",
+   "lat": "48.913108",
+   "lon": "2.266965",
+   "num": "08920075",
+   "salle": "Gymnase Charles Coste",
+   "ville": "Bois-Colombes"
+  },
+  "BOIS COLOMBES S 7": {
+   "adresse": "Av du Reverend Pere C Cloarec",
+   "club": "BOIS COLOMBES SPORTS",
+   "cp": "92270",
+   "lat": "48.913108",
+   "lon": "2.266965",
+   "num": "08920075",
+   "salle": "Gymnase Charles Coste",
+   "ville": "Bois-Colombes"
+  },
+  "BOIS COLOMBES S 8": {
+   "adresse": "Av du Reverend Pere C Cloarec",
+   "club": "BOIS COLOMBES SPORTS",
+   "cp": "92270",
+   "lat": "48.913108",
+   "lon": "2.266965",
+   "num": "08920075",
+   "salle": "Gymnase Charles Coste",
+   "ville": "Bois-Colombes"
+  },
+  "BOURG LA REINE 2": {
+   "adresse": "14 bd Carnot digicode grille : 1692",
+   "club": "BOURG  LA REINE AS",
+   "cp": "92340",
+   "lat": "48.778447",
+   "lon": "2.317653",
+   "num": "08920389",
+   "salle": "GYMNASE CARNOT",
+   "ville": "BOURG LA REINE"
+  },
+  "BOURG LA REINE 3": {
+   "adresse": "14 bd Carnot digicode grille : 1692",
+   "club": "BOURG  LA REINE AS",
+   "cp": "92340",
+   "lat": "48.778447",
+   "lon": "2.317653",
+   "num": "08920389",
+   "salle": "GYMNASE CARNOT",
+   "ville": "BOURG LA REINE"
+  },
+  "BRETIGNY CS 1": {
+   "adresse": "Allee des Irlandais derriere college Pablo Neruda",
+   "club": "BRETIGNY CS",
+   "cp": "91220",
+   "lat": "48.599076",
+   "lon": "2.308239",
+   "num": "08910916",
+   "salle": "Gymnase Camille Herbert",
+   "ville": "BRETIGNY SUR ORGE"
+  },
+  "CHATENAY ASVTT 4": {
+   "adresse": "254 Av de la Division Leclerc Gymnase Jules Verne",
+   "club": "CHATENAY MALABRY  T T ASV",
+   "cp": "92290",
+   "lat": "48.764602",
+   "lon": "2.267375",
+   "num": "08920063",
+   "salle": "ASV CHATENAY-MALABRY",
+   "ville": "CHATENAY MALABRY"
+  },
+  "CHATENAY ASVTT 5": {
+   "adresse": "254 Av de la Division Leclerc Gymnase Jules Verne",
+   "club": "CHATENAY MALABRY  T T ASV",
+   "cp": "92290",
+   "lat": "48.764602",
+   "lon": "2.267375",
+   "num": "08920063",
+   "salle": "ASV CHATENAY-MALABRY",
+   "ville": "CHATENAY MALABRY"
+  },
+  "CHATENAY ASVTT 6": {
+   "adresse": "254 Av de la Division Leclerc Gymnase Jules Verne",
+   "club": "CHATENAY MALABRY  T T ASV",
+   "cp": "92290",
+   "lat": "48.764602",
+   "lon": "2.267375",
+   "num": "08920063",
+   "salle": "ASV CHATENAY-MALABRY",
+   "ville": "CHATENAY MALABRY"
+  },
+  "CHATILLON TTM 2": {
+   "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
+   "club": "TennisTable Municipal Chatillon",
+   "cp": "92320",
+   "lat": "48.810014",
+   "lon": "2.285384",
+   "num": "08920151",
+   "salle": "STADE MUNICIPAL",
+   "ville": "CHATILLON"
+  },
+  "CHESNAY 78 AS 4": {
+   "adresse": "58 rue Caruel de St Martin",
+   "club": "CHESNAY 78 AS",
+   "cp": "78150",
+   "lat": "48.820639",
+   "lon": "2.119471",
+   "num": "08780080",
+   "salle": "Salle Dominique HECKMANN",
+   "ville": "LE CHESNAY"
+  },
+  "CLAMART CSM 4": {
+   "adresse": "52 rue Condorcet",
+   "club": "CLAMART CSM",
+   "cp": "92140",
+   "lat": "48.811111",
+   "lon": "2.26488",
+   "num": "08920111",
+   "salle": "GYMNASE CONDORCET",
+   "ville": "CLAMART"
+  },
+  "CLAMART CSM 7": {
+   "adresse": "52 rue Condorcet",
+   "club": "CLAMART CSM",
+   "cp": "92140",
+   "lat": "48.811111",
+   "lon": "2.26488",
+   "num": "08920111",
+   "salle": "GYMNASE CONDORCET",
+   "ville": "CLAMART"
+  },
+  "CLAMART CSM 8": {
+   "adresse": "52 rue Condorcet",
+   "club": "CLAMART CSM",
+   "cp": "92140",
+   "lat": "48.811111",
+   "lon": "2.26488",
+   "num": "08920111",
+   "salle": "GYMNASE CONDORCET",
+   "ville": "CLAMART"
+  },
+  "COMBS SENART TT 2": {
+   "adresse": "Avenue du Paloisel",
+   "club": "COMBS SENART TT",
+   "cp": "77380",
+   "lat": "48.661369",
+   "lon": "2.563168",
+   "num": "08770426",
+   "salle": "CS Le Paloisel",
+   "ville": "COMBS LA VILLE"
+  },
+  "COURBEVOIE STT 13": {
+   "adresse": "89 a 91 Boulevard de Verdun (face a la station Total)",
+   "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+   "cp": "92400",
+   "lat": "48.901644",
+   "lon": "2.259404",
+   "num": "08920025",
+   "salle": "Espace Sportif Jean-Pierre RIVES",
+   "ville": "COURBEVOIE"
+  },
+  "COURBEVOIE STT 14": {
+   "adresse": "89 a 91 Boulevard de Verdun (face a la station Total)",
+   "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+   "cp": "92400",
+   "lat": "48.901644",
+   "lon": "2.259404",
+   "num": "08920025",
+   "salle": "Espace Sportif Jean-Pierre RIVES",
+   "ville": "COURBEVOIE"
+  },
+  "COURBEVOIE STT 15": {
+   "adresse": "89 a 91 Boulevard de Verdun (face a la station Total)",
+   "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+   "cp": "92400",
+   "lat": "48.901644",
+   "lon": "2.259404",
+   "num": "08920025",
+   "salle": "Espace Sportif Jean-Pierre RIVES",
+   "ville": "COURBEVOIE"
+  },
+  "COURBEVOIE STT 5": {
+   "adresse": "89 a 91 Boulevard de Verdun (face a la station Total)",
+   "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+   "cp": "92400",
+   "lat": "48.901644",
+   "lon": "2.259404",
+   "num": "08920025",
+   "salle": "Espace Sportif Jean-Pierre RIVES",
+   "ville": "COURBEVOIE"
+  },
+  "COURBEVOIE STT 9": {
+   "adresse": "89 a 91 Boulevard de Verdun (face a la station Total)",
+   "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+   "cp": "92400",
+   "lat": "48.901644",
+   "lon": "2.259404",
+   "num": "08920025",
+   "salle": "Espace Sportif Jean-Pierre RIVES",
+   "ville": "COURBEVOIE"
+  },
+  "CS CLICHY TT 1": {
+   "adresse": "111 rue Henri Barbusse",
+   "club": "CLICHY SUR SEINE CS",
+   "cp": "92110",
+   "lat": "48.90147",
+   "lon": "2.309123",
+   "num": "08920066",
+   "salle": "GYMNASE HENRI BARBUSSE",
+   "ville": "CLICHY"
+  },
+  "CS CLICHY TT 5": {
+   "adresse": "111 rue Henri Barbusse",
+   "club": "CLICHY SUR SEINE CS",
+   "cp": "92110",
+   "lat": "48.90147",
+   "lon": "2.309123",
+   "num": "08920066",
+   "salle": "GYMNASE HENRI BARBUSSE",
+   "ville": "CLICHY"
+  },
+  "CSM CLAMART 1": {
+   "adresse": "52 rue Condorcet",
+   "club": "CLAMART CSM",
+   "cp": "92140",
+   "lat": "48.811111",
+   "lon": "2.26488",
+   "num": "08920111",
+   "salle": "GYMNASE CONDORCET",
+   "ville": "CLAMART"
+  },
+  "ES NANTERRE 1": {
+   "adresse": "24 rue Salvador Allende",
+   "club": "NANTERRE ES",
+   "cp": "92000",
+   "lat": "48.895776",
+   "lon": "2.219254",
+   "num": "08920234",
+   "salle": "GYMNASE PAUL ELUARD",
+   "ville": "NANTERRE"
+  },
+  "ESP REUILLY 2": {
+   "adresse": "26-28 Bld Carnot",
+   "club": "ESPERANCE REUILLY",
+   "cp": "75012",
+   "lat": "48.843919",
+   "lon": "2.413215",
+   "num": "08750074",
+   "salle": "Gymnase CARNOT",
+   "ville": "PARIS 12"
+  },
+  "IVRY US TT 1": {
+   "adresse": "52 boulevard de Brandebourg",
+   "club": "IVRY US TT",
+   "cp": "94200",
+   "lat": "48.814642",
+   "lon": "2.396022",
+   "num": "08941343",
+   "salle": "Complexe Sportif Lenine",
+   "ville": "IVRY SUR SEINE"
+  },
+  "JOSASSIEN TT 1": {
+   "adresse": "35 Rue St Roch",
+   "club": "JOSASSIEN TT",
+   "cp": "78350",
+   "lat": "48.762562",
+   "lon": "2.172654",
+   "num": "08780440",
+   "salle": "Centre Sportif du Val d Enfer",
+   "ville": "JOUY EN JOSAS"
+  },
+  "LA GARENNE COLO 4": {
+   "adresse": "111 av. Ch. De Gaulle",
+   "club": "LA GARENNE COLOMBES AE",
+   "cp": "92250",
+   "lat": "48.907694",
+   "lon": "2.255617",
+   "num": "08920126",
+   "salle": "COMPLEXE SP. PIERRE DENIS",
+   "ville": "LA GARENNE COLOMBES"
+  },
+  "LEVALLOIS SPORT 11": {
+   "adresse": "152, rue Danton",
+   "club": "LEVALLOIS SPORTING CLUB TT",
+   "cp": "92300",
+   "lat": "48.896309",
+   "lon": "2.278291",
+   "num": "08921458",
+   "salle": "Gymnase Eric SRECKI",
+   "ville": "LEVALLOIS PERRET"
+  },
+  "LEVALLOIS SPORT 13": {
+   "adresse": "152, rue Danton",
+   "club": "LEVALLOIS SPORTING CLUB TT",
+   "cp": "92300",
+   "lat": "48.896309",
+   "lon": "2.278291",
+   "num": "08921458",
+   "salle": "Gymnase Eric SRECKI",
+   "ville": "LEVALLOIS PERRET"
+  },
+  "LEVALLOIS SPORT 14": {
+   "adresse": "152, rue Danton",
+   "club": "LEVALLOIS SPORTING CLUB TT",
+   "cp": "92300",
+   "lat": "48.896309",
+   "lon": "2.278291",
+   "num": "08921458",
+   "salle": "Gymnase Eric SRECKI",
+   "ville": "LEVALLOIS PERRET"
+  },
+  "LEVALLOIS SPORT 16": {
+   "adresse": "152, rue Danton",
+   "club": "LEVALLOIS SPORTING CLUB TT",
+   "cp": "92300",
+   "lat": "48.896309",
+   "lon": "2.278291",
+   "num": "08921458",
+   "salle": "Gymnase Eric SRECKI",
+   "ville": "LEVALLOIS PERRET"
+  },
+  "LEVALLOIS SPORT 6": {
+   "adresse": "152, rue Danton",
+   "club": "LEVALLOIS SPORTING CLUB TT",
+   "cp": "92300",
+   "lat": "48.896309",
+   "lon": "2.278291",
+   "num": "08921458",
+   "salle": "Gymnase Eric SRECKI",
+   "ville": "LEVALLOIS PERRET"
+  },
+  "MENUCOURT 1": {
+   "adresse": "rue Bernard Astruc Complexe sportif",
+   "club": "MENUCOURT ASTT",
+   "cp": "95180",
+   "lat": "49.029666",
+   "lon": "1.977447",
+   "num": "08951449",
+   "salle": "Complexe Sportif Alain Bailli",
+   "ville": "MENUCOURT"
+  },
+  "MEUDON AS 1": {
+   "adresse": "14 Av.de Lattre de Tassigny",
+   "club": "MEUDON AS",
+   "cp": "92360",
+   "lat": "48.787387",
+   "lon": "2.232851",
+   "num": "08920067",
+   "salle": "GYMNASE MICHEL VIGNAUD",
+   "ville": "MEUDON LA FORET"
+  },
+  "MEUDON AS 3": {
+   "adresse": "14 Av.de Lattre de Tassigny",
+   "club": "MEUDON AS",
+   "cp": "92360",
+   "lat": "48.787387",
+   "lon": "2.232851",
+   "num": "08920067",
+   "salle": "GYMNASE MICHEL VIGNAUD",
+   "ville": "MEUDON LA FORET"
+  },
+  "MEUDON AS 4": {
+   "adresse": "14 Av.de Lattre de Tassigny",
+   "club": "MEUDON AS",
+   "cp": "92360",
+   "lat": "48.787387",
+   "lon": "2.232851",
+   "num": "08920067",
+   "salle": "GYMNASE MICHEL VIGNAUD",
+   "ville": "MEUDON LA FORET"
+  },
+  "MEUDON AS 6": {
+   "adresse": "14 Av.de Lattre de Tassigny",
+   "club": "MEUDON AS",
+   "cp": "92360",
+   "lat": "48.787387",
+   "lon": "2.232851",
+   "num": "08920067",
+   "salle": "GYMNASE MICHEL VIGNAUD",
+   "ville": "MEUDON LA FORET"
+  },
+  "MONTMAGNY-GROSLAY 1": {
+   "adresse": "(place rue) Ferdinand Berthoud",
+   "club": "MONTMAGNY GROSLAY TTC",
+   "cp": "95410",
+   "lat": "",
+   "lon": "",
+   "num": "08950348",
+   "salle": "Salle Polyvalente Roger Donnet",
+   "ville": "GROSLAY"
+  },
+  "NANTERRE ES 2": {
+   "adresse": "24 rue Salvador Allende",
+   "club": "NANTERRE ES",
+   "cp": "92000",
+   "lat": "48.895776",
+   "lon": "2.219254",
+   "num": "08920234",
+   "salle": "GYMNASE PAUL ELUARD",
+   "ville": "NANTERRE"
+  },
+  "NANTERRE ES 3": {
+   "adresse": "24 rue Salvador Allende",
+   "club": "NANTERRE ES",
+   "cp": "92000",
+   "lat": "48.895776",
+   "lon": "2.219254",
+   "num": "08920234",
+   "salle": "GYMNASE PAUL ELUARD",
+   "ville": "NANTERRE"
+  },
+  "NEUILLY ASPN 11": {
+   "adresse": "Espace Koenig 23 boulevard du General Koenig",
+   "club": "NEUILLY AS ST PIERRE",
+   "cp": "92200",
+   "lat": "48.883897",
+   "lon": "2.254621",
+   "num": "08920312",
+   "salle": "NEUILLY AS ST PIERRE",
+   "ville": "NEUILLY SUR SEINE"
+  },
+  "NEUILLY ASPN 5": {
+   "adresse": "Espace Koenig 23 boulevard du General Koenig",
+   "club": "NEUILLY AS ST PIERRE",
+   "cp": "92200",
+   "lat": "48.883897",
+   "lon": "2.254621",
+   "num": "08920312",
+   "salle": "NEUILLY AS ST PIERRE",
+   "ville": "NEUILLY SUR SEINE"
+  },
+  "NOISY LE GRAND 3": {
+   "adresse": "7 Rue de l'Universite",
+   "club": "NOISY LE GRAND CSTT",
+   "cp": "93160",
+   "lat": "48.838275",
+   "lon": "2.550063",
+   "num": "08930610",
+   "salle": "Gymnase Louison Bobet",
+   "ville": "NOISY LE GRAND"
+  },
+  "PALAISEAU US 2": {
+   "adresse": "1 Rue des Ecoles",
+   "club": "PALAISEAU US",
+   "cp": "91120",
+   "lat": "48.711052",
+   "lon": "2.240449",
+   "num": "08910042",
+   "salle": "GYMNASE BARA",
+   "ville": "Palaiseau"
+  },
+  "PARIS IX ATT 2": {
+   "adresse": "33, rue milton SAMEDI AU GYMNASE TOUR DES DAMES",
+   "club": "PARIS IX ATT",
+   "cp": "75009",
+   "lat": "48.877762",
+   "lon": "2.33317",
+   "num": "08751124",
+   "salle": "Gymnase PAUL GAUGUIN",
+   "ville": "PARIS 09"
+  },
+  "PARIS US 2": {
+   "adresse": "17,Rue Leopold Bellan",
+   "club": "US 2 PARIS",
+   "cp": "75002",
+   "lat": "48.866568",
+   "lon": "2.345507",
+   "num": "08751249",
+   "salle": "Gymnase Jean Dame",
+   "ville": "PARIS 02"
+  },
+  "PLESSIS ROBINS. 2": {
+   "adresse": "23 bis Rue du Capt Georges Facq",
+   "club": "PLESSIS ROBINSON TT",
+   "cp": "92350",
+   "lat": "48.776743",
+   "lon": "2.263392",
+   "num": "08920503",
+   "salle": "Gymnase Henri Wallon",
+   "ville": "LE PLESSIS ROBINSON"
+  },
+  "PLESSIS ROBINS. 3": {
+   "adresse": "23 bis Rue du Capt Georges Facq",
+   "club": "PLESSIS ROBINSON TT",
+   "cp": "92350",
+   "lat": "48.776743",
+   "lon": "2.263392",
+   "num": "08920503",
+   "salle": "Gymnase Henri Wallon",
+   "ville": "LE PLESSIS ROBINSON"
+  },
+  "PLESSIS ROBINS. 4": {
+   "adresse": "23 bis Rue du Capt Georges Facq",
+   "club": "PLESSIS ROBINSON TT",
+   "cp": "92350",
+   "lat": "48.776743",
+   "lon": "2.263392",
+   "num": "08920503",
+   "salle": "Gymnase Henri Wallon",
+   "ville": "LE PLESSIS ROBINSON"
+  },
+  "PLESSIS ROBINS. 5": {
+   "adresse": "23 bis Rue du Capt Georges Facq",
+   "club": "PLESSIS ROBINSON TT",
+   "cp": "92350",
+   "lat": "48.776743",
+   "lon": "2.263392",
+   "num": "08920503",
+   "salle": "Gymnase Henri Wallon",
+   "ville": "LE PLESSIS ROBINSON"
+  },
+  "PLESSIS ROBINS. 7": {
+   "adresse": "23 bis Rue du Capt Georges Facq",
+   "club": "PLESSIS ROBINSON TT",
+   "cp": "92350",
+   "lat": "48.776743",
+   "lon": "2.263392",
+   "num": "08920503",
+   "salle": "Gymnase Henri Wallon",
+   "ville": "LE PLESSIS ROBINSON"
+  },
+  "PONTAULT UMS TT 5": {
+   "adresse": "121 Rue des Pres Saint Martin",
+   "club": "UMS TT PONTAULT COMBAULT",
+   "cp": "77340",
+   "lat": "48.789227",
+   "lon": "2.617087",
+   "num": "08771170",
+   "salle": "Gymnase Jacqueline Auriol",
+   "ville": "PONTAULT COMBAULT"
+  },
+  "PUTEAUX TT CSM 3": {
+   "adresse": "4 cours du Marechal Leclerc",
+   "club": "PUTEAUX TT CSM",
+   "cp": "92800",
+   "lat": "48.88631",
+   "lon": "2.240982",
+   "num": "08921256",
+   "salle": "GYMNASE MARECHAL LECLERC",
+   "ville": "PUTEAUX"
+  },
+  "PUTEAUX TT CSM 4": {
+   "adresse": "4 cours du Marechal Leclerc",
+   "club": "PUTEAUX TT CSM",
+   "cp": "92800",
+   "lat": "48.88631",
+   "lon": "2.240982",
+   "num": "08921256",
+   "salle": "GYMNASE MARECHAL LECLERC",
+   "ville": "PUTEAUX"
+  },
+  "PUTEAUX TT CSM 5": {
+   "adresse": "4 cours du Marechal Leclerc",
+   "club": "PUTEAUX TT CSM",
+   "cp": "92800",
+   "lat": "48.88631",
+   "lon": "2.240982",
+   "num": "08921256",
+   "salle": "GYMNASE MARECHAL LECLERC",
+   "ville": "PUTEAUX"
+  },
+  "RUEIL ATHLETIC 10": {
+   "adresse": "41, rue Voltaire",
+   "club": "RUEIL ATHLETIC CLUB TT",
+   "cp": "92500",
+   "lat": "48.873602",
+   "lon": "2.195621",
+   "num": "08920309",
+   "salle": "Complexe Omnisports Alain Mimoun",
+   "ville": "RUEIL MALMAISON"
+  },
+  "RUEIL ATHLETIC 11": {
+   "adresse": "41, rue Voltaire",
+   "club": "RUEIL ATHLETIC CLUB TT",
+   "cp": "92500",
+   "lat": "48.873602",
+   "lon": "2.195621",
+   "num": "08920309",
+   "salle": "Complexe Omnisports Alain Mimoun",
+   "ville": "RUEIL MALMAISON"
+  },
+  "RUEIL ATHLETIC 13": {
+   "adresse": "41, rue Voltaire",
+   "club": "RUEIL ATHLETIC CLUB TT",
+   "cp": "92500",
+   "lat": "48.873602",
+   "lon": "2.195621",
+   "num": "08920309",
+   "salle": "Complexe Omnisports Alain Mimoun",
+   "ville": "RUEIL MALMAISON"
+  },
+  "RUEIL ATHLETIC 14": {
+   "adresse": "41, rue Voltaire",
+   "club": "RUEIL ATHLETIC CLUB TT",
+   "cp": "92500",
+   "lat": "48.873602",
+   "lon": "2.195621",
+   "num": "08920309",
+   "salle": "Complexe Omnisports Alain Mimoun",
+   "ville": "RUEIL MALMAISON"
+  },
+  "RUEIL ATHLETIC 16": {
+   "adresse": "41, rue Voltaire",
+   "club": "RUEIL ATHLETIC CLUB TT",
+   "cp": "92500",
+   "lat": "48.873602",
+   "lon": "2.195621",
+   "num": "08920309",
+   "salle": "Complexe Omnisports Alain Mimoun",
+   "ville": "RUEIL MALMAISON"
+  },
+  "RUEIL ATHLETIC 3": {
+   "adresse": "41, rue Voltaire",
+   "club": "RUEIL ATHLETIC CLUB TT",
+   "cp": "92500",
+   "lat": "48.873602",
+   "lon": "2.195621",
+   "num": "08920309",
+   "salle": "Complexe Omnisports Alain Mimoun",
+   "ville": "RUEIL MALMAISON"
+  },
+  "RUEIL ATHLETIC 6": {
+   "adresse": "41, rue Voltaire",
+   "club": "RUEIL ATHLETIC CLUB TT",
+   "cp": "92500",
+   "lat": "48.873602",
+   "lon": "2.195621",
+   "num": "08920309",
+   "salle": "Complexe Omnisports Alain Mimoun",
+   "ville": "RUEIL MALMAISON"
+  },
+  "RUEIL ATHLETIC 8": {
+   "adresse": "41, rue Voltaire",
+   "club": "RUEIL ATHLETIC CLUB TT",
+   "cp": "92500",
+   "lat": "48.873602",
+   "lon": "2.195621",
+   "num": "08920309",
+   "salle": "Complexe Omnisports Alain Mimoun",
+   "ville": "RUEIL MALMAISON"
+  },
+  "SCEAUX TT 1": {
+   "adresse": "4-6, rue Leo Delibes",
+   "club": "SCEAUX T.T.",
+   "cp": "92330",
+   "lat": "48.783592",
+   "lon": "2.307535",
+   "num": "08921164",
+   "salle": "Centre Sportif des Blagis",
+   "ville": "SCEAUX"
+  },
+  "SCEAUX TT 2": {
+   "adresse": "4-6, rue Leo Delibes",
+   "club": "SCEAUX T.T.",
+   "cp": "92330",
+   "lat": "48.783592",
+   "lon": "2.307535",
+   "num": "08921164",
+   "salle": "Centre Sportif des Blagis",
+   "ville": "SCEAUX"
+  },
+  "SCEAUX TT 3": {
+   "adresse": "4-6, rue Leo Delibes",
+   "club": "SCEAUX T.T.",
+   "cp": "92330",
+   "lat": "48.783592",
+   "lon": "2.307535",
+   "num": "08921164",
+   "salle": "Centre Sportif des Blagis",
+   "ville": "SCEAUX"
+  },
+  "SM MONTROUGE 1": {
+   "adresse": "11 Rue d'Arcueil",
+   "club": "SM MONTROUGE",
+   "cp": "92120",
+   "lat": "48.810901",
+   "lon": "2.325198",
+   "num": "08921182",
+   "salle": "Gymnase Maurice Genevoix ",
+   "ville": "Montrouge"
+  },
+  "SM MONTROUGE 2": {
+   "adresse": "11 Rue d'Arcueil",
+   "club": "SM MONTROUGE",
+   "cp": "92120",
+   "lat": "48.810901",
+   "lon": "2.325198",
+   "num": "08921182",
+   "salle": "Gymnase Maurice Genevoix ",
+   "ville": "Montrouge"
+  },
+  "SM MONTROUGE 3": {
+   "adresse": "11 Rue d'Arcueil",
+   "club": "SM MONTROUGE",
+   "cp": "92120",
+   "lat": "48.810901",
+   "lon": "2.325198",
+   "num": "08921182",
+   "salle": "Gymnase Maurice Genevoix ",
+   "ville": "Montrouge"
+  },
+  "SM MONTROUGE 4": {
+   "adresse": "11 Rue d'Arcueil",
+   "club": "SM MONTROUGE",
+   "cp": "92120",
+   "lat": "48.810901",
+   "lon": "2.325198",
+   "num": "08921182",
+   "salle": "Gymnase Maurice Genevoix ",
+   "ville": "Montrouge"
+  },
+  "SQY PING 2": {
+   "adresse": "Mail de Schenefeld",
+   "club": "SQY PING",
+   "cp": "78960",
+   "lat": "48.760862",
+   "lon": "2.046433",
+   "num": "08781477",
+   "salle": "Gymnase des Pyramides",
+   "ville": "VOISINS LE BRETONNEUX"
+  },
+  "STADE DE VANVES 1": {
+   "adresse": "10 rue Danton",
+   "club": "STADE DE VANVES",
+   "cp": "92170",
+   "lat": "48.8247",
+   "lon": "2.297312",
+   "num": "08921316",
+   "salle": "GYMNASE Maurice Magne",
+   "ville": "VANVES"
+  },
+  "STADE DE VANVES 2": {
+   "adresse": "10 rue Danton",
+   "club": "STADE DE VANVES",
+   "cp": "92170",
+   "lat": "48.8247",
+   "lon": "2.297312",
+   "num": "08921316",
+   "salle": "GYMNASE Maurice Magne",
+   "ville": "VANVES"
+  },
+  "THIAIS AS TT 3": {
+   "adresse": "Place  VAN GOGH",
+   "club": "THIAIS AS TT",
+   "cp": "94320",
+   "lat": "48.769375",
+   "lon": "2.389124",
+   "num": "08940459",
+   "salle": "PALAIS OMNISPORT THIAIS",
+   "ville": "THIAIS"
+  },
+  "TTMC CHATILLON 2": {
+   "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
+   "club": "TennisTable Municipal Chatillon",
+   "cp": "92320",
+   "lat": "48.810014",
+   "lon": "2.285384",
+   "num": "08920151",
+   "salle": "STADE MUNICIPAL",
+   "ville": "CHATILLON"
+  },
+  "TTMC CHATILLON 5": {
+   "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
+   "club": "TennisTable Municipal Chatillon",
+   "cp": "92320",
+   "lat": "48.810014",
+   "lon": "2.285384",
+   "num": "08920151",
+   "salle": "STADE MUNICIPAL",
+   "ville": "CHATILLON"
+  },
+  "TTMC CHATILLON 6": {
+   "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
+   "club": "TennisTable Municipal Chatillon",
+   "cp": "92320",
+   "lat": "48.810014",
+   "lon": "2.285384",
+   "num": "08920151",
+   "salle": "STADE MUNICIPAL",
+   "ville": "CHATILLON"
+  },
+  "TTMC CHATILLON 7": {
+   "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
+   "club": "TennisTable Municipal Chatillon",
+   "cp": "92320",
+   "lat": "48.810014",
+   "lon": "2.285384",
+   "num": "08920151",
+   "salle": "STADE MUNICIPAL",
+   "ville": "CHATILLON"
+  },
+  "TTMC CHATILLON 8": {
+   "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
+   "club": "TennisTable Municipal Chatillon",
+   "cp": "92320",
+   "lat": "48.810014",
+   "lon": "2.285384",
+   "num": "08920151",
+   "salle": "STADE MUNICIPAL",
+   "ville": "CHATILLON"
+  },
+  "USM MALAKOFF 4": {
+   "adresse": "1 Place de la Republique",
+   "club": "USM MALAKOFF",
+   "cp": "92240",
+   "lat": "48.823019",
+   "lon": "2.30515",
+   "num": "08920018",
+   "salle": "GYMNASE JACQUES DUCLOS",
+   "ville": "MALAKOFF"
+  },
+  "USM MALAKOFF 5": {
+   "adresse": "1 Place de la Republique",
+   "club": "USM MALAKOFF",
+   "cp": "92240",
+   "lat": "48.823019",
+   "lon": "2.30515",
+   "num": "08920018",
+   "salle": "GYMNASE JACQUES DUCLOS",
+   "ville": "MALAKOFF"
+  },
+  "USM MALAKOFF 6": {
+   "adresse": "1 Place de la Republique",
+   "club": "USM MALAKOFF",
+   "cp": "92240",
+   "lat": "48.823019",
+   "lon": "2.30515",
+   "num": "08920018",
+   "salle": "GYMNASE JACQUES DUCLOS",
+   "ville": "MALAKOFF"
+  },
+  "VERSAILLES SCTT 3": {
+   "adresse": "33 rue Henri Simon",
+   "club": "VERSAILLES SCTT",
+   "cp": "78000",
+   "lat": "48.807996",
+   "lon": "2.148877",
+   "num": "08780329",
+   "salle": "Gymnase HENRI SIMON",
+   "ville": "VERSAILLES"
+  },
+  "VILLENEUVE LA G 1": {
+   "adresse": "26 avenue Georges Pompidou (suivre direction Piscine)",
+   "club": "VILLENEUVE LA GARENNE",
+   "cp": "92390",
+   "lat": "48.941688",
+   "lon": "2.326439",
+   "num": "08921099",
+   "salle": "CENTRE SPORTIF PHILIPPE CATTIAU",
+   "ville": "VILLENEUVE LA GARENNE"
+  },
+  "VILLENEUVE LA G 2": {
+   "adresse": "26 avenue Georges Pompidou (suivre direction Piscine)",
+   "club": "VILLENEUVE LA GARENNE",
+   "cp": "92390",
+   "lat": "48.941688",
+   "lon": "2.326439",
+   "num": "08921099",
+   "salle": "CENTRE SPORTIF PHILIPPE CATTIAU",
+   "ville": "VILLENEUVE LA GARENNE"
+  },
+  "VINCENNOIS TT 2": {
+   "adresse": "25 rue du commandant MOWAT",
+   "club": "VINCENNOIS TT",
+   "cp": "94300",
+   "lat": "48.849641",
+   "lon": "2.445871",
+   "num": "08940096",
+   "salle": "Gymnase de l'est",
+   "ville": "VINCENNES"
+  },
+  "VOLTIGEURS 2": {
+   "adresse": "11, rue de Clamart",
+   "club": "LES VOLTIGEURS DE BILLANCOURT",
+   "cp": "92100",
+   "lat": "48.830816",
+   "lon": "2.243776",
+   "num": "08920505",
+   "salle": "VOLTIGEURS DE BILLANCOURT",
+   "ville": "BOULOGNE BILLANCOURT"
+  },
+  "VOLTIGEURS 5": {
+   "adresse": "11, rue de Clamart",
+   "club": "LES VOLTIGEURS DE BILLANCOURT",
+   "cp": "92100",
+   "lat": "48.830816",
+   "lon": "2.243776",
+   "num": "08920505",
+   "salle": "VOLTIGEURS DE BILLANCOURT",
+   "ville": "BOULOGNE BILLANCOURT"
+  }
+ },
+ "source": "API FFTT xml_club_b + xml_equipe + xml_club_detail — salle DÉCLARÉE du club, pas le lieu confirmé de la rencontre ; départemental et régional uniquement"
+}
