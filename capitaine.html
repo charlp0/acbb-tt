@@ -304,6 +304,13 @@
     ACBB.json('data/capitaines.json').then(c=>{ S.caps=(c&&c.capitaines)||{}; if(TAB==='equipe') renderDispos(); }).catch(()=>{ S.caps={}; });
     ACBB.json('data/site.json').then(s=>{ S.site=s; S.feuilles=null; if(TAB==='poule') renderPoule(); else if(S.dispos) renderDispos(); }).catch(()=>{});
     ACBB.json('data/resultats2627.json').then(r=>{ if(r&&r.resultats) S.resultats=r.resultats; if(TAB==='poule') renderPoule(); }).catch(()=>{});
+    /* Adresses des déplacements. Deux sources, dans cet ordre : le planning tenu à la main par la
+       sportive (salles2627.json), qui connaît les exceptions — notre F1 reçoit une journée à Marly ;
+       puis, à défaut, la salle DÉCLARÉE par le club adverse à la FFTT (salles_adverses.json), la même
+       que celle affichée par l'application FFTT. La seconde est étiquetée comme telle : c'est la salle
+       du club, pas le lieu confirmé de la rencontre. */
+    ACBB.json('data/salles2627.json').then(r=>{ S.salles=(r&&r.salles)||{}; if(TAB==='poule') renderPoule(); }).catch(()=>{});
+    ACBB.json('data/salles_adverses.json').then(r=>{ S.sadv=(r&&r.salles)||{}; if(TAB==='poule') renderPoule(); }).catch(()=>{});
     gate.hidden=true; document.getElementById('app').hidden=false;
     S.j=currentJ(S.poule&&S.poule.cal);
     document.getElementById('hTitle').innerHTML=esc(S.team)+' <em class="b">· '+esc(TAB==='poule'?'Ma poule':'Mon équipe')+'</em>';
@@ -623,6 +630,17 @@
     h+=top.length?'<div class="seen">'+top.map(x=>'<div class="card2"><span>'+esc(shortName(String(x[0]).trim()))+'</span><span class="pt">'+esc(x[1])+'</span></div>').join('')+'</div>':'<div class="empty" style="margin-top:6px">Pas de feuille de match exploitable.</div>';
     return h;
   }
+  /* Adresse du déplacement : planning de la sportive d'abord, salle déclarée du club ensuite. */
+  function lieuDe(m){
+    if(!m||m.dom||m.exempt) return null;
+    const cal=((S.salles||{})[S.team]||{}).cal||[];
+    const c=cal.filter(function(x){ return +x.j===+m.j; })[0];
+    if(c&&c.venue) return {txt:c.venue,src:''};
+    const a=(S.sadv||{})[(m.oppTeam&&m.oppTeam.name)||m.opp||''];
+    if(!a) return null;
+    const txt=[a.salle,a.adresse,a.cp,a.ville].filter(Boolean).join(' ').replace(/\s+/g,' ').trim();
+    return txt?{txt:txt,src:'club'}:null;
+  }
   function renderScout(m,acbbTeam,st){
     const el=document.getElementById('scout');
     if(!m||m.exempt||!m.oppTeam){ el.innerHTML='<div class="ch"><span class="t">Scouting</span></div><div class="empty">'+(m&&m.exempt?'Journée exempte : pas d\'adversaire.':'Sélectionne un adversaire dans la liste.')+'</div>'; return; }
@@ -644,6 +662,9 @@
 
     let h='<div class="ch"><span class="lab" style="color:var(--blue)">Scouting · J'+m.j+' · '+esc(fmtDate(m.date))+' · '+(m.dom?'domicile':'extérieur')+'</span>'+(diff?'<span class="tag'+(diff.cls?' '+diff.cls:'')+'" title="Estimation : moyenne de la dernière compo adverse et place au classement">'+diff.label+'</span>':'')+'</div>';
     h+='<div class="h2">'+esc(shortName(t.name))+'</div>';
+    const lieu=lieuDe(m);
+    if(lieu) h+='<div style="font-size:12px;color:var(--dim);line-height:1.5;margin:2px 0 8px">📍 <a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(lieu.txt)+'" target="_blank" rel="noopener" style="color:inherit">'+esc(lieu.txt)+'</a>'
+      +(lieu.src==='club'?'<span style="display:block;font-family:\'JetBrains Mono\',monospace;font-size:9.5px;color:var(--dimmer);letter-spacing:.2px">salle déclarée du club à la FFTT — sauf avis contraire</span>':'')+'</div>';
     const chips=[];
     if(rk){ const d=rk.diff!=null?+rk.diff:((+rk.gf||0)-(+rk.ga||0)); chips.push('<span class="chip" title="place au classement"><b>'+ordinal(+rk.pos)+'</b>/'+st.length+'</span>','<span class="chip"><b>'+esc(rk.pts)+'</b> pts</span>','<span class="chip" title="victoires / nuls / défaites">'+esc(rk.V)+'/'+esc(rk.N)+'/'+esc(rk.D)+'</span>','<span class="chip" title="parties gagnées moins parties perdues">GA <b>'+(d>0?'+':'')+d+'</b></span>'); }
     if(avg26!=null) chips.push('<span class="chip" title="classement moyen des joueurs alignés sur les journées déjà jouées">⌀ <b>'+avg26+'</b></span>');
