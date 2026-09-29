@@ -1,5 +1,5 @@
 {
- "maj": "2026-09-28",
+ "maj": "2026-09-29",
  "salles": {
   "ANTONY SPORT TT 5": {
    "adresse": "Rue de l'Annapurna",
@@ -70,6 +70,16 @@
    "num": "08920646",
    "salle": "GYMNASE des Bruyeres",
    "ville": "ASNIERES SUR SEINE"
+  },
+  "ATT XV 1": {
+   "adresse": "198 RUE SAINT CHARLES",
+   "club": "ASSOC.TENNIS DE TABLE PARIS XVe",
+   "cp": "75015",
+   "lat": "48.839562",
+   "lon": "2.279203",
+   "num": "08751260",
+   "salle": "GYMNASE SAINT CHARLES",
+   "ville": "PARIS 15"
   },
   "BEAUCHAMP CTT 1": {
    "adresse": "25 avenue Curnonsky",
@@ -581,6 +591,16 @@
    "salle": "Gymnase Jean Dame",
    "ville": "PARIS 02"
   },
+  "PING PARIS 14 1": {
+   "adresse": "3, avenue Maurice d'Ocagne",
+   "club": "PING PARIS 14",
+   "cp": "75014",
+   "lat": "48.824389",
+   "lon": "2.313944",
+   "num": "08751456",
+   "salle": "Gymnase Jules Noel",
+   "ville": "PARIS 14"
+  },
   "PLESSIS ROBINS. 2": {
    "adresse": "23 bis Rue du Capt Georges Facq",
    "club": "PLESSIS ROBINSON TT",
@@ -751,6 +771,16 @@
    "salle": "Complexe Omnisports Alain Mimoun",
    "ville": "RUEIL MALMAISON"
   },
+  "SAINT MAUR VGA US 2": {
+   "adresse": "31bis, ave du Port au Fouarre Centre sportif Arromanches",
+   "club": "VGA ST MAUR US TT",
+   "cp": "94100",
+   "lat": "48.789625",
+   "lon": "2.477904",
+   "num": "08940976",
+   "salle": "VGA ST MAUR US",
+   "ville": "ST MAUR DES FOSSES"
+  },
   "SCEAUX TT 1": {
    "adresse": "4-6, rue Leo Delibes",
    "club": "SCEAUX T.T.",
@@ -850,6 +880,16 @@
    "num": "08921316",
    "salle": "GYMNASE Maurice Magne",
    "ville": "VANVES"
+  },
+  "STAINS ES-PIERREFITTE AS 1": {
+   "adresse": "31/33 Rue d'Amiens",
+   "club": "STAINS ES-PIERREFITTE AS",
+   "cp": "93240",
+   "lat": "48.952477",
+   "lon": "2.369281",
+   "num": "08931032",
+   "salle": "Gymnase du Sivom",
+   "ville": "STAINS"
   },
   "THIAIS AS TT 3": {
    "adresse": "Place  VAN GOGH",
