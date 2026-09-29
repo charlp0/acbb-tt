@@ -68,6 +68,19 @@ for e in REG + DEP:
 print("adversaires à résoudre : %d" % len(cible))
 
 GEN = {'TT','AS','US','CS','ES','AC','CSM','USM','SC','ATT','UMS','SMTT','VGA','ESP','STT','CTT','SM','TTM','TTMC','EP','ASTT','PPC','CTTA','MJC','ASC'}
+
+# Correspondances forcées : numéro de club donné à la main quand le rapprochement
+# automatique échoue. Numéros fournis par Charles le 29/09/2026 après lecture du
+# diagnostic (scripts/probe_salles3.py). Les noms FFTT de ces clubs ne partagent
+# aucun mot distinctif avec le libellé de nos poules, aucune heuristique ne les
+# trouverait — d'où la saisie manuelle, qui reste la seule voie sûre.
+FORCE = {
+    'ATT XV 1':                   '08751260',   # Assoc. Tennis de Table Paris XVe
+    'PING PARIS 14 1':            '08751456',
+    'STAINS ES-PIERREFITTE AS 1': '08931032',
+    'SAINT MAUR VGA US 2':        '08940976',
+    'LAGNY SMTT 1':               '08770166',   # club identifié, mais aucune salle déclarée à la FFTT
+}
 cache = {}
 def equipes(num):
     if num not in cache:
@@ -79,11 +92,14 @@ fiches, out, rate = {}, {}, []
 for nom, alias in sorted(cible.items()):
     cles = {norme(a) for a in alias}
     distinct = {m for a in alias for m in mots(a) if len(m) >= 3 and m not in GEN and not m.isdigit()}
-    cands = [c for c in clubs if distinct & set(mots(c['nom']))]
-    trouve = [c for c in cands[:25] if cles & equipes(c['num'])]
-    if len(trouve) != 1:
-        rate.append((nom, len(cands), len(trouve))); continue
-    c = trouve[0]
+    if nom in FORCE:
+        c = {'num': FORCE[nom], 'nom': '(forcé)'}
+    else:
+        cands = [c2 for c2 in clubs if distinct & set(mots(c2['nom']))]
+        trouve = [c2 for c2 in cands[:25] if cles & equipes(c2['num'])]
+        if len(trouve) != 1:
+            rate.append((nom, len(cands), len(trouve))); continue
+        c = trouve[0]
     if c['num'] not in fiches:
         r = fb.get("xml_club_detail.php?club=%s" % c['num']); time.sleep(0.08)
         b = re.findall(r'<club>(.*?)</club>', r, re.S)
@@ -91,7 +107,7 @@ for nom, alias in sorted(cible.items()):
     d = fiches[c['num']]
     adr = ' '.join(x for x in [d.get('adressesalle1'), d.get('adressesalle2'), d.get('adressesalle3')] if x and x.strip())
     if not (d.get('nomsalle') or adr):
-        rate.append((nom, len(cands), -1)); continue
+        rate.append((nom, 0, -1)); continue
     out[nom] = {'salle': d.get('nomsalle') or '', 'adresse': adr.strip(),
                 'cp': d.get('codepsalle') or '', 'ville': d.get('villesalle') or '',
                 'lat': d.get('latitude') or '', 'lon': d.get('longitude') or '',
