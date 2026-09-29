@@ -314,7 +314,7 @@ const EXT=[{key:'NEVES|LOUNA',nom:'NEVES',pre:'Louna',men:1342,ext:'Marly (enten
 const SCALE=250;   // écart de points -> indice de victoire (logistique)
 
 /* ===================== ÉTAT ===================== */
-let SITE=null, D=[], BYKEY={}, BYFK={}, BYSN={}, ALIASK={}, CAT={}, SEXE={}, CAPT={}, POULES={}, SALLES={}, TAGS={}, FEM={}, VOTES={};
+let SITE=null, D=[], BYKEY={}, BYFK={}, BYSN={}, ALIASK={}, CAT={}, SEXE={}, CAPT={}, POULES={}, SALLES={}, SADV={}, TAGS={}, FEM={}, VOTES={};
 let EXC={ex:new Set(),conf:new Set()};   // extra-communautaires (data/extra_communautaires.json)
 let COMPOS={}, BASE={}, META={};      // COMPOS[j][team]={p:[],st:'draft'|'valid'|'sent',note:''}
 let J=1, FILTER='all', SEL=null, DRAG=null;
@@ -347,7 +347,8 @@ function boot(){
     rest('dispos_log','select=licence,nom,prenom,dispos,n,created_at&order=id.asc'),
     rest('scenarios_log','select=id,slot,tags,author,created_at&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc'),
     rest('scenarios_log',ACBB_CONTR.QUERY),
-    gj('../data/sexes.json')
+    gj('../data/sexes.json'),
+    gj('../data/salles_adverses.json')
   ]).then(res=>{
     const ct=ACBB_CONTR.fromRows(res[11]); CONTR=ct.liste; CONTR_META=ct.meta;
     SITE=res[6]||null;
@@ -358,6 +359,7 @@ function boot(){
     D.forEach(p=>{ [p.lic&&String(p.lic),p.key,(p.nom||'')+'|'+(p.pre||''),fkey(p)].forEach(k=>{ if(k&&!ALIASK[k]) ALIASK[k]=p; }); });
     CAT=res[1]||{};
     SEXE=res[12]||{};
+    SADV=(res[13]&&res[13].salles)||{};
     CAPT=(res[2]&&res[2].capitaines)||{};
     ((res[3]&&res[3].poules)||[]).forEach(q=>{POULES[q.acbb]=q;});
     SALLES=(res[4]&&res[4].salles)||{};
@@ -401,6 +403,16 @@ function matchOf(t,j){
   const home=(SALLES[t]&&SALLES[t].home)||'SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT';
   let venue=S.venue||(cl.dom?home:'');
   venue=venue.replace(/\s*digicode[^0-9]*\d+\s*/i,' ').replace(/\s+/g,' ').trim();
+  /* Déplacement sans adresse connue : on prend la salle DÉCLARÉE PAR LE CLUB adverse à la FFTT
+     (data/salles_adverses.json, départemental + régional). C'est la même source que l'application
+     FFTT que consultent les capitaines. Ce n'est PAS le lieu confirmé de la rencontre — un club
+     peut recevoir ailleurs, comme notre F1 à Marly — d'où l'étiquetage de la source, et la
+     priorité laissée aux adresses tenues à la main dans salles2627.json. */
+  let vSrc=venue?'planning':'';
+  if(!venue&&!cl.dom){
+    const a=SADV[name]||((opp&&opp.fftt)?SADV[opp.fftt]:null);
+    if(a){ venue=[a.salle,a.adresse,a.cp,a.ville].filter(Boolean).join(' ').replace(/\s+/g,' ').trim(); vSrc='club'; }
+  }
   /* niveau adverse : moyenne des joueurs réellement alignés depuis la J1 (site.json) ; à défaut seulement,
      le repère 25/26 — qui décrit l'équipe de la saison passée et peut être très loin de la réalité. */
   let oAvg=null, oSrc='', oJs=[];
@@ -411,7 +423,7 @@ function matchOf(t,j){
     if(n!=null){ oAvg=n; oSrc='26/27'; oJs=js.map(x=>+x.journee); }   // journées qui fondent la moyenne
   }
   if(oAvg==null&&opp&&opp.s25&&opp.s25.avg){ oAvg=opp.s25.avg; oSrc='25/26'; }
-  return {exempt:false,date:cl.date,dom:!!cl.dom,opp:name,oppAvg:oAvg,oppAvgSrc:oSrc,oppAvgJ:oJs,oppRank:(opp&&opp.s25)?opp.s25.rank:null,venue:venue,salle:S.salle||'',division:P.division,poule:P.poule,oppTeam:opp||null};
+  return {exempt:false,date:cl.date,dom:!!cl.dom,opp:name,oppAvg:oAvg,oppAvgSrc:oSrc,oppAvgJ:oJs,venueSrc:vSrc,oppRank:(opp&&opp.s25)?opp.s25.rank:null,venue:venue,salle:S.salle||'',division:P.division,poule:P.poule,oppTeam:opp||null};
 }
 function playing(t,j){ const m=matchOf(t,j); return !!(m&&!m.exempt); }
 /* Une feuille de rencontre est due dès que l'équipe figure au calendrier, EXEMPTION COMPRISE :
@@ -965,7 +977,7 @@ async function waText(t,j,opts){
   let s='🏓 ACBB TT — '+t+' · J'+j+' ('+div+(m.poule?' poule '+m.poule:'')+')\n';
   s+='📅 '+fmtD(m.date)+' · '+(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp)+'\n';
   if(withVenue&&m.dom&&m.salle) s+='📍 '+m.salle+'\n';
-  else if(withVenue&&m.venue) s+='📍 '+m.venue+'\n';
+  else if(withVenue&&m.venue) s+='📍 '+m.venue+(m.venueSrc==='club'?' (salle déclarée du club à la FFTT — sauf avis contraire)':'')+'\n';
   /* niveau adverse : moyenne des joueurs que l'adversaire a RÉELLEMENT alignés depuis la J1. On date
      la source, sinon le capitaine ne sait pas si le chiffre décrit l'équipe de cette saison ou celle
      d'avant — l'écart peut être énorme après des montées ou des départs. */
