@@ -47,6 +47,7 @@
   function create(options){
     const o=options||{}, ids=identities(o.players||[]), plans=o.plans||{}, confirmed=o.confirmedPlans||plans;
     const poules=Array.isArray(o.poules)?Object.fromEntries(o.poules.map(p=>[p.acbb,p])):(o.poules||{});
+    const context={saison:o.saison||'2026/2027',phase:o.phase||1};
     const sheets={}, events=[], unknown=[];
     const today=o.today||new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Paris'});
     Object.entries((o.site&&o.site.DATA)||{}).forEach(([t,pool])=>{
@@ -60,7 +61,7 @@
         const s={t,j,p,source:'fftt',complete:resolved.every(Boolean),row};
         sheets[t+':'+j]=s;
         resolved.forEach((k,i)=>{if(!k) unknown.push({t,j,reason:'identite',name:name(raw[i])});});
-        p.forEach(k=>events.push({k,t,j,source:'fftt',reel:true,played:true}));
+        p.forEach(k=>events.push({...context,championnat:t[0],k,t,j,source:'fftt',reel:true,played:true}));
       });
     });
     function calendar(t,j){return ((poules[t]||{}).cal||[]).find(c=>+c.j===+j)||null;}
@@ -72,7 +73,7 @@
         if(c.exempt&&d&&d<today&&p&&p.p.length&&['valid','sent'].includes(p.st)&&!sheets[t+':'+c.j]){
           const s={t,j:+c.j,p:p.p,source:'exemption',complete:true,played:false};
           sheets[t+':'+c.j]=s;
-          s.p.forEach(k=>events.push({k,t,j:+c.j,source:'exemption',reel:false,played:false}));
+          s.p.forEach(k=>events.push({...context,championnat:t[0],k,t,j:+c.j,source:'exemption',reel:false,played:false}));
         }
       });
     });
@@ -104,7 +105,7 @@
       // vieux plans de ce joueur dans ce même championnat ne font plus foi.
       if(includePlan) Object.keys(plans[j]||{}).filter(team).forEach(t=>{
         if(sheets[t+':'+j]||actual.some(e=>e.t[0]===t[0])) return;
-        const p=plan(t,j); if(p&&p.p.includes(k)) out.push({k,t,j:+j,source:'plan',played:false});
+        const p=plan(t,j); if(p&&p.p.includes(k)) out.push({...context,championnat:t[0],k,t,j:+j,source:'plan',played:false});
       });
       return out;
     }
@@ -121,7 +122,7 @@
         inconnus:jours.filter(x=>x.unknown).length,exemptions:jours.filter(x=>x.exempt).length,
         ailleurs:jours.filter(x=>x.t&&x.t!==t).map(x=>({j:x.j,t:x.t})),jours};
     }
-    return {events,sheets,unknown,canonical:ids.canonical,resolve:ids.resolve,calendar,lineup,history,missing,assignments,rounds,parcours};
+    return {context,events,sheets,unknown,canonical:ids.canonical,resolve:ids.resolve,calendar,lineup,history,missing,assignments,rounds,parcours};
   }
   function historyRules(model,k,t,j,poules){
     const h=model.history(k,j,t[0]), perRound=new Map();

@@ -100,3 +100,11 @@ test('les effectifs et contraintes utilisent aussi une version, aucun contournem
   assert.equal((await s.request('spo/documents',s.sportive,{kind,changes})).status,400);
  }
 });
+
+test('capitaine dames : les remplaçantes de l’effectif restent visibles, sans renfort prévu',async()=>{
+ const s=server();s.tables.liens[0].equipe='F3';
+ s.tables.scenarios_log.push({id:4,slot:'fem',tags:{'101':{e:'F3',r:'T'},'102':{e:'F3',r:'R'}}});
+ s.tables.scenarios_log.push({id:5,slot:'j2',tags:{F3:{p:['101','102','103']}}});
+ const r=await s.request('cap/dispos',s.captain);assert.equal(r.status,200);
+ assert.deepEqual((await r.json()).joueurs.map(p=>p.licence).sort(),['101','102']);
+});

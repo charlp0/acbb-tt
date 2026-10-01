@@ -743,7 +743,7 @@ async function router(req: Request): Promise<Response> {
       const statut = new Map<string, 'T' | 'renfort'>();
       for (const [k, v] of Object.entries(tags)) if (v && (v as Json).r === 'T' && (v as Json).e === equipe) statut.set(k, 'T');
       if (/^F\d/.test(equipe) && fem) {
-        for (const [k, v] of Object.entries(fem)) if (v && (v as Json).e === equipe && (v as Json).r === 'T') statut.set(k, 'T');
+        for (const [k, v] of Object.entries(fem)) if (v && (v as Json).e === equipe && ['T','R'].includes((v as Json).r)) statut.set(k, 'T');
       }
       const cles = [...statut.keys()];
       const dispos = await disposParJoueur(cles, ann);
