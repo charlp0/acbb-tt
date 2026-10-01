@@ -307,6 +307,11 @@ async function dernierScenario(slot: string): Promise<Json | null> {
   if (error) fail(500, 'lecture_scenarios', { detail: error.message });
   return (data?.tags as Json) ?? null;
 }
+async function nonParticipationsConfirmees(): Promise<Json[]> {
+  const { data, error } = await sb.from('private_config').select('value').eq('name', 'non_participations').maybeSingle();
+  if (error || (data && !Array.isArray(data.value))) fail(503, 'confirmations_indisponibles');
+  return data?.value ?? [];
+}
 /** Équipe d'un joueur : titulaire tags_log, sinon slot féminin, sinon null. */
 function equipeDuJoueur(cle: string, tags: Json, fem: Json | null): string | null {
   const t = tags?.[cle];
@@ -730,13 +735,14 @@ async function router(req: Request): Promise<Response> {
     const acteur = lien.nom;
 
     if (path === '/cap/dispos' && GET) {
-      const [tags, fem, slots, ann, journees, calendrier] = await Promise.all([
+      const [tags, fem, slots, ann, journees, calendrier, confirmations] = await Promise.all([
         derniersTags(),
         dernierScenario('fem'),
         Promise.all(JOURNEES.map((j) => dernierScenario(`j${j}`))),
         annuaire(),
         journeesEquipe(equipe),
         getStatic('poules2627.json'),
+        nonParticipationsConfirmees(),
       ]);
       // Effectif de base seulement. Ne jamais envoyer les renforts des plans futurs,
       // même si le navigateur les masquerait ensuite.
@@ -776,6 +782,8 @@ async function router(req: Request): Promise<Response> {
           changes: libellesChangements(derniere, lignes[1]),
           jamais: !derniere,
           exemptions,
+          non_participations: confirmations.filter(n => aliases.includes(String(n.k)) && n.championnat === equipe[0])
+            .map(n => ({ j: n.j, championnat: n.championnat, saison: n.saison, phase: n.phase, confirmed: n.confirmed })),
         };
       }))).sort((a, b) => a.nom.localeCompare(b.nom, 'fr') || a.prenom.localeCompare(b.prenom, 'fr'));
       return json({ equipe, journees, joueurs });
@@ -869,6 +877,7 @@ async function router(req: Request): Promise<Response> {
       if (error || !data) fail(503, 'statuts_indisponibles');
       return json(data.value);
     }
+    if (path === '/spo/config/non-participations' && GET) return json(await nonParticipationsConfirmees());
 
     if (path === '/spo/documents' && POST) {
       const body=await lireJson(req), kind=String(body.kind ?? ''), changes=body.changes;

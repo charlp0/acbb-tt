@@ -12,7 +12,7 @@ function fixture(){
  const rows=[{id:12,slot:'j2',author:'Test A',created_at:'2026-09-29T10:00:00Z',tags:{M11:{p:players.slice(0,4).map(p=>p.lic),st:'draft',note:''}}},
   {id:11,slot:'j1',author:'Test A',created_at:'2026-09-20T10:00:00Z',tags:{M9:{p:[players[0].lic],st:'sent'},M15:{p:[players[4].lic],st:'sent'}}}];
  const votes=players.map((p,i)=>({id:i+1,licence:p.lic,nom:p.nom,prenom:p.pre,created_at:'2026-09-29T09:00:00Z',dispos:{j1:true,j2:i!==1,j3:true,j4:true,j5:true,j6:true,j7:true},n:6}));
- return {players,tags,poules,site,rows,votes,saves:[],conflict:false,role:'sportive',documents:[]};
+ return {players,tags,poules,site,rows,votes,saves:[],conflict:false,role:'sportive',documents:[],nonParticipations:[]};
 }
 async function install(context,state){
  await context.route('**/*',async route=>{
@@ -22,6 +22,7 @@ async function install(context,state){
    const api=url.pathname.split('/api/')[1],body=req.method()==='POST'?req.postDataJSON():null;
    if(api==='me')return send({role:state.role,equipe:'M11',nom:'Test'});
    if(api==='spo/config/extras')return send({ex:{},a_confirmer:{}});
+   if(api==='spo/config/non-participations')return send(state.nonParticipations);
    if(api==='spo/rest'){
     if(body.method!=='select')throw new Error('Écriture non prévue dans le test');
     if(body.table==='tags_log')return send([{id:1,tags:state.tags}]);
@@ -35,7 +36,7 @@ async function install(context,state){
     if(state.conflict){state.conflict=false;return send({error:'conflit_composition',conflicts:['M11'],current:{id:13,slot:'j2',author:'Test B',created_at:'2026-09-30T10:00:00Z',tags:{M11:{p:[state.players[4].lic],st:'valid',note:'Note partagée'}}}},409);}
     const row={id:14,slot:body.slot,author:'Test',created_at:'2026-09-30T11:00:00Z',tags:body.changes};state.rows.unshift(row);return send({ok:true,row});
    }
-   if(api==='cap/dispos')return send({equipe:'M11',journees:state.poules.poules.find(x=>x.acbb==='M11').cal,joueurs:state.players.slice(0,4).map((p,i)=>({...state.votes[i],prenom:p.pre,statut:'T',saved_at:'2026-09-29T09:00:00Z',changes:[],exemptions:[]}))});
+   if(api==='cap/dispos')return send({equipe:'M11',journees:state.poules.poules.find(x=>x.acbb==='M11').cal,joueurs:state.players.slice(0,4).map((p,i)=>({...state.votes[i],prenom:p.pre,statut:'T',saved_at:'2026-09-29T09:00:00Z',changes:[],exemptions:[],non_participations:state.nonParticipations.filter(n=>n.k===p.lic)}))});
    if(api==='cap/debriefs'||api==='public/journee')return send({items:[]});
    if(api==='cap/poule')return send({equipe:'M11',resultats:[]});
    if(api==='spo/alerts/dispos')return send({message:'Avis privé fictif'});
@@ -109,6 +110,27 @@ test('mobile : accueil public et équipe restent consultables',async({page,conte
  const overflow=await page.evaluate(()=>Array.from(document.querySelectorAll('body *')).filter(e=>e.getBoundingClientRect().right>innerWidth+1).map(e=>({tag:e.tagName,cls:e.className,width:e.getBoundingClientRect().width})).slice(0,12));
  expect(overflow).toEqual([]);
  expect(errors).toEqual([]);
+});
+test('capitaine : NJ confirmé et colonnes alignées malgré un compteur encore incertain',async({page,context})=>{
+ const state=fixture();
+ state.site.DATA.M11.teams.find(t=>t.acbb).journees[0].players=state.site.DATA.M11.teams.find(t=>t.acbb).journees[0].players.slice(0,2);
+ state.nonParticipations=[{k:state.players[2].lic,j:1,championnat:'M',saison:'2026/2027',phase:1,confirmed:true}];
+ state.votes[2].dispos.j1=false;
+ await install(context,state);
+ for(const width of [1280,390,320]){
+  await page.setViewportSize({width,height:900});await page.goto('/capitaine.html');
+  const rows=page.locator('.prow');await expect(rows).toHaveCount(4);
+  await expect(rows.nth(2).locator('.tick').first()).toHaveText('NJ');
+  await expect(rows.nth(2).locator('.tick').first()).toHaveClass(/no/);
+  await expect(rows.nth(2).locator('.mj')).toHaveText('0/1');
+  await expect(rows.nth(3).locator('.mj')).toHaveText('0/1 ?');
+  const bounds=await rows.evaluateAll(rs=>rs.map(r=>Array.from(r.querySelectorAll('.tick,.mj'),e=>{const b=e.getBoundingClientRect();return {x:b.x,w:b.width,right:b.right};})));
+  for(const row of bounds)for(let i=0;i<8;i++){
+   expect(Math.abs(row[i].x-bounds[0][i].x)).toBeLessThan(.5);
+   expect(Math.abs(row[i].w-bounds[0][i].w)).toBeLessThan(.5);
+   expect(row[i].right).toBeLessThanOrEqual(width);
+  }
+ }
 });
 
 test('effectifs : seuls les joueurs modifiés sont enregistrés avec la version chargée',async({page,context})=>{

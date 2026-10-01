@@ -119,7 +119,7 @@ function boot(){
     rest('scenarios_log','select=id,tags&slot=eq.fem&order=id.desc&limit=1'),
     rest('dispos_log','select=licence,nom,prenom,dispos,n,created_at&order=id.asc'),
     rest('scenarios_log','select=id,slot,tags,author,created_at&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc'),
-    gj('../data/site.json')
+    gj('../data/site.json'), api('spo/config/non-participations')
   ]).then(res=>{
     const base=((res[0]&&res[0].players)||[]);
     D=base.concat(EXT.filter(x=>!base.some(p=>pkey(p)===pkey(x))));
@@ -131,7 +131,7 @@ function boot(){
     const seen={};
     res[5].forEach(r=>{ if(!r.slot||seen[r.slot]) return; seen[r.slot]=1; const j=parseInt(r.slot.slice(1),10); const t=Object.assign({},r.tags||{}); META[j]={id:r.id,author:r.author,at:r.created_at}; delete t._meta; COMPOS[j]=t; });
     if(LOADERR){ const se=document.getElementById('srvErr'); se.hidden=false; se.textContent='Données serveur indisponibles ('+LOADERR.message+') — affichage incomplet'; }
-    SITE=res[6]; PARTS=ACBB_PART.create({site:SITE,players:D,plans:COMPOS,poules:POULES});
+    SITE=res[6]; PARTS=ACBB_PART.create({site:SITE,players:D,plans:COMPOS,nonParticipations:res[7]||[],poules:POULES});
     renderFilters(); render();
   }).catch(e=>{ document.getElementById('mx').innerHTML='<div class="tag lose">Erreur de chargement : '+esc(e.message)+'</div>'; });
 }

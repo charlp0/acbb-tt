@@ -50,6 +50,12 @@
     const context={saison:o.saison||'2026/2027',phase:o.phase||1};
     const sheets={}, events=[], unknown=[];
     const today=o.today||new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Paris'});
+    // Confirmations privées explicites de non-participation. Ni une indisponibilité,
+    // ni l'absence d'un joueur dans une composition prévue ne constitue cette preuve.
+    const nonParticipations=(o.nonParticipations||[]).filter(n=>n.confirmed===true&&n.saison===context.saison&&n.phase===context.phase
+      &&['M','F'].includes(n.championnat)&&Number.isInteger(n.j)&&n.j>=1
+      &&Object.entries(poules).some(([t,p])=>t[0]===n.championnat&&(p.cal||[]).some(c=>+c.j===n.j&&dateISO(c.date)&&dateISO(c.date)<today)))
+      .map(n=>({...n,k:ids.canonical(n.k)}));
     Object.entries((o.site&&o.site.DATA)||{}).forEach(([t,pool])=>{
       if(!team(t)) return;
       const own=(pool.teams||[]).find(x=>x.acbb); if(!own) return;
@@ -98,11 +104,13 @@
       return out;
     }
     function missingFor(k,before,genre){
+      k=ids.canonical(k);
       const confirmed=history(k,before,genre);
       // Une participation confirmée (exemption comprise) établit l'équipe du
       // joueur pour cette journée et ce championnat. Le manque d'une autre
       // feuille ne rend pas à nouveau cet historique individuel inconnu.
-      return missing(before,genre).filter(m=>!confirmed.some(e=>e.j===m.j&&e.championnat===m.t[0]));
+      return missing(before,genre).filter(m=>!confirmed.some(e=>e.j===m.j&&e.championnat===m.t[0])
+        &&!nonParticipations.some(n=>n.k===k&&n.j===m.j&&n.championnat===m.t[0]));
     }
     function assignments(k,j,includePlan=true){
       k=ids.canonical(k);

@@ -108,3 +108,16 @@ test('capitaine dames : les remplaçantes de l’effectif restent visibles, sans
  const r=await s.request('cap/dispos',s.captain);assert.equal(r.status,200);
  assert.deepEqual((await r.json()).joueurs.map(p=>p.licence).sort(),['101','102']);
 });
+test('confirmations NJ privées : chaque capitaine ne reçoit que son effectif et son championnat',async()=>{
+ const s=server();
+ const entries=[{k:'101',j:1,championnat:'M',saison:'2026/2027',phase:1,confirmed:true,note:'note interne'},
+  {k:'102',j:1,championnat:'M',saison:'2026/2027',phase:1,confirmed:true},
+  {k:'101',j:1,championnat:'F',saison:'2026/2027',phase:1,confirmed:true}];
+ s.tables.private_config.push({name:'non_participations',value:entries});
+ assert.equal((await s.request('spo/config/non-participations')).status,401);
+ assert.equal((await s.request('spo/config/non-participations',s.captain)).status,403);
+ assert.deepEqual(await (await s.request('spo/config/non-participations',s.sportive)).json(),entries);
+ const cap=await (await s.request('cap/dispos',s.captain)).json();
+ assert.deepEqual(cap.joueurs[0].non_participations,[{j:1,championnat:'M',saison:'2026/2027',phase:1,confirmed:true}]);
+ assert(!JSON.stringify(cap).includes('note interne'));assert.equal(cap.joueurs.length,1);
+});

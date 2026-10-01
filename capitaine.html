@@ -38,9 +38,10 @@
      (vert dispo, rouge absent, gris sans réponse). Sur cette page elles sont simplement plus
      larges, pour qu'une journée déjà disputée puisse porter, écrite en noir par-dessus,
      l'équipe où le joueur a été aligné — ou NJ s'il n'a pas joué. */
-  .ticks .tick{width:30px;height:20px;border-radius:4px;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;letter-spacing:.2px;display:inline-flex;align-items:center;justify-content:center;color:#0B0B0D}
+  .prow .ticks{display:inline-grid;grid-template-columns:repeat(7,minmax(0,1fr)) 42px;width:273px;max-width:100%;align-items:center}
+  .ticks .tick{width:100%;height:20px;border-radius:4px;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;letter-spacing:.2px;display:inline-flex;align-items:center;justify-content:center;color:#0B0B0D}
   .ticks .tick.off{color:var(--ink-2)}   /* sur le gris, du noir ne se lirait pas */
-  .mj{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;margin-left:7px;padding:1px 5px;border-radius:99px;background:rgba(61,214,140,.12);border:1px solid rgba(61,214,140,.35);color:var(--win-lt);cursor:help;flex-shrink:0;vertical-align:middle}
+  .mj{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;padding:1px 5px;border-radius:99px;background:rgba(61,214,140,.12);border:1px solid rgba(61,214,140,.35);color:var(--win-lt);cursor:help;text-align:center;white-space:nowrap;box-sizing:border-box;width:42px}
   .mj.zero{background:rgba(255,255,255,.05);border-color:var(--line-2);color:var(--dim)}
   .venus{font-size:11.5px;color:var(--dim);padding:8px 12px;line-height:1.6}
   .venus b{color:var(--ink-2);font-weight:700}
@@ -378,7 +379,8 @@
       const byDay=declarations[e.j]=declarations[e.j]||{};
       const c=byDay[e.t]=byDay[e.t]||{p:[],st:'sent'};c.p.push(String(p.licence));
     }));
-    return ACBB_PART.create({site:S.site,players:S.players,plans:declarations,poules:(S.poules&&S.poules.poules)||[]});
+    const nonParticipations=((S.dispos&&S.dispos.joueurs)||[]).flatMap(p=>(p.non_participations||[]).map(n=>({...n,k:p.licence})));
+    return ACBB_PART.create({site:S.site,players:S.players,plans:declarations,nonParticipations,poules:(S.poules&&S.poules.poules)||[]});
   }
   /* Ceux qui sont venus nous aider : présents sur NOS feuilles sans appartenir à l'effectif.
      On montre les deux sens de la rotation — sinon le capitaine ne verrait que ce qu'il perd. */

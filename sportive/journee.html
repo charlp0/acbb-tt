@@ -319,7 +319,7 @@ const EXT=[{key:'NEVES|LOUNA',nom:'NEVES',pre:'Louna',men:1342,ext:'Marly (enten
 const SCALE=250;   // écart de points -> indice de victoire (logistique)
 
 /* ===================== ÉTAT ===================== */
-let PARTS=null, EXJ=null, LIEUX={}, SAVING=false;
+let PARTS=null, EXJ=null, LIEUX={}, NON_PARTICIPATIONS=[], SAVING=false;
 let SITE=null, D=[], BYKEY={}, BYFK={}, BYSN={}, ALIASK={}, CAT={}, SEXE={}, CAPT={}, POULES={}, SALLES={}, SADV={}, TAGS={}, FEM={}, VOTES={};
 let EXC={ex:new Set(),conf:new Set()};   // extra-communautaires (data/extra_communautaires.json)
 let COMPOS={}, BASE={}, META={};      // COMPOS[j][team]={p:[],st:'draft'|'valid'|'sent',note:''}
@@ -354,7 +354,7 @@ function boot(){
     rest('scenarios_log','select=id,slot,tags,author,created_at&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc'),
     rest('scenarios_log',ACBB_CONTR.QUERY),
     gj('../data/sexes.json'),
-    gj('../data/salles_adverses.json'), gj('../data/lieux.json')
+    gj('../data/salles_adverses.json'), gj('../data/lieux.json'), api('spo/config/non-participations')
   ]).then(res=>{
     const ct=ACBB_CONTR.fromRows(res[11]); CONTR=ct.liste; CONTR_META=ct.meta;
     SITE=res[6]||null;
@@ -366,6 +366,7 @@ function boot(){
     CAT=res[1]||{};
     SEXE=res[12]||{};
     LIEUX=res[14]||{};
+    NON_PARTICIPATIONS=res[15]||[];
     SADV=(res[13]&&res[13].salles)||{};
     CAPT=(res[2]&&res[2].capitaines)||{};
     ((res[3]&&res[3].poules)||[]).forEach(q=>{POULES[q.acbb]=q;});
@@ -488,7 +489,7 @@ function cleFeuille(nom,pre){
   return null;
 }
 function buildReel(){
-  PARTS=ACBB_PART.create({site:SITE,players:D,plans:COMPOS,confirmedPlans:BASE,poules:POULES});
+  PARTS=ACBB_PART.create({site:SITE,players:D,plans:COMPOS,confirmedPlans:BASE,nonParticipations:NON_PARTICIPATIONS,poules:POULES});
   REEL={}; RSC={};
   Object.values(PARTS.sheets).filter(s=>s.source==='fftt').forEach(s=>{
     (REEL[s.j]=REEL[s.j]||{})[s.t]=s.p;

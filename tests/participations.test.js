@@ -90,3 +90,25 @@ test('une preuve ne complète ni une autre journée ni un autre championnat',()=
  assert(m.missingFor('101',3,'M').every(x=>x.j===2));
  assert(m.missingFor('101',2,'F').some(x=>x.t==='F3'));
 });
+test('une non-participation confirmée lève uniquement le doute du joueur et de la journée concernés',()=>{
+ const m=model({poules:{M1:pool('M1'),M11:pool('M11'),F3:pool('F3')},
+  nonParticipations:[{k:'TEST|Alex',j:1,championnat:'M',saison:'2026/2027',phase:1,confirmed:true}]});
+ const pc=m.parcours('101','M11');
+ assert.equal(pc.joue,0);assert.equal(pc.jours[0].t,null);assert.equal(pc.inconnus,0);
+ assert.equal(m.history('101',2).length,0); // NJ n'est jamais une participation réglementaire.
+ assert(m.missingFor('102',2,'M').length);
+ assert(m.missingFor('101',2,'F').length);
+ assert(m.missingFor('101',3,'M').every(x=>x.j===2));
+});
+test('une confirmation NJ future, non validée ou d’une autre saison/phase ne masque aucune feuille manquante',()=>{
+ const n={k:'101',j:1,championnat:'M',saison:'2026/2027',phase:1,confirmed:true};
+ for(const extra of [{confirmed:false},{saison:'2025/2026'},{phase:2}]){
+  assert(model({nonParticipations:[{...n,...extra}]}).parcours('101','M11').inconnus>0);
+ }
+ assert(model({today:'2026-09-01',nonParticipations:[n]}).missingFor('101',2,'M').length>0);
+});
+test('une feuille réelle ultérieure prime sur une déclaration NJ',()=>{
+ const m=model({nonParticipations:[{k:'101',j:1,championnat:'M',saison:'2026/2027',phase:1,confirmed:true}],site:{DATA:sheet('M11',1)}});
+ assert.equal(m.parcours('101','M11').joue,1);assert.equal(m.parcours('101','M11').jours[0].t,'M11');
+ assert.equal(PART.historyRules(m,'101','M15',2,{}).descendedJ2,true);
+});
