@@ -3,3 +3,17 @@
 data/_state.json
 data/_oppcache.json
 .claude/
+
+# Données privées : seules les tables/API privées peuvent les contenir.
+data/backup-supabase/
+data/extra_communautaires.json
+data/phones.enc.json
+alert.md
+run.log
+build/
+node_modules/
+__pycache__/
+.env
+.env.*
+test-results/
+playwright-report/

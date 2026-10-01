@@ -293,6 +293,8 @@ def s25_of(hit, genre, club, num, div2627):
             out['top'] = [[n.title(), p] for n, p in top]; out['vivier'] = _VIV[name27]
     return out
 
+FFTT_ALIASES = {'PARIS US 2': 'PARIS US 2 1', 'COURBEVOIE STT 5': 'COURBEVOIE STT 4', 'BOIS COLOMBES S 3': 'BCS TT 3', 'AL GRAND QUEVILLY / GRAVIGNY TT 2': 'ALCL TT GRAND QUEVILLY 2'}
+
 out = {'source': 'Ligue IDF V.26-07-23 + CD92 v13/07/2026 · renumérotation CD92 26/27 (Minh, 11/09/2026)', 'dates': DATES, 'poules': []}
 for P in POULES:
     dept92 = '(92)' in P['division']
@@ -305,6 +307,8 @@ for P in POULES:
         acbb = club.startswith('BOULOGNE')
         teams.append({'pos': pos, 'name': (f'{club} {num}' if num != '' else club), 'dept': dep, 'acbb': acbb,
                       's25': s25_of(hit, P['genre'], club, num, P['division'])})
+    for t in teams:
+        if t['name'] in FFTT_ALIASES: t['fftt']=FFTT_ALIASES[t['name']]
     filled = {t['pos'] for t in teams}
     cal = []
     if P.get('fixtures'):

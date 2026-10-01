@@ -6,8 +6,7 @@
    encore. Ce module le remet partout, en une ligne par page, pour qu'une page
    ajoutée plus tard n'ait plus qu'à l'inclure.
 
-   Vie privée. Le chemin envoyé est construit ICI, explicitement : chemin +
-   chaîne de requête, JAMAIS le fragment. C'est essentiel — le jeton d'accès des
+   Vie privée. Le chemin envoyé est construit ICI, explicitement : chemin uniquement, sans requête, titre personnel ni fragment. C'est essentiel — le jeton d'accès des
    capitaines et de la sportive voyage dans le fragment (#t=...). GoatCounter ne
    l'enverrait pas non plus par défaut, mais on ne veut pas que cette garantie
    dépende du comportement d'un script tiers.
@@ -28,9 +27,7 @@
   function chemin(){
     try{
       var u=new URL(location.href);
-      u.searchParams.delete('dev');
-      var q=u.searchParams.toString();
-      return u.pathname+(q?'?'+q:'');
+      return u.pathname; // aucune licence, recherche, date ou jeton dans la mesure d’audience
     }catch(e){ return location.pathname; }
   }
 
@@ -39,7 +36,7 @@
   function compter(n){
     n=n||0;
     if(window.goatcounter&&window.goatcounter.count){
-      try{ window.goatcounter.count({path:chemin(),title:document.title}); }catch(e){}
+      try{ window.goatcounter.count({path:chemin(),title:location.pathname.split('/').pop()||'index.html',referrer:''}); }catch(e){}
       return;
     }
     if(n<50) setTimeout(function(){ compter(n+1); },200);

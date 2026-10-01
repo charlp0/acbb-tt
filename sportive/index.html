@@ -6,7 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,600;0,700;0,800;1,700&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/style.css">
 <link rel="icon" type="image/png" href="../logo.png">
-<link rel="manifest" href="../../manifest.json">
+<link rel="manifest" href="../manifest.json">
 <meta name="theme-color" content="#0B0B0D">
 <style>
   :root{
@@ -401,7 +401,7 @@
     <div class="tmrow"><button type="button" id="tmCancel">Annuler</button><button type="button" class="ok" id="tmOk">Appliquer</button></div>
   </div>
 </div>
-<script src="../shared/api.js"></script>
+<script src="../shared/api.js"></script><script src="../shared/edition.js"></script>
 <script src="../shared/contraintes.js"></script>
 <script src="../shared/nav.js" data-base=".."></script>
 <script src="../shared/report.js" defer></script>
@@ -446,18 +446,19 @@ const isCaptOf=(p,team)=>{const c=CAPT_MAP[team]; const k=String(p.lic||p._k||''
 const captBadge=(p,team)=>isCaptOf(p,team)?'<span class="ref-r" title="capitaine de l\'équipe">C</span>':'';
 /* joueurs extra-communautaires (hors UE) : 1 seul par feuille en équipe de 4 (II.609) — data/extra_communautaires.json */
 let EXC={ex:new Set(),conf:new Set()};
-onAuth(()=>gj('extra_communautaires.json')).then(j=>{ if(!j)return; EXC={ex:new Set(Object.values(j.ex||{}).map(String)),conf:new Set(Object.values(j.a_confirmer||{}).map(String))};if(typeof render==='function')render();}).catch(()=>{});
+onAuth(()=>ACBB.api('spo/config/extras')).then(j=>{ if(!j)return; EXC={ex:new Set(Object.values(j.ex||{}).map(String)),conf:new Set(Object.values(j.a_confirmer||{}).map(String))};if(typeof render==='function')render();}).catch(()=>{});
 const exKey=p=>String(p.lic||pkey(p));
 const exBadge=p=>{const k=exKey(p); return EXC.ex.has(k)?'<span class="agec ex" title="nationalité hors UE / EEE / Suisse / RU : 1 seul par feuille (II.609)">EX</span>':(EXC.conf.has(k)?'<span class="agec ex q" title="nationalité hors UE à confirmer">EX?</span>':'');};
 const tb=document.getElementById('tb'), q=document.getElementById('q'), ks=document.getElementById('k'), kv=document.getElementById('kv'), cs=document.getElementById('cap'), cv=document.getElementById('capv');
 function traj(t){return t>=30?'<span class="up">↗</span>':(t<=-30?'<span class="down">↘</span>':'<span class="flat">→</span>');}
 
 /* ===== TAGS COMPO 26/27 (journal tags_log via la fonction serveur : la dernière ligne fait foi) ===== */
+let TAG_VERSION=0, TAGS_READY=false;
 let TAGS={}, DIRTY=new Set(), CURKEY=null;
 const pkey=p=>String(p.lic||((p.nom||'')+'|'+(p.pre||'')));
 const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-function draftSave(){try{localStorage.setItem('acbb_tags_draft',JSON.stringify({keys:[...DIRTY],tags:Object.fromEntries([...DIRTY].map(k=>[k,TAGS[k]||null]))}));}catch(e){}}
-function draftLoad(){try{const d=JSON.parse(localStorage.getItem('acbb_tags_draft')||'null');if(!d)return;(d.keys||[]).forEach(k=>{DIRTY.add(k);if(d.tags[k])TAGS[k]=d.tags[k];else delete TAGS[k];});}catch(e){}}
+function draftSave(){try{localStorage.setItem('acbb_tags_draft',JSON.stringify({version:TAG_VERSION,keys:[...DIRTY],tags:Object.fromEntries([...DIRTY].map(k=>[k,TAGS[k]||null]))}));}catch(e){}}
+function draftLoad(){try{const d=JSON.parse(localStorage.getItem('acbb_tags_draft')||'null');if(!d)return;TAG_VERSION=d.version||0;(d.keys||[]).forEach(k=>{DIRTY.add(k);if(d.tags[k])TAGS[k]=d.tags[k];else delete TAGS[k];});}catch(e){}}
 function tagStr(t){if(!t)return'';return [t.d,(t.r==='T'?'TIT':(t.r==='R'?'REMP':'')),t.e].filter(Boolean).join(' ');}
 function teamHue(e){const all=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3','F4'];
   const i=all.indexOf(e); return i<0?24:Math.round(i*137.5)%360;}
@@ -626,7 +627,7 @@ const FEM_TEAMS={F1:{div:'N2D',label:'Nationale 2 Dames',obj:'maintien'},F2:{div
 const FEM_EXT={'NEVES|LOUNA':{nom:'NEVES',pre:'Louna',men:1342,cat:'J2',ext:'Marly'}};   // joueuse de l'entente (Marly-le-Roi US), officiel 26/27
 const FEM_DEFAULT={F1:['7847253','9253701','7523006','NEVES|LOUNA'],F2:['9247334','9259716','4110787','6950140','7510996'],
   F3:['9256241','7529318','9257788','9267050','4930753','6110396','9261305','9266626','9236275','7520384']};
-let FEM=null, FEM_ST='';
+let FEM=null, FEM_BASE={}, FEM_VERSION=0, FEM_READY=false, FEM_ST='';
 function femPlayer(k){ if(FEM_EXT[k])return Object.assign({_k:k},FEM_EXT[k]); const p=D.find(x=>String(x.lic)===k); return p?Object.assign({_k:k},p):{_k:k,nom:'?',pre:'',men:null}; }
 function femDefault(){ const out={}; Object.keys(FEM_DEFAULT).forEach(t=>{ const ps=FEM_DEFAULT[t].map(femPlayer).sort((a,b)=>(b.men||0)-(a.men||0)); ps.forEach((p,i)=>{out[p._k]={e:t,r:i<4?'T':'R'};}); }); return out; }
 function renderFem(){
@@ -648,15 +649,19 @@ function renderFem(){
   }).join('');
   const st=document.getElementById('femSt'); if(st)st.textContent=FEM_ST;
 }
-function femSave(){
-  FEM_ST='enregistrement…'; renderFem();
-  // plus d'auteur saisi : le serveur signe « <nom du lien> — filles »
-  spoInsert('scenarios_log',{tags:FEM,author:'filles',slot:'fem'})
-    .then(()=>{ FEM_ST='✓ compos filles enregistrées à '+new Date().toTimeString().slice(0,5)+(ME?' (signé '+ME.nom+')':''); renderFem(); })
-    .catch(e=>{ FEM_ST='⚠ échec enregistrement ('+(e&&e.message||'réseau')+')'; renderFem(); });
+async function femSave(){
+  if(!FEM_READY){FEM_ST='Effectifs non chargés : recharge la page avant de modifier';renderFem();return;}
+  const changes=ACBB_EDIT.diff(FEM_BASE,FEM);if(!Object.keys(changes).length)return;
+  FEM_ST='enregistrement…';renderFem();document.body.inert=true;
+  try{
+    const result=await ACBB_EDIT.save({kind:'fem',expected:FEM_VERSION,changes,note:'filles',label:k=>{const p=femPlayer(k);return p.pre+' '+p.nom;}});
+    FEM=structuredClone(result.row.tags);FEM_BASE=structuredClone(FEM);FEM_VERSION=result.row.id;
+    FEM_ST='✓ Effectifs enregistrés';
+  }catch(e){FEM_ST='⚠ '+e.message;}
+  finally{document.body.inert=false;renderFem();}
 }
 onAuth(async function(){   // chargement de la dernière compo filles partagée
-  try{ const a=await spoSelect('scenarios_log','select=tags&slot=eq.fem&order=id.desc&limit=1'); if(a.length&&a[0].tags){FEM=a[0].tags;} }catch(e){}
+  try{ const a=await spoSelect('scenarios_log','select=id,tags&slot=eq.fem&order=id.desc&limit=1'); if(a.length&&a[0].tags){FEM=a[0].tags;FEM_VERSION=a[0].id;FEM_BASE=structuredClone(FEM);} FEM_READY=true; }catch(e){FEM_ST='Effectifs non chargés : modifications non enregistrables';}
   renderFem();
 });
 /* D&D filles : entre titulaires/remplaçantes et entre équipes F1-F3 (type 'fem:' ignoré par le module hommes) */
@@ -708,10 +713,9 @@ function schedParams(){ clearTimeout(_prmT); _prmT=setTimeout(pushParams,2500); 
 async function pushParams(){
   const el=document.getElementById('prmSync');
   try{
-    let remote={};
-    const a=await spoSelect('tags_log','select=tags&order=id.desc&limit=1'); if(a.length&&a[0].tags)remote=a[0].tags;
-    remote._params={k:ks.value,cap:cs.value};
-    await spoInsert('tags_log',{tags:remote,author:'réglages'});   // signé « <nom du lien> — réglages »
+    if(!TAGS_READY)throw new Error('Effectifs non chargés');
+    const result=await ACBB_EDIT.save({kind:'tags',expected:TAG_VERSION,changes:{_params:{k:ks.value,cap:cs.value}},note:'réglages',label:()=> 'Réglages'});
+    if(!DIRTY.size){TAG_VERSION=result.row.id;TAGS=structuredClone(result.row.tags);delete TAGS._params;render();}
     if(el)el.textContent='réglages partagés ✓ '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     loadHisto();
   }catch(e){ if(el)el.textContent=DEV?'réglages non partagés (mode dev)':'réglages non partagés (hors-ligne)'; }
@@ -747,21 +751,18 @@ async function saveTags(){
   const st=document.getElementById('saveSt'), btn=document.getElementById('saveTags'), noteEl=document.getElementById('saveNote');
   btn.disabled=true; st.textContent='enregistrement…';
   try{
-    // merge avec la dernière version partagée (évite d'écraser l'autre éditeur)
-    let remote={};
-    const a=await spoSelect('tags_log','select=tags&order=id.desc&limit=1'); if(a.length&&a[0].tags)remote=a[0].tags;
-    DIRTY.forEach(k=>{ if(TAGS[k]) remote[k]=TAGS[k]; else delete remote[k]; });
-    remote._params={k:ks.value,cap:cs.value};
-    const body={tags:remote}; const note=(noteEl.value||'').trim(); if(note) body.author=note;
-    await spoInsert('tags_log',body);
-    TAGS={...remote}; delete TAGS._params; DIRTY.clear(); try{localStorage.removeItem('acbb_tags_draft');}catch(e){}
+    if(!TAGS_READY)throw new Error('Effectifs non chargés : recharge la page');
+    document.body.inert=true;
+    const changes=Object.fromEntries([...DIRTY].map(k=>[k,TAGS[k]||null]));
+    const result=await ACBB_EDIT.save({kind:'tags',expected:TAG_VERSION,changes,note:(noteEl.value||'').trim(),label:k=>{const p=D.find(x=>pkey(x)===k);return p?p.pre+' '+p.nom:k;}});
+    TAGS=structuredClone(result.row.tags);TAG_VERSION=result.row.id;delete TAGS._params;DIRTY.clear();try{localStorage.removeItem('acbb_tags_draft');}catch(e){}
     noteEl.value='';
     updateSaveBar(); render();
     st.textContent='✓ Enregistré à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+(ME?' — signé '+ME.nom:'');
     document.getElementById('saveBar').classList.add('show'); setTimeout(()=>{if(!DIRTY.size)document.getElementById('saveBar').classList.remove('show');},4000);
     loadHisto();
   }catch(e){ st.textContent=''; alert('Échec de l\'enregistrement : '+e.message); }
-  btn.disabled=false;
+  document.body.inert=false;btn.disabled=false;
 }
 document.getElementById('saveTags').addEventListener('click',saveTags);
 document.addEventListener('keydown',e=>{ // Ctrl+S / Cmd+S = enregistrer les tags
@@ -790,10 +791,10 @@ async function loadHisto(more){
 /* chargement initial : serveur (dernière version), repli data/tags.json */
 onAuth(async function(){
   try{
-    const a=await spoSelect('tags_log','select=tags&order=id.desc&limit=1');
-    if(a.length&&a[0].tags)TAGS=a[0].tags; else throw 0;
+    const a=await spoSelect('tags_log','select=id,tags&order=id.desc&limit=1');
+    if(a.length&&a[0].tags){TAGS=a[0].tags;TAG_VERSION=a[0].id;}TAGS_READY=true;
   }catch(e){
-    try{const j=await gj('tags.json');if(j&&j.tags)TAGS=j.tags;}catch(_){ }
+    document.getElementById('saveSt').textContent='Effectifs non chargés : modifications non enregistrables';
   }
   if(TAGS._params){ applyParams(TAGS._params); delete TAGS._params; }
   draftLoad(); updateSaveBar(); render(); loadHisto();

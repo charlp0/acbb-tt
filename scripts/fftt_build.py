@@ -5,10 +5,11 @@ Sortie : data/players/<licence>.json + data/players_index.json
 Usage : python3 fftt_build.py [licence1 licence2 ...]   (sans arg = tout le club)
 """
 import os, sys, json, re, html, time, hashlib, hmac, datetime, random, string, unicodedata
+from fftt_quality import profile_signature, require_xml, acbb_team_key
 APPID=os.environ.get('FFTT_ID'); MDP=os.environ.get('FFTT_PWD'); CLUB="08920049"
 # Joueurs partis du club à exclure du roster (annuaire + scoring), même si la FFTT les liste encore.
 EXCLUDE_LIC = {'9236792', '7871729'}   # partis du club : Douss, Mondino (14/09/2026)  # Mehdi DOUSS (départ 08/2026) — German RODRIGUEZ réintégré le 03/09 (pool D2)
-BASE="http://www.fftt.com/mobile/pxml/"
+BASE="https://www.fftt.com/mobile/pxml/"
 serie=''.join(random.choices(string.ascii_uppercase+string.digits,k=15)); cle=hashlib.md5((MDP or '').encode()).hexdigest()
 def auth():
     tm=datetime.datetime.now().strftime("%Y%m%d%H%M%S")+"000"
@@ -18,10 +19,10 @@ def get(ep):
         try:
             import requests
             r=requests.get(BASE+ep+("&" if "?" in ep else "?")+auth(),timeout=25); r.encoding='ISO-8859-1'
-            if r.status_code==200 and '<' in r.text: return r.text
+            if r.status_code==200: return require_xml(r.text)
         except Exception: pass
         time.sleep(0.5)
-    return ''
+    raise RuntimeError('FFTT indisponible : '+ep.split('?')[0])
 def tag(s,t):
     m=re.search('<'+t+'>(.*?)</'+t+'>',s,re.S); return m.group(1).strip() if m else ''
 def nrm(s):
@@ -80,6 +81,7 @@ SAISON='2026/2027'
 SEASON_START=20260701   # AAAAMMJJ : seules les parties à partir de cette date comptent pour le récap et le mensuel de la saison   # saison courante : fenêtre du récap et du calendrier mensuel (bascule 16/09/2026 ; récap 25/26 archivé dans data/archive/2025-2026/players)
 MB=[(2026,9),(2026,10),(2026,11),(2026,12),(2027,1),(2027,2),(2027,3),(2027,4),(2027,5),(2027,6),(2027,7)]
 EXACT = os.environ.get('FFTT_FAST','0') != '1'   # exact = reconstruire le mensuel adversaire (défaut). FFTT_FAST=1 -> hybride léger
+OPPC_AT=time.time()
 OPPC={}   # cache adversaire: licence -> (initm, [(date,pointres)])
 PAIR2TEAM={}  # (nrm joueur ACBB)|(nrm adversaire) -> clé d'équipe (M2..F3), pour rattacher chaque match simple à son équipe
 def opp_mensuel_at(lic, date):
@@ -97,30 +99,31 @@ def opp_mensuel_at(lic, date):
     if im is None: return None
     cut=monthstart(date); return im+sum(pr for d,pr in hh if dn(d)<cut)
 
-# nom d'équipe ACBB -> clé (M2..M17/F1..F3) pour les splits
-TEAMKEY={nrm(k):v for k,v in {
- 'BOULOGNE BILLANCOURT 1':'F1','BOULOGNE BILLANCOURT 2':'F2','BOULOGNE BILLAN 3':'F3',
- 'BOULOGNE BILLANCOURT AC 2':'M2','BOULOGNE BILLANCOURT 3':'M3','BOULOGNE BILLANCOURT 4':'M4','BOULOGNE BILLANCOURT 5':'M5',
- 'BOULOGNE BILLAN 6':'M6','BOULOGNE BILLAN 7':'M7','BOULOGNE BILLAN 8':'M8','BOULOGNE BILLAN 9':'M9','BOULOGNE BILLAN 10':'M10',
- 'BOULOGNE BILLAN 11':'M11','BOULOGNE BILLAN 12':'M12','BOULOGNE BILLAN 13':'M13','BOULOGNE BILLAN 14':'M14',
- 'BOULOGNE BILLAN 15':'M15','BOULOGNE BILLAN 16':'M16','BOULOGNE BILLAN 17':'M17'}.items()}
 def build_team_detail(club=CLUB):
-    """Parcourt toutes les rencontres ACBB (championnat phase 2) une fois, et renvoie
+    """Parcourt toutes les rencontres ACBB (championnat de la saison) une fois, et renvoie
        par joueur ACBB : manches, doubles, set le plus serré, matchs en 5 manches, split par équipe."""
     eq=get(f"xml_equipe.php?numclu={club}&type=A")
-    links=[(lib.split(' - ')[0].strip(), html.unescape(l))
-           for lib,l in re.findall(r'<libequipe>(.*?)</libequipe>.*?<liendivision><!\[CDATA\[(.*?)\]\]>', eq, re.S) if 'Phase' in lib]   # toutes les phases de la saison en cours
+    links=[]
+    for block in re.findall(r'<equipe>(.*?)</equipe>',eq,re.S):
+        label=tag(block,'libequipe')
+        if 'Phase' not in label: continue
+        link=re.search(r'<liendivision><!\[CDATA\[(.*?)\]\]>',block,re.S)
+        if not link: continue
+        tkey=acbb_team_key(label,tag(block,'libdivision'))
+        if not tkey: raise RuntimeError('Équipe FFTT sans championnat identifiable')
+        links.append((tkey,html.unescape(link.group(1))))
     ACBB=set()
     for (nm,pr) in roster(club).values(): ACBB.add(nrm(nm+pr))
     det={}
     def D(name):
-        return det.setdefault(nrm(name), {'mw':0,'ml':0,'dw':0,'dt':0,'five':0,'fivew':0,'closest':None,'team':{}})
-    for tname,link in links:
-        tkey=TEAMKEY.get(nrm(tname), tname)
+        return det.setdefault(nrm(name), {}).setdefault(tkey[0], {'mw':0,'ml':0,'dw':0,'dt':0,'five':0,'fivew':0,'closest':None,'team':{}})
+    for tkey,link in links:
         res=get("xml_result_equ.php?"+link)
         for tb in re.finditer(r'<tour>(.*?)</tour>', res, re.S):
             blk=tb.group(1)
             ea,eb=tag(blk,'equa'),tag(blk,'equb')
+            date=(tag(blk,'datereelle') or tag(blk,'dateprevue'))[:10]
+            if re.match(r'^\d{4}-\d\d-\d\d$',date): date=date[8:10]+'/'+date[5:7]+'/'+date[:4]
             if not (nrm(ea).startswith('BOULOGNEBILLAN') or nrm(eb).startswith('BOULOGNEBILLAN')): continue
             lm=re.search(r'<lien><!\[CDATA\[(.*?)\]\]>',blk,re.S)
             if not lm: continue
@@ -141,7 +144,7 @@ def build_team_detail(club=CLUB):
                 elif nrm(jb) in ACBB: acbb_ja=False; me=jb
                 else: continue
                 opp_name = (jb if acbb_ja else ja).strip()
-                if opp_name: PAIR2TEAM[nrm(me)+'|'+nrm(opp_name)] = tkey   # rattache (joueur ACBB, adversaire) -> équipe
+                if opp_name: PAIR2TEAM[(nrm(me),nrm(opp_name),date,tkey[0])] = tkey   # rattache (joueur ACBB, adversaire) -> équipe
                 sets=[int(t) for t in detail.split() if re.match(r'^-?\d+$',t)]
                 ws=sum(1 for v in sets if (v>0)==acbb_ja); ls=len(sets)-ws   # manches (signe detail = côté A)
                 won = (ws>ls) if sets else ((sa if acbb_ja else sb) not in ('','-'))
@@ -153,8 +156,8 @@ def build_team_detail(club=CLUB):
                     if iwon and lp>=8 and (d['closest'] is None or lp>d['closest'][0]):
                         d['closest']=(lp, (jb if acbb_ja else ja).strip())
     return det
-def build_player(lic, nom, prenom, team_detail=None, allp=None):
-    lb=get(f"xml_licence_b.php?licence={lic}")
+def build_player(lic, nom, prenom, team_detail=None, allp=None, lb=None, pmysql=None):
+    if lb is None: lb=get(f"xml_licence_b.php?licence={lic}")
     initm=float(tag(lb,'initm') or 0) or None
     point=tag(lb,'point'); pointm=tag(lb,'pointm'); apointm=tag(lb,'apointm')
     offpts = int(point) if (point and point.isdigit()) else None
@@ -163,7 +166,7 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
     base_level = (float(pointm) if pointm else None)
     if base_level is None: base_level = initm if initm is not None else (float(offpts) if offpts is not None else 0)
     # historique points (validé) pour mensuel + jointure pointres par idpartie
-    pmysql=get(f"xml_partie_mysql.php?licence={lic}")
+    if pmysql is None: pmysql=get(f"xml_partie_mysql.php?licence={lic}")
     hist=[]; pts_by_id={}; advlic_by_id={}
     for b in re.findall(r'<partie>(.*?)</partie>', pmysql, re.S):
         d=tag(b,'date'); pr=tag(b,'pointres'); idp=tag(b,'idpartie'); al=tag(b,'advlic')
@@ -203,10 +206,9 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
         tot_pts+=pts
         if not homol: nonval_pts+=pts   # points des matchs pas encore homologués (pour le "à venir")
         key,label=categorize(epr)
-        if key=='equipe' and ' et ' not in opp:   # match simple de championnat -> niveau par équipe
-            # PAIR2TEAM uniquement (paires issues des feuilles de rencontre PHASE 2) :
-            # un raccourci "équipe unique du joueur" taggerait aussi ses matchs de phase 1.
-            tk = PAIR2TEAM.get(nrm(nom+prenom)+'|'+nrm(opp))
+        if key in ('equipe','equipe_f') and ' et ' not in opp:   # match simple de championnat -> niveau par équipe
+            # Date et championnat évitent de confondre deux rencontres de la même paire.
+            tk = PAIR2TEAM.get((nrm(nom+prenom),nrm(opp),date,'F' if key=='equipe_f' else 'M'))
             if tk: team_levels.append({'t':tk,'my':round(my),'opp':olvl})
         c=comps.setdefault(key,{'key':key,'label':label,'V':0,'D':0,'pg':0.0,'pl':0.0,'perf':0,'cperf':0,'best':None,'worst':None,'matches':[]})
         if won: V+=1; c['V']+=1
@@ -227,11 +229,11 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
         c['pg']=round(c['pg'],1); c['pl']=round(c['pl'],1); c['solde']=round(c['pg']+c['pl'],1)
         n=c['V']+c['D']; c['winpct']=round(100*c['V']/n) if n else 0
     # détail championnat (manches/doubles/sets/splits) si dispo
-    if team_detail and 'equipe' in comps:
-        d=team_detail.get(nrm(nom+prenom))
-        if d:
+    for genre,competition in [('M','equipe'),('F','equipe_f')]:
+        d=(team_detail.get(nrm(nom+prenom)) or {}).get(genre) if team_detail else None
+        if d and competition in comps:
             mtot=d['mw']+d['ml']
-            comps['equipe']['detail']={
+            comps[competition]['detail']={
                 'manches_w':d['mw'],'manches_t':mtot,'manches_pct':round(100*d['mw']/mtot) if mtot else 0,
                 'doubles_w':d['dw'],'doubles_t':d['dt'],
                 'five':d['five'],'five_w':d['fivew'],
@@ -268,19 +270,19 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None):
     }
 STATE_PATH='data/_state.json'; OPP_PATH='data/_oppcache.json'
 
-# Infos statiques des équipes (division + position) pour data/teams.json
-TEAMINFO=[
-  ('M2','N2','Nationale 2','M','1/8'),('M3','R2','Régional 2','M','1/8'),  # M3 1ère : départage Art.14 (confrontation directe gagnée 23-19 vs Rambouillet)
-  ('M4','R3','Régional 3','M','3/8'),('M5','R3','Régional 3','M','1/8'),
-  ('M6','PR','Pré-Régional','M','8/8'),('M7','PR','Pré-Régional','M','8/8'),
-  ('M8','PR','Pré-Régional','M','4/8'),('M9','PR','Pré-Régional','M','2/8'),
-  ('M10','D1','Départemental 1','M','5/8'),('M11','D1','Départemental 1','M','5/8'),
-  ('M12','D2','Départemental 2','M','5/8'),('M13','D2','Départemental 2','M','2/8'),
-  ('M14','D2','Départemental 2','M','4/8'),('M15','D2','Départemental 2','M','5/8'),
-  ('M16','D2','Départemental 2','M','3/7'),('M17','D2','Départemental 2','M','6/7'),
-  ('F1','PN','Pré-Nationale','F','2/8'),('F2','R1','Régional 1','F','4/8'),
-  ('F3','PR','Pré-Régional','F','6/7'),
-]
+def team_info():
+    pools=json.load(open('data/poules2627.json'))['poules']
+    site=json.load(open('data/site.json'))
+    result=[]
+    for pool in pools:
+        k=pool['acbb']; label=pool['division']
+        standings=site.get('STANDINGS',{}).get(k,[])
+        names={nrm(x.get('name')) for x in site.get('DATA',{}).get(k,{}).get('teams',[]) if x.get('acbb')}
+        own=next((r for r in standings if nrm(r.get('name')) in names),None)
+        pos=str(own.get('pos'))+'/'+str(len(standings)) if own and own.get('pos') and any(r.get('mp',0) for r in standings) else None
+        result.append((k,label,label,k[0],pos))
+    return result
+
 def build_teams_json(profiles):
     """Agrège, par équipe puis par division, le mensuel réel ACBB vs adverse au moment des matchs."""
     acc={}   # tkey -> {'acbb':[...], 'opp':[...]}
@@ -291,7 +293,7 @@ def build_teams_json(profiles):
             if isinstance(tl.get('opp'),(int,float)) and tl['opp']>0: a['opp'].append(tl['opp'])
     avg=lambda l: round(sum(l)/len(l)) if l else None
     teams=[]; divacc={}
-    for (k,short,label,genre,pos) in TEAMINFO:
+    for (k,short,label,genre,pos) in team_info():
         a=acc.get(k,{'acbb':[],'opp':[]})
         teams.append({'key':k,'short':short,'label':label,'genre':genre,'pos':pos,
                       'acbb':avg(a['acbb']),'opp':avg(a['opp']),'n':len(a['acbb'])})
@@ -301,22 +303,25 @@ def build_teams_json(profiles):
     divisions=[{'short':s,'label':lab,'genre':g,'acbb':avg(v['acbb']),'opp':avg(v['opp']),'n':len(v['acbb'])}
                for (g,lab,s),v in divacc.items()]
     return {'teams':teams,'divisions':divisions}
-def match_sig(allp):
-    # signature des matchs d'un joueur (id + date + résultat) -> détecte un nouveau match sans tout recalculer
-    items=sorted((tag(b,'idpartie') or '', tag(b,'date') or '', tag(b,'victoire') or '')
-                 for b in re.findall(r'<partie>(.*?)</partie>', allp, re.S))
-    return hashlib.sha1(repr(items).encode()).hexdigest()
-def load_oppcache():
-    # le passé est figé : les classements adverses reconstruits ne changent jamais -> cache persistant
+def match_sig(allp, licence='', validated='', details=None):
+    return profile_signature(allp, licence, validated, details)
+def load_oppcache(full=False):
+    global OPPC_AT
+    OPPC_AT=time.time()
+    OPPC.clear()
+    if full: return 0
     try:
         oc=json.load(open(OPP_PATH))
+        if oc.get('season')!=SAISON: return 0
+        age=time.time()-oc.get('at',0)
+        if age<0 or age>24*3600: return 0
+        OPPC_AT=oc['at']
         for k,v in oc.get('data',{}).items(): OPPC[k]=(v[0],[tuple(x) for x in v[1]])
         return len(OPPC)
-    except Exception: pass
-    return 0
+    except (OSError,ValueError,TypeError): return 0
 def save_oppcache():
     data={k:[im,[list(x) for x in hh]] for k,(im,hh) in OPPC.items()}
-    json.dump({'data':data}, open(OPP_PATH,'w'), ensure_ascii=False)
+    json.dump({'at':OPPC_AT,'season':SAISON,'data':data}, open(OPP_PATH,'w'), ensure_ascii=False)
 
 def main():
     if not APPID or not MDP: sys.exit("FFTT_ID / FFTT_PWD manquants (env vars)")
@@ -332,14 +337,13 @@ def main():
             if built==today_utc:
                 print(f"Déjà à jour aujourd'hui ({built}) — run ignoré."); return
         except Exception: pass
-    # Le passé étant figé, on ne recalcule un joueur que s'il a joué un NOUVEAU match
-    # (signature des matchs). Pas de rebuild forcé au changement de mois.
+    # Classement, homologation et détail de rencontre entrent dans la signature.
     prev={}
     try:
         st=json.load(open(STATE_PATH))
-        if not FULL: prev=st.get('sig',{})
+        if not FULL and st.get('season')==SAISON: prev=st.get('sig',{})
     except Exception: pass
-    nb_opp = load_oppcache()   # le cache adverse (passé figé) est toujours valide, même en mode full
+    nb_opp = load_oppcache(FULL)
     mode = "COMPLET (FFTT_FULL)" if FULL else ("INCRÉMENTAL" if prev else "COMPLET (amorçage, pas de cache)")
     print(f"Mode : {mode} — cache adverse : {nb_opp} joueurs préchargés")
     if args:
@@ -350,18 +354,20 @@ def main():
     print("Collecte du détail championnat (chp_renc)…")
     team_detail=build_team_detail(CLUB)
     print(f"  {len(team_detail)} joueurs ACBB avec détail championnat.")
-    os.makedirs('data/players', exist_ok=True); index=[]; profiles=[]; kept=0; skipped=0; rebuilt=0; reused=0; new_sig={}
+    os.makedirs('data/players', exist_ok=True); index=[]; profiles=[]; kept=0; skipped=0; rebuilt=0; reused=0; new_sig={}; failed=0
     for (lic,nom,prenom,pts) in candidates:
         if kept>=need: break
         try:
             allp=get(f"xml_partie.php?numlic={lic}")   # appel léger : sert à la signature ET au build si besoin
-            sig=match_sig(allp); new_sig[lic]=sig
+            lb=get(f"xml_licence_b.php?licence={lic}")
+            pmysql=get(f"xml_partie_mysql.php?licence={lic}")
+            sig=match_sig(allp,lb,pmysql,{'detail':team_detail.get(nrm(nom+prenom)), 'opponent_cache_epoch':int(OPPC_AT)}); new_sig[lic]=sig
             fpath=f"data/players/{lic}.json"
             unchanged = (not FULL) and (not args) and prev.get(lic)==sig and os.path.exists(fpath)
             if unchanged:
                 prof=json.load(open(fpath)); reused+=1
             else:
-                prof=build_player(lic,nom,prenom,team_detail,allp=allp); rebuilt+=1
+                prof=build_player(lic,nom,prenom,team_detail,allp=allp,lb=lb,pmysql=pmysql); rebuilt+=1
                 # 26/27 : on garde TOUS les licenciés, même sans match (la fiche affiche alors le classement officiel
                 # et « reviens après tes premiers matchs ») — indispensable pour la recherche joueur du nouveau site.
                 json.dump(prof, open(fpath,"w"), ensure_ascii=False)
@@ -374,8 +380,10 @@ def main():
             flag='=' if unchanged else '↻'
             print(f"[{kept}/{need}] {flag} {lic} {nom} {prenom} — {prof['saison']['parties']}p {prof['saison']['V']}V/{prof['saison']['D']}D")
         except Exception as e:
-            print(f"  {lic} ERREUR: {e}")
+            failed+=1
+            print("Profil non collecté : publication du lot annulée")
         time.sleep(0.15)
+    if failed: sys.exit(f"ABORT: {failed} profil(s) incomplet(s), aucune publication.")
     # garde-fou : si l'API a flanché (collecte très incomplète), on n'écrase RIEN —
     # le run échoue, les données en prod restent intactes.
     if not args:
@@ -383,16 +391,20 @@ def main():
         except Exception: prev_n=0
         if prev_n>=20 and kept < prev_n*0.8:
             sys.exit(f"ABORT: collecte incomplète ({kept} profils vs {prev_n} précédents) — aucune écriture, run en échec.")
+    if args:
+        prior=json.load(open('data/players_index.json'))
+        changed={p['lic'] for p in index}
+        index=[p for p in prior if p['lic'] not in changed]+index
     index=[p for p in index if p.get('lic') not in EXCLUDE_LIC]   # retire les partis du club
     json.dump(index, open("data/players_index.json","w"), ensure_ascii=False)
     if not args:   # on ne met à jour l'état/cache/teams que sur un run complet du club
         tj=build_teams_json(profiles)
         json.dump(tj, open("data/teams.json","w"), ensure_ascii=False)
         n2=next((t for t in tj['teams'] if t['key']=='M2'), {})
-        print(f"  teams.json : ACBB N2 mensuel={n2.get('acbb')} (attendu ~2236), adv={n2.get('opp')}, n={n2.get('n')}")
+        print("  teams.json : statistiques recalculées")
         # horodatage de la dernière mise à jour (UTC ISO) -> affiché formaté côté client (heure de Paris)
         json.dump({'built':datetime.datetime.now(datetime.timezone.utc).isoformat()}, open("data/meta.json","w"), ensure_ascii=False)
-        json.dump({'built':datetime.date.today().isoformat(),'sig':new_sig}, open(STATE_PATH,'w'), ensure_ascii=False)
+        json.dump({'built':datetime.date.today().isoformat(),'season':SAISON,'sig':new_sig}, open(STATE_PATH,'w'), ensure_ascii=False)
         save_oppcache()
     print(f"OK — {kept} profils ({reused} réutilisés, {rebuilt} reconstruits, {skipped} sans match ignorés).")
 if __name__=='__main__': main()

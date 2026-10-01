@@ -1,0 +1,50 @@
+name: Publier le site vérifié
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  # Les commits du robot utilisent GITHUB_TOKEN : workflow_run permet de publier
+  # leur sortie même lorsqu'ils ne déclenchent pas un nouvel événement push.
+  workflow_run:
+    workflows: ['Résultats équipes FFTT', 'Mise à jour données FFTT', 'Catégories d’âge FFTT', "Catégories d'âge FFTT", 'Salles des adversaires (FFTT)']
+    types: [completed]
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: pages-production
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: main}
+      - uses: actions/setup-node@v4
+        with: {node-version: '24', cache: npm}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - run: python3 scripts/check_data.py
+      - run: python3 scripts/build_public.py
+      - run: python3 scripts/check_public.py
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: build/public}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Déployer le dossier vérifié
+        id: deployment
+        uses: actions/deploy-pages@v4

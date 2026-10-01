@@ -4,6 +4,7 @@ depuis l'API FFTT live -> ces pages deviennent data-driven (fini les données fi
 Identifiants via FFTT_ID / FFTT_PWD. Usage : python3 scripts/fftt_site.py
 """
 import os, re, html, json, time, datetime, importlib.util
+from fftt_quality import check_site, coverage
 spec=importlib.util.spec_from_file_location("fb","scripts/fftt_build.py")
 fb=importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
 def tg(s,t):
@@ -133,11 +134,6 @@ def build_standings(key, cx, d1, org):
         rows.append({'pos':int(tg(c,'clt') or 0),'name':tg(c,'equipe'),'pts':int(tg(c,'pts') or 0),
                      'mp':int(tg(c,'joue') or 0),'V':int(tg(c,'vic') or 0),'N':int(tg(c,'nul') or 0),
                      'D':int(tg(c,'def') or 0),'gf':gf,'ga':ga,'diff':gf-ga})
-    # M3 : départage Art.14 régional (confrontation directe) -> ACBB devant Rambouillet à égalité de points
-    if key=='M3':
-        rows.sort(key=lambda x:x['pos'])
-        if len(rows)>=2 and rows[0]['pts']==rows[1]['pts'] and is_acbb(rows[1]['name']):
-            rows[0],rows[1]=rows[1],rows[0]; rows[0]['pos'],rows[1]['pos']=1,2
     return rows
 
 def main():
@@ -166,7 +162,7 @@ def main():
             acbb=next((t['name'] for t in e['teams'] if t.get('acbb')),'')
             want[key]=(tok[0],int(e['poule']),tok[1],tok[2],acbb)
     except Exception as ex:
-        print(f"  poules2627.json illisible ({ex}) — repli sur META 25/26")
+        raise RuntimeError("Calendrier de saison illisible : aucune publication") from ex
     coords={}   # key -> (cx,D1,org)
     vus=[]
     for mm in re.finditer(r'<equipe>(.*?)</equipe>', eq, re.S):
@@ -184,9 +180,6 @@ def main():
             if len(cands)>1:   # départage par le nom ACBB (dames/messieurs)
                 cands=[k for k in cands if fb.nrm(want[k][4])==nm] or cands
             if len(cands)==1: key=cands[0]
-        if not key:   # repli : ancien rapprochement par nom (saison 25/26)
-            key=fb.TEAMKEY.get(nm)
-            if key not in META: key=None
         if not key or key in coords: continue
         coords[key]=(p['cx_poule'],p['D1'],p['organisme_pere'])
         if key in want:
@@ -208,7 +201,11 @@ def main():
     except Exception: prev=0
     if prev>=5 and len(DATA) < prev*0.8:
         import sys; sys.exit(f"ABORT: {len(DATA)} équipes collectées vs {prev} précédentes — API probablement en bascule de saison, aucune écriture.")
-    out={'built':datetime.datetime.now(datetime.timezone.utc).isoformat(),'DATA':DATA,'STANDINGS':STAND}
+    out={'built':datetime.datetime.now(datetime.timezone.utc).isoformat(),'season':fb.SAISON,'DATA':DATA,'STANDINGS':STAND}
+    try: previous=json.load(open('data/site.json'))
+    except FileNotFoundError: previous={}
+    check_site(previous,out,ORDER)
+    out['coverage']=coverage(out)
     json.dump(out, open("data/site.json","w"), ensure_ascii=False)
     # site.js : chargé en <script> AVANT le script de page -> DATA/STANDINGS dispo en synchrone (pas de réécriture async)
     with open("data/site.js","w",encoding="utf-8") as f:

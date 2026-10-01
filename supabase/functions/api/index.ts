@@ -26,7 +26,10 @@ const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const PEPPER = Deno.env.get('ACBB_PEPPER') ?? '';
 const ANTHROPIC_API_KEY = Deno.env.get('ANTHROPIC_API_KEY') ?? '';
 const DATA_URL = (Deno.env.get('ACBB_DATA_URL') ?? 'https://team.acbb-tt.fr/data').replace(/\/$/, '');
-const SITE_URL = (Deno.env.get('ACBB_SITE_URL') ?? 'https://team.acbb-tt.fr/refonte').replace(/\/$/, '');
+const SITE_URL = (Deno.env.get('ACBB_SITE_URL') ?? 'https://team.acbb-tt.fr').replace(/\/$/, '');
+
+// Compatibilité uniquement pendant la bascule serveur → pages, puis activer à true.
+const REQUIRE_COMPOSITION_VERSION = Deno.env.get('ACBB_REQUIRE_COMPOSITION_VERSION') !== 'false';
 
 const BUCKET_PRIVE = 'debriefs';           // photos brutes (privé, URL signées)
 const BUCKET_PUBLIC = 'debriefs-publies';  // photos des debriefs publiés (public)
@@ -727,29 +730,42 @@ async function router(req: Request): Promise<Response> {
     const acteur = lien.nom;
 
     if (path === '/cap/dispos' && GET) {
-      const [tags, fem, slots, ann, journees] = await Promise.all([
+      const [tags, fem, slots, ann, journees, calendrier] = await Promise.all([
         derniersTags(),
         dernierScenario('fem'),
         Promise.all(JOURNEES.map((j) => dernierScenario(`j${j}`))),
         annuaire(),
         journeesEquipe(equipe),
+        getStatic('poules2627.json'),
       ]);
-      // Effectif : titulaires tags_log + slot fem (F1..F3) + joueurs alignés dans les slots j1..j7.
+      // Effectif de base seulement. Ne jamais envoyer les renforts des plans futurs,
+      // même si le navigateur les masquerait ensuite.
       const statut = new Map<string, 'T' | 'renfort'>();
       for (const [k, v] of Object.entries(tags)) if (v && (v as Json).r === 'T' && (v as Json).e === equipe) statut.set(k, 'T');
       if (/^F\d/.test(equipe) && fem) {
-        for (const [k, v] of Object.entries(fem)) if (v && (v as Json).e === equipe && !statut.has(k)) statut.set(k, (v as Json).r === 'T' ? 'T' : 'renfort');
-      }
-      for (const s of slots) {
-        const t = s?.[equipe];
-        if (t && Array.isArray(t.p)) for (const k of t.p) if (typeof k === 'string' && !statut.has(k)) statut.set(k, 'renfort');
+        for (const [k, v] of Object.entries(fem)) if (v && (v as Json).e === equipe && (v as Json).r === 'T') statut.set(k, 'T');
       }
       const cles = [...statut.keys()];
       const dispos = await disposParJoueur(cles, ann);
-      const joueurs = cles.map((k) => {
+      const aujourdHui = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Paris' });
+      const joueurs = (await Promise.all(cles.map(async (k) => {
         const lignes = dispos.get(k) ?? [];
         const derniere = lignes[0];
         const id = identite(ann, k, derniere ? { nom: derniere.nom ?? '', prenom: derniere.prenom ?? '' } : null);
+        const aliases = await equivalents(k);
+        const exemptions: Json[] = [];
+        for (const p of calendrier?.poules ?? []) {
+          if (String(p.acbb)[0] !== equipe[0]) continue;
+          for (const c of p.cal ?? []) {
+            const dm = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(c.date ?? ''));
+            const iso = dm ? `${dm[3]}-${dm[2]}-${dm[1]}` : null;
+            const plan = slots[Number(c.j) - 1]?.[p.acbb];
+            if (c.exempt && iso && iso < aujourdHui && ['valid','sent'].includes(plan?.st)
+                && (plan?.p ?? []).some((x: unknown) => aliases.includes(String(x)))) {
+              exemptions.push({ j: Number(c.j), t: p.acbb });
+            }
+          }
+        }
         return {
           licence: k,
           nom: id.nom,
@@ -759,8 +775,9 @@ async function router(req: Request): Promise<Response> {
           saved_at: derniere?.created_at ?? null,
           changes: libellesChangements(derniere, lignes[1]),
           jamais: !derniere,
+          exemptions,
         };
-      }).sort((a, b) => (a.statut === b.statut ? 0 : a.statut === 'T' ? -1 : 1) || a.nom.localeCompare(b.nom, 'fr') || a.prenom.localeCompare(b.prenom, 'fr'));
+      }))).sort((a, b) => a.nom.localeCompare(b.nom, 'fr') || a.prenom.localeCompare(b.prenom, 'fr'));
       return json({ equipe, journees, joueurs });
     }
 
@@ -838,6 +855,60 @@ async function router(req: Request): Promise<Response> {
     const lien = await exiger(req, 'sportive');
     const acteur = lien.nom;
 
+    if (path === '/spo/alerts/dispos' && GET) {
+      const { data, error } = await sb.storage.from('club-backups').download('alerts/dispos/latest.json');
+      if (error) {
+        if (String(error.statusCode ?? error.status) === '404') return json({ message: null });
+        fail(503, 'alerte_indisponible');
+      }
+      return json(JSON.parse(await data.text()));
+    }
+
+    if (path === '/spo/config/extras' && GET) {
+      const { data, error } = await sb.from('private_config').select('value').eq('name', 'extra_communautaires').maybeSingle();
+      if (error || !data) fail(503, 'statuts_indisponibles');
+      return json(data.value);
+    }
+
+    if (path === '/spo/documents' && POST) {
+      const body=await lireJson(req), kind=String(body.kind ?? ''), changes=body.changes;
+      if (!['tags','fem','contraintes'].includes(kind) || !Number.isSafeInteger(body.expected_id) || body.expected_id<0) fail(400,'version_requise');
+      if (!changes || typeof changes!=='object' || Array.isArray(changes) || !Object.keys(changes).length || Object.keys(changes).length>1000) fail(400,'document_invalide');
+      for (const [key,value] of Object.entries(changes)) {
+        if (!key || key.length>120 || ['_meta','__proto__','constructor','prototype'].includes(key)
+          || (value!==null && (typeof value!=='object' || Array.isArray(value)))) fail(400,'changement_invalide');
+        if (kind==='contraintes' && value!==null && (value as Json).id!==key) fail(400,'contrainte_invalide');
+      }
+      const note=texteCourt(body.note,120), author=note?`${acteur} — ${note}`:acteur;
+      const {data,error}=await sb.rpc('save_club_document',{p_kind:kind,p_expected_id:body.expected_id,p_changes:changes,p_author:author});
+      if (error) fail(503,'enregistrement_indisponible');
+      if (!data?.ok) fail(409,'conflit_document',{conflicts:data?.conflicts ?? [],current:data?.current});
+      await journal(acteur,'sportive','document_enregistre',{kind,id:data.row?.id,keys:Object.keys(changes)});
+      return json(data);
+    }
+
+    if (path === '/spo/compositions' && POST) {
+      const body = await lireJson(req);
+      const slot = String(body.slot ?? '');
+      if (!/^j[1-7]$/.test(slot) || !Number.isSafeInteger(body.expected_id) || body.expected_id < 0) fail(400, 'version_requise');
+      const changes = body.changes;
+      if (!changes || typeof changes !== 'object' || Array.isArray(changes) || !Object.keys(changes).length || Object.keys(changes).length > 20) fail(400, 'compos_invalides');
+      const cleaned: Json = {};
+      for (const [team, value] of Object.entries(changes)) {
+        if (!/^(M([1-9]|1[0-7])|F[1-3])$/.test(team)) fail(400, 'equipe_invalide');
+        if (value === null) { cleaned[team] = null; continue; }
+        const c = value as Json;
+        if (!c || !Array.isArray(c.p) || c.p.length > 6 || c.p.some((k: unknown) => typeof k !== 'string' || !k || k.length > 120)
+            || new Set(c.p).size !== c.p.length || !['draft','valid','sent'].includes(c.st)) fail(400, 'compo_invalide');
+        cleaned[team] = { p: c.p, st: c.st, note: texteCourt(c.note, 2000) };
+      }
+      const { data, error } = await sb.rpc('save_composition', { p_slot: slot, p_expected_id: body.expected_id, p_changes: cleaned, p_author: acteur });
+      if (error) fail(503, 'enregistrement_indisponible');
+      if (!data?.ok) fail(409, 'conflit_composition', { conflicts: data?.conflicts ?? [], current: data?.current });
+      await journal(acteur, 'sportive', 'composition_enregistree', { slot, id: data.row?.id, teams: Object.keys(cleaned) });
+      return json(data);
+    }
+
     if (path === '/spo/rest' && POST) {
       const body = await lireJson(req);
       const table = String(body.table ?? '');
@@ -848,17 +919,29 @@ async function router(req: Request): Promise<Response> {
         // Caractères sûrs uniquement (lettres accentuées admises dans les valeurs) :
         // pas de / ? # ; \ < { } qui permettraient de sortir du chemin ou de forger l'URL.
         if (query.length > 2000 || !/^[\p{L}\p{N}_\-.,=&*():!%+>|"'\s]*$/u.test(query)) fail(400, 'query_invalide');
-        if (!/(^|&)limit=/.test(query)) query += (query ? '&' : '') + 'limit=1000'; // jamais de dump illimité
-        const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
-          headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}`, Accept: 'application/json' },
-        });
-        const txt = await r.text();
-        if (!r.ok) {
-          let detail: any = txt.slice(0, 500);
-          try { detail = JSON.parse(txt); } catch { /* texte brut */ }
-          fail(r.status >= 500 ? 502 : 400, 'postgrest', { status: r.status, detail });
+        // Pagination serveur : un historique > 1 000 lignes ne doit pas masquer
+        // les dernières disponibilités. Limite explicite conservée pour les vues courtes.
+        const params = new URLSearchParams(query);
+        const wanted = params.has('limit') ? Number(params.get('limit')) : 20000;
+        const start = params.has('offset') ? Number(params.get('offset')) : 0;
+        if (!Number.isInteger(wanted) || wanted < 1 || wanted > 20000 || !Number.isInteger(start) || start < 0) fail(400, 'pagination_invalide');
+        const order = params.get('order') || 'id.asc';
+        params.set('order', /(^|,)id\./.test(order) ? order : order + ',id.asc');
+        const all: Json[] = [];
+        while (all.length < wanted) {
+          const size = Math.min(500, wanted - all.length);
+          params.set('limit', String(size)); params.set('offset', String(start + all.length));
+          const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
+            headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}`, Accept: 'application/json' },
+          });
+          if (!r.ok) fail(r.status >= 500 ? 502 : 400, 'postgrest', { status: r.status });
+          const rows = await r.json();
+          if (!Array.isArray(rows)) fail(502, 'lecture_historique');
+          all.push(...rows);
+          if (rows.length < size) return json(all);
         }
-        return new Response(txt, { status: 200, headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
+        if (!new URLSearchParams(query).has('limit')) fail(413, 'historique_trop_volumineux');
+        return json(all);
       }
       if (method === 'insert') {
         if (!REST_INSERT_OK.has(table)) fail(403, 'table_interdite');
@@ -870,6 +953,8 @@ async function router(req: Request): Promise<Response> {
           const { id: _id, created_at: _ca, ...reste } = l; // l'identité et l'horodatage restent au serveur
           const suffixe = texteCourt(reste.author, 120);
           if (table === 'scenarios_log' && !/^[a-z0-9_]{1,16}$/.test(String(reste.slot ?? ''))) fail(400, 'slot_invalide');
+          // Ancien onglet encore en cache : il doit se recharger, pas écraser une journée.
+          if (REQUIRE_COMPOSITION_VERSION && (table === 'tags_log' || (table === 'scenarios_log' && /^(j[1-7]|fem|contraintes)$/.test(String(reste.slot))))) fail(409, 'version_requise');
           if (!reste.tags || typeof reste.tags !== 'object') fail(400, 'tags_invalides');
           return { ...reste, author: suffixe ? `${acteur} — ${suffixe}` : acteur };
         });

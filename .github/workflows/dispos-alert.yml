@@ -1,56 +1,49 @@
-name: Alerte dispos (mail via issue)
-# Toutes les heures (7h-22h Paris) + en temps réel via webhook Supabase (repository_dispatch 'dispos', regroupement 2 min) :
-# nouvelles saisies / modifications de dispos depuis le dernier passage.
-# S'il y a du nouveau -> issue GitHub (= mail à Charles) avec un bloc prêt à coller dans WhatsApp,
-# en signalant les changements qui touchent une compo enregistrée d'une journée à venir.
+name: Alerte dispos privée
 on:
   schedule:
     - cron: '0 5-20 * * *'
-  repository_dispatch:          # temps réel : déclenché par un webhook Supabase à chaque saisie de dispo
+  repository_dispatch:
     types: [dispos]
   workflow_dispatch:
-    inputs:
-      since_id:
-        description: "Relire depuis cet id de dispos_log (test) — vide = depuis le dernier passage"
-        required: false
-        default: ''
 permissions:
-  contents: write
+  contents: read
   issues: write
 concurrency:
   group: dispos-alert
-  cancel-in-progress: true      # plusieurs saisies rapprochées -> un seul mail (le dernier run gagne)
+  cancel-in-progress: false
 jobs:
   alert:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Regrouper les saisies rapprochées
-        if: github.event_name == 'repository_dispatch'
-        run: sleep 120
       - uses: actions/checkout@v4
-      - name: Détecter les changements
-        id: run
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Détecter et conserver les changements en privé
+        id: changes
         env:
           SUPA_SERVICE_KEY: ${{ secrets.SUPA_SERVICE_KEY }}
         run: |
-          set -e
-          ARGS=""; [ -n "${{ github.event.inputs.since_id }}" ] && ARGS="--since ${{ github.event.inputs.since_id }}"
-          python3 scripts/dispos_alert.py $ARGS --out alert.md | tee run.log
-          N=$(grep -o 'CHANGES=[0-9]*' run.log | tail -1 | cut -d= -f2)
-          I=$(grep -o 'IMPACTS=[0-9]*' run.log | tail -1 | cut -d= -f2)
-          echo "changes=${N:-0}" >> "$GITHUB_OUTPUT"; echo "impacts=${I:-0}" >> "$GITHUB_OUTPUT"
-      - name: Créer l'issue (mail)
-        if: steps.run.outputs.changes != '0' && hashFiles('alert.md') != ''
+          python3 scripts/restore_alert_cursor.py
+          python3 scripts/dispos_alert.py --out alert.md > run.log
+          cat run.log
+          N=$(sed -n 's/^CHANGES=//p' run.log | tail -1)
+          echo "count=${N:-0}" >> "$GITHUB_OUTPUT"
+          python3 scripts/publish_private_alert.py
+      - name: Notification générique sans données de joueurs
+        if: steps.changes.outputs.count != '0'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          D=$(TZ=Europe/Paris date +'%d/%m %Hh')
-          T="📋 Dispos — ${{ steps.run.outputs.changes }} changement(s) · $D"
-          [ "${{ steps.run.outputs.impacts }}" != "0" ] && T="⚠️ Dispos — ${{ steps.run.outputs.impacts }} impact(s) compo · ${{ steps.run.outputs.changes }} changement(s) · $D"
-          printf '\n\n@charlp0 — à coller dans le groupe WhatsApp sportive.\n' >> alert.md   # la mention garantit le mail
-          gh issue create -R "$GITHUB_REPOSITORY" --title "$T" --body-file alert.md --label dispos || gh issue create -R "$GITHUB_REPOSITORY" --title "$T" --body-file alert.md
-      - name: Mémoriser le curseur
-        run: |
-          git config user.name "acbb-data-bot"; git config user.email "bot@users.noreply.github.com"
-          git add data/dispos_alert_state.json
-          git diff --staged --quiet && echo "curseur inchangé" || (git commit -m "dispos-alert: curseur" && git pull --rebase origin main && git push)
+          cat > notification.md <<'NOTICE'
+          Une mise à jour est à consulter dans [Suivi des disponibilités](https://team.acbb-tt.fr/sportive/suivi-dispos.html).
+
+          Le détail est réservé à la commission sportive, après ouverture de son lien personnel.
+          @charlp0
+          NOTICE
+          gh issue create -R "$GITHUB_REPOSITORY" --title "ACBB — nouvelle notification privée" --body-file notification.md
+      - name: Confirmer le curseur privé après notification
+        env:
+          SUPA_SERVICE_KEY: ${{ secrets.SUPA_SERVICE_KEY }}
+        run: python3 scripts/publish_private_alert.py --commit-cursor
+      # Seul l'avis générique est public ; aucun nom, disponibilité ou composition.

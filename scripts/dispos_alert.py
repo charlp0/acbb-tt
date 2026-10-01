@@ -4,10 +4,10 @@ signale celles qui touchent une compo enregistrée (scenarios_log j1..j7) d'une 
 et écrit un bloc prêt à coller dans WhatsApp. État : data/dispos_alert_state.json ({last_id}).
 Usage : python3 scripts/dispos_alert.py [--since ID] [--out alert.md]  -> exit 0, imprime CHANGES=<n> sur la dernière ligne."""
 import json, re, sys, unicodedata, urllib.request, datetime, os
-import os
+from private_store import rows as private_rows
 SB = "https://vhhmageufrcenruywawg.supabase.co"
 # Depuis la bascule du 16/09/2026 les tables sont fermées au public : la clé service (secret GitHub SUPA_SERVICE_KEY) est requise.
-PUB = os.environ.get("SUPA_SERVICE_KEY") or "sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay"
+PUB = os.environ["SUPA_SERVICE_KEY"]
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def get(p): return json.load(urllib.request.urlopen(urllib.request.Request(SB + p, headers={'apikey': PUB, 'Authorization': 'Bearer '+PUB}), timeout=30))
 args = sys.argv[1:]; since = None; out_path = 'alert.md'
@@ -16,7 +16,7 @@ if '--out' in args: out_path = args[args.index('--out') + 1]
 state_path = os.path.join(ROOT, 'data/dispos_alert_state.json')
 state = json.load(open(state_path)) if os.path.exists(state_path) else {'last_id': 0}
 if since is None: since = int(state.get('last_id', 0))
-rows = get("/rest/v1/dispos_log?select=id,licence,prenom,nom,dispos,n,created_at&order=id.asc")
+rows = private_rows("dispos_log", order="id.asc", query="select=id,licence,prenom,nom,dispos,n,created_at")
 rows = [r for r in rows if r['licence'] and not re.match(r'^(TEST|0000)', str(r['licence']), re.I)]
 sc = {p['lic']: p for p in json.load(open(os.path.join(ROOT, 'data/scoring.json')))['players']}
 tags = get("/rest/v1/tags_log?select=tags&order=id.desc&limit=1")[0]['tags']
@@ -43,9 +43,9 @@ def pdate(s):
 jdates = {}
 for j in range(1, 8):
     ds = [pdate(c['date']) for q in poules['poules'] for c in q['cal'] if c['j'] == j and pdate(c['date'])]
-    jdates[j] = min(ds) if ds else None
+    jdates[j] = max(ds) if ds else None
 compos = {}
-for r in get("/rest/v1/scenarios_log?select=slot,tags&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc"):
+for r in private_rows("scenarios_log", order="id.desc", query="select=slot,tags&slot=in.(j1,j2,j3,j4,j5,j6,j7)"):
     j = int(r['slot'][1:])
     if j in compos or not jdates.get(j) or jdates[j] < today: continue
     compos[j] = {t: v for t, v in (r['tags'] or {}).items() if t != '_meta'}
@@ -53,7 +53,9 @@ def aligned(k):
     out = []
     for j, c in sorted(compos.items()):
         for t, v in c.items():
-            if k in (v.get('p') or []): out.append((j, t))
+            cl=next((c for q in poules['poules'] if q['acbb']==t for c in q['cal'] if c['j']==j),{})
+            date=pdate(cl.get('date'))
+            if date and date>=today and k in (v.get('p') or []): out.append((j, t))
     return out
 hist = {}
 for r in rows: hist.setdefault(canon(r), []).append(r)
@@ -99,4 +101,4 @@ wa_txt = '\n'.join(wa)
 md = f"**{len(real)} changement(s)**, {len(same)} ressaisie(s) identique(s), {len(new_rows)} ligne(s) lues (id {since + 1} → {new_rows[-1]['id']}).\n\nBloc à coller dans WhatsApp :\n\n```\n{wa_txt}\n```\n"
 open(out_path, 'w').write(md)
 json.dump({'last_id': new_rows[-1]['id'], 'at': datetime.datetime.utcnow().isoformat() + 'Z'}, open(state_path, 'w'))
-print(wa_txt); print(f"IMPACTS={len(imp)}"); print(f"CHANGES={len(real)}")
+print(f"IMPACTS={len(imp)}"); print(f"CHANGES={len(real)}")

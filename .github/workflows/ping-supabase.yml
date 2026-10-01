@@ -1,44 +1,19 @@
-name: Backup Supabase (+ anti-pause)
-
-# 1) Sauvegarde quotidienne des tables Supabase (tags_log + dispos_log) en JSON
-#    versionné dans le repo (data/backup-supabase/) — commit uniquement si changement.
-# 2) La requête sert aussi de ping anti-pause (projets gratuits pausés après ~1 sem
-#    sans trafic).
-# Tables fermées au public depuis le 16/09/2026 : la sauvegarde utilise la clé service (secret SUPA_SERVICE_KEY).
-# Restauration : ré-insérer la dernière ligne de chaque table (journaux append-only,
-# la dernière ligne = état courant).
+name: Sauvegarde Supabase privée
 on:
   schedule:
-    - cron: '0 6 * * *'   # tous les jours ~8h Paris
+    - cron: '0 6 * * *'
   workflow_dispatch:
-
 permissions:
-  contents: write
-
+  contents: read
 jobs:
   backup:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Export des tables
-        run: |
-          mkdir -p data/backup-supabase
-          for t in tags_log dispos_log; do
-            curl -sf \
-              -H "apikey: ${{ secrets.SUPA_SERVICE_KEY }}" -H "Authorization: Bearer ${{ secrets.SUPA_SERVICE_KEY }}" \
-              "https://vhhmageufrcenruywawg.supabase.co/rest/v1/$t?select=*&order=id.asc" \
-              -o "/tmp/$t.json" || { echo "⚠️ projet injoignable (pausé ?)"; exit 1; }
-            python3 -c "import json;d=json.load(open('/tmp/$t.json'));json.dump(d,open('data/backup-supabase/$t.json','w'),ensure_ascii=False,indent=1);print('$t :',len(d),'lignes')"
-          done
-      - name: Commit si changement
-        run: |
-          git config user.name "acbb-data-bot"
-          git config user.email "bot@users.noreply.github.com"
-          git add data/backup-supabase/
-          if git diff --staged --quiet; then
-            echo "Backup inchangé."
-          else
-            git commit -m "backup supabase: $(date -u +%Y-%m-%d)"
-            git pull --rebase origin main || true
-            git push
-          fi
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Sauvegarder et vérifier dans le stockage privé
+        env:
+          SUPA_SERVICE_KEY: ${{ secrets.SUPA_SERVICE_KEY }}
+        run: python3 scripts/backup_private.py

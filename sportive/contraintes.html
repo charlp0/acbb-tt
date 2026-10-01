@@ -6,7 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/style.css">
 <link rel="icon" type="image/png" href="../logo.png">
-<link rel="manifest" href="../../manifest.json">
+<link rel="manifest" href="../manifest.json">
 <meta name="theme-color" content="#0B0B0D">
 <style>
   /* Contraintes compo — rendu aligné sur la maquette PropContraintes.dc.html : en-tête .h1 + sous-titre mono + état à droite,
@@ -126,15 +126,20 @@
   </div>
 
   <div class="card rule green fftt" data-rule="n1">
-    <div class="rc"><div class="rt"><span class="t" data-t="Nationale 1 : 1800 points minimum">Nationale 1 : 1800 points minimum</span><span class="pill art">II.243</span></div><span class="d">Chaque joueur aligné en N1 doit avoir <b>au moins 1800 points</b> au classement officiel.</span></div>
+    <div class="rc"><div class="rt"><span class="t" data-t="Classements minimum par division">Classements minimum par division</span><span class="pill art">II.243</span></div><span class="d">N1 : chaque joueur à 1800 points minimum. R1 : trois joueurs à 900 points. R2 : trois joueurs à 700 points. N2 dames : deux joueuses à 900 points. Classements officiels ; points manquants à vérifier.</span></div>
     <div class="ra"><span class="lab">s’applique à</span><span class="teams">…</span></div>
     <div class="rv"><a class="lab chk" href="journee.html" title="vérifiée aussi dans Scoring &amp; compos"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12.5l5 5L20 7"></path></svg>vérifiée dans Compos journée</a><span class="lab st"></span></div>
   </div>
 
   <div class="card rule green fftt" data-rule="ex">
-    <div class="rc"><div class="rt"><span class="t" data-t="Un joueur EX par feuille">Un joueur EX par feuille</span><span class="pill art">II.609</span></div><span class="d">En équipe de 4, <b>un seul</b> joueur extra-communautaire (hors UE / EEE / Suisse / Royaume-Uni) par feuille de rencontre. Statuts d’après <code>extra_communautaires.json</code>. <span id="exConf"></span></span></div>
+    <div class="rc"><div class="rt"><span class="t" data-t="Un joueur EX par feuille">Un joueur EX par feuille</span><span class="pill art">II.609</span></div><span class="d">En équipe de 4, <b>un seul</b> joueur extra-communautaire (hors UE / EEE / Suisse / Royaume-Uni) par feuille de rencontre. Statuts vérifiés par la sportive. <span id="exConf"></span></span></div>
     <div class="ra"><span class="lab">s’applique à</span><span class="teams">…</span></div>
     <div class="rv"><a class="lab chk" href="journee.html" title="vérifiée aussi dans Scoring &amp; compos"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12.5l5 5L20 7"></path></svg>vérifiée dans Compos journée</a><span class="lab st"></span></div>
+  </div>
+
+  <div class="card rule green fftt" data-rule="feminines">
+    <div class="rc"><div class="rt"><span class="t" data-t="Régionale messieurs : deux féminines maximum">Régionale messieurs : deux féminines maximum</span></div><span class="d">M3, M4 et M5 : contrôle à partir du sexe renseigné par la FFTT. Une donnée manquante déclenche une vérification.</span></div>
+    <div class="rv"><span class="lab st"></span></div>
   </div>
 
   <div class="card rule green fftt" data-rule="licence">
@@ -148,7 +153,9 @@
 </div><!-- /app -->
 </div><!-- /wrap -->
 
-<script src="../shared/api.js"></script>
+<script src="../shared/api.js"></script><script src="../shared/edition.js"></script>
+<script src="../shared/participations.js?v=1"></script>
+<script src="../shared/regles.js?v=1"></script>
 <script src="../shared/contraintes.js"></script>
 <script src="../shared/nav.js" data-base=".."></script>
 <script src="../shared/report.js" defer></script>
@@ -188,6 +195,7 @@
   var pkey=function(p){ return String(p.lic||((p.nom||'')+'|'+(p.pre||''))); };
   var ORDER=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3','F4'];
   var SVG='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12.5l5 5L20 7"></path></svg>';
+  var PARTS=null, SEXE={}, SITE=null;
   var NJ=7, COMPOS={}, POULES={}, BYKEY={}, EXC={ex:[],conf:[]}, PLAYERS=[], TAGS=null, FEM={}, EXJ={};
   var LISTE=[], META=null, DEFAUT=true;
   var fmtD=function(iso){ var m=/^(\d{4})-(\d\d)-(\d\d)/.exec(String(iso||'')); return m?m[3]+'/'+m[2]+'/'+m[1]:String(iso||''); };
@@ -200,10 +208,11 @@
       gj('scoring.json'),
       spoSelect('tags_log','select=tags&order=id.desc&limit=1').catch(function(){return [];}),
       spoSelect('scenarios_log','select=tags&slot=eq.fem&order=id.desc&limit=1').catch(function(){return [];}),
-      gj('extra_communautaires.json'),
+      ACBB.api('spo/config/extras'),
       spoSelect('scenarios_log','select=id,slot,tags&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc').catch(function(){return [];}),
       gj('poules2627.json'),
-      spoSelect('scenarios_log',C.QUERY).catch(function(){return [];})
+      spoSelect('scenarios_log',C.QUERY).catch(function(){return [];}),
+      gj('site.json'), gj('sexes.json')
     ]).then(function(res){
       PLAYERS=(res[0]&&res[0].players)||[];
       PLAYERS.forEach(function(p){ BYKEY[pkey(p)]=p; });
@@ -219,6 +228,7 @@
       var st=$('stateMeta');
       if(!TAGS){ st.textContent=DEV?'· mode dev : compo officielle non chargée (données serveur uniquement)':'· compo officielle indisponible : équipes non déterminées'; }
       else st.textContent='';
+      SITE=res[7]; SEXE=res[8]||{}; PARTS=ACBB_PART.create({site:SITE,players:PLAYERS,plans:COMPOS,poules:POULES});
       initEditor();
       renderAll();
     }).catch(function(e){ $('stateMeta').textContent='· erreur : '+e.message; });
@@ -294,7 +304,7 @@
   function fillFftt(){
     var n=LISTE.length;
     document.querySelectorAll('.rule.fftt .t').forEach(function(el,i){ el.textContent=(n+i+1)+' · '+el.getAttribute('data-t'); });
-    setTeams('n1','M2');
+    setTeams('n1','M2, M3, M4, F1');
     if(!TAGS){ setTeams('ex','<span class="none">non déterminé</span>'); return; }
     var exIds=Object.values((EXJ&&EXJ.ex)||{}).map(String), qIds=Object.values((EXJ&&EXJ.a_confirmer)||{}).map(String);
     var byId=function(id){ return PLAYERS.filter(function(p){ return String(p.lic)===id||pkey(p)===id||(id.indexOf('|')>0&&fkey(p)===nrmK(id.split('|')[0])+'|'+nrmK(id.split('|')[1])); })[0]; };
@@ -307,41 +317,26 @@
 
   /* ===== état par règle : alertes relevées sur les compos enregistrées (mêmes règles que le vérificateur de Compos journée) ===== */
   function fillStates(){
-    var composed=Object.keys(COMPOS).map(Number).sort(function(a,b){return a-b;});
+    var composed=Array.from(new Set(Object.keys(COMPOS).map(Number).concat(PARTS.events.map(function(e){return e.j;})))).sort(function(a,b){return a-b;});
     var sts=document.querySelectorAll('.rule .st');
     if(!composed.length){
       Array.prototype.forEach.call(sts,function(el){ el.textContent=DEV?'mode dev : compos non chargées':'aucune journée composée pour l’instant'; });
       return;
     }
     var A={}; var add=function(r,txt){ (A[r]=A[r]||[]).push(txt); };
-    var NUM=function(t){return parseInt(t.slice(1),10);}, GENRE=function(t){return t[0];}, isTeam=function(t){return /^[MF]\d+$/.test(t||'');};
-    var teamsOf=function(j){ return Object.keys(COMPOS[j]||{}).filter(function(t){return t!=='_meta';}); };
+    var teamsOf=function(j){return Array.from(new Set(Object.keys(COMPOS[j]||{}).concat(PARTS.events.filter(function(e){return e.j===j;}).map(function(e){return e.t;})))).filter(function(t){return /^[MF]\d+$/.test(t);});};
     var calOf=function(t,j){ var P=POULES[t]; return P?((P.cal||[]).filter(function(c){return c.j===j;})[0]||null):null; };
-    var parts=function(k,j){ var out=[]; for(var jj=1;jj<j;jj++) teamsOf(jj).forEach(function(t){ if((((COMPOS[jj][t]||{}).p)||[]).map(String).indexOf(k)>=0) out.push({j:jj,t:t}); }); return out; };
-    var shortN=function(k){ var p=BYKEY[k]; return p?((p.pre||'').charAt(0)+'. '+(p.nom||'')):k; };
     composed.forEach(function(j){
       teamsOf(j).forEach(function(t){
-        var cl=calOf(t,j); if(!cl||cl.exempt) return;                       // équipe exempte ou calendrier inconnu : rien à vérifier
-        var P=(((COMPOS[j][t]||{}).p)||[]).map(String); if(!P.length) return;
+        var cl=calOf(t,j); if(!cl) {add('brulage','J'+j+' '+t+' : calendrier manquant, à vérifier');return;}
+        var P=((PARTS.lineup(t,j)||{}).p||[]);
         var tag='J'+j+' '+t;
         // contraintes internes (liste éditable)
-        var ou=function(cp){ var w=null; teamsOf(j).forEach(function(o){ if(!w&&o!==t&&(((COMPOS[j][o]||{}).p)||[]).map(String).some(function(k){ return C.isP(cp,k,BYKEY); })) w='aligné en '+o; }); return w||'non aligné'; };
-        C.check(LISTE,{t:t,j:j,P:P,dom:!!cl.dom,adv:C.advOf(POULES,t,j),BYKEY:BYKEY,POULES:POULES,ou:ou}).forEach(function(i){ if(i.lvl!=='info') add(i.cid,tag+(i.msg.indexOf('extérieur')>=0?' (extérieur)':'')); });
-        if(isTeam(t)){
-          // brûlage II.112 (numérotation séparée M / F)
-          P.forEach(function(k){ var pr=parts(k,j).filter(function(x){return isTeam(x.t)&&GENRE(x.t)===GENRE(t);}).map(function(x){return NUM(x.t);}).sort(function(a,b){return a-b;});
-            if(pr.length>=2&&NUM(t)>pr[1]) add('brulage',tag+' · '+shortN(k)+' brûlé'); });
-          // règle de la 2e journée (II.112.1)
-          if(j===2){ var desc=P.filter(function(k){ return parts(k,2).some(function(x){return isTeam(x.t)&&GENRE(x.t)===GENRE(t)&&NUM(x.t)<NUM(t);}); }); if(desc.length>1) add('brulage',tag+' · règle J2 ('+desc.length+' joueurs)'); }
-          // deux équipes ACBB dans la même poule
-          ORDER.forEach(function(o){ if(o===t) return; var Po=POULES[o], Pt=POULES[t]; if(!Po||!Pt||Po.poule==null||Po.division!==Pt.division||Po.poule!==Pt.poule) return;
-            P.forEach(function(k){ if(parts(k,j).some(function(x){return x.t===o;})) add('brulage',tag+' · '+shortN(k)+' déjà en '+o+' (même poule)'); }); });
-        }
-        // classement minimum N1
-        if(t==='M2') P.forEach(function(k){ var p=BYKEY[k]; if(p&&p.men&&p.men<1800) add('n1',tag+' · '+shortN(k)+' '+p.men+' pts'); });
-        // extra-communautaires : 1 seul par feuille (II.609)
-        var exs=P.filter(function(k){return EXC.ex.indexOf(k)>=0;}), exq=P.filter(function(k){return EXC.conf.indexOf(k)>=0;});
-        if(exs.length>1) add('ex',tag+' · '+exs.length+' joueurs EX'); else if(exs.length+exq.length>1) add('ex',tag+' · '+(exs.length+exq.length)+' EX possibles (statut à confirmer)');
+        var ou=function(cp){ var w=null; teamsOf(j).forEach(function(o){ if(!w&&o!==t&&((PARTS.lineup(o,j)||{}).p||[]).map(String).some(function(k){ return C.isP(cp,k,BYKEY); })) w='aligné en '+o; }); return w||'non aligné'; };
+        C.check(cl.exempt?LISTE.filter(function(c){return c.type==='ensemble'||c.type==='separes';}):LISTE,{t:t,j:j,P:P,dom:!!cl.dom,adv:C.advOf(POULES,t,j),BYKEY:BYKEY,POULES:POULES,ou:ou}).forEach(function(i){ if(i.lvl!=='info') add(i.cid,tag+(i.msg.indexOf('extérieur')>=0?' (extérieur)':'')); });
+        ACBB_RULES.check({model:PARTS,t:t,j:j,players:BYKEY,poules:POULES,
+          division:({M2:'N1',M3:'R1',M4:'R2',M5:'R3',F1:'N2D'})[t],size:t==='M1'?3:4,sexes:SEXE,extras:EXJ})
+          .forEach(function(i){add(i.code==='minimum'?'n1':i.code==='ex'?'ex':i.code==='feminines'?'feminines':'brulage',tag+' · '+i.msg);});
       });
     });
     var jl=composed.map(function(j){return 'J'+j;}).join(', ')+(composed.length>1?' composées':' composée');
@@ -357,8 +352,8 @@
   function persist(liste,action){
     if(SAVING) return Promise.resolve();
     SAVING=true; var sb=$('edSave'); sb.disabled=true;
-    return spoInsert('scenarios_log',C.payload(liste,(ME.nom||'')+' — '+action))
-      .then(function(){ return spoSelect('scenarios_log',C.QUERY); })
+    return ACBB_EDIT.save({kind:'contraintes',expected:META&&META.id||0,changes:ACBB_EDIT.diff(META?Object.fromEntries(LISTE.map(c=>[c.id,c])):{},Object.fromEntries(liste.map(c=>[c.id,c]))),note:action,label:function(k){var c=liste.find(c=>c.id===k)||LISTE.find(c=>c.id===k);return c?C.titre(c):k;}})
+      .then(function(result){ return [result.row]; })
       .then(function(rows){ var ct=C.fromRows(rows); LISTE=ct.liste; META=ct.meta; DEFAUT=ct.defaut; closeEditor(); renderAll(); toast('Contraintes enregistrées ('+action+') — vérifiées dans Compos journée et Scoring'); })
       .catch(function(e){ toast('Enregistrement impossible : '+e.message); })
       .then(function(){ SAVING=false; sb.disabled=false; });

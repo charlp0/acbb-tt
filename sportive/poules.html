@@ -6,7 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/style.css">
 <link rel="icon" type="image/png" href="../logo.png">
-<link rel="manifest" href="../../manifest.json">
+<link rel="manifest" href="../manifest.json">
 <meta name="theme-color" content="#0B0B0D">
 <style>
   :root{--bg:#0B0B0D;--paper:#141416;--panel:#1E1E22;--panel-2:#26262B;--line:rgba(255,255,255,0.08);--line-2:rgba(255,255,255,0.16);
@@ -170,6 +170,7 @@
 <aside id="fiche" aria-label="Fiche adversaire" aria-hidden="true"></aside>
 
 <script src="../shared/api.js"></script>
+<script src="../shared/lieux.js?v=1"></script>
 <script src="../shared/scouting.js?v=3"></script>
 <script src="../shared/nav.js" data-base=".."></script>
 <script src="../shared/report.js" defer></script>
@@ -201,6 +202,7 @@
   })();
 
   /* ===== données ===== */
+  var LIEUX={}, SADV={};
   var POULES=null, SALLES={}, RES={}, HIST=[], TAGS={}, PLAYERS=[];
   function boot(){
     var NJ=7;   // scores serveur : journées 1..7 (phase 1) ; au-delà (Pro B) : resultats2627.json uniquement
@@ -213,7 +215,7 @@
       gj('resultats2627.json'),
       gj('archive/2025-2026/acbb-vs.json'),
       Promise.all(pubs),
-      gj('site.json')
+      gj('site.json'), gj('lieux.json'), gj('salles_adverses.json')
     ]).then(function(res){
       if(!res[0]) throw new Error('poules2627.json introuvable');
       POULES=res[0];
@@ -221,6 +223,7 @@
       PLAYERS=(res[2]&&res[2].players)||[];
       SALLES=(res[3]&&res[3].salles)||{};
       HIST=(res[5]&&res[5].rencontres)||[];
+      LIEUX=res[8]||{}; SADV=(res[9]&&res[9].salles)||{};
       SITE=res[7]; buildL26(res[7]);
       buildResults(res[4],res[6],res[7]);
       render(POULES,TAGS,PLAYERS);
@@ -328,13 +331,12 @@
     if(d){ var days=Math.round((d-today)/864e5); return '<span class="st play">à venir'+(days===0?' · aujourd\'hui':(days===1?' · demain':(days<=14?' · dans '+days+' j':'')))+'</span>'; }
     return '<span class="st play">à venir</span>';
   }
-  function salleFor(acbb,P,t){   // salle adverse quand on la joue à l'extérieur (salles2627.json cal[].venue)
-    var S=SALLES[acbb]; var cal=P.cal||[];
-    var c=cal.find(function(x){ return (x.opp===t.pos)||(x.oppName&&norm(x.oppName)===norm(t.name)); });
-    if(c&&!c.dom&&S){ var sc=(S.cal||[]).find(function(x){return x.j===c.j;}); if(sc&&sc.venue) return {venue:sc.venue.replace(/\s*digicode[^0-9]*\d+\s*/i,' ').replace(/\s+/g,' ').trim(),j:c.j,date:c.date}; }
-    if(S){ var byOpp=(S.cal||[]).find(function(x){ return !x.dom&&x.opp&&(clubKey(x.opp)===clubKey(t.name)||(x.opp&&norm(x.opp)===norm(t.name))); }); if(byOpp&&byOpp.venue) return {venue:byOpp.venue.replace(/\s*digicode[^0-9]*\d+\s*/i,' ').replace(/\s+/g,' ').trim(),j:byOpp.j,date:byOpp.date}; }
-    if(c&&c.dom){ var sh=S?(S.cal||[]).find(function(x){return x.j===c.j;}):null; return {home:true,j:c.j,date:c.date,salle:sh&&sh.salle||''}; }
-    return null;
+  function salleFor(acbb,P,t){
+    var c=(P.cal||[]).find(function(x){return !x.exempt&&+x.opp===+t.pos;});
+    if(!c)return null;
+    var v=ACBB_LIEUX.resolve({t:acbb,j:c.j,poule:P,salles:SALLES,adverses:SADV,lieux:LIEUX});
+    if(c.dom)return {home:true,j:c.j,date:c.date,salle:v?v.label:'',venue:v?v.txt:'',note:v&&v.note||''};
+    return v&&v.txt?{venue:v.txt,j:c.j,date:c.date,note:v.note}:null;
   }
 
   /* ===== fiche adversaire ===== */
@@ -367,7 +369,7 @@
     }
     var sal=salleFor(P.acbb,P,t);
     if(sal&&sal.venue){
-      h+='<div class="f-h">Salle · déplacement J'+sal.j+'</div><div class="f-salle">'+esc(sal.venue)+'<br><span style="color:var(--dim);font-size:11px">'+esc(sal.date||'')+'</span><br><a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(sal.venue)+'" target="_blank" rel="noopener">Itinéraire ↗</a></div>';
+      h+='<div class="f-h">Salle · '+(sal.home?'domicile':'déplacement')+' J'+sal.j+'</div><div class="f-salle">'+esc(sal.venue)+(sal.note?'<br>'+esc(sal.note):'')+'<br><span style="color:var(--dim);font-size:11px">'+esc(sal.date||'')+'</span><br><a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(sal.venue)+'" target="_blank" rel="noopener">Itinéraire ↗</a></div>';
     }else if(sal&&sal.home){
       h+='<div class="f-h">Salle</div><div class="f-salle">Rencontre à domicile (J'+sal.j+')'+(sal.salle?' — <b style="color:var(--ink-2)">'+esc(sal.salle)+'</b>':' — salle ACBB')+'.</div>';
     }

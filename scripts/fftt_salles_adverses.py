@@ -21,6 +21,8 @@ Sortie : data/salles_adverses.json   { "<nom d'équipe>": {salle, adresse, cp, v
 """
 import json, re, time, unicodedata, importlib.util, datetime, os
 
+from team_identity import unique_alias
+
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
 
@@ -59,11 +61,10 @@ for e in REG + DEP:
         if not n or 'BOULOGNE BILLAN' in n.upper(): continue
         al = {n}
         if t.get('fftt'): al.add(t['fftt'])
-        # même numéro d'équipe + un mot distinctif en commun => c'est le libellé FFTT du même club
-        num = (mots(n) or [''])[-1]
-        for s in alias_site:
-            if (mots(s) or [''])[-1] == num and (set(mots(n)) & set(mots(s))) - {num}:
-                al.add(s)
+        # Le libellé explicite est prioritaire ; seul un rapprochement unique
+        # de tous les mots distinctifs ET du numéro peut ajouter un alias.
+        hit = unique_alias(n, alias_site)
+        if hit: al.add(hit)
         cible.setdefault(n, set()).update(al)
 print("adversaires à résoudre : %d" % len(cible))
 
@@ -111,7 +112,9 @@ for nom, alias in sorted(cible.items()):
     out[nom] = {'salle': d.get('nomsalle') or '', 'adresse': adr.strip(),
                 'cp': d.get('codepsalle') or '', 'ville': d.get('villesalle') or '',
                 'lat': d.get('latitude') or '', 'lon': d.get('longitude') or '',
-                'club': d.get('nom') or c['nom'], 'num': c['num']}
+                'club': d.get('nom') or c['nom'], 'num': c['num'],
+                'team_id': c['num']+':'+(mots(nom) or [''])[-1],
+                'source': 'fftt_club', 'checked_at': datetime.datetime.now(datetime.timezone.utc).isoformat()}
 
 res = {'maj': datetime.date.today().isoformat(),
        'source': "API FFTT xml_club_b + xml_equipe + xml_club_detail — salle DÉCLARÉE du club, "

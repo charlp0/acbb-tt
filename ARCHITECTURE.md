@@ -32,7 +32,7 @@ Réponses JSON. Erreurs : `{error:"code", ...}` avec statut HTTP.
 - `POST /joueur/dispos {licence, dob, dispos:{j1..j7:bool}}` → `{ok:true, saved_at}`. Insère dans `dispos_log` (`licence, nom, prenom, dispos:{j1..j7, roles:<copié de la ligne précédente>}, n, ip`). Journal.
 
 ### Capitaine (jeton rôle `capitaine`, équipe fixée par le lien)
-- `GET /cap/dispos` → `{equipe, journees:[{j,date,opp,dom}], joueurs:[{licence, nom, prenom, statut:'T'|'renfort', dispos|null, saved_at|null, changes:[str], jamais:bool}]}`. Effectif = titulaires de `tags_log` (dernier, `r=='T' && e==equipe`) + pour F1..F3 le slot `fem` de `scenarios_log` (toutes `e==equipe`) + joueurs alignés dans l'équipe dans les slots `j1..j7`. `changes` = tableau (≤ 3 éléments : deux libellés puis « et N autres ») issu du diff entre les 2 dernières lignes `dispos_log` du joueur (« plus dispo en J5 », « de nouveau dispo en J2 », « première saisie ») ; le front fait `join(' · ')`. `journees[]` porte aussi `exempt`.
+- `GET /cap/dispos` → `{equipe, journees:[{j,date,opp,dom}], joueurs:[{licence, nom, prenom, statut:'T', dispos|null, saved_at|null, changes:[str], jamais:bool}]}`. Effectif = titulaires de `tags_log` (dernier, `r=='T' && e==equipe`) + pour F1..F3 le slot `fem` de `scenarios_log` (toutes `e==equipe`) ; aucun joueur des compositions futures n’est ajouté. Les exemptions passées validées sont renvoyées par joueur, sans exposer les compositions des autres équipes. `changes` = tableau (≤ 3 éléments : deux libellés puis « et N autres ») issu du diff entre les 2 dernières lignes `dispos_log` du joueur (« plus dispo en J5 », « de nouveau dispo en J2 », « première saisie ») ; le front fait `join(' · ')`. `journees[]` porte aussi `exempt`.
 - `GET /cap/debriefs` → `{items:[debrief par journée de l'équipe, avec photo_url (URL signée 1 h)]}` ; `POST /cap/debrief {journee, score_acbb, score_adv, texte, visible_club}` → `{id}` (insert, la dernière ligne par (equipe,journee) fait foi) ; `POST /cap/photo` multipart `file, journee` → `{photo_path}` (bucket privé `debriefs`, ≤ 5 Mo, jpg/png/webp).
 - `GET /cap/poule` → `{equipe, resultats:[{journee, score_acbb, score_adv}]}` (le reste vient de `../data/poules2627.json`, `salles2627.json`).
 
@@ -63,4 +63,20 @@ RLS activée sur ces tables sans aucune politique : seule la fonction (service r
 `scripts/refonte_deploy.sh` (API de gestion Supabase, jeton `SUPABASE_ACCESS_TOKEN` dans `.secrets.env`) : SQL → buckets → secrets → fonction. `scripts/refonte_seed_naissances.py` : lit le fichier des inscriptions (xlsx) et insère les hachés `source='fichier'`.
 
 ## Données statiques utilisées par le front (`../data/`)
-`scoring.json` (effectif, points), `players_index.json` + `players/<lic>.json` (fiches), `poules2627.json` (poules, calendriers, niveaux 25/26), `salles2627.json` (adresses, dom/ext), `resultats2627.json` (résultats FFTT quand disponibles), `site.json` (`STANDINGS` par équipe quand disponibles), `capitaines.json`, `categories.json`, `extra_communautaires.json`.
+`scoring.json` (effectif, points), `players_index.json` + `players/<lic>.json` (fiches), `poules2627.json` (poules, calendriers, niveaux 25/26), `salles2627.json` (adresses, dom/ext), `resultats2627.json` (résultats FFTT quand disponibles), `site.json` (`STANDINGS` par équipe quand disponibles), `capitaines.json`, `categories.json`, `sexes.json`, `lieux.json`. Les statuts extra-communautaires sont privés et servis par `/spo/config/extras`.
+
+
+## Corrections de l’audit — contrats supplémentaires
+
+- `POST /spo/compositions {slot, expected_id, changes}` : changements par équipe, sauvegarde transactionnelle et signée. Une édition d’une autre équipe est fusionnée ; un conflit sur la même équipe répond `409` avec la version courante. L’historique est append-only. Reprendre une ancienne version crée d’abord un brouillon.
+- `POST /spo/documents {kind:'tags'|'fem'|'contraintes', expected_id, changes, note?}` : même protection pour les effectifs, réglages et contraintes ; fusion par joueur ou identifiant de contrainte.
+- Les insertions génériques de ces documents via `/spo/rest` sont refusées après la bascule. Le mode temporaire `ACBB_REQUIRE_COMPOSITION_VERSION=false` n’est utilisé que pendant le changement de version.
+- Les sélections `/spo/rest` sans limite explicite sont paginées côté serveur. Au-delà de 20 000 lignes, une erreur demande de filtrer, jamais une réponse silencieusement tronquée.
+- `GET /spo/config/extras` : configuration privée des quotas, réservée à la sportive.
+- `GET /spo/alerts/dispos` : dernière alerte détaillée stockée en privé. Les notifications publiques ne contiennent que le lien vers cette page, sans nom ni disponibilité.
+- `shared/participations.js` fournit les feuilles réelles et déclarations d’exemption passées validées ; le plan d’origine reste séparé. `shared/regles.js` centralise les contrôles. Messieurs et dames ont des historiques indépendants. Une source manquante reste à vérifier.
+- `shared/lieux.js` donne la priorité au lieu enregistré pour la rencontre, puis à la salle habituelle du club. Il ne présente jamais cette dernière comme une confirmation spécifique au match.
+- Le dossier public est construit par `build_public.py` et contrôlé par `check_public.py`. Les dates de chaque source sont recalculées dans l’artefact publié ; les scripts et styles ont des références versionnées par leur contenu.
+- `results.yml` rafraîchit les poules indépendamment des profils complets. `check-freshness.yml` contrôle les trois sources séparément. `backup_private.py` pagine et relit les sauvegardes des tables dans `club-backups`, jamais dans un commit ou artefact public.
+
+Procédure de mise en ligne et de retour arrière : [DEPLOYMENT.md](DEPLOYMENT.md).

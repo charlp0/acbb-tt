@@ -1,0 +1,38 @@
+{
+ "maj": "2026-09-30",
+ "lieux": {
+  "piscine": {
+   "nom": "Sous-sol de la piscine",
+   "adresse": "165 rue du Vieux-Pont-de-Sèvres",
+   "cp": "92100",
+   "ville": "Boulogne-Billancourt",
+   "source": "https://www.acbb.fr/tennis-de-table/"
+  },
+  "bartholdi": {
+   "nom": "Gymnase Bartholdi",
+   "adresse": "rue de l’Ancienne-Mairie",
+   "cp": "92100",
+   "ville": "Boulogne-Billancourt",
+   "a_confirmer": true,
+   "note": "Numéro d’entrée à confirmer : 28 dans l’annuaire des installations ACBB, 30 sur la page de la section. La salle est bien rue de l’Ancienne-Mairie.",
+   "sources": [
+    "https://www.acbb.fr/equipments/",
+    "https://www.acbb.fr/tennis-de-table/"
+   ]
+  },
+  "numerique": {
+   "nom": "Gymnase du Numérique",
+   "adresse": "23 rue Heinrich",
+   "cp": "92100",
+   "ville": "Boulogne-Billancourt",
+   "source": "https://www.acbb.fr/equipments/"
+  },
+  "marly_maigrets": {
+   "nom": "Gymnase des Maigrets",
+   "adresse": "Chemin des Maigrets",
+   "cp": "78160",
+   "ville": "Marly-le-Roi",
+   "source": "Adresse confirmée par Charles, 21/09/2026"
+  }
+ }
+}

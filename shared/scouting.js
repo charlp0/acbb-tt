@@ -18,7 +18,7 @@
   };
   var norm = function (s) {
     return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
-      .toUpperCase().replace(/[^A-Z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+      .toUpperCase().replace(/\bT\.T\./g,'TT').replace(/[^A-Z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
   };
   /* « BOULOGNE BILLAN 11 » ≈ « BOULOGNE BILLANCOURT 11 » : même premier mot et même numéro d'équipe */
   function sameTeam(a, b) {
@@ -27,39 +27,30 @@
     if (a === b) return true;
     var na = a.match(/(\d+)$/), nb = b.match(/(\d+)$/);
     if (!na || !nb || na[1] !== nb[1]) return false;
-    var fa = a.split(' ')[0], fb = b.split(' ')[0];
-    return fa === fb || fa.indexOf(fb) === 0 || fb.indexOf(fa) === 0;
+    var wa=motsEq(a).sort().join('|'),wb=motsEq(b).sort().join('|');
+    return !!wa&&wa===wb;
   }
   /* Les libellés d'équipe diffèrent entre le PDF des poules et la FFTT : « USM MALAKOFF 5 » vs
      « MALAKOFF USM 5 », « CS CLICHY TT 1 » vs « CLICHY CS 1 ». On retrouve l'équipe par le numéro
      ET un mot distinctif commun (on ignore les sigles et mots génériques), à condition qu'une seule
      équipe corresponde. Sans ça, le site retombait sur le repère 25/26 pour 10 adversaires. */
-  var GENERIQUE = { TT:1, TTM:1, TTMC:1, ASTT:1, CS:1, CSM:1, US:1, USM:1, AS:1, ASV:1, ASVTT:1, ES:1,
+  var GENERIQUE = { ENT:1, AC:1, EP:1, TT:1, TTM:1, TTMC:1, ASTT:1, CS:1, CSM:1, US:1, USM:1, AS:1, ASV:1, ASVTT:1, ES:1,
                     SC:1, SCTT:1, STT:1, SPORT:1, SPORTS:1, SPORTIF:1, SPORTING:1, CLUB:1, TENNIS:1,
                     TABLE:1, SAINT:1, SAINTE:1, PING:1, ATT:1, UMS:1, ASPN:1 };
   function numeroEq(n) { var m = norm(n).match(/(\d+)$/); return m ? m[1] : null; }
   function motsEq(n) {
-    return norm(n).replace(/\s*\d+$/, '').split(' ').filter(function (w) { return w.length >= 4 && !GENERIQUE[w]; });
+    return norm(n).replace(/\s*\d+$/, '').split(' ').filter(function (w) { return !!w && !GENERIQUE[w]; });
   }
   function trouverEquipe(teams, nom) {
     teams = teams || [];
     var k = norm(nom);
     var hit = teams.filter(function (t) { return norm(t.name) === k; })[0];
     if (hit) return hit;
-    hit = teams.filter(function (t) { return sameTeam(t.name, nom); })[0];
-    if (hit) return hit;
-    var num = numeroEq(nom), ms = motsEq(nom);
-    if (!num || !ms.length) return null;
-    var c = teams.filter(function (t) {
-      if (numeroEq(t.name) !== num) return false;
-      var tm = motsEq(t.name);
-      return ms.some(function (w) { return tm.indexOf(w) >= 0; });
-    });
-    /* On s'arrête là volontairement : ignorer le numéro d'équipe rapprocherait « COURBEVOIE STT 5 »
-       de « COURBEVOIE STT 4 », deux équipes différentes du même club. Trois adversaires restent non
-       résolus (numéro divergent entre le PDF des poules et la FFTT) et gardent le repère 25/26,
-       ce qui est préférable à un niveau 26/27 faux. */
-    return c.length === 1 ? c[0] : null;
+    var exacts=teams.filter(function (t) { return sameTeam(t.name, nom); });
+    if(exacts.length===1)return exacts[0];
+    if(exacts.length>1)return null;
+    return null; // alias incomplet ou ambigu : aucun rapprochement par un seul mot
+
   }
   var reels = function (ps) { return (ps || []).filter(function (p) { return p && p.nom && p.nom !== 'Joueur absent'; }); };
   var nom = function (p) { return ((p.prenom || '') + ' ' + (p.nom || '')).trim(); };

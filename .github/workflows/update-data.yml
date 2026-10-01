@@ -1,10 +1,6 @@
 name: Mise à jour données FFTT
 
 on:
-  # ⏸️ PAUSE INTERSAISON (juil. → sept. 2026) : l'API FFTT a basculé sur 2026/2027,
-  # le championnat 2025/2026 n'est plus servi (équipes/matchs vides). Runs programmés
-  # désactivés pour éviter des échecs quotidiens. RÉACTIVER À LA REPRISE en décommentant
-  # le bloc schedule ci-dessous. Déclenchement manuel toujours possible.
   schedule:                    # tous les jours, 4 créneaux (réactivé le 16/09/2026, décision Charles)
     - cron: '0 6 * * *'        # ~8h Paris
     - cron: '0 11 * * *'       # ~13h Paris
@@ -14,6 +10,12 @@ on:
     inputs:
       full:
         description: 'Rebuild complet (1 = tout reconstruire, ignore le cache)'
+        default: '0'
+      dry_run:
+        description: 'Validation isolée sans publication ni alerte (1 = oui)'
+        default: '0'
+      sample:
+        description: 'En validation uniquement : trois profils représentatifs (1 = oui)'
         default: '0'
       only_site:
         description: 'Ne régénérer que site.json (poules/classements), sans les profils joueurs (1 = oui)'
@@ -29,7 +31,9 @@ concurrency:
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == '1')
     runs-on: ubuntu-latest
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -42,9 +46,9 @@ jobs:
           path: |
             data/_state.json
             data/_oppcache.json
-          key: fftt-cache-${{ github.run_id }}    # toujours unique -> sauvegarde à chaque run
+          key: fftt-cache-v2-${{ github.run_id }}    # toujours unique -> sauvegarde à chaque run
           restore-keys: |
-            fftt-cache-                            # restaure le cache le plus récent
+            fftt-cache-v2-                            # restaure le cache le plus récent
       - name: Génération des profils joueurs
         if: ${{ github.event.inputs.only_site != '1' }}
         env:
@@ -53,37 +57,41 @@ jobs:
           FFTT_TOP: '0'          # 0 = tout le club ayant joué ≥1 match cette saison
           FFTT_FULL: ${{ github.event.inputs.full || '0' }}   # 1 = rebuild complet (manuel)
           FFTT_SKIP_IF_FRESH: '0'   # chaque créneau tourne en incrémental (seuls les joueurs avec de nouveaux matchs sont recalculés)
-        run: python3 scripts/fftt_build.py
+          FFTT_SAMPLE: ${{ github.event.inputs.dry_run == '1' && github.event.inputs.sample == '1' && '1' || '0' }}
+        run: python3 scripts/collect_profiles.py
       - name: Génération data-driven des pages d'équipe (site.json)
-        # 26/27 : les poules FFTT ne sont pas encore résolues par fftt_site.py → l'étape ne doit pas bloquer les profils joueurs
-        continue-on-error: true
+        if: ${{ github.event.inputs.only_site == '1' || github.event.inputs.dry_run == '1' }}
         env:
           FFTT_ID: ${{ secrets.FFTT_ID }}
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
-          FFTT_SKIP_IF_FRESH: ${{ github.event_name == 'schedule' && '1' || '0' }}
+          FFTT_SKIP_IF_FRESH: '0'
         run: python3 scripts/fftt_site.py
       - name: Génération du scoring compo (scoring.json — progression 4 phases)
+        if: ${{ github.event.inputs.only_site != '1' }}
         env:
           FFTT_ID: ${{ secrets.FFTT_ID }}
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
-          FFTT_SKIP_IF_FRESH: ${{ github.event_name == 'schedule' && '1' || '0' }}
+          FFTT_SKIP_IF_FRESH: '0'
         run: python3 scripts/fftt_scoring.py
+      - name: Vérifier les sorties et dater chaque source
+        run: python3 scripts/check_data.py
       - name: Commit si changement
+        if: github.ref == 'refs/heads/main' && github.event.inputs.dry_run != '1'
         run: |
           git config user.name "acbb-data-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/
+          git add data/players/ data/players_index.json data/meta.json data/teams.json data/site.json data/site.js data/scoring.json data/scoring.js
           if git diff --staged --quiet; then
             echo "Aucun changement dans les données."
           else
             git commit -m "data: mise à jour auto $(date -u +%Y-%m-%d)"
-            # les données générées font foi : en cas de divergence, on garde notre version (-X ours)
+            # Un conflit est visible ; aucune priorité automatique au robot.
             git fetch origin main
-            git merge -s recursive -X ours origin/main -m "merge auto (priorité données robot)" || true
-            git push || (git fetch origin main && git merge -s recursive -X ours origin/main -m "merge auto" && git push)
+            git rebase origin/main
+            git push origin HEAD:main
           fi
       - name: Alerte si échec (issue GitHub)
-        if: failure()
+        if: failure() && github.event.inputs.dry_run != '1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -91,4 +99,4 @@ jobs:
             --title "🤖 Échec mise à jour données FFTT — $(date -u +%d/%m/%Y)" \
             --body "Le run a échoué : https://github.com/$GITHUB_REPOSITORY/actions/runs/${{ github.run_id }}
 
-          Les données en prod n'ont pas été modifiées (garde-fou). Relancer manuellement : onglet Actions → Run workflow." || true
+          Consulter l’étape en échec. Les données ne sont publiées qu’après validation du lot. Relancer manuellement : onglet Actions → Run workflow." || true

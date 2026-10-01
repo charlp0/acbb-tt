@@ -300,7 +300,9 @@
      "name": "AL GRAND QUEVILLY / GRAVIGNY TT 2",
      "dept": "76",
      "acbb": false,
-     "s25": null
+     "s25": null,
+     "fftt": "ALCL TT GRAND QUEVILLY 2",
+     "note_fftt": "Libellé de la feuille F1 J1 2026/27 ; même rencontre au calendrier."
     },
     {
      "pos": 3,

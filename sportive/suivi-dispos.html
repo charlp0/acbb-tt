@@ -166,6 +166,13 @@
     });
   }
   function boot(){
+    api('spo/alerts/dispos').then(function(r){
+      if(!r||!r.message)return;
+      var box=document.createElement('details'); box.className='card2'; box.style.padding='14px';
+      var title=document.createElement('summary'); title.textContent='Dernière alerte de disponibilités (privée)'; box.appendChild(title);
+      var content=document.createElement('pre'); content.style.cssText='white-space:pre-wrap;font:inherit'; content.textContent=r.message; box.appendChild(content);
+      var host=document.getElementById('mxBody'); if(host)host.parentElement.insertBefore(box,host);
+    }).catch(function(){ /* le suivi principal reste accessible si aucune alerte n'est archivée */ });
     Promise.all([
       rest('dispos_log','select=licence,prenom,nom,dispos,n,created_at&order=id.asc'),
       rest('tags_log','select=tags&order=id.desc&limit=1'),

@@ -12,7 +12,7 @@
   const SPO=SPO_GROUPS.flatMap(g=>g[1]);
   function pill(label,href,cls,on){ return '<a class="pill'+(cls?' '+cls:'')+(on?' on':'')+'" href="'+base+'/'+href+'">'+label+'</a>'; }
   window.renderNav=function(opts){
-    opts=opts||{}; const here=opts.active||''; const role=opts.role||''; const team=opts.team||'';
+    opts=Object.assign({},opts||{}); ['name','team'].forEach(k=>{opts[k]=ACBB.esc(opts[k]||'');}); const here=opts.active||''; const role=opts.role||''; const team=opts.team||'';
     const nav=PUB.map(([l,h])=>pill(l,h,'',here===l)).join('');
     let sub='';
     if(role==='capitaine') sub='<nav class="subnav cap">'+CAP.map(([l,h])=>pill(l,h,'cap',here===l)).join('')+'</nav>';
@@ -24,6 +24,14 @@
     const right=role==='capitaine'?'<span class="pill cap">Capitaine'+(team?' · '+team:'')+'</span>':role==='sportive'?'<span class="pill spo">Sportive'+(opts.name?' · '+opts.name:'')+(team?' · capitaine '+team:'')+'</span>':'<span class="lab" style="align-self:center">Saison 2026/27 · Phase 1</span>';
     const el=document.getElementById('hdr'); if(!el) return;
     el.className='hdr';
-    el.innerHTML='<div class="hdr1"><a class="brand" href="'+base+'/index.html"><img src="'+base+'/../logo.png" alt="ACBB"><span><span class="b1">ACBB TT</span><br><span class="b2">Tennis de table · Boulogne-Billancourt</span></span></a><nav class="nav">'+nav+'</nav><div class="row">'+right+'</div></div>'+sub;
+    el.innerHTML='<div class="hdr1"><a class="brand" href="'+base+'/index.html"><img src="'+base+'/logo.png" alt="ACBB"><span><span class="b1">ACBB TT</span><br><span class="b2">Tennis de table · Boulogne-Billancourt</span></span></a><nav class="nav">'+nav+'</nav><div class="row">'+right+'</div></div>'+sub;
+    if(role==='sportive'){
+      fetch(base+'/data/freshness.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error();return r.json();}).then(data=>{
+        const stale=Object.entries(data.sources||{}).filter(([,s])=>!s.collected_at||Date.now()-Date.parse(s.collected_at)>18*3600000||!Number.isFinite(Date.parse(s.collected_at)));
+        const missing=((data.coverage||{}).pending_sheets||[]).length;
+        if(stale.length||missing){const note=document.createElement('div');note.className='tag warn';note.style.margin='8px';
+          note.textContent=(stale.length?'Mise à jour à vérifier : '+stale.map(([n])=>n).join(', '):'')+(stale.length&&missing?' · ':'')+(missing?missing+' feuille(s) FFTT encore attendue(s)':'');el.appendChild(note);}
+      }).catch(()=>{const note=document.createElement('div');note.className='tag warn';note.textContent='Date de mise à jour non vérifiable';el.appendChild(note);});
+    }
   };
 })();

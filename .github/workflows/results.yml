@@ -1,0 +1,51 @@
+name: Résultats équipes FFTT
+on:
+  schedule:
+    - cron: '5 6,11,17,21 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: fftt-results
+  cancel-in-progress: false
+jobs:
+  results:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install requests
+      - name: Collecter les feuilles et classements sans attendre les profils
+        env:
+          FFTT_ID: ${{ secrets.FFTT_ID }}
+          FFTT_PWD: ${{ secrets.FFTT_PWD }}
+          FFTT_SKIP_IF_FRESH: '0'
+        run: python3 scripts/fftt_site.py
+      - run: python3 scripts/check_data.py
+      - name: Conserver le dernier lot complet
+        run: |
+          git config user.name acbb-data-bot
+          git config user.email bot@users.noreply.github.com
+          git add data/site.json data/site.js
+          if ! git diff --staged --quiet; then
+            git commit -m "data: résultats équipes FFTT"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
+      - name: Signaler un échec sans données personnelles
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > notice.md <<'NOTICE'
+          Le dernier lot complet reste en ligne. Consulter le traitement Résultats équipes FFTT dans Actions et les dates affichées dans l'espace sportive.
+          NOTICE
+          N=$(gh issue list -R "$GITHUB_REPOSITORY" --state open --search 'Résultats équipes FFTT à vérifier in:title' --json number -q length)
+          if [ "$N" = 0 ]; then
+            gh issue create -R "$GITHUB_REPOSITORY" --title "Résultats équipes FFTT à vérifier" --body-file notice.md
+          fi

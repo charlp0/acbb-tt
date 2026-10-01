@@ -249,7 +249,7 @@
   <div class="ttl" id="saveTtl">📅 Compos — drag &amp; drop</div>
   <span class="stt" id="saveSt"></span>
   <span class="stt" id="saveChk"></span>
-  <div class="btns"><button id="undoBtn" type="button">↶ Annuler</button><button id="saveBtn" class="sv" type="button">💾 Enregistrer</button></div>
+  <div class="btns"><button id="historyBtn" type="button">Historique</button><button id="undoBtn" type="button">↶ Annuler</button><button id="saveBtn" class="sv" type="button">💾 Enregistrer</button></div>
 </div>
 <div class="toast" id="toast"></div>
 <div id="cardHost"></div>
@@ -258,6 +258,9 @@
 <div class="scbg" id="scBg" hidden></div>
 <aside class="scpop" id="scPop" hidden aria-label="Scouting adversaire"></aside>
 <script src="../shared/api.js"></script>
+<script src="../shared/lieux.js?v=1"></script>
+<script src="../shared/participations.js?v=1"></script>
+<script src="../shared/regles.js?v=1"></script>
 <script src="../shared/contraintes.js"></script>
 <script src="../shared/scouting.js?v=3"></script>
 <script src="../shared/nav.js" data-base=".."></script>
@@ -314,6 +317,7 @@ const EXT=[{key:'NEVES|LOUNA',nom:'NEVES',pre:'Louna',men:1342,ext:'Marly (enten
 const SCALE=250;   // écart de points -> indice de victoire (logistique)
 
 /* ===================== ÉTAT ===================== */
+let PARTS=null, EXJ=null, LIEUX={}, SAVING=false;
 let SITE=null, D=[], BYKEY={}, BYFK={}, BYSN={}, ALIASK={}, CAT={}, SEXE={}, CAPT={}, POULES={}, SALLES={}, SADV={}, TAGS={}, FEM={}, VOTES={};
 let EXC={ex:new Set(),conf:new Set()};   // extra-communautaires (data/extra_communautaires.json)
 let COMPOS={}, BASE={}, META={};      // COMPOS[j][team]={p:[],st:'draft'|'valid'|'sent',note:''}
@@ -341,14 +345,14 @@ function boot(){
   const gj=u=>fetch(u,{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
   Promise.all([
     gj('../data/scoring.json'), gj('../data/categories.json'), gj('../data/capitaines.json'),
-    gj('../data/poules2627.json'), gj('../data/salles2627.json'), gj('../data/extra_communautaires.json'), gj('../data/site.json'),
+    gj('../data/poules2627.json'), gj('../data/salles2627.json'), api('spo/config/extras').catch(e=>{LOADERR=LOADERR||e;return null;}), gj('../data/site.json'),
     rest('tags_log','select=id,tags&order=id.desc&limit=1'),
     rest('scenarios_log','select=id,tags&slot=eq.fem&order=id.desc&limit=1'),
     rest('dispos_log','select=licence,nom,prenom,dispos,n,created_at&order=id.asc'),
     rest('scenarios_log','select=id,slot,tags,author,created_at&slot=in.(j1,j2,j3,j4,j5,j6,j7)&order=id.desc'),
     rest('scenarios_log',ACBB_CONTR.QUERY),
     gj('../data/sexes.json'),
-    gj('../data/salles_adverses.json')
+    gj('../data/salles_adverses.json'), gj('../data/lieux.json')
   ]).then(res=>{
     const ct=ACBB_CONTR.fromRows(res[11]); CONTR=ct.liste; CONTR_META=ct.meta;
     SITE=res[6]||null;
@@ -359,11 +363,12 @@ function boot(){
     D.forEach(p=>{ [p.lic&&String(p.lic),p.key,(p.nom||'')+'|'+(p.pre||''),fkey(p)].forEach(k=>{ if(k&&!ALIASK[k]) ALIASK[k]=p; }); });
     CAT=res[1]||{};
     SEXE=res[12]||{};
+    LIEUX=res[14]||{};
     SADV=(res[13]&&res[13].salles)||{};
     CAPT=(res[2]&&res[2].capitaines)||{};
     ((res[3]&&res[3].poules)||[]).forEach(q=>{POULES[q.acbb]=q;});
     SALLES=(res[4]&&res[4].salles)||{};
-    const exj=res[5]||{}; EXC={ex:new Set(Object.values(exj.ex||{}).map(String)),conf:new Set(Object.values(exj.a_confirmer||{}).map(String))};
+    EXJ=res[5]; const exj=EXJ||{}; EXC={ex:new Set(Object.values(exj.ex||{}).map(String)),conf:new Set(Object.values(exj.a_confirmer||{}).map(String))};
     TAGS=canonTags((res[7][0]&&res[7][0].tags)||{});
     FEM=canonTags((res[8][0]&&res[8][0].tags)||{});
     res[9].forEach(r=>{ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)){ const raw=String(r.licence); let k=raw; if(/^SN-/.test(raw)){const m=BYSN[raw]; if(m&&m.lic)k=String(m.lic);} VOTES[k]=r; } });
@@ -400,19 +405,8 @@ function matchOf(t,j){
   const S=(SALLES[t]&&(SALLES[t].cal||[]).find(c=>c.j===j))||{};
   let opp=null; if(typeof cl.opp==='number'&&P.teams[cl.opp-1]) opp=P.teams[cl.opp-1];
   const name=(opp&&opp.name)||cl.oppName||S.opp||'?';
-  const home=(SALLES[t]&&SALLES[t].home)||'SOUS-SOL PISCINE 165 rue du vieux pont de Sevres 92100 BOULOGNE BILLANCOURT';
-  let venue=S.venue||(cl.dom?home:'');
-  venue=venue.replace(/\s*digicode[^0-9]*\d+\s*/i,' ').replace(/\s+/g,' ').trim();
-  /* Déplacement sans adresse connue : on prend la salle DÉCLARÉE PAR LE CLUB adverse à la FFTT
-     (data/salles_adverses.json, départemental + régional). C'est la même source que l'application
-     FFTT que consultent les capitaines. Ce n'est PAS le lieu confirmé de la rencontre — un club
-     peut recevoir ailleurs, comme notre F1 à Marly — d'où l'étiquetage de la source, et la
-     priorité laissée aux adresses tenues à la main dans salles2627.json. */
-  let vSrc=venue?'planning':'';
-  if(!venue&&!cl.dom){
-    const a=SADV[name]||((opp&&opp.fftt)?SADV[opp.fftt]:null);
-    if(a){ venue=[a.salle,a.adresse,a.cp,a.ville].filter(Boolean).join(' ').replace(/\s+/g,' ').trim(); vSrc='club'; }
-  }
+  const lieu=ACBB_LIEUX.resolve({t,j,poule:P,salles:SALLES,adverses:SADV,lieux:LIEUX});
+  const venue=lieu?lieu.txt:'', vSrc=lieu?lieu.source:'';
   /* niveau adverse : moyenne des joueurs réellement alignés depuis la J1 (site.json) ; à défaut seulement,
      le repère 25/26 — qui décrit l'équipe de la saison passée et peut être très loin de la réalité. */
   let oAvg=null, oSrc='', oJs=[];
@@ -423,7 +417,7 @@ function matchOf(t,j){
     if(n!=null){ oAvg=n; oSrc='26/27'; oJs=js.map(x=>+x.journee); }   // journées qui fondent la moyenne
   }
   if(oAvg==null&&opp&&opp.s25&&opp.s25.avg){ oAvg=opp.s25.avg; oSrc='25/26'; }
-  return {exempt:false,date:cl.date,dom:!!cl.dom,opp:name,oppAvg:oAvg,oppAvgSrc:oSrc,oppAvgJ:oJs,venueSrc:vSrc,oppRank:(opp&&opp.s25)?opp.s25.rank:null,venue:venue,salle:S.salle||'',division:P.division,poule:P.poule,oppTeam:opp||null};
+  return {exempt:false,date:cl.date,dom:!!cl.dom,opp:name,oppAvg:oAvg,oppAvgSrc:oSrc,oppAvgJ:oJs,venueSrc:vSrc,oppRank:(opp&&opp.s25)?opp.s25.rank:null,venue:venue,salle:S.salle||'',venueNote:lieu&&lieu.note||'',division:P.division,poule:P.poule,oppTeam:opp||null};
 }
 function playing(t,j){ const m=matchOf(t,j); return !!(m&&!m.exempt); }
 /* Une feuille de rencontre est due dès que l'équipe figure au calendrier, EXEMPTION COMPRISE :
@@ -458,10 +452,11 @@ function ticks(k,g){ // 7 traits : vert dispo, rouge indispo, gris sans réponse
    (ni l'inverse) — même logique que le brûlage, cf. montees(). */
 function joues(k,g){
   if(J<=1) return '';                       // aucune journée écoulée
-  const parts=participations(k,J).filter(x=>!g||GENRE(x.t)===g), tot=J-1, n=parts.length;
+  const parts=participations(k,J).filter(x=>x.played&&(!g||GENRE(x.t)===g)), tot=J-1, n=new Set(parts.map(x=>x.j)).size;
+  const incomplete=PARTS.missing(J,g).some(x=>!parts.some(p=>p.j===x.j));
   const det=n?parts.map(x=>'J'+x.j+' '+x.t).join(' · '):'aucune rencontre disputée';
   const chp=g==='F'?' en championnat dames':(g==='M'?' en championnat messieurs':'');
-  return '<span class="mj'+(n?'':' zero')+'" title="'+esc(n+' match'+(n>1?'s':'')+' joué'+(n>1?'s':'')+chp+' sur '+tot+' journée'+(tot>1?'s':'')+' écoulée'+(tot>1?'s':'')+' — '+det)+'">'+n+'/'+tot+'</span>';
+  return '<span class="mj'+(n?'':' zero')+'" title="'+esc(n+' match'+(n>1?'s':'')+' joué'+(n>1?'s':'')+chp+' sur '+tot+' journée'+(tot>1?'s':'')+' écoulée'+(tot>1?'s':'')+' — '+det+(incomplete?' · feuilles manquantes : compteur partiel':''))+'">'+n+'/'+tot+(incomplete?' ?':'')+'</span>';
 }
 function dispoTxt(k,j){ const p=BYKEY[k]; const s=dispo(k,j); if(s==='g') return ''; if(p&&FORCE_STATUS[fkey(p)]) return FORCE_STATUS[fkey(p)]; if(s==='y') return 'pas répondu'; const v=p&&voteFor(p); if(v&&((v.dispos||{}).roles||[]).indexOf('N')>=0) return 'ne veut pas jouer'; return 'indispo J'+j; }
 function isCapt(k,t){ const c=CAPT[t]; if(!c) return false; return Array.isArray(c)?c.indexOf(k)>=0:c===k; }
@@ -490,32 +485,15 @@ function cleFeuille(nom,pre){
   return null;
 }
 function buildReel(){
-  REEL={};
-  const D=(SITE&&SITE.DATA)||{};
-  Object.keys(D).forEach(k=>{
-    const t=(D[k].teams||[]).find(x=>x.acbb); if(!t) return;
-    (t.journees||[]).forEach(j=>{
-      if(j.match_score==null) return;
-      const cles=[];
-      (j.players||[]).forEach(p=>{
-        if(!p.nom||p.nom==='Joueur absent') return;
-        const c=cleFeuille(p.nom,p.prenom); if(c) cles.push(c);
-      });
-      if(cles.length){ (REEL[+j.journee]=REEL[+j.journee]||{})[k]=cles;
-        const a=+j.match_score, b=+j.opp_score;
-        (RSC[+j.journee]=RSC[+j.journee]||{})[k]=(a+b===42&&a>=14&&b>=14)?[a-14,b-14]:[a,b]; }
-    });
+  PARTS=ACBB_PART.create({site:SITE,players:D,plans:COMPOS,confirmedPlans:BASE,poules:POULES});
+  REEL={}; RSC={};
+  Object.values(PARTS.sheets).filter(s=>s.source==='fftt').forEach(s=>{
+    (REEL[s.j]=REEL[s.j]||{})[s.t]=s.p;
+    const a=+s.row.match_score,b=+s.row.opp_score;
+    (RSC[s.j]=RSC[s.j]||{})[s.t]=(a+b===42&&a>=14&&b>=14)?[a-14,b-14]:[a,b];
   });
 }
-function participations(k,j){
-  const out=[];
-  for(let jj=1;jj<j;jj++){
-    const r=REEL[jj]||{}, cj=BASE[jj]||{}, vus={};
-    Object.keys(r).forEach(t=>{ vus[t]=1; if(r[t].indexOf(k)>=0) out.push({j:jj,t:t,reel:true}); });
-    Object.keys(cj).forEach(t=>{ if(t==='_meta'||vus[t]) return; if((cj[t].p||[]).indexOf(k)>=0) out.push({j:jj,t:t}); });
-  }
-  return out;
-}
+function participations(k,j){ return PARTS?PARTS.history(k,j):[]; }
 /* écarts entre notre plan et la feuille officielle, journée par journée */
 function ecartsPlan(){
   const out=[];
@@ -530,7 +508,7 @@ function ecartsPlan(){
   });
   return out;
 }
-/* montées = journées déjà enregistrées (J1..Jj-1, brouillon ou finale) où le joueur a été aligné dans une équipe supérieure (numéro plus petit, même championnat) à son équipe d'origine */
+/* montées = journées confirmées par une feuille FFTT ou une exemption validée où le joueur a été aligné dans une équipe supérieure (numéro plus petit, même championnat) à son équipe d'origine */
 function montees(k,j,home){ if(!home||!/^[MF]\d+$/.test(home)) return []; return participations(k,j).filter(x=>/^[MF]\d+$/.test(x.t)&&GENRE(x.t)===GENRE(home)&&NUM(x.t)<NUM(home)).map(x=>'J'+x.j+' '+x.t); }
 function bruBadge(k,j,home){ const m=montees(k,j,home); if(!m.length) return '';
   const tip='brûlage II.112 : déjà aligné '+m.length+' fois au-dessus de '+home+' ('+m.join(', ')+')'+(m.length>=2?' — 2 matchs en équipe supérieure : retour en '+home+' interdit':' — au 2ᵉ match en équipe supérieure, retour en '+home+' interdit');
@@ -548,60 +526,13 @@ function checkTeam(t,j){
   if(n<size) add(n?'warn':'info', n?('compo incomplète — '+(size-n)+' place'+(size-n>1?'s':'')+' à pourvoir')
     :(m.exempt?'feuille d\'exemption non saisie — le règlement impose de l\'envoyer quand même':'aucun joueur aligné'));
   if(n>size) add('err','trop de joueurs ('+n+'/'+size+')');
-  // doublons dans la journée
-  c.p.forEach(k=>{
-    TEAMS.forEach(o=>{ if(o===t)return; const co=COMPOS[j][o]; if(!co||co.p.indexOf(k)<0)return; const mo=matchOf(o,j); if(!mo)return;   // équipe exempte comprise : y figurer vaut participation
-      const p=BYKEY[k]||{nom:k}; const same=mo.date===m.date;
-      const sat=d=>{const x=parseDate(d);return x&&x.getDay()===6;};
-      if(same) add('err',short(p)+' aligné aussi en '+o+' le même jour (1 rencontre par joueur et par journée)',[k]);
-      else if(sat(m.date)&&sat(mo.date)) add('err',short(p)+' aussi en '+o+' : deux rencontres le samedi (interdit)',[k]);
-      else add('info',short(p)+' joue aussi en '+o+' ('+fmtD(mo.date)+') — autorisé, dates différentes');
-    });
-  });
-  // brûlage II.112 (numérotation séparée M / F)
-  c.p.forEach(k=>{ const p=BYKEY[k]||{nom:k}; const parts=participations(k,j).filter(x=>GENRE(x.t)===GENRE(t)).map(x=>NUM(x.t)).sort((a,b)=>a-b);
-    if(parts.length>=2){ const N=parts[1]; if(NUM(t)>N) add('err',short(p)+' brûlé : 2 matchs déjà joués en '+GENRE(t)+N+' ou plus fort → interdit en équipe de numéro > '+N,[k]); }
-  });
-  // règle de la 2e journée : max 1 joueur ayant fait J1 dans une équipe supérieure (formule 4 joueurs)
-  if(j===2){ const desc=c.p.filter(k=>participations(k,2).some(x=>GENRE(x.t)===GENRE(t)&&NUM(x.t)<NUM(t)));
-    if(desc.length>1) add('err','règle J2 (II.112.1) : '+desc.length+' joueurs ont disputé la J1 dans une équipe supérieure (max 1) — '+desc.map(k=>short(BYKEY[k]||{nom:k})).join(', '),desc); }
-  // 2 équipes ACBB dans la même poule
-  TEAMS.forEach(o=>{ if(o===t)return; const Po=POULES[o],Pt=POULES[t]; if(!Po||!Pt||Po.division!==Pt.division||Po.poule!==Pt.poule)return;
-    c.p.forEach(k=>{ if(participations(k,j).some(x=>x.t===o)) add('err',short(BYKEY[k]||{nom:k})+' a déjà joué en '+o+' (même poule) — interdit',[k]); }); });
-  // classement minimum N1
-  const _div=TEAMDIV[t]||'', _mini=MINI[_div];
-  if(_mini&&n){
-    if(!_mini.n){                                   // national : le plancher vaut pour CHAQUE joueur
-      c.p.forEach(k=>{ const p=BYKEY[k]; if(p&&p.men&&p.men<_mini.pts) add('err',short(p)+' : '+p.men+' pts — classement minimum '+_div+' : '+_mini.pts+' pts',[k]); });
-    } else {                                        // pré-national / régional : au moins n joueurs au-dessus
-      const hauts=c.p.filter(k=>{ const p=BYKEY[k]; return p&&p.men>=_mini.pts; });
-      // un joueur sans classement chez nous (joueuse d'une entente, licence toute neuve) n'est pas
-      // « en dessous » : on ne sait pas. Il ne doit donc jamais provoquer une erreur ferme.
-      const flous=c.p.filter(k=>{ const p=BYKEY[k]; return !p||!p.men; });
-      const reste=Math.max(0,size-n);               // places encore à pourvoir
-      const bas=c.p.filter(k=>hauts.indexOf(k)<0&&flous.indexOf(k)<0);
-      if(hauts.length<_mini.n){
-        const lbl='classement minimum '+_div+' : '+hauts.length+' joueur'+(hauts.length>1?'s':'')+' à '+_mini.pts+' pts ou plus, il en faut '+_mini.n;
-        if(hauts.length+reste+flous.length<_mini.n) add('err',lbl,bas);
-        else if(flous.length&&hauts.length+reste>=_mini.n&&hauts.length+flous.length>=_mini.n)
-          add('warn',lbl+' — classement inconnu pour '+flous.map(k=>short(BYKEY[k]||{nom:k})).join(', '),flous);
-        else add('warn',lbl+' — les '+reste+' place'+(reste>1?'s':'')+' restante'+(reste>1?'s':'')+' doi'+(reste>1?'vent':'t')+' les atteindre',[]);
-      }
-    }
-  }
-  if(GENRE(t)==='M'&&REG_M[_div]){
-    const elles=c.p.filter(estF);
-    if(elles.length>MAX_F_REG) add('err',elles.length+' joueuses alignées — maximum '+MAX_F_REG+' en régional messieurs ('+_div+')',elles);
-    else if(elles.length===MAX_F_REG) add('info',MAX_F_REG+' joueuses en régional messieurs : maximum atteint');
-  }
-  // étrangers extra-communautaires : 1 seul par feuille en équipe de 4 (II.609)
-  const exs=c.p.filter(isEx), exq=c.p.filter(isExQ);
-  if(exs.length>1) add('err','II.609 : '+exs.length+' joueurs extra-communautaires ('+exs.map(k=>short(BYKEY[k]||{nom:k})).join(', ')+') — 1 seul autorisé par feuille',exs);
-  else if(exs.length+exq.length>1) add('warn','II.609 : '+(exs.length+exq.length)+' extra-communautaires possibles ('+exs.concat(exq).map(k=>short(BYKEY[k]||{nom:k})).join(', ')+') — statut à confirmer',exq);
+  ACBB_RULES.check({model:PARTS,t,j,lineup:PARTS.lineup(t,j),players:BYKEY,
+    poules:POULES,division:TEAMDIV[t],size,sexes:SEXE,extras:EXJ})
+    .forEach(i=>add(i.lvl,i.msg,i.keys,i.code));
   // dispos
   c.p.forEach(k=>{ const s=dispo(k,j); if(s==='r') add('warn',short(BYKEY[k]||{nom:k})+' : '+dispoTxt(k,j),[k]); else if(s==='y') add('info',short(BYKEY[k]||{nom:k})+' n\'a pas répondu au formulaire',[k]); });
   // contraintes internes (liste éditable dans Contraintes) : où est un joueur attendu mais absent de cette compo ?
-  const ou=cp=>{ for(const o of TEAMS){ if(o!==t&&((COMPOS[j][o]||{}).p||[]).some(k=>ACBB_CONTR.isP(cp,k,BYKEY))) return 'aligné en '+o; } return 'non aligné'; };
+  const ou=cp=>{ for(const o of TEAMS){ if(o!==t&&((PARTS.lineup(o,j)||{}).p||[]).some(k=>ACBB_CONTR.isP(cp,k,BYKEY))) return 'aligné en '+o; } return 'non aligné'; };
   // une exemption n'a ni adversaire ni lieu : on n'évalue que les contraintes qui s'en passent
   const _ctr=m.exempt?CONTR.filter(x=>x.type==='ensemble'||x.type==='separes'):CONTR;
   ACBB_CONTR.check(_ctr,{t,j,P:c.p,dom:!!m.dom,adv:m.opp,BYKEY,POULES,ou}).forEach(i=>add(i.lvl,i.msg,i.keys,i.cid));
@@ -611,9 +542,16 @@ function lvlOf(issues){ return issues.some(i=>i.lvl==='err')?'err':(issues.some(
 
 /* ===================== RENDU ===================== */
 function draftKey(j){ return 'acbb_journee_draft_j'+j; }
-function draftSave(){ try{ const d=dirtyTeams(); if(d.length) localStorage.setItem(draftKey(J),JSON.stringify({at:Date.now(),compos:COMPOS[J]})); else localStorage.removeItem(draftKey(J)); }catch(e){} }
-function draftRestore(j){ try{ const raw=localStorage.getItem(draftKey(j)); if(!raw)return false; const d=JSON.parse(raw); const baseAt=META[j]?new Date(META[j].at).getTime():0; if(d.at<baseAt){ localStorage.removeItem(draftKey(j)); return false; } COMPOS[j]=d.compos; return true; }catch(e){ return false; } }
-function renderAll(){ renderHero(); renderCapacite(); renderState(); renderFilters(); renderGrid(); renderRail(); renderChecker(); renderSave(); draftSave(); }
+function draftSave(){ try{ const d=dirtyTeams(); if(d.length) localStorage.setItem(draftKey(J),JSON.stringify({at:Date.now(),compos:COMPOS[J],base:BASE[J],meta:META[J]||null})); else localStorage.removeItem(draftKey(J)); }catch(e){} }
+function draftRestore(j){
+  try{ const raw=localStorage.getItem(draftKey(j)); if(!raw)return false; const d=JSON.parse(raw);
+    if(d.base){ BASE[j]=d.base; META[j]=d.meta; COMPOS[j]=d.compos; return true; }
+    // Un ancien brouillon sans version ne peut pas remplacer la version partagée.
+    if(d.compos&&typeof d.compos==='object'){BASE[j]={};META[j]=null;COMPOS[j]=d.compos;return true;}
+    return false;
+  }catch(e){return false;}
+}
+function renderAll(){ buildReel(); renderHero(); renderCapacite(); renderState(); renderFilters(); renderGrid(); renderRail(); renderChecker(); renderSave(); draftSave(); }
 /* Capacité du sous-sol piscine : 5 rencontres au maximum le même jour. Au-delà, la sportive doit
    basculer des équipes à Bartholdi (règle rappelée par Charles le 22/09/2026). On compte TOUTES les
    équipes du club à domicile ce jour-là — messieurs, dames, régional — pas seulement M2→M17. */
@@ -829,7 +767,7 @@ function renderGrid(){
   g.querySelectorAll('[data-prop]').forEach(el=>el.onclick=()=>{ propose(el.dataset.prop); renderAll(); toast('proposition : titulaires dispo par points'); });
   g.querySelectorAll('[data-wa]').forEach(el=>el.onclick=async()=>copy(await waText(el.dataset.wa,J)));
   g.querySelectorAll('[data-img]').forEach(el=>el.onclick=()=>exportImg(el.dataset.img));
-  g.querySelectorAll('[data-note]').forEach(el=>el.onchange=()=>{ compo(J,el.dataset.note).note=el.value.trim(); renderSave(); renderState(); });
+  g.querySelectorAll('[data-note]').forEach(el=>el.onchange=()=>{ compo(J,el.dataset.note).note=el.value.trim(); renderSave(); renderState(); draftSave(); });
   g.querySelectorAll('.oc').forEach(el=>{ el.onclick=()=>{ const k=el.dataset.k, t=el.dataset.ot; if(el.dataset.ex){ if(dispo(k,J)==='r'){toast(short(BYKEY[k])+' est indisponible pour cette journée');return;} SEL={k:k,from:null}; document.querySelectorAll('.oc.sel').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); toast(short(BYKEY[k])+' sélectionné — touche une case ＋ dans une autre équipe'); return; } if(dispo(k,J)==='r'&&!confirm(short(BYKEY[k])+' est indisponible pour cette journée. L\'aligner quand même ?'))return; place({k:k,from:null},t); };
     el.addEventListener('dragstart',e=>{ DRAG={k:el.dataset.k,from:null}; e.dataTransfer.effectAllowed='move'; try{e.dataTransfer.setData('text/plain',el.dataset.k);}catch(x){} }); el.addEventListener('dragend',()=>{DRAG=null;}); });
   g.querySelectorAll('.slot').forEach(el=>el.onclick=()=>{ if(SEL){ place(SEL,el.dataset.slot); } else toast('touche d\'abord un joueur dans la colonne de droite'); });
@@ -947,36 +885,82 @@ function renderSave(){
   else if(warns||inc){ chk.className='stt warn'; chk.textContent='⚠ '+(inc?inc+' incomplète'+(inc>1?'s':''):'')+(inc&&warns?' · ':'')+(warns?warns+' à vérifier':''); }
   else { chk.className='stt ok'; chk.textContent='✓ Règles conformes ('+pl.length+' équipes complètes)'; }
   const sb=document.getElementById('saveBtn'), ub=document.getElementById('undoBtn');
-  sb.textContent='💾 Enregistrer'+(d.length?' ('+d.length+')':''); sb.disabled=!d.length; ub.disabled=!d.length;
+  sb.textContent='💾 Enregistrer'+(d.length?' ('+d.length+')':''); sb.disabled=SAVING||!d.length||!!LOADERR; ub.disabled=SAVING||!d.length;
 }
 document.getElementById('undoBtn').onclick=()=>{ COMPOS[J]=JSON.parse(JSON.stringify(BASE[J]||{})); SEL=null; try{localStorage.removeItem(draftKey(J));}catch(e){} renderAll(); };
-document.getElementById('saveBtn').onclick=async()=>{
-  const btn=document.getElementById('saveBtn'); btn.disabled=true; btn.textContent='⏳ enregistrement…';
-  const payload={}; Object.keys(COMPOS[J]).forEach(t=>{ const c=COMPOS[J][t]; if(c&&((c.p||[]).length||c.note||(c.st&&c.st!=='draft'))) payload[t]={p:c.p||[],st:c.st||'draft',note:c.note||''}; });
-  payload._meta={j:J,saved:new Date().toISOString(),by:(ME&&ME.nom)||''};
+function savedRow(j,row){
+  const t=Object.assign({},row.tags||{}); META[j]={id:row.id,author:row.author,at:row.created_at,meta:t._meta||null};
+  delete t._meta; COMPOS[j]=canonCompos(t); BASE[j]=JSON.parse(JSON.stringify(COMPOS[j]));
+}
+function showConflict(j,error,pending){
+  const latest=error.body&&error.body.current, conflicts=(error.body&&error.body.conflicts)||[];
+  if(!latest){ toast('La version a changé. Recharge la page ; ton brouillon est conservé.'); return; }
+  const dialog=document.createElement('dialog'); dialog.style.cssText='max-width:620px;background:#17181d;color:#fff;border:1px solid #555;border-radius:12px;padding:24px';
+  const names=c=>(c&&c.p||[]).map(k=>BYKEY[k]?full(BYKEY[k]):k).join(', ')||'aucun joueur';
+  dialog.innerHTML='<h3>J'+j+' a été modifiée par '+esc(authorName(latest.author))+'</h3><p>Choisis la version à conserver pour chaque équipe en conflit. Les autres changements seront fusionnés.</p>'
+    +conflicts.map(t=>'<div style="margin:16px 0"><b>'+esc(t)+'</b><p>Partagée : '+esc(names((latest.tags||{})[t]))+'</p><p>Ton brouillon : '+esc(names(pending[t]))+'</p><select data-team="'+esc(t)+'"><option value="">Choisir…</option><option value="shared">Garder la version partagée</option><option value="mine">Garder mon brouillon</option></select></div>').join('')
+    +'<button type="button" data-cancel>Plus tard</button> <button type="button" data-apply>Reprendre avec ces choix</button>';
+  document.body.appendChild(dialog); dialog.showModal();
+  dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();
+  dialog.addEventListener('close',()=>dialog.remove());
+  dialog.querySelector('[data-apply]').onclick=()=>{
+    const selects=[...dialog.querySelectorAll('select')]; if(selects.some(x=>!x.value)) return;
+    const keep=Object.assign({},pending); selects.forEach(x=>{if(x.value==='shared')delete keep[x.dataset.team];});
+    savedRow(j,latest);
+    Object.entries(keep).forEach(([t,c])=>{if(c===null)delete COMPOS[j][t];else COMPOS[j][t]=c;});
+    J=j; dialog.close(); renderAll(); toast('Choix repris dans ton brouillon. Vérifie puis clique sur Enregistrer.');
+  };
+}
+document.getElementById('historyBtn').onclick=async()=>{
+  const day=J;
   try{
-    // le serveur signe la ligne : author = « <nom du lien> — J<n> »
-    await api('spo/rest',{table:'scenarios_log',method:'insert',body:{tags:payload,slot:'j'+J,author:'J'+J}});
-    const rows=await rest('scenarios_log','select=id,slot,tags,author,created_at&slot=eq.j'+J+'&order=id.desc&limit=1');
-    if(rows[0]){ const t=Object.assign({},rows[0].tags); META[J]={id:rows[0].id,author:rows[0].author,at:rows[0].created_at,meta:t._meta||null}; delete t._meta; COMPOS[J]=t; BASE[J]=JSON.parse(JSON.stringify(t)); }
-    try{localStorage.removeItem(draftKey(J));}catch(e){} toast('✓ J'+J+' enregistrée par '+((ME&&ME.nom)||'la sportive')+' et partagée'); renderAll();
-  }catch(e){ toast('⚠ échec : '+e.message); }
-  btn.disabled=false; renderSave();
+    const rows=await rest('scenarios_log','select=id,tags,author,created_at&slot=eq.j'+day+'&order=id.desc&limit=50');
+    if(!rows.length){toast('Aucune version enregistrée');return;}
+    const dialog=document.createElement('dialog');dialog.style.cssText='background:var(--panel);color:var(--ink);max-width:720px;width:calc(100% - 24px);max-height:85vh;overflow:auto;border:1px solid var(--orange);padding:20px;border-radius:12px';
+    dialog.innerHTML='<h2>Historique J'+day+'</h2><select data-version>'+rows.map((r,i)=>'<option value="'+i+'">#'+r.id+' · '+esc(r.author||'')+' · '+esc(new Date(r.created_at).toLocaleString('fr-FR'))+'</option>').join('')+'</select><div data-diff></div><p><button data-close>Fermer</button> <button data-restore>Reprendre les équipes cochées en brouillon</button></p>';
+    const title=c=>((c||{}).p||[]).map(k=>BYKEY[k]?full(BYKEY[k]):k).join(', ')||'aucun joueur';
+    const show=()=>{const old=rows[+dialog.querySelector('[data-version]').value].tags||{};
+      dialog.querySelector('[data-diff]').innerHTML=TEAMS.filter(t=>JSON.stringify(old[t]||null)!==JSON.stringify((COMPOS[day]||{})[t]||null)).map(t=>
+        '<section style="margin:14px 0"><label><input type="checkbox" data-team="'+t+'" '+((REEL[day]||{})[t]?'disabled':'')+'> '+t+'</label><p>Actuel : '+esc(title((COMPOS[day]||{})[t]))+'</p><p>Version choisie : '+esc(title(old[t]))+'</p>'+((REEL[day]||{})[t]?'<small>Feuille FFTT affichée : restauration désactivée</small>':'')+'</section>').join('')||'<p>Aucune différence avec ton brouillon.</p>';};
+    dialog.querySelector('[data-version]').onchange=show;
+    dialog.querySelector('[data-close]').onclick=()=>{dialog.close();dialog.remove();};
+    dialog.oncancel=()=>dialog.remove();
+    dialog.querySelector('[data-restore]').onclick=()=>{const old=rows[+dialog.querySelector('[data-version]').value].tags||{};
+      dialog.querySelectorAll('[data-team]:checked').forEach(el=>{const t=el.dataset.team;if((REEL[day]||{})[t])return;if(old[t])COMPOS[day][t]=structuredClone(old[t]);else delete COMPOS[day][t];});
+      dialog.close();dialog.remove();renderAll();toast('Brouillon restauré : utilise Enregistrer pour le partager');};
+    document.body.appendChild(dialog);show();dialog.showModal();
+  }catch(e){toast('Historique indisponible : '+e.message);}
+};
+document.getElementById('saveBtn').onclick=async()=>{
+  if(SAVING||LOADERR)return;
+  const day=J, changes={}; dirtyTeams().forEach(t=>{const c=COMPOS[day][t];changes[t]=c?{p:[...(c.p||[])],st:c.st||'draft',note:c.note||''}:null;});
+  if(!Object.keys(changes).length)return;
+  SAVING=true; document.getElementById('saveBtn').textContent='⏳ enregistrement…';
+  // Une requête ne peut pas absorber des modifications faites pendant son envoi.
+  const wasInert=document.body.inert; document.body.inert=true;
+  try{
+    const result=await api('spo/compositions',{slot:'j'+day,expected_id:(META[day]&&META[day].id)||0,changes});
+    savedRow(day,result.row); try{localStorage.removeItem(draftKey(day));}catch(e){}
+    toast('✓ J'+day+' enregistrée et partagée');
+  }catch(e){
+    if(e.status===409&&e.body&&e.body.error==='conflit_composition') showConflict(day,e,changes);
+    else toast('⚠ Enregistrement impossible : '+(e.body&&e.body.error==='version_requise'?'recharge la page pour utiliser les enregistrements protégés':e.message));
+  }finally{SAVING=false;document.body.inert=wasInert;renderAll();}
 };
 document.getElementById('q').addEventListener('input',renderRail);
 
 /* ===================== EXPORTS ===================== */
 async function waText(t,j,opts){
   opts=opts||{}; const withVenue=opts.adresse!==false;
-  const m=matchOf(t,j), c=compo(j,t); if(!m||m.exempt) return t+' · J'+j+' : exempte';
+  const m=matchOf(t,j), actual=PARTS.lineup(t,j,false), c=actual?{p:actual.p,st:'sent',note:''}:compo(j,t); if(!m)return t+' · J'+j+' : calendrier inconnu';
   const div=TEAMDIV[t]||''; const sorted=c.p.slice().sort((a,b)=>((BYKEY[b]||{}).men||0)-((BYKEY[a]||{}).men||0));
   // équipe d'origine (compo officielle) : code d'équipe, ou « pool D1 » pour un remplaçant
   const origin=k=>{ if(GENRE(t)==='F') return (FEM[k]&&FEM[k].e)||homeTeam(k)||''; const g=TAGS[k]||{}; if(g.e) return g.e; if(g.r==='R'&&g.d) return 'pool '+g.d; const f=FEM[k]; return f&&f.e?f.e:''; };
   const renforts=sorted.filter(k=>{ const o=origin(k); return o&&o!==t; });
   const ph=renforts.length?await getPhones():null;
   let s='🏓 ACBB TT — '+t+' · J'+j+' ('+div+(m.poule?' poule '+m.poule:'')+')\n';
-  s+='📅 '+fmtD(m.date)+' · '+(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp)+'\n';
-  if(withVenue&&m.dom&&m.salle) s+='📍 '+m.salle+'\n';
+  s+='📅 '+fmtD(m.date)+' · '+(m.exempt?'Exemption · composition réglementaire':(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp))+'\n';
+  if(withVenue&&m.dom&&m.salle) s+='📍 '+(m.venue||m.salle)+(m.venueNote?' — '+m.venueNote:'')+'\n';
   else if(withVenue&&m.venue) s+='📍 '+m.venue+(m.venueSrc==='club'?' (salle déclarée du club à la FFTT — sauf avis contraire)':'')+'\n';
   /* niveau adverse : moyenne des joueurs que l'adversaire a RÉELLEMENT alignés depuis la J1. On date
      la source, sinon le capitaine ne sait pas si le chiffre décrit l'équipe de cette saison ou celle
@@ -997,7 +981,7 @@ async function waText(t,j,opts){
   }
   // titulaires de l'équipe absents de cette compo : où jouent-ils ce jour-là ?
   // titulaires de l'équipe qui jouent ailleurs cette journée (les indispos / non retenus ne sont pas mentionnés)
-  const where=k=>{ for(const o of Object.keys(COMPOS[j]||{})){ if(o!=='_meta'&&o!==t&&((COMPOS[j][o]||{}).p||[]).indexOf(k)>=0) return o; } return null; };
+  const where=k=>{const e=PARTS.assignments(k,j).find(x=>x.t!==t&&x.t[0]===t[0]);return e?e.t:null;};
   const away=titulaires(t).filter(k=>BYKEY[k]&&c.p.indexOf(k)<0&&where(k)).sort((a,b)=>(BYKEY[b].men||0)-(BYKEY[a].men||0));
   if(away.length) s+='\n\n🔀 Joueurs de '+t+' qui jouent ailleurs cette journée :\n'+away.map(k=>'• '+full(BYKEY[k])+' jouera en '+where(k)).join('\n');
   return s;
@@ -1021,7 +1005,7 @@ async function getPhones(){
 const phoneKey=k=>{ const p=BYKEY[k]; return p?nrmK(p.nom)+'|'+nrmK(p.pre):''; };
 const fmtTel=t=>t&&/^\d{10}$/.test(t)?t.replace(/(\d{2})(?=\d)/g,'$1 '):t;
 function draftText(t,j){ // version « draft » : texte brut pour discuter des compos (pas de gras, pas de téléphones)
-  const m=matchOf(t,j), c=compo(j,t); if(!m||m.exempt) return t+' · J'+j+' : exempte';
+  const m=matchOf(t,j), actual=PARTS.lineup(t,j,false), c=actual?{p:actual.p,st:'sent',note:''}:compo(j,t); if(!m)return t+' · J'+j+' : calendrier inconnu';
   const sorted=c.p.slice().sort((a,b)=>((BYKEY[b]||{}).men||0)-((BYKEY[a]||{}).men||0));
   const origin=k=>{ if(GENRE(t)==='F') return (FEM[k]&&FEM[k].e)||homeTeam(k)||''; const g=TAGS[k]||{}; if(g.e) return g.e; if(g.r==='R'&&g.d) return 'pool '+g.d; const f=FEM[k]; return f&&f.e?f.e:''; };
   let s=t+' · J'+j+' — '+fmtD(m.date)+' · '+(m.dom?'dom. vs ':'ext. à ')+m.opp+(m.oppAvg?' (≈'+m.oppAvg+')':'')+'\n';

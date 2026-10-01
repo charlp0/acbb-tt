@@ -171,7 +171,7 @@
     <section class="grid2" id="tabEquipe" hidden>
       <div class="col">
         <div class="card">
-          <div class="ch"><span class="t">Dispos de l'équipe</span><span class="legend">J1 à J7 · vert dispo · rouge absent · gris sans réponse · journée jouée : équipe alignée, ou NJ si non joué</span></div>
+          <div class="ch"><span class="t">Dispos de l'équipe</span><span class="legend">J1 à J7 · vert dispo · rouge absent · gris sans réponse · journée passée : équipe alignée · NJ non joué · E exemption (hors compteur) · ? feuille manquante</span></div>
           <div class="rows" id="dispos"><div class="empty">Chargement…</div></div>
           <div class="lab" style="margin-top:12px">Seule ton équipe est visible. Les autres dispos du club restent côté sportive.</div>
         </div>
@@ -228,6 +228,9 @@
 </div>
 
 <script src="shared/api.js"></script>
+<script src="shared/lieux.js?v=1"></script>
+<script src="shared/participations.js?v=1"></script>
+<script src="shared/regles.js?v=1"></script>
 <script src="shared/report.js" defer></script>
 <script src="shared/track.js?v=1" defer></script>
 <script src="shared/nav.js" data-base="."></script>
@@ -302,7 +305,7 @@
     try{ S.poules=await ACBB.json('data/poules2627.json'); }catch(e){ showGate('Données indisponibles','Le calendrier des poules n\'a pas pu être chargé.'); return; }
     S.poule=(S.poules.poules||[]).find(p=>p.acbb===S.team)||null;
     ACBB.json('data/capitaines.json').then(c=>{ S.caps=(c&&c.capitaines)||{}; if(TAB==='equipe') renderDispos(); }).catch(()=>{ S.caps={}; });
-    ACBB.json('data/site.json').then(s=>{ S.site=s; S.feuilles=null; if(TAB==='poule') renderPoule(); else if(S.dispos) renderDispos(); }).catch(()=>{});
+    Promise.all([ACBB.json('data/site.json'),ACBB.json('data/scoring.json')]).then(([s,sc])=>{ S.site=s; S.players=(sc&&sc.players)||[]; S.feuilles=null; if(TAB==='poule') renderPoule(); else if(S.dispos) renderDispos(); }).catch(()=>{ S.historyError=true; if(S.dispos)renderDispos(); });
     ACBB.json('data/resultats2627.json').then(r=>{ if(r&&r.resultats) S.resultats=r.resultats; if(TAB==='poule') renderPoule(); }).catch(()=>{});
     /* Adresses des déplacements. Deux sources, dans cet ordre : le planning tenu à la main par la
        sportive (salles2627.json), qui connaît les exceptions — notre F1 reçoit une journée à Marly ;
@@ -310,6 +313,7 @@
        que celle affichée par l'application FFTT. La seconde est étiquetée comme telle : c'est la salle
        du club, pas le lieu confirmé de la rencontre. */
     ACBB.json('data/salles2627.json').then(r=>{ S.salles=(r&&r.salles)||{}; if(TAB==='poule') renderPoule(); }).catch(()=>{});
+    ACBB.json('data/lieux.json').then(r=>{S.lieux=r;if(TAB==='poule')renderPoule();}).catch(()=>{});
     ACBB.json('data/salles_adverses.json').then(r=>{ S.sadv=(r&&r.salles)||{}; if(TAB==='poule') renderPoule(); }).catch(()=>{});
     gate.hidden=true; document.getElementById('app').hidden=false;
     S.j=currentJ(S.poule&&S.poule.cal);
@@ -364,24 +368,17 @@
     return (S.feuilles=out);
   }
   function parcours(joueur){
-    const F=feuilles(); if(!F) return null;
-    const moi={n:nkC(joueur.nom),p:nkC(joueur.prenom)};
-    const mien=F[S.team]||{};
-    const jsMoi=Object.keys(mien).map(Number).sort((a,b)=>a-b);
-    /* Une ligne par journée déjà disputée par l'équipe : dans quelle équipe du club le joueur a-t-il
-       été aligné ce jour-là ? Null s'il n'a joué nulle part. Le compteur additionne les journées où
-       il A JOUÉ, chez nous OU ailleurs : un joueur parti renforcer une autre équipe n'a pas chômé,
-       et l'afficher à zéro donnerait une image fausse de sa saison. */
-    const jours=jsMoi.map(j=>{
-      const ou=[];
-      Object.keys(F).forEach(t=>{ if((F[t][j]||[]).some(x=>memeJ(moi,x))) ou.push(t); });
-      const t=ou.indexOf(S.team)>=0?S.team:(ou[0]||null);
-      return {j:j,t:t,tous:ou};
-    });
-    const joue=jours.filter(x=>x.t).length;
-    const avec=jours.filter(x=>x.t===S.team).length;
-    const ailleurs=jours.filter(x=>x.t&&x.t!==S.team).map(x=>({j:x.j,t:x.t}));
-    return {joue:joue,avec:avec,total:jsMoi.length,ailleurs:ailleurs,jours:jours};
+    if(!S.participations)return null;
+    return S.participations.parcours(joueur.licence,S.team);
+  }
+  function buildParticipations(){
+    if(!S.site||!S.players)return null;
+    const declarations={};
+    ((S.dispos&&S.dispos.joueurs)||[]).forEach(p=>(p.exemptions||[]).forEach(e=>{
+      const byDay=declarations[e.j]=declarations[e.j]||{};
+      const c=byDay[e.t]=byDay[e.t]||{p:[],st:'sent'};c.p.push(String(p.licence));
+    }));
+    return ACBB_PART.create({site:S.site,players:S.players,plans:declarations,poules:(S.poules&&S.poules.poules)||[]});
   }
   /* Ceux qui sont venus nous aider : présents sur NOS feuilles sans appartenir à l'effectif.
      On montre les deux sens de la rotation — sinon le capitaine ne verrait que ce qu'il perd. */
@@ -403,6 +400,7 @@
   function renderDispos(){
     const d=S.dispos; if(!d) return;
     const el=document.getElementById('dispos');
+    S.participations=buildParticipations();
     const js=(d.joueurs||[]).filter(p=>p.statut!=='renfort').slice().sort((a,b)=>{ const ra=a.statut==='renfort'?1:0, rb=b.statut==='renfort'?1:0; if(ra!==rb) return ra-rb; return String(a.nom||'').localeCompare(String(b.nom||''),'fr'); });
     if(!js.length){ el.innerHTML='<div class="empty">Aucun joueur rattaché à l\'équipe pour le moment.</div>'; return; }
     const now=Date.now();
@@ -425,8 +423,8 @@
         const f=fait[j];
         if(f){
           const autres=f.tous.filter(x=>x!==f.t);
-          const quoi=f.t?('a joué en '+f.t+(autres.length?' (et '+autres.join(', ')+')':'')):'n\'a pas joué';
-          return '<span class="tick'+cls+'" title="'+esc('J'+j+' · '+quoi+' · disponibilité déclarée : '+dsp)+'">'+esc(f.t||'NJ')+'</span>';
+          const quoi=f.unknown?'feuilles manquantes : participation à vérifier':f.exempt?('exemption déclarée en '+f.t+' — compte pour le brûlage, sans match disputé'):f.t?('a joué en '+f.t+(autres.length?' (et '+autres.join(', ')+')':'')):'n\'a pas joué';
+          return '<span class="tick'+cls+'" title="'+esc('J'+j+' · '+quoi+' · disponibilité déclarée : '+dsp)+'">'+esc(f.unknown?'?':f.exempt?'E '+f.t:f.t||'NJ')+'</span>';
         }
         return '<span class="tick'+cls+'" title="J'+j+' · '+dsp+'"></span>';
       }).join('');
@@ -434,10 +432,11 @@
       let cpt='';
       if(pc&&pc.total){
         const det=pc.ailleurs.length?(' · dont '+pc.ailleurs.map(x=>'la J'+x.j+' en '+x.t).join(', ')):'';
-        cpt='<span class="mj'+(pc.joue?'':' zero')+'" title="'+esc(pc.joue+' rencontre'+(pc.joue>1?'s':'')+' disputée'+(pc.joue>1?'s':'')+' sur '+pc.total+' journée'+(pc.total>1?'s':'')+' déjà jouée'+(pc.total>1?'s':'')+' par '+S.team+det+' — d\'après les feuilles officielles')+'">'+pc.joue+'/'+pc.total+'</span>';
+        cpt='<span class="mj'+(pc.joue?'':' zero')+'" title="'+esc(pc.joue+' rencontre'+(pc.joue>1?'s':'')+' disputée'+(pc.joue>1?'s':'')+' sur '+pc.total+' journée'+(pc.total>1?'s':'')+' déjà jouée'+(pc.total>1?'s':'')+' par '+S.team+det+' — feuilles FFTT'+(pc.inconnus?' · '+pc.inconnus+' journée(s) à vérifier':'')+(pc.exemptions?' · '+pc.exemptions+' exemption(s), hors compteur de matchs':''))+'">'+pc.joue+'/'+pc.total+(pc.inconnus?' ?':'')+'</span>';
       }
       return '<div class="card2 prow"><span class="dot" style="background:'+(has?'var(--win)':'var(--warn)')+'"></span><div><div class="nm">'+esc((p.prenom||'')+' '+(p.nom||''))+(isCap(p.licence)?'<span class="tag cap">C</span>':'')+(p.statut==='renfort'?'<span class="tag blue">renfort</span>':'')+'</div><div class="sub '+cls+'">'+esc(sub)+'</div></div><span class="ticks">'+ticks+cpt+'</span></div>';
     }).join('');
+    if(S.historyError)el.innerHTML+='<p class="empty">Historique indisponible : les compteurs ne peuvent pas être vérifiés.</p>';
     const vs=venus();
     if(vs.length) el.innerHTML+='<div class="card2 venus">Sont venus renforcer '+esc(S.team)+' : '
       +vs.map(v=>'<b>'+esc(((v.prenom||'')+' '+v.nom).trim())+'</b> ('+v.js.map(j=>'J'+j).join(', ')+')').join(', ')+'.</div>';
@@ -632,14 +631,9 @@
   }
   /* Adresse du déplacement : planning de la sportive d'abord, salle déclarée du club ensuite. */
   function lieuDe(m){
-    if(!m||m.dom||m.exempt) return null;
-    const cal=((S.salles||{})[S.team]||{}).cal||[];
-    const c=cal.filter(function(x){ return +x.j===+m.j; })[0];
-    if(c&&c.venue) return {txt:c.venue,src:''};
-    const a=(S.sadv||{})[(m.oppTeam&&m.oppTeam.name)||m.opp||''];
-    if(!a) return null;
-    const txt=[a.salle,a.adresse,a.cp,a.ville].filter(Boolean).join(' ').replace(/\s+/g,' ').trim();
-    return txt?{txt:txt,src:'club'}:null;
+    if(!m||m.dom||m.exempt||!ACBB_LIEUX.inScope(S.team))return null;
+    const v=ACBB_LIEUX.resolve({t:S.team,j:m.j,poule:S.poule,salles:S.salles,adverses:S.sadv,lieux:S.lieux});
+    return v&&v.txt?{txt:v.txt,src:v.source==='club'?'club':'',note:v.note}:null;
   }
   function renderScout(m,acbbTeam,st){
     const el=document.getElementById('scout');
