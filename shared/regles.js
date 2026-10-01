@@ -12,8 +12,12 @@
     const c=o.lineup||model.lineup(t,j)||{p:[]}, keys=(c.p||[]).map(model.canonical), out=[];
     const add=(code,lvl,msg,ks)=>out.push({code,lvl,msg,keys:ks||[]});
     const label=k=>{const p=players[k];return p?((p.pre||p.prenom||'')+' '+p.nom).trim():k;};
-    const missing=model.missing(j,t[0]);
-    if(missing.length) add('source','warn','Historique incomplet : '+missing.map(x=>x.t+' J'+x.j).join(', ')+' — règles à vérifier');
+    const uncertain=keys.map(k=>({k,missing:model.missingFor(k,j,t[0])})).filter(x=>x.missing.length);
+    if(uncertain.length){
+      const missing=[...new Set(uncertain.flatMap(x=>x.missing.map(m=>m.t+' J'+m.j)))];
+      add('source','warn','Historique à vérifier pour '+uncertain.map(x=>label(x.k)).join(', ')
+        +' — feuilles non confirmées : '+missing.join(', '),uncertain.map(x=>x.k));
+    }
     if(c.source==='fftt'&&!c.complete) add('source','warn','Feuille FFTT : des identités restent à rapprocher');
     const size=o.size||4;
     if(keys.length>size) add('effectif','err','Trop de joueurs ('+keys.length+'/'+size+')',keys);

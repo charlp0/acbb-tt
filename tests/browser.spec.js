@@ -75,6 +75,18 @@ test('un conflit conserve le brouillon et demande un choix explicite',async({pag
  await expect(note).toHaveValue('Ma note');await page.locator('#saveBtn').click();
  await expect(page.locator('#saveBtn')).toBeDisabled();expect(state.saves[1].expected_id).toBe(13);
 });
+test('une feuille manquante est signalée une fois et les alertes ciblent les historiques inconnus',async({page,context})=>{
+ const state=fixture();await install(context,state);
+ await page.goto('/sportive/journee.html?j=2');
+ const team=page.locator('.tc[data-team="M11"]');await expect(team).toBeVisible();
+ await expect(page.locator('#historyNote')).toContainText('M1 J1');
+ await expect(team).not.toContainText('Historique à vérifier');
+ await expect(team).toContainText('feuilles FFTT et exemptions confirmées');
+ // Retirer la confirmation d'un seul joueur sans changer le plan J2.
+ state.site.DATA.M11.teams.find(t=>t.acbb).journees[0].players.pop();
+ await page.reload();await expect(team).toContainText('Historique à vérifier pour Jo EXEMPLE4');
+ await expect(team).not.toContainText('Historique à vérifier pour Alex');
+});
 test('capitaine : compteurs réels, cases vertes/rouges conservées, vues sportive chargeables',async({page,context})=>{
  const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/capitaine.html');await expect(page.locator('.prow')).toHaveCount(4);

@@ -40,6 +40,7 @@
   .jp.past{opacity:.6}
   /* barre d'état */
   .statebar{display:flex;align-items:center;gap:8px;padding:10px 20px 14px;flex-wrap:wrap}
+  .history-note{font-size:12px;color:var(--dim);padding:0 20px 14px;line-height:1.5}
   .pill{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:6px 12px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
   .pill.g{background:rgba(61,214,140,.13);border-color:rgba(61,214,140,.4);color:var(--win-lt)}
   .pill.y{background:rgba(250,204,21,.1);border-color:rgba(250,204,21,.4);color:var(--warn)}
@@ -226,6 +227,7 @@
   </div>
 </div>
 <div class="statebar" id="statebar"></div>
+<div class="history-note" id="historyNote" hidden></div>
 <div class="filters" id="filters"></div>
 
 <div class="body">
@@ -453,7 +455,7 @@ function ticks(k,g){ // 7 traits : vert dispo, rouge indispo, gris sans réponse
 function joues(k,g){
   if(J<=1) return '';                       // aucune journée écoulée
   const parts=participations(k,J).filter(x=>x.played&&(!g||GENRE(x.t)===g)), tot=J-1, n=new Set(parts.map(x=>x.j)).size;
-  const incomplete=PARTS.missing(J,g).some(x=>!parts.some(p=>p.j===x.j));
+  const incomplete=PARTS.missingFor(k,J,g).length>0;
   const det=n?parts.map(x=>'J'+x.j+' '+x.t).join(' · '):'aucune rencontre disputée';
   const chp=g==='F'?' en championnat dames':(g==='M'?' en championnat messieurs':'');
   return '<span class="mj'+(n?'':' zero')+'" title="'+esc(n+' match'+(n>1?'s':'')+' joué'+(n>1?'s':'')+chp+' sur '+tot+' journée'+(tot>1?'s':'')+' écoulée'+(tot>1?'s':'')+' — '+det+(incomplete?' · feuilles manquantes : compteur partiel':''))+'">'+n+'/'+tot+(incomplete?' ?':'')+'</span>';
@@ -469,7 +471,8 @@ function dirtyTeams(){ const out=[]; TEAMS.forEach(t=>{ const a=JSON.stringify(C
 /* ===================== PARTICIPATIONS & RÈGLES ===================== */
 /* Participations : la FEUILLE DE RENCONTRE FFTT fait foi dès qu'elle existe. Nos compos enregistrées
    restent du prévisionnel — à la J1, 6 équipes ont finalement aligné autre chose que le plan, et le
-   brûlage calculé sur le plan aurait été faux. Repli sur la compo enregistrée équipe par équipe. */
+   brûlage calculé sur le plan aurait été faux. Seules les feuilles confirmées et les déclarations
+   d'exemption validées alimentent l'historique ; les autres cas restent à vérifier. */
 let REEL={}, RSC={};      // REEL[journée][équipe] = joueurs réellement alignés · RSC = score officiel (parties)
 /* Un nom de feuille FFTT vers notre clé joueur. La feuille porte l'état civil, nous parfois le prénom
    d'usage (« BOTELLA Milosav » sur la feuille, « Milo » chez nous) : on tolère donc un prénom qui
@@ -607,6 +610,10 @@ function renderHero(){
   document.querySelectorAll('.jp').forEach(el=>el.onclick=()=>{ if(dirtyTeams().length&&!confirm('Des modifications de J'+J+' ne sont pas enregistrées. Changer de journée quand même ?'))return; J=+el.dataset.j; SEL=null; history.replaceState(null,'','?j='+J); renderAll(); });
 }
 function renderState(){
+  const missing=PARTS.missing(J), historyNote=document.getElementById('historyNote');
+  historyNote.hidden=!missing.length;
+  historyNote.textContent=missing.length?'Feuilles non confirmées : '+missing.map(x=>x.t+' J'+x.j).join(', ')
+    +'. Les alertes d’historique concernent uniquement les joueurs sans participation confirmée pour ces journées.':'';
   const pl=TEAMS.filter(t=>aFeuille(t,J)); let sent=0,valid=0,draft=0,errs=0,warns=0;
   pl.forEach(t=>{ const c=compo(J,t); if(c.st==='sent')sent++; else if(c.st==='valid')valid++; else draft++; const r=checkTeam(t,J); if(r.issues.some(i=>i.lvl==='err'))errs++; else if(r.issues.some(i=>i.lvl==='warn'))warns++; });
   const m=META[J];
@@ -735,7 +742,7 @@ function card(t){
     }).join(''):'<span style="font-size:11px;color:var(--dimmer)">tout l\'effectif est aligné — glisse ici (ou sélectionne puis touche ici) un joueur pour le sortir de l\'équipe</span>')+'</div></div>';
   const shown=r.issues.filter(i=>i.lvl!=='info'); const infos=r.issues.filter(i=>i.lvl==='info');
   const alerts=shown.map(i=>'<div class="alert '+i.lvl+'">'+(i.lvl==='err'?'⛔':'⚠')+' <span>'+esc(i.msg)+'</span></div>').join('');
-  const ruleLine='<div class="rules">'+(shown.length?'':'✓ règles OK')+(infos.length?(shown.length?'':' · ')+infos.map(i=>i.msg).join(' · '):'')+(J>1?' · brûlage calculé sur les compos enregistrées '+(J>2?'J1→J'+(J-1):'J1'):'')+'</div>';
+  const ruleLine='<div class="rules">'+(shown.length?'':'✓ règles OK')+(infos.length?(shown.length?'':' · ')+infos.map(i=>i.msg).join(' · '):'')+(J>1?' · brûlage : feuilles FFTT et exemptions confirmées '+(J>2?'J1→J'+(J-1):'J1'):'')+'</div>';
   const cap=CAPT[t]; const capName=cap?[].concat(cap).map(k=>BYKEY[k]?short(BYKEY[k]):k).join(', '):'';
   /* Journée déjà jouée : on montre la feuille officielle, en lecture seule. La compo enregistrée
      n'est ni modifiée ni écrasée — elle reste consultable en dessous si elle différait. */

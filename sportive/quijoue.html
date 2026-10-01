@@ -168,7 +168,7 @@ function cellInfo(k,j,t){ // classification de la cellule + alertes (mêmes règ
   }
   const source=PARTS.assignments(k,j).find(x=>x.t===t);
   if(source&&source.source==='plan') al.push('J'+j+' : composition prévue, feuille FFTT non confirmée');
-  if(PARTS.missing(j,t[0]).length) al.push('Historique incomplet : brûlage à vérifier');
+  if(PARTS.missingFor(k,j,t[0]).length) al.push('Historique de ce joueur incomplet : brûlage à vérifier');
   return {t:t,cls:cls,al:al,home:home,source:source&&source.source};
 }
 

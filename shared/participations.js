@@ -97,6 +97,13 @@
       });
       return out;
     }
+    function missingFor(k,before,genre){
+      const confirmed=history(k,before,genre);
+      // Une participation confirmée (exemption comprise) établit l'équipe du
+      // joueur pour cette journée et ce championnat. Le manque d'une autre
+      // feuille ne rend pas à nouveau cet historique individuel inconnu.
+      return missing(before,genre).filter(m=>!confirmed.some(e=>e.j===m.j&&e.championnat===m.t[0]));
+    }
     function assignments(k,j,includePlan=true){
       k=ids.canonical(k);
       const actual=events.filter(e=>e.k===k&&e.j===+j);
@@ -116,13 +123,13 @@
       const js=rounds(t), jours=js.map(j=>{
         const es=history(k,j+1,t[0]).filter(e=>e.j===j), all=es.map(e=>e.t);
         const own=es.find(e=>e.t===t)||es[0];
-        return {j,t:own?own.t:null,tous:all,played:es.some(e=>e.played),exempt:!!own&&!own.played,unknown:!own&&missing(j+1,t[0]).some(m=>m.j===j)};
+        return {j,t:own?own.t:null,tous:all,played:es.some(e=>e.played),exempt:!!own&&!own.played,unknown:missingFor(k,j+1,t[0]).some(m=>m.j===j)};
       });
       return {joue:jours.filter(x=>x.played).length,avec:jours.filter(x=>x.played&&x.t===t).length,total:js.length,
         inconnus:jours.filter(x=>x.unknown).length,exemptions:jours.filter(x=>x.exempt).length,
         ailleurs:jours.filter(x=>x.t&&x.t!==t).map(x=>({j:x.j,t:x.t})),jours};
     }
-    return {context,events,sheets,unknown,canonical:ids.canonical,resolve:ids.resolve,calendar,lineup,history,missing,assignments,rounds,parcours};
+    return {context,events,sheets,unknown,canonical:ids.canonical,resolve:ids.resolve,calendar,lineup,history,missing,missingFor,assignments,rounds,parcours};
   }
   function historyRules(model,k,t,j,poules){
     const h=model.history(k,j,t[0]), perRound=new Map();
@@ -134,7 +141,7 @@
       samePool:h.filter(e=>{
         const other=(poules||{})[e.t];
         return e.t!==t&&pool&&other&&pool.poule!=null&&pool.division===other.division&&pool.poule===other.poule;
-      }),incomplete:model.missing(j,t[0]).length>0};
+      }),incomplete:model.missingFor(k,j,t[0]).length>0};
   }
   return {create,identities,historyRules,norm,dateISO,key};
 });
