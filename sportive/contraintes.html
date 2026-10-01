@@ -351,8 +351,10 @@
   var SAVING=false;
   function persist(liste,action){
     if(SAVING) return Promise.resolve();
+    var changes=ACBB_EDIT.diff(META?Object.fromEntries(LISTE.map(c=>[c.id,c])):{},Object.fromEntries(liste.map(c=>[c.id,c])));
+    if(!Object.keys(changes).length){closeEditor();toast('Aucune modification');return Promise.resolve();}
     SAVING=true; var sb=$('edSave'); sb.disabled=true;
-    return ACBB_EDIT.save({kind:'contraintes',expected:META&&META.id||0,changes:ACBB_EDIT.diff(META?Object.fromEntries(LISTE.map(c=>[c.id,c])):{},Object.fromEntries(liste.map(c=>[c.id,c]))),note:action,label:function(k){var c=liste.find(c=>c.id===k)||LISTE.find(c=>c.id===k);return c?C.titre(c):k;}})
+    return ACBB_EDIT.save({kind:'contraintes',expected:META&&META.id||0,changes:changes,note:action,label:function(k){var c=liste.find(c=>c.id===k)||LISTE.find(c=>c.id===k);return c?C.titre(c):k;}})
       .then(function(result){ return [result.row]; })
       .then(function(rows){ var ct=C.fromRows(rows); LISTE=ct.liste; META=ct.meta; DEFAUT=ct.defaut; closeEditor(); renderAll(); toast('Contraintes enregistrées ('+action+') — vérifiées dans Compos journée et Scoring'); })
       .catch(function(e){ toast('Enregistrement impossible : '+e.message); })

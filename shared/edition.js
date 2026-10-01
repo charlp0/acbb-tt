@@ -5,12 +5,18 @@
     .filter(k=>k!=='_meta'&&JSON.stringify((base||{})[k])!==JSON.stringify((next||{})[k]))
     .map(k=>[k,(next||{})[k]||null]));
   const documentOf=(kind,row)=>kind==='contraintes'?Object.fromEntries(((row&&row.tags&&row.tags.liste)||[]).map(c=>[c.id,c])):((row&&row.tags)||{});
+  function describe(value){
+    if(!value)return 'Supprimé';
+    if(value.type&&window.ACBB_CONTR)return ACBB_CONTR.titre(value)+(value.note?' · '+value.note:'');
+    if(value.k!=null||value.cap!=null)return 'Poids de la tendance : '+value.k+' · plafond : '+value.cap;
+    return [value.r==='T'?'Titulaire':value.r==='R'?'Remplaçant':'',value.e,value.d,value.e2?'également '+value.e2:''].filter(Boolean).join(' · ')||'Sans affectation';
+  }
   function choose(keys,current,mine,label){
     return new Promise(resolve=>{
       const d=document.createElement('dialog');d.style.cssText='max-width:680px;width:calc(100% - 28px);max-height:85vh;overflow:auto;background:var(--panel);color:var(--ink);border:1px solid var(--orange);border-radius:12px;padding:20px';
       const e=ACBB.esc;
       d.innerHTML='<h2>Modifications simultanées</h2><p>Ces éléments ont changé depuis ton ouverture. Choisis la version à conserver pour chacun.</p>'+keys.map((k,i)=>
-        '<section><b>'+e(label?label(k):k)+'</b><p>Version partagée : '+e(JSON.stringify(current[k]||null))+'</p><p>Ta modification : '+e(JSON.stringify(mine[k]||null))+'</p><select data-choice="'+i+'"><option value="shared">Conserver la version partagée</option><option value="mine">Conserver ma modification</option></select></section>').join('')+
+        '<section><b>'+e(label?label(k):k)+'</b><p>Version partagée : '+e(describe(current[k]))+'</p><p>Ta modification : '+e(describe(mine[k]))+'</p><select data-choice="'+i+'"><option value="shared">Conserver la version partagée</option><option value="mine">Conserver ma modification</option></select></section>').join('')+
         '<p><button data-cancel>Annuler, garder mon brouillon</button> <button data-apply>Enregistrer mes choix</button></p>';
       const close=v=>{d.close();d.remove();resolve(v);};
       d.querySelector('[data-cancel]').onclick=()=>close(null);
