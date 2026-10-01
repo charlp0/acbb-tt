@@ -15,6 +15,10 @@ TABLES = {
 }
 
 
+class ObjectNotFound(RuntimeError):
+    """Objet Storage absent, distinct d'un refus d'accès ou d'une panne."""
+
+
 def request(path, method='GET', data=None, content_type='application/json'):
     secret = os.environ.get('SUPA_SERVICE_KEY')
     if not secret:
@@ -28,6 +32,21 @@ def request(path, method='GET', data=None, content_type='application/json'):
         with urllib.request.urlopen(req, timeout=90) as resp:
             return resp.read()
     except urllib.error.HTTPError as exc:
+        # Storage peut répondre HTTP 400 avec NoSuchKey/statusCode=404.
+        # Ne tolérer que cette absence précise, jamais tous les HTTP 400/404
+        # (une erreur de bucket, de droits ou de configuration doit rester visible).
+        try:
+            detail = json.loads(exc.read(4096))
+        except (ValueError, UnicodeError):
+            detail = {}
+        if not isinstance(detail, dict):
+            detail = {}
+        missing = detail.get('code') == 'NoSuchKey' or (
+            not detail.get('code') and str(detail.get('statusCode')) == '404'
+            and detail.get('message') == 'Object not found')
+        if (method == 'GET' and path.startswith('/storage/v1/object/authenticated/')
+                and exc.code in (400, 404) and missing):
+            raise ObjectNotFound('Objet privé introuvable') from None
         # Ne pas recopier l'URL, le corps de la réponse ou les données envoyées.
         raise RuntimeError('Stockage privé : HTTP %s' % exc.code) from None
 
