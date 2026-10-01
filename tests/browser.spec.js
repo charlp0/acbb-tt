@@ -46,6 +46,7 @@ async function install(context,state){
   if(url.hostname!=='127.0.0.1')return route.abort(); // jamais le réseau de production
   if(url.pathname==='/data/scoring.js')return route.fulfill({contentType:'text/javascript',body:'window.__SCORING='+JSON.stringify({players:state.players})+';'});
   if(url.pathname==='/data/scoring.json')return send({built:new Date().toISOString(),players:state.players});
+  if(url.pathname==='/data/poules2627.json')return send(state.poules);
   if(url.pathname==='/data/site.json')return send(state.site);
   if(url.pathname==='/data/sexes.json')return send(Object.fromEntries(state.players.map(p=>[p.lic,'M'])));
   return route.continue();
@@ -80,13 +81,27 @@ test('une feuille manquante est signalée une fois et les alertes ciblent les hi
  const state=fixture();await install(context,state);
  await page.goto('/sportive/journee.html?j=2');
  const team=page.locator('.tc[data-team="M11"]');await expect(team).toBeVisible();
- await expect(page.locator('#historyNote')).toContainText('M1 J1');
+ await expect(page.locator('#historyNote')).toContainText('M2 J1');
+ await expect(page.locator('#historyNote')).not.toContainText('M1 J1');
  await expect(team).not.toContainText('Historique à vérifier');
  await expect(team).toContainText('feuilles FFTT et exemptions confirmées');
  // Retirer la confirmation d'un seul joueur sans changer le plan J2.
  state.site.DATA.M11.teams.find(t=>t.acbb).journees[0].players.pop();
  await page.reload();await expect(team).toContainText('Historique à vérifier pour Jo EXEMPLE4');
  await expect(team).not.toContainText('Historique à vérifier pour Alex');
+});
+test('M1 hors gestion : aucun historique manquant et NJ sans correction individuelle',async({page,context})=>{
+ const state=fixture();state.poules.poules=state.poules.poules.filter(p=>['M1','M11'].includes(p.acbb));
+ state.site.DATA.M11.teams.find(t=>t.acbb).journees[0].players.pop();
+ await install(context,state);
+ await page.goto('/sportive/journee.html?j=2');
+ await expect(page.locator('.tc[data-team="M11"]')).toBeVisible();
+ await expect(page.locator('#historyNote')).toBeHidden();
+ await expect(page.locator('.tc[data-team="M11"]')).not.toContainText('Historique à vérifier');
+ await page.goto('/capitaine.html');
+ const row=page.locator('.prow').nth(3);
+ await expect(row.locator('.tick').first()).toHaveText('NJ');
+ await expect(row.locator('.mj')).toHaveText('0/1');
 });
 test('capitaine : compteurs réels, cases vertes/rouges conservées, vues sportive chargeables',async({page,context})=>{
  const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));

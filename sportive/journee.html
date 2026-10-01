@@ -279,7 +279,7 @@ function api(route,body){
 }
 const rest=(table,query)=>api('spo/rest',{table:table,method:'select',query:query}).then(r=>Array.isArray(r)?r:((r&&r.rows)||[])).catch(e=>{ LOADERR=LOADERR||e; return []; });
 const authorName=a=>String(a||'').split(/\s[—·-]\s/)[0]||'?';   // « Minh — J1 » (signature serveur) ou « Minh · J1 » (anciennes lignes) -> « Minh »
-const ALL_TEAMS=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
+const ALL_TEAMS=['M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
 const TEAMS=['M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17'];   // périmètre de la sportive : M1 et les équipes féminines ne sont pas composées ici
 const NJ=7;
 const TEAMDIV={M1:'Pro B',M2:'N1',M3:'R1',M4:'R2',M5:'R3',M6:'PR',M7:'PR',M8:'D1',M9:'D1',M10:'D1',M11:'D1',M12:'D2',M13:'D2',M14:'D2',M15:'D2',M16:'D2',M17:'D2',F1:'N2D',F2:'R1D',F3:'PRD'};

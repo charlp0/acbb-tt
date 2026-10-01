@@ -7,7 +7,9 @@
   else root.ACBB_PART=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const team=t=>/^[MF]\d+$/.test(t||'');
+  // M1 (Pro B) est gérée hors du site : aucune feuille n'est attendue dans
+  // cet outil, et ses plans éventuels ne font pas partie de ses contrôles.
+  const team=t=>/^[MF]\d+$/.test(t||'')&&t!=='M1';
   const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');
   const key=p=>String(p.key||p.lic||p.licence||((p.nom||'')+'|'+(p.pre||p.prenom||'')));
   const name=p=>norm(p.nom)+'|'+norm(p.pre||p.prenom);
@@ -46,7 +48,8 @@
   }
   function create(options){
     const o=options||{}, ids=identities(o.players||[]), plans=o.plans||{}, confirmed=o.confirmedPlans||plans;
-    const poules=Array.isArray(o.poules)?Object.fromEntries(o.poules.map(p=>[p.acbb,p])):(o.poules||{});
+    const calendars=Array.isArray(o.poules)?Object.fromEntries(o.poules.map(p=>[p.acbb,p])):(o.poules||{});
+    const poules=Object.fromEntries(Object.entries(calendars).filter(([t])=>team(t)));
     const context={saison:o.saison||'2026/2027',phase:o.phase||1};
     const sheets={}, events=[], unknown=[];
     const today=o.today||new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Paris'});
@@ -84,6 +87,7 @@
       });
     });
     function lineup(t,j,includePlan=true){
+      if(!team(t)) return null;
       const s=sheets[t+':'+j]; if(s) return s;
       const p=includePlan?plan(t,j):null;
       return p?{...p,t,j:+j,source:'plan',complete:false}:null;

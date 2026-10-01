@@ -60,18 +60,30 @@ test('trois féminines en régionale déclenchent le quota, indépendamment des 
  const a=RULES.check({model:m,t:'M3',j:2,division:'R1',players:Object.fromEntries(ps.map(p=>[p.lic,p])),sexes:{101:'F',102:'F',103:'F'},extras:{}});
  assert(a.some(i=>i.code==='feminines'&&i.lvl==='err'));
 });
-test('M1 J1 manquante ne rend pas incertains les joueurs confirmés ailleurs',()=>{
+test('M1 hors périmètre : son absence ne provoque ni alerte ni compteur incertain',()=>{
  const pools={M1:pool('M1'),M11:pool('M11')};
- const m=model({poules:pools,site:{DATA:sheet('M11',1)},plans:{2:{M11:{p:['101','102']}}}});
- assert.deepEqual(m.missing(2,'M').map(x=>x.t),['M1']);
- assert.deepEqual(m.missingFor('101',2,'M'),[]);
+ const m=model({poules:pools,site:{DATA:sheet('M11',1,[players[0]])},plans:{2:{M11:{p:['101','102']}}}});
+ assert.deepEqual(m.missing(2,'M'),[]);
+ assert.deepEqual(m.missingFor('102',2,'M'),[]);
+ assert.equal(m.parcours('102','M11').joue,0);assert.equal(m.parcours('102','M11').inconnus,0);
+ assert.equal(m.parcours('102','M11').jours[0].t,null);
  assert.equal(PART.historyRules(m,'101','M11',2,pools).incomplete,false);
  assert(!RULES.check({model:m,t:'M11',j:2,players:byKey,poules:pools,extras:{}}).some(i=>i.code==='source'));
 });
+test('les données M1 éventuelles ne réintègrent pas les contrôles et les plans sont préservés',()=>{
+ const plans={1:{M1:{p:['101','102'],st:'sent'}},2:{M1:{p:['101'],st:'draft'},M11:{p:['101','102']}}};
+ const original=JSON.stringify(plans);
+ const m=model({poules:{M1:pool('M1'),M11:pool('M11')},plans,site:{DATA:sheet('M1',1)}});
+ assert.equal(m.lineup('M1',1),null);assert.equal(m.calendar('M1',1),null);
+ assert.deepEqual(m.history('101',2),[]);assert.deepEqual(m.assignments('101',1),[]);
+ assert.equal(PART.historyRules(m,'101','M11',2,{}).descendedJ2,false);
+ assert.deepEqual(m.missing(2,'M').map(x=>x.t),['M11']); // une vraie feuille attendue reste à vérifier
+ assert.equal(JSON.stringify(plans),original);
+});
 test('une alerte de source vise uniquement le joueur sans participation confirmée',()=>{
- const pools={M1:pool('M1'),M11:pool('M11')};
+ const pools={M2:pool('M2'),M11:pool('M11')};
  const m=model({poules:pools,site:{DATA:sheet('M11',1,[players[0]])},
-   plans:{1:{M1:{p:['102'],st:'sent'}},2:{M11:{p:['101','102']}}}});
+   plans:{1:{M2:{p:['102'],st:'sent'}},2:{M11:{p:['101','102']}}}});
  const warning=RULES.check({model:m,t:'M11',j:2,players:byKey,poules:pools,extras:{}}).find(i=>i.code==='source');
  assert.deepEqual(warning.keys,['102']);
  assert.match(warning.msg,/Sam SECOND/);assert.doesNotMatch(warning.msg,/Alex TEST/);
@@ -80,7 +92,7 @@ test('une alerte de source vise uniquement le joueur sans participation confirm�
  assert.equal(m.history('102',2,'M').length,0);
 });
 test('une exemption confirmée résout le manque individuel sans ajouter de match disputé',()=>{
- const m=model({poules:{M1:pool('M1'),M15:pool('M15',true)},plans:{1:{M15:{p:['101'],st:'sent'}}}});
+ const m=model({poules:{M2:pool('M2'),M15:pool('M15',true)},plans:{1:{M15:{p:['101'],st:'sent'}}}});
  assert.deepEqual(m.missingFor('101',2,'M'),[]);
  assert.equal(m.parcours('101','M15').joue,0);
  assert.equal(m.parcours('101','M15').inconnus,0);

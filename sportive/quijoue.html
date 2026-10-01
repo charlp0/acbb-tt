@@ -97,9 +97,9 @@ const rest=(table,query)=>api('spo/rest',{table:table,method:'select',query:quer
 
 /* ===== constantes (identiques à journee.html) ===== */
 const NJ=7;
-const ALL=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
+const ALL=['M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
 const TEAMDIV={M1:'Pro B',M2:'N1',M3:'R1',M4:'R2',M5:'R3',M6:'PR',M7:'PR',M8:'D1',M9:'D1',M10:'D1',M11:'D1',M12:'D2',M13:'D2',M14:'D2',M15:'D2',M16:'D2',M17:'D2',F1:'N2D',F2:'R1D',F3:'PRD'};
-const GROUPS=[['all','Toutes',null],['nat','Pro B / N1',['M1','M2']],['reg','Régional',['M3','M4','M5']],['pr','PR',['M6','M7']],['d1','D1',['M8','M9','M10','M11']],['d2','D2',['M12','M13','M14','M15','M16','M17']],['f','Dames',['F1','F2','F3']],['pool','Pools / sans équipe',[]]];
+const GROUPS=[['all','Toutes',null],['nat','N1',['M2']],['reg','Régional',['M3','M4','M5']],['pr','PR',['M6','M7']],['d1','D1',['M8','M9','M10','M11']],['d2','D2',['M12','M13','M14','M15','M16','M17']],['f','Dames',['F1','F2','F3']],['pool','Pools / sans équipe',[]]];
 const EXT=[{key:'NEVES|LOUNA',nom:'NEVES',pre:'Louna',men:1342,ext:'Marly (entente F1)'}];
 const esc=ACBB.esc;
 const nrmK=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');
