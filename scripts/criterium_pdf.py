@@ -47,6 +47,34 @@ def coupe_nom(bloc):
     i = max(maj)
     return ' '.join(mots[:i + 1]), ' '.join(mots[i + 1:])
 
+AGES = ['-11', '-13', '-15', '-19', 'ELITE']
+LIB  = {'F': {'ELITE': 'Élite Dames'}, 'M': {'ELITE': 'Élite Messieurs'}}
+
+def classer(groupes):
+    """Découpe « D2 -13 GARCONS » en division et catégorie d'âge, pour que la page puisse
+    ranger par ÂGE d'abord (la grosse catégorie) puis par division — c'est ainsi qu'un joueur
+    se cherche, pas l'inverse.
+
+    Deux groupes s'appellent « D3-11 Groupe 3 » et « D3 -19 Groupe 3 », sans le genre : le PDF
+    les place juste après le groupe de garçons du même âge et de la même division, et sa page
+    de synthèse les range bien sous « GARCONS ». On hérite donc du groupe précédent plutôt que
+    de deviner sur les prénoms."""
+    precedent = None
+    for g in groupes:
+        n = g['nom'].upper()
+        m = re.match(r'^(D\d)\s*(.*)$', n)
+        g['div'] = m.group(1) if m else ''
+        reste = (m.group(2) if m else n).strip()
+        age = next((a for a in AGES if reste.startswith(a)), '')
+        genre = 'F' if ('FILLE' in reste or 'DAME' in reste) else ('M' if ('GARCON' in reste or 'MESSIEUR' in reste) else '')
+        if not genre and precedent and precedent['age'] == age and precedent['div'] == g['div']:
+            genre = precedent['genre']
+        g['age'], g['genre'] = age, genre
+        g['cat'] = LIB.get(genre, {}).get(age) or (
+            (age + ' ans ' + ('Filles' if genre == 'F' else 'Garçons')) if age and genre else (reste.title() or g['nom']))
+        g['rang'] = (AGES.index(age) if age in AGES else 9, 0 if genre == 'F' else 1)
+        precedent = g
+
 def lire(chemin):
     groupes, courant = [], None
     with pdfplumber.open(chemin) as pdf:
@@ -94,6 +122,7 @@ def main():
         g = lire(os.path.expanduser(p))
         print("  %-52s %2d groupes, %3d joueurs" % (os.path.basename(p)[:52], len(g), sum(len(x['joueurs']) for x in g)))
         groupes += g
+    classer(groupes)
     for i, g in enumerate(groupes):
         g['id'] = 't%s-g%02d' % (tour, i + 1)
     try:

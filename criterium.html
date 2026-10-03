@@ -15,20 +15,11 @@
   .avis .t{font-weight:700;font-size:13px;color:var(--warn);margin-bottom:3px}
   .avis .d{font-size:12.5px;color:var(--ink-2);line-height:1.55}
   .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
-  .seg{display:inline-flex;background:var(--panel-2);border:1px solid var(--line-2);border-radius:99px;padding:3px}
-  .seg button{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:800;padding:6px 14px;border-radius:99px;border:0;background:transparent;color:var(--dim);cursor:pointer}
-  .seg button.on{background:var(--orange);color:#0B0B0D}
   .find{flex:1 1 260px;min-width:0;position:relative}
   .find input{width:100%;padding-left:32px}
   .find .lo{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--dimmer);font-size:13px;pointer-events:none}
   .cnt{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dimmer);white-space:nowrap}
-  /* vue poules */
-  .gs{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
-  .g{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-  .g.mine{border-color:rgba(242,106,27,.45)}
-  .gh{padding:11px 14px;border-bottom:1px solid var(--line);background:var(--panel-2)}
-  .gh .n{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:19px;letter-spacing:.4px}
-  .gh .m{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim);margin-top:3px;line-height:1.5}
+  /* la poule, affichée dans la fiche du joueur */
   .gl{padding:6px 8px;display:flex;flex-direction:column;gap:2px;max-height:330px;overflow:auto}
   .r{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:8px;padding:5px 7px;border-radius:7px;cursor:pointer;border:1px solid transparent}
   .r:hover{background:var(--panel-2)}
@@ -41,18 +32,39 @@
   .ok.y{background:rgba(61,214,140,.16);border:1px solid rgba(61,214,140,.5);color:var(--win-lt)}
   .ok.n{background:rgba(242,99,86,.14);border:1px solid rgba(242,99,86,.5);color:var(--lose-lt)}
   /* vue joueurs */
-  .sec{margin-bottom:18px}
-  .sec>.lab{margin-bottom:7px;display:block;color:var(--orange)}
+  /* Deux niveaux : l'âge (la grosse catégorie, celle par laquelle on se cherche) puis la division. */
+  .cat{margin-bottom:26px}
+  .cat>h2{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-family:"Saira Condensed",sans-serif;
+          font-style:italic;font-weight:800;text-transform:uppercase;font-size:25px;letter-spacing:.4px}
+  .cat>h2::after{content:'';flex:1;height:1px;background:var(--line-2)}
+  .cat>h2 .n{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:10px;font-weight:800;
+             color:var(--dimmer);text-transform:none;letter-spacing:0}
+  .sec{margin-bottom:14px}
+  .sec>.lab{margin-bottom:7px;display:inline-block;color:var(--orange);background:rgba(242,106,27,.12);
+            border:1px solid rgba(242,106,27,.35);border-radius:99px;padding:3px 10px}
   .js{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
   .j{display:flex;align-items:center;gap:9px;padding:9px 11px;cursor:pointer}
   .j:hover{border-color:var(--line-2)}
   .j .nm{flex:1 1 auto;min-width:0;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .j .sub{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dim);font-weight:400;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .j>.lab,.j>.ok{white-space:nowrap;flex:0 0 auto}   /* « à confirmer » passait à la ligne sur les cartes étroites */
+  .j>.go,.j>.ok{white-space:nowrap;flex:0 0 auto}
+  /* « À confirmer » se lisait comme un statut : personne ne devinait qu'il fallait cliquer.
+     C'est maintenant un bouton, et la carte entière réagit au survol. */
+  .go{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:800;padding:4px 9px;border-radius:99px;
+      background:rgba(242,106,27,.14);border:1px solid rgba(242,106,27,.55);color:var(--orange)}
+  .j:hover .go{background:var(--orange);color:#0B0B0D}
+  .j:hover{border-color:rgba(242,106,27,.5)}
+  .r.us{position:relative;padding-right:20px}
+  .r.us::after{content:'›';position:absolute;right:7px;top:50%;transform:translateY(-50%);color:var(--orange);font-size:15px;line-height:1}
+  .aide{font-size:12px;color:var(--dim);margin:-6px 0 14px;display:flex;align-items:center;gap:7px}
+  .aide b{color:var(--orange);font-weight:700}
   /* panneau joueur */
   .bg{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);z-index:40}
-  .pop{position:fixed;z-index:41;right:0;top:0;bottom:0;width:min(520px,100%);background:var(--paper);border-left:1px solid var(--line-2);overflow:auto;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
-  .pop .x{position:absolute;right:16px;top:14px;font-size:20px;color:var(--dim);cursor:pointer;line-height:1;background:none;border:0}
+  /* Popup CENTRALE, jamais un panneau latéral : préférence de Charles, valable partout sur le site. */
+  .pop{position:fixed;z-index:41;left:50%;top:50%;transform:translate(-50%,-50%);width:min(580px,94vw);max-height:88vh;
+       background:var(--paper);border:1px solid var(--line-2);border-radius:18px;overflow:auto;padding:22px 24px;
+       display:flex;flex-direction:column;gap:14px;box-shadow:0 28px 70px rgba(0,0,0,.65)}
+  .pop .x{position:sticky;align-self:flex-end;top:-6px;margin:-8px -8px -22px 0;font-size:20px;color:var(--dim);cursor:pointer;line-height:1;background:none;border:0}
   .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:12.5px}
   .kv .k{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dimmer);text-transform:uppercase;letter-spacing:.5px;align-self:center}
   /* fenêtre de confirmation */
@@ -89,14 +101,11 @@
   </div>
 
   <div class="bar">
-    <div class="seg" id="seg">
-      <button type="button" data-v="poules" class="on">Poules</button>
-      <button type="button" data-v="joueurs">Joueurs du club</button>
-    </div>
     <div class="find"><span class="lo">⌕</span><input id="q" placeholder="chercher un joueur par nom ou prénom…" autocomplete="off"></div>
     <span class="cnt" id="cnt"></span>
   </div>
 
+  <div class="aide" id="aide">👆 <span>Trouve-toi par <b>ton nom</b> ou ta catégorie, puis clique : tu verras <b>ta poule complète</b> et tu pourras <b>confirmer ta présence</b>.</span></div>
   <div id="vue"></div>
 </div>
 
@@ -117,7 +126,7 @@
    contrôle d'identité licence + date de naissance, le même que l'espace joueur. */
 const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const nk=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-const S={data:null,tour:null,vue:'poules',q:'',pres:{},sel:null};
+const S={data:null,tour:null,q:'',pres:{},sel:null};
 
 function groupesDuTour(){ const t=S.data&&S.data.tours&&S.data.tours[S.tour]; return (t&&t.groupes)||[]; }
 function tousNos(){ const out=[]; groupesDuTour().forEach(g=>g.joueurs.forEach(j=>{ if(j.acbb) out.push({j,g}); })); return out; }
@@ -140,7 +149,7 @@ function render(){
   const t=(S.data&&S.data.tours&&S.data.tours[S.tour])||null;
   document.getElementById('sub').textContent='compétition individuelle · 4 tours dans la saison'+(t?' · tour '+S.tour+' le '+t.date:'');
   renderTours();
-  document.getElementById('vue').innerHTML = S.vue==='poules' ? vuePoules() : vueJoueurs();
+  document.getElementById('vue').innerHTML = vueJoueurs();
   const n=tousNos().length, c=tousNos().filter(x=>etat(x.j.lic)).length;
   document.getElementById('cnt').textContent=n?(c+' / '+n+' joueur'+(n>1?'s':'')+' du club ont répondu'):'';
   document.querySelectorAll('[data-sel]').forEach(el=>el.onclick=()=>ouvrir(el.dataset.sel));
@@ -151,27 +160,31 @@ function ligne(j,g){
     +'<span class="nm">'+esc(j.pre+' '+j.nom)+(j.acbb?' '+tagPres(j.lic):'')+'<span class="cl">'+esc(j.club)+' · '+esc(j.cat)+'</span></span>'
     +'<span class="pt">'+j.clt+'</span></div>';
 }
-function vuePoules(){
-  const gs=groupesDuTour().filter(g=>g.joueurs.some(corr));
-  if(!gs.length) return '<div class="empty">Aucun groupe ne correspond à cette recherche.</div>';
-  return '<div class="gs">'+gs.map(g=>{
-    const nous=g.joueurs.filter(j=>j.acbb).length;
-    return '<div class="g'+(nous?' mine':'')+'"><div class="gh"><div class="n">'+esc(g.nom)+'</div>'
-      +'<div class="m">📍 '+esc(g.salle||'salle à confirmer')+'<br>pointage '+esc(g.pointage)+' · début '+esc(g.debut)
-      +' · '+g.joueurs.length+' joueurs'+(nous?' · <b style="color:var(--orange)">'+nous+' de l\'ACBB</b>':'')+'</div></div>'
-      +'<div class="gl">'+g.joueurs.filter(corr).map(j=>ligne(j,g)).join('')+'</div></div>';
-  }).join('')+'</div>';
-}
+/* On range par ÂGE d'abord — c'est ainsi qu'un joueur se cherche, « je suis en -13 » avant
+   « je suis en D3 » — puis par division à l'intérieur. L'ordre vient du champ `rang` posé
+   par le convertisseur, pas d'un tri alphabétique qui mettrait Élite avant -11. */
 function vueJoueurs(){
   const nos=tousNos().filter(x=>corr(x.j));
   if(!nos.length) return '<div class="empty">Aucun joueur du club ne correspond à cette recherche.</div>';
   const par={};
-  nos.forEach(x=>{ (par[x.g.nom]=par[x.g.nom]||[]).push(x); });
-  return Object.keys(par).sort().map(k=>'<div class="sec"><span class="lab">'+esc(k)+'</span><div class="js">'
-    +par[k].sort((a,b)=>b.j.clt-a.j.clt).map(x=>'<div class="card2 j" data-sel="'+esc(x.g.id+'|'+x.j.lic)+'">'
-      +'<span class="nm">'+esc(x.j.pre+' '+x.j.nom)+'<span class="sub">'+esc(lieu(x.g))+' · '+esc(x.g.debut)+' · '+x.j.clt+' pts</span></span>'
-      +(tagPres(x.j.lic)||'<span class="lab">à confirmer</span>')+'</div>').join('')
-    +'</div></div>').join('');
+  nos.forEach(x=>{
+    const c=x.g.cat||x.g.nom, d=x.g.div||'—';
+    const e=par[c]=par[c]||{rang:x.g.rang||[9,9],divs:{}};
+    (e.divs[d]=e.divs[d]||[]).push(x);
+  });
+  const ordre=(a,b)=>{ const ra=par[a].rang,rb=par[b].rang;
+    return (ra[0]-rb[0])||(ra[1]-rb[1])||a.localeCompare(b,'fr'); };
+  return Object.keys(par).sort(ordre).map(c=>{
+    const divs=Object.keys(par[c].divs).sort();
+    const n=divs.reduce((s,d)=>s+par[c].divs[d].length,0);
+    return '<section class="cat"><h2>'+esc(c)+'<span class="n">'+n+' joueur'+(n>1?'s':'')+'</span></h2>'
+      +divs.map(d=>'<div class="sec"><span class="lab">'+esc(d)+'</span><div class="js">'
+        +par[c].divs[d].sort((a,b)=>b.j.clt-a.j.clt).map(x=>'<div class="card2 j" data-sel="'+esc(x.g.id+'|'+x.j.lic)+'">'
+          +'<span class="nm">'+esc(x.j.pre+' '+x.j.nom)+'<span class="sub">'+esc(lieu(x.g))+' · '+esc(x.g.debut)+' · '+x.j.clt+' pts</span></span>'
+          +(tagPres(x.j.lic)||'<span class="go">Confirmer ›</span>')+'</div>').join('')
+        +'</div></div>').join('')
+      +'</section>';
+  }).join('');
 }
 /* ---------- panneau d'un joueur : tout ce qu'il doit savoir sur sa poule ---------- */
 function ouvrir(cle){
@@ -252,9 +265,6 @@ async function charger(){
   const tours=Object.keys(S.data.tours||{}).sort();
   S.tour=tours[tours.length-1]||'1';
   await charger(); render();
-  document.querySelectorAll('#seg button').forEach(b=>b.onclick=()=>{
-    S.vue=b.dataset.v; document.querySelectorAll('#seg button').forEach(x=>x.classList.toggle('on',x===b)); render();
-  });
   let tmo; document.getElementById('q').addEventListener('input',e=>{
     clearTimeout(tmo); tmo=setTimeout(()=>{ S.q=nk(e.target.value); render(); },140);
   });

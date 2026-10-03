@@ -90,6 +90,14 @@
        "acbb": false
       }
      ],
+     "div": "D1",
+     "age": "-11",
+     "genre": "F",
+     "cat": "-11 ans Filles",
+     "rang": [
+      0,
+      0
+     ],
      "id": "t1-g01"
     },
     {
@@ -245,6 +253,14 @@
        "acbb": false
       }
      ],
+     "div": "D1",
+     "age": "-13",
+     "genre": "F",
+     "cat": "-13 ans Filles",
+     "rang": [
+      1,
+      0
+     ],
      "id": "t1-g02"
     },
     {
@@ -364,6 +380,14 @@
        "clt": 500,
        "acbb": false
       }
+     ],
+     "div": "D1",
+     "age": "-15",
+     "genre": "F",
+     "cat": "-15 ans Filles",
+     "rang": [
+      2,
+      0
      ],
      "id": "t1-g03"
     },
@@ -552,6 +576,14 @@
        "clt": 525,
        "acbb": false
       }
+     ],
+     "div": "D1",
+     "age": "-11",
+     "genre": "M",
+     "cat": "-11 ans Garçons",
+     "rang": [
+      0,
+      1
      ],
      "id": "t1-g04"
     },
@@ -921,6 +953,14 @@
        "acbb": false
       }
      ],
+     "div": "D2",
+     "age": "-11",
+     "genre": "M",
+     "cat": "-11 ans Garçons",
+     "rang": [
+      0,
+      1
+     ],
      "id": "t1-g05"
     },
     {
@@ -1288,6 +1328,14 @@
        "acbb": false
       }
      ],
+     "div": "D3",
+     "age": "-11",
+     "genre": "M",
+     "cat": "-11 ans Garçons",
+     "rang": [
+      0,
+      1
+     ],
      "id": "t1-g06"
     },
     {
@@ -1479,6 +1527,14 @@
        "lic": "9259969"
       }
      ],
+     "div": "D3",
+     "age": "-11",
+     "genre": "M",
+     "cat": "-11 ans Garçons",
+     "rang": [
+      0,
+      1
+     ],
      "id": "t1-g07"
     },
     {
@@ -1667,6 +1723,14 @@
        "clt": 626,
        "acbb": false
       }
+     ],
+     "div": "D1",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "rang": [
+      1,
+      1
      ],
      "id": "t1-g08"
     },
@@ -2033,6 +2097,14 @@
        "lic": "9264555"
       }
      ],
+     "div": "D2",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "rang": [
+      1,
+      1
+     ],
      "id": "t1-g09"
     },
     {
@@ -2219,6 +2291,14 @@
        "clt": 500,
        "acbb": false
       }
+     ],
+     "div": "D3",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "rang": [
+      1,
+      1
      ],
      "id": "t1-g10"
     },
@@ -2601,6 +2681,14 @@
        "acbb": false
       }
      ],
+     "div": "D3",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "rang": [
+      1,
+      1
+     ],
      "id": "t1-g11"
     },
     {
@@ -2799,6 +2887,14 @@
        "acbb": false
       }
      ],
+     "div": "D3",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "rang": [
+      1,
+      1
+     ],
      "id": "t1-g12"
     },
     {
@@ -2995,6 +3091,14 @@
        "clt": 500,
        "acbb": false
       }
+     ],
+     "div": "D3",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "rang": [
+      1,
+      1
      ],
      "id": "t1-g13"
     },
@@ -3195,6 +3299,14 @@
        "acbb": false
       }
      ],
+     "div": "D3",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "rang": [
+      1,
+      1
+     ],
      "id": "t1-g14"
     },
     {
@@ -3382,6 +3494,14 @@
        "clt": 831,
        "acbb": false
       }
+     ],
+     "div": "D1",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "rang": [
+      2,
+      1
      ],
      "id": "t1-g15"
     },
@@ -3748,6 +3868,14 @@
        "acbb": false
       }
      ],
+     "div": "D2",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "rang": [
+      2,
+      1
+     ],
      "id": "t1-g16"
     },
     {
@@ -3948,6 +4076,14 @@
        "clt": 500,
        "acbb": false
       }
+     ],
+     "div": "D3",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "rang": [
+      2,
+      1
      ],
      "id": "t1-g17"
     },
@@ -4527,6 +4663,14 @@
        "acbb": false
       }
      ],
+     "div": "D3",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "rang": [
+      2,
+      1
+     ],
      "id": "t1-g18"
     },
     {
@@ -4940,6 +5084,14 @@
        "acbb": false
       }
      ],
+     "div": "D3",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "rang": [
+      2,
+      1
+     ],
      "id": "t1-g19"
     },
     {
@@ -5060,6 +5212,14 @@
        "clt": 500,
        "acbb": false
       }
+     ],
+     "div": "D1",
+     "age": "-19",
+     "genre": "F",
+     "cat": "-19 ans Filles",
+     "rang": [
+      3,
+      0
      ],
      "id": "t1-g20"
     },
@@ -5309,6 +5469,14 @@
        "acbb": false
       }
      ],
+     "div": "D1",
+     "age": "ELITE",
+     "genre": "F",
+     "cat": "Élite Dames",
+     "rang": [
+      4,
+      0
+     ],
      "id": "t1-g21"
     },
     {
@@ -5495,6 +5663,14 @@
        "clt": 1192,
        "acbb": false
       }
+     ],
+     "div": "D1",
+     "age": "-19",
+     "genre": "M",
+     "cat": "-19 ans Garçons",
+     "rang": [
+      3,
+      1
      ],
      "id": "t1-g22"
     },
@@ -5697,6 +5873,14 @@
        "acbb": false
       }
      ],
+     "div": "D2",
+     "age": "-19",
+     "genre": "M",
+     "cat": "-19 ans Garçons",
+     "rang": [
+      3,
+      1
+     ],
      "id": "t1-g23"
     },
     {
@@ -5883,6 +6067,14 @@
        "clt": 599,
        "acbb": false
       }
+     ],
+     "div": "D2",
+     "age": "-19",
+     "genre": "M",
+     "cat": "-19 ans Garçons",
+     "rang": [
+      3,
+      1
      ],
      "id": "t1-g24"
     },
@@ -6229,6 +6421,14 @@
        "acbb": false
       }
      ],
+     "div": "D3",
+     "age": "-19",
+     "genre": "M",
+     "cat": "-19 ans Garçons",
+     "rang": [
+      3,
+      1
+     ],
      "id": "t1-g25"
     },
     {
@@ -6572,6 +6772,14 @@
        "clt": 500,
        "acbb": false
       }
+     ],
+     "div": "D3",
+     "age": "-19",
+     "genre": "M",
+     "cat": "-19 ans Garçons",
+     "rang": [
+      3,
+      1
      ],
      "id": "t1-g26"
     },
@@ -6928,6 +7136,14 @@
        "acbb": false
       }
      ],
+     "div": "D1",
+     "age": "ELITE",
+     "genre": "M",
+     "cat": "Élite Messieurs",
+     "rang": [
+      4,
+      1
+     ],
      "id": "t1-g27"
     },
     {
@@ -7269,6 +7485,14 @@
        "clt": 837,
        "acbb": false
       }
+     ],
+     "div": "D2",
+     "age": "ELITE",
+     "genre": "M",
+     "cat": "Élite Messieurs",
+     "rang": [
+      4,
+      1
      ],
      "id": "t1-g28"
     },
@@ -7635,6 +7859,14 @@
        "acbb": false
       }
      ],
+     "div": "D2",
+     "age": "ELITE",
+     "genre": "M",
+     "cat": "Élite Messieurs",
+     "rang": [
+      4,
+      1
+     ],
      "id": "t1-g29"
     },
     {
@@ -7999,6 +8231,14 @@
        "acbb": false
       }
      ],
+     "div": "D3",
+     "age": "ELITE",
+     "genre": "M",
+     "cat": "Élite Messieurs",
+     "rang": [
+      4,
+      1
+     ],
      "id": "t1-g30"
     },
     {
@@ -8362,6 +8602,14 @@
        "clt": 629,
        "acbb": false
       }
+     ],
+     "div": "D3",
+     "age": "ELITE",
+     "genre": "M",
+     "cat": "Élite Messieurs",
+     "rang": [
+      4,
+      1
      ],
      "id": "t1-g31"
     },
@@ -8749,6 +8997,14 @@
        "acbb": false
       }
      ],
+     "div": "D4",
+     "age": "ELITE",
+     "genre": "M",
+     "cat": "Élite Messieurs",
+     "rang": [
+      4,
+      1
+     ],
      "id": "t1-g32"
     },
     {
@@ -9125,6 +9381,14 @@
        "clt": 500,
        "acbb": false
       }
+     ],
+     "div": "D4",
+     "age": "ELITE",
+     "genre": "M",
+     "cat": "Élite Messieurs",
+     "rang": [
+      4,
+      1
      ],
      "id": "t1-g33"
     },
@@ -9512,6 +9776,14 @@
        "clt": 500,
        "acbb": false
       }
+     ],
+     "div": "D4",
+     "age": "ELITE",
+     "genre": "M",
+     "cat": "Élite Messieurs",
+     "rang": [
+      4,
+      1
      ],
      "id": "t1-g34"
     }
