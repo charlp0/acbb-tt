@@ -384,13 +384,14 @@ function ouvrir(cle){
   document.getElementById('fermer').onclick=fermer;
   document.getElementById('chg').onclick=()=>demander(j,g);
 }
-/* La federation n'a pas encore verse les journees de cette saison : le dire, plutot que
-   de laisser lire des chiffres frais la ou il y a ceux de l'an dernier. */
+/* Dire de quelle periode on parle, et jusqu'ou la federation a verse ses resultats :
+   un bilan vide peut vouloir dire « n'a pas joue » ou « pas encore publie ». */
 function legendeBilans(){
   const b=(S.data||{}).bilans||{}; if(!b.depuis) return '';
-  return '<div class="leg"><b>'+esc(b.depuis)+(b.jusqu?' → '+esc(b.jusqu):'')+'</b> · '
-    +'victoires–défaites toutes compétitions confondues, <b>▲</b> performances, <b>▼</b> contres. '
-    +'Ce sont les dernières parties publiées par la FFTT ; les journées de cette saison n\'y sont pas encore.</div>';
+  return '<div class="leg"><b>Saison 2026-27</b>, toutes compétitions confondues · '
+    +'victoires–défaites, <b>▲</b> performances, <b>▼</b> contres'
+    +(b.jusqu?' · dernière partie connue de la FFTT : <b>'+esc(b.jusqu)+'</b>':'')
+    +'. Un joueur sans pastille n\'a pas encore joué cette saison.</div>';
 }
 function fermer(){ document.getElementById('pop').hidden=true; document.getElementById('bg').hidden=true; document.getElementById('modal').hidden=true; }
 document.getElementById('bg').onclick=fermer;

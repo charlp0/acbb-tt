@@ -18,12 +18,19 @@ Les licences ne sont pas dans le dépôt : elles viennent de scenarios_log (slot
 « criterium_lic »), déposées par scripts/criterium_push_lic.py. Seuls les COMPTEURS
 agrégés sont écrits dans le fichier publié, jamais une licence.
 
-Fenetre : la base « parties » de la federation s'arrete fin juin 2026 (sonde du
-03/10/2026 : 99 a 172 parties par joueur, aucune posterieure au 21/06/2026). Les
-journees de septembre et octobre 2026 n'y sont pas encore. Compter « depuis le debut
-de la saison 26/27 » rendait donc zero partout, ce qui etait exact et inutile. On
-compte depuis le 01/07/2025, et on publie la derniere date reellement vue pour que la
-page dise de quoi elle parle au lieu de le supposer.
+Point d'entree : xml_partie.php?numlic= — et non xml_partie_mysql.php?licence=, qui
+est une base d'archive arretee au 30/06/2026. La sonde du 03/10/2026 a tranche : avec
+numlic, la federation rend les parties du jour meme. Les deux bases ne nomment pas
+leurs champs pareil (victoire/classement ici, vd/advclaof la-bas), et surtout
+« classement » designe ici les POINTS de l'adversaire, pas son classement officiel.
+
+On en tire le classement comme la federation : points // 100, cinq au minimum. Nos
+propres points sont deja dans le fichier publie (releves des PDF), donc un seul appel
+par licence suffit — xml_joueur n'est plus necessaire, et la collecte est deux fois
+plus courte.
+
+Les forfaits sont ecartes : une victoire par forfait ne dit rien de la forme, qui est
+tout ce qu'on cherche a montrer ici.
 
 Usage : python3 scripts/criterium_stats.py <tour> [debut_saison JJ/MM/AAAA]
 Env : FFTT_ID, FFTT_PWD, SUPA_SERVICE_KEY
@@ -35,15 +42,6 @@ SB = "https://vhhmageufrcenruywawg.supabase.co"
 SORTIE = 'data/criterium2627.json'
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
-
-def classement(v):
-    """Rend un classement comparable : un numéroté passe avant tout classement par
-    lettre, et entre numérotés le plus petit rang est le meilleur."""
-    v = str(v or '').strip().upper()
-    m = re.match(r'^N\s*°?\s*(\d+)', v)
-    if m: return 10000 - int(m.group(1))
-    m = re.match(r'^(\d+)', v)
-    return int(m.group(1)) if m else None
 
 def tags(s):
     return dict(re.findall(r'<([a-zA-Z0-9_]+)>([^<]*)</\1>', s or '', re.S))
@@ -61,25 +59,31 @@ def table_licences(tour):
     if str(t.get('tour')) != str(tour): print('  ⚠️ la table déposée vise le tour %s' % t.get('tour'))
     return t.get('lic') or {}
 
-def bilan(lic, depuis):
-    """(v, d, perfs, contres) depuis le début de saison, ou None si la FFTT ne répond pas."""
+def classe(points):
+    """Le classement officiel : les points divises par cent, cinq au minimum."""
+    try: n = int(float(str(points).strip()))
+    except Exception: return None
+    return max(5, n // 100)
+
+def bilan(lic, mes_points, depuis):
+    """(v, d, perfs, contres, derniere_date) sur la saison, ou None si la FFTT se tait."""
     try:
-        fiche = tags(fb.get('xml_joueur.php?licence=%s' % lic)); time.sleep(0.03)
-        moi = classement(fiche.get('clast'))
-        brut = fb.get('xml_partie_mysql.php?licence=%s' % lic); time.sleep(0.03)
+        brut = fb.get('xml_partie.php?numlic=%s' % lic); time.sleep(0.03)
     except Exception:
         return None
+    moi = classe(mes_points)
     v = d = pf = ct = 0; vue = None
     for b in re.findall(r'<partie>(.*?)</partie>', brut or '', re.S):
         p = tags(b)
+        if (p.get('forfait') or '0').strip() == '1': continue
         jj = p.get('date', '')
         if not re.match(r'^\d{2}/\d{2}/\d{4}$', jj): continue
         j, m, a = (int(x) for x in jj.split('/'))
         if datetime.date(a, m, j) < depuis: continue
         q = datetime.date(a, m, j)
         if vue is None or q > vue: vue = q
-        gagne = (p.get('vd') or '').upper().startswith('V')
-        adv = classement(p.get('advclaof'))
+        gagne = (p.get('victoire') or '').upper().startswith('V')
+        adv = classe(p.get('classement'))
         if gagne:
             v += 1
             if moi is not None and adv is not None and adv > moi: pf += 1
@@ -90,27 +94,27 @@ def bilan(lic, depuis):
 
 def main():
     tour = sys.argv[1] if len(sys.argv) > 1 else '1'
-    dep = sys.argv[2] if len(sys.argv) > 2 else '01/07/2025'
+    dep = sys.argv[2] if len(sys.argv) > 2 else '01/07/2026'
     j, m, a = (int(x) for x in dep.split('/'))
     depuis = datetime.date(a, m, j)
     lic = table_licences(tour)
     doc = json.load(open(SORTIE)); t = doc['tours'][str(tour)]
     # on ne traite que les groupes consultables : la page n'ouvre que ceux où nous jouons
     cibles = [g for g in t['groupes'] if any(x['acbb'] for x in g['joueurs'])]
-    besoin = []
+    besoin, points = [], {}
     for g in cibles:
         for p in g['joueurs']:
             l = (lic.get(g['id']) or {}).get(str(p.get('pos') or 0))
-            if l: besoin.append(l)
+            if l: besoin.append(l); points.setdefault(l, p.get('clt'))
     uniques = sorted(set(besoin))
     print('%d groupes consultables · %d joueurs · %d licences distinctes' % (len(cibles), len(besoin), len(uniques)))
     # Deux appels FFTT par licence, un millier de licences : en serie le job depasse
     # l'heure. FILS fils suffisent a tenir dans le quart d'heure sans brusquer la
     # federation (auth() est sans etat, donc parallelisable sans risque).
-    FILS = 4
+    FILS = 5
     cache, echecs, faits, verrou = {}, 0, [0], threading.Lock()
     def un(l):
-        b = bilan(l, depuis)
+        b = bilan(l, points.get(l), depuis)
         with verrou:
             faits[0] += 1
             if faits[0] % 100 == 0: print('  %d/%d' % (faits[0], len(uniques)), flush=True)
