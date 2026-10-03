@@ -47,7 +47,8 @@
   .j{display:flex;align-items:center;gap:9px;padding:9px 11px;cursor:pointer}
   .j:hover{border-color:var(--line-2)}
   .j .nm{flex:1 1 auto;min-width:0;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .j .sub{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dim);font-weight:400;display:block}
+  .j .sub{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dim);font-weight:400;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .j>.lab,.j>.ok{white-space:nowrap;flex:0 0 auto}   /* « à confirmer » passait à la ligne sur les cartes étroites */
   /* panneau joueur */
   .bg{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);z-index:40}
   .pop{position:fixed;z-index:41;right:0;top:0;bottom:0;width:min(520px,100%);background:var(--paper);border-left:1px solid var(--line-2);overflow:auto;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
