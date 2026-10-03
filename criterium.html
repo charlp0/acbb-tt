@@ -42,7 +42,21 @@
   .cnt{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dimmer);white-space:nowrap}
   /* la poule, affichée dans la fiche du joueur */
   .gl{padding:6px 8px;display:flex;flex-direction:column;gap:2px;max-height:330px;overflow:auto}
-  .r{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:8px;padding:5px 7px;border-radius:7px;cursor:pointer;border:1px solid transparent}
+  .r{display:grid;grid-template-columns:22px minmax(0,1fr) auto auto;align-items:center;gap:8px;padding:5px 7px;border-radius:7px;cursor:pointer;border:1px solid transparent}
+  /* Bilan FFTT : victoires et defaites au vert et au rouge de l'appli federale, et le
+     fond de la pastille teinte par le ratio — on voit qui mord avant de lire les chiffres. */
+  .bil{display:inline-flex;align-items:center;font-family:"JetBrains Mono",monospace;font-size:10px;
+       font-weight:800;padding:2px 7px;border-radius:99px;border:1px solid var(--line-2);white-space:nowrap}
+  .bil .v{color:var(--win)} .bil .d{color:var(--lose)}
+  .bil .s{color:var(--dimmer);margin:0 3px;font-weight:400}
+  .bil em{font-style:normal;font-size:9px;margin-left:5px;padding-left:5px;border-left:1px solid var(--line-2)}
+  .bil .pf{color:var(--win)} .bil .ct{color:var(--lose)}
+  .bil.b4{background:rgba(61,214,140,.16);border-color:rgba(61,214,140,.45)}
+  .bil.b3{background:rgba(61,214,140,.07)}
+  .bil.b1{background:rgba(242,99,86,.11);border-color:rgba(242,99,86,.38)}
+  .leg{margin-top:9px;font-size:11px;color:var(--dimmer);line-height:1.5}
+  .leg b{color:var(--dim);font-weight:700}
+  @media(max-width:600px){.bil{font-size:9px;padding:2px 5px}.bil em{margin-left:3px;padding-left:3px}}
   .r:hover{background:var(--panel-2)}
   .r.us{background:rgba(242,106,27,.09);border-color:rgba(242,106,27,.3)}
   .r .p{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dimmer);text-align:right}
@@ -263,11 +277,24 @@ function render(){
   document.getElementById('cnt').textContent=n?(c+' / '+n+' joueur'+(n>1?'s':'')+' du club ont répondu'):'';
   document.querySelectorAll('[data-sel]').forEach(el=>el.onclick=()=>ouvrir(el.dataset.sel));
 }
+/* Rend le bilan d'un joueur, ou rien du tout : un joueur sans partie connue de la
+   federation ne doit pas porter un « 0–0 » qui se lirait comme une contre-performance. */
+function bilanDe(j){
+  const v=j.v|0, d=j.d|0, n=v+d; if(!n) return '';
+  const r=v/n, k=r>=.70?'b4':r>=.55?'b3':r>=.40?'b2':'b1';
+  const b=(S.data||{}).bilans||{};
+  const tt=v+' victoire'+(v>1?'s':'')+', '+d+' défaite'+(d>1?'s':'')
+    +(j.pf?' · '+j.pf+' performance'+(j.pf>1?'s':''):'')
+    +(j.ct?' · '+j.ct+' contre'+(j.ct>1?'s':''):'')
+    +(b.depuis?' — du '+b.depuis+(b.jusqu?' au '+b.jusqu:''):'');
+  return '<span class="bil '+k+'" title="'+esc(tt)+'"><b class="v">'+v+'</b><span class="s">–</span><b class="d">'+d+'</b>'
+    +(j.pf?'<em class="pf">▲'+j.pf+'</em>':'')+(j.ct?'<em class="ct">▼'+j.ct+'</em>':'')+'</span>';
+}
 function ligne(j,g){
   const sel=j.acbb&&j.lic?' data-sel="'+esc(g.id+'|'+j.lic)+'"':'';
   return '<div class="r'+(j.acbb?' us':'')+'"'+sel+'><span class="p">'+(j.pos||'+')+'</span>'
     +'<span class="nm">'+esc(j.pre+' '+j.nom)+(j.acbb?' '+tagPres(j.lic):'')+'<span class="cl">'+esc(j.club)+' · '+esc(j.cat)+'</span></span>'
-    +'<span class="pt">'+j.clt+'</span></div>';
+    +bilanDe(j)+'<span class="pt">'+j.clt+'</span></div>';
 }
 /* Le rail : chaque catégorie d'âge y est listée avec son effectif et reste visible pendant
    tout le défilement, celle qu'on regarde s'allume. C'est ce qui donne prise sur 123 noms. */
@@ -352,10 +379,18 @@ function ouvrir(cle){
           +'<button class="btn sm" id="chg" style="margin-left:auto">Modifier</button></div>'
         :'<button class="btn primary" id="chg">Confirmer ma présence</button>')+'</div>'
     +'<div><div class="lab" style="margin-bottom:6px">Autres joueurs du même groupe</div><div class="gl" style="max-height:none;padding:0">'
-      +g.joueurs.map(x=>ligne(x,g)).join('')+'</div></div>';
+      +g.joueurs.map(x=>ligne(x,g)).join('')+'</div>'+legendeBilans()+'</div>';
   pop.hidden=false; document.getElementById('bg').hidden=false;
   document.getElementById('fermer').onclick=fermer;
   document.getElementById('chg').onclick=()=>demander(j,g);
+}
+/* La federation n'a pas encore verse les journees de cette saison : le dire, plutot que
+   de laisser lire des chiffres frais la ou il y a ceux de l'an dernier. */
+function legendeBilans(){
+  const b=(S.data||{}).bilans||{}; if(!b.depuis) return '';
+  return '<div class="leg"><b>'+esc(b.depuis)+(b.jusqu?' → '+esc(b.jusqu):'')+'</b> · '
+    +'victoires–défaites toutes compétitions confondues, <b>▲</b> performances, <b>▼</b> contres. '
+    +'Ce sont les dernières parties publiées par la FFTT ; les journées de cette saison n\'y sont pas encore.</div>';
 }
 function fermer(){ document.getElementById('pop').hidden=true; document.getElementById('bg').hidden=true; document.getElementById('modal').hidden=true; }
 document.getElementById('bg').onclick=fermer;
