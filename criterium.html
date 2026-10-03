@@ -32,20 +32,31 @@
   .ok.y{background:rgba(61,214,140,.16);border:1px solid rgba(61,214,140,.5);color:var(--win-lt)}
   .ok.n{background:rgba(242,99,86,.14);border:1px solid rgba(242,99,86,.5);color:var(--lose-lt)}
   /* vue joueurs */
-  /* Deux niveaux : l'âge (la grosse catégorie, celle par laquelle on se cherche) puis la division. */
-  .cat{margin-bottom:26px}
-  .cat>h2{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-family:"Saira Condensed",sans-serif;
-          font-style:italic;font-weight:800;text-transform:uppercase;font-size:25px;letter-spacing:.4px}
-  .cat>h2::after{content:'';flex:1;height:1px;background:var(--line-2)}
-  .cat>h2 .n{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:10px;font-weight:800;
-             color:var(--dimmer);text-transform:none;letter-spacing:0}
-  .sec{margin-bottom:14px}
-  .sec>.lab{margin-bottom:7px;display:inline-block;color:var(--orange);background:rgba(242,106,27,.12);
-            border:1px solid rgba(242,106,27,.35);border-radius:99px;padding:3px 10px}
+  /* Trois niveaux nettement distincts, du plus gros au plus fin : la CATÉGORIE D'ÂGE (celle par
+     laquelle un joueur se cherche), la division, puis le joueur. Avant, tout pesait pareil et
+     l'œil n'avait aucune prise sur 107 noms. */
+  .saut{position:sticky;top:0;z-index:5;display:flex;gap:6px;flex-wrap:wrap;padding:10px 0 12px;
+        margin-bottom:4px;background:linear-gradient(var(--bg) 72%,rgba(11,11,13,0))}
+  .saut button{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:800;padding:6px 11px;
+        border-radius:99px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink-2);cursor:pointer}
+  .saut button:hover{border-color:var(--orange);color:var(--orange)}
+  .saut button i{font-style:normal;color:var(--dimmer);margin-left:5px;font-weight:400}
+  .cat{margin-bottom:34px;scroll-margin-top:62px}
+  .cat>h2{display:flex;align-items:baseline;gap:12px;margin:0 0 14px;padding-bottom:9px;
+          border-bottom:2px solid var(--orange);
+          font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;
+          font-size:38px;line-height:1;letter-spacing:.5px;color:var(--orange)}
+  @media(max-width:800px){.cat>h2{font-size:28px}}
+  .cat>h2 .n{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:10.5px;font-weight:800;
+             color:var(--dimmer);text-transform:none;letter-spacing:0;margin-left:auto;white-space:nowrap}
+  .sec{display:grid;grid-template-columns:54px minmax(0,1fr);gap:10px;align-items:start;margin-bottom:12px}
+  @media(max-width:600px){.sec{grid-template-columns:1fr;gap:5px}}
+  .sec>.lab{color:var(--ink-2);background:var(--panel-2);border:1px solid var(--line-2);border-radius:8px;
+            padding:7px 0;text-align:center;font-size:11px;letter-spacing:.5px}
   .js{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
   .j{display:flex;align-items:center;gap:9px;padding:9px 11px;cursor:pointer}
   .j:hover{border-color:var(--line-2)}
-  .j .nm{flex:1 1 auto;min-width:0;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .j .nm{flex:1 1 auto;min-width:0;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .j .sub{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--dim);font-weight:400;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .j>.go,.j>.ok{white-space:nowrap;flex:0 0 auto}
   /* « À confirmer » se lisait comme un statut : personne ne devinait qu'il fallait cliquer.
@@ -105,6 +116,7 @@
     <span class="cnt" id="cnt"></span>
   </div>
 
+  <div class="saut" id="saut"></div>
   <div class="aide" id="aide">👆 <span>Trouve-toi par <b>ton nom</b> ou ta catégorie, puis clique : tu verras <b>ta poule complète</b> et tu pourras <b>confirmer ta présence</b>.</span></div>
   <div id="vue"></div>
 </div>
@@ -150,6 +162,7 @@ function render(){
   document.getElementById('sub').textContent='compétition individuelle · 4 tours dans la saison'+(t?' · tour '+S.tour+' le '+t.date:'');
   renderTours();
   document.getElementById('vue').innerHTML = vueJoueurs();
+  renderSauts();
   const n=tousNos().length, c=tousNos().filter(x=>etat(x.j.lic)).length;
   document.getElementById('cnt').textContent=n?(c+' / '+n+' joueur'+(n>1?'s':'')+' du club ont répondu'):'';
   document.querySelectorAll('[data-sel]').forEach(el=>el.onclick=()=>ouvrir(el.dataset.sel));
@@ -159,6 +172,17 @@ function ligne(j,g){
   return '<div class="r'+(j.acbb?' us':'')+'"'+sel+'><span class="p">'+(j.pos||'+')+'</span>'
     +'<span class="nm">'+esc(j.pre+' '+j.nom)+(j.acbb?' '+tagPres(j.lic):'')+'<span class="cl">'+esc(j.club)+' · '+esc(j.cat)+'</span></span>'
     +'<span class="pt">'+j.clt+'</span></div>';
+}
+/* Raccourcis par catégorie : avec dix catégories et 107 joueurs, un joueur doit pouvoir
+   sauter directement à la sienne sans parcourir la page. */
+function renderSauts(){
+  const el=document.getElementById('saut'); if(!el) return;
+  const secs=[].slice.call(document.querySelectorAll('#vue .cat'));
+  el.innerHTML=secs.map(x=>'<button type="button" data-go="'+x.id+'">'+esc(x.dataset.cat)+'<i>'+x.dataset.n+'</i></button>').join('');
+  el.hidden=secs.length<2;
+  el.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{
+    const t=document.getElementById(b.dataset.go); if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+  });
 }
 /* On range par ÂGE d'abord — c'est ainsi qu'un joueur se cherche, « je suis en -13 » avant
    « je suis en D3 » — puis par division à l'intérieur. L'ordre vient du champ `rang` posé
@@ -177,7 +201,9 @@ function vueJoueurs(){
   return Object.keys(par).sort(ordre).map(c=>{
     const divs=Object.keys(par[c].divs).sort();
     const n=divs.reduce((s,d)=>s+par[c].divs[d].length,0);
-    return '<section class="cat"><h2>'+esc(c)+'<span class="n">'+n+' joueur'+(n>1?'s':'')+'</span></h2>'
+    const id='cat-'+c.replace(/[^A-Za-z0-9]+/g,'-').toLowerCase();
+    return '<section class="cat" id="'+id+'" data-cat="'+esc(c)+'" data-n="'+n+'"><h2>'+esc(c)
+      +'<span class="n">'+n+' joueur'+(n>1?'s':'')+'</span></h2>'
       +divs.map(d=>'<div class="sec"><span class="lab">'+esc(d)+'</span><div class="js">'
         +par[c].divs[d].sort((a,b)=>b.j.clt-a.j.clt).map(x=>'<div class="card2 j" data-sel="'+esc(x.g.id+'|'+x.j.lic)+'">'
           +'<span class="nm">'+esc(x.j.pre+' '+x.j.nom)+'<span class="sub">'+esc(lieu(x.g))+' · '+esc(x.g.debut)+' · '+x.j.clt+' pts</span></span>'
