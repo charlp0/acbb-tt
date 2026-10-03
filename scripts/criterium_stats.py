@@ -1,0 +1,118 @@
+# -*- coding: utf-8 -*-
+"""Bilans victoires / défaites du critérium : interroge la FFTT et enrichit le fichier publié.
+
+Pour chaque joueur d'un groupe où nous avons quelqu'un, on compte depuis le début de
+saison : victoires, défaites, performances et contres — les quatre compteurs de l'appli
+FFTT. Aucun point d'entrée ne les rend tout faits (vérifié : ni xml_licence, ni
+xml_licence_b, ni xml_joueur ; xml_bilan n'existe pas), la liste des parties est donc la
+source et l'agrégation se fait ici.
+
+Définition retenue, celle de la fédération, sans seuil inventé :
+  · performance = victoire contre un classement SUPÉRIEUR au sien
+  · contre      = défaite contre un classement INFÉRIEUR au sien
+Le classement de l'adversaire est dans `advclaof` de chaque partie, le sien dans `clast`
+de xml_joueur. Un joueur numéroté (« N176 ») passe avant tout classement par lettre, et
+entre numérotés le plus petit rang est le meilleur.
+
+Les licences ne sont pas dans le dépôt : elles viennent de scenarios_log (slot
+« criterium_lic »), déposées par scripts/criterium_push_lic.py. Seuls les COMPTEURS
+agrégés sont écrits dans le fichier publié, jamais une licence.
+
+Usage : python3 scripts/criterium_stats.py <tour> [debut_saison JJ/MM/AAAA]
+Env : FFTT_ID, FFTT_PWD, SUPA_SERVICE_KEY
+"""
+import json, os, re, sys, time, datetime, urllib.request, importlib.util
+
+SB = "https://vhhmageufrcenruywawg.supabase.co"
+SORTIE = 'data/criterium2627.json'
+spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
+fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
+
+def classement(v):
+    """Rend un classement comparable : un numéroté passe avant tout classement par
+    lettre, et entre numérotés le plus petit rang est le meilleur."""
+    v = str(v or '').strip().upper()
+    m = re.match(r'^N\s*°?\s*(\d+)', v)
+    if m: return 10000 - int(m.group(1))
+    m = re.match(r'^(\d+)', v)
+    return int(m.group(1)) if m else None
+
+def tags(s):
+    return dict(re.findall(r'<([a-zA-Z0-9_]+)>([^<]*)</\1>', s or '', re.S))
+
+def table_licences(tour):
+    k = os.environ.get('SUPA_SERVICE_KEY') or ''
+    if not k: sys.exit('SUPA_SERVICE_KEY manquant')
+    url = (SB + '/rest/v1/scenarios_log?select=tags&slot=eq.criterium_lic'
+           '&order=id.desc&limit=1')
+    req = urllib.request.Request(url, headers={'apikey': k, 'Authorization': 'Bearer ' + k})
+    with urllib.request.urlopen(req) as r:
+        lignes = json.load(r)
+    if not lignes: sys.exit('aucune table de licences déposée (criterium_push_lic.py)')
+    t = lignes[0]['tags']
+    if str(t.get('tour')) != str(tour): print('  ⚠️ la table déposée vise le tour %s' % t.get('tour'))
+    return t.get('lic') or {}
+
+def bilan(lic, depuis):
+    """(v, d, perfs, contres) depuis le début de saison, ou None si la FFTT ne répond pas."""
+    try:
+        fiche = tags(fb.get('xml_joueur.php?licence=%s' % lic)); time.sleep(0.06)
+        moi = classement(fiche.get('clast'))
+        brut = fb.get('xml_partie_mysql.php?licence=%s' % lic); time.sleep(0.06)
+    except Exception:
+        return None
+    v = d = pf = ct = 0
+    for b in re.findall(r'<partie>(.*?)</partie>', brut or '', re.S):
+        p = tags(b)
+        jj = p.get('date', '')
+        if not re.match(r'^\d{2}/\d{2}/\d{4}$', jj): continue
+        j, m, a = (int(x) for x in jj.split('/'))
+        if datetime.date(a, m, j) < depuis: continue
+        gagne = (p.get('vd') or '').upper().startswith('V')
+        adv = classement(p.get('advclaof'))
+        if gagne:
+            v += 1
+            if moi is not None and adv is not None and adv > moi: pf += 1
+        else:
+            d += 1
+            if moi is not None and adv is not None and adv < moi: ct += 1
+    return v, d, pf, ct
+
+def main():
+    tour = sys.argv[1] if len(sys.argv) > 1 else '1'
+    dep = sys.argv[2] if len(sys.argv) > 2 else '01/07/2026'
+    j, m, a = (int(x) for x in dep.split('/'))
+    depuis = datetime.date(a, m, j)
+    lic = table_licences(tour)
+    doc = json.load(open(SORTIE)); t = doc['tours'][str(tour)]
+    # on ne traite que les groupes consultables : la page n'ouvre que ceux où nous jouons
+    cibles = [g for g in t['groupes'] if any(x['acbb'] for x in g['joueurs'])]
+    besoin = []
+    for g in cibles:
+        for p in g['joueurs']:
+            l = (lic.get(g['id']) or {}).get(str(p.get('pos') or 0))
+            if l: besoin.append(l)
+    uniques = sorted(set(besoin))
+    print('%d groupes consultables · %d joueurs · %d licences distinctes' % (len(cibles), len(besoin), len(uniques)))
+    cache, echecs = {}, 0
+    for i, l in enumerate(uniques):
+        b = bilan(l, depuis)
+        if b is None: echecs += 1
+        else: cache[l] = b
+        if (i + 1) % 100 == 0: print('  %d/%d' % (i + 1, len(uniques)))
+    pose = 0
+    for g in t['groupes']:
+        for p in g['joueurs']:
+            l = (lic.get(g['id']) or {}).get(str(p.get('pos') or 0))
+            b = cache.get(l) if l else None
+            for champ in ('v', 'd', 'pf', 'ct'): p.pop(champ, None)
+            if b and (b[0] or b[1]):
+                p['v'], p['d'], p['pf'], p['ct'] = b
+                pose += 1
+    doc['maj'] = datetime.date.today().isoformat()
+    doc['bilans'] = {'depuis': dep, 'le': datetime.date.today().isoformat()}
+    json.dump(doc, open(SORTIE, 'w'), ensure_ascii=False, indent=1, sort_keys=False)
+    print('bilans posés sur %d joueurs · %d licences sans réponse FFTT' % (pose, echecs))
+
+if __name__ == '__main__':
+    main()
