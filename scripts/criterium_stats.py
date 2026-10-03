@@ -21,7 +21,8 @@ agrégés sont écrits dans le fichier publié, jamais une licence.
 Usage : python3 scripts/criterium_stats.py <tour> [debut_saison JJ/MM/AAAA]
 Env : FFTT_ID, FFTT_PWD, SUPA_SERVICE_KEY
 """
-import json, os, re, sys, time, datetime, urllib.request, importlib.util
+import json, os, re, sys, time, datetime, urllib.request, importlib.util, threading
+from concurrent.futures import ThreadPoolExecutor
 
 SB = "https://vhhmageufrcenruywawg.supabase.co"
 SORTIE = 'data/criterium2627.json'
@@ -56,9 +57,9 @@ def table_licences(tour):
 def bilan(lic, depuis):
     """(v, d, perfs, contres) depuis le début de saison, ou None si la FFTT ne répond pas."""
     try:
-        fiche = tags(fb.get('xml_joueur.php?licence=%s' % lic)); time.sleep(0.06)
+        fiche = tags(fb.get('xml_joueur.php?licence=%s' % lic)); time.sleep(0.03)
         moi = classement(fiche.get('clast'))
-        brut = fb.get('xml_partie_mysql.php?licence=%s' % lic); time.sleep(0.06)
+        brut = fb.get('xml_partie_mysql.php?licence=%s' % lic); time.sleep(0.03)
     except Exception:
         return None
     v = d = pf = ct = 0
@@ -94,12 +95,21 @@ def main():
             if l: besoin.append(l)
     uniques = sorted(set(besoin))
     print('%d groupes consultables · %d joueurs · %d licences distinctes' % (len(cibles), len(besoin), len(uniques)))
-    cache, echecs = {}, 0
-    for i, l in enumerate(uniques):
+    # Deux appels FFTT par licence, un millier de licences : en serie le job depasse
+    # l'heure. FILS fils suffisent a tenir dans le quart d'heure sans brusquer la
+    # federation (auth() est sans etat, donc parallelisable sans risque).
+    FILS = 4
+    cache, echecs, faits, verrou = {}, 0, [0], threading.Lock()
+    def un(l):
         b = bilan(l, depuis)
-        if b is None: echecs += 1
-        else: cache[l] = b
-        if (i + 1) % 100 == 0: print('  %d/%d' % (i + 1, len(uniques)))
+        with verrou:
+            faits[0] += 1
+            if faits[0] % 100 == 0: print('  %d/%d' % (faits[0], len(uniques)), flush=True)
+        return l, b
+    with ThreadPoolExecutor(max_workers=FILS) as ex:
+        for l, b in ex.map(un, uniques):
+            if b is None: echecs += 1
+            else: cache[l] = b
     pose = 0
     for g in t['groupes']:
         for p in g['joueurs']:
