@@ -1,5 +1,5 @@
 {
- "source": "PDF « GROUPES DEPART CRIT FED » du CD92 (cdtt92@gmail.com), un fichier jeunes et un fichier -19 ans/adultes par tour",
+ "source": "PDF « GROUPES DEPART CRIT FED » du CD92 pour le départemental ; listes et salles de la ligue Île-de-France (fftt-idf.com/criterium-federal) et convocations FFTT pour le régional et le national",
  "tours": {
   "1": {
    "date": "11/10/2026",
@@ -96,9 +96,11 @@
      "cat": "-11 ans Filles",
      "rang": [
       0,
+      0,
       0
      ],
-     "id": "t1-g01"
+     "id": "t1-g01",
+     "niveau": "D"
     },
     {
      "nom": "D1 -13 FILLES",
@@ -259,9 +261,11 @@
      "cat": "-13 ans Filles",
      "rang": [
       1,
+      0,
       0
      ],
-     "id": "t1-g02"
+     "id": "t1-g02",
+     "niveau": "D"
     },
     {
      "nom": "D1 -15 FILLES",
@@ -387,9 +391,11 @@
      "cat": "-15 ans Filles",
      "rang": [
       2,
+      0,
       0
      ],
-     "id": "t1-g03"
+     "id": "t1-g03",
+     "niveau": "D"
     },
     {
      "nom": "D1 -11 GARCONS",
@@ -583,9 +589,11 @@
      "cat": "-11 ans Garçons",
      "rang": [
       0,
-      1
+      1,
+      0
      ],
-     "id": "t1-g04"
+     "id": "t1-g04",
+     "niveau": "D"
     },
     {
      "nom": "D2 -11 GARCONS",
@@ -959,9 +967,11 @@
      "cat": "-11 ans Garçons",
      "rang": [
       0,
-      1
+      1,
+      0
      ],
-     "id": "t1-g05"
+     "id": "t1-g05",
+     "niveau": "D"
     },
     {
      "nom": "D3 -11 GARCONS",
@@ -1334,9 +1344,11 @@
      "cat": "-11 ans Garçons",
      "rang": [
       0,
-      1
+      1,
+      0
      ],
-     "id": "t1-g06"
+     "id": "t1-g06",
+     "niveau": "D"
     },
     {
      "nom": "D3-11 Groupe 3",
@@ -1533,9 +1545,11 @@
      "cat": "-11 ans Garçons",
      "rang": [
       0,
-      1
+      1,
+      0
      ],
-     "id": "t1-g07"
+     "id": "t1-g07",
+     "niveau": "D"
     },
     {
      "nom": "D1 -13 GARCONS",
@@ -1730,9 +1744,11 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1
+      1,
+      0
      ],
-     "id": "t1-g08"
+     "id": "t1-g08",
+     "niveau": "D"
     },
     {
      "nom": "D2 -13 GARCONS",
@@ -2103,9 +2119,11 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1
+      1,
+      0
      ],
-     "id": "t1-g09"
+     "id": "t1-g09",
+     "niveau": "D"
     },
     {
      "nom": "D3 -13 GARCONS",
@@ -2298,9 +2316,11 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1
+      1,
+      0
      ],
-     "id": "t1-g10"
+     "id": "t1-g10",
+     "niveau": "D"
     },
     {
      "nom": "D3 -13 GARCONS",
@@ -2687,9 +2707,11 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1
+      1,
+      0
      ],
-     "id": "t1-g11"
+     "id": "t1-g11",
+     "niveau": "D"
     },
     {
      "nom": "D3 -13 GARCONS",
@@ -2893,9 +2915,11 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1
+      1,
+      0
      ],
-     "id": "t1-g12"
+     "id": "t1-g12",
+     "niveau": "D"
     },
     {
      "nom": "D3 -13 GARCONS",
@@ -3098,9 +3122,11 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1
+      1,
+      0
      ],
-     "id": "t1-g13"
+     "id": "t1-g13",
+     "niveau": "D"
     },
     {
      "nom": "D3 -13 GARCONS",
@@ -3305,9 +3331,11 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1
+      1,
+      0
      ],
-     "id": "t1-g14"
+     "id": "t1-g14",
+     "niveau": "D"
     },
     {
      "nom": "D1 -15 GARCONS",
@@ -3501,9 +3529,11 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1
+      1,
+      0
      ],
-     "id": "t1-g15"
+     "id": "t1-g15",
+     "niveau": "D"
     },
     {
      "nom": "D2 -15 GARCONS",
@@ -3874,9 +3904,11 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1
+      1,
+      0
      ],
-     "id": "t1-g16"
+     "id": "t1-g16",
+     "niveau": "D"
     },
     {
      "nom": "D3 -15 GARCONS",
@@ -4083,9 +4115,11 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1
+      1,
+      0
      ],
-     "id": "t1-g17"
+     "id": "t1-g17",
+     "niveau": "D"
     },
     {
      "nom": "D3 -15 GARCONS",
@@ -4669,9 +4703,11 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1
+      1,
+      0
      ],
-     "id": "t1-g18"
+     "id": "t1-g18",
+     "niveau": "D"
     },
     {
      "nom": "D3 -15 GARCONS",
@@ -5090,9 +5126,11 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1
+      1,
+      0
      ],
-     "id": "t1-g19"
+     "id": "t1-g19",
+     "niveau": "D"
     },
     {
      "nom": "D1 -19 FILLES",
@@ -5219,9 +5257,11 @@
      "cat": "-19 ans Filles",
      "rang": [
       3,
+      0,
       0
      ],
-     "id": "t1-g20"
+     "id": "t1-g20",
+     "niveau": "D"
     },
     {
      "nom": "D1 ELITE DAMES",
@@ -5475,9 +5515,11 @@
      "cat": "Élite Dames",
      "rang": [
       4,
+      0,
       0
      ],
-     "id": "t1-g21"
+     "id": "t1-g21",
+     "niveau": "D"
     },
     {
      "nom": "D1 -19 GARCONS",
@@ -5670,9 +5712,11 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1
+      1,
+      0
      ],
-     "id": "t1-g22"
+     "id": "t1-g22",
+     "niveau": "D"
     },
     {
      "nom": "D2 -19 GARCONS",
@@ -5879,9 +5923,11 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1
+      1,
+      0
      ],
-     "id": "t1-g23"
+     "id": "t1-g23",
+     "niveau": "D"
     },
     {
      "nom": "D2 -19 GARCONS",
@@ -6074,9 +6120,11 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1
+      1,
+      0
      ],
-     "id": "t1-g24"
+     "id": "t1-g24",
+     "niveau": "D"
     },
     {
      "nom": "D3 -19 GARCONS",
@@ -6427,9 +6475,11 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1
+      1,
+      0
      ],
-     "id": "t1-g25"
+     "id": "t1-g25",
+     "niveau": "D"
     },
     {
      "nom": "D3 -19 Groupe 3",
@@ -6779,9 +6829,11 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1
+      1,
+      0
      ],
-     "id": "t1-g26"
+     "id": "t1-g26",
+     "niveau": "D"
     },
     {
      "nom": "D1 ELITE MESSIEURS",
@@ -7142,9 +7194,11 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1
+      1,
+      0
      ],
-     "id": "t1-g27"
+     "id": "t1-g27",
+     "niveau": "D"
     },
     {
      "nom": "D2 ELITE MESSIEURS",
@@ -7492,9 +7546,11 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1
+      1,
+      0
      ],
-     "id": "t1-g28"
+     "id": "t1-g28",
+     "niveau": "D"
     },
     {
      "nom": "D2 ELITE MESSIEURS",
@@ -7865,9 +7921,11 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1
+      1,
+      0
      ],
-     "id": "t1-g29"
+     "id": "t1-g29",
+     "niveau": "D"
     },
     {
      "nom": "D3 ELITE MESSIEURS",
@@ -8237,9 +8295,11 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1
+      1,
+      0
      ],
-     "id": "t1-g30"
+     "id": "t1-g30",
+     "niveau": "D"
     },
     {
      "nom": "D3 ELITE MESSIEURS",
@@ -8609,9 +8669,11 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1
+      1,
+      0
      ],
-     "id": "t1-g31"
+     "id": "t1-g31",
+     "niveau": "D"
     },
     {
      "nom": "D4 ELITE MESSIEURS",
@@ -9003,9 +9065,11 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1
+      1,
+      0
      ],
-     "id": "t1-g32"
+     "id": "t1-g32",
+     "niveau": "D"
     },
     {
      "nom": "D4 ELITE MESSIEURS",
@@ -9388,9 +9452,11 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1
+      1,
+      0
      ],
-     "id": "t1-g33"
+     "id": "t1-g33",
+     "niveau": "D"
     },
     {
      "nom": "D4 ELITE MESSIEURS",
@@ -9783,9 +9849,7889 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
+      1,
+      0
+     ],
+     "id": "t1-g34",
+     "niveau": "D"
+    },
+    {
+     "nom": "R1 BENJAMINES",
+     "niveau": "R",
+     "div": "R1",
+     "age": "-11",
+     "genre": "F",
+     "cat": "-11 ans Filles",
+     "salle": "Ponthierry (77) — Salle Jean-Pierre Pelletier, rue du Stade, 77310 St Fargeau Ponthierry",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "IZAC",
+       "pre": "Prisca-Victoire",
+       "club": "Courbevoie Sport TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 712,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "LAMBERT",
+       "pre": "Ellie",
+       "club": "Pontoise Cergy AS",
+       "cat": "B2",
+       "cats": "",
+       "clt": 704,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "MOGA",
+       "pre": "Victoria",
+       "club": "Vitry ES",
+       "cat": "B1",
+       "cats": "",
+       "clt": 699,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "BOSTAN",
+       "pre": "Ines",
+       "club": "Houilles SO",
+       "cat": "B1",
+       "cats": "",
+       "clt": 668,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "TANG",
+       "pre": "Nina",
+       "club": "Paris 13 TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 668,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "EL MAAROUF",
+       "pre": "Kenza",
+       "club": "SQY Ping",
+       "cat": "B2",
+       "cats": "",
+       "clt": 642,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "BACCOUCHE",
+       "pre": "Tesnyme",
+       "club": "Bourgetin CTT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 617,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "XIAN XIAO",
+       "pre": "Claire",
+       "club": "Charenton TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 616,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "MIAUDET",
+       "pre": "Jade",
+       "club": "Maisons-Laffitte US",
+       "cat": "B1",
+       "cats": "",
+       "clt": 613,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "ARAB",
+       "pre": "Thiziry",
+       "club": "Ivry US TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 608,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "GALLIANO DANG",
+       "pre": "Camille",
+       "club": "Rueil Athletic Club TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 594,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "ETIENNE",
+       "pre": "Mahe",
+       "club": "Créteil USTT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 575,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "VLAD",
+       "pre": "Lavinia",
+       "club": "Fontenaysienne US TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 575,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "DAI",
+       "pre": "Margaux",
+       "club": "Charenton TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 548,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "BENAISSA",
+       "pre": "Nalya",
+       "club": "Brétigny CS",
+       "cat": "B1",
+       "cats": "",
+       "clt": 541,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "ISTASSE",
+       "pre": "Margot",
+       "club": "Lognes EP",
+       "cat": "B1",
+       "cats": "",
+       "clt": 538,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "LEBOUTEILLER",
+       "pre": "Laura",
+       "club": "Chatou Croissy TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 533,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "LUSUKULA OKITO",
+       "pre": "Johanna",
+       "club": "Pontoise Cergy AS",
+       "cat": "B2",
+       "cats": "",
+       "clt": 527,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "WEISENBURGER",
+       "pre": "Anaïs",
+       "club": "Rueil Athletic Club TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 526,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "ZANG",
+       "pre": "Charlotte",
+       "club": "TT Paris 16",
+       "cat": "B1",
+       "cats": "",
+       "clt": 517,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "WU",
+       "pre": "Marcelina",
+       "club": "VGA Saint-Maur TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 516,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "BESLAY",
+       "pre": "Léonie",
+       "club": "Chesnay 78 AS",
+       "cat": "B1",
+       "cats": "",
+       "clt": 512,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "BISSET",
+       "pre": "Agathe",
+       "club": "Issy-les-Moulineaux",
+       "cat": "B1",
+       "cats": "",
+       "clt": 507,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "N'SONGAN",
+       "pre": "Lya",
+       "club": "Igny TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 500,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      0,
+      0,
       1
      ],
-     "id": "t1-g34"
+     "id": "t1-g35"
+    },
+    {
+     "nom": "R1 MINIMES FILLES",
+     "niveau": "R",
+     "div": "R1",
+     "age": "-13",
+     "genre": "F",
+     "cat": "-13 ans Filles",
+     "salle": "Combs-la-Ville (77) — Gymnase Le Paloisel, avenue Le Paloisel",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "BRAULT",
+       "pre": "Auxane",
+       "club": "IGNY TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 893,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "SALYN BENCARDINO",
+       "pre": "Faustine",
+       "club": "CHESNAY 78 AS",
+       "cat": "M2",
+       "cats": "",
+       "clt": 867,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "BRANKOVIC",
+       "pre": "Anja",
+       "club": "SAINT-DENIS TT93",
+       "cat": "M1",
+       "cats": "",
+       "clt": 827,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "NICULESCU",
+       "pre": "Mathilde",
+       "club": "BRETIGNY CS",
+       "cat": "M1",
+       "cats": "",
+       "clt": 776,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "ARAB",
+       "pre": "Zina",
+       "club": "IVRY US TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 775,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "TRAN",
+       "pre": "Clara",
+       "club": "BEAUCHAMP CTT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 774,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "TAYLOR URBINA",
+       "pre": "Jade",
+       "club": "EZANVILLE",
+       "cat": "M1",
+       "cats": "",
+       "clt": 773,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "CANITROT",
+       "pre": "Sarah",
+       "club": "BEAUCHAMP CTT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 735,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "MALONDA",
+       "pre": "Janaëlle",
+       "club": "ERMONT PLESSIS BOUCHARD",
+       "cat": "M1",
+       "cats": "",
+       "clt": 703,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "BERTHELIER",
+       "pre": "Jeanne",
+       "club": "ASNIERES TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 695,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "CLAUDE",
+       "pre": "Flavia",
+       "club": "SAINT-DENIS TT93",
+       "cat": "M2",
+       "cats": "",
+       "clt": 693,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "MARIE SAINTE",
+       "pre": "Clémence",
+       "club": "BRETIGNY CS",
+       "cat": "M1",
+       "cats": "",
+       "clt": 676,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "MIRANDE",
+       "pre": "Nelly",
+       "club": "MENUCOURT ASTT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 676,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "JACQUOT",
+       "pre": "Zoé",
+       "club": "BOIS COLOMBES SPORTS",
+       "cat": "M2",
+       "cats": "",
+       "clt": 666,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "VAZ",
+       "pre": "Camille",
+       "club": "POISSY USC",
+       "cat": "M1",
+       "cats": "",
+       "clt": 663,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "GANTOIS",
+       "pre": "Romane",
+       "club": "MAISONS-LAFFITTE. US",
+       "cat": "M2",
+       "cats": "",
+       "clt": 660,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "FREZGI",
+       "pre": "Erina",
+       "club": "ELANCOURT CTT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 648,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "BERGIN",
+       "pre": "Clara",
+       "club": "SPORTING PARIS 20 TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 647,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "GHASARIAN",
+       "pre": "Jade",
+       "club": "COULOMMIERS TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 647,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "BESLIU",
+       "pre": "Melisa",
+       "club": "SAVIGNY SO PING",
+       "cat": "M2",
+       "cats": "",
+       "clt": 643,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "DENIS",
+       "pre": "Eléonore",
+       "club": "SAINT-DENIS TT93",
+       "cat": "M2",
+       "cats": "",
+       "clt": 608,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "MOUGE DRIDI",
+       "pre": "Tess",
+       "club": "CHILLY-MORANGIS CTT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 565,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "D'HAUSSY",
+       "pre": "Victoire",
+       "club": "PARIS 13 TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 541,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "LI",
+       "pre": "Juliane",
+       "club": "SERRIS VAL D'EUROPE ATT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 500,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      1,
+      0,
+      1
+     ],
+     "id": "t1-g36"
+    },
+    {
+     "nom": "R1 CADETTES",
+     "niveau": "R",
+     "div": "R1",
+     "age": "-15",
+     "genre": "F",
+     "cat": "-15 ans Filles",
+     "salle": "Corbeil-Essonnes (91) — Gymnase de la Nacelle, rue de la Nacelle",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "HUSSAIN",
+       "pre": "Malayeka",
+       "club": "EAUBONNE CSM TT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1149,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "COULAIS NOZUE",
+       "pre": "Yuzuki",
+       "club": "PALAISEAU US",
+       "cat": "C1",
+       "cats": "",
+       "clt": 966,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "DUJARRIER",
+       "pre": "Lou",
+       "club": "JUMP",
+       "cat": "C2",
+       "cats": "",
+       "clt": 943,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "NGUON",
+       "pre": "Daline",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 898,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "ABOUDRAR",
+       "pre": "Leïla",
+       "club": "ERMONT PLESSIS BOUCHARD",
+       "cat": "C2",
+       "cats": "",
+       "clt": 882,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "ALVES NOVO",
+       "pre": "Julia",
+       "club": "BESSANCOURT TTB",
+       "cat": "C2",
+       "cats": "",
+       "clt": 881,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "FARES",
+       "pre": "Noélia",
+       "club": "IVRY US TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 833,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "CATHERIN",
+       "pre": "Alice",
+       "club": "IGNY TT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 831,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "WATZKO",
+       "pre": "Irina",
+       "club": "BOIS COLOMBES SPORTS",
+       "cat": "C2",
+       "cats": "",
+       "clt": 819,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "GMEREK",
+       "pre": "Soline",
+       "club": "CHESNAY 78 AS",
+       "cat": "C1",
+       "cats": "",
+       "clt": 810,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "MERLEN",
+       "pre": "Mya-Rose",
+       "club": "US ROISSY TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 810,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "PERCIO",
+       "pre": "Valentina",
+       "club": "PUTEAUX TT CSM",
+       "cat": "C1",
+       "cats": "",
+       "clt": 801,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "CATHERIN",
+       "pre": "Julie",
+       "club": "IGNY TT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 770,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "CANITROT",
+       "pre": "Sofia",
+       "club": "BEAUCHAMP CTT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 767,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "MAVROPOULOS",
+       "pre": "Eleonore",
+       "club": "MENUCOURT ASTT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 761,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "ANDRIEUX",
+       "pre": "Leelouane",
+       "club": "PALAISEAU US",
+       "cat": "C2",
+       "cats": "",
+       "clt": 747,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "LEBOURGEOIS",
+       "pre": "Lea",
+       "club": "PALAISEAU US",
+       "cat": "C2",
+       "cats": "",
+       "clt": 743,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "WATTELAR",
+       "pre": "Léa",
+       "club": "VGA ST MAUR US TT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 741,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "CHAN",
+       "pre": "Flora",
+       "club": "PARIS 13 TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 727,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "VANHTHONG DESCHAMPS",
+       "pre": "Dung",
+       "club": "Anh SAVIGNY SO PING",
+       "cat": "C2",
+       "cats": "",
+       "clt": 726,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "ARNAUD",
+       "pre": "Maë",
+       "club": "CLICHY SUR SEINE CS",
+       "cat": "C2",
+       "cats": "",
+       "clt": 680,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "TAING",
+       "pre": "Emmy",
+       "club": "HOUILLES SO",
+       "cat": "C2",
+       "cats": "",
+       "clt": 646,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "BELINSKI",
+       "pre": "Anna",
+       "club": "JUMP",
+       "cat": "C2",
+       "cats": "",
+       "clt": 621,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      2,
+      0,
+      1
+     ],
+     "id": "t1-g37"
+    },
+    {
+     "nom": "R1 JUNIORS FILLES",
+     "niveau": "R",
+     "div": "R1",
+     "age": "-19",
+     "genre": "F",
+     "cat": "-19 ans Filles",
+     "salle": "Viry-Châtillon (91) — Gymnase du Bellay, 27 avenue du Bellay",
+     "date": "11/10/2026",
+     "pointage": "9h00",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "AGOSTINI",
+       "pre": "Paloma",
+       "club": "BOIS COLOMBES SPORTS",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1341,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "SIBER",
+       "pre": "Lea",
+       "club": "VGA ST MAUR US TT",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1232,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "LESCAUDRON",
+       "pre": "Noemie",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1150,
+       "acbb": true,
+       "lic": "7523006"
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "DUPONT",
+       "pre": "Elsa",
+       "club": "THIAIS AS TT",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1129,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "FAVREUX",
+       "pre": "Albanne",
+       "club": "PING-NEMOURS",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1117,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "ROSSIGNOL",
+       "pre": "Marie",
+       "club": "VERSAILLES SCTT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1082,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "BENAHMED",
+       "pre": "Yasmine",
+       "club": "AS CORBEIL-ESSONNES TT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1050,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "ANUSHAN",
+       "pre": "Angelique",
+       "club": "AS CORBEIL-ESSONNES TT",
+       "cat": "J4",
+       "cats": "",
+       "clt": 1049,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "GOURDON",
+       "pre": "Laura",
+       "club": "POISSY USC",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1038,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "VINCENT",
+       "pre": "Lilou",
+       "club": "PALAISEAU US",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1016,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "DIVERD",
+       "pre": "Sara",
+       "club": "COMT PONTHIERRY",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1013,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "GODIN",
+       "pre": "Emeline",
+       "club": "EAUBONNE CSM TT",
+       "cat": "J4",
+       "cats": "",
+       "clt": 1012,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "POMMAT-PERRON",
+       "pre": "Lola",
+       "club": "COURBEVOIE SPORT TT",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1011,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "NGUYEN",
+       "pre": "Ema",
+       "club": "AS CORBEIL-ESSONNES TT",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1005,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "DEMONSABLON",
+       "pre": "Chloe",
+       "club": "Ste GENEVIEVE SP",
+       "cat": "J1",
+       "cats": "",
+       "clt": 995,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "BOUABID",
+       "pre": "Loubna",
+       "club": "SAINT-DENIS TT93",
+       "cat": "J1",
+       "cats": "",
+       "clt": 990,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "AUGOUVERNAIRE",
+       "pre": "Keity",
+       "club": "ANTONY SP TT",
+       "cat": "J2",
+       "cats": "",
+       "clt": 978,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "CHARTON BARGUET",
+       "pre": "Romane",
+       "club": "SPORTING PARIS 20 TT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 960,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "HULIN",
+       "pre": "Taina",
+       "club": "BRETIGNY CS",
+       "cat": "J3",
+       "cats": "",
+       "clt": 879,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "LAURIN",
+       "pre": "Julie",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "J2",
+       "cats": "",
+       "clt": 850,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "TRAN",
+       "pre": "Laura",
+       "club": "TennisTable Municipal Chatillon",
+       "cat": "J3",
+       "cats": "",
+       "clt": 776,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "RECROSIO",
+       "pre": "Chloe",
+       "club": "BRY PSC",
+       "cat": "J3",
+       "cats": "",
+       "clt": 757,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "RABEMANANJARA",
+       "pre": "Aliyah",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "J4",
+       "cats": "",
+       "clt": 725,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "MARUANI",
+       "pre": "Loane",
+       "club": "DRANCY JA",
+       "cat": "J4",
+       "cats": "",
+       "clt": 612,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      3,
+      0,
+      1
+     ],
+     "id": "t1-g38"
+    },
+    {
+     "nom": "R1 SENIORS DAMES",
+     "niveau": "R",
+     "div": "R1",
+     "age": "ELITE",
+     "genre": "F",
+     "cat": "Élite Dames",
+     "salle": "Saint-Cyr-l'École (78) — Complexe sportif Pierre Mazeaud (3ᵉ étage), 5 rue de Lattre de Tassigny",
+     "date": "11/10/2026",
+     "pointage": "9h00",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "VERSCHAERE",
+       "pre": "Audrey",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "V45",
+       "cats": "",
+       "clt": 1326,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "KOULAOUINHI",
+       "pre": "Lorenza",
+       "club": "VGA ST MAUR US TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1273,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "ANUSHAN",
+       "pre": "Amandine",
+       "club": "AS CORBEIL-ESSONNES TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1228,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "KAHNA",
+       "pre": "Yasmin",
+       "club": "MEUDON AS",
+       "cat": "S",
+       "cats": "",
+       "clt": 1176,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "FARGE",
+       "pre": "Celine",
+       "club": "BEAUCHAMP CTT",
+       "cat": "V40",
+       "cats": "",
+       "clt": 1130,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "PASCAL",
+       "pre": "Marjorie",
+       "club": "VIRY CHATILLON ES",
+       "cat": "S",
+       "cats": "",
+       "clt": 1109,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "MILLET",
+       "pre": "Lisa",
+       "club": "ESSARTS AGSE",
+       "cat": "S",
+       "cats": "",
+       "clt": 1095,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "BAJON",
+       "pre": "Celia",
+       "club": "MEUDON AS",
+       "cat": "S",
+       "cats": "",
+       "clt": 1092,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "WILLEMIN",
+       "pre": "Caroline",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1074,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "FONTANET",
+       "pre": "Nadia",
+       "club": "TT PARIS 16",
+       "cat": "S",
+       "cats": "",
+       "clt": 1069,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "ANDRIEUX",
+       "pre": "Emilie",
+       "club": "PALAISEAU US",
+       "cat": "V45",
+       "cats": "",
+       "clt": 1054,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "DUCHESNE",
+       "pre": "Florence",
+       "club": "ATHIS MONS USO",
+       "cat": "V40",
+       "cats": "",
+       "clt": 1038,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "JANIAUD",
+       "pre": "Ines",
+       "club": "SPORTING PARIS 20 TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1029,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "FAVIEZ",
+       "pre": "Carole",
+       "club": "TT PARIS 16",
+       "cat": "S",
+       "cats": "",
+       "clt": 1013,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "DANGREMONT",
+       "pre": "Marilou",
+       "club": "AL VILLECRESNES TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 904,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "ROY",
+       "pre": "Manon",
+       "club": "SAINT ARNOULT US",
+       "cat": "S",
+       "cats": "",
+       "clt": 848,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "VAN LIERDE",
+       "pre": "Melanie",
+       "club": "CLAMART CSM",
+       "cat": "V45",
+       "cats": "",
+       "clt": 837,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      4,
+      0,
+      1
+     ],
+     "id": "t1-g39"
+    },
+    {
+     "nom": "R2 SENIORS DAMES",
+     "niveau": "R",
+     "div": "R2",
+     "age": "ELITE",
+     "genre": "F",
+     "cat": "Élite Dames",
+     "salle": "Saint-Cyr-l'École (78) — Complexe sportif Pierre Mazeaud (3ᵉ étage), 5 rue de Lattre de Tassigny",
+     "date": "11/10/2026",
+     "pointage": "9h00",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "MALAGAMMANA",
+       "pre": "Salomé",
+       "club": "NEUILLY ASP",
+       "cat": "S",
+       "cats": "",
+       "clt": 1045,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "SAVAN",
+       "pre": "Vuthny",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "V50",
+       "cats": "",
+       "clt": 987,
+       "acbb": true,
+       "lic": "9247334"
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "BESSETTE",
+       "pre": "Aurore",
+       "club": "SQY PING",
+       "cat": "S",
+       "cats": "",
+       "clt": 980,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "BOISSOT",
+       "pre": "Gaetane",
+       "club": "CHELLES TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 960,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "LEMAIRE",
+       "pre": "Louane",
+       "club": "UMS TT PONTAULT COMBAULT",
+       "cat": "S",
+       "cats": "",
+       "clt": 925,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "DOS REIS",
+       "pre": "Tiphaine",
+       "club": "PING-NEMOURS",
+       "cat": "S",
+       "cats": "",
+       "clt": 921,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "GAUTIER",
+       "pre": "Emilie",
+       "club": "RAMBOUILLET TT",
+       "cat": "V40",
+       "cats": "",
+       "clt": 921,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "GALTIER",
+       "pre": "Stephanie",
+       "club": "RUEIL ATHLETIC CLUB TT",
+       "cat": "V45",
+       "cats": "",
+       "clt": 898,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "ATTY",
+       "pre": "Aurelie",
+       "club": "AP 17",
+       "cat": "S",
+       "cats": "",
+       "clt": 897,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "CHELALA",
+       "pre": "Clara",
+       "club": "ATT XV",
+       "cat": "S",
+       "cats": "",
+       "clt": 889,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "BUTTERLIN",
+       "pre": "Agnes",
+       "club": "ATT XV",
+       "cat": "V55",
+       "cats": "",
+       "clt": 882,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "DINCUFF",
+       "pre": "Aimie",
+       "club": "ORMESSON US",
+       "cat": "S",
+       "cats": "",
+       "clt": 879,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "SALLET",
+       "pre": "Valerie",
+       "club": "CHELLES TT",
+       "cat": "V45",
+       "cats": "",
+       "clt": 875,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "GALEOTTI",
+       "pre": "Caroline",
+       "club": "CHARENTON TT",
+       "cat": "V45",
+       "cats": "",
+       "clt": 874,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "BELLIARD",
+       "pre": "Typhanie",
+       "club": "CHELLES TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 847,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "BREDEL",
+       "pre": "Sandrine",
+       "club": "DRANCY JA",
+       "cat": "V50",
+       "cats": "",
+       "clt": 819,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "NASS",
+       "pre": "Aurelie",
+       "club": "RUEIL ATHLETIC CLUB TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 770,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "LECOIN",
+       "pre": "Tomoko",
+       "club": "PARIS IX ATT",
+       "cat": "V60",
+       "cats": "",
+       "clt": 741,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "PIRCHER-DEBRY",
+       "pre": "Renee",
+       "club": "CHESNAY 78 AS",
+       "cat": "V65",
+       "cats": "",
+       "clt": 735,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "HERBERT",
+       "pre": "Christine",
+       "club": "EAUBONNE CSM TT",
+       "cat": "V65",
+       "cats": "",
+       "clt": 673,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "GRADEL",
+       "pre": "Loïs",
+       "club": "DOMONT TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 670,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "AVAKYAN",
+       "pre": "Ema",
+       "club": "SQY PING",
+       "cat": "S",
+       "cats": "",
+       "clt": 664,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "GAILLY",
+       "pre": "Emilie",
+       "club": "SM MONTROUGE",
+       "cat": "S",
+       "cats": "",
+       "clt": 609,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "LEBRETON",
+       "pre": "Erica",
+       "club": "BRETIGNY CS",
+       "cat": "S",
+       "cats": "",
+       "clt": 536,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      4,
+      0,
+      1
+     ],
+     "id": "t1-g40"
+    },
+    {
+     "nom": "R1 BENJAMINS",
+     "niveau": "R",
+     "div": "R1",
+     "age": "-11",
+     "genre": "M",
+     "cat": "-11 ans Garçons",
+     "salle": "Viry-Châtillon (91) — Gymnase du Bellay, avenue du Bellay",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "SELETZKY",
+       "pre": "Alexandre",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 821,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "ALLEGRE-GUILLAUME",
+       "pre": "Baptiste",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "B2",
+       "cats": "",
+       "clt": 807,
+       "acbb": true,
+       "lic": "9257191"
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "YANG",
+       "pre": "Aaron",
+       "club": "PLESSIS-TREVISE TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 782,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "GROH",
+       "pre": "Georges",
+       "club": "PARIS IX ATT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 763,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "PEREIRA",
+       "pre": "Mattia",
+       "club": "MARLY LE ROI US",
+       "cat": "B2",
+       "cats": "",
+       "clt": 760,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "PEDRO REMY",
+       "pre": "Emmanuel",
+       "club": "BESSANCOURT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 748,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "PHAN",
+       "pre": "Guillaume",
+       "club": "SQY PING",
+       "cat": "B2",
+       "cats": "",
+       "clt": 746,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "CUSTANCE MODIANO",
+       "pre": "Diego",
+       "club": "ALLEE VERTE",
+       "cat": "B2",
+       "cats": "",
+       "clt": 742,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "CHOUAN",
+       "pre": "Tony",
+       "club": "VITRY ES",
+       "cat": "B1",
+       "cats": "",
+       "clt": 730,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "ARROUM",
+       "pre": "Naël",
+       "club": "ST GRATIEN AS",
+       "cat": "B1",
+       "cats": "",
+       "clt": 720,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "FRANCO",
+       "pre": "Natéo",
+       "club": "SQY PING",
+       "cat": "B2",
+       "cats": "",
+       "clt": 723,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "DARQUE",
+       "pre": "Clément",
+       "club": "TRIEL TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 716,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      0,
+      1,
+      1
+     ],
+     "id": "t1-g41"
+    },
+    {
+     "nom": "R2 BENJAMINS",
+     "niveau": "R",
+     "div": "R2",
+     "age": "-11",
+     "genre": "M",
+     "cat": "-11 ans Garçons",
+     "salle": "Viry-Châtillon (91) — Gymnase du Bellay, avenue du Bellay",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "AZZOUG",
+       "pre": "Axel",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 714,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "PHAN",
+       "pre": "Aurelien",
+       "club": "ORMESSON US",
+       "cat": "B1",
+       "cats": "",
+       "clt": 703,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "GERALD",
+       "pre": "Gauthier",
+       "club": "ERMONT PLESSIS BOUCHARD",
+       "cat": "B2",
+       "cats": "",
+       "clt": 701,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "COSTA",
+       "pre": "Raphael",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 684,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "YANG",
+       "pre": "Jimmy",
+       "club": "PLESSIS-TREVISE TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 682,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "NIE",
+       "pre": "Alex",
+       "club": "Assoc. Patronage Sainte Melanie",
+       "cat": "B2",
+       "cats": "",
+       "clt": 679,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "CREVENNA",
+       "pre": "Matteo",
+       "club": "ERMONT PLESSIS BOUCHARD",
+       "cat": "B1",
+       "cats": "",
+       "clt": 679,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "VASSILLE-ARNOULT",
+       "pre": "Eliott",
+       "club": "CLAMART CSM",
+       "cat": "B2",
+       "cats": "",
+       "clt": 678,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "BOUROT",
+       "pre": "Louka",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 675,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "MARTHINET",
+       "pre": "Nolan",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 670,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "VERHILLE",
+       "pre": "Santino",
+       "club": "ENGHIEN CLUB DE TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 663,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "BELLUT",
+       "pre": "Alexandre",
+       "club": "US CRETEIL TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 650,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "FU",
+       "pre": "Henri",
+       "club": "ANTONY SP TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 648,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "CHEBLAL",
+       "pre": "Yanis",
+       "club": "ELANCOURT CTT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 640,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "ORIEUX",
+       "pre": "Soan",
+       "club": "TennisTable Municipal Chatillon",
+       "cat": "B2",
+       "cats": "",
+       "clt": 639,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "MUNOZ RIVERA",
+       "pre": "Nicolas",
+       "club": "SAINT GERMAIN TUE",
+       "cat": "B2",
+       "cats": "",
+       "clt": 638,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "MELKI",
+       "pre": "Louis",
+       "club": "MARLY LE ROI US",
+       "cat": "B1",
+       "cats": "",
+       "clt": 631,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "LECOQ",
+       "pre": "Jensen",
+       "club": "CHAMPAGNE TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 628,
+       "acbb": false
+      },
+      {
+       "pos": 25,
+       "ajoute": false,
+       "nom": "LE ROUX",
+       "pre": "Raphael",
+       "club": "Ste GENEVIEVE SP",
+       "cat": "B1",
+       "cats": "",
+       "clt": 628,
+       "acbb": false
+      },
+      {
+       "pos": 26,
+       "ajoute": false,
+       "nom": "RAZE",
+       "pre": "Arthur",
+       "club": "SPORTING PARIS 20 TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 627,
+       "acbb": false
+      },
+      {
+       "pos": 28,
+       "ajoute": false,
+       "nom": "FAREAU",
+       "pre": "Jules",
+       "club": "SAINT CYR L'ECOLE TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 624,
+       "acbb": false
+      },
+      {
+       "pos": 30,
+       "ajoute": false,
+       "nom": "BELYAZID",
+       "pre": "Martin",
+       "club": "CHARENTON TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 623,
+       "acbb": false
+      },
+      {
+       "pos": 31,
+       "ajoute": false,
+       "nom": "KAMTCHOUM",
+       "pre": "Anthony",
+       "club": "US CRETEIL TT",
+       "cat": "P",
+       "cats": "",
+       "clt": 622,
+       "acbb": false
+      },
+      {
+       "pos": 32,
+       "ajoute": false,
+       "nom": "SARFATI",
+       "pre": "Natanel",
+       "club": "AL VILLECRESNES TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 619,
+       "acbb": false
+      },
+      {
+       "pos": 33,
+       "ajoute": false,
+       "nom": "KERSANI",
+       "pre": "Aaron",
+       "club": "BRETIGNY CS",
+       "cat": "B1",
+       "cats": "",
+       "clt": 616,
+       "acbb": false
+      },
+      {
+       "pos": 34,
+       "ajoute": false,
+       "nom": "POULAIN",
+       "pre": "Paul",
+       "club": "PLESSIS-TREVISE TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 615,
+       "acbb": false
+      },
+      {
+       "pos": 36,
+       "ajoute": false,
+       "nom": "DE OLIVEIRA",
+       "pre": "Paul",
+       "club": "TT ADAMOIS",
+       "cat": "B1",
+       "cats": "",
+       "clt": 612,
+       "acbb": false
+      },
+      {
+       "pos": 37,
+       "ajoute": false,
+       "nom": "MARIE",
+       "pre": "Lilian",
+       "club": "ELANCOURT CTT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 610,
+       "acbb": false
+      },
+      {
+       "pos": 38,
+       "ajoute": false,
+       "nom": "VALERO",
+       "pre": "Anton",
+       "club": "KREMLIN BICETRE US",
+       "cat": "P",
+       "cats": "",
+       "clt": 609,
+       "acbb": false
+      },
+      {
+       "pos": 39,
+       "ajoute": false,
+       "nom": "FAIVRE",
+       "pre": "Gabriel",
+       "club": "UMS TT PONTAULT COMBAULT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 608,
+       "acbb": false
+      },
+      {
+       "pos": 40,
+       "ajoute": false,
+       "nom": "HOFF OSTER",
+       "pre": "Bastien",
+       "club": "CHATOU CROISSY TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 608,
+       "acbb": false
+      },
+      {
+       "pos": 41,
+       "ajoute": false,
+       "nom": "KEI LANUR",
+       "pre": "Ayden",
+       "club": "EAUBONNE CSM TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 605,
+       "acbb": false
+      },
+      {
+       "pos": 42,
+       "ajoute": false,
+       "nom": "HENRY",
+       "pre": "Marceau",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "B2",
+       "cats": "",
+       "clt": 604,
+       "acbb": false
+      },
+      {
+       "pos": 43,
+       "ajoute": false,
+       "nom": "PANG",
+       "pre": "Hugo",
+       "club": "EAUBONNE CSM TT",
+       "cat": "B1",
+       "cats": "",
+       "clt": 602,
+       "acbb": false
+      },
+      {
+       "pos": 44,
+       "ajoute": false,
+       "nom": "KDYEM",
+       "pre": "Mathis",
+       "club": "ERMONT PLESSIS BOUCHARD",
+       "cat": "B1",
+       "cats": "",
+       "clt": 601,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      0,
+      1,
+      1
+     ],
+     "id": "t1-g42"
+    },
+    {
+     "nom": "R1 MINIMES GARÇONS",
+     "niveau": "R",
+     "div": "R1",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "salle": "Montmorency (95) — Complexe sportif des Champeaux, chemin de la Butte aux Pères",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "CERF",
+       "pre": "Maxime",
+       "club": "EAUBONNE CSM TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1293,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "GUILLARD",
+       "pre": "Elrick",
+       "club": "UMS TT PONTAULT COMBAULT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1289,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "LUCAS LIM",
+       "pre": "Joan",
+       "club": "PONTOISE CERGY A.S.",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1232,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "FARGETTE",
+       "pre": "Antoine",
+       "club": "VIROFLAY USM",
+       "cat": "M1",
+       "cats": "",
+       "clt": 1220,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "CROCQ RIVEROS",
+       "pre": "Gabriel",
+       "club": "BESSANCOURT TTB",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1171,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "TANKOUA",
+       "pre": "Lucas",
+       "club": "POISSY USC",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1157,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "GARCIA",
+       "pre": "Clément",
+       "club": "CHEVRY II",
+       "cat": "M1",
+       "cats": "",
+       "clt": 1104,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "DURAUD LIN",
+       "pre": "Tom",
+       "club": "PARIS 13 TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1082,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "MEYER",
+       "pre": "Bastien",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1082,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "ARROUM",
+       "pre": "Ilian",
+       "club": "ST GRATIEN AS",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1075,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "POMARES",
+       "pre": "Jules",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1065,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "BESLAY",
+       "pre": "Paul",
+       "club": "CHESNAY 78 AS",
+       "cat": "M1",
+       "cats": "",
+       "clt": 1062,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "THIERRY",
+       "pre": "Jules",
+       "club": "CHELLES TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1058,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "SITGES-VERSCHAERE",
+       "pre": "Paul",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1049,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "ADAMIAK",
+       "pre": "Leopold",
+       "club": "CHESNAY 78 AS",
+       "cat": "M1",
+       "cats": "",
+       "clt": 1046,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "PIZARRO",
+       "pre": "Angel",
+       "club": "E. P. DE LOGNES",
+       "cat": "M2",
+       "cats": "",
+       "clt": 946,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      1,
+      1,
+      1
+     ],
+     "id": "t1-g43"
+    },
+    {
+     "nom": "R2 MINIMES GARÇONS",
+     "niveau": "R",
+     "div": "R2",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "salle": "Montmorency (95) — Complexe sportif des Champeaux, chemin de la Butte aux Pères",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "ROL",
+       "pre": "Theo",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 1037,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "RABEMANANJARA",
+       "pre": "Aston",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 1022,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "COUDRY",
+       "pre": "Arthur",
+       "club": "CHESNAY 78 AS",
+       "cat": "M1",
+       "cats": "",
+       "clt": 1010,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "CHETTI",
+       "pre": "Alexandre",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 986,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "JOOMUN",
+       "pre": "Arthur",
+       "club": "US METRO ALLEE VERTE",
+       "cat": "M2",
+       "cats": "",
+       "clt": 984,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "DE CONINCK",
+       "pre": "Paul",
+       "club": "BOIS COLOMBES SPORTS",
+       "cat": "M2",
+       "cats": "",
+       "clt": 983,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "DI FONZO",
+       "pre": "Gianni",
+       "club": "AMICALE PONGISTE OZOIR",
+       "cat": "M2",
+       "cats": "",
+       "clt": 981,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "PONTOIZEAU",
+       "pre": "Martin",
+       "club": "SAVIGNY SO PING",
+       "cat": "M1",
+       "cats": "",
+       "clt": 971,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "GILLET ALMEIDA",
+       "pre": "Lucas",
+       "club": "SQY PING",
+       "cat": "M2",
+       "cats": "",
+       "clt": 961,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "LI LUN YUK",
+       "pre": "Hugo",
+       "club": "BESSANCOURT TTB",
+       "cat": "M2",
+       "cats": "",
+       "clt": 957,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "LEGARSON",
+       "pre": "Valentin",
+       "club": "IGNY TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 954,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "GOUDEY",
+       "pre": "Aymeric",
+       "club": "IGNY TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 943,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "PELLETIER",
+       "pre": "Lucas",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 941,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "ZHENG",
+       "pre": "Zhaokang",
+       "club": "MONTESSON TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 930,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "CHERGUI",
+       "pre": "Ilyan",
+       "club": "THIAIS AS TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 916,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "SEROUSSI",
+       "pre": "Timy",
+       "club": "MONTMAGNY GROSLAY TTC",
+       "cat": "M2",
+       "cats": "",
+       "clt": 910,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "SARRAZIN",
+       "pre": "Lucas",
+       "club": "COURBEVOIE SPORT TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 900,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "MOUHAMADALY",
+       "pre": "Rémi",
+       "club": "COMT PONTHIERRY",
+       "cat": "M1",
+       "cats": "",
+       "clt": 886,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "LE BLAY",
+       "pre": "Lucas",
+       "club": "POISSY USC",
+       "cat": "M1",
+       "cats": "",
+       "clt": 879,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "LIM",
+       "pre": "Lucas",
+       "club": "E. P. DE LOGNES",
+       "cat": "M1",
+       "cats": "",
+       "clt": 877,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "VANG FOUA",
+       "pre": "Jonathan",
+       "club": "MILLY MAISSE TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 874,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "EDAN",
+       "pre": "Colin",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 869,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "LEPREUX",
+       "pre": "Lucas",
+       "club": "ELANCOURT CTT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 869,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "LESPINASSE",
+       "pre": "Hugo",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "M2",
+       "cats": "",
+       "clt": 868,
+       "acbb": true,
+       "lic": "9255377"
+      },
+      {
+       "pos": 25,
+       "ajoute": false,
+       "nom": "LE NY",
+       "pre": "Kais",
+       "club": "MARLY LE ROI US",
+       "cat": "M1",
+       "cats": "",
+       "clt": 867,
+       "acbb": false
+      },
+      {
+       "pos": 26,
+       "ajoute": false,
+       "nom": "LI",
+       "pre": "Lucas",
+       "club": "PERREUX AP",
+       "cat": "M1",
+       "cats": "",
+       "clt": 861,
+       "acbb": false
+      },
+      {
+       "pos": 27,
+       "ajoute": false,
+       "nom": "ALLEGRE-GUILLAUME",
+       "pre": "Antoine",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "M2",
+       "cats": "",
+       "clt": 859,
+       "acbb": true,
+       "lic": "9257190"
+      },
+      {
+       "pos": 28,
+       "ajoute": false,
+       "nom": "WASILEWSKI",
+       "pre": "Steve",
+       "club": "RUEIL ATHLETIC CLUB TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 851,
+       "acbb": false
+      },
+      {
+       "pos": 29,
+       "ajoute": false,
+       "nom": "GILBERT",
+       "pre": "Satchin",
+       "club": "BEAUCHAMP CTT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 847,
+       "acbb": false
+      },
+      {
+       "pos": 30,
+       "ajoute": false,
+       "nom": "TRINH",
+       "pre": "William",
+       "club": "E. P. DE LOGNES",
+       "cat": "M2",
+       "cats": "",
+       "clt": 843,
+       "acbb": false
+      },
+      {
+       "pos": 31,
+       "ajoute": false,
+       "nom": "ZAWA",
+       "pre": "Sogo",
+       "club": "Gombo E. P. DE LOGNES",
+       "cat": "M2",
+       "cats": "",
+       "clt": 841,
+       "acbb": false
+      },
+      {
+       "pos": 32,
+       "ajoute": false,
+       "nom": "COLARD",
+       "pre": "Evan",
+       "club": "COMT PONTHIERRY",
+       "cat": "M1",
+       "cats": "",
+       "clt": 829,
+       "acbb": false
+      },
+      {
+       "pos": 33,
+       "ajoute": false,
+       "nom": "TOULZAC",
+       "pre": "Joann",
+       "club": "RAMBOUILLET TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 829,
+       "acbb": false
+      },
+      {
+       "pos": 34,
+       "ajoute": false,
+       "nom": "WATTELAR",
+       "pre": "Zacharie",
+       "club": "VGA ST MAUR US TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 823,
+       "acbb": false
+      },
+      {
+       "pos": 35,
+       "ajoute": false,
+       "nom": "MOUZOUNE LELONG",
+       "pre": "Nahel",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 820,
+       "acbb": false
+      },
+      {
+       "pos": 36,
+       "ajoute": false,
+       "nom": "XU",
+       "pre": "Domo",
+       "club": "PARIS 13 TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 815,
+       "acbb": false
+      },
+      {
+       "pos": 37,
+       "ajoute": false,
+       "nom": "BOURTOUTIAN",
+       "pre": "Armen",
+       "club": "RUEIL ATHLETIC CLUB TT",
+       "cat": "M1",
+       "cats": "",
+       "clt": 804,
+       "acbb": false
+      },
+      {
+       "pos": 38,
+       "ajoute": false,
+       "nom": "STAFFORD",
+       "pre": "Noah",
+       "club": "VGA ST MAUR US TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 799,
+       "acbb": false
+      },
+      {
+       "pos": 39,
+       "ajoute": false,
+       "nom": "ARNOULD",
+       "pre": "Gael",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 791,
+       "acbb": false
+      },
+      {
+       "pos": 40,
+       "ajoute": false,
+       "nom": "PORLON",
+       "pre": "Benoit",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 789,
+       "acbb": false
+      },
+      {
+       "pos": 41,
+       "ajoute": false,
+       "nom": "NEITER WANG",
+       "pre": "Adrien",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "M2",
+       "cats": "",
+       "clt": 784,
+       "acbb": false
+      },
+      {
+       "pos": 42,
+       "ajoute": false,
+       "nom": "MOURRE",
+       "pre": "Aurélien",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "M2",
+       "cats": "",
+       "clt": 783,
+       "acbb": true,
+       "lic": "9263353"
+      },
+      {
+       "pos": 43,
+       "ajoute": false,
+       "nom": "PORTIER",
+       "pre": "Cyriac",
+       "club": "CHESNAY 78 AS",
+       "cat": "M2",
+       "cats": "",
+       "clt": 775,
+       "acbb": false
+      },
+      {
+       "pos": 44,
+       "ajoute": false,
+       "nom": "ZAMIT",
+       "pre": "Liham",
+       "club": "EZANVILLE",
+       "cat": "M2",
+       "cats": "",
+       "clt": 758,
+       "acbb": false
+      },
+      {
+       "pos": 45,
+       "ajoute": false,
+       "nom": "IBRAHEM",
+       "pre": "Aws",
+       "club": "STAINS ES-PIERREFITTE AS",
+       "cat": "M2",
+       "cats": "",
+       "clt": 752,
+       "acbb": false
+      },
+      {
+       "pos": 46,
+       "ajoute": false,
+       "nom": "LEFEVRE",
+       "pre": "Théo",
+       "club": "JUMP",
+       "cat": "M2",
+       "cats": "",
+       "clt": 716,
+       "acbb": false
+      },
+      {
+       "pos": 47,
+       "ajoute": false,
+       "nom": "BEZILLE",
+       "pre": "Louis",
+       "club": "BRETIGNY CS",
+       "cat": "M2",
+       "cats": "",
+       "clt": 689,
+       "acbb": false
+      },
+      {
+       "pos": 48,
+       "ajoute": false,
+       "nom": "COEVOET",
+       "pre": "Léon",
+       "club": "BOIS COLOMBES SPORTS",
+       "cat": "M2",
+       "cats": "",
+       "clt": 632,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      1,
+      1,
+      1
+     ],
+     "id": "t1-g44"
+    },
+    {
+     "nom": "R1 CADETS",
+     "niveau": "R",
+     "div": "R1",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "salle": "Corbeil-Essonnes (91) — Gymnase de la Nacelle, rue de la Nacelle",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "GARCIA",
+       "pre": "Simon",
+       "club": "IGNY TT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1813,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "BONNARD",
+       "pre": "Maxence",
+       "club": "AP 17",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1706,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "MEGNAFI",
+       "pre": "Yassine",
+       "club": "EAUBONNE CSM TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1667,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "CLOSON",
+       "pre": "Timothée",
+       "club": "CHESNAY 78 AS",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1635,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "MARTIN GARNIER",
+       "pre": "Camille",
+       "club": "E. P. DE LOGNES",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1622,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "IZAC",
+       "pre": "Pierre-Yves",
+       "club": "COURBEVOIE SPORT TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1595,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "LAMINE FENKAM",
+       "pre": "Louis",
+       "club": "EAUBONNE CSM TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1595,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "VERDIER",
+       "pre": "Mahé",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1594,
+       "acbb": true,
+       "lic": "9253816"
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "GODEAU",
+       "pre": "Lancelot",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1576,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "DE ARAUJO SOUSA",
+       "pre": "Maxens",
+       "club": "EAUBONNE CSM TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1571,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "MILLET",
+       "pre": "René",
+       "club": "PARIS 13 TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1512,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "GRIMAUD",
+       "pre": "Adam",
+       "club": "EAUBONNE CSM TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1509,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "BENOIST",
+       "pre": "Samuel",
+       "club": "IGNY TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1502,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "CAMPOS ZITOUNI",
+       "pre": "Alexandre",
+       "club": "Maisons Alfort TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1485,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "LESCURE",
+       "pre": "Paul",
+       "club": "BOIS COLOMBES SPORTS",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1475,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "DE MONVAL",
+       "pre": "Axel",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1465,
+       "acbb": true,
+       "lic": "9255913"
+      }
+     ],
+     "rang": [
+      2,
+      1,
+      1
+     ],
+     "id": "t1-g45"
+    },
+    {
+     "nom": "R2 CADETS",
+     "niveau": "R",
+     "div": "R2",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "salle": "Corbeil-Essonnes (91) — Gymnase de la Nacelle, rue de la Nacelle",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "GROSS",
+       "pre": "Kylian",
+       "club": "CHESNAY 78 AS",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1463,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "CODUYS",
+       "pre": "Liam",
+       "club": "COMBS SENART TT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1430,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "TRAN",
+       "pre": "Loic",
+       "club": "ASNIERES TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1423,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "LAMOURET",
+       "pre": "Simon",
+       "club": "EAUBONNE CSM TT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1390,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "VALLEE",
+       "pre": "Timeo",
+       "club": "HERBLAY ASTT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1378,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "MOGA",
+       "pre": "Nikita",
+       "club": "VITRY ES",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1371,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "GOSSA",
+       "pre": "Baptiste",
+       "club": "SQY PING",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1368,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "BALU",
+       "pre": "Arthur",
+       "club": "TennisTable Municipal Chatillon",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1351,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "TCHAKHOTINE",
+       "pre": "Hamza",
+       "club": "VGA ST MAUR US TT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1349,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "RAPOSO",
+       "pre": "Constantin",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1334,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "DECROI",
+       "pre": "Lucas",
+       "club": "BRETIGNY CS",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1313,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "BOUSSAA",
+       "pre": "Aylan",
+       "club": "SQY PING",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1311,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "BERNIER",
+       "pre": "Yann",
+       "club": "SQY PING",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1296,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "PAPOUIN",
+       "pre": "Cyril",
+       "club": "RUEIL ATHLETIC CLUB TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1294,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "PLE",
+       "pre": "Victor",
+       "club": "ISSY-LES-MOULINEAUX",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1292,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "AUBERT",
+       "pre": "Richard",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1291,
+       "acbb": true,
+       "lic": "9250807"
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "CAFAXE",
+       "pre": "Mawen",
+       "club": "MARLY LE ROI US",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1276,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "SAMAHA",
+       "pre": "Oscar",
+       "club": "PARIS 13 TT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1259,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "CAMPRASSE",
+       "pre": "Keziah",
+       "club": "E. P. DE LOGNES",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1233,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "CHIRON",
+       "pre": "Benjamin",
+       "club": "VINCENNOIS TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1233,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "SALHA-OJIMA",
+       "pre": "Hassen",
+       "club": "Maisons Alfort TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1231,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "MORIN",
+       "pre": "François",
+       "club": "MARLY LE ROI US",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1224,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "SERGENT",
+       "pre": "Enzo",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1218,
+       "acbb": true,
+       "lic": "9540663"
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "MARTI",
+       "pre": "Noe",
+       "club": "Maisons Alfort TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1211,
+       "acbb": false
+      },
+      {
+       "pos": 25,
+       "ajoute": false,
+       "nom": "ALASSANE",
+       "pre": "Nelson",
+       "club": "US ROISSY TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1208,
+       "acbb": false
+      },
+      {
+       "pos": 26,
+       "ajoute": false,
+       "nom": "DUVAL",
+       "pre": "Tiago",
+       "club": "PARIS 13 TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1206,
+       "acbb": false
+      },
+      {
+       "pos": 27,
+       "ajoute": false,
+       "nom": "DURET",
+       "pre": "Thomas",
+       "club": "MAISONS-LAFFITTE. US",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1202,
+       "acbb": false
+      },
+      {
+       "pos": 28,
+       "ajoute": false,
+       "nom": "CATHELIN",
+       "pre": "Victor",
+       "club": "E. P. DE LOGNES",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1191,
+       "acbb": false
+      },
+      {
+       "pos": 29,
+       "ajoute": false,
+       "nom": "GUIZONNE",
+       "pre": "Nathan",
+       "club": "ISSY-LES-MOULINEAUX",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1180,
+       "acbb": false
+      },
+      {
+       "pos": 30,
+       "ajoute": false,
+       "nom": "HUCHETTE",
+       "pre": "Noe",
+       "club": "AUBERGENVILLE CTT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1172,
+       "acbb": false
+      },
+      {
+       "pos": 31,
+       "ajoute": false,
+       "nom": "NEHME",
+       "pre": "Raphael",
+       "club": "BREVANNAISE AS",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1171,
+       "acbb": false
+      },
+      {
+       "pos": 32,
+       "ajoute": false,
+       "nom": "GAJECKI",
+       "pre": "Justin",
+       "club": "IGNY TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1159,
+       "acbb": false
+      },
+      {
+       "pos": 33,
+       "ajoute": false,
+       "nom": "FORT-LAULIER",
+       "pre": "Arthur",
+       "club": "MARLY LE ROI US",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1158,
+       "acbb": false
+      },
+      {
+       "pos": 34,
+       "ajoute": false,
+       "nom": "TARACONAT",
+       "pre": "Mathéis",
+       "club": "MONTREUIL ESD",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1156,
+       "acbb": false
+      },
+      {
+       "pos": 35,
+       "ajoute": false,
+       "nom": "HLAVACEK",
+       "pre": "Oscar",
+       "club": "IGNY TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1154,
+       "acbb": false
+      },
+      {
+       "pos": 36,
+       "ajoute": false,
+       "nom": "GUILLUY",
+       "pre": "Maxence",
+       "club": "CHELLES TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1144,
+       "acbb": false
+      },
+      {
+       "pos": 37,
+       "ajoute": false,
+       "nom": "VICTORIEN",
+       "pre": "Dalil",
+       "club": "ISSY-LES-MOULINEAUX",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1141,
+       "acbb": false
+      },
+      {
+       "pos": 38,
+       "ajoute": false,
+       "nom": "BOYER",
+       "pre": "Hugo",
+       "club": "CLAMART CSM",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1139,
+       "acbb": false
+      },
+      {
+       "pos": 39,
+       "ajoute": false,
+       "nom": "REA",
+       "pre": "Mattia",
+       "club": "THIAIS AS TT",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1135,
+       "acbb": false
+      },
+      {
+       "pos": 40,
+       "ajoute": false,
+       "nom": "GREFF-THOMAS",
+       "pre": "Nathael",
+       "club": "VIRY CHATILLON ES",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1133,
+       "acbb": false
+      },
+      {
+       "pos": 41,
+       "ajoute": false,
+       "nom": "BERRIOT",
+       "pre": "Eloan",
+       "club": "PONTOISE CERGY A.S.",
+       "cat": "C1",
+       "cats": "",
+       "clt": 1111,
+       "acbb": false
+      },
+      {
+       "pos": 42,
+       "ajoute": false,
+       "nom": "LACAZE",
+       "pre": "Adrien",
+       "club": "IGNY TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1064,
+       "acbb": false
+      },
+      {
+       "pos": 43,
+       "ajoute": false,
+       "nom": "LAKROUZ",
+       "pre": "Younes",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1038,
+       "acbb": false
+      },
+      {
+       "pos": 44,
+       "ajoute": false,
+       "nom": "GOMEZ",
+       "pre": "Pierre",
+       "club": "BRETIGNY CS",
+       "cat": "C2",
+       "cats": "",
+       "clt": 961,
+       "acbb": false
+      },
+      {
+       "pos": 45,
+       "ajoute": false,
+       "nom": "TRAORE",
+       "pre": "Ian-Elie",
+       "club": "EAUBONNE CSM TT",
+       "cat": "C2",
+       "cats": "",
+       "clt": 901,
+       "acbb": false
+      },
+      {
+       "pos": 46,
+       "ajoute": false,
+       "nom": "SCHMUTZ",
+       "pre": "Lucien",
+       "club": "Assoc. Patronage Sainte Melanie",
+       "cat": "C2",
+       "cats": "",
+       "clt": 808,
+       "acbb": false
+      },
+      {
+       "pos": 47,
+       "ajoute": false,
+       "nom": "SMITH",
+       "pre": "Eliott",
+       "club": "BESSANCOURT TTB",
+       "cat": "C2",
+       "cats": "",
+       "clt": 738,
+       "acbb": false
+      },
+      {
+       "pos": 48,
+       "ajoute": false,
+       "nom": "FARRET D'ASTIÈS",
+       "pre": "Antoine",
+       "club": "TT PARIS 16",
+       "cat": "C2",
+       "cats": "",
+       "clt": 635,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      2,
+      1,
+      1
+     ],
+     "id": "t1-g46"
+    },
+    {
+     "nom": "R1 JUNIORS GARÇONS",
+     "niveau": "R",
+     "div": "R1",
+     "age": "-19",
+     "genre": "M",
+     "cat": "-19 ans Garçons",
+     "salle": "Montmorency (95) — Complexe sportif des Champeaux, chemin de la Butte aux Pères",
+     "date": "11/10/2026",
+     "pointage": "9h00",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "CARDOSO",
+       "pre": "Lucas",
+       "club": "ELANCOURT CTT",
+       "cat": "J3",
+       "cats": "",
+       "clt": 2204,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "GUNDOGDU",
+       "pre": "Kuzey",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "J1",
+       "cats": "",
+       "clt": 2075,
+       "acbb": true,
+       "lic": "9267939"
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "BARRÉ",
+       "pre": "Evan",
+       "club": "PARIS 13 TENNIS DE TABLE",
+       "cat": "J3",
+       "cats": "",
+       "clt": 2070,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "DRAPIER",
+       "pre": "Timothée",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "J4",
+       "cats": "",
+       "clt": 1964,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "HUSSAIN",
+       "pre": "Momin",
+       "club": "EAUBONNE CSM TT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1964,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "CHANTEPIE",
+       "pre": "Thomas",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1951,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "DE PAS",
+       "pre": "Raphael",
+       "club": "BEAUCHAMP CTT",
+       "cat": "J4",
+       "cats": "",
+       "clt": 1935,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "RABEMANANTSOA",
+       "pre": "Tsilavo",
+       "club": "E. P. DE LOGNES",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1902,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "MOUTIC",
+       "pre": "Robin",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1891,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "SEREHEN",
+       "pre": "Ruben",
+       "club": "CHESNAY 78 AS",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1858,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "CHAIZE",
+       "pre": "Andrea",
+       "club": "YERRES ATT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1853,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "GENIAUT",
+       "pre": "Remi",
+       "club": "IGNY T.T.",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1840,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "MOREIRA",
+       "pre": "Jovan",
+       "club": "COMT PONTHIERRY",
+       "cat": "J4",
+       "cats": "",
+       "clt": 1825,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "LARCHER",
+       "pre": "Augustin",
+       "club": "CHESNAY 78 AS",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1810,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "NGUYEN",
+       "pre": "Lucas",
+       "club": "BOIS COLOMBES SPORTS",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1650,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "BOUCHARD",
+       "pre": "Jean",
+       "club": "NEUILLY AS ST PIERRE",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1592,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      3,
+      1,
+      1
+     ],
+     "id": "t1-g47"
+    },
+    {
+     "nom": "R2 JUNIORS GARÇONS",
+     "niveau": "R",
+     "div": "R2",
+     "age": "-19",
+     "genre": "M",
+     "cat": "-19 ans Garçons",
+     "salle": "Montmorency (95) — Complexe sportif des Champeaux, chemin de la Butte aux Pères",
+     "date": "11/10/2026",
+     "pointage": "9h00",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "LIU",
+       "pre": "Nathan",
+       "club": "E. P. DE LOGNES",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1809,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "ALTAF",
+       "pre": "Arshan",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1807,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "HUMBERT",
+       "pre": "Baptiste",
+       "club": "VGA ST MAUR US TT",
+       "cat": "J4",
+       "cats": "",
+       "clt": 1805,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "IMBERTY",
+       "pre": "Noe",
+       "club": "USM MALAKOFF",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1805,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "LERICOLAIS",
+       "pre": "Damien",
+       "club": "PARIS 13 TENNIS DE TABLE",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1788,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "PIRES",
+       "pre": "David",
+       "club": "THIAIS AS TT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1771,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "BRAZO",
+       "pre": "Samuel",
+       "club": "EAUBONNE CSM TT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1745,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "YU",
+       "pre": "Shuhe",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1744,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "FERNET",
+       "pre": "Clement",
+       "club": "YERRES ATT",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1727,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "COHEN MELKA",
+       "pre": "Eytan",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1726,
+       "acbb": true,
+       "lic": "9258246"
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "PRAIRA",
+       "pre": "Aleks",
+       "club": "CLAMART CSM",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1726,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "SALLAH DUSE",
+       "pre": "Louis",
+       "club": "RAMBOUILLET TT",
+       "cat": "J4",
+       "cats": "",
+       "clt": 1703,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "VESPASIEN",
+       "pre": "Elouan",
+       "club": "HERBLAY ASTT",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1700,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "LE CORRE",
+       "pre": "Erwan",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1698,
+       "acbb": true,
+       "lic": "9255025"
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "FOUCHE",
+       "pre": "Nolann",
+       "club": "SQY PING",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1666,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "CRON-ANTHORE",
+       "pre": "Malo",
+       "club": "THIAIS AS TT",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1655,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "LAINE BRUNO",
+       "pre": "Elijah",
+       "club": "MARLY LE ROI US",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1651,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "NGUYEN TRI",
+       "pre": "Oscar",
+       "club": "Maisons Alfort Tennis de table",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1650,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "COLAS",
+       "pre": "Timeo",
+       "club": "AP 17",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1648,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "TILLOL DELETANG",
+       "pre": "Martin",
+       "club": "USM MALAKOFF",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1648,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "COLLET",
+       "pre": "Baptiste",
+       "club": "CHELLES TENNIS DE TABLE",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1641,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "CILIBERTI",
+       "pre": "Nicola",
+       "club": "PARIS 13 TENNIS DE TABLE",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1635,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "CATHELIN",
+       "pre": "Leonard",
+       "club": "E. P. DE LOGNES",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1633,
+       "acbb": false
+      },
+      {
+       "pos": 25,
+       "ajoute": false,
+       "nom": "LONGUET",
+       "pre": "Adam",
+       "club": "BOURGETIN CTT",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1628,
+       "acbb": false
+      },
+      {
+       "pos": 26,
+       "ajoute": false,
+       "nom": "BADAIRE",
+       "pre": "Evariste",
+       "club": "CHESNAY 78 AS",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1611,
+       "acbb": false
+      },
+      {
+       "pos": 27,
+       "ajoute": false,
+       "nom": "IZAC",
+       "pre": "Jean-Marie",
+       "club": "COURBEVOIE SPORT TT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1611,
+       "acbb": false
+      },
+      {
+       "pos": 28,
+       "ajoute": false,
+       "nom": "FONTEZ-CHAPPELL",
+       "pre": "Justin",
+       "club": "CHESNAY 78 AS",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1606,
+       "acbb": false
+      },
+      {
+       "pos": 29,
+       "ajoute": false,
+       "nom": "GRELLIER-COFFY",
+       "pre": "Mathis",
+       "club": "VGA ST MAUR US TT",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1604,
+       "acbb": false
+      },
+      {
+       "pos": 30,
+       "ajoute": false,
+       "nom": "GODEAU",
+       "pre": "Florian",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1601,
+       "acbb": false
+      },
+      {
+       "pos": 32,
+       "ajoute": false,
+       "nom": "FERREIRA CECIA",
+       "pre": "Firmin",
+       "club": "US ROISSY TENNIS DE TABLE",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1593,
+       "acbb": false
+      },
+      {
+       "pos": 34,
+       "ajoute": false,
+       "nom": "COSSEC",
+       "pre": "Kenji",
+       "club": "PONTOISE CERGY A.S.",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1535,
+       "acbb": false
+      },
+      {
+       "pos": 35,
+       "ajoute": false,
+       "nom": "GMEREK",
+       "pre": "Quentin",
+       "club": "CHESNAY 78 AS",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1457,
+       "acbb": false
+      },
+      {
+       "pos": 36,
+       "ajoute": false,
+       "nom": "ZIKIRIA-GUATELLI",
+       "pre": "Nolan",
+       "club": "USM VILLEPARISIS TT",
+       "cat": "J4",
+       "cats": "",
+       "clt": 1425,
+       "acbb": false
+      },
+      {
+       "pos": 37,
+       "ajoute": false,
+       "nom": "JAKUBOWICZ",
+       "pre": "Maxime",
+       "club": "USM MALAKOFF",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1413,
+       "acbb": false
+      },
+      {
+       "pos": 38,
+       "ajoute": false,
+       "nom": "TEA",
+       "pre": "Maxime",
+       "club": "US CRETEIL TENNIS DE TABLE",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1381,
+       "acbb": false
+      },
+      {
+       "pos": 39,
+       "ajoute": false,
+       "nom": "DESVAQUET",
+       "pre": "Hippolyte",
+       "club": "VGA ST MAUR US TT",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1379,
+       "acbb": false
+      },
+      {
+       "pos": 40,
+       "ajoute": false,
+       "nom": "KUKIC",
+       "pre": "Luka",
+       "club": "DRANCY JA",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1367,
+       "acbb": false
+      },
+      {
+       "pos": 41,
+       "ajoute": false,
+       "nom": "PEDROSA FERREIRA",
+       "pre": "Raphael",
+       "club": "UMS TT PONTAULT COMBAULT",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1353,
+       "acbb": false
+      },
+      {
+       "pos": 42,
+       "ajoute": false,
+       "nom": "ROSSI-JURBERT",
+       "pre": "Corentin",
+       "club": "IGNY T.T.",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1337,
+       "acbb": false
+      },
+      {
+       "pos": 43,
+       "ajoute": false,
+       "nom": "BOTHEREL",
+       "pre": "Hugo",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1330,
+       "acbb": false
+      },
+      {
+       "pos": 44,
+       "ajoute": false,
+       "nom": "CHARLET",
+       "pre": "Maxime",
+       "club": "HERBLAY ASTT",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1275,
+       "acbb": false
+      },
+      {
+       "pos": 45,
+       "ajoute": false,
+       "nom": "GIRAUD-MARTINEZ",
+       "pre": "Francois",
+       "club": "PARIS IX ATT",
+       "cat": "J3",
+       "cats": "",
+       "clt": 1132,
+       "acbb": false
+      },
+      {
+       "pos": 46,
+       "ajoute": false,
+       "nom": "HARBAOUI",
+       "pre": "Feres",
+       "club": "CHILLY-MORANGIS CTT",
+       "cat": "J2",
+       "cats": "",
+       "clt": 1129,
+       "acbb": false
+      },
+      {
+       "pos": 47,
+       "ajoute": false,
+       "nom": "BLONDEAU",
+       "pre": "Clement",
+       "club": "PARIS 13 TENNIS DE TABLE",
+       "cat": "J4",
+       "cats": "",
+       "clt": 1041,
+       "acbb": false
+      },
+      {
+       "pos": 48,
+       "ajoute": false,
+       "nom": "TEA",
+       "pre": "Mathis",
+       "club": "US CRETEIL TENNIS DE TABLE",
+       "cat": "J1",
+       "cats": "",
+       "clt": 1029,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      3,
+      1,
+      1
+     ],
+     "id": "t1-g48"
+    },
+    {
+     "nom": "R1 SENIORS MESSIEURS",
+     "niveau": "R",
+     "div": "R1",
+     "age": "ELITE",
+     "genre": "M",
+     "cat": "Élite Messieurs",
+     "salle": "Viry-Châtillon (91) — Gymnase du Bellay, 27 avenue du Bellay",
+     "date": "11/10/2026",
+     "pointage": "9h00",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "ROUSSEL",
+       "pre": "Matéo",
+       "club": "VINCENNOIS TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 2156,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "CORRIC",
+       "pre": "Paolo",
+       "club": "COURBEVOIE SPORT TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 2073,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "BOUEROUX-TRISTRAM",
+       "pre": "Thomas",
+       "club": "KREMLIN BICETRE US",
+       "cat": "S",
+       "cats": "",
+       "clt": 2044,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "LEREAH",
+       "pre": "Mikael",
+       "club": "E. P. DE LOGNES",
+       "cat": "S",
+       "cats": "",
+       "clt": 2014,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "HAMEL",
+       "pre": "Simon",
+       "club": "VINCENNOIS TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 2012,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "BARNIER",
+       "pre": "Mathieu",
+       "club": "CHELLES TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 2006,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "LAURENT",
+       "pre": "Antoine",
+       "club": "RUEIL ATHLETIC CLUB TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 2002,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "CARDOSO",
+       "pre": "Alexis",
+       "club": "CHESNAY 78 AS",
+       "cat": "S",
+       "cats": "",
+       "clt": 1996,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "BONNEAU",
+       "pre": "Bradley",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1993,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "SARFATI",
+       "pre": "Julien",
+       "club": "AL VILLECRESNES TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1987,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "SCHMITT",
+       "pre": "Ugo",
+       "club": "RUEIL ATHLETIC CLUB TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1960,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "LEGEE",
+       "pre": "Nathael",
+       "club": "IGNY T.T.",
+       "cat": "S",
+       "cats": "",
+       "clt": 1943,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "LACUISSE",
+       "pre": "Romain",
+       "club": "VINCENNOIS TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1939,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "RAVELONANOSY",
+       "pre": "Ny",
+       "club": "Aro PARIS 13 TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1939,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "FERHAT-ROCAMORA",
+       "pre": "Farel",
+       "club": "BEAUCHAMP CTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1933,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "DENG",
+       "pre": "Xiang",
+       "club": "ANTONY SP TT",
+       "cat": "V40",
+       "cats": "",
+       "clt": 1932,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "POIREY",
+       "pre": "Mattis",
+       "club": "ESPERANCE REUILLY",
+       "cat": "S",
+       "cats": "",
+       "clt": 1927,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "GHOUMARI",
+       "pre": "Mourad",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1918,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "HUET",
+       "pre": "Jérome",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1913,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "COURTEAUX",
+       "pre": "Maxime",
+       "club": "MEUDON AS",
+       "cat": "S",
+       "cats": "",
+       "clt": 1900,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "FUSILLER",
+       "pre": "Antoine",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1890,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "BASILE",
+       "pre": "Mathieu",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1884,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "ALLUIN-DELACOUR",
+       "pre": "Killian",
+       "club": "AL VILLECRESNES",
+       "cat": "S",
+       "cats": "",
+       "clt": 1878,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "TEAV",
+       "pre": "Aaron",
+       "club": "RUEIL ATHLETIC CLUB TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1863,
+       "acbb": false
+      },
+      {
+       "pos": 25,
+       "ajoute": false,
+       "nom": "PUTIGNY",
+       "pre": "Tony",
+       "club": "VILLEMOMBLE SPTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1863,
+       "acbb": false
+      },
+      {
+       "pos": 26,
+       "ajoute": false,
+       "nom": "GERVAIS",
+       "pre": "Hugo",
+       "club": "RUEIL ATHLETIC CLUB TT",
+       "cat": "V40",
+       "cats": "",
+       "clt": 1836,
+       "acbb": false
+      },
+      {
+       "pos": 27,
+       "ajoute": false,
+       "nom": "LOPES",
+       "pre": "0",
+       "club": "NEUILLY AS ST PIERRE",
+       "cat": "S",
+       "cats": "",
+       "clt": 1826,
+       "acbb": false
+      },
+      {
+       "pos": 28,
+       "ajoute": false,
+       "nom": "GRODZKI",
+       "pre": "Jean-Francois",
+       "club": "E. P. DE LOGNES",
+       "cat": "S",
+       "cats": "",
+       "clt": 1797,
+       "acbb": false
+      },
+      {
+       "pos": 29,
+       "ajoute": false,
+       "nom": "AMIR",
+       "pre": "Sofiane",
+       "club": "FRANCONVILLE CTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1774,
+       "acbb": false
+      },
+      {
+       "pos": 30,
+       "ajoute": false,
+       "nom": "GAG",
+       "pre": "Jean-Charles",
+       "club": "ST GRATIEN AS",
+       "cat": "V55",
+       "cats": "",
+       "clt": 1737,
+       "acbb": false
+      },
+      {
+       "pos": 31,
+       "ajoute": false,
+       "nom": "LACHHEB",
+       "pre": "Yanis",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1733,
+       "acbb": false
+      },
+      {
+       "pos": 32,
+       "ajoute": false,
+       "nom": "BELIN",
+       "pre": "Clement",
+       "club": "PALAISEAU US",
+       "cat": "S",
+       "cats": "",
+       "clt": 1698,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      4,
+      1,
+      1
+     ],
+     "id": "t1-g49"
+    },
+    {
+     "nom": "R2 SENIORS MESSIEURS",
+     "niveau": "R",
+     "div": "R2",
+     "age": "ELITE",
+     "genre": "M",
+     "cat": "Élite Messieurs",
+     "salle": "Corbeil-Essonnes (91) — Gymnase de la Nacelle, rue de la Nacelle",
+     "date": "11/10/2026",
+     "pointage": "9h00",
+     "debut": "10h00",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "MESSARRA",
+       "pre": "Maxime",
+       "club": "THIAIS AS TT",
+       "cat": "V40",
+       "cats": "",
+       "clt": 1874,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "BEKKOUCHE",
+       "pre": "Loic",
+       "club": "RUEIL ATHLETIC CLUB TT",
+       "cat": "V40",
+       "cats": "",
+       "clt": 1870,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "DERUY",
+       "pre": "Baptiste",
+       "club": "JUMP",
+       "cat": "S",
+       "cats": "",
+       "clt": 1866,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "JEAN MICHEL",
+       "pre": "Alner",
+       "club": "YERRES ATT",
+       "cat": "V45",
+       "cats": "",
+       "clt": 1856,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "CHARPENTIER",
+       "pre": "Theo",
+       "club": "SPORTING PARIS 20 TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1846,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "MOREIRA",
+       "pre": "Theo",
+       "club": "COMT PONTHIERRY",
+       "cat": "S",
+       "cats": "",
+       "clt": 1846,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "TRABULO",
+       "pre": "Rafael",
+       "club": "SARTROUVILLOIS TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1846,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "DELGADO",
+       "pre": "Thomas",
+       "club": "USM MALAKOFF",
+       "cat": "S",
+       "cats": "",
+       "clt": 1844,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "AUBIER",
+       "pre": "Pascal",
+       "club": "IGNY T.T.",
+       "cat": "S",
+       "cats": "",
+       "clt": 1842,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "LIZZI",
+       "pre": "Enzo",
+       "club": "AP 17",
+       "cat": "S",
+       "cats": "",
+       "clt": 1837,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "WANG",
+       "pre": "Kim",
+       "club": "J A M PARIS 14e",
+       "cat": "S",
+       "cats": "",
+       "clt": 1822,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "AGOSTINI",
+       "pre": "Luca",
+       "club": "BOIS COLOMBES SPORTS",
+       "cat": "S",
+       "cats": "",
+       "clt": 1819,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "MATHIAUX",
+       "pre": "Andy",
+       "club": "COMT PONTHIERRY",
+       "cat": "S",
+       "cats": "",
+       "clt": 1816,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "BANC",
+       "pre": "Côme",
+       "club": "E. P. DE LOGNES",
+       "cat": "S",
+       "cats": "",
+       "clt": 1806,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "GERMAIN",
+       "pre": "Pierre-Mathieu",
+       "club": "THIAIS AS TT",
+       "cat": "V40",
+       "cats": "",
+       "clt": 1796,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "CHAPPOUX",
+       "pre": "Cedric",
+       "club": "VILLEMOMBLE SPTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1789,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "CAUJOLLE",
+       "pre": "Valentin",
+       "club": "COMBS SENART TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1788,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "CASSINARI",
+       "pre": "Thomas",
+       "club": "PALAISEAU US",
+       "cat": "S",
+       "cats": "",
+       "clt": 1787,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "SIRAMY",
+       "pre": "Benoit",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1770,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "BEN BRAHIM",
+       "pre": "Yannis",
+       "club": "COURBEVOIE SPORT TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1769,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "DOS REIS",
+       "pre": "Alexandre",
+       "club": "CHILLY-MORANGIS CTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1769,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "CHABBERT",
+       "pre": "Guillaume",
+       "club": "USM MALAKOFF",
+       "cat": "S",
+       "cats": "",
+       "clt": 1761,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "CHELGHOUM",
+       "pre": "Mehdi",
+       "club": "CHELLES TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1760,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "IVANCIU",
+       "pre": "Florin-Valentin",
+       "club": "COMT PONTHIERRY",
+       "cat": "S",
+       "cats": "",
+       "clt": 1759,
+       "acbb": false
+      },
+      {
+       "pos": 25,
+       "ajoute": false,
+       "nom": "PATISSIER",
+       "pre": "Jules",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1759,
+       "acbb": false
+      },
+      {
+       "pos": 26,
+       "ajoute": false,
+       "nom": "SEEBALLACK",
+       "pre": "Dylan",
+       "club": "ST GRATIEN AS",
+       "cat": "S",
+       "cats": "",
+       "clt": 1759,
+       "acbb": false
+      },
+      {
+       "pos": 27,
+       "ajoute": false,
+       "nom": "LE POULTIER",
+       "pre": "Jordan",
+       "club": "BRETIGNY CS",
+       "cat": "S",
+       "cats": "",
+       "clt": 1754,
+       "acbb": false
+      },
+      {
+       "pos": 28,
+       "ajoute": false,
+       "nom": "CAUDRON",
+       "pre": "Nicolas",
+       "club": "E. P. DE LOGNES",
+       "cat": "V50",
+       "cats": "",
+       "clt": 1753,
+       "acbb": false
+      },
+      {
+       "pos": 29,
+       "ajoute": false,
+       "nom": "ARPIN",
+       "pre": "Anthony",
+       "club": "NEUILLY AS ST PIERRE",
+       "cat": "S",
+       "cats": "",
+       "clt": 1752,
+       "acbb": false
+      },
+      {
+       "pos": 31,
+       "ajoute": false,
+       "nom": "CHARDIN",
+       "pre": "Guillaume",
+       "club": "VILLEMOMBLE SPTT",
+       "cat": "V40",
+       "cats": "",
+       "clt": 1746,
+       "acbb": false
+      },
+      {
+       "pos": 32,
+       "ajoute": false,
+       "nom": "DAGBERT",
+       "pre": "Logan",
+       "club": "ELANCOURT CTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1741,
+       "acbb": false
+      },
+      {
+       "pos": 33,
+       "ajoute": false,
+       "nom": "LAGALIE",
+       "pre": "Kilian",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1735,
+       "acbb": false
+      },
+      {
+       "pos": 34,
+       "ajoute": false,
+       "nom": "AZIBERT",
+       "pre": "Baptiste",
+       "club": "E. P. DE LOGNES",
+       "cat": "S",
+       "cats": "",
+       "clt": 1720,
+       "acbb": false
+      },
+      {
+       "pos": 35,
+       "ajoute": false,
+       "nom": "DESTRES",
+       "pre": "Alexis",
+       "club": "TRIEL TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1719,
+       "acbb": false
+      },
+      {
+       "pos": 36,
+       "ajoute": false,
+       "nom": "LUGUET",
+       "pre": "Vincent",
+       "club": "COMBS SENART TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1714,
+       "acbb": false
+      },
+      {
+       "pos": 37,
+       "ajoute": false,
+       "nom": "SUN SOTHI",
+       "pre": "Kevin",
+       "club": "SPORTING PARIS 20 TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1714,
+       "acbb": false
+      },
+      {
+       "pos": 38,
+       "ajoute": false,
+       "nom": "IMBERTY",
+       "pre": "Matthieu",
+       "club": "USM MALAKOFF",
+       "cat": "V50",
+       "cats": "",
+       "clt": 1710,
+       "acbb": false
+      },
+      {
+       "pos": 39,
+       "ajoute": false,
+       "nom": "VETZEL-MARTIN",
+       "pre": "Loann",
+       "club": "RAMBOUILLET TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1708,
+       "acbb": false
+      },
+      {
+       "pos": 40,
+       "ajoute": false,
+       "nom": "LEGER",
+       "pre": "Louis",
+       "club": "PARIS IX ATT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1703,
+       "acbb": false
+      },
+      {
+       "pos": 41,
+       "ajoute": false,
+       "nom": "MOTTIN",
+       "pre": "Ronan",
+       "club": "SAINT-DENIS TT93",
+       "cat": "S",
+       "cats": "",
+       "clt": 1702,
+       "acbb": false
+      },
+      {
+       "pos": 42,
+       "ajoute": false,
+       "nom": "DELORME",
+       "pre": "Thibault",
+       "club": "COURBEVOIE SPORT TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1700,
+       "acbb": false
+      },
+      {
+       "pos": 43,
+       "ajoute": false,
+       "nom": "LE BOULC'H",
+       "pre": "Maxime",
+       "club": "PALAISEAU US",
+       "cat": "S",
+       "cats": "",
+       "clt": 1700,
+       "acbb": false
+      },
+      {
+       "pos": 44,
+       "ajoute": false,
+       "nom": "PEREIRA",
+       "pre": "Louis",
+       "club": "LAGNY SUR MARNE TT",
+       "cat": "V50",
+       "cats": "",
+       "clt": 1657,
+       "acbb": false
+      },
+      {
+       "pos": 45,
+       "ajoute": false,
+       "nom": "BORNAREL",
+       "pre": "Selim",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1639,
+       "acbb": false
+      },
+      {
+       "pos": 46,
+       "ajoute": false,
+       "nom": "BOURDONNEAU",
+       "pre": "Tanguy",
+       "club": "DUCKS DE BONDOUFLE",
+       "cat": "V45",
+       "cats": "",
+       "clt": 1637,
+       "acbb": false
+      },
+      {
+       "pos": 47,
+       "ajoute": false,
+       "nom": "KHING",
+       "pre": "Danid",
+       "club": "JUMP",
+       "cat": "V55",
+       "cats": "",
+       "clt": 1627,
+       "acbb": false
+      },
+      {
+       "pos": 48,
+       "ajoute": false,
+       "nom": "RAMOND",
+       "pre": "Theo",
+       "club": "COLOMBES ES",
+       "cat": "S",
+       "cats": "",
+       "clt": 1626,
+       "acbb": false
+      },
+      {
+       "pos": 49,
+       "ajoute": false,
+       "nom": "CUELLO",
+       "pre": "Pedro",
+       "club": "EAUBONNE CSM TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1582,
+       "acbb": false
+      },
+      {
+       "pos": 50,
+       "ajoute": false,
+       "nom": "CHARLOT",
+       "pre": "Sebastien",
+       "club": "LAGNY SUR MARNE TT",
+       "cat": "V45",
+       "cats": "",
+       "clt": 1571,
+       "acbb": false
+      },
+      {
+       "pos": 51,
+       "ajoute": false,
+       "nom": "LASSEAUX",
+       "pre": "Mickael",
+       "club": "MENUCOURT ASTT",
+       "cat": "V45",
+       "cats": "",
+       "clt": 1570,
+       "acbb": false
+      },
+      {
+       "pos": 52,
+       "ajoute": false,
+       "nom": "SALAMEH",
+       "pre": "Antoine",
+       "club": "IGNY T.T.",
+       "cat": "S",
+       "cats": "",
+       "clt": 1561,
+       "acbb": false
+      },
+      {
+       "pos": 53,
+       "ajoute": false,
+       "nom": "ROUX",
+       "pre": "Kevin",
+       "club": "CHESNAY 78 AS",
+       "cat": "S",
+       "cats": "",
+       "clt": 1559,
+       "acbb": false
+      },
+      {
+       "pos": 54,
+       "ajoute": false,
+       "nom": "LEQUITTE",
+       "pre": "Romeo",
+       "club": "TT PLUS",
+       "cat": "S",
+       "cats": "",
+       "clt": 1556,
+       "acbb": false
+      },
+      {
+       "pos": 55,
+       "ajoute": false,
+       "nom": "DIAS",
+       "pre": "Dylan",
+       "club": "TRIEL TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1549,
+       "acbb": false
+      },
+      {
+       "pos": 56,
+       "ajoute": false,
+       "nom": "CHAMMAKHI",
+       "pre": "Omar",
+       "club": "COMT PONTHIERRY",
+       "cat": "S",
+       "cats": "",
+       "clt": 1540,
+       "acbb": false
+      },
+      {
+       "pos": 57,
+       "ajoute": false,
+       "nom": "THOREAU",
+       "pre": "Adrien",
+       "club": "HERBLAY ASTT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1538,
+       "acbb": false
+      },
+      {
+       "pos": 58,
+       "ajoute": false,
+       "nom": "CAPITAINE",
+       "pre": "Pierre-Louis",
+       "club": "CPS 10eme",
+       "cat": "S",
+       "cats": "",
+       "clt": 1534,
+       "acbb": false
+      },
+      {
+       "pos": 59,
+       "ajoute": false,
+       "nom": "FARSSI",
+       "pre": "Mehdi",
+       "club": "COURBEVOIE SPORT TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1531,
+       "acbb": false
+      },
+      {
+       "pos": 60,
+       "ajoute": false,
+       "nom": "SERI LAGO",
+       "pre": "Steve",
+       "club": "DRAVEIL TT",
+       "cat": "V40",
+       "cats": "",
+       "clt": 1515,
+       "acbb": false
+      },
+      {
+       "pos": 61,
+       "ajoute": false,
+       "nom": "MONFORT",
+       "pre": "Alain",
+       "club": "POISSY USC",
+       "cat": "V60",
+       "cats": "",
+       "clt": 1507,
+       "acbb": false
+      },
+      {
+       "pos": 62,
+       "ajoute": false,
+       "nom": "HADAMAR",
+       "pre": "Pierre",
+       "club": "CHELLES TT",
+       "cat": "S",
+       "cats": "",
+       "clt": 1494,
+       "acbb": false
+      },
+      {
+       "pos": 63,
+       "ajoute": false,
+       "nom": "DUBRAI",
+       "pre": "Cédric",
+       "club": "DRANCY JA",
+       "cat": "V45",
+       "cats": "",
+       "clt": 1451,
+       "acbb": false
+      },
+      {
+       "pos": 64,
+       "ajoute": false,
+       "nom": "MARAONE",
+       "pre": "Juan",
+       "club": "LIVRY GARGAN",
+       "cat": "S",
+       "cats": "",
+       "clt": 1420,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      4,
+      1,
+      1
+     ],
+     "id": "t1-g50"
+    },
+    {
+     "nom": "N2 JUNIORS FILLES",
+     "niveau": "N",
+     "div": "N2",
+     "age": "-19",
+     "genre": "F",
+     "cat": "-19 ans Filles",
+     "salle": "Le Mans (72) — Salle de tennis de table, 51 rue Garnier Pages, 72000 Le Mans",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h30",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "BOST",
+       "pre": "Julie",
+       "club": "TennisTable Municipal Chatillon",
+       "cat": "",
+       "cats": "",
+       "clt": 1721,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "HADDOU",
+       "pre": "Thilleli",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "",
+       "cats": "",
+       "clt": 1680,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "PRYSHCHEPA",
+       "pre": "Veronika",
+       "club": "4S TOURS T.T.",
+       "cat": "",
+       "cats": "",
+       "clt": 1611,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "LEFEVRE",
+       "pre": "Chloe",
+       "club": "US CRETEIL TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1592,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "SAADA",
+       "pre": "Lea",
+       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1572,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "BELDA",
+       "pre": "Chloe",
+       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1551,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "CLAVIER",
+       "pre": "Violette",
+       "club": "T.T. JOUE-LES-TOURS",
+       "cat": "",
+       "cats": "",
+       "clt": 1543,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "RIN",
+       "pre": "Seangna",
+       "club": "SPORTING PARIS 20 TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1540,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "CENDRIER",
+       "pre": "Chloé",
+       "club": "4S TOURS T.T.",
+       "cat": "",
+       "cats": "",
+       "clt": 1529,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "PREVOT",
+       "pre": "Edena",
+       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1514,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "BERRANGER TRAMIER",
+       "pre": "Emilie",
+       "club": "RENNES CERCLE PAUL BERT",
+       "cat": "",
+       "cats": "",
+       "clt": 1477,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "RODRIGUES",
+       "pre": "Pauline",
+       "club": "PING ST JEAN 45",
+       "cat": "",
+       "cats": "",
+       "clt": 1472,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "CASSIER",
+       "pre": "Nao",
+       "club": "MENUCOURT ASTT",
+       "cat": "",
+       "cats": "",
+       "clt": 1453,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "EDAN",
+       "pre": "Romane",
+       "club": "VGA ST MAUR US TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1404,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "LEROUX TESTAULT",
+       "pre": "Clemence",
+       "club": "BEAUCHAMP CTT",
+       "cat": "",
+       "cats": "",
+       "clt": 1399,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "CANEVET",
+       "pre": "Elaia",
+       "club": "LES PONGISTES BIGOUDENS",
+       "cat": "",
+       "cats": "",
+       "clt": 1398,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "TABILLON",
+       "pre": "Gaetane",
+       "club": "PING ST JEAN 45",
+       "cat": "",
+       "cats": "",
+       "clt": 1379,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "PERROT",
+       "pre": "Pauline",
+       "club": "CJM BOURGES TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1367,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "MAYEUX",
+       "pre": "Lise",
+       "club": "Argantel Club PLERIN",
+       "cat": "",
+       "cats": "",
+       "clt": 1363,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "NEVES",
+       "pre": "Louna",
+       "club": "MARLY LE ROI US",
+       "cat": "",
+       "cats": "",
+       "clt": 1342,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "OUVRARD",
+       "pre": "Lucie",
+       "club": "LA FLECHE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1333,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "COCHIN",
+       "pre": "Manon",
+       "club": "STADE LOUPEEN TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1304,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "GAUTREAU DUMEZ",
+       "pre": "Candice",
+       "club": "CESSON O.C.",
+       "cat": "",
+       "cats": "",
+       "clt": 1180,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "SIRET",
+       "pre": "Zoelie",
+       "club": "FERRIERE VENDEE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 946,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      3,
+      0,
+      2
+     ],
+     "id": "t1-g51"
+    },
+    {
+     "nom": "N2 CADETTES",
+     "niveau": "N",
+     "div": "N2",
+     "age": "-15",
+     "genre": "F",
+     "cat": "-15 ans Filles",
+     "salle": "Le Mans (72) — Salle de tennis de table, 51 rue Garnier Pages, 72000 Le Mans",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h30",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "KARPOVA",
+       "pre": "Varvara",
+       "club": "RENNES CERCLE PAUL BERT",
+       "cat": "",
+       "cats": "",
+       "clt": 1374,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "DRAPIER",
+       "pre": "Melanie",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "",
+       "cats": "",
+       "clt": 1365,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "PICHON",
+       "pre": "May",
+       "club": "LE MANS SARTHE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1289,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "STORM",
+       "pre": "Alice",
+       "club": "E.S PLESCOP T.T",
+       "cat": "",
+       "cats": "",
+       "clt": 1212,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "GREMILLON-BACHELET",
+       "pre": "Lilou",
+       "club": "PONTOISE CERGY A.S.",
+       "cat": "",
+       "cats": "",
+       "clt": 1204,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "CHKAM",
+       "pre": "Mélina",
+       "club": "VGA ST MAUR US TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1155,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "BARBERI XU",
+       "pre": "Eva",
+       "club": "IVRY US TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1088,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "LEFEVRE",
+       "pre": "Tessa",
+       "club": "AS CORBEIL-ESSONNES TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1083,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "LESPINASSE",
+       "pre": "Joanne",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "",
+       "cats": "",
+       "clt": 1078,
+       "acbb": true,
+       "lic": "9253701"
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "CHIGNAGUET",
+       "pre": "Ambre",
+       "club": "U.S.E. AVOINE-BEAUMONT",
+       "cat": "",
+       "cats": "",
+       "clt": 1064,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "ROUSSEAU",
+       "pre": "Anna",
+       "club": "TENNIS DE TABLE VANNES",
+       "cat": "",
+       "cats": "",
+       "clt": 1060,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "COUTANT",
+       "pre": "Elise",
+       "club": "AZE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1041,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "BACCOUCHE",
+       "pre": "Zeineb",
+       "club": "BOURGETIN CTT",
+       "cat": "",
+       "cats": "",
+       "clt": 1033,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "CARDOSO",
+       "pre": "Jade",
+       "club": "ELANCOURT CTT",
+       "cat": "",
+       "cats": "",
+       "clt": 999,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "PHAN",
+       "pre": "Luu-Ly",
+       "club": "FERRIERE VENDEE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 998,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "ROGER",
+       "pre": "Eden",
+       "club": "LA CHAPELLE ALTT",
+       "cat": "",
+       "cats": "",
+       "clt": 980,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "XU",
+       "pre": "Loucie",
+       "club": "T.T. JOUE-LES-TOURS",
+       "cat": "",
+       "cats": "",
+       "clt": 942,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "VOISINE",
+       "pre": "Maëlys",
+       "club": "POMMERIEUX Eclair Sports",
+       "cat": "",
+       "cats": "",
+       "clt": 936,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "MANCELLE HIMIDI",
+       "pre": "Inaya",
+       "club": "IGNY T.T.",
+       "cat": "",
+       "cats": "",
+       "clt": 891,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "BUTYN",
+       "pre": "Nolwenn",
+       "club": "TENNIS DE TABLE DE LOPERHET",
+       "cat": "",
+       "cats": "",
+       "clt": 885,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "VOISINE",
+       "pre": "Océane",
+       "club": "POMMERIEUX Eclair Sports",
+       "cat": "",
+       "cats": "",
+       "clt": 875,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "PEYRON",
+       "pre": "Ambre",
+       "club": "LE MANS SARTHE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 842,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "CRENN",
+       "pre": "Enora",
+       "club": "U.S. VERN",
+       "cat": "",
+       "cats": "",
+       "clt": 745,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "GUYOMARD",
+       "pre": "Lauryn",
+       "club": "TT GRACES",
+       "cat": "",
+       "cats": "",
+       "clt": 735,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      2,
+      0,
+      2
+     ],
+     "id": "t1-g52"
+    },
+    {
+     "nom": "N2 MINIMES FILLES",
+     "niveau": "N",
+     "div": "N2",
+     "age": "-13",
+     "genre": "F",
+     "cat": "-13 ans Filles",
+     "salle": "Le Mans (72) — Salle de tennis de table, 51 rue Garnier Pages, 72000 Le Mans",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h30",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "HUMBERT",
+       "pre": "Clemence",
+       "club": "VGA ST MAUR US TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1151,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "SOULLARD",
+       "pre": "Clara",
+       "club": "FERRIERE VENDEE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1135,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "CHEN FENG",
+       "pre": "Loanna",
+       "club": "PARIS 13 TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 987,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "SURAND",
+       "pre": "Clémence",
+       "club": "LE MANS SARTHE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 952,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "HAMONIAUX",
+       "pre": "Inès",
+       "club": "U.S. VERN",
+       "cat": "",
+       "cats": "",
+       "clt": 933,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "HUANG",
+       "pre": "Caroline",
+       "club": "IVRY US TT",
+       "cat": "",
+       "cats": "",
+       "clt": 930,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "GABILLET",
+       "pre": "Jeanne",
+       "club": "CARQUEFOU TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 926,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "PORTAIL",
+       "pre": "Zoé",
+       "club": "T.T. JOUE-LES-TOURS",
+       "cat": "",
+       "cats": "",
+       "clt": 925,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "CHAMBON",
+       "pre": "Apolline",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "",
+       "cats": "",
+       "clt": 877,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "HUANG",
+       "pre": "Amandine",
+       "club": "IVRY US TT",
+       "cat": "",
+       "cats": "",
+       "clt": 856,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "ALVES",
+       "pre": "Taina-Flor",
+       "club": "CARQUEFOU TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 807,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "BERTRAND",
+       "pre": "Clémence",
+       "club": "R.S. ST CYR-SUR-LOIRE",
+       "cat": "",
+       "cats": "",
+       "clt": 806,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "DAMIDEAUX",
+       "pre": "Romane",
+       "club": "A.T.T. LANGEAIS-CINQ-MARS",
+       "cat": "",
+       "cats": "",
+       "clt": 801,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "COMPAGNET",
+       "pre": "Mégane",
+       "club": "PING ST JEAN 45",
+       "cat": "",
+       "cats": "",
+       "clt": 787,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "PUEL",
+       "pre": "Amandine",
+       "club": "MURS ERIGNE ASITT",
+       "cat": "",
+       "cats": "",
+       "clt": 647,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "CHOLLET",
+       "pre": "Emmy",
+       "club": "MURS ERIGNE ASITT",
+       "cat": "",
+       "cats": "",
+       "clt": 538,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      1,
+      0,
+      2
+     ],
+     "id": "t1-g53"
+    },
+    {
+     "nom": "N2 BENJAMINES",
+     "niveau": "N",
+     "div": "N2",
+     "age": "-11",
+     "genre": "F",
+     "cat": "-11 ans Filles",
+     "salle": "Le Mans (72) — Salle de tennis de table, 51 rue Garnier Pages, 72000 Le Mans",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h30",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "BOUMNIDEL",
+       "pre": "Aya",
+       "club": "MONTESSON TT",
+       "cat": "",
+       "cats": "",
+       "clt": 920,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "HONGKHAM",
+       "pre": "Yuna",
+       "club": "E. P. DE LOGNES",
+       "cat": "",
+       "cats": "",
+       "clt": 801,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "RAKOTOZANDRINY",
+       "pre": "Liana",
+       "club": "BRETIGNY CS",
+       "cat": "",
+       "cats": "",
+       "clt": 758,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "STAINMESSE",
+       "pre": "Ailani",
+       "club": "PONTOISE CERGY A.S.",
+       "cat": "",
+       "cats": "",
+       "clt": 752,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "LOUNAS",
+       "pre": "Yanelle",
+       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 751,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "PERDRIAU",
+       "pre": "Louane",
+       "club": "FERRIERE VENDEE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 705,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "BRULET",
+       "pre": "Calie",
+       "club": "U.S. VERN",
+       "cat": "",
+       "cats": "",
+       "clt": 688,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "GONCALVES",
+       "pre": "Anna",
+       "club": "GDR GUIPAVAS",
+       "cat": "",
+       "cats": "",
+       "clt": 655,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "LAMOURET",
+       "pre": "Anna",
+       "club": "EAUBONNE CSM TT",
+       "cat": "",
+       "cats": "",
+       "clt": 643,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "FONTAINE",
+       "pre": "Charlotte",
+       "club": "STADE LOUPEEN TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 621,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "BEN MOUSSA",
+       "pre": "Sophie",
+       "club": "NANTES ST MEDARD DOULON",
+       "cat": "",
+       "cats": "",
+       "clt": 615,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "DUVILLARD",
+       "pre": "Malia",
+       "club": "CHANGE Union Sportive",
+       "cat": "",
+       "cats": "",
+       "clt": 586,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "DENIS VAROTEAUX",
+       "pre": "Lou",
+       "club": "4S TOURS T.T.",
+       "cat": "",
+       "cats": "",
+       "clt": 583,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "GONCALVES",
+       "pre": "Laura",
+       "club": "GDR GUIPAVAS",
+       "cat": "",
+       "cats": "",
+       "clt": 579,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "PENVEN MARECHAL",
+       "pre": "Marie",
+       "club": "7 ILES TT",
+       "cat": "",
+       "cats": "",
+       "clt": 568,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "PORTAIL",
+       "pre": "Lize",
+       "club": "PP.ST-GEORGES/CHER",
+       "cat": "",
+       "cats": "",
+       "clt": 528,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      0,
+      0,
+      2
+     ],
+     "id": "t1-g54"
+    },
+    {
+     "nom": "N2 JUNIORS GARÇONS",
+     "niveau": "N",
+     "div": "N2",
+     "age": "-19",
+     "genre": "M",
+     "cat": "-19 ans Garçons",
+     "salle": "Le Mans (72) — Salle de tennis de table, 51 rue Garnier Pages, 72000 Le Mans",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h30",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "STORA",
+       "pre": "Elie",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "",
+       "cats": "",
+       "clt": 2281,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "MARSAUD",
+       "pre": "Noa",
+       "club": "FERRIERE VENDEE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 2251,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "SYLVAIN",
+       "pre": "Julien",
+       "club": "NANTES ST MEDARD DOULON",
+       "cat": "",
+       "cats": "",
+       "clt": 2201,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "GOUDJIL",
+       "pre": "Aylan",
+       "club": "COMBS SENART TT",
+       "cat": "",
+       "cats": "",
+       "clt": 2146,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "ADEYEMI",
+       "pre": "Olamide",
+       "club": "CESSON O.C.",
+       "cat": "",
+       "cats": "",
+       "clt": 2142,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "GUEGUEN",
+       "pre": "Anselme",
+       "club": "Argantel Club PLERIN",
+       "cat": "",
+       "cats": "",
+       "clt": 2126,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "HUA",
+       "pre": "Louis",
+       "club": "PARIS 13 TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 2091,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "CHADELAUD",
+       "pre": "Boris",
+       "club": "VERSAILLES SCTT",
+       "cat": "",
+       "cats": "",
+       "clt": 2069,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "CORTET",
+       "pre": "Ylann",
+       "club": "STE LUCE T.T.",
+       "cat": "",
+       "cats": "",
+       "clt": 2063,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "HAN",
+       "pre": "Thomas",
+       "club": "PARIS 13 TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 2051,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "MOUSSAY",
+       "pre": "Dorian",
+       "club": "ERNEENNE Sport Tennis de Table",
+       "cat": "",
+       "cats": "",
+       "clt": 2045,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "AMORI",
+       "pre": "Amine",
+       "club": "ELANCOURT CTT",
+       "cat": "",
+       "cats": "",
+       "clt": 2044,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "TEYSSEDRE",
+       "pre": "Louis",
+       "club": "PARIS 13 TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 2040,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "MOLIN",
+       "pre": "Maxyme",
+       "club": "CHARENTON TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 2034,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "STAMPANONI",
+       "pre": "Maxime",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "",
+       "cats": "",
+       "clt": 2033,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "MIYAKE",
+       "pre": "Taira",
+       "club": "VERSAILLES SCTT",
+       "cat": "",
+       "cats": "",
+       "clt": 2015,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "VERCHERE",
+       "pre": "Simon",
+       "club": "LE MANS SARTHE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 2013,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "BARROCA",
+       "pre": "Titouan",
+       "club": "BERRICHONNE-CHATEAUROUX",
+       "cat": "",
+       "cats": "",
+       "clt": 1971,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "ROL",
+       "pre": "Adrien",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1971,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "JACQUES",
+       "pre": "Antoine",
+       "club": "CLAMART CSM",
+       "cat": "",
+       "cats": "",
+       "clt": 1967,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "RONSIN",
+       "pre": "Marius",
+       "club": "RENNES TOUR D AUVERGNE",
+       "cat": "",
+       "cats": "",
+       "clt": 1920,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "GAPAILLARD",
+       "pre": "Aubin",
+       "club": "Ste GENEVIEVE SP",
+       "cat": "",
+       "cats": "",
+       "clt": 1908,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "LE PAUTREMAT",
+       "pre": "Leon",
+       "club": "GARDE DU VOEU HENNEBONT",
+       "cat": "",
+       "cats": "",
+       "clt": 1898,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "HOBBAH",
+       "pre": "Amontchi",
+       "club": "ISSY-LES-MOULINEAUX",
+       "cat": "",
+       "cats": "",
+       "clt": 1826,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      3,
+      1,
+      2
+     ],
+     "id": "t1-g55"
+    },
+    {
+     "nom": "N2 CADETS",
+     "niveau": "N",
+     "div": "N2",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "salle": "Le Mans (72) — Salle de tennis de table, 51 rue Garnier Pages, 72000 Le Mans",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h30",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "MELKI",
+       "pre": "Paul",
+       "club": "MARLY LE ROI US",
+       "cat": "",
+       "cats": "",
+       "clt": 1897,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "DUGUET",
+       "pre": "Sacha",
+       "club": "ELANCOURT CTT",
+       "cat": "",
+       "cats": "",
+       "clt": 1825,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "CAILLAUD",
+       "pre": "Adam",
+       "club": "ROMAGNE (LA) - S.S.",
+       "cat": "",
+       "cats": "",
+       "clt": 1817,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "RENONCOURT",
+       "pre": "Jarod",
+       "club": "CHELLES TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1795,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "NOUBLANCHE",
+       "pre": "Raphael",
+       "club": "NANTES ST JOSEPH TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1781,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "ZHOU",
+       "pre": "Mingxuan",
+       "club": "PALAISEAU US",
+       "cat": "",
+       "cats": "",
+       "clt": 1744,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "LALOUE",
+       "pre": "Bastien",
+       "club": "MESANGER ATT",
+       "cat": "",
+       "cats": "",
+       "clt": 1744,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "COUSSEAU",
+       "pre": "Hugo",
+       "club": "ROMAGNE (LA) - S.S.",
+       "cat": "",
+       "cats": "",
+       "clt": 1733,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "LE PAGE GUERINET",
+       "pre": "Louis",
+       "club": "ST-AVERTIN SPORTS TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1701,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "OKAMOTO",
+       "pre": "Yugo",
+       "club": "THORIGNE-FOUILLARD T.T.",
+       "cat": "",
+       "cats": "",
+       "clt": 1690,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "COHEN MELKA",
+       "pre": "Nathan",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1677,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "COZIGOU",
+       "pre": "Mael",
+       "club": "PONTOISE CERGY A.S.",
+       "cat": "",
+       "cats": "",
+       "clt": 1646,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "BARRAL",
+       "pre": "Andréa",
+       "club": "MARLY LE ROI US",
+       "cat": "",
+       "cats": "",
+       "clt": 1645,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "LEVASSOR",
+       "pre": "Dylan",
+       "club": "NANTES TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1632,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "PRUVOT",
+       "pre": "Jules",
+       "club": "USM OLIVET TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1622,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "MAYOMBO",
+       "pre": "Tommy",
+       "club": "ANTONY SP TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1614,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "DOUARAN",
+       "pre": "Rafael",
+       "club": "THORIGNE-FOUILLARD T.T.",
+       "cat": "",
+       "cats": "",
+       "clt": 1611,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "ZHANG",
+       "pre": "Theo",
+       "club": "ANTONY SP TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1574,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "ROY",
+       "pre": "Alexis",
+       "club": "NANTES ST MEDARD DOULON",
+       "cat": "",
+       "cats": "",
+       "clt": 1554,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "CHANLIAT",
+       "pre": "Timothee",
+       "club": "USM OLIVET TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1553,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "SUCHODOLSKI",
+       "pre": "Ugo",
+       "club": "USM OLIVET TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1508,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "BAHI",
+       "pre": "Sofiane",
+       "club": "US ORLEANS TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1423,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "DEMOSSIER",
+       "pre": "Victor",
+       "club": "CESSON O.C.",
+       "cat": "",
+       "cats": "",
+       "clt": 1299,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "JOUBAUD",
+       "pre": "Antonin",
+       "club": "CESSON O.C.",
+       "cat": "",
+       "cats": "",
+       "clt": 1209,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      2,
+      1,
+      2
+     ],
+     "id": "t1-g56"
+    },
+    {
+     "nom": "N2 MINIMES GARÇONS",
+     "niveau": "N",
+     "div": "N2",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "salle": "Le Mans (72) — Salle de tennis de table, 51 rue Garnier Pages, 72000 Le Mans",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h30",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "LE GOFF",
+       "pre": "Noam",
+       "club": "GARDE DU VOEU HENNEBONT",
+       "cat": "",
+       "cats": "",
+       "clt": 1633,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "GACHE",
+       "pre": "Axel",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1620,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "BARRE",
+       "pre": "Victor",
+       "club": "SPORTING PARIS 20 TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1543,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "LE ROY",
+       "pre": "Florian",
+       "club": "SAINT-DIVY SPORT TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1522,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "FERREIRA CECIA",
+       "pre": "Valérian",
+       "club": "US ROISSY TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1501,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "TISSAFI IDRISSI",
+       "pre": "Lyazid",
+       "club": "VERSAILLES SCTT",
+       "cat": "",
+       "cats": "",
+       "clt": 1499,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "GRELLIER-COFFY",
+       "pre": "Hugo",
+       "club": "VGA ST MAUR US TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1415,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "BUSSEROLLE",
+       "pre": "Gabriel",
+       "club": "CESSON O.C.",
+       "cat": "",
+       "cats": "",
+       "clt": 1411,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "LE NY",
+       "pre": "Anis",
+       "club": "MARLY LE ROI US",
+       "cat": "",
+       "cats": "",
+       "clt": 1399,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "LHUISSIER",
+       "pre": "Nolan",
+       "club": "MAZE AUTHION TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1389,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "DUCOUDRAY",
+       "pre": "Antonin",
+       "club": "CLAMART CSM",
+       "cat": "",
+       "cats": "",
+       "clt": 1321,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "GELE FORT",
+       "pre": "Evan",
+       "club": "HERBIERS (LES) TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1319,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "ANDORIN",
+       "pre": "Timeo",
+       "club": "RP FOUESNANT",
+       "cat": "",
+       "cats": "",
+       "clt": 1302,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "LI",
+       "pre": "Max",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "",
+       "cats": "",
+       "clt": 1299,
+       "acbb": true,
+       "lic": "7528733"
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "ALTAF",
+       "pre": "Ayaan",
+       "club": "NOISY LE GRAND CSTT",
+       "cat": "",
+       "cats": "",
+       "clt": 1271,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "CHEN",
+       "pre": "Lilian",
+       "club": "VGA ST MAUR US TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1269,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "CHARLES",
+       "pre": "Marin",
+       "club": "ASC GUICLAN TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1202,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "VELUT",
+       "pre": "Baptiste",
+       "club": "RP FOUESNANT",
+       "cat": "",
+       "cats": "",
+       "clt": 1202,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "LE GUILLOU",
+       "pre": "Mathieu",
+       "club": "GOLFE TT 56",
+       "cat": "",
+       "cats": "",
+       "clt": 1196,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "BLEAS",
+       "pre": "Yilan",
+       "club": "THORIGNE-FOUILLARD T.T.",
+       "cat": "",
+       "cats": "",
+       "clt": 1167,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "GARCIA-VINCENT",
+       "pre": "Luis",
+       "club": "4S TOURS T.T.",
+       "cat": "",
+       "cats": "",
+       "clt": 1113,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "DOUILLARD",
+       "pre": "Alexis",
+       "club": "CJF / SAINT-MALO U.P.",
+       "cat": "",
+       "cats": "",
+       "clt": 1112,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "EDAN",
+       "pre": "Adrien",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1055,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "LE MENER",
+       "pre": "Paul",
+       "club": "LES LOUPS D'ANGERS TT",
+       "cat": "",
+       "cats": "",
+       "clt": 847,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      1,
+      1,
+      2
+     ],
+     "id": "t1-g57"
+    },
+    {
+     "nom": "N2 BENJAMINS",
+     "niveau": "N",
+     "div": "N2",
+     "age": "-11",
+     "genre": "M",
+     "cat": "-11 ans Garçons",
+     "salle": "Le Mans (72) — Salle de tennis de table, 51 rue Garnier Pages, 72000 Le Mans",
+     "date": "10/10/2026",
+     "pointage": "9h30",
+     "debut": "10h30",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 1,
+       "ajoute": false,
+       "nom": "MANACH",
+       "pre": "Paul",
+       "club": "4S TOURS T.T.",
+       "cat": "",
+       "cats": "",
+       "clt": 1126,
+       "acbb": false
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "GAY",
+       "pre": "Rafaël",
+       "club": "CESSON O.C.",
+       "cat": "",
+       "cats": "",
+       "clt": 1079,
+       "acbb": false
+      },
+      {
+       "pos": 3,
+       "ajoute": false,
+       "nom": "CHEVALIER",
+       "pre": "Matheo",
+       "club": "ST-AVERTIN SPORTS TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1067,
+       "acbb": false
+      },
+      {
+       "pos": 4,
+       "ajoute": false,
+       "nom": "MARIE",
+       "pre": "Maxence",
+       "club": "ST GRATIEN AS",
+       "cat": "",
+       "cats": "",
+       "clt": 1044,
+       "acbb": false
+      },
+      {
+       "pos": 5,
+       "ajoute": false,
+       "nom": "MASSELIN",
+       "pre": "Marius",
+       "club": "PELLERIN (LE)",
+       "cat": "",
+       "cats": "",
+       "clt": 1032,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "SON",
+       "pre": "Lenny",
+       "club": "PONTOISE CERGY A.S.",
+       "cat": "",
+       "cats": "",
+       "clt": 1020,
+       "acbb": false
+      },
+      {
+       "pos": 7,
+       "ajoute": false,
+       "nom": "CASANAVE-LAULIVE",
+       "pre": "Augustin",
+       "club": "RP FOUESNANT",
+       "cat": "",
+       "cats": "",
+       "clt": 877,
+       "acbb": false
+      },
+      {
+       "pos": 8,
+       "ajoute": false,
+       "nom": "MENAGE",
+       "pre": "Louis",
+       "club": "MAISONS-LAFFITTE. US",
+       "cat": "",
+       "cats": "",
+       "clt": 861,
+       "acbb": false
+      },
+      {
+       "pos": 9,
+       "ajoute": false,
+       "nom": "COHARD",
+       "pre": "Lilian",
+       "club": "BELLEVIGNY ESBV",
+       "cat": "",
+       "cats": "",
+       "clt": 848,
+       "acbb": false
+      },
+      {
+       "pos": 10,
+       "ajoute": false,
+       "nom": "LIBERT TOULOUSE",
+       "pre": "Robin",
+       "club": "AMICALE EPERNON",
+       "cat": "",
+       "cats": "",
+       "clt": 841,
+       "acbb": false
+      },
+      {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "PEAN",
+       "pre": "Maël",
+       "club": "CHANGE Union Sportive",
+       "cat": "",
+       "cats": "",
+       "clt": 836,
+       "acbb": false
+      },
+      {
+       "pos": 12,
+       "ajoute": false,
+       "nom": "VERISSIMO FERRO",
+       "pre": "Martin",
+       "club": "LE MANS SARTHE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 835,
+       "acbb": false
+      },
+      {
+       "pos": 13,
+       "ajoute": false,
+       "nom": "SCHMUTZ",
+       "pre": "Soren",
+       "club": "PARIS 13 TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 835,
+       "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "CHIRON",
+       "pre": "Martin",
+       "club": "Argantel Club PLERIN",
+       "cat": "",
+       "cats": "",
+       "clt": 834,
+       "acbb": false
+      },
+      {
+       "pos": 15,
+       "ajoute": false,
+       "nom": "GIRAUD",
+       "pre": "Raphael",
+       "club": "CLAMART CSM",
+       "cat": "",
+       "cats": "",
+       "clt": 823,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "LIAIGRE",
+       "pre": "Tao",
+       "club": "ST HILAIRE DE LOULAY",
+       "cat": "",
+       "cats": "",
+       "clt": 799,
+       "acbb": false
+      },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "SOMMEILLY",
+       "pre": "Thomas",
+       "club": "C'CHARTRES TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 777,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "LARTIGUE",
+       "pre": "Robin",
+       "club": "VINEUIL SPORTS / SUEVRES TT",
+       "cat": "",
+       "cats": "",
+       "clt": 766,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "PONCELET ANDRE",
+       "pre": "Titouan",
+       "club": "CMPJM INGRE TT",
+       "cat": "",
+       "cats": "",
+       "clt": 748,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "LEDOS",
+       "pre": "Arthur",
+       "club": "THORIGNE-FOUILLARD T.T.",
+       "cat": "",
+       "cats": "",
+       "clt": 726,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "MEMPONTEL",
+       "pre": "Antoine",
+       "club": "AURORE DE VITRE TT",
+       "cat": "",
+       "cats": "",
+       "clt": 717,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "PRUDHOMME",
+       "pre": "Jules",
+       "club": "NANTES ST MEDARD DOULON",
+       "cat": "",
+       "cats": "",
+       "clt": 708,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "MERCIER",
+       "pre": "Paul",
+       "club": "LES LOUPS D'ANGERS TT",
+       "cat": "",
+       "cats": "",
+       "clt": 694,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "HALBOT",
+       "pre": "Theo",
+       "club": "S.C. MOREE TT",
+       "cat": "",
+       "cats": "",
+       "clt": 644,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      0,
+      1,
+      2
+     ],
+     "id": "t1-g58"
+    },
+    {
+     "nom": "N2 SENIORS DAMES",
+     "niveau": "N",
+     "div": "N2",
+     "age": "ELITE",
+     "genre": "F",
+     "cat": "Élite Dames",
+     "salle": "Draveil (91) — Salle Alborghetti, 53 rue Ferdinand Buisson, 91210 Draveil",
+     "date": "10/10/2026",
+     "pointage": "9h00",
+     "debut": "10h30",
+     "contact": "",
+     "joueurs": [
+      {
+       "pos": 51,
+       "ajoute": false,
+       "nom": "PERRET",
+       "pre": "Charlotte",
+       "club": "CLAMART CSM",
+       "cat": "",
+       "cats": "",
+       "clt": 1749,
+       "acbb": false
+      },
+      {
+       "pos": 52,
+       "ajoute": false,
+       "nom": "BUREAU",
+       "pre": "Clemence",
+       "club": "LE MANS SARTHE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1745,
+       "acbb": false
+      },
+      {
+       "pos": 53,
+       "ajoute": false,
+       "nom": "RAHARIMANANA",
+       "pre": "Hanitra",
+       "club": "Karen SAINT-DENIS TT93",
+       "cat": "",
+       "cats": "",
+       "clt": 1689,
+       "acbb": false
+      },
+      {
+       "pos": 54,
+       "ajoute": false,
+       "nom": "LE FUR",
+       "pre": "Iris",
+       "club": "ST GRATIEN AS",
+       "cat": "",
+       "cats": "",
+       "clt": 1533,
+       "acbb": false
+      },
+      {
+       "pos": 55,
+       "ajoute": false,
+       "nom": "SCHELLINGER",
+       "pre": "Lea",
+       "club": "RAMBOUILLET TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1530,
+       "acbb": false
+      },
+      {
+       "pos": 56,
+       "ajoute": false,
+       "nom": "CAMUS",
+       "pre": "Laura",
+       "club": "VGA ST MAUR US TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1507,
+       "acbb": false
+      },
+      {
+       "pos": 57,
+       "ajoute": false,
+       "nom": "PAUL",
+       "pre": "Philippine",
+       "club": "Cholet Alliance Tennis de Table",
+       "cat": "",
+       "cats": "",
+       "clt": 1505,
+       "acbb": false
+      },
+      {
+       "pos": 58,
+       "ajoute": false,
+       "nom": "BLAEVOET",
+       "pre": "Margot",
+       "club": "FONTENAYSIENNE Union Sportive TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1456,
+       "acbb": false
+      },
+      {
+       "pos": 59,
+       "ajoute": false,
+       "nom": "YENENKO",
+       "pre": "Galyna",
+       "club": "MONTMAGNY GROSLAY TTC",
+       "cat": "",
+       "cats": "",
+       "clt": 1426,
+       "acbb": false
+      },
+      {
+       "pos": 60,
+       "ajoute": false,
+       "nom": "GALLIER",
+       "pre": "Mathilde",
+       "club": "FERRIERE VENDEE TENNIS DE TABLE",
+       "cat": "",
+       "cats": "",
+       "clt": 1424,
+       "acbb": false
+      },
+      {
+       "pos": 61,
+       "ajoute": false,
+       "nom": "ROBINI",
+       "pre": "Ines",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1355,
+       "acbb": false
+      },
+      {
+       "pos": 62,
+       "ajoute": false,
+       "nom": "CHEN",
+       "pre": "Mengmeng",
+       "club": "JUMP",
+       "cat": "",
+       "cats": "",
+       "clt": 1354,
+       "acbb": false
+      },
+      {
+       "pos": 63,
+       "ajoute": false,
+       "nom": "MAUGER",
+       "pre": "Carole",
+       "club": "POISSY USC",
+       "cat": "",
+       "cats": "",
+       "clt": 1316,
+       "acbb": false
+      },
+      {
+       "pos": 64,
+       "ajoute": false,
+       "nom": "DIENG",
+       "pre": "Kelly",
+       "club": "ELANCOURT CTT",
+       "cat": "",
+       "cats": "",
+       "clt": 1301,
+       "acbb": false
+      },
+      {
+       "pos": 65,
+       "ajoute": false,
+       "nom": "CHEVREUIL",
+       "pre": "Ophélie",
+       "club": "POMMERIEUX Eclair Sports",
+       "cat": "",
+       "cats": "",
+       "clt": 1229,
+       "acbb": false
+      },
+      {
+       "pos": 66,
+       "ajoute": false,
+       "nom": "MERIC",
+       "pre": "Marion",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "",
+       "cats": "",
+       "clt": 1209,
+       "acbb": true,
+       "lic": "7847253"
+      },
+      {
+       "pos": 67,
+       "ajoute": false,
+       "nom": "ANTUNES",
+       "pre": "Lucie",
+       "club": "VINCENNOIS TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1201,
+       "acbb": false
+      },
+      {
+       "pos": 68,
+       "ajoute": false,
+       "nom": "JOSSE",
+       "pre": "Marie",
+       "club": "VITRY ES",
+       "cat": "",
+       "cats": "",
+       "clt": 1175,
+       "acbb": false
+      },
+      {
+       "pos": 69,
+       "ajoute": false,
+       "nom": "THERASSE",
+       "pre": "Léa",
+       "club": "THIAIS AS TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1125,
+       "acbb": false
+      },
+      {
+       "pos": 70,
+       "ajoute": false,
+       "nom": "CORNET",
+       "pre": "Julie",
+       "club": "RUEIL ATHLETIC CLUB TT",
+       "cat": "",
+       "cats": "",
+       "clt": 1118,
+       "acbb": false
+      },
+      {
+       "pos": 71,
+       "ajoute": false,
+       "nom": "COURPOTIN",
+       "pre": "Maelys",
+       "club": "BOIS COLOMBES SPORTS",
+       "cat": "",
+       "cats": "",
+       "clt": 1052,
+       "acbb": false
+      },
+      {
+       "pos": 72,
+       "ajoute": false,
+       "nom": "VALLS",
+       "pre": "Emma",
+       "club": "RAQUETTE BRECEENNE",
+       "cat": "",
+       "cats": "",
+       "clt": 1050,
+       "acbb": false
+      },
+      {
+       "pos": 73,
+       "ajoute": false,
+       "nom": "BRUNO",
+       "pre": "Jenny",
+       "club": "LA RICHARDAIS PING",
+       "cat": "",
+       "cats": "",
+       "clt": 792,
+       "acbb": false
+      },
+      {
+       "pos": 74,
+       "ajoute": false,
+       "nom": "GODARD",
+       "pre": "Floriane",
+       "club": "FL ST AIGNAN",
+       "cat": "",
+       "cats": "",
+       "clt": 651,
+       "acbb": false
+      }
+     ],
+     "rang": [
+      4,
+      0,
+      2
+     ],
+     "id": "t1-g59"
     }
    ]
   }
