@@ -15,9 +15,10 @@
   .avis .t{font-weight:700;font-size:13px;color:var(--warn);margin-bottom:3px}
   .avis .d{font-size:12.5px;color:var(--ink-2);line-height:1.55}
   .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
-  .find{flex:1 1 260px;min-width:0;position:relative}
-  .find input{width:100%;padding-left:32px}
-  .find .lo{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--dimmer);font-size:13px;pointer-events:none}
+  .find{display:flex;align-items:center;gap:11px;background:var(--panel);border:1px solid var(--line-2);
+        border-radius:12px;padding:0 16px;margin-bottom:8px}
+  .find input{flex:1 1 auto;min-width:0;background:transparent;border:0;color:var(--ink);
+              font-family:"Space Grotesk",system-ui,sans-serif;font-size:16px;padding:15px 0;outline:none}
   .cnt{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dimmer);white-space:nowrap}
   /* la poule, affichée dans la fiche du joueur */
   .gl{padding:6px 8px;display:flex;flex-direction:column;gap:2px;max-height:330px;overflow:auto}
@@ -35,24 +36,46 @@
   /* Trois niveaux nettement distincts, du plus gros au plus fin : la CATÉGORIE D'ÂGE (celle par
      laquelle un joueur se cherche), la division, puis le joueur. Avant, tout pesait pareil et
      l'œil n'avait aucune prise sur 107 noms. */
-  .saut{position:sticky;top:0;z-index:5;display:flex;gap:6px;flex-wrap:wrap;padding:10px 0 12px;
-        margin-bottom:4px;background:linear-gradient(var(--bg) 72%,rgba(11,11,13,0))}
-  .saut button{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:800;padding:6px 11px;
-        border-radius:99px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink-2);cursor:pointer}
-  .saut button:hover{border-color:var(--orange);color:var(--orange)}
-  .saut button i{font-style:normal;color:var(--dimmer);margin-left:5px;font-weight:400}
-  .cat{margin-bottom:34px;scroll-margin-top:62px}
-  .cat>h2{display:flex;align-items:baseline;gap:12px;margin:0 0 14px;padding-bottom:9px;
-          border-bottom:2px solid var(--orange);
+  /* Rail des catégories : la catégorie d'âge devient une structure permanente, visible
+     pendant tout le défilement, et non plus un titre qu'on dépasse. Au téléphone il
+     redevient une barre horizontale qui défile. */
+  .cols{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+  .rail{flex:1 1 212px;max-width:244px;position:sticky;top:16px}
+  .rail nav{display:flex;flex-direction:column;gap:3px}
+  .rail a{display:flex;align-items:baseline;gap:8px;padding:9px 12px;border-radius:9px;text-decoration:none;
+          color:var(--ink-2);border:1px solid transparent}
+  .rail a:hover{background:var(--panel-2);color:var(--ink)}
+  .rail a.on{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+  .rail a .l{flex-grow:1;font-size:13px;font-weight:600}
+  .rail a.on .l{font-weight:700}
+  .rail a .n{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dimmer)}
+  .rail a.on .n{color:#0B0B0D;font-weight:800}
+  .jauge{margin-top:16px;padding:12px;border-radius:10px;background:var(--panel);border:1px solid var(--line)}
+  .jauge b{display:block;font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;font-size:26px;line-height:1}
+  .jauge b span{color:var(--dimmer)}
+  .jauge i{display:block;height:5px;border-radius:99px;background:var(--panel-3);margin-top:9px;overflow:hidden}
+  .jauge i em{display:block;height:100%;background:var(--win)}
+  @media(max-width:780px){
+    .rail{position:static;max-width:none;flex-basis:100%}
+    .rail nav{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:8px}
+    .rail a{flex:0 0 auto;border:1px solid var(--line-2);border-radius:99px;padding:8px 12px}
+    .jauge{display:none}
+  }
+  .cat{margin-bottom:36px;scroll-margin-top:18px}
+  .cat>h2{display:flex;align-items:flex-end;gap:14px;margin:0 0 16px;padding-bottom:11px;
+          border-bottom:3px solid var(--orange);
           font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;
-          font-size:38px;line-height:1;letter-spacing:.5px;color:var(--orange)}
-  @media(max-width:800px){.cat>h2{font-size:28px}}
-  .cat>h2 .n{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:10.5px;font-weight:800;
-             color:var(--dimmer);text-transform:none;letter-spacing:0;margin-left:auto;white-space:nowrap}
-  .sec{display:grid;grid-template-columns:54px minmax(0,1fr);gap:10px;align-items:start;margin-bottom:12px}
-  @media(max-width:600px){.sec{grid-template-columns:1fr;gap:5px}}
-  .sec>.lab{color:var(--ink-2);background:var(--panel-2);border:1px solid var(--line-2);border-radius:8px;
-            padding:7px 0;text-align:center;font-size:11px;letter-spacing:.5px}
+          font-size:46px;line-height:.9;letter-spacing:.5px;color:var(--orange)}
+  .cat>h2 .g{font-size:28px;line-height:1.2;color:var(--ink-2)}
+  @media(max-width:800px){.cat>h2{font-size:32px}.cat>h2 .g{font-size:20px}}
+  .cat>h2 .n{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:11px;font-weight:400;
+             color:var(--dimmer);text-transform:none;letter-spacing:0;margin-left:auto;white-space:nowrap;padding-bottom:5px}
+  .sec{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+  .sec>.lab{flex:0 0 62px;text-align:center;padding:9px 0;border-radius:9px;background:var(--panel-2);
+            border:1px solid var(--line-2);color:var(--ink-2);font-size:12px;font-weight:800;letter-spacing:.5px}
+  .sec>.lab.haut{border-color:rgba(167,139,250,.55);color:var(--violet)}
+  .sec .js{flex:1 1 auto;min-width:0}
+  @media(max-width:600px){.sec{flex-direction:column;gap:7px}.sec>.lab{flex:0 0 auto;align-self:flex-start;padding:6px 13px}}
   .js{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
   .j{display:flex;align-items:center;gap:9px;padding:9px 11px;cursor:pointer}
   .j:hover{border-color:var(--line-2)}
@@ -111,14 +134,25 @@
     </div>
   </div>
 
-  <div class="bar">
-    <div class="find"><span class="lo">⌕</span><input id="q" placeholder="chercher un joueur par nom ou prénom…" autocomplete="off"></div>
-    <span class="cnt" id="cnt"></span>
+  <div class="cols">
+    <aside class="rail">
+      <div class="lab" style="margin-bottom:9px">Ma catégorie</div>
+      <nav id="rail"></nav>
+      <div class="jauge" id="jauge"></div>
+    </aside>
+    <main style="flex:999 1 620px;min-width:0">
+      <label style="display:block">
+        <span class="lab">Trouve-toi</span>
+        <span class="find" style="margin-top:7px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--dimmer);flex:0 0 auto" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <input id="q" type="search" placeholder="ton nom ou ton prénom…" autocomplete="off">
+        </span>
+      </label>
+      <div class="aide" id="aide" style="margin:0 0 24px">Clique sur ton nom : tu verras ta poule complète, ta salle et ton heure de pointage, et tu pourras confirmer ta présence.</div>
+      <span class="cnt" id="cnt" hidden></span>
+      <div id="vue"></div>
+    </main>
   </div>
-
-  <div class="saut" id="saut"></div>
-  <div class="aide" id="aide">👆 <span>Trouve-toi par <b>ton nom</b> ou ta catégorie, puis clique : tu verras <b>ta poule complète</b> et tu pourras <b>confirmer ta présence</b>.</span></div>
-  <div id="vue"></div>
 </div>
 
 <div class="bg" id="bg" hidden></div>
@@ -162,7 +196,7 @@ function render(){
   document.getElementById('sub').textContent='compétition individuelle · 4 tours dans la saison'+(t?' · tour '+S.tour+' le '+t.date:'');
   renderTours();
   document.getElementById('vue').innerHTML = vueJoueurs();
-  renderSauts();
+  renderRail();
   const n=tousNos().length, c=tousNos().filter(x=>etat(x.j.lic)).length;
   document.getElementById('cnt').textContent=n?(c+' / '+n+' joueur'+(n>1?'s':'')+' du club ont répondu'):'';
   document.querySelectorAll('[data-sel]').forEach(el=>el.onclick=()=>ouvrir(el.dataset.sel));
@@ -173,41 +207,64 @@ function ligne(j,g){
     +'<span class="nm">'+esc(j.pre+' '+j.nom)+(j.acbb?' '+tagPres(j.lic):'')+'<span class="cl">'+esc(j.club)+' · '+esc(j.cat)+'</span></span>'
     +'<span class="pt">'+j.clt+'</span></div>';
 }
-/* Raccourcis par catégorie : avec dix catégories et 107 joueurs, un joueur doit pouvoir
-   sauter directement à la sienne sans parcourir la page. */
-function renderSauts(){
-  const el=document.getElementById('saut'); if(!el) return;
+/* Le rail : chaque catégorie d'âge y est listée avec son effectif et reste visible pendant
+   tout le défilement, celle qu'on regarde s'allume. C'est ce qui donne prise sur 123 noms. */
+function renderRail(){
+  const el=document.getElementById('rail'); if(!el) return;
   const secs=[].slice.call(document.querySelectorAll('#vue .cat'));
-  el.innerHTML=secs.map(x=>'<button type="button" data-go="'+x.id+'">'+esc(x.dataset.cat)+'<i>'+x.dataset.n+'</i></button>').join('');
-  el.hidden=secs.length<2;
-  el.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{
-    const t=document.getElementById(b.dataset.go); if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
-  });
+  el.innerHTML=secs.map(x=>'<a href="#'+x.id+'" data-go="'+x.id+'"><span class="l">'+esc(x.dataset.cat)+'</span><span class="n">'+x.dataset.n+'</span></a>').join('');
+  const liens=[].slice.call(el.querySelectorAll('[data-go]'));
+  liens.forEach(a=>a.onclick=e=>{ e.preventDefault();
+    const t=document.getElementById(a.dataset.go); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); });
+  if(window.IntersectionObserver){
+    if(S.obs) S.obs.disconnect();
+    S.obs=new IntersectionObserver(es=>{ es.forEach(e=>{ if(!e.isIntersecting) return;
+      liens.forEach(a=>a.classList.toggle('on',a.dataset.go===e.target.id)); }); },
+      {rootMargin:'-10% 0px -75% 0px'});
+    secs.forEach(x=>S.obs.observe(x));
+  }
+  if(liens[0]) liens[0].classList.add('on');
+  const nos=tousNos(), rep=nos.filter(x=>etat(x.j.lic)).length;
+  const pct=nos.length?Math.round(100*rep/nos.length):0;
+  document.getElementById('jauge').innerHTML='<div class="lab" style="margin-bottom:7px">Réponses</div>'
+    +'<b>'+rep+' <span>/ '+nos.length+'</span></b><i><em style="width:'+pct+'%"></em></i>';
 }
 /* On range par ÂGE d'abord — c'est ainsi qu'un joueur se cherche, « je suis en -13 » avant
-   « je suis en D3 » — puis par division à l'intérieur. L'ordre vient du champ `rang` posé
-   par le convertisseur, pas d'un tri alphabétique qui mettrait Élite avant -11. */
+   « je suis en D3 » — puis par niveau à l'intérieur, du plus haut au plus bas : un même âge
+   peut mêler national, régional et départemental, qui ne se jouent ni le même jour ni au même
+   endroit. L'ordre des âges vient du champ `rang` posé par les convertisseurs. */
+const ORDRE_DIV={N2:0,N1:0,R1:1,R2:2,R3:3,D1:4,D2:5,D3:6,D4:7};
+const rangDiv=d=>(ORDRE_DIV[d]!==undefined?ORDRE_DIV[d]:9);
+const haut=d=>/^[NR]\d/.test(d||'');
 function vueJoueurs(){
   const nos=tousNos().filter(x=>corr(x.j));
   if(!nos.length) return '<div class="empty">Aucun joueur du club ne correspond à cette recherche.</div>';
   const par={};
   nos.forEach(x=>{
     const c=x.g.cat||x.g.nom, d=x.g.div||'—';
-    const e=par[c]=par[c]||{rang:x.g.rang||[9,9],divs:{}};
+    const e=par[c]=par[c]||{rang:x.g.rang||[9,9,9],divs:{}};
     (e.divs[d]=e.divs[d]||[]).push(x);
   });
   const ordre=(a,b)=>{ const ra=par[a].rang,rb=par[b].rang;
     return (ra[0]-rb[0])||(ra[1]-rb[1])||a.localeCompare(b,'fr'); };
+  const dateTour=((S.data||{}).tours&&S.data.tours[S.tour]||{}).date||'';
   return Object.keys(par).sort(ordre).map(c=>{
-    const divs=Object.keys(par[c].divs).sort();
-    const n=divs.reduce((s,d)=>s+par[c].divs[d].length,0);
+    const divs=Object.keys(par[c].divs).sort((a,b)=>rangDiv(a)-rangDiv(b)||a.localeCompare(b));
+    const n=divs.reduce((s2,d)=>s2+par[c].divs[d].length,0);
+    const rep=divs.reduce((s2,d)=>s2+par[c].divs[d].filter(x=>etat(x.j.lic)).length,0);
     const id='cat-'+c.replace(/[^A-Za-z0-9]+/g,'-').toLowerCase();
-    return '<section class="cat" id="'+id+'" data-cat="'+esc(c)+'" data-n="'+n+'"><h2>'+esc(c)
-      +'<span class="n">'+n+' joueur'+(n>1?'s':'')+'</span></h2>'
-      +divs.map(d=>'<div class="sec"><span class="lab">'+esc(d)+'</span><div class="js">'
-        +par[c].divs[d].sort((a,b)=>b.j.clt-a.j.clt).map(x=>'<div class="card2 j" data-sel="'+esc(x.g.id+'|'+x.j.lic)+'">'
-          +'<span class="nm">'+esc(x.j.pre+' '+x.j.nom)+'<span class="sub">'+esc(lieu(x.g))+' · '+esc(x.g.debut)+' · '+x.j.clt+' pts</span></span>'
-          +(tagPres(x.j.lic)||'<span class="go">Confirmer ›</span>')+'</div>').join('')
+    const mots=c.split(' '), genre=mots.pop(), age=mots.join(' ');
+    return '<section class="cat" id="'+id+'" data-cat="'+esc(c)+'" data-n="'+n+'">'
+      +'<h2>'+esc(age)+'<span class="g">'+esc(genre)+'</span>'
+        +'<span class="n">'+n+' joueur'+(n>1?'s':'')+' · '+rep+' ont répondu</span></h2>'
+      +divs.map(d=>'<div class="sec"><span class="lab'+(haut(d)?' haut':'')+'">'+esc(d)+'</span><div class="js">'
+        +par[c].divs[d].sort((a,b)=>b.j.clt-a.j.clt).map(x=>{
+            const sous=[lieu(x.g),x.g.debut,x.j.clt+' pts'];
+            if(x.g.date&&x.g.date!==dateTour) sous.unshift(x.g.date.slice(0,5));
+            return '<div class="card2 j" data-sel="'+esc(x.g.id+'|'+x.j.lic)+'">'
+              +'<span class="nm">'+esc(x.j.pre+' '+x.j.nom)+'<span class="sub">'+esc(sous.join(' · '))+'</span></span>'
+              +(tagPres(x.j.lic)||'<span class="go">Confirmer ›</span>')+'</div>';
+          }).join('')
         +'</div></div>').join('')
       +'</section>';
   }).join('');
