@@ -18,6 +18,13 @@ Les licences ne sont pas dans le dépôt : elles viennent de scenarios_log (slot
 « criterium_lic »), déposées par scripts/criterium_push_lic.py. Seuls les COMPTEURS
 agrégés sont écrits dans le fichier publié, jamais une licence.
 
+Fenetre : la base « parties » de la federation s'arrete fin juin 2026 (sonde du
+03/10/2026 : 99 a 172 parties par joueur, aucune posterieure au 21/06/2026). Les
+journees de septembre et octobre 2026 n'y sont pas encore. Compter « depuis le debut
+de la saison 26/27 » rendait donc zero partout, ce qui etait exact et inutile. On
+compte depuis le 01/07/2025, et on publie la derniere date reellement vue pour que la
+page dise de quoi elle parle au lieu de le supposer.
+
 Usage : python3 scripts/criterium_stats.py <tour> [debut_saison JJ/MM/AAAA]
 Env : FFTT_ID, FFTT_PWD, SUPA_SERVICE_KEY
 """
@@ -62,13 +69,15 @@ def bilan(lic, depuis):
         brut = fb.get('xml_partie_mysql.php?licence=%s' % lic); time.sleep(0.03)
     except Exception:
         return None
-    v = d = pf = ct = 0
+    v = d = pf = ct = 0; vue = None
     for b in re.findall(r'<partie>(.*?)</partie>', brut or '', re.S):
         p = tags(b)
         jj = p.get('date', '')
         if not re.match(r'^\d{2}/\d{2}/\d{4}$', jj): continue
         j, m, a = (int(x) for x in jj.split('/'))
         if datetime.date(a, m, j) < depuis: continue
+        q = datetime.date(a, m, j)
+        if vue is None or q > vue: vue = q
         gagne = (p.get('vd') or '').upper().startswith('V')
         adv = classement(p.get('advclaof'))
         if gagne:
@@ -77,11 +86,11 @@ def bilan(lic, depuis):
         else:
             d += 1
             if moi is not None and adv is not None and adv < moi: ct += 1
-    return v, d, pf, ct
+    return v, d, pf, ct, vue
 
 def main():
     tour = sys.argv[1] if len(sys.argv) > 1 else '1'
-    dep = sys.argv[2] if len(sys.argv) > 2 else '01/07/2026'
+    dep = sys.argv[2] if len(sys.argv) > 2 else '01/07/2025'
     j, m, a = (int(x) for x in dep.split('/'))
     depuis = datetime.date(a, m, j)
     lic = table_licences(tour)
@@ -117,10 +126,13 @@ def main():
             b = cache.get(l) if l else None
             for champ in ('v', 'd', 'pf', 'ct'): p.pop(champ, None)
             if b and (b[0] or b[1]):
-                p['v'], p['d'], p['pf'], p['ct'] = b
+                p['v'], p['d'], p['pf'], p['ct'] = b[:4]
                 pose += 1
     doc['maj'] = datetime.date.today().isoformat()
-    doc['bilans'] = {'depuis': dep, 'le': datetime.date.today().isoformat()}
+    vues = [b[4] for b in cache.values() if b[4]]
+    jusqu = max(vues).strftime('%d/%m/%Y') if vues else None
+    doc['bilans'] = {'depuis': dep, 'jusqu': jusqu, 'le': datetime.date.today().isoformat()}
+    print('derniere partie connue de la FFTT : %s' % (jusqu or 'aucune'))
     json.dump(doc, open(SORTIE, 'w'), ensure_ascii=False, indent=1, sort_keys=False)
     print('bilans posés sur %d joueurs · %d licences sans réponse FFTT' % (pose, echecs))
 
