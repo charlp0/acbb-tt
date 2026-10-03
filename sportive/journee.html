@@ -493,6 +493,7 @@ function buildReel(){
   REEL={}; RSC={};
   Object.values(PARTS.sheets).filter(s=>s.source==='fftt').forEach(s=>{
     (REEL[s.j]=REEL[s.j]||{})[s.t]=s.p;
+    if(s.row.match_score==null||s.row.opp_score==null)return;
     const a=+s.row.match_score,b=+s.row.opp_score;
     (RSC[s.j]=RSC[s.j]||{})[s.t]=(a+b===42&&a>=14&&b>=14)?[a-14,b-14]:[a,b];
   });
@@ -749,7 +750,7 @@ function card(t){
      n'est ni modifiée ni écrasée — elle reste consultable en dessous si elle différait. */
   const sc=(RSC[J]||{})[t]||null;
   const stH=reel
-    ? '<span class="st sent" title="composition réellement alignée, lue sur la feuille de rencontre FFTT">FEUILLE OFFICIELLE'+(sc?' · '+sc[0]+'–'+sc[1]:'')+'</span>'
+    ? '<span class="st sent" title="composition réellement alignée, lue sur la feuille de rencontre FFTT">FEUILLE OFFICIELLE'+(sc?' · '+sc[0]+'–'+sc[1]:' · score en attente')+'</span>'
     : '<span class="st '+c.st+'" data-st="'+t+'" title="cliquer pour changer : brouillon → validée → envoyée">'+stLbl+'</span>';
   let planH='';
   if(reel){

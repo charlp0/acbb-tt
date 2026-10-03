@@ -56,7 +56,7 @@ def parse_num(x):
     return int(m.group(1)) if m else None
 
 def fetch_renc(lien):
-    """feuille -> { nrm(nom équipe) : (lineup, doubles) }. La feuille a SA propre orientation
+    """feuille -> { nrm(nom équipe) : (lineup, doubles, parties jouées) }. La feuille a SA propre orientation
     equa/equb : on renvoie donc les compos indexées par nom d'équipe (robuste aux inversions)."""
     r=fb.get("xml_chp_renc.php?"+lien)
     ea,eb=tg(r,'equa'),tg(r,'equb')   # noms d'équipe DE LA FEUILLE (xja appartient à ea, xjb à eb)
@@ -65,18 +65,19 @@ def fetch_renc(lien):
         na,ca,nb,cb=tg(jb,'xja'),tg(jb,'xca'),tg(jb,'xjb'),tg(jb,'xcb')
         if na and ' et ' not in na: A.setdefault(na,dict({'nom':splitnom(na)[0],'prenom':splitnom(na)[1],'cls':parse_cls(ca),'vic':0}, **({'num':parse_num(ca)} if parse_num(ca) else {})))
         if nb and ' et ' not in nb: B.setdefault(nb,dict({'nom':splitnom(nb)[0],'prenom':splitnom(nb)[1],'cls':parse_cls(cb),'vic':0}, **({'num':parse_num(cb)} if parse_num(cb) else {})))
-    dA=dB=0
+    dA=dB=games=0
     for p in re.findall(r'<partie>(.*?)</partie>', r, re.S):
         ja,jbn=tg(p,'ja'),tg(p,'jb'); sa,sb=tg(p,'scorea'),tg(p,'scoreb')
         awin = sa.isdigit() and sb.isdigit() and int(sa)>int(sb)
         bwin = sa.isdigit() and sb.isdigit() and int(sb)>int(sa)
+        if awin or bwin: games+=1
         if ' et ' in ja or ' et ' in jbn:           # double
             if awin: dA+=1
             elif bwin: dB+=1
             continue
         if awin and ja in A: A[ja]['vic']+=1
         elif bwin and jbn in B: B[jbn]['vic']+=1
-    return {fb.nrm(ea):(list(A.values()),dA), fb.nrm(eb):(list(B.values()),dB)}
+    return {fb.nrm(ea):(list(A.values()),dA,games), fb.nrm(eb):(list(B.values()),dB,games)}
 
 def build_pool(key, cx, d1, org):
     cal=fb.get(f"xml_result_equ.php?cx_poule={cx}&D1={d1}&organisme_pere={org}")
@@ -91,15 +92,18 @@ def build_pool(key, cx, d1, org):
         sa,sb=tg(t,'scorea'),tg(t,'scoreb')
         played = sa.isdigit() and sb.isdigit()
         lm=re.search(r'<lien><!\[CDATA\[(.*?)\]\]>',t)
-        la,lb,da,db=([],[],0,0)
+        la,lb,da,db,ga,gb=([],[],0,0,0,0)
         if lm:
             comps=fetch_renc(html.unescape(lm.group(1))); time.sleep(0.2)
-            la,da=comps.get(fb.nrm(ea),([],0))   # rattachement par NOM (pas par position feuille)
-            lb,db=comps.get(fb.nrm(eb),([],0))
+            la,da,ga=comps.get(fb.nrm(ea),([],0,0))   # rattachement par NOM (pas par position feuille)
+            lb,db,gb=comps.get(fb.nrm(eb),([],0,0))
         def tpts(lst): return sum(p['cls'] for p in lst if isinstance(p['cls'],int)) or None
         # journée côté A
-        jA={'journee':jn,'date':date,'players':la,'doubles':da,'opponent':eb}
-        jB={'journee':jn,'date':date,'players':lb,'doubles':db,'opponent':ea}
+        # Le score global peut être retiré pendant la remontée GIRPE, alors que
+        # la feuille et ses parties jouées sont toujours présentes. Ne pas
+        # inventer un score ni perdre ces participations effectivement constatées.
+        jA={'journee':jn,'date':date,'players':la,'doubles':da,'opponent':eb,'played_games':ga}
+        jB={'journee':jn,'date':date,'players':lb,'doubles':db,'opponent':ea,'played_games':gb}
         if played:
             jA['match_score']=int(sa); jA['opp_score']=int(sb)
             jB['match_score']=int(sb); jB['opp_score']=int(sa)

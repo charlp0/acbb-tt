@@ -143,6 +143,13 @@ test('après J2 : la feuille manquante reste inconnue, puis les compteurs suiven
  await page.reload();
  await expect(page.locator('.prow').first().locator('.mj')).toHaveText('2/2');
  await expect(page.locator('.prow').first().locator('.tick').nth(1)).toHaveText('M11');
+ // La FFTT retire parfois le total tout en conservant les parties de la feuille.
+ delete own.journees[1].match_score;delete own.journees[1].opp_score;own.journees[1].played_games=5;
+ await page.reload();await expect(page.locator('.prow').first().locator('.mj')).toHaveText('2/2');
+ await page.goto('/sportive/journee.html?j=2');
+ await expect(page.locator('.tc[data-team="M11"] .st')).toContainText('score en attente');
+ await expect(page.locator('.tc[data-team="M11"]')).not.toContainText('NaN');
+ await expect(page.locator('[data-st="M11"]')).toHaveCount(0);
 });
 test('capitaine : NJ confirmé et colonnes alignées malgré un compteur encore incertain',async({page,context})=>{
  const state=fixture();

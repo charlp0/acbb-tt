@@ -17,6 +17,16 @@ test('un plan seul ne prouve ni participation ni absence',()=>{
  assert.equal(m.history('101',2).length,0);
  assert.equal(m.parcours('101','M9').jours[0].unknown,true);
 });
+test('la feuille jouée reste une preuve quand le score global est en attente',()=>{
+ const data=sheet('M11',1),row=data.M11.teams[0].journees[0];
+ delete row.match_score;delete row.opp_score;row.played_games=5;
+ const m=model({site:{DATA:data}});
+ assert.equal(m.parcours('101','M11').joue,1);
+ assert.equal(m.history('101',2)[0].source,'fftt');
+ assert.equal(PART.historyRules(m,'101','M12',2,{}).descendedJ2,true);
+ row.played_games=0;
+ assert.equal(model({site:{DATA:data}}).history('101',2).length,0);
+});
 test('dames et messieurs restent indépendants',()=>{
  const m=model({site:{DATA:{...sheet('M11',1),...sheet('F3',1)}},poules:{M11:pool('M11'),F3:pool('F3')}});
  assert.equal(m.history('101',2,'M').length,1);

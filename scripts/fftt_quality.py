@@ -18,7 +18,7 @@ def sheet_keys(site):
     return {(t, row.get('name'), int(j['journee']))
             for t, pool in site.get('DATA', {}).items()
             for row in pool.get('teams', []) for j in row.get('journees', [])
-            if j.get('match_score') is not None and j.get('players')}
+            if (j.get('match_score') is not None or j.get('played_games', 0) > 0) and j.get('players')}
 
 
 def missing_sheets(previous, current):
@@ -68,17 +68,20 @@ def check_site(previous, current, expected):
 
 def coverage(site):
     played, available = 0, 0
-    pending = []
+    pending, pending_scores = [], []
     for t, pool in site.get('DATA', {}).items():
         for row in pool.get('teams', []):
             for j in row.get('journees', []):
-                if j.get('match_score') is not None:
+                if j.get('match_score') is not None or j.get('played_games', 0) > 0:
                     played += 1
                     if j.get('players'):
                         available += 1
                     else:
                         pending.append({'poule': t, 'equipe': row.get('name'), 'j': j.get('journee')})
-    return {'scored_team_rounds': played, 'with_sheet': available, 'pending_sheets': pending}
+                    if j.get('match_score') is None:
+                        pending_scores.append({'poule': t, 'equipe': row.get('name'), 'j': j.get('journee')})
+    return {'scored_team_rounds': played-len(pending_scores), 'with_sheet': available,
+            'pending_sheets': pending, 'pending_scores': pending_scores}
 
 
 def acbb_team_key(label, division):

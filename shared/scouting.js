@@ -61,12 +61,13 @@
   }
   /* points de rencontre FFTT (28 – 14, total 42) -> parties gagnées (14 – 0), l'unité du club */
   function parties(a, b) {
+    if (a == null || b == null) return null;
     a = +a; b = +b;
     if (!isFinite(a) || !isFinite(b)) return null;
     return (a + b === 42 && a >= 14 && b >= 14) ? [a - 14, b - 14] : [a, b];
   }
   function jouees(t) {
-    return ((t && t.journees) || []).filter(function (j) { return j.match_score != null && j.opp_score != null; })
+    return ((t && t.journees) || []).filter(function (j) { return (j.match_score != null && j.opp_score != null) || j.played_games > 0; })
       .sort(function (x, y) { return (+x.journee) - (+y.journee); });
   }
   /* niveau = moyenne des points de tous les joueurs alignés sur les journées déjà jouées */
@@ -170,7 +171,7 @@
     var last = js[js.length - 1];
     var pr = parties(last.match_score, last.opp_score);
     out += '<div class="sc-h">Compo récente</div>';
-    out += '<div class="sc-line">J' + esc(last.journee) + ' · ' + esc(last.date || '') + ' · <b class="sc-sc ' + scCls(pr[0], pr[1]) + '">' + pr[0] + ' – ' + pr[1] + '</b> vs ' + esc(last.opponent || '') + '<br>'
+    out += '<div class="sc-line">J' + esc(last.journee) + ' · ' + esc(last.date || '') + ' · '+ (pr ? '<b class="sc-sc ' + scCls(pr[0], pr[1]) + '">' + pr[0] + ' – ' + pr[1] + '</b>' : '<span class="sc-chip">score en attente</span>') + ' vs ' + esc(last.opponent || '') + '<br>'
       + reels(last.players).map(function (p) { return esc(nom(p)) + ' <span class="sc-chip">' + pts(p) + '</span>'; }).join(' ') + '</div>';
 
     var eff = effectif(js);
@@ -191,7 +192,7 @@
       var p = parties(j.match_score, j.opp_score);
       var nous = opts.acbbTeam && sameTeam(j.opponent, opts.acbbTeam.name);
       return '<div class="sc-row"><span>J' + esc(j.journee) + ' <span class="sep">' + esc(j.date || '') + '</span> ' + esc(j.opponent || '') + (nous ? ' <span class="sc-chip">nous</span>' : '') + '</span>'
-        + '<span class="num sc-sc ' + scCls(p[0], p[1]) + '">' + p[0] + ' – ' + p[1] + '</span></div>';
+        + (p ? '<span class="num sc-sc ' + scCls(p[0], p[1]) + '">' + p[0] + ' – ' + p[1] + '</span>' : '<span class="sc-chip">score en attente</span>') + '</div>';
     }).join('');
     return out;
   }

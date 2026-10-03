@@ -11,7 +11,8 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'scripts'))
-from fftt_quality import profile_signature, check_site, acbb_team_key, require_xml, retry_missing_pools
+from fftt_quality import profile_signature, check_site, acbb_team_key, require_xml, retry_missing_pools, coverage
+import fftt_site
 from team_identity import same_team, unique_alias
 from backup_private import encode, verify, main as backup
 from private_store import rows, TABLES
@@ -58,6 +59,36 @@ class DataTests(unittest.TestCase):
         self.assertEqual(len(current['DATA']['M11']['teams'][0]['journees']),2)
         self.assertEqual(current['STANDINGS']['M11'][0]['mp'],2)
         check_site(old,current,['M10','M11'])
+
+    def test_existing_sheet_with_games_survives_missing_global_score(self):
+        old={'DATA':{'M14':{'teams':[{'name':'ACBB 14','acbb':True,'journees':[
+            {'journee':2,'players':[{'nom':'TEST'}],'match_score':10,'opp_score':8}]}]}}}
+        current=copy.deepcopy(old)
+        row=current['DATA']['M14']['teams'][0]['journees'][0]
+        del row['match_score'];del row['opp_score'];row['played_games']=6
+        check_site(old,current,['M14'])
+        status=coverage(current)
+        self.assertEqual(status['with_sheet'],1)
+        self.assertEqual(status['pending_sheets'],[])
+        self.assertEqual(len(status['pending_scores']),1)
+        row['played_games']=0
+        with self.assertRaises(ValueError):check_site(old,current,['M14'])
+
+    def test_collector_keeps_sheet_evidence_without_inventing_score(self):
+        calendar='''<liste><tour><equa>PUTEAUX 4</equa><equb>BOULOGNE BILLAN 14</equb>
+          <libelle>tour n°2</libelle><scorea></scorea><scoreb></scoreb>
+          <dateprevue>02/10/2026</dateprevue><lien><![CDATA[id=test]]></lien></tour></liste>'''
+        sheet='''<liste><equa>PUTEAUX 4</equa><equb>BOULOGNE BILLAN 14</equb>
+          <joueur><xja>ADVERSE Alex</xja><xca>M 1000pts</xca><xjb>TEST Sam</xjb><xcb>M 1100pts</xcb></joueur>
+          <partie><ja>ADVERSE Alex</ja><jb>TEST Sam</jb><scorea>1</scorea><scoreb>2</scoreb></partie>
+          <partie><ja>ADVERSE Alex</ja><jb>TEST Sam</jb><scorea>0</scorea><scoreb>0</scoreb></partie></liste>'''
+        with patch.object(fftt_site.fb,'get',side_effect=[calendar,sheet]),patch.object(fftt_site.time,'sleep'):
+            pool=fftt_site.build_pool('M14','test','test','test')
+        row=next(t for t in pool['teams'] if t.get('acbb'))['journees'][0]
+        self.assertEqual(row['played_games'],1)
+        self.assertEqual(row['players'][0]['vic'],1)
+        self.assertNotIn('match_score',row)
+        self.assertNotIn('opp_score',row)
 
     def test_persistent_missing_sheet_still_fails_after_bounded_retries(self):
         old={'DATA':{'M11':{'teams':[{'name':'ACBB 11','acbb':True,'journees':[

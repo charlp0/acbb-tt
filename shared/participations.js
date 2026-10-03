@@ -63,7 +63,7 @@
       if(!team(t)) return;
       const own=(pool.teams||[]).find(x=>x.acbb); if(!own) return;
       (own.journees||[]).forEach(row=>{
-        if(row.match_score==null||!Array.isArray(row.players)||!row.players.length) return;
+        if((row.match_score==null&&!(row.played_games>0))||!Array.isArray(row.players)||!row.players.length) return;
         const j=+row.journee; if(!Number.isInteger(j)||j<1) return;
         const raw=row.players.filter(p=>p.nom&&norm(p.nom)!=='JOUEURABSENT');
         const resolved=raw.map(ids.resolve), p=[...new Set(resolved.filter(Boolean))];

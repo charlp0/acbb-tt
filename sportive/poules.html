@@ -260,7 +260,7 @@
       (D[k].teams||[]).forEach(function(t){
         var pts=[], roster={}, last=null, nj=0;
         (t.journees||[]).forEach(function(j){
-          if(j.match_score==null) return;                       // journée non jouée
+          if(j.match_score==null&&!(j.played_games>0)) return;   // pas encore de partie jouée
           var nums=[];
           (j.players||[]).forEach(function(pl){
             if(typeof pl.cls!=='number') return;                // « N500 » / absent : hors moyenne
