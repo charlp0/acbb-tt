@@ -21,13 +21,44 @@ def sheet_keys(site):
             if j.get('match_score') is not None and j.get('players')}
 
 
+def missing_sheets(previous, current):
+    return sorted(sheet_keys(previous) - sheet_keys(current))
+
+
+def describe_sheets(sheets):
+    # Noms d'équipes et journées seulement, jamais les joueurs ni les accès API.
+    return '; '.join('%s / %s / J%s' % item for item in sheets)
+
+
+def retry_missing_pools(previous, current, collect_pool, attempts=2, pause=None):
+    """Relit seulement les poules incomplètes, sans réutiliser une ancienne feuille.
+
+    Chaque tentative remplace le lot de la poule en entier. Les contrôles finaux
+    restent obligatoires : une régression persistante interdit toute écriture.
+    """
+    import time
+    pause = pause or time.sleep
+    for attempt in range(1, attempts + 1):
+        lost = missing_sheets(previous, current)
+        if not lost:
+            return
+        print('Feuilles absentes, nouvelle lecture %d/%d : %s' %
+              (attempt, attempts, describe_sheets(lost)), flush=True)
+        pause(2 * attempt)
+        for key in sorted({t for t, _, _ in lost}):
+            pool, standings = collect_pool(key)
+            current['DATA'][key] = pool
+            current['STANDINGS'][key] = standings
+
+
 def check_site(previous, current, expected):
     missing = set(expected) - set(current.get('DATA', {}))
     if missing:
         raise ValueError('Poules FFTT absentes : ' + ', '.join(sorted(missing)))
-    lost = sheet_keys(previous) - sheet_keys(current)
+    lost = missing_sheets(previous, current)
     if lost:
-        raise ValueError('%d feuille(s) précédemment connue(s) manquante(s) : publication refusée' % len(lost))
+        raise ValueError('%d feuille(s) précédemment connue(s) manquante(s) : %s — publication refusée' %
+                         (len(lost), describe_sheets(lost)))
     for t, pool in current['DATA'].items():
         if not pool.get('teams') or not any(x.get('acbb') for x in pool['teams']):
             raise ValueError('Poule sans équipe ACBB : ' + t)

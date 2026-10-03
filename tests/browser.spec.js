@@ -1,5 +1,9 @@
 const {test,expect}=require('@playwright/test');
 const fs=require('node:fs');
+// Les scénarios ci-dessous sont entre J1 et J2, quelle que soit la date de CI.
+test.beforeEach(async({page})=>{
+ await page.clock.setFixedTime(new Date('2026-09-30T10:00:00Z'));
+});
 const read=n=>JSON.parse(fs.readFileSync('data/'+n+'.json','utf8'));
 function fixture(){
  const players=['Alex','Sam','Chris','Jo','Nova'].map((pre,i)=>({...read('scoring').players[0],lic:'9000000'+(i+1),key:undefined,nom:'EXEMPLE'+(i+1),pre,men:1250-i*30}));
@@ -125,6 +129,20 @@ test('mobile : accueil public et équipe restent consultables',async({page,conte
  const overflow=await page.evaluate(()=>Array.from(document.querySelectorAll('body *')).filter(e=>e.getBoundingClientRect().right>innerWidth+1).map(e=>({tag:e.tagName,cls:e.className,width:e.getBoundingClientRect().width})).slice(0,12));
  expect(overflow).toEqual([]);
  expect(errors).toEqual([]);
+});
+test('après J2 : la feuille manquante reste inconnue, puis les compteurs suivent la feuille réelle',async({page,context})=>{
+ const state=fixture();await install(context,state);
+ await page.clock.setFixedTime(new Date('2026-10-03T10:00:00Z'));
+ await page.goto('/capitaine.html');
+ await expect(page.locator('.prow').first().locator('.mj')).toHaveText('1/2 ?');
+ await expect(page.locator('.prow').first().locator('.tick').nth(1)).toHaveText('?');
+ // La feuille officielle J2 suffit à confirmer la participation, même si les
+ // autres rencontres de la journée ne sont pas encore toutes remontées.
+ const own=state.site.DATA.M11.teams.find(t=>t.acbb);
+ own.journees.push({...own.journees[0],journee:2});
+ await page.reload();
+ await expect(page.locator('.prow').first().locator('.mj')).toHaveText('2/2');
+ await expect(page.locator('.prow').first().locator('.tick').nth(1)).toHaveText('M11');
 });
 test('capitaine : NJ confirmé et colonnes alignées malgré un compteur encore incertain',async({page,context})=>{
  const state=fixture();

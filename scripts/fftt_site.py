@@ -4,7 +4,7 @@ depuis l'API FFTT live -> ces pages deviennent data-driven (fini les données fi
 Identifiants via FFTT_ID / FFTT_PWD. Usage : python3 scripts/fftt_site.py
 """
 import os, re, html, json, time, datetime, importlib.util
-from fftt_quality import check_site, coverage
+from fftt_quality import check_site, coverage, retry_missing_pools
 spec=importlib.util.spec_from_file_location("fb","scripts/fftt_build.py")
 fb=importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
 def tg(s,t):
@@ -204,7 +204,12 @@ def main():
     out={'built':datetime.datetime.now(datetime.timezone.utc).isoformat(),'season':fb.SAISON,'DATA':DATA,'STANDINGS':STAND}
     try: previous=json.load(open('data/site.json'))
     except FileNotFoundError: previous={}
+    def recollect(key):
+        cx,d1,org=coords[key]
+        return build_pool(key,cx,d1,org), build_standings(key,cx,d1,org)
+    retry_missing_pools(previous,out,recollect)
     check_site(previous,out,ORDER)
+    out['built']=datetime.datetime.now(datetime.timezone.utc).isoformat()
     out['coverage']=coverage(out)
     json.dump(out, open("data/site.json","w"), ensure_ascii=False)
     # site.js : chargé en <script> AVANT le script de page -> DATA/STANDINGS dispo en synchrone (pas de réécriture async)

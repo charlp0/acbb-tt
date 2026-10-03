@@ -1,4 +1,5 @@
 import ast
+import copy
 import datetime
 import importlib.util
 import json
@@ -10,7 +11,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'scripts'))
-from fftt_quality import profile_signature, check_site, acbb_team_key, require_xml
+from fftt_quality import profile_signature, check_site, acbb_team_key, require_xml, retry_missing_pools
 from team_identity import same_team, unique_alias
 from backup_private import encode, verify, main as backup
 from private_store import rows, TABLES
@@ -39,6 +40,38 @@ class DataTests(unittest.TestCase):
         self.assertFalse(same_team('PING PARIS 14 1','PARIS US 1'))
         self.assertTrue(same_team('USM MALAKOFF 5','MALAKOFF USM 5'))
         self.assertIsNone(unique_alias('MALAKOFF 5',['MALAKOFF USM 5','USM MALAKOFF 5']))
+
+    def test_transient_missing_sheet_retries_only_affected_pool(self):
+        old={'DATA':{t:{'teams':[{'name':t,'acbb':True,'journees':[
+            {'journee':1,'players':[{'nom':'TEST'}],'match_score':22}]}]}
+            for t in ['M10','M11']},'STANDINGS':{'M10':[],'M11':[]}}
+        current=copy.deepcopy(old)
+        current['DATA']['M11']['teams'][0]['journees'][0]['players']=[]
+        fresh=copy.deepcopy(old['DATA']['M11'])
+        fresh['teams'][0]['journees'].append({'journee':2,'players':[{'nom':'TEST'}],'match_score':24})
+        calls=[]
+        def collect(key):
+            calls.append(key)
+            return fresh,[{'name':'M11','mp':2}]
+        retry_missing_pools(old,current,collect,pause=lambda _:None)
+        self.assertEqual(calls,['M11'])
+        self.assertEqual(len(current['DATA']['M11']['teams'][0]['journees']),2)
+        self.assertEqual(current['STANDINGS']['M11'][0]['mp'],2)
+        check_site(old,current,['M10','M11'])
+
+    def test_persistent_missing_sheet_still_fails_after_bounded_retries(self):
+        old={'DATA':{'M11':{'teams':[{'name':'ACBB 11','acbb':True,'journees':[
+            {'journee':1,'players':[{'nom':'TEST'}],'match_score':22}]}]}},'STANDINGS':{}}
+        current=copy.deepcopy(old)
+        current['DATA']['M11']['teams'][0]['journees'][0]['players']=[]
+        calls=[]
+        def collect(key):
+            calls.append(key)
+            return current['DATA'][key],[]
+        retry_missing_pools(old,current,collect,pause=lambda _:None)
+        self.assertEqual(calls,['M11','M11'])
+        with self.assertRaisesRegex(ValueError,'M11 / ACBB 11 / J1.*publication refusée'):
+            check_site(old,current,['M11'])
 
     def test_backup_pagination_exceeds_supabase_default_page(self):
         data=[{'id':n} for n in range(1201)]
