@@ -17,10 +17,23 @@
   .tours{display:flex;gap:6px;flex-wrap:wrap}
   .tours .pill[disabled]{opacity:.38;cursor:not-allowed;background:var(--panel);border-style:dashed}
   /* Le message qui compte : déclarer ici prévient le club, cela n'excuse pas auprès du comité. */
-  .avis{display:flex;gap:12px;align-items:flex-start;background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.45);border-radius:12px;padding:12px 15px;margin-bottom:16px}
-  .avis .ic{font-size:17px;line-height:1.2}
-  .avis .t{font-weight:700;font-size:13px;color:var(--warn);margin-bottom:3px}
-  .avis .d{font-size:12.5px;color:var(--ink-2);line-height:1.55}
+  .avis{display:flex;gap:14px;align-items:flex-start;background:rgba(250,204,21,.10);
+        border:1px solid rgba(250,204,21,.5);border-left:4px solid var(--warn);border-radius:12px;
+        padding:16px 18px;margin-bottom:18px;box-shadow:0 10px 34px rgba(0,0,0,.34)}
+  .avis .ic{font-size:22px;line-height:1.1}
+  .avis .t{font-weight:800;font-size:16px;color:var(--warn);margin-bottom:6px;letter-spacing:-.1px}
+  .avis .d{font-size:13.5px;color:var(--ink-2);line-height:1.6}
+  .avis .vite{font-size:16px;font-weight:800;color:var(--warn);white-space:nowrap}
+  /* un échelon par ligne : le nom tient dans une pastille, l'oeil trouve le sien sans lire le reste */
+  .ech{list-style:none;margin:11px 0 0;padding:0;display:grid;gap:7px}
+  .ech li{display:flex;gap:9px;align-items:baseline;flex-wrap:wrap;font-size:13px;line-height:1.5}
+  .ech .n{flex:0 0 auto;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:800;
+          letter-spacing:.5px;text-transform:uppercase;padding:3px 9px;border-radius:99px;
+          background:rgba(250,204,21,.16);border:1px solid rgba(250,204,21,.4);color:var(--warn)}
+  .ech .q{color:var(--ink);font-weight:700}
+  .avis .pen{margin-top:11px;padding-top:10px;border-top:1px solid rgba(250,204,21,.28);font-size:13px;color:var(--ink-2)}
+  .avis .pen b{color:var(--ink)}
+  @media(max-width:600px){.avis{padding:14px 15px;gap:11px}.avis .t{font-size:15px}.ech li{gap:7px}}
   .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
   .find{display:flex;align-items:center;gap:11px;background:var(--panel);border:1px solid var(--line-2);
         border-radius:12px;padding:0 16px;margin-bottom:8px}
@@ -136,12 +149,15 @@
     <span class="ic">⚠️</span>
     <div>
       <div class="t">Se déclarer absent ici ne vous excuse pas auprès du comité</div>
-      <div class="d">Cette page prévient le club. Pour être excusé officiellement, il faut écrire, et l'adresse comme le délai dépendent de l'échelon :
-        <br>· <b>Départemental</b>, <b>avant le 16 octobre</b> : <a href="mailto:cdtt92@gmail.com">cdtt92@gmail.com</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a>
-        <br>· <b>Régional</b>, dès que possible : <a href="mailto:mtangee@orange.fr">mtangee@orange.fr</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a>
-        <br>· <b>Nationale 2 Seniors</b>, d'urgence (la convocation demande aussi un appel au 06 86 95 18 16) : <a href="mailto:mtangee@orange.fr">mtangee@orange.fr</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a>
-        <br>· <b>Nationale 2 Jeunes</b>, dès que possible : <a href="mailto:eric.duberos@gmail.com">eric.duberos@gmail.com</a> + <a href="mailto:mickael.mandard@gmail.com">mickael.mandard@gmail.com</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a>
-        <br>Sans cet écrit, l'absence est pénalisée et vaut <b>forfait général pour les tours suivants</b>.</div>
+      <div class="d">Cette page prévient le club. Pour être excusé officiellement, il faut écrire et prévenir
+        <span class="vite">dès que possible</span>, et l'adresse dépend de l'échelon :</div>
+      <ul class="ech">
+        <li><span class="n">Départemental</span><span><a href="mailto:cdtt92@gmail.com">cdtt92@gmail.com</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a> — <span class="q">par écrit, avant le 16 octobre</span></span></li>
+        <li><span class="n">Régional</span><span><a href="mailto:mtangee@orange.fr">mtangee@orange.fr</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a></span></li>
+        <li><span class="n">Nationale 2 Seniors</span><span><a href="mailto:mtangee@orange.fr">mtangee@orange.fr</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a> — <span class="q">appeler aussi le 06 86 95 18 16</span></span></li>
+        <li><span class="n">Nationale 2 Jeunes</span><span><a href="mailto:eric.duberos@gmail.com">eric.duberos@gmail.com</a> + <a href="mailto:mickael.mandard@gmail.com">mickael.mandard@gmail.com</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a></span></li>
+      </ul>
+      <div class="pen">Sans cet écrit, l'absence est pénalisée et vaut <b>forfait général pour les tours suivants</b>.</div>
     </div>
   </div>
 
