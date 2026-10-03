@@ -7,6 +7,13 @@
 <style>
   /* ---- Critérium Fédéral : compétition individuelle, 4 tours dans la saison ---- */
   .top{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:18px 0 14px}
+  .quand{display:inline-flex;align-items:center;gap:10px;margin:10px 0 6px;padding:7px 8px 7px 7px;
+         border-radius:99px;background:rgba(242,106,27,.1);border:1px solid rgba(242,106,27,.45)}
+  .quand .t{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:800;letter-spacing:.4px;
+            padding:4px 11px;border-radius:99px;background:var(--orange);color:#0B0B0D}
+  .quand .d{font-size:15px;color:var(--ink-2);padding-right:8px}
+  .quand .d b{color:var(--ink);font-weight:700}
+  @media(max-width:600px){.quand{flex-wrap:wrap}.quand .d{font-size:13.5px}}
   .tours{display:flex;gap:6px;flex-wrap:wrap}
   .tours .pill[disabled]{opacity:.38;cursor:not-allowed;background:var(--panel);border-style:dashed}
   /* Le message qui compte : déclarer ici prévient le club, cela n'excuse pas auprès du comité. */
@@ -119,7 +126,8 @@
   <div class="top">
     <div>
       <h1 class="h1">Critérium <em>Fédéral</em></h1>
-      <div class="hsub" id="sub">compétition individuelle · 4 tours dans la saison</div>
+      <div class="quand" id="sub"></div>
+      <div class="hsub">compétition individuelle · 4 tours dans la saison</div>
     </div>
     <div class="tours" id="tours"></div>
   </div>
@@ -128,11 +136,11 @@
     <span class="ic">⚠️</span>
     <div>
       <div class="t">Se déclarer absent ici ne vous excuse pas auprès du comité</div>
-      <div class="d">Cette page prévient le club. Pour être excusé officiellement, il faut écrire <b>avant le 16 octobre</b>,
-        et l'adresse dépend de l'échelon :
-        <br>· <b>Départemental</b> : <a href="mailto:cdtt92@gmail.com">cdtt92@gmail.com</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a>
-        <br>· <b>Régional et Nationale 2 Seniors</b> : <a href="mailto:mtangee@orange.fr">mtangee@orange.fr</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a>
-        <br>· <b>Nationale 2 Jeunes</b> : <a href="mailto:eric.duberos@gmail.com">eric.duberos@gmail.com</a> + <a href="mailto:mickael.mandard@gmail.com">mickael.mandard@gmail.com</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a>
+      <div class="d">Cette page prévient le club. Pour être excusé officiellement, il faut écrire, et l'adresse comme le délai dépendent de l'échelon :
+        <br>· <b>Départemental</b>, <b>avant le 16 octobre</b> : <a href="mailto:cdtt92@gmail.com">cdtt92@gmail.com</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a>
+        <br>· <b>Régional</b>, dès que possible : <a href="mailto:mtangee@orange.fr">mtangee@orange.fr</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a>
+        <br>· <b>Nationale 2 Seniors</b>, d'urgence (la convocation demande aussi un appel au 06 86 95 18 16) : <a href="mailto:mtangee@orange.fr">mtangee@orange.fr</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a>
+        <br>· <b>Nationale 2 Jeunes</b>, dès que possible : <a href="mailto:eric.duberos@gmail.com">eric.duberos@gmail.com</a> + <a href="mailto:mickael.mandard@gmail.com">mickael.mandard@gmail.com</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a>
         <br>Sans cet écrit, l'absence est pénalisée et vaut <b>forfait général pour les tours suivants</b>.</div>
     </div>
   </div>
@@ -200,12 +208,14 @@ function jourCourt(d){
    d'interlocuteur revient à ne pas prévenir. */
 function contactAbsence(g){
   const cyril='cyril.camion@gmail.com';
-  if(g.niveau==='R') return {qui:'régional',mails:['mtangee@orange.fr',cyril]};
+  const vite='dès que possible';
+  if(g.niveau==='R') return {qui:'régional',delai:vite,mails:['mtangee@orange.fr',cyril]};
   if(g.niveau==='N'&&g.div==='N2') return g.age==='ELITE'
-    ? {qui:'Nationale 2 Seniors',mails:['mtangee@orange.fr',cyril]}
-    : {qui:'Nationale 2 Jeunes',mails:['eric.duberos@gmail.com','mickael.mandard@gmail.com',cyril]};
-  if(g.niveau==='N') return {qui:'Nationale 1',mails:[cyril],note:'interlocuteur FFTT à confirmer'};
-  return {qui:'départemental',mails:['cdtt92@gmail.com',cyril]};
+    ? {qui:'Nationale 2 Seniors',delai:'d\'urgence',mails:['mtangee@orange.fr',cyril],note:'la convocation demande aussi un appel au 06 86 95 18 16'}
+    : {qui:'Nationale 2 Jeunes',delai:vite,mails:['eric.duberos@gmail.com','mickael.mandard@gmail.com',cyril]};
+  if(g.niveau==='N') return {qui:'Nationale 1',delai:vite,mails:[cyril],note:'interlocuteur FFTT à confirmer'};
+  /* Seul le CD92 publie une date limite, au bas de ses deux listes de groupes. */
+  return {qui:'départemental',delai:'<b>avant le 16 octobre</b>',mails:['cdtt92@gmail.com',cyril]};
 }
 const titre=g=>g.nom+(lieu(g)?' · '+lieu(g):'');
 const texte=j=>!S.q||nk(j.nom).indexOf(S.q)>=0||nk(j.pre).indexOf(S.q)>=0||nk(j.pre+' '+j.nom).indexOf(S.q)>=0;
@@ -224,8 +234,12 @@ function render(){
   /* Un tour s'étale sur un week-end : la N1 commence le vendredi, le départemental jeunes
      joue le samedi et les adultes le dimanche. Annoncer une seule date était faux pour la
      plupart des joueurs — la majorité des jeunes jouait le samedi et lisait « dimanche ». */
-  document.getElementById('sub').textContent='compétition individuelle · 4 tours dans la saison'
-    +(t?' · tour '+S.tour+(t.weekend?' · week-end du '+t.weekend:' · '+t.date):'');
+  /* La date est l'information la plus utile de la page : quand est-ce que je joue.
+     Elle était noyée dans un sous-titre gris — elle a maintenant son propre bandeau. */
+  document.getElementById('sub').innerHTML = t
+    ? '<span class="t">Tour '+esc(S.tour)+'</span><span class="d">'
+        +(t.weekend?'week-end du <b>'+esc(t.weekend)+'</b>':'<b>'+esc(t.date)+'</b>')+'</span>'
+    : '';
   renderTours();
   document.getElementById('vue').innerHTML = vueJoueurs();
   renderRail();
@@ -340,7 +354,7 @@ function demander(j,g){
     +'<div style="font-size:12.5px;color:var(--dim);line-height:1.5">Pour éviter qu\'un autre réponde à ta place, confirme ta licence et ta date de naissance.</div>'
     +(function(){ const c=contactAbsence(g);
         return '<div style="font-size:11.5px;color:var(--dim);line-height:1.55;background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.45);border-radius:10px;padding:10px 12px">'
-          +'Si tu es absent, écris aussi <b>avant le 16 octobre</b> à '
+          +'Si tu es absent, écris aussi '+c.delai+' à '
           +c.mails.map(m=>'<a href="mailto:'+m+'">'+esc(m)+'</a>').join(' + ')
           +' (échelon '+esc(c.qui)+')'+(c.note?' — '+esc(c.note):'')
           +'. Sans cet écrit, l\'absence est pénalisée et vaut forfait général pour les tours suivants.</div>'; })()
