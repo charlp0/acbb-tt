@@ -17,3 +17,4 @@ __pycache__/
 .env.*
 test-results/
 playwright-report/
+data/_criterium_lic.json

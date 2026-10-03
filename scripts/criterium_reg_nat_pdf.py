@@ -96,6 +96,7 @@ def lire_regional(chemin):
                     j = {'pos': int(pos), 'ajoute': False, 'nom': nom, 'pre': pre, 'club': club,
                          'cat': cat2, 'cats': '', 'clt': int(clt), 'acbb': acbb}
                     if acbb: j['lic'] = lic
+                    j['_lic'] = lic          # retiré avant écriture, cf. separer_licences()
                     courant['joueurs'].append(j)
     return [g for g in groupes if g['joueurs']]
 
@@ -128,8 +129,27 @@ def lire_national(chemin):
                     j = {'pos': int(pos), 'ajoute': False, 'nom': nom, 'pre': pre, 'club': club,
                          'cat': '', 'cats': '', 'clt': int(clt), 'acbb': acbb}
                     if acbb: j['lic'] = lic
+                    j['_lic'] = lic          # retiré avant écriture, cf. separer_licences()
                     courant['joueurs'].append(j)
     return [g for g in groupes if g['joueurs']]
+
+def separer_licences(groupes, chemin='data/_criterium_lic.json'):
+    """Même principe que pour le départemental : les licences des joueurs des autres clubs
+    sortent du fichier publié vers une table PRIVÉE indexée par groupe et position, qui sert
+    uniquement à interroger la FFTT pour les bilans."""
+    import json as _json, os as _os
+    table = {}
+    for g in groupes:
+        for j in g['joueurs']:
+            lic = j.pop('_lic', None)
+            if lic: table.setdefault(g['id'], {})[str(j.get('pos') or 0)] = lic
+    anc = {}
+    if _os.path.exists(chemin):
+        try: anc = _json.load(open(chemin))
+        except Exception: anc = {}
+    anc.update(table)
+    _json.dump(anc, open(chemin, 'w'), ensure_ascii=False, indent=1, sort_keys=True)
+    return sum(len(v) for v in table.values())
 
 def main():
     if len(sys.argv) < 3: sys.exit('usage : criterium_reg_nat_pdf.py <tour> <pdf> [pdf...]')
@@ -150,6 +170,7 @@ def main():
                      0 if g.get('genre') == 'F' else 1,
                      {'D': 0, 'R': 1, 'N': 2}.get(g['niveau'], 9)]
     for i, g in enumerate(t['groupes']): g['id'] = 't%s-g%02d' % (tour, i + 1)
+    nlic = separer_licences(t['groupes'])
     doc['maj'] = datetime.date.today().isoformat()
     doc['source'] = ("PDF « GROUPES DEPART CRIT FED » du CD92 pour le départemental ; "
                      "listes et salles de la ligue Île-de-France (fftt-idf.com/criterium-federal) "
@@ -158,8 +179,8 @@ def main():
     from collections import Counter
     c = Counter(g['niveau'] for g in t['groupes'])
     acbb = Counter(g['niveau'] for g in t['groupes'] for j in g['joueurs'] if j['acbb'])
-    print('%s : tour %s · %d catégories %s · joueurs ACBB %s'
-          % (SORTIE, tour, len(t['groupes']), dict(c), dict(acbb)))
+    print('%s : tour %s · %d catégories %s · joueurs ACBB %s · %d licences mises de côté'
+          % (SORTIE, tour, len(t['groupes']), dict(c), dict(acbb), nlic))
 
 if __name__ == '__main__':
     main()

@@ -96,6 +96,7 @@ def lire(chemin):
                     # garde la licence que pour les nôtres, seule utile (rapprochement et confirmation
                     # de présence). Pour un adversaire, nom, club, catégorie et classement suffisent.
                     if acbb: j['lic'] = lic
+                    j['_lic'] = lic          # retiré avant écriture, cf. separer_licences()
                     courant['joueurs'].append(j)
                     continue
                 if l.startswith('Licence Nom') or l.startswith('CRITERIUM'):
@@ -113,6 +114,29 @@ def lire(chemin):
                     courant['salle'] = l
     return [g for g in groupes if g['joueurs']]
 
+def separer_licences(groupes, chemin='data/_criterium_lic.json'):
+    """Sort les licences du fichier publié vers un fichier PRIVÉ (préfixe `_`, hors dépôt).
+
+    Le PDF du comité porte la licence de tous les joueurs, dont ceux des autres clubs.
+    On ne la publie pas — nom, club, catégorie et classement suffisent à un adversaire.
+    Mais elle sert à interroger la FFTT pour le bilan victoires / défaites, d'où cette
+    table à part, indexée par groupe et par position : rien d'identifiant ne sort, et le
+    rapprochement se refait sans ambiguïté.
+    """
+    import json as _json, os as _os
+    table = {}
+    for g in groupes:
+        for j in g['joueurs']:
+            lic = j.pop('_lic', None)
+            if lic: table.setdefault(g['id'], {})[str(j.get('pos') or 0)] = lic
+    anc = {}
+    if _os.path.exists(chemin):
+        try: anc = _json.load(open(chemin))
+        except Exception: anc = {}
+    anc.update(table)
+    _json.dump(anc, open(chemin, 'w'), ensure_ascii=False, indent=1, sort_keys=True)
+    return sum(len(v) for v in table.values())
+
 def main():
     if len(sys.argv) < 4:
         sys.exit(__doc__.strip().splitlines()[-2])
@@ -125,6 +149,7 @@ def main():
     classer(groupes)
     for i, g in enumerate(groupes):
         g['id'] = 't%s-g%02d' % (tour, i + 1)
+    nlic = separer_licences(groupes)
     try:
         with open(SORTIE) as f: doc = json.load(f)
     except Exception:
@@ -134,8 +159,8 @@ def main():
     with open(SORTIE, 'w') as f:
         json.dump(doc, f, ensure_ascii=False, indent=1, sort_keys=False)
     acbb = sum(1 for g in groupes for j in g['joueurs'] if j['acbb'])
-    print("%s : tour %s · %d groupes · %d joueurs dont %d ACBB"
-          % (SORTIE, tour, len(groupes), sum(len(g['joueurs']) for g in groupes), acbb))
+    print("%s : tour %s · %d groupes · %d joueurs dont %d ACBB · %d licences mises de côté"
+          % (SORTIE, tour, len(groupes), sum(len(g['joueurs']) for g in groupes), acbb, nlic))
 
 if __name__ == '__main__':
     main()
