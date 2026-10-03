@@ -130,6 +130,8 @@
       '.sc-h .n{color:var(--dimmer)}',
       '.sc-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid rgba(255,255,255,.06);font-size:12.5px}',
       '.sc-row .num{font-family:"JetBrains Mono",monospace;font-weight:700;white-space:nowrap}',
+      /* vu moins souvent que le nombre de feuilles : présent, mais au second plan */
+      '.sc-row.sc-rare{opacity:.62}',
       '.sc-n{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:800;padding:1px 5px;border-radius:99px;background:rgba(250,204,21,.14);border:1px solid rgba(250,204,21,.45);color:var(--gold)}',
       '.sc-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}',
       '.sc-chip{font-family:"JetBrains Mono",monospace;font-size:10.5px;padding:4px 9px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink-2)}',
@@ -180,11 +182,20 @@
       out += '<div class="sc-h">Meilleur joueur</div>';
       out += '<div class="sc-top"><b>' + esc(nom(top)) + '</b> · ' + pts(top) + ' · <b>' + top.vic + ' victoire' + (top.vic > 1 ? 's' : '') + '</b> en ' + top.count + ' feuille' + (top.count > 1 ? 's' : '') + '</div>';
     }
-    var rec = eff.filter(function (p) { return p.count >= 2; });
-    if (rec.length) {
-      out += '<div class="sc-h">Joueurs récurrents <span class="n">' + rec.length + '</span></div>';
-      out += rec.map(function (p) {
-        return '<div class="sc-row"><span>' + esc(nom(p)) + '</span><span class="num">' + pts(p) + ' · ' + p.count + ' feuilles' + (p.vic ? ' · ' + p.vic + 'V' : '') + '</span></div>';
+    /* Tout l'effectif vu cette saison, et pas seulement les « récurrents ». Le seuil à deux
+       feuilles jetait de l'information : après deux journées il signifiait juste « a joué les
+       deux », et le joueur vu une seule fois est précisément l'incertitude qu'un capitaine veut
+       voir — c'est peut-être lui qui jouera vendredi. On montre donc le compte d'apparitions sur
+       le nombre de feuilles connues, et le lecteur fait son propre tri. */
+    if (eff.length) {
+      var nf = js.length;
+      var socle = eff.filter(function (p) { return p.count === nf; }).length;
+      out += '<div class="sc-h">Effectif vu cette saison <span class="n">' + eff.length + '</span>'
+        + (nf > 1 && socle ? ' <span class="sep">dont ' + socle + ' sur toutes les feuilles</span>' : '') + '</div>';
+      out += eff.map(function (p) {
+        var rare = nf > 1 && p.count < nf;
+        return '<div class="sc-row' + (rare ? ' sc-rare' : '') + '"><span>' + esc(nom(p)) + '</span><span class="num">'
+          + pts(p) + ' · ' + p.count + '/' + nf + (p.vic ? ' · ' + p.vic + 'V' : '') + '</span></div>';
       }).join('');
     }
     out += '<div class="sc-h">Résultats 26/27 · journée par journée</div>';
