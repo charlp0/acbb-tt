@@ -75,9 +75,25 @@ def classer(groupes):
         g['rang'] = (AGES.index(age) if age in AGES else 9, 0 if genre == 'F' else 1)
         precedent = g
 
+MOIS = {'janvier':1,'fevrier':2,'mars':3,'avril':4,'mai':5,'juin':6,'juillet':7,
+        'aout':8,'septembre':9,'octobre':10,'novembre':11,'decembre':12}
+
+def date_du_pdf(pdf):
+    """La date est sur la couverture (« Samedi 10 octobre 2026 »). Elle DOIT être lue
+    par fichier : le comité publie deux PDF par tour et ils ne tombent pas le même jour —
+    au tour 1, les jeunes jouent le samedi et les -19/adultes le dimanche. Passer une
+    seule date pour les deux envoyait 426 jeunes au mauvais jour."""
+    import unicodedata
+    for page in pdf.pages[:2]:
+        txt = unicodedata.normalize('NFD', page.extract_text() or '').encode('ascii', 'ignore').decode().lower()
+        m = re.search(r'(\d{1,2})\s+(' + '|'.join(MOIS) + r')\s+(\d{4})', txt)
+        if m: return '%02d/%02d/%s' % (int(m.group(1)), MOIS[m.group(2)], m.group(3))
+    return ''
+
 def lire(chemin):
     groupes, courant = [], None
     with pdfplumber.open(chemin) as pdf:
+        date_fichier = date_du_pdf(pdf)
         for page in pdf.pages:
             for ligne in (page.extract_text() or '').split('\n'):
                 l = ligne.strip()
@@ -107,7 +123,8 @@ def lire(chemin):
                     if h.group(3): courant['contact'] = h.group(3).rstrip('.')
                     continue
                 if RE_GROUPE.match(l) and 'Gymnase' not in l and 'Salle' not in l:
-                    courant = {'nom': l, 'salle': '', 'pointage': '', 'debut': '', 'contact': '', 'joueurs': []}
+                    courant = {'nom': l, 'salle': '', 'pointage': '', 'debut': '', 'contact': '',
+                               'date': date_fichier, 'joueurs': []}
                     groupes.append(courant)
                     continue
                 if courant is not None and not courant['salle'] and not courant['joueurs'] and RE_SALLE.match(l):
@@ -144,7 +161,11 @@ def main():
     groupes = []
     for p in pdfs:
         g = lire(os.path.expanduser(p))
-        print("  %-52s %2d groupes, %3d joueurs" % (os.path.basename(p)[:52], len(g), sum(len(x['joueurs']) for x in g)))
+        for x in g:
+            if not x.get('date'): x['date'] = date
+        jours = sorted({x['date'] for x in g if x.get('date')})
+        print("  %-46s %2d groupes, %3d joueurs · %s" % (os.path.basename(p)[:46], len(g),
+              sum(len(x['joueurs']) for x in g), ', '.join(jours) or date))
         groupes += g
     classer(groupes)
     for i, g in enumerate(groupes):

@@ -80,6 +80,15 @@ def main():
     if ignores: print('  onglets ignorés (autre saison ou hors format) : %s' % ', '.join(ignores))
 
     doc = json.load(open(SORTIE)); t = doc['tours'][str(tour)]
+    # Le tour s'étale sur un week-end : la N1 commence le vendredi, le départemental
+    # jeunes joue le samedi, les adultes le dimanche. Un libellé de plage vaut mieux
+    # qu'une date unique, qui serait fausse pour la plupart.
+    for ws in wb.worksheets:
+        tete = ' '.join(str(c) for r in ws.iter_rows(min_row=1, max_row=7, values_only=True) for c in r if c)
+        if saison not in tete: continue
+        m = re.search(r'(\d{1,2}),?\s*(\d{1,2})\s*et\s*(\d{1,2})\s+(\w+)\s+(\d{4})', tete)
+        if m:
+            t['weekend'] = '%s, %s et %s %s %s' % m.groups(); break
     t['groupes'] = [x for x in t['groupes'] if not (x.get('niveau') == 'N' and x.get('div') == 'N1')] + groupes
     for g in t['groupes']:
         g.setdefault('niveau', 'D')
