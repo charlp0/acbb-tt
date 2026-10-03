@@ -41,7 +41,9 @@ const MAX_ECHECS_IP = 5;
 const FENETRE_IP_MS = 10 * 60_000;
 const MAX_ECHECS_LICENCE = 3;
 const FENETRE_LICENCE_MS = 60 * 60_000;
-const MAX_LICENCES_PAR_APPAREIL = 3;
+// Un parent confirme la présence de plusieurs enfants au Critérium depuis le même téléphone,
+// en plus de la sienne : 3 était atteint dès deux enfants. Porté à 6 (02/10/2026).
+const MAX_LICENCES_PAR_APPAREIL = 6;
 
 const PHOTO_MAX_OCTETS = 5 * 1024 * 1024;
 const TEXTE_MAX = 6000;
@@ -683,6 +685,42 @@ async function router(req: Request): Promise<Response> {
     if (error) fail(500, 'ecriture_signalement', { detail: error.message });
     await journal('visiteur', 'public', 'signalement', { ip, page: row.page, type: row.type });
     return json({ ok: true });
+  }
+
+  if (path === '/public/criterium' && GET) {
+    // Présences du Critérium Fédéral pour un tour donné. Lecture PUBLIQUE : la page du critérium
+    // affiche l'état de chacun sans exiger d'identification — seule la DÉCLARATION en demande une.
+    // On ne renvoie que licence -> présent/absent ; la page a déjà les noms (data/criterium2627.json).
+    const tour = Number(new URL(req.url).searchParams.get('tour') || '0');
+    if (!Number.isInteger(tour) || tour < 1 || tour > 4) fail(400, 'tour_invalide');
+    const { data, error } = await sb.from('criterium_log')
+      .select('licence,present,created_at')
+      .eq('tour', tour)
+      .order('id', { ascending: true });
+    if (error) fail(500, 'lecture_criterium', { detail: error.message });
+    const presences: Json = {};
+    for (const r of (data ?? []) as Json[]) presences[String(r.licence)] = { present: !!r.present, at: r.created_at };
+    return json({ tour, presences });
+  }
+
+  if (path === '/joueur/criterium' && POST) {
+    // Déclaration de présence. Même contrôle d'identité que le reste de l'espace joueur
+    // (licence + date de naissance, 1re saisie faisant foi), donc rien à réinventer : un joueur
+    // qui n'a jamais utilisé le site saisit simplement sa date une première fois.
+    const body = await lireJson(req);
+    const tour = Number(body.tour);
+    if (!Number.isInteger(tour) || tour < 1 || tour > 4) fail(400, 'tour_invalide');
+    if (typeof body.present !== 'boolean') fail(400, 'presence_invalide');
+    const jo = await verifierJoueur(req, body);
+    const ann = await annuaire();
+    const id = identite(ann, jo.licence, null);
+    const { data, error } = await sb.from('criterium_log')
+      .insert({ licence: jo.licence, tour, present: body.present, ip: jo.ip })
+      .select('created_at')
+      .single();
+    if (error) fail(500, 'ecriture_criterium', { detail: error.message });
+    await journal(`${id.prenom} ${id.nom} (joueur)`, 'joueur', 'criterium', { licence: jo.licence, tour, present: body.present });
+    return json({ ok: true, saved_at: data.created_at, present: body.present });
   }
 
   if (path === '/joueur/entree' && POST) {

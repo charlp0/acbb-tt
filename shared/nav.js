@@ -1,7 +1,7 @@
 /* En-tête commun : onglets publics + onglets du rôle connu par le jeton (capitaine bleu, sportive orange). */
 (function(){
   const base=(document.currentScript.getAttribute('data-base')||'.');
-  const PUB=[['Accueil','index.html'],['Équipes','equipe.html'],['Joueurs','joueurs.html']];
+  const PUB=[['Accueil','index.html'],['Équipes','equipe.html'],['Joueurs','joueurs.html'],['Critérium','criterium.html']];
   const CAP=[['Mon équipe','capitaine.html'],['Ma poule','capitaine.html?tab=poule']];
   // Onglets sportive groupés par usage : la journée (le quotidien), la saison (référence), l'administration.
   const SPO_GROUPS=[
