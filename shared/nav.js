@@ -25,14 +25,22 @@
   const ROLE=CAP.map(x=>x[0]).concat(SPO_GROUPS.flatMap(g=>g[1].map(x=>x[0])));
   function pill(label,href,cls,on){ return '<a class="pill'+(cls?' '+cls:'')+(on?' on':'')+'" href="'+base+'/'+href+'"'+(on?' aria-current="page"':'')+'>'+ACBB.esc(label)+'</a>'; }
   function tuile(c,on){
-    const nom='<span class="tname">'+c.nom[0]+' <span>'+c.nom[1]+'</span></span>';
-    if(c.soon) return '<span class="tile soon"><span class="trow"><span class="tlab">'+c.sous+'</span><span class="tsoon">Coming soon</span></span>'+nom+'</span>';
-    return '<a class="tile'+(on?' on':'')+'" href="'+base+'/'+c.href+'"'+(on?' aria-current="page"':'')+'><span class="tlab">'+c.sous+'</span>'+nom+'</a>';
+    const nom='<span class="nv-name">'+c.nom[0]+' <span>'+c.nom[1]+'</span></span>';
+    if(c.soon) return '<span class="nv-tile nv-soon"><span class="nv-row"><span class="nv-lab">'+c.sous+'</span><span class="nv-tag">Coming soon</span></span>'+nom+'</span>';
+    return '<a class="nv-tile'+(on?' on':'')+'" href="'+base+'/'+c.href+'"'+(on?' aria-current="page"':'')+'><span class="nv-lab">'+c.sous+'</span>'+nom+'</a>';
+  }
+  /* La barre charge elle-même ses deux polices : chaque page a son propre lien Google Fonts, pas toujours
+     le même. Le critérium ne demandait que la Saira Condensed ITALIQUE — que Google ne fournit pas (le site
+     incline la version droite) — et ses tuiles comme son titre retombaient sur une police par défaut. */
+  if(!document.getElementById('nv-polices')){
+    const l=document.createElement('link'); l.id='nv-polices'; l.rel='stylesheet';
+    l.href='https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@800&family=JetBrains+Mono:wght@800&display=swap';
+    document.head.appendChild(l);
   }
   window.renderNav=function(opts){
     opts=Object.assign({},opts||{}); ['name','team'].forEach(k=>{opts[k]=ACBB.esc(opts[k]||'');}); const here=sansSigne(opts.active||''); const role=opts.role||''; const team=opts.team||'';
     const ici=ALIAS[here]||(ROLE.includes(here)?'cpe':'');
-    const tiles='<nav class="tiles" aria-label="Compétitions">'+COMPETS.map(c=>tuile(c,ici===c.id)).join('')+'</nav>';
+    const tiles='<nav class="nv-tiles" aria-label="Compétitions">'+COMPETS.map(c=>tuile(c,ici===c.id)).join('')+'</nav>';
     let sub='';
     if(role==='capitaine') sub='<nav class="subnav cap" aria-label="Espace capitaine">'+CAP.map(([l,h])=>pill(l,h,'cap',here===l)).join('')+'</nav>';
     if(role==='sportive'){

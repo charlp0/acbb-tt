@@ -138,10 +138,10 @@ test('accueil : trois compétitions en tuiles, une popup centrée par équipe av
  state.site.DATA.M11.teams.find(t=>t.acbb).journees[0].opponent='ASNIERES TT 5';   // la vraie J1 de la M11
  await install(context,state);page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/index.html');
- await expect(page.locator('.tiles .tile')).toHaveCount(3);
- const on=page.locator('.tiles a.tile.on');
+ await expect(page.locator('.nv-tiles .nv-tile')).toHaveCount(3);
+ const on=page.locator('.nv-tiles a.nv-tile.on');
  await expect(on).toHaveAttribute('aria-current','page');await expect(on).toContainText('Championnat');
- const paris=page.locator('.tiles .tile.soon');
+ const paris=page.locator('.nv-tiles .nv-soon');
  await expect(paris).toContainText('Coming soon');expect(await paris.evaluate(e=>e.tagName)).toBe('SPAN');   // pas un lien
  await expect(page.locator('#eqgrid .eqb')).toHaveCount(state.poules.poules.length);
  await page.locator('#eqgrid .eqb[data-t="M11"]').click();
