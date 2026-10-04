@@ -133,6 +133,28 @@ test('capitaine : compteurs réels, cases vertes/rouges conservées, vues sporti
  expect(errors).toEqual([]);
 });
 
+test('accueil : trois compétitions en tuiles, une popup centrée par équipe avec calendrier et classement',async({page,context})=>{
+ const state=fixture(),errors=[];
+ state.site.DATA.M11.teams.find(t=>t.acbb).journees[0].opponent='ASNIERES TT 5';   // la vraie J1 de la M11
+ await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/index.html');
+ await expect(page.locator('.tiles .tile')).toHaveCount(3);
+ const on=page.locator('.tiles a.tile.on');
+ await expect(on).toHaveAttribute('aria-current','page');await expect(on).toContainText('Championnat');
+ const paris=page.locator('.tiles .tile.soon');
+ await expect(paris).toContainText('Coming soon');expect(await paris.evaluate(e=>e.tagName)).toBe('SPAN');   // pas un lien
+ await expect(page.locator('#eqgrid .eqb')).toHaveCount(state.poules.poules.length);
+ await page.locator('#eqgrid .eqb[data-t="M11"]').click();
+ await expect(page.locator('#ebg')).toBeVisible();
+ await expect(page.locator('#eCode')).toContainText('M11');
+ await expect(page.locator('#eCal .erow')).toHaveCount(state.poules.poules.find(p=>p.acbb==='M11').cal.length);
+ await expect(page.locator('#eCal .erow').first()).toContainText('8 – 6');   // 22 – 20 FFTT, en parties gagnées
+ await expect(page.locator('#eSt tr.me')).toContainText('ACBB · M11');
+ const b=await page.locator('.emod').boundingBox();expect(Math.abs(b.x+b.width/2-page.viewportSize().width/2)).toBeLessThan(2);
+ await page.keyboard.press('Escape');
+ await expect(page.locator('#ebg')).toBeHidden();await expect(page.locator('#eqgrid .eqb[data-t="M11"]')).toBeFocused();
+ expect(errors).toEqual([]);
+});
 test('mobile : accueil public et équipe restent consultables',async({page,context})=>{
  const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
  await page.setViewportSize({width:390,height:844});

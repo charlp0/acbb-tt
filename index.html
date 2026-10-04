@@ -17,7 +17,7 @@
   .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:22px;flex-wrap:wrap}
   .hero .lab.state{color:var(--win)}
   /* encarts du haut */
-  .top2{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;margin-top:18px}
+  .top2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:18px}
   .cta{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:14px;padding:18px 22px;display:flex;flex-direction:column;gap:12px;min-height:240px}
   .cta .ttl{display:flex;align-items:center;gap:12px;font-weight:700;font-size:16px}
   .cta .ttl svg{color:var(--orange);flex:0 0 22px}
@@ -28,30 +28,44 @@
   .cta .btn.primary{min-height:44px;padding:0 18px;font-size:12px}
   .cta .err{color:var(--lose-lt);font-size:12px}
   .cta .fine{font-size:10.5px;color:var(--dimmer);font-family:"JetBrains Mono",monospace}
-  .perf{display:flex;flex-direction:column;gap:10px;min-height:240px;padding:18px 22px}
-  .perf .ttl{display:flex;align-items:center;gap:12px;font-weight:700;font-size:16px}
-  .perf .ttl svg{color:var(--dim)}
-  .srch{position:relative}
-  .srch input{padding:11px 12px;font-size:14px;min-height:44px}
-  .sug{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--panel-3);border:1px solid var(--line-2);border-radius:10px;overflow:hidden;z-index:30;box-shadow:0 18px 50px rgba(0,0,0,.6)}
-  .sugi{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:13.5px;padding:11px 12px;min-height:44px;cursor:pointer}
-  .sugi:last-child{border-bottom:0}
-  .sugi:hover,.sugi.sel{background:rgba(242,106,27,.14)}
-  .sugi .pre{color:var(--dim);font-weight:400}
-  .sugi .pts{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-2)}
-  .res{height:156px;display:flex;flex-direction:column;gap:8px;min-height:0;overflow:hidden}
-  .res .hint{font-size:12.5px;color:var(--dim);line-height:1.4;margin-top:auto}
-  .res .who{display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .res .who b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .res .who .btn{padding:7px 12px;font-size:10.5px;min-height:34px}
-  .kpis.one{grid-template-columns:minmax(0,1fr)}
-  .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-  .kpis .kpi{padding:6px 9px}
-  .kpis .kpi b{font-size:16px}
-  .kpis .kpi .lab{font-size:8.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .kpis .kpi .small{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .kpis .kpi.up b{color:var(--win)} .kpis .kpi.down b{color:var(--lose)}
-  .spark{height:40px;width:100%;display:block}
+  /* calendrier et classement : un bouton par équipe, même taille que « Mets à jour tes dispos » */
+  .cc{display:flex;flex-direction:column;gap:12px;padding:18px 22px}
+  .cc .ttl{display:flex;align-items:center;gap:12px;font-weight:700;font-size:16px;margin:0}
+  .cc .ttl svg{color:var(--orange);flex:0 0 22px}
+  .cc p{margin:0;font-size:12.5px;color:var(--dim);line-height:1.45}
+  .eqgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:auto}
+  .eqb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:52px;padding:6px 4px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink);font-family:inherit;cursor:pointer;transition:border-color .15s ease,background-color .15s ease}
+  .eqb:hover{border-color:var(--orange);background:var(--panel-3)}
+  .eqb:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .eqb .tc-team{font-size:15px;line-height:1.1}
+  .eqb .lab{font-size:9px}
+  /* la popup d'une équipe : centrée à toutes les tailles, défile si elle dépasse */
+  .ebg{position:fixed;inset:0;z-index:50;display:flex;padding:24px;overflow-y:auto;background:rgba(11,11,13,.78)}
+  .emod{margin:auto;width:100%;max-width:960px;background:var(--panel);border:1px solid var(--line-2);border-radius:18px;box-shadow:0 28px 70px rgba(0,0,0,.65);padding:22px 24px 24px;display:flex;flex-direction:column;gap:18px}
+  .ehead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+  .eid{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .eid .tc-team{font-size:13px;letter-spacing:.4px}
+  .eid h2{margin:0;font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:32px;line-height:1;letter-spacing:.4px}
+  .ebody{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;align-items:start}
+  .ech{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
+  .ech h3{margin:0;font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:800}
+  .ecal{display:flex;flex-direction:column;gap:6px}
+  .erow{display:grid;grid-template-columns:30px 72px 38px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:42px;padding:0 12px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line)}
+  .erow .j{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:800}
+  .erow .o{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .erow .sc{font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:800;white-space:nowrap}
+  .erow .sc.win{color:var(--win)} .erow .sc.lose{color:var(--lose)} .erow .sc.draw{color:var(--warn)}
+  .etab{overflow-x:auto;background:var(--panel-2);border:1px solid var(--line);border-radius:10px}
+  .etab table{width:100%;border-collapse:collapse;font-family:"JetBrains Mono",monospace;font-size:12.5px}
+  .etab th{font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--dim);font-weight:700;padding:8px;text-align:right}
+  .etab td{padding:9px 8px;text-align:right;border-top:1px solid var(--line);color:var(--ink-2)}
+  .etab .l{text-align:left}
+  .etab td.l{color:var(--ink);white-space:nowrap}
+  .etab td.pos{color:var(--dim)}
+  .etab td.pts{font-weight:800;color:var(--ink)}
+  .etab tr.me td{background:rgba(242,106,27,.12)} .etab tr.me td.l{color:var(--orange);font-weight:800}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .evide{padding:18px 16px;border-radius:10px;border:1px dashed rgba(255,255,255,.2);font-size:12.5px;color:var(--dim);line-height:1.5}
   /* section journée */
   .jsec{margin-top:26px;display:flex;flex-direction:column;gap:12px}
   .jhead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -112,13 +126,16 @@
     .cta{min-height:0;padding:16px 16px}
     .cta form{grid-template-columns:1fr}
     .cta .btn.primary{width:100%}
-    .perf{min-height:0}
+    .eqgrid{grid-template-columns:repeat(5,minmax(0,1fr))}
+    .ebg{padding:12px}
+    .emod{padding:18px 16px 20px}
+    .eid h2{font-size:26px}
+    .ebody{grid-template-columns:minmax(0,1fr)}
     .tgrid{grid-template-columns:1fr}
     .modal-bg{padding:0;align-items:flex-end}
     .modal{max-width:none;border-radius:16px 16px 0 0;max-height:96vh;overflow:auto;padding:18px 16px 26px}
-    .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
   }
-  @media(max-width:420px){.kpis .kpi b{font-size:14px}}
+  @media(prefers-reduced-motion:reduce){.eqb{transition:none}}
 </style>
 </head>
 <body>
@@ -143,14 +160,11 @@
       <div class="err" id="iErr" hidden></div>
     </div>
 
-    <div class="card perf">
-      <div class="ttl"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>Performance d'un joueur</div>
-      <div class="srch">
-        <input id="q" type="search" placeholder="Nom ou prénom…" autocomplete="off" aria-label="Rechercher un joueur" aria-autocomplete="list">
-        <div class="sug" id="sug" role="listbox" hidden></div>
-      </div>
-      <div class="res" id="res"><p class="hint">Tape un nom : points, progression sur 12 mois et bilan de la saison, sans quitter l'accueil.</p></div>
-    </div>
+    <section class="card cc" aria-labelledby="ccT">
+      <h2 class="ttl" id="ccT"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"></path><path d="M3 6h.01M3 12h.01M3 18h.01"></path></svg>Calendrier et classement</h2>
+      <p>Choisis une équipe pour voir son calendrier de la phase 1 et le classement de sa poule.</p>
+      <div class="eqgrid" id="eqgrid"></div>
+    </section>
   </section>
 
   <section class="jsec">
@@ -165,6 +179,19 @@
     <div class="tgrid" id="tgrid"><div class="tc-empty">Chargement du calendrier…</div></div>
   </section>
 
+</div>
+
+<div class="ebg" id="ebg" hidden>
+  <section class="emod" role="dialog" aria-modal="true" aria-labelledby="eTitle">
+    <div class="ehead">
+      <div class="eid"><span class="tc-team" id="eCode"></span><h2 id="eTitle"></h2><span class="lab" id="eSub"></span></div>
+      <button class="mclose" id="eClose" type="button" aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+    </div>
+    <div class="ebody">
+      <div><div class="ech"><h3>Calendrier</h3><span class="lab" id="eCalSub"></span></div><div class="ecal" id="eCal"></div></div>
+      <div><div class="ech"><h3>Classement de la poule</h3><span class="lab" id="eStSub"></span></div><div id="eSt"></div></div>
+    </div>
+  </section>
 </div>
 
 <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo en grand">
@@ -238,7 +265,7 @@
 
   function scoreClass(a,b){ return a>b?'win':(a<b?'lose':'draw'); }
 
-  const S={poules:null,byTeam:{},players:[],scoresJ:{},resultats:{},fftt:{},j:1,me:{role:null}};
+  const S={poules:null,byTeam:{},scoresJ:{},resultats:{},fftt:{},site:null,eq:null,j:1,me:{role:null}};
   /* Score FFTT -> parties gagnées : ACBB.parties(journée), dans shared/api.js. Une seule règle pour
      tout le site ; le build versionne chaque script par empreinte, un api.js périmé ne peut plus
      servir une page récente. */
@@ -249,8 +276,6 @@
 
   /* ---------- données statiques ---------- */
   const pPoules=ACBB.json('data/poules2627.json').then(p=>{ S.poules=p; (p.poules||[]).forEach(x=>{ S.byTeam[x.acbb]=x; }); return p; });
-  const pIdx=ACBB.json('data/players_index.json').catch(()=>[]);
-  const pSc=ACBB.json('data/scoring.json').catch(()=>null);
   const pRes=ACBB.json('data/resultats2627.json').catch(()=>null);
   /* scores officiels FFTT (feuilles de rencontre, data/site.json) : la carte d'équipe affiche le résultat
      dès sa publication par la fédération, sans attendre le debrief du capitaine. Pro B (M1) : non couvert ici. */
@@ -269,19 +294,12 @@
   }).catch(()=>{ document.getElementById('tgrid').innerHTML='<div class="tc-empty">Calendrier indisponible pour le moment.</div>'; });
 
   pRes.then(r=>{ if(r&&r.resultats) S.resultats=r.resultats; renderGrid(); });
-  pSite.then(st=>{ if(!st||!st.DATA) return;
+  pSite.then(st=>{ if(!st||!st.DATA) return; S.site=st; if(S.eq) renderPopup(S.eq);
     Object.keys(st.DATA).forEach(k=>{ ((st.DATA[k]||{}).teams||[]).forEach(t=>{ if(!t.acbb) return;
       (t.journees||[]).forEach(j=>{ if(j.match_score==null||j.opp_score==null) return;
         const pr=ACBB.parties(j); if(!pr) return;
         (S.fftt[k]=S.fftt[k]||[]).push({j:j.journee,score_acbb:pr[0],score_adv:pr[1]}); }); }); });
     renderGrid(); });
-
-  Promise.all([pIdx,pSc]).then(([idx,sc])=>{
-    const by={};
-    (idx||[]).forEach(p=>{ if(p.lic) by[String(p.lic)]={lic:String(p.lic),nom:p.nom,prenom:p.prenom,men:p.mensuel,parties:p.parties,fiche:true}; });
-    ((sc&&sc.players)||[]).forEach(p=>{ if(!p.lic) return; const k=String(p.lic); if(by[k]){ if(p.men!=null) by[k].men=p.men; by[k].tend=p.tend; } else by[k]={lic:k,nom:p.nom,prenom:p.pre,men:p.men,tend:p.tend,fiche:false}; });
-    S.players=Object.values(by);
-  });
 
   /* ---------- onglets journées ---------- */
   function buildTabs(){
@@ -341,69 +359,94 @@
     majSuite();
   }
 
-  /* ---------- recherche joueur ---------- */
-  const q=document.getElementById('q'), sug=document.getElementById('sug'), res=document.getElementById('res');
-  let sel=-1, cur=[];
-  function suggest(){
-    const v=nrm(q.value.trim());
-    if(v.length<2||!S.players.length){ sug.hidden=true; cur=[]; return; }
-    const starts=[],inc=[];
-    S.players.forEach(p=>{ const a=nrm(p.nom+' '+p.prenom), b=nrm(p.prenom+' '+p.nom); if(a.startsWith(v)||b.startsWith(v)||nrm(p.nom).startsWith(v)||nrm(p.prenom).startsWith(v)) starts.push(p); else if(a.includes(v)||b.includes(v)) inc.push(p); });
-    const byPts=(x,y)=>(y.men||0)-(x.men||0);
-    cur=starts.sort(byPts).concat(inc.sort(byPts)).slice(0,8); sel=-1;
-    if(!cur.length){ sug.innerHTML='<div class="sugi muted" style="cursor:default">Aucun joueur trouvé</div>'; sug.hidden=false; return; }
-    sug.innerHTML=cur.map((p,i)=>'<button type="button" class="sugi" role="option" data-i="'+i+'">'+esc(p.nom)+' <span class="pre">'+esc(p.prenom)+'</span><span class="pts">'+(p.men!=null?p.men:'')+'</span></button>').join('');
-    sug.hidden=false;
-    sug.querySelectorAll('.sugi[data-i]').forEach(b=>b.addEventListener('click',()=>pick(cur[+b.dataset.i])));
+  /* ---------- calendrier et classement d'une équipe ---------- */
+  // Un bouton par équipe, rangés par échelon : National et Régional, puis PR et D1, puis D2.
+  const NIV=[/^Pro/i,/^Nationale 1/i,/^Nationale 2/i,/^Régionale 1/i,/^Régionale 2/i,/^Régionale 3/i,/^Pré-?Régionale/i,/^D1/i,/^D2/i,/^D3/i];
+  const rangNiv=d=>{ const i=NIV.findIndex(r=>r.test(d||'')); return i<0?99:i; };
+  function divCourt(d){ d=String(d||'');
+    if(/^Pro B/i.test(d)) return 'Pro B';
+    let m=d.match(/^Nationale (\d)/i); if(m) return 'N'+m[1];
+    m=d.match(/^Régionale (\d)/i); if(m) return 'R'+m[1];
+    if(/^Pré-?Régionale/i.test(d)) return 'PR';
+    m=d.match(/^(D\d)/i); return m?m[1].toUpperCase():d; }
+  const clsEq=t=>t==='M1'?'pro':(t[0]==='F'?'f':'');
+  function renderEquipes(){
+    const el=document.getElementById('eqgrid'); if(!el||!S.poules) return;
+    const ps=(S.poules.poules||[]).slice().sort((a,b)=>rangNiv(a.division)-rangNiv(b.division)||(a.acbb[0]==='F'?0:1)-(b.acbb[0]==='F'?0:1)||(+a.acbb.slice(1))-(+b.acbb.slice(1)));
+    el.innerHTML=ps.map(p=>'<button type="button" class="eqb" data-t="'+esc(p.acbb)+'" aria-label="'+esc(p.acbb+', '+(p.division||'')+' : calendrier et classement')+'"><span class="tc-team '+clsEq(p.acbb)+'">'+esc(p.acbb)+'</span><span class="lab">'+esc(divCourt(p.division))+'</span></button>').join('');
   }
-  q.addEventListener('input',suggest);
-  q.addEventListener('focus',suggest);
-  q.addEventListener('keydown',e=>{
-    if(sug.hidden||!cur.length) return;
-    if(e.key==='ArrowDown'){ e.preventDefault(); sel=Math.min(cur.length-1,sel+1); mark(); }
-    else if(e.key==='ArrowUp'){ e.preventDefault(); sel=Math.max(0,sel-1); mark(); }
-    else if(e.key==='Enter'){ e.preventDefault(); pick(cur[sel>=0?sel:0]); }
-    else if(e.key==='Escape'){ sug.hidden=true; }
-  });
-  function mark(){ sug.querySelectorAll('.sugi[data-i]').forEach((b,i)=>b.classList.toggle('sel',i===sel)); }
-  document.addEventListener('click',e=>{ if(!e.target.closest('.srch')) sug.hidden=true; });
+  document.getElementById('eqgrid').addEventListener('click',e=>{ const b=e.target.closest('.eqb'); if(b) ouvrirEquipe(b.dataset.t,b); });
 
-  function spark(vals){
-    vals=(vals||[]).filter(v=>typeof v==='number'); if(vals.length<2) return '';
-    const n=vals.length,mn=Math.min.apply(0,vals),mx=Math.max.apply(0,vals),rng=(mx-mn)||1,W=300,T=4,B=36;
-    const X=i=>(i/(n-1)*W).toFixed(1),Y=v=>(B-(v-mn)/rng*(B-T)).toFixed(1);
-    const pts=vals.map((v,i)=>X(i)+','+Y(v)).join(' ');
-    return '<svg class="spark" viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="spg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="rgba(242,106,27,.32)"/><stop offset="1" stop-color="rgba(242,106,27,0)"/></linearGradient></defs><path d="M'+pts+' L300,40 L0,40 Z" fill="url(#spg)"/><polyline points="'+pts+'" fill="none" stroke="#F26A1B" stroke-width="2" vector-effect="non-scaling-stroke"/><circle cx="'+X(n-1)+'" cy="'+Y(vals[n-1])+'" r="3" fill="#F26A1B"/></svg>';
+  /* La rencontre FFTT se retrouve par le NOM de l'adversaire (le numéro de tour peut différer du calendrier
+     club), et ce nom ne s'écrit pas pareil partout (« CS CLICHY TT 1 » / « CLICHY CS 1 ») : on retient
+     l'adversaire qui partage le plus de mots, numéro d'équipe compris. */
+  const mots=v=>new Set(String(v||'').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').match(/[A-Z0-9]+/g)||[]);
+  function journeeFFTT(t,nom){
+    const d=S.site&&S.site.DATA&&S.site.DATA[t]; const me=d?(d.teams||[]).find(x=>x.acbb):null; if(!me||!nom) return null;
+    const m=mots(nom), num=(String(nom).match(/(\d+)\s*$/)||[])[1];
+    let best=null,n0=1;
+    (me.journees||[]).forEach(x=>{ const o=mots(x.opponent); if(num&&!o.has(num)) return; let n=0; m.forEach(w=>{ if(o.has(w)) n++; }); if(n>n0){ n0=n; best=x; } });
+    return best;
   }
-  async function pick(p){
-    if(!p) return;
-    sug.hidden=true; q.value=p.prenom+' '+p.nom;
-    res.innerHTML='<p class="hint">Chargement de la fiche…</p>';
-    let f=null; if(p.fiche!==false){ try{ f=await ACBB.json('data/players/'+p.lic+'.json'); }catch(e){} }
-    const c=(f&&f.classement)||{};
-    const off=(c.officiel!=null?c.officiel:(p.men!=null?p.men:c.mensuel));
-    const s=(f&&f.saison)||null;
-    const played=!!(s&&s.parties>0);
-    let html='<div class="who"><b>'+esc(p.prenom+' '+p.nom)+'</b>'+(p.fiche!==false?'<a class="btn" href="joueurs.html?lic='+esc(p.lic)+'">Voir plus</a>':'')+'</div>';
-    if(!played){
-      // Pas encore de match en 26/27 : le classement officiel et un rendez-vous.
-      html+='<div class="kpis one"><div class="kpi"><span class="lab">classement officiel 26/27</span><b>'+(off!=null?off:'—')+'</b><span class="small muted">points</span></div></div>';
-      html+='<p class="hint" style="margin-top:0">Pas encore de match cette saison. Reviens après tes premiers matchs de la phase 1 : progression, victoires et perfs s\'afficheront ici.</p>';
-    }else{
-      // Saison 26/27 en cours : mensuel, progression depuis le début de saison, bilan.
-      const men=(c.mensuel!=null?c.mensuel:off);
-      const prog=(c.debut!=null&&men!=null)?Math.round(men-c.debut):null;
-      const k=[];
-      if(men!=null) k.push('<div class="kpi"><span class="lab">points</span><b>'+men+'</b><span class="small muted">mensuel'+(off!=null?' · officiel '+off:'')+'</span></div>');
-      if(prog!=null) k.push('<div class="kpi '+(prog>0?'up':(prog<0?'down':''))+'"><span class="lab">progression</span><b>'+(prog>0?'+':'')+prog+'</b><span class="small muted">phase 1 · 26/27</span></div>');
-      k.push('<div class="kpi"><span class="lab">victoires</span><b>'+(s.winpct!=null?s.winpct+'%':'—')+'</b><span class="small muted">'+s.V+'V · '+s.D+'D · '+s.parties+' partie'+(s.parties>1?'s':'')+'</span></div>');
-      if(s.perfs!=null) k.push('<div class="kpi"><span class="lab">perfs</span><b>'+s.perfs+'</b><span class="small muted">'+(s.contre_perfs||0)+' contre-perf'+((s.contre_perfs||0)>1?'s':'')+'</span></div>');
-      html+='<div class="kpis">'+k.join('')+'</div>';
-      const tl=((f&&f.timeline)||[]).map(x=>x.v).filter(v=>typeof v==='number');
-      if(tl.length>=2) html+=spark(tl);
-    }
-    res.innerHTML=html;
+  // Score FFTT en parties gagnées dès qu'il est publié, puis celui du debrief en attendant la feuille.
+  function scoreEquipe(t,j,nom){
+    const jj=journeeFFTT(t,nom); const p=jj?ACBB.parties(jj):null; if(p) return p;
+    const it=(S.scoresJ[j]||{})[t]; if(it&&it.score_acbb!=null&&it.score_adv!=null) return [+it.score_acbb,+it.score_adv];
+    const rr=(S.resultats[t]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null) return [+rr.score_acbb,+rr.score_adv];
+    return null;
   }
+  // Notre ligne au classement : la seule « BOULOGNE » de la poule, ou celle qui porte notre numéro d'équipe.
+  function ligneACBB(st,t){
+    const b=st.filter(r=>/BOULOGNE/i.test(r.name||'')); if(b.length<2) return b[0]||null;
+    return b.find(r=>new RegExp('\\b'+t.slice(1)+'\\s*$').test(String(r.name).trim()))||null;
+  }
+  // Les scores des debriefs de toutes les journées, chargés une fois, à la première ouverture.
+  let toutes=null;
+  function chargeToutes(){
+    if(!toutes) toutes=Promise.allSettled([1,2,3,4,5,6,7].filter(j=>!S.scoresJ[j]).map(j=>ACBB.api('public/journee?j='+j).then(r=>{ const m={}; ((r&&r.items)||[]).forEach(it=>{ m[it.equipe]=it; }); S.scoresJ[j]=m; })));
+    return toutes;
+  }
+  function renderPopup(t){
+    const p=S.byTeam[t]; if(!p) return;
+    const auj=new Date(); auj.setHours(0,0,0,0);
+    const cal=p.cal||[];
+    document.getElementById('eCalSub').textContent=cal.length+' journée'+(cal.length>1?'s':'')+(t==='M1'?' · dates FFTT Pro B':' · phase 1');
+    document.getElementById('eCal').innerHTML=cal.map(c=>{
+      const m=matchOf(p,c.j)||{}; const dt=parseFR(c.date);
+      let droite;
+      if(m.exempt) droite='<span class="lab">exempte</span>';
+      else { const sc=scoreEquipe(t,c.j,m.opp);
+        droite=sc?'<span class="sc '+scoreClass(sc[0],sc[1])+'">'+sc[0]+' – '+sc[1]+'</span>'
+                 :'<span class="lab">'+(dt&&dt<auj?(t==='M1'?'non relié':'en attente'):'à venir')+'</span>'; }
+      return '<div class="erow"><span class="j">J'+c.j+'</span><span class="lab">'+esc(fmtDate(c.date))+'</span><span class="lab">'+(m.exempt?'':(m.dom?'dom.':'ext.'))+'</span><span class="o" title="'+esc(m.opp||'')+'">'+esc(m.exempt?'Repos':(shortName(m.opp)||'adversaire à confirmer'))+'</span>'+droite+'</div>';
+    }).join('')||'<div class="evide">Calendrier non publié.</div>';
+    const st=(S.site&&S.site.STANDINGS&&S.site.STANDINGS[t])||[];
+    const moi=ligneACBB(st,t), jMax=st.reduce((a,r)=>Math.max(a,+r.mp||0),0);
+    document.getElementById('eStSub').textContent=st.length?'FFTT'+(jMax?' · après J'+jMax:''):'';
+    document.getElementById('eSt').innerHTML=st.length
+      ?'<div class="etab"><table><thead><tr><th><span class="sr">Rang</span></th><th class="l">Équipe</th><th>Pts</th><th>J</th><th>V</th><th>N</th><th>D</th></tr></thead><tbody>'
+        +st.map(r=>'<tr'+(r===moi?' class="me"':'')+'><td class="pos">'+esc(r.pos)+'</td><td class="l">'+esc(r===moi?'ACBB · '+t:shortName(r.name))+'</td><td class="pts">'+esc(r.pts)+'</td><td>'+esc(r.mp)+'</td><td>'+esc(r.V)+'</td><td>'+esc(r.N)+'</td><td>'+esc(r.D)+'</td></tr>').join('')+'</tbody></table></div>'
+      :'<div class="evide">Le classement de cette poule n\'est pas encore relié au site.</div>';
+    const rang=moi&&(+moi.mp||0)>0?((+moi.pos===1?'1er':moi.pos+'e')+' après J'+jMax):null;
+    document.getElementById('eSub').textContent=[p.poule?'Poule '+p.poule:null,(p.teams||[]).length+' équipes',rang,'phase 1'].filter(Boolean).join(' · ');
+  }
+  const ebg=document.getElementById('ebg'); let eRetour=null;
+  function ouvrirEquipe(t,src){
+    const p=S.byTeam[t]; if(!p) return;
+    S.eq=t; eRetour=src||null;
+    const code=document.getElementById('eCode'); code.className='tc-team '+clsEq(t); code.textContent=t+' · '+divCourt(p.division);
+    document.getElementById('eTitle').textContent=String(p.division||'').replace(/\s*\(\d+\)\s*$/,'');
+    renderPopup(t);
+    ebg.hidden=false; document.body.style.overflow='hidden'; ebg.scrollTop=0;
+    document.getElementById('eClose').focus();
+    chargeToutes().then(()=>{ if(!ebg.hidden&&S.eq===t) renderPopup(t); });
+  }
+  function fermerEquipe(){ ebg.hidden=true; document.body.style.overflow=''; S.eq=null; if(eRetour&&eRetour.focus) eRetour.focus(); }
+  document.getElementById('eClose').addEventListener('click',fermerEquipe);
+  ebg.addEventListener('click',e=>{ if(e.target===ebg) fermerEquipe(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!ebg.hidden) fermerEquipe(); });
+  // Lien direct vers la popup d'une équipe : index.html#equipe=M11
+  pPoules.then(()=>{ renderEquipes(); const h=(location.hash.match(/(?:^#|&)equipe=([MF]\d{1,2})\b/)||[])[1]; if(h&&S.byTeam[h]) ouvrirEquipe(h); });
 
   /* ---------- photo en grand (vignette des cartes de journée) ---------- */
   const lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'), lbCap=document.getElementById('lbCap');
