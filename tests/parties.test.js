@@ -13,8 +13,9 @@ test('rencontre complète en 14 parties : 22 – 20 FFTT = 8 – 6',()=>{
 test('une partie gagnée par forfait : M9 J2, 23 – 18 FFTT = 9 – 5, pas 23 – 18',()=>{
   assert.deepEqual([...parties(feuille(23,18,13,[2,2,2,1],1))],[9,5]);
 });
-test('rencontre écourtée sans compte entier : on garde la feuille (M5 J1, 11 – 2 et non 26 – 12)',()=>{
-  assert.deepEqual([...parties(feuille(26,12,13,[3,3,3,2],0))],[11,2]);
+test('adversaire incomplet (M5 J1, Paris XV à trois) : 12 – 2, ni 26 – 12 ni 11 – 2',()=>{
+  // simples forfaités notés joués sur la feuille, double forfaité absent : seul notre côté tombe juste
+  assert.deepEqual([...parties(feuille(26,12,13,[3,3,3,2],0))],[12,2]);
 });
 test('score déjà publié en parties (national) : gardé tel quel, jamais ramené à 0 – 0',()=>{
   assert.deepEqual([...parties(feuille(7,7,14,[2,2,2,1],0))],[7,7]);

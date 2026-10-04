@@ -324,7 +324,10 @@
       if(!m){ mid='<div class="tc-mid"><span class="tc-opp muted">Pas de rencontre programmée</span></div>'; bot='<div class="tc-empty">calendrier en attente</div>'; }
       else if(m.exempt){ mid='<div class="tc-mid"><span class="tc-opp">Exempte</span><span class="tc-wait">repos</span></div>'; bot='<div class="tc-empty">pas de match cette journée</div>'; }
       else {
-        const sc=(sa!=null)?'<span class="tc-score '+scoreClass(sa,sb)+'">'+sa+' – '+sb+'</span>':'<span class="tc-wait">à venir</span>';
+        // Sans score : « à venir » seulement si la rencontre n'a pas encore eu lieu. Passée, elle est
+        // « en attente » de sa feuille (M14 en J2, interrompue par une panne de lumière, s'affichait « à venir »).
+        const dm=parseFR(m.date), auj=new Date(); auj.setHours(0,0,0,0);
+        const sc=(sa!=null)?'<span class="tc-score '+scoreClass(sa,sb)+'">'+sa+' – '+sb+'</span>':'<span class="tc-wait">'+(dm&&dm<auj?'en attente':'à venir')+'</span>';
         mid='<div class="tc-mid"><span class="tc-opp" title="'+esc(m.opp||'')+'">'+esc(shortName(m.opp)||'adversaire à confirmer')+'</span>'+sc+'</div>';
         if(it&&it.publie&&(it.texte||it.photo_url)){
           bot='<div class="tc-deb">'+(it.photo_url?'<img class="tc-thumb" src="'+esc(it.photo_url)+'" data-full="'+esc(it.photo_url)+'" data-cap="'+esc(t+' · J'+j+(m.opp?' · '+shortName(m.opp):'')+(it.auteur?' · photo du debrief de '+it.auteur:''))+'" alt="Photo '+t+' J'+j+' (cliquer pour agrandir)" loading="lazy">':'')+'<div><p>'+rich(it.texte||'')+'</p>'+(it.texte?'<button type="button" class="tc-more" hidden>lire la suite</button>':'')+'</div></div>'+(it.auteur?'<span class="lab tc-by">debrief de '+esc(it.auteur)+'</span>':'');
