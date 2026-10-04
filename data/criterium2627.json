@@ -271,6 +271,17 @@
        "cats": "-13",
        "clt": 500,
        "acbb": false
+      },
+      {
+       "pos": 14,
+       "ajoute": false,
+       "nom": "LIN",
+       "pre": "Valentine",
+       "club": "AS BOURG LA REINE",
+       "cat": "M1",
+       "cats": "-12",
+       "clt": 500,
+       "acbb": false
       }
      ],
      "div": "D1",
@@ -817,7 +828,28 @@
        "cats": "-10",
        "clt": 500,
        "acbb": false
-      },
+      }
+     ],
+     "div": "D2",
+     "age": "-11",
+     "genre": "M",
+     "cat": "-11 ans Garçons",
+     "rang": [
+      0,
+      1,
+      0
+     ],
+     "id": "t1-g05",
+     "niveau": "D"
+    },
+    {
+     "nom": "D2 -11 GARCONS",
+     "salle": "MEUDON - Gymnase Michel VIGNAUD – 14 Rue De Lattre de Tassigny - 01.46.01.08.75",
+     "pointage": "13h30",
+     "debut": "14h00",
+     "contact": "cdtt92@gmail.com",
+     "date": "10/10/2026",
+     "joueurs": [
       {
        "pos": 1,
        "ajoute": false,
@@ -1007,7 +1039,7 @@
       1,
       0
      ],
-     "id": "t1-g05",
+     "id": "t1-g06",
      "niveau": "D"
     },
     {
@@ -1196,7 +1228,28 @@
        "cats": "-10",
        "clt": 500,
        "acbb": false
-      },
+      }
+     ],
+     "div": "D3",
+     "age": "-11",
+     "genre": "M",
+     "cat": "-11 ans Garçons",
+     "rang": [
+      0,
+      1,
+      0
+     ],
+     "id": "t1-g07",
+     "niveau": "D"
+    },
+    {
+     "nom": "D3 -11 GARCONS",
+     "salle": "LE PLESSIS ROBINSON – Gymnase Henri Wallon – 23 Bis, Rue du Capitaine Facq",
+     "pointage": "13h30",
+     "debut": "14h00",
+     "contact": "cdtt92@gmail.com",
+     "date": "10/10/2026",
+     "joueurs": [
       {
        "pos": 1,
        "ajoute": false,
@@ -1385,7 +1438,7 @@
       1,
       0
      ],
-     "id": "t1-g06",
+     "id": "t1-g08",
      "niveau": "D"
     },
     {
@@ -1587,7 +1640,7 @@
       1,
       0
      ],
-     "id": "t1-g07",
+     "id": "t1-g09",
      "niveau": "D"
     },
     {
@@ -1839,7 +1892,7 @@
       1,
       0
      ],
-     "id": "t1-g08",
+     "id": "t1-g10",
      "niveau": "D"
     },
     {
@@ -2031,7 +2084,28 @@
        "cats": "-13",
        "clt": 500,
        "acbb": false
-      },
+      }
+     ],
+     "div": "D2",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "rang": [
+      1,
+      1,
+      0
+     ],
+     "id": "t1-g11",
+     "niveau": "D"
+    },
+    {
+     "nom": "D2 -13 GARCONS",
+     "salle": "LE PLESSIS ROBINSON – Gymnase Henri Wallon – 23 Bis, Rue du Capitaine Facq",
+     "pointage": "13h30",
+     "debut": "14h00",
+     "contact": "cdtt92@gmail.com",
+     "date": "10/10/2026",
+     "joueurs": [
       {
        "pos": 1,
        "ajoute": false,
@@ -2223,7 +2297,7 @@
       1,
       0
      ],
-     "id": "t1-g09",
+     "id": "t1-g12",
      "niveau": "D"
     },
     {
@@ -2425,7 +2499,7 @@
       1,
       0
      ],
-     "id": "t1-g10",
+     "id": "t1-g13",
      "niveau": "D"
     },
     {
@@ -2620,6 +2694,38 @@
        "clt": 500,
        "acbb": false
       },
+      {
+       "pos": 17,
+       "ajoute": false,
+       "nom": "COUTANCE",
+       "pre": "Hugo",
+       "club": "AS FONTENAISIENNE TT",
+       "cat": "M1",
+       "cats": "-12",
+       "clt": 500,
+       "acbb": false
+      }
+     ],
+     "div": "D3",
+     "age": "-13",
+     "genre": "M",
+     "cat": "-13 ans Garçons",
+     "rang": [
+      1,
+      1,
+      0
+     ],
+     "id": "t1-g14",
+     "niveau": "D"
+    },
+    {
+     "nom": "D3 -13 GARCONS",
+     "salle": "NEUILLY SUR SEINE - Espace Koenig – 23 boulevard du général Koenig",
+     "pointage": "13h30",
+     "debut": "14h00",
+     "contact": "cdtt92@gmail.com",
+     "date": "10/10/2026",
+     "joueurs": [
       {
        "pos": 1,
        "ajoute": false,
@@ -2825,7 +2931,7 @@
       1,
       0
      ],
-     "id": "t1-g11",
+     "id": "t1-g15",
      "niveau": "D"
     },
     {
@@ -3038,7 +3144,7 @@
       1,
       0
      ],
-     "id": "t1-g12",
+     "id": "t1-g16",
      "niveau": "D"
     },
     {
@@ -3246,7 +3352,7 @@
       1,
       0
      ],
-     "id": "t1-g13",
+     "id": "t1-g17",
      "niveau": "D"
     },
     {
@@ -3456,7 +3562,7 @@
       1,
       0
      ],
-     "id": "t1-g14",
+     "id": "t1-g18",
      "niveau": "D"
     },
     {
@@ -3715,7 +3821,7 @@
       1,
       0
      ],
-     "id": "t1-g15",
+     "id": "t1-g19",
      "niveau": "D"
     },
     {
@@ -3923,7 +4029,28 @@
        "cats": "-15",
        "clt": 585,
        "acbb": false
-      },
+      }
+     ],
+     "div": "D2",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "rang": [
+      2,
+      1,
+      0
+     ],
+     "id": "t1-g20",
+     "niveau": "D"
+    },
+    {
+     "nom": "D2 -15 GARCONS",
+     "salle": "CHATENAY MALABRY - Gymnase Jules Verne – 254 Avenue de la Division Leclerc",
+     "pointage": "13h30",
+     "debut": "14h00",
+     "contact": "cdtt92@gmail.com",
+     "date": "10/10/2026",
+     "joueurs": [
       {
        "pos": 1,
        "ajoute": false,
@@ -4131,7 +4258,7 @@
       1,
       0
      ],
-     "id": "t1-g16",
+     "id": "t1-g21",
      "niveau": "D"
     },
     {
@@ -4344,6 +4471,17 @@
        "cats": "-15",
        "clt": 500,
        "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "HUTEAU",
+       "pre": "Gael",
+       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+       "cat": "C1",
+       "cats": "-14",
+       "clt": 547,
+       "acbb": false
       }
      ],
      "div": "D3",
@@ -4355,14 +4493,14 @@
       1,
       0
      ],
-     "id": "t1-g17",
+     "id": "t1-g22",
      "niveau": "D"
     },
     {
      "nom": "D3 -15 GARCONS",
      "salle": "ANTONY - Complexe Sportif Eric Tabarly – Rue de L’annapurna - 01.40.96.64.44",
-     "pointage": "14h00",
-     "debut": "14h30",
+     "pointage": "13h30",
+     "debut": "14h00",
      "contact": "cdtt92@gmail.com",
      "date": "10/10/2026",
      "joueurs": [
@@ -4561,7 +4699,28 @@
        "clt": 500,
        "acbb": true,
        "lic": "9264338"
-      },
+      }
+     ],
+     "div": "D3",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "rang": [
+      2,
+      1,
+      0
+     ],
+     "id": "t1-g23",
+     "niveau": "D"
+    },
+    {
+     "nom": "D3 -15 GARCONS",
+     "salle": "CHATILLON - STADE MUNICIPAL - Espace sportif Roland Garros Rue Roland Garros",
+     "pointage": "14h00",
+     "debut": "14h30",
+     "contact": "cdtt92@gmail.com",
+     "date": "10/10/2026",
+     "joueurs": [
       {
        "pos": 1,
        "ajoute": false,
@@ -4760,7 +4919,28 @@
        "cats": "-15",
        "clt": 500,
        "acbb": false
-      },
+      }
+     ],
+     "div": "D3",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "rang": [
+      2,
+      1,
+      0
+     ],
+     "id": "t1-g24",
+     "niveau": "D"
+    },
+    {
+     "nom": "D3 -15 GARCONS",
+     "salle": "CHATILLON - STADE MUNICIPAL - Espace sportif Roland Garros Rue Roland Garros",
+     "pointage": "14h00",
+     "debut": "14h30",
+     "contact": "cdtt92@gmail.com",
+     "date": "10/10/2026",
+     "joueurs": [
       {
        "pos": 1,
        "ajoute": false,
@@ -4968,7 +5148,7 @@
       1,
       0
      ],
-     "id": "t1-g18",
+     "id": "t1-g25",
      "niveau": "D"
     },
     {
@@ -5177,7 +5357,28 @@
        "cats": "-15",
        "clt": 500,
        "acbb": false
-      },
+      }
+     ],
+     "div": "D3",
+     "age": "-15",
+     "genre": "M",
+     "cat": "-15 ans Garçons",
+     "rang": [
+      2,
+      1,
+      0
+     ],
+     "id": "t1-g26",
+     "niveau": "D"
+    },
+    {
+     "nom": "D3 -15 GARCONS",
+     "salle": "NEUILLY SUR SEINE - Espace Koenig – 23 boulevard du général Koenig",
+     "pointage": "13h30",
+     "debut": "14h00",
+     "contact": "cdtt92@gmail.com",
+     "date": "10/10/2026",
+     "joueurs": [
       {
        "pos": 1,
        "ajoute": false,
@@ -5412,7 +5613,7 @@
       1,
       0
      ],
-     "id": "t1-g19",
+     "id": "t1-g27",
      "niveau": "D"
     },
     {
@@ -5568,7 +5769,7 @@
       0,
       0
      ],
-     "id": "t1-g20",
+     "id": "t1-g28",
      "niveau": "D"
     },
     {
@@ -5895,7 +6096,7 @@
       0,
       0
      ],
-     "id": "t1-g21",
+     "id": "t1-g29",
      "niveau": "D"
     },
     {
@@ -6149,7 +6350,7 @@
       1,
       0
      ],
-     "id": "t1-g22",
+     "id": "t1-g30",
      "niveau": "D"
     },
     {
@@ -6421,7 +6622,7 @@
       1,
       0
      ],
-     "id": "t1-g23",
+     "id": "t1-g31",
      "niveau": "D"
     },
     {
@@ -6675,7 +6876,7 @@
       1,
       0
      ],
-     "id": "t1-g24",
+     "id": "t1-g32",
      "niveau": "D"
     },
     {
@@ -6876,7 +7077,28 @@
        "d": 3,
        "pf": 0,
        "ct": 0
-      },
+      }
+     ],
+     "div": "D3",
+     "age": "-19",
+     "genre": "M",
+     "cat": "-19 ans Garçons",
+     "rang": [
+      3,
+      1,
+      0
+     ],
+     "id": "t1-g33",
+     "niveau": "D"
+    },
+    {
+     "nom": "D3 -19 GARCONS",
+     "salle": "ISSY LES MOULINEAUX - Stade Alain Mimoun - rue Rabelais",
+     "pointage": "8h30",
+     "debut": "9h00",
+     "contact": "cdtt92@gmail.com",
+     "date": "11/10/2026",
+     "joueurs": [
       {
        "pos": 1,
        "ajoute": false,
@@ -7079,7 +7301,7 @@
       1,
       0
      ],
-     "id": "t1-g25",
+     "id": "t1-g34",
      "niveau": "D"
     },
     {
@@ -7282,7 +7504,28 @@
        "cats": "-19",
        "clt": 500,
        "acbb": false
-      },
+      }
+     ],
+     "div": "D3",
+     "age": "-19",
+     "genre": "M",
+     "cat": "-19 ans Garçons",
+     "rang": [
+      3,
+      1,
+      0
+     ],
+     "id": "t1-g35",
+     "niveau": "D"
+    },
+    {
+     "nom": "D3 -19 Groupe 4",
+     "salle": "MONTROUGE - Gymnase Maurice Genevoix – 11 rue d'Arcueil",
+     "pointage": "8h30",
+     "debut": "9h00",
+     "contact": "cdtt92@gmail.com",
+     "date": "11/10/2026",
+     "joueurs": [
       {
        "pos": 1,
        "ajoute": false,
@@ -7482,7 +7725,7 @@
       1,
       0
      ],
-     "id": "t1-g26",
+     "id": "t1-g36",
      "niveau": "D"
     },
     {
@@ -7562,6 +7805,17 @@
        "cat": "S",
        "cats": "-40",
        "clt": 1646,
+       "acbb": false
+      },
+      {
+       "pos": 6,
+       "ajoute": false,
+       "nom": "MAS",
+       "pre": "Arthur",
+       "club": "USM MALAKOFF",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 1645,
        "acbb": false
       },
       {
@@ -7964,7 +8218,7 @@
       1,
       0
      ],
-     "id": "t1-g27",
+     "id": "t1-g37",
      "niveau": "D"
     },
     {
@@ -8198,6 +8452,17 @@
        "ct": 0
       },
       {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "HONTARREDE",
+       "pre": "Pierre-Alain",
+       "club": "SM MONTROUGE",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 1116,
+       "acbb": false
+      },
+      {
        "pos": 17,
        "ajoute": false,
        "nom": "GHAOUTI",
@@ -8226,6 +8491,17 @@
        "d": 0,
        "pf": 0,
        "ct": 0
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "LEJEUNE",
+       "pre": "Thomas",
+       "club": "USM MALAKOFF",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 1083,
+       "acbb": false
       },
       {
        "pos": 20,
@@ -8433,7 +8709,7 @@
       1,
       0
      ],
-     "id": "t1-g28",
+     "id": "t1-g38",
      "niveau": "D"
     },
     {
@@ -8929,7 +9205,7 @@
       1,
       0
      ],
-     "id": "t1-g29",
+     "id": "t1-g39",
      "niveau": "D"
     },
     {
@@ -9413,6 +9689,17 @@
        "d": 0,
        "pf": 0,
        "ct": 0
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "TOURKI",
+       "pre": "Soufiane",
+       "club": "CHATENAY MALABRY T T ASV",
+       "cat": "V55",
+       "cats": "55+",
+       "clt": 757,
+       "acbb": false
       }
      ],
      "div": "D3",
@@ -9424,7 +9711,7 @@
       1,
       0
      ],
-     "id": "t1-g30",
+     "id": "t1-g40",
      "niveau": "D"
     },
     {
@@ -9904,6 +10191,17 @@
        "d": 3,
        "pf": 0,
        "ct": 0
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "HUGEUX",
+       "pre": "Vincent",
+       "club": "ISSY-LES-MOULINEAUX",
+       "cat": "V65",
+       "cats": "65+",
+       "clt": 943,
+       "acbb": false
       }
      ],
      "div": "D3",
@@ -9915,7 +10213,7 @@
       1,
       0
      ],
-     "id": "t1-g31",
+     "id": "t1-g41",
      "niveau": "D"
     },
     {
@@ -10400,7 +10698,7 @@
       1,
       0
      ],
-     "id": "t1-g32",
+     "id": "t1-g42",
      "niveau": "D"
     },
     {
@@ -10708,6 +11006,17 @@
        "ct": 0
       },
       {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "BLACODON",
+       "pre": "Daniel",
+       "club": "ANTONY SP TENNIS DE TABLE",
+       "cat": "V70",
+       "cats": "70+",
+       "clt": 500,
+       "acbb": false
+      },
+      {
        "pos": 23,
        "ajoute": false,
        "nom": "SAYAH",
@@ -10880,7 +11189,7 @@
       1,
       0
      ],
-     "id": "t1-g33",
+     "id": "t1-g43",
      "niveau": "D"
     },
     {
@@ -11375,6 +11684,28 @@
        "d": 6,
        "pf": 0,
        "ct": 0
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "DE LESTRANGE",
+       "pre": "Ithier",
+       "club": "CLAMART CSM",
+       "cat": "V55",
+       "cats": "55+",
+       "clt": 555,
+       "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "DAVETTE",
+       "pre": "Marc",
+       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+       "cat": "V45",
+       "cats": "45+",
+       "clt": 500,
+       "acbb": false
       }
      ],
      "div": "D4",
@@ -11386,7 +11717,7 @@
       1,
       0
      ],
-     "id": "t1-g34",
+     "id": "t1-g44",
      "niveau": "D"
     },
     {
@@ -11672,7 +12003,7 @@
       0,
       1
      ],
-     "id": "t1-g35"
+     "id": "t1-g45"
     },
     {
      "nom": "R1 MINIMES FILLES",
@@ -11957,7 +12288,7 @@
       0,
       1
      ],
-     "id": "t1-g36"
+     "id": "t1-g46"
     },
     {
      "nom": "R1 CADETTES",
@@ -12231,7 +12562,7 @@
       0,
       1
      ],
-     "id": "t1-g37"
+     "id": "t1-g47"
     },
     {
      "nom": "R1 JUNIORS FILLES",
@@ -12609,7 +12940,7 @@
       0,
       1
      ],
-     "id": "t1-g38"
+     "id": "t1-g48"
     },
     {
      "nom": "R1 SENIORS DAMES",
@@ -12817,7 +13148,7 @@
       0,
       1
      ],
-     "id": "t1-g39"
+     "id": "t1-g49"
     },
     {
      "nom": "R2 SENIORS DAMES",
@@ -13187,7 +13518,7 @@
       0,
       1
      ],
-     "id": "t1-g40"
+     "id": "t1-g50"
     },
     {
      "nom": "R1 BENJAMINS",
@@ -13381,7 +13712,7 @@
       1,
       1
      ],
-     "id": "t1-g41"
+     "id": "t1-g51"
     },
     {
      "nom": "R2 BENJAMINS",
@@ -13787,7 +14118,7 @@
       1,
       1
      ],
-     "id": "t1-g42"
+     "id": "t1-g52"
     },
     {
      "nom": "R1 MINIMES GARÇONS",
@@ -13984,7 +14315,7 @@
       1,
       1
      ],
-     "id": "t1-g43"
+     "id": "t1-g53"
     },
     {
      "nom": "R2 MINIMES GARÇONS",
@@ -14716,7 +15047,7 @@
       1,
       1
      ],
-     "id": "t1-g44"
+     "id": "t1-g54"
     },
     {
      "nom": "R1 CADETS",
@@ -14979,7 +15310,7 @@
       1,
       1
      ],
-     "id": "t1-g45"
+     "id": "t1-g55"
     },
     {
      "nom": "R2 CADETS",
@@ -15714,7 +16045,7 @@
       1,
       1
      ],
-     "id": "t1-g46"
+     "id": "t1-g56"
     },
     {
      "nom": "R1 JUNIORS GARÇONS",
@@ -15976,7 +16307,7 @@
       1,
       1
      ],
-     "id": "t1-g47"
+     "id": "t1-g57"
     },
     {
      "nom": "R2 JUNIORS GARÇONS",
@@ -16674,7 +17005,7 @@
       1,
       1
      ],
-     "id": "t1-g48"
+     "id": "t1-g58"
     },
     {
      "nom": "R1 SENIORS MESSIEURS",
@@ -17047,7 +17378,7 @@
       1,
       1
      ],
-     "id": "t1-g49"
+     "id": "t1-g59"
     },
     {
      "nom": "R2 SENIORS MESSIEURS",
@@ -17761,7 +18092,7 @@
       1,
       1
      ],
-     "id": "t1-g50"
+     "id": "t1-g60"
     },
     {
      "nom": "N2 JUNIORS FILLES",
@@ -17774,6 +18105,7 @@
      "date": "10/10/2026",
      "pointage": "9h30",
      "debut": "10h30",
+     "date_fin": "11/10/2026",
      "contact": "",
      "joueurs": [
       {
@@ -18046,8 +18378,7 @@
       0,
       2
      ],
-     "id": "t1-g51",
-     "date_fin": "11/10/2026"
+     "id": "t1-g61"
     },
     {
      "nom": "N2 CADETTES",
@@ -18060,6 +18391,7 @@
      "date": "10/10/2026",
      "pointage": "9h30",
      "debut": "10h30",
+     "date_fin": "11/10/2026",
      "contact": "",
      "joueurs": [
       {
@@ -18429,8 +18761,7 @@
       0,
       2
      ],
-     "id": "t1-g52",
-     "date_fin": "11/10/2026"
+     "id": "t1-g62"
     },
     {
      "nom": "N2 MINIMES FILLES",
@@ -18443,6 +18774,7 @@
      "date": "10/10/2026",
      "pointage": "9h30",
      "debut": "10h30",
+     "date_fin": "11/10/2026",
      "contact": "",
      "joueurs": [
       {
@@ -18627,8 +18959,7 @@
       0,
       2
      ],
-     "id": "t1-g53",
-     "date_fin": "11/10/2026"
+     "id": "t1-g63"
     },
     {
      "nom": "N2 BENJAMINES",
@@ -18641,6 +18972,7 @@
      "date": "10/10/2026",
      "pointage": "9h30",
      "debut": "10h30",
+     "date_fin": "11/10/2026",
      "contact": "",
      "joueurs": [
       {
@@ -18825,8 +19157,7 @@
       0,
       2
      ],
-     "id": "t1-g54",
-     "date_fin": "11/10/2026"
+     "id": "t1-g64"
     },
     {
      "nom": "N2 JUNIORS GARÇONS",
@@ -18839,6 +19170,7 @@
      "date": "10/10/2026",
      "pointage": "9h30",
      "debut": "10h30",
+     "date_fin": "11/10/2026",
      "contact": "",
      "joueurs": [
       {
@@ -19111,8 +19443,7 @@
       1,
       2
      ],
-     "id": "t1-g55",
-     "date_fin": "11/10/2026"
+     "id": "t1-g65"
     },
     {
      "nom": "N2 CADETS",
@@ -19125,6 +19456,7 @@
      "date": "10/10/2026",
      "pointage": "9h30",
      "debut": "10h30",
+     "date_fin": "11/10/2026",
      "contact": "",
      "joueurs": [
       {
@@ -19397,8 +19729,7 @@
       1,
       2
      ],
-     "id": "t1-g56",
-     "date_fin": "11/10/2026"
+     "id": "t1-g66"
     },
     {
      "nom": "N2 MINIMES GARÇONS",
@@ -19411,6 +19742,7 @@
      "date": "10/10/2026",
      "pointage": "9h30",
      "debut": "10h30",
+     "date_fin": "11/10/2026",
      "contact": "",
      "joueurs": [
       {
@@ -19772,8 +20104,7 @@
       1,
       2
      ],
-     "id": "t1-g57",
-     "date_fin": "11/10/2026"
+     "id": "t1-g67"
     },
     {
      "nom": "N2 BENJAMINS",
@@ -19786,6 +20117,7 @@
      "date": "10/10/2026",
      "pointage": "9h30",
      "debut": "10h30",
+     "date_fin": "11/10/2026",
      "contact": "",
      "joueurs": [
       {
@@ -20058,8 +20390,7 @@
       1,
       2
      ],
-     "id": "t1-g58",
-     "date_fin": "11/10/2026"
+     "id": "t1-g68"
     },
     {
      "nom": "N2 SENIORS DAMES",
@@ -20072,6 +20403,7 @@
      "date": "10/10/2026",
      "pointage": "9h00",
      "debut": "10h30",
+     "date_fin": "11/10/2026",
      "contact": "",
      "joueurs": [
       {
@@ -20437,8 +20769,7 @@
       0,
       2
      ],
-     "id": "t1-g59",
-     "date_fin": "11/10/2026"
+     "id": "t1-g69"
     },
     {
      "nom": "N1 Cadettes A",
@@ -20718,13 +21049,13 @@
        "acbb": false
       }
      ],
+     "date_fin": "11/10/2026",
      "rang": [
       2,
       0,
       2
      ],
-     "id": "t1-g60",
-     "date_fin": "11/10/2026"
+     "id": "t1-g70"
     },
     {
      "nom": "N1 Cadets A",
@@ -21093,13 +21424,13 @@
        "acbb": false
       }
      ],
+     "date_fin": "11/10/2026",
      "rang": [
       2,
       1,
       2
      ],
-     "id": "t1-g61",
-     "date_fin": "11/10/2026"
+     "id": "t1-g71"
     },
     {
      "nom": "N1 Juniors Filles A",
@@ -21291,13 +21622,13 @@
        "acbb": false
       }
      ],
+     "date_fin": "11/10/2026",
      "rang": [
       3,
       0,
       2
      ],
-     "id": "t1-g62",
-     "date_fin": "11/10/2026"
+     "id": "t1-g72"
     },
     {
      "nom": "N1 Juniors Filles B",
@@ -21709,13 +22040,13 @@
        "acbb": false
       }
      ],
+     "date_fin": "11/10/2026",
      "rang": [
       3,
       0,
       2
      ],
-     "id": "t1-g63",
-     "date_fin": "11/10/2026"
+     "id": "t1-g73"
     },
     {
      "nom": "N1 Juniors Garçons A",
@@ -21908,13 +22239,13 @@
        "acbb": false
       }
      ],
+     "date_fin": "11/10/2026",
      "rang": [
       3,
       1,
       2
      ],
-     "id": "t1-g64",
-     "date_fin": "11/10/2026"
+     "id": "t1-g74"
     },
     {
      "nom": "N1 Juniors Garçons B",
@@ -22559,13 +22890,13 @@
        "acbb": false
       }
      ],
+     "date_fin": "11/10/2026",
      "rang": [
       3,
       1,
       2
      ],
-     "id": "t1-g65",
-     "date_fin": "11/10/2026"
+     "id": "t1-g75"
     },
     {
      "nom": "N1 Seniors Dames A",
@@ -22845,13 +23176,13 @@
        "acbb": false
       }
      ],
+     "date_fin": "11/10/2026",
      "rang": [
       4,
       0,
       2
      ],
-     "id": "t1-g66",
-     "date_fin": "11/10/2026"
+     "id": "t1-g76"
     },
     {
      "nom": "N1 Seniors Dames B",
@@ -23263,13 +23594,13 @@
        "acbb": false
       }
      ],
+     "date_fin": "11/10/2026",
      "rang": [
       4,
       0,
       2
      ],
-     "id": "t1-g67",
-     "date_fin": "11/10/2026"
+     "id": "t1-g77"
     },
     {
      "nom": "N1 Seniors Messieurs A",
@@ -23550,13 +23881,13 @@
        "acbb": false
       }
      ],
+     "date_fin": "11/10/2026",
      "rang": [
       4,
       1,
       2
      ],
-     "id": "t1-g68",
-     "date_fin": "11/10/2026"
+     "id": "t1-g78"
     },
     {
      "nom": "N1 Seniors Messieurs B",
@@ -24367,19 +24698,19 @@
        "acbb": false
       }
      ],
+     "date_fin": "11/10/2026",
      "rang": [
       4,
       1,
       2
      ],
-     "id": "t1-g69",
-     "date_fin": "11/10/2026"
+     "id": "t1-g79"
     }
    ],
    "weekend": "9, 10 et 11 octobre 2026"
   }
  },
- "maj": "2026-10-03",
+ "maj": "2026-10-04",
  "bilans": {
   "depuis": "01/07/2026",
   "jusqu": "03/10/2026",

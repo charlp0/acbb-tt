@@ -35,7 +35,12 @@ RE_HORAIRE = re.compile(r'Fin du Pointage\s*:\s*(\d{1,2}\s*[Hh]\s*\d{0,2})'
 def heure(t):
     m = re.match(r'(\d{1,2})\s*[Hh]\s*(\d{0,2})', t or '')
     return '%dh%02d' % (int(m.group(1)), int(m.group(2) or 0)) if m else (t or '')
-RE_JOUEUR  = re.compile(r'^(\d{1,3}|FEJ)\s+(\d{6,8})\s+(.+?)\s+(\d{8})\s+(.+?)\s+(\S+)\s+(\S+)\s+(\d+)\s*$')
+# Le PDF du comité n'est pas toujours propre : « FE » aussi bien que « FEJ » pour un joueur
+# ajouté, parfois collé à la licence (« FEJ9237736 »), quelques licences mal saisies
+# (« 9F3849 », « 92134 ») et des numéros de club qui ont perdu leur zéro de tête (« 8920389 »).
+# Une ligne qui ne passait pas le filtre faisait simplement disparaître le joueur du groupe.
+RE_JOUEUR  = re.compile(r'^(?:(\d{1,3})\s+|(FEJ?)\s*)(\d[0-9A-Z]{3,7})\s+(.+?)\s+(\d{7,8})\s+(.+?)\s+(\S+)\s+(\S+)\s+(\d+)\s*$')
+RE_SOUS_GROUPE = re.compile(r'^Groupe\s+\d+$', re.I)
 
 def coupe_nom(bloc):
     """« LENNON Clémence » -> ('LENNON', 'Clémence') ; gère « DE BONNECHOSE Isabelle »."""
@@ -101,10 +106,10 @@ def lire(chemin):
                     continue
                 m = RE_JOUEUR.match(l)
                 if m and courant is not None:
-                    rang, lic, bloc, numclub, club, cat, cats, clt = m.groups()
+                    rang, fe, lic, bloc, numclub, club, cat, cats, clt = m.groups()
                     nom, pre = coupe_nom(bloc)
-                    acbb = numclub == CLUB_ACBB
-                    j = {'pos': None if rang == 'FEJ' else int(rang), 'ajoute': rang == 'FEJ',
+                    acbb = numclub.zfill(8) == CLUB_ACBB
+                    j = {'pos': int(rang) if rang else None, 'ajoute': bool(fe),
                          'nom': nom, 'pre': pre, 'club': club.strip(),
                          'cat': cat, 'cats': cats, 'clt': int(clt), 'acbb': acbb}
                     # Le PDF du comité porte le numéro de licence de TOUS les joueurs, dont 700 et
@@ -121,6 +126,19 @@ def lire(chemin):
                 if h and courant is not None:
                     courant['pointage'], courant['debut'] = heure(h.group(1)), heure(h.group(2))
                     if h.group(3): courant['contact'] = h.group(3).rstrip('.')
+                    continue
+                if RE_SOUS_GROUPE.match(l):
+                    # Une division peut enchaîner plusieurs groupes sur la même page (« Groupe 1 »,
+                    # « Groupe 2 »…), chacun dans SA salle et à SON horaire. Faute de coupure ici,
+                    # les joueurs du groupe 2 s'ajoutaient au groupe 1 et héritaient de sa salle :
+                    # 20 des nôtres se voyaient convoqués au mauvais gymnase (tour 1, 04/10/2026).
+                    if courant is not None and (courant['joueurs'] or courant['salle']):
+                        nom = courant['nom']
+                        if re.search(r'Groupe\s*\d+\s*$', nom, re.I):
+                            nom = re.sub(r'Groupe\s*\d+\s*$', l, nom, flags=re.I)
+                        courant = {'nom': nom, 'salle': '', 'pointage': '', 'debut': '', 'contact': '',
+                                   'date': date_fichier, 'joueurs': []}
+                        groupes.append(courant)
                     continue
                 if RE_GROUPE.match(l) and 'Gymnase' not in l and 'Salle' not in l:
                     courant = {'nom': l, 'salle': '', 'pointage': '', 'debut': '', 'contact': '',
