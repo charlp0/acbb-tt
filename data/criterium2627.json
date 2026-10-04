@@ -18046,7 +18046,8 @@
       0,
       2
      ],
-     "id": "t1-g51"
+     "id": "t1-g51",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N2 CADETTES",
@@ -18428,7 +18429,8 @@
       0,
       2
      ],
-     "id": "t1-g52"
+     "id": "t1-g52",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N2 MINIMES FILLES",
@@ -18625,7 +18627,8 @@
       0,
       2
      ],
-     "id": "t1-g53"
+     "id": "t1-g53",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N2 BENJAMINES",
@@ -18822,7 +18825,8 @@
       0,
       2
      ],
-     "id": "t1-g54"
+     "id": "t1-g54",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N2 JUNIORS GARÇONS",
@@ -19107,7 +19111,8 @@
       1,
       2
      ],
-     "id": "t1-g55"
+     "id": "t1-g55",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N2 CADETS",
@@ -19392,7 +19397,8 @@
       1,
       2
      ],
-     "id": "t1-g56"
+     "id": "t1-g56",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N2 MINIMES GARÇONS",
@@ -19766,7 +19772,8 @@
       1,
       2
      ],
-     "id": "t1-g57"
+     "id": "t1-g57",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N2 BENJAMINS",
@@ -20051,7 +20058,8 @@
       1,
       2
      ],
-     "id": "t1-g58"
+     "id": "t1-g58",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N2 SENIORS DAMES",
@@ -20429,7 +20437,8 @@
       0,
       2
      ],
-     "id": "t1-g59"
+     "id": "t1-g59",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N1 Cadettes A",
@@ -20439,7 +20448,7 @@
      "genre": "F",
      "cat": "-15 ans Filles",
      "salle": "Joué-lès-Tours (37)",
-     "date": "10/10/2026",
+     "date": "09/10/2026",
      "pointage": "",
      "debut": "",
      "contact": "",
@@ -20714,7 +20723,8 @@
       0,
       2
      ],
-     "id": "t1-g60"
+     "id": "t1-g60",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N1 Cadets A",
@@ -20724,7 +20734,7 @@
      "genre": "M",
      "cat": "-15 ans Garçons",
      "salle": "Joué-lès-Tours (37)",
-     "date": "10/10/2026",
+     "date": "09/10/2026",
      "pointage": "",
      "debut": "",
      "contact": "",
@@ -21088,7 +21098,8 @@
       1,
       2
      ],
-     "id": "t1-g61"
+     "id": "t1-g61",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N1 Juniors Filles A",
@@ -21098,7 +21109,7 @@
      "genre": "F",
      "cat": "-19 ans Filles",
      "salle": "Joué-lès-Tours (37)",
-     "date": "10/10/2026",
+     "date": "09/10/2026",
      "pointage": "",
      "debut": "",
      "contact": "",
@@ -21285,7 +21296,8 @@
       0,
       2
      ],
-     "id": "t1-g62"
+     "id": "t1-g62",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N1 Juniors Filles B",
@@ -21295,7 +21307,7 @@
      "genre": "F",
      "cat": "-19 ans Filles",
      "salle": "Joué-lès-Tours (37)",
-     "date": "10/10/2026",
+     "date": "09/10/2026",
      "pointage": "",
      "debut": "",
      "contact": "",
@@ -21702,7 +21714,8 @@
       0,
       2
      ],
-     "id": "t1-g63"
+     "id": "t1-g63",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N1 Juniors Garçons A",
@@ -21712,7 +21725,7 @@
      "genre": "M",
      "cat": "-19 ans Garçons",
      "salle": "Joué-lès-Tours (37)",
-     "date": "10/10/2026",
+     "date": "09/10/2026",
      "pointage": "",
      "debut": "",
      "contact": "",
@@ -21900,7 +21913,8 @@
       1,
       2
      ],
-     "id": "t1-g64"
+     "id": "t1-g64",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N1 Juniors Garçons B",
@@ -21910,7 +21924,7 @@
      "genre": "M",
      "cat": "-19 ans Garçons",
      "salle": "Joué-lès-Tours (37)",
-     "date": "10/10/2026",
+     "date": "09/10/2026",
      "pointage": "",
      "debut": "",
      "contact": "",
@@ -22550,7 +22564,8 @@
       1,
       2
      ],
-     "id": "t1-g65"
+     "id": "t1-g65",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N1 Seniors Dames A",
@@ -22560,7 +22575,7 @@
      "genre": "F",
      "cat": "Élite Dames",
      "salle": "Joué-lès-Tours (37)",
-     "date": "10/10/2026",
+     "date": "09/10/2026",
      "pointage": "",
      "debut": "",
      "contact": "",
@@ -22835,7 +22850,8 @@
       0,
       2
      ],
-     "id": "t1-g66"
+     "id": "t1-g66",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N1 Seniors Dames B",
@@ -22845,7 +22861,7 @@
      "genre": "F",
      "cat": "Élite Dames",
      "salle": "Joué-lès-Tours (37)",
-     "date": "10/10/2026",
+     "date": "09/10/2026",
      "pointage": "",
      "debut": "",
      "contact": "",
@@ -23252,7 +23268,8 @@
       0,
       2
      ],
-     "id": "t1-g67"
+     "id": "t1-g67",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N1 Seniors Messieurs A",
@@ -23262,7 +23279,7 @@
      "genre": "M",
      "cat": "Élite Messieurs",
      "salle": "Joué-lès-Tours (37)",
-     "date": "10/10/2026",
+     "date": "09/10/2026",
      "pointage": "",
      "debut": "",
      "contact": "",
@@ -23538,7 +23555,8 @@
       1,
       2
      ],
-     "id": "t1-g68"
+     "id": "t1-g68",
+     "date_fin": "11/10/2026"
     },
     {
      "nom": "N1 Seniors Messieurs B",
@@ -23548,7 +23566,7 @@
      "genre": "M",
      "cat": "Élite Messieurs",
      "salle": "Joué-lès-Tours (37)",
-     "date": "10/10/2026",
+     "date": "09/10/2026",
      "pointage": "",
      "debut": "",
      "contact": "",
@@ -24354,7 +24372,8 @@
       1,
       2
      ],
-     "id": "t1-g69"
+     "id": "t1-g69",
+     "date_fin": "11/10/2026"
     }
    ],
    "weekend": "9, 10 et 11 octobre 2026"

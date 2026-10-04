@@ -18,6 +18,8 @@ import openpyxl
 SORTIE = 'data/criterium2627.json'
 PRIVE = 'data/_criterium_lic.json'
 CLUB_ACBB = '08920049'
+MOIS = {'janvier':1,'fevrier':2,'mars':3,'avril':4,'mai':5,'juin':6,'juillet':7,
+        'aout':8,'septembre':9,'octobre':10,'novembre':11,'decembre':12}
 
 CAT = {'CF': ('-15', 'F', 'Cadettes'), 'CG': ('-15', 'M', 'Cadets'),
        'JF': ('-19', 'F', 'Juniors Filles'), 'JG': ('-19', 'M', 'Juniors Garçons'),
@@ -61,7 +63,12 @@ def main():
              'age': age, 'genre': genre,
              'cat': LIB.get((age, genre)) or (age + ' ans ' + ('Filles' if genre == 'F' else 'Garçons')),
              'salle': salle, 'date': '', 'pointage': '', 'debut': '', 'contact': '', 'joueurs': []}
-        if date: g['date'] = '%02d/10/%s' % (int(date.group(2)), date.group(5))   # le samedi du week-end
+        if date:
+            mois = unicodedata.normalize('NFD', date.group(4)).encode('ascii', 'ignore').decode().lower()
+            if mois in MOIS:
+                # Le classeur annonce un week-end, pas un jour unique par joueur.
+                g['date'] = datetime.date(int(date.group(5)), MOIS[mois], int(date.group(1))).strftime('%d/%m/%Y')
+                g['date_fin'] = datetime.date(int(date.group(5)), MOIS[mois], int(date.group(3))).strftime('%d/%m/%Y')
         for r in lignes:
             if not r or not re.fullmatch(r'\d+(\.0)?', str(r[0]).strip()): continue
             pos = int(float(r[0])); lic = re.sub(r'\D', '', str(r[1] if len(r) > 1 else ''))

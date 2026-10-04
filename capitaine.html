@@ -202,6 +202,7 @@
             </div>
             <div class="note" id="debErr" hidden></div>
             <button class="btn blue big" id="debSave" type="submit">Enregistrer le debrief</button>
+            <div class="small" id="debStatus" role="status" style="color:var(--win-lt)" hidden></div>
           </form>
         </div>
       </div>
@@ -446,11 +447,20 @@
 
   /* ================= Mon équipe : debrief ================= */
   function loadDebriefs(){
-    ACBB.api('cap/debriefs').then(r=>{ S.debriefs=(r&&r.items)||[]; renderDebList(); renderDebForm(); }).catch(err=>{
+    return ACBB.api('cap/debriefs').then(r=>{ S.debriefs=(r&&r.items)||[]; renderDebList(); renderDebForm(); }).catch(err=>{
       const e0=document.getElementById('debErr'); if(e0){ e0.hidden=false; e0.textContent=err&&err.status?'Debriefs indisponibles (erreur '+err.status+').':'Serveur indisponible : le debrief déjà saisi ne peut pas être rechargé pour le moment.'; }
-      renderDebForm();
     });
   }
+  function statutDebrief(d){
+    const el=document.getElementById('debStatus'); el.hidden=!d;
+    if(!d) return;
+    const at=new Date(d.created_at);
+    el.textContent='✓ Debrief enregistré'+(isNaN(at.getTime())?'':' le '+at.toLocaleDateString('fr-FR')+' à '+at.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}))
+      +(d.publie?' · publié sur l’accueil.':' · en attente de publication par la sportive.');
+  }
+  document.getElementById('debForm').addEventListener('input',()=>{
+    const el=document.getElementById('debStatus'); el.hidden=false; el.textContent='Modifications en cours : pense à enregistrer.';
+  });
   function debFor(j){ return S.debriefs.filter(x=>+x.journee===j).sort((a,b)=>String(b.created_at||'').localeCompare(String(a.created_at||'')))[0]||null; }
   function renderDebForm(){
     const m=matchOf(S.poule,S.j);
@@ -458,6 +468,7 @@
     document.getElementById('debMatch').textContent=m?(fmtDate(m.date)+' · '+(m.exempt?'exempte':shortName(m.opp)+' · '+(m.dom?'domicile':'extérieur'))):'';
     document.getElementById('scBLab').textContent=m&&m.opp&&!m.exempt?shortName(m.opp):'Adversaire';
     const d=debFor(S.j);
+    statutDebrief(d);
     /* pré-remplissage : score officiel FFTT s'il existe, sinon ce que le capitaine avait saisi */
     var off=null; try{ off=siteScore(matchOf(S.poule,S.j)); }catch(e){}
     document.getElementById('scA').value=(off?off[0]:(d&&d.score_acbb!=null?d.score_acbb:''));
@@ -496,6 +507,7 @@
       const deja=/^\*[^*]+\*$/.test(coeur), rep=av+(deja?coeur.slice(1,-1):'*'+coeur+'*')+ap;
       ta.value=v.slice(0,a)+rep+v.slice(b); ta.selectionStart=a; ta.selectionEnd=a+rep.length; }
     ta.focus();
+    ta.dispatchEvent(new Event('input',{bubbles:true}));
   });
     document.getElementById('debForm').addEventListener('submit',async e=>{
     e.preventDefault();
@@ -506,7 +518,7 @@
     const body={journee:S.j,score_acbb:a===''?null:+a,score_adv:b===''?null:+b,texte:txt,visible_club:true};
     if(S.photoPath) body.photo_path=S.photoPath;
     const btn=document.getElementById('debSave'); btn.disabled=true; btn.textContent='Enregistrement…';
-    try{ await ACBB.api('cap/debrief',body); ACBB.toast(debFor(S.j)?'Debrief modifié':'Debrief enregistré'); S.photoPath=null; loadDebriefs(); }
+    try{ await ACBB.api('cap/debrief',body); statutDebrief({created_at:new Date().toISOString(),publie:false}); ACBB.toast(debFor(S.j)?'Debrief modifié':'Debrief enregistré'); S.photoPath=null; await loadDebriefs(); }
     catch(x){ err.hidden=false; const c=x&&x.body&&x.body.error;
       if(c==='jeton_requis'||c==='jeton_invalide'){ err.textContent="Ton lien personnel n'est plus reconnu par ce navigateur. Rouvre-le depuis ton message puis réessaie : ton texte reste dans le champ, rien n'est perdu."; }
       else err.textContent=x&&x.status?'Enregistrement refusé ('+(x.body&&x.body.error||x.status)+').':'Serveur indisponible : le debrief n\'a pas été enregistré. Réessaie dans quelques minutes.'; }

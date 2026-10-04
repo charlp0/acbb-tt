@@ -119,6 +119,7 @@ def lire_national(chemin):
                     courant = {'nom': 'N2 ' + cle, 'niveau': 'N', 'div': 'N2', 'age': age, 'genre': genre,
                                'cat': LIB.get((age, genre)) or (age + ' ans ' + ('Filles' if genre == 'F' else 'Garçons')),
                                'salle': salle, 'date': date, 'pointage': pointage, 'debut': debut,
+                               'date_fin': '11/10/2026',  # convocations du tour 1 : samedi ET dimanche
                                'contact': '', 'joueurs': []}
                     groupes.append(courant); continue
                 m = RE_JOUEUR_N.match(l)

@@ -138,6 +138,8 @@
   /* fenêtre de confirmation */
   .modal{position:fixed;z-index:50;left:50%;top:50%;transform:translate(-50%,-50%);width:min(430px,94vw);background:var(--paper);border:1px solid var(--line-2);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:13px;box-shadow:0 24px 60px rgba(0,0,0,.6)}
   .modal label{display:flex;flex-direction:column;gap:5px}
+  .modal{max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain}
+  .modal input{min-height:44px;font-size:16px}
   .modal .err{color:var(--lose-lt);font-size:12px;min-height:16px}
   .choice{display:flex;gap:10px}
   .choice .btn{flex:1}
@@ -233,6 +235,24 @@ function jourCourt(d){
   const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(d||''); if(!m) return '';
   const x=new Date(+m[3],+m[2]-1,+m[1]);
   return isNaN(x.getTime()) ? '' : JOURS[x.getDay()]+' '+m[1];
+}
+function dateGroupe(g,court){
+  const debut=g.date||'',fin=g.date_fin||'';
+  if(!debut) return 'Date à confirmer';
+  const jour=d=>{
+    const j=jourCourt(d); if(!j) return d;
+    if(court) return j;
+    const noms={'dim.':'dimanche','lun.':'lundi','mar.':'mardi','mer.':'mercredi','jeu.':'jeudi','ven.':'vendredi','sam.':'samedi'};
+    return noms[j.split(' ')[0]]+' '+d;
+  };
+  return jour(debut)+(fin&&fin!==debut?' – '+jour(fin):'');
+}
+function naissanceISO(valeur){
+  const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(valeur||'').trim());
+  if(!m) return null;
+  const jour=+m[1],mois=+m[2],annee=+m[3],d=new Date(annee,mois-1,jour);
+  if(annee<1900||d>new Date()||d.getFullYear()!==annee||d.getMonth()!==mois-1||d.getDate()!==jour) return null;
+  return m[3]+'-'+m[2]+'-'+m[1];
 }
 /* À qui écrire pour être excusé : l'adresse dépend de l'échelon, et se tromper
    d'interlocuteur revient à ne pas prévenir. */
@@ -336,7 +356,6 @@ function vueJoueurs(){
   });
   const ordre=(a,b)=>{ const ra=par[a].rang,rb=par[b].rang;
     return (ra[0]-rb[0])||(ra[1]-rb[1])||a.localeCompare(b,'fr'); };
-  const dateTour=((S.data||{}).tours&&S.data.tours[S.tour]||{}).date||'';
   return Object.keys(par).sort(ordre).map(c=>{
     const divs=Object.keys(par[c].divs).sort((a,b)=>rangDiv(a)-rangDiv(b)||a.localeCompare(b));
     const n=divs.reduce((s2,d)=>s2+par[c].divs[d].length,0);
@@ -348,8 +367,7 @@ function vueJoueurs(){
         +'<span class="n">'+n+' joueur'+(n>1?'s':'')+' · '+rep+' ont répondu</span></h2>'
       +divs.map(d=>'<div class="sec"><span class="lab'+(haut(d)?' haut':'')+'">'+esc(d)+'</span><div class="js">'
         +par[c].divs[d].sort((a,b)=>b.j.clt-a.j.clt).map(x=>{
-            const sous=[lieu(x.g),x.g.debut,x.j.clt+' pts'];
-            const jc=jourCourt(x.g.date); if(jc) sous.unshift(jc);
+            const sous=[dateGroupe(x.g,true),lieu(x.g),x.g.debut,x.j.clt+' pts'].filter(Boolean);
             return '<div class="card2 j" data-sel="'+esc(x.g.id+'|'+x.j.lic)+'">'
               +'<span class="nm">'+esc(x.j.pre+' '+x.j.nom)+'<span class="sub">'+esc(sous.join(' · '))+'</span></span>'
               +(tagPres(x.j.lic)||'<span class="go">Confirmer ›</span>')+'</div>';
@@ -370,8 +388,8 @@ function ouvrir(cle){
     +'<div><div class="lab">'+esc(g.nom)+'</div><div class="h1" style="font-size:30px">'+esc(j.pre+' '+j.nom)+'</div></div>'
     +'<div class="kv"><span class="k">Classement</span><span>'+j.clt+' points · '+esc(j.cat)+'</span>'
     +'<span class="k">Salle</span><span>'+esc(g.salle||'à confirmer')+'</span>'
-    +'<span class="k">Pointage</span><span><b>'+esc(g.pointage)+'</b> — début '+esc(g.debut)+'</span>'
-    +'<span class="k">Date</span><span>'+esc((S.data.tours[S.tour]||{}).date||'')+'</span>'
+    +'<span class="k">Date</span><span data-date-groupe><b>'+esc(dateGroupe(g,false))+'</b></span>'
+    +'<span class="k">Pointage</span><span><b>'+esc(g.pointage||'à confirmer')+'</b> — début '+esc(g.debut||'à confirmer')+(g.date_fin?' (premier jour)':'')+'</span>'
     +'<span class="k">Adversaires</span><span>'+(g.joueurs.length-1)+' joueurs dans le groupe</span></div>'
     +'<div><div class="lab" style="margin-bottom:6px">Présence</div>'
       +(e?'<div class="card2" style="display:flex;align-items:center;gap:10px">'+tagPres(lic)
@@ -411,11 +429,16 @@ function demander(j,g){
           +' (échelon '+esc(c.qui)+')'+(c.note?' — '+esc(c.note):'')
           +'. Sans cet écrit, l\'absence est pénalisée et vaut forfait général pour les tours suivants.</div>'; })()
     +'<label><span class="lab">Numéro de licence</span><input id="mLic" inputmode="numeric" autocomplete="off" value="'+esc(j.lic)+'"></label>'
-    +'<label><span class="lab">Date de naissance</span><input id="mDob" type="date"></label>'
+    +'<label for="mDob"><span class="lab">Date de naissance</span><input id="mDob" type="text" inputmode="numeric" autocomplete="bday" placeholder="JJ/MM/AAAA" maxlength="10" aria-describedby="dobHint"></label>'
+    +'<span class="small muted" id="dobHint">Jour / mois / année, par exemple 07/03/1985.</span>'
     +'<div class="err" id="mErr"></div>'
     +'<div class="choice"><button class="btn yes" id="mOui">Je serai présent</button><button class="btn no" id="mNon">Je serai absent</button></div>'
     +'<button class="btn" id="mAnn">Annuler</button>';
   m.hidden=false;
+  document.getElementById('mDob').addEventListener('input',e=>{
+    const digits=e.target.value.replace(/\D/g,'').slice(0,8);
+    e.target.value=digits.slice(0,2)+(digits.length>2?'/'+digits.slice(2,4):'')+(digits.length>4?'/'+digits.slice(4):'');
+  });
   document.getElementById('mAnn').onclick=()=>{ m.hidden=true; };
   document.getElementById('mOui').onclick=()=>envoyer(j,true);
   document.getElementById('mNon').onclick=()=>envoyer(j,false);
@@ -423,9 +446,11 @@ function demander(j,g){
 async function envoyer(j,present){
   const err=document.getElementById('mErr');
   const lic=(document.getElementById('mLic').value||'').trim();
-  const dob=(document.getElementById('mDob').value||'').trim();
-  if(!lic||!dob){ err.textContent='Licence et date de naissance sont nécessaires.'; return; }
+  const dob=naissanceISO(document.getElementById('mDob').value);
+  if(!lic){ err.textContent='Le numéro de licence est nécessaire.'; return; }
+  if(!dob){ err.textContent='Saisis une date de naissance valide au format JJ/MM/AAAA.'; document.getElementById('mDob').focus(); return; }
   err.textContent='Vérification…';
+  document.getElementById('mOui').disabled=true; document.getElementById('mNon').disabled=true;
   try{
     await ACBB.api('joueur/criterium',{licence:lic,dob:dob,tour:Number(S.tour),present:present});
     document.getElementById('modal').hidden=true;
@@ -438,6 +463,8 @@ async function envoyer(j,present){
       : c==='trop_essais' ? 'Trop d\'essais. Réessaie dans quelques minutes.'
       : c==='appareil_limite' ? 'Trop de licences différentes depuis cet appareil.'
       : 'Enregistrement impossible pour le moment.' + (c?' ('+c+')':'');
+  }finally{
+    document.getElementById('mOui').disabled=false; document.getElementById('mNon').disabled=false;
   }
 }
 /* ---------- chargement ---------- */

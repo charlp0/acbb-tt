@@ -41,7 +41,19 @@ async function install(context,state){
     const row={id:14,slot:body.slot,author:'Test',created_at:'2026-09-30T11:00:00Z',tags:body.changes};state.rows.unshift(row);return send({ok:true,row});
    }
    if(api==='cap/dispos')return send({equipe:'M11',journees:state.poules.poules.find(x=>x.acbb==='M11').cal,joueurs:state.players.slice(0,4).map((p,i)=>({...state.votes[i],prenom:p.pre,statut:'T',saved_at:'2026-09-29T09:00:00Z',changes:[],exemptions:[],non_participations:state.nonParticipations.filter(n=>n.k===p.lic)}))});
-   if(api==='cap/debriefs'||api==='public/journee')return send({items:[]});
+   if(api==='cap/debriefs')return send({items:state.debriefs||[]});
+   if(api==='cap/debrief'){
+    if(state.debriefError)return send({error:'ecriture_debrief'},500);
+    const row={...body,id:70,created_at:'2026-10-04T11:16:00Z',publie:false};
+    state.debriefs=[row];return send({id:row.id});
+   }
+   if(api==='public/journee')return send({items:[]});
+   if(api.startsWith('public/criterium'))return send({presences:state.presences||{}});
+   if(api==='joueur/criterium'){
+    (state.presenceSaves||(state.presenceSaves=[])).push(body);
+    state.presences={[body.licence]:{present:body.present,at:'2026-10-04T12:00:00Z'}};
+    return send({ok:true});
+   }
    if(api==='cap/poule')return send({equipe:'M11',resultats:[]});
    if(api==='spo/alerts/dispos')return send({message:'Avis privé fictif'});
    if(api.startsWith('public/'))return send({items:[]});
@@ -187,4 +199,57 @@ test('historique : restauration en brouillon uniquement, aucune écriture automa
  await page.locator('#historyBtn').click();const d=page.locator('dialog');await expect(d).toBeVisible();
  await d.locator('[data-version]').selectOption('2');await d.locator('[data-team="M11"]').check();await d.locator('[data-restore]').click();
  await expect(page.locator('[data-note="M11"]')).toHaveValue('Version ancienne');expect(state.saves).toHaveLength(0);await expect(page.locator('#saveBtn')).toBeEnabled();
+});
+
+test('critérium : chaque fiche utilise son groupe, y compris les compétitions sur plusieurs jours',async({page,context})=>{
+ const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.setViewportSize({width:390,height:844});await page.goto('/criterium.html');
+ const data=read('criterium2627'),tour=data.tours[Object.keys(data.tours).sort().at(-1)];
+ for(const g of tour.groupes){
+  const j=g.joueurs.find(j=>j.acbb&&j.lic);if(!j)continue;
+  await page.locator('#vue [data-sel="'+g.id+'|'+j.lic+'"]').click();
+  await expect(page.locator('[data-date-groupe]')).toContainText(g.date);
+  if(g.date_fin)await expect(page.locator('[data-date-groupe]')).toContainText(g.date_fin);
+  else if(g.date!==tour.date)await expect(page.locator('[data-date-groupe]')).not.toContainText(tour.date);
+  await page.getByRole('button',{name:'fermer',exact:true}).click();
+ }
+ // Une date absente ne doit pas être remplacée par le dimanche du tour.
+ const withoutDate=structuredClone(data),g=withoutDate.tours['1'].groupes.find(g=>g.joueurs.some(j=>j.acbb));delete g.date;
+ await context.route('**/data/criterium2627.json',r=>r.fulfill({json:withoutDate}));
+ await page.reload();await page.locator('#vue [data-sel]').first().click();
+ await expect(page.locator('[data-date-groupe]')).toHaveText('Date à confirmer');
+ expect(errors).toEqual([]);
+});
+
+test('critérium mobile : saisie de naissance, validation puis confirmation de présence',async({page,context})=>{
+ const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.setViewportSize({width:320,height:568});await page.goto('/criterium.html');
+ await page.locator('#vue [data-sel]').first().click();await page.getByRole('button',{name:'Confirmer ma présence',exact:true}).click();
+ const dob=page.getByLabel('Date de naissance',{exact:true});
+ await expect(dob).toHaveAttribute('type','text');await expect(dob).toHaveAttribute('inputmode','numeric');
+ await dob.fill('31022010');await expect(dob).toHaveValue('31/02/2010');
+ await page.getByRole('button',{name:'Je serai présent',exact:true}).click();
+ await expect(page.locator('#mErr')).toContainText('date de naissance valide');expect(state.presenceSaves).toBeUndefined();
+ // Écran réduit par le clavier : champ et boutons atteignables dans la fenêtre défilante.
+ await page.setViewportSize({width:320,height:320});await dob.fill('07032010');
+ await expect(dob).toHaveValue('07/03/2010');
+ await page.getByRole('button',{name:'Je serai présent',exact:true}).click();
+ await expect(page.locator('#modal')).toBeHidden();await expect(page.locator('#pop')).toContainText('✓ présent');
+ expect(state.presenceSaves).toHaveLength(1);expect(state.presenceSaves[0].dob).toBe('2010-03-07');
+ expect(errors).toEqual([]);
+});
+
+test('debrief capitaine : confirmation durable, relecture et texte conservé après un échec',async({page,context})=>{
+ const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.setViewportSize({width:390,height:844});await page.goto('/capitaine.html');
+ const txt=page.locator('#debTxt');await expect(txt).toBeVisible();
+ await page.locator('#scA').fill('7');await page.locator('#scB').fill('7');await txt.fill('Belle rencontre, *bravo* à tous 😅');
+ await page.locator('#debSave').click();await expect(page.locator('#debStatus')).toContainText('Debrief enregistré le 04/10/2026');
+ await expect(page.locator('#debStatus')).toContainText('en attente de publication');
+ expect(state.debriefs[0].texte).toBe('Belle rencontre, *bravo* à tous 😅');
+ await page.reload();await expect(txt).toHaveValue('Belle rencontre, *bravo* à tous 😅');
+ await expect(page.locator('#debStatus')).toContainText('Debrief enregistré');
+ state.debriefError=true;await txt.fill('Texte modifié conservé même en cas d’erreur.');await page.locator('#debSave').click();
+ await expect(page.locator('#debErr')).toContainText('Enregistrement refusé');await expect(txt).toHaveValue('Texte modifié conservé même en cas d’erreur.');
+ await expect(page.locator('#debSave')).toBeEnabled();expect(errors).toEqual([]);
 });
