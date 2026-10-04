@@ -124,7 +124,27 @@
   pPoules.then(()=>{ render(); pSite.then(render); pRes.then(render); pApi.then(rs=>{ if(rs.some(r=>r.status==='rejected')){ S.apiFail=true; const n=document.getElementById('apiNote'); n.hidden=false; n.textContent='Scores momentanément indisponibles (serveur). Le calendrier reste à jour.'; } render(); }); })
     .catch(()=>{ document.getElementById('cal').innerHTML='<div class="empty">Calendrier indisponible pour le moment.</div>'; document.getElementById('standings').innerHTML=''; });
 
-  function scoreOf(t,j){ const it=S.scores[j]&&S.scores[j][t]; if(it&&it.score_acbb!=null&&it.score_adv!=null) return [+it.score_acbb,+it.score_adv]; const rr=(S.resultats[t]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null) return [+rr.score_acbb,+rr.score_adv]; return null; }
+  /* Score officiel FFTT, ramené en parties gagnées par ACBB.parties(). La rencontre est retrouvée par
+     le NOM de l'adversaire (le numéro de tour FFTT peut différer du calendrier club), et ce nom ne s'écrit
+     pas pareil partout (« CS CLICHY TT 1 » au calendrier, « CLICHY CS 1 » sur la feuille) : à défaut d'égalité,
+     on retient l'adversaire qui partage le plus de mots, numéro d'équipe compris. */
+  function ffttOf(t,j){
+    const p=S.byTeam[t], site=S.site; if(!p||!site||!site.DATA||!site.DATA[t]) return null;
+    const c=(p.cal||[]).find(x=>x.j===j); if(!c||c.exempt) return null;
+    let name=c.oppName||null; if(!name&&c.opp!=null){ const x=(p.teams||[]).find(y=>y.pos===c.opp); name=x?x.name:null; }
+    if(!name) return null;
+    const me=(site.DATA[t].teams||[]).find(x=>x.acbb); if(!me) return null;
+    const js=me.journees||[]; let jj=js.find(x=>sameTeam(x.opponent,name));
+    if(!jj){
+      const mots=v=>new Set(String(v||'').toUpperCase().match(/[A-Z0-9]+/g)||[]);
+      const m=mots(name), num=(String(name).match(/(\d+)\s*$/)||[])[1];
+      let best=0; js.forEach(x=>{ const o=mots(x.opponent); if(num&&!o.has(num)) return; let n=0; m.forEach(w=>{ if(o.has(w)) n++; }); if(n>best){ best=n; jj=x; } });
+      if(best<2) jj=null;
+    }
+    return jj?ACBB.parties(jj):null;
+  }
+  /* Priorité au score FFTT dès qu'il est publié ; le debrief ne sert qu'en attendant la feuille. */
+  function scoreOf(t,j){ const f=ffttOf(t,j); if(f) return f; const it=S.scores[j]&&S.scores[j][t]; if(it&&it.score_acbb!=null&&it.score_adv!=null) return [+it.score_acbb,+it.score_adv]; const rr=(S.resultats[t]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null) return [+rr.score_acbb,+rr.score_adv]; return null; }
 
   function render(){
     const p=S.byTeam[S.team]; if(!p) return;

@@ -543,15 +543,12 @@
   }
   /* score d'une journée : saisie du capitaine (cap/poule) → resultats2627.json → feuille FFTT 26/27 de site.json (si la poule correspond) */
   function scoreOf(j){ if(S.capRes[j]) return S.capRes[j]; const rr=(S.resultats[S.team]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null) return [+rr.score_acbb,+rr.score_adv]; return siteScore(matchOf(S.poule,j)); }
-  /* Points de rencontre FFTT (28 – 14, total 42) -> parties gagnées (14 – 0), l'unité du club.
-     Défini ici et pas seulement dans shared/api.js : ce fichier peut être en cache chez le visiteur. */
-  function toParties(a,b){ if(a==null||b==null)return null; a=+a; b=+b; if(!isFinite(a)||!isFinite(b)) return null;
-    return (a+b===42&&a>=14&&b>=14)?[a-14,b-14]:[a,b]; }
+  /* Score FFTT -> parties gagnées : ACBB.parties(journée), dans shared/api.js (une seule règle). */
   function sitePools(){ if(S.poolsFor!==S.site){ S.poolsFor=S.site; S.pools=poolFor(S.site,S.poule); } return S.pools||null; }
   function siteScore(m){ /* rencontre retrouvée par le nom de l'adversaire (pas par le numéro de journée, qui peut différer du calendrier club) */
     if(!m||!m.opp||m.exempt) return null; const pools=sitePools(); if(!pools) return null;
     const acbb=(S.poule.teams||[]).find(t=>t.acbb)||null;
-    for(const d of pools){ const me=d.teams.find(t=>t.acbb)||(acbb?d.teams.find(t=>sameTeam(t.name,acbb.name)):null); const jj=me?(me.journees||[]).find(x=>sameTeam(x.opponent,m.opp)&&x.match_score!=null&&x.opp_score!=null):null; if(jj) return toParties(jj.match_score,jj.opp_score); }
+    for(const d of pools){ const me=d.teams.find(t=>t.acbb)||(acbb?d.teams.find(t=>sameTeam(t.name,acbb.name)):null); const jj=me?(me.journees||[]).find(x=>sameTeam(x.opponent,m.opp)&&x.match_score!=null&&x.opp_score!=null):null; if(jj) return ACBB.parties(jj); }
     return null;
   }
   function renderPoule(){
@@ -629,7 +626,7 @@
     return n.length?Math.round(n.reduce((a,b)=>a+b,0)/n.length):null;
   }
   function avgScore(played){ if(!played.length) return null;
-    const v=played.map(j=>{ const pr=toParties(j.match_score,j.opp_score); return pr?pr[0]:null; }).filter(x=>x!=null);
+    const v=played.map(j=>{ const pr=ACBB.parties(j); return pr?pr[0]:null; }).filter(x=>x!=null);
     return v.length?(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1).replace('.',','):null; }
   function block2526(t,s,ours,avg26,njoue){
     if(!s&&avg26==null) return '<div class="empty" style="margin-top:8px">Pas encore de feuille 26/27, et pas de repère 25/26 pour cette équipe.</div>';
@@ -666,7 +663,7 @@
     const diff=difficulty(avg26!=null?avg26:lastAvg,(rk&&(+rk.mp||0)>0)?+rk.pos:null);   // la place ne compte qu'après au moins un match joué (avant J1, tout le monde est 1er ex æquo)
     const vsAll=acbbTeam?played.filter(j=>sameTeam(j.opponent,acbbTeam.name)):[];
     const vsUs=vsAll.find(j=>+j.journee===m.j)||vsAll[0]||null;
-    const sc=scoreOf(m.j)||(vsUs?toParties(vsUs.opp_score,vsUs.match_score):null); /* dernier repli : la feuille adverse, score inversé */
+    const sc=scoreOf(m.j)||(vsUs?(p=>p&&[p[1],p[0]])(ACBB.parties(vsUs)):null); /* dernier repli : la feuille adverse, score inversé */
 
     let h='<div class="ch"><span class="lab" style="color:var(--blue)">Scouting · J'+m.j+' · '+esc(fmtDate(m.date))+' · '+(m.dom?'domicile':'extérieur')+'</span>'+(diff?'<span class="tag'+(diff.cls?' '+diff.cls:'')+'" title="Estimation : moyenne de la dernière compo adverse et place au classement">'+diff.label+'</span>':'')+'</div>';
     h+='<div class="h2">'+esc(shortName(t.name))+'</div>';
@@ -686,8 +683,9 @@
       h+='<div class="sblock"><span class="lab">Compo récente</span>';
       if(!od) h+='<div class="empty" style="margin-top:6px">Pas encore de feuille de match 26/27 pour cette équipe.</div>';
       else if(lastJ&&realPlayers(lastJ.players).length){
-        const r=lastJ.match_score==null?'score en attente':(+lastJ.match_score>+lastJ.opp_score?'gagné':(+lastJ.match_score<+lastJ.opp_score?'perdu':'nul'));
-        h+='<div class="lineup"><span class="small muted">J'+esc(lastJ.journee)+' · '+r+(lastJ.match_score!=null?' <b class="sc '+scoreClass(+lastJ.match_score,+lastJ.opp_score)+'">'+esc(lastJ.match_score)+' – '+esc(lastJ.opp_score)+'</b>':'')+' vs '+esc(shortOpp(lastJ.opponent))+'</span><br>'+realPlayers(lastJ.players).map(p=>esc(playerLabel(p))+' <span class="cl">cl. '+clsTxt(p)+'</span>').join(' · ')+'</div>';
+        const pl=ACBB.parties(lastJ);
+        const r=!pl?'score en attente':(pl[0]>pl[1]?'gagné':(pl[0]<pl[1]?'perdu':'nul'));
+        h+='<div class="lineup"><span class="small muted">J'+esc(lastJ.journee)+' · '+r+(pl?' <b class="sc '+scoreClass(pl[0],pl[1])+'">'+pl[0]+' – '+pl[1]+'</b>':'')+' vs '+esc(shortOpp(lastJ.opponent))+'</span><br>'+realPlayers(lastJ.players).map(p=>esc(playerLabel(p))+' <span class="cl">cl. '+clsTxt(p)+'</span>').join(' · ')+'</div>';
       } else h+='<div class="empty" style="margin-top:6px">Pas de composition récente disponible.</div>';
       h+='</div>';
       if(recurring.length){
@@ -695,7 +693,7 @@
       }
       if(top&&top.vic>0) h+='<div class="sblock"><span class="lab">Meilleur joueur</span><div class="card2" style="margin-top:6px;font-size:13px"><b>'+esc(playerLabel(top))+'</b> · cl. '+clsTxt(top)+' · <b>'+top.vic+' victoire'+(top.vic>1?'s':'')+'</b> en '+top.count+' feuille'+(top.count>1?'s':'')+' de match</div></div>';
       if(played.length){
-        h+='<div class="sblock"><span class="lab">Résultats 26/27 · journée par journée</span><div class="slist">'+played.map(j=>{ const us=!!(acbbTeam&&sameTeam(j.opponent,acbbTeam.name)); return '<div class="card2 res'+(us?' us':'')+'"><span class="j">J'+esc(j.journee)+'</span><span class="dt">'+esc(fmtD26(j.date))+'</span><span class="o" title="'+esc(j.opponent)+'">'+esc(shortOpp(j.opponent))+'</span><span class="sc '+scoreClass(+j.match_score,+j.opp_score)+'">'+(j.match_score==null?'score en attente':esc(j.match_score)+' – '+esc(j.opp_score))+'</span></div>'; }).join('')+'</div></div>';
+        h+='<div class="sblock"><span class="lab">Résultats 26/27 · journée par journée</span><div class="slist">'+played.map(j=>{ const us=!!(acbbTeam&&sameTeam(j.opponent,acbbTeam.name)); const pj=ACBB.parties(j); return '<div class="card2 res'+(us?' us':'')+'"><span class="j">J'+esc(j.journee)+'</span><span class="dt">'+esc(fmtD26(j.date))+'</span><span class="o" title="'+esc(j.opponent)+'">'+esc(shortOpp(j.opponent))+'</span><span class="sc '+(pj?scoreClass(pj[0],pj[1]):'')+'">'+(!pj?'score en attente':pj[0]+' – '+pj[1])+'</span></div>'; }).join('')+'</div></div>';
       }
       h+='<details class="sblock"><summary class="lab">Niveau : 26/27 joué vs repères 25/26</summary>'+block2526(t,s,ours,avg26,played.length)+'</details>';
     } else {

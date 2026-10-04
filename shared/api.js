@@ -43,8 +43,34 @@
   /* Score d'une rencontre : le club raisonne en PARTIES GAGNÉES (14 – 0), la FFTT publie des
      POINTS DE RENCONTRE (28 – 14 = 14 + parties, total 42 en formule 4 joueurs). On convertit donc les
      scores venant des feuilles FFTT ; tout score dont le total n'est pas 42 est laissé tel quel. */
-  function parties(a,b){ a=+a; b=+b; if(!isFinite(a)||!isFinite(b)) return null;
-    return (a+b===42&&a>=14&&b>=14)?[a-14,b-14]:[a,b]; }
+  /* Score d'une rencontre en PARTIES GAGNÉES, l'unité du club (8 – 6).
+     La FFTT publie souvent un score en points : 2 la partie gagnée, 1 la partie perdue jouée, 0 au
+     forfait. Sur 14 parties jouées, 8 – 6 y devient 22 – 20, d'où la règle « total 42 : retirer 14 ».
+     Elle échoue dès qu'une rencontre n'a pas ses 14 parties jouées : la M9 en J2 (9 – 5, dont une
+     partie gagnée par forfait) s'affichait 23 – 18, la M5 en J1 26 – 12 au lieu de 11 – 2, et le
+     debrief préremplissait ces chiffres. Passer la JOURNÉE de data/site.json plutôt que deux nombres :
+     la feuille (victoires individuelles, doubles, parties jouées) permet de retrouver le compte exact.
+     Garde-fou : quand le score publié vaut déjà un nombre de parties (championnats nationaux), on le
+     garde tel quel, sinon le calcul ramènerait un 7 – 7 à 0 – 0. Deux nombres seuls : ancienne règle. */
+  function parties(a,b){
+    if(a&&typeof a==='object'){
+      const j=a; if(j.match_score==null||j.opp_score==null) return null;
+      const A=+j.match_score, B=+j.opp_score; if(!isFinite(A)||!isFinite(B)) return null;
+      const g=+j.played_games||0;
+      if(g>0&&Array.isArray(j.players)){
+        if(A+B<=g+4) return [A,B];                       // déjà en parties
+        const wp=j.players.reduce((s,p)=>s+(+(p&&p.vic)||0),0)+(+j.doubles||0), lp=g-wp;
+        const W=(A-lp)/2, L=(B-wp)/2;
+        if(Number.isInteger(W)&&Number.isInteger(L)&&W>=0&&L>=0) return [W,L];
+        if(A+B===42&&A>=14&&B>=14) return [A-14,B-14];
+        return (wp>=0&&lp>=0)?[wp,lp]:null;
+      }
+      return parties(A,B);
+    }
+    if(a==null||b==null) return null;
+    a=+a; b=+b; if(!isFinite(a)||!isFinite(b)) return null;
+    return (a+b===42&&a>=14&&b>=14)?[a-14,b-14]:[a,b];
+  }
   async function json(path){ const r=await fetch(path,{cache:'no-cache'}); if(!r.ok) throw new Error(path); return r.json(); }
   window.ACBB={api,upload,token,deviceId,toast,esc,json,parties,API};
 })();
