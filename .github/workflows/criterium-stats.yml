@@ -32,5 +32,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/criterium2627.json
-          git diff --staged --quiet || git commit -m "data: bilans V/D du critérium"
-          git push
+          if git diff --staged --quiet; then echo "rien de neuf"; exit 0; fi
+          git commit -m "data: bilans V/D du critérium"
+          # La collecte dure plusieurs minutes : main a pu avancer entre-temps. Le 04/10/2026, un push
+          # du site pendant la collecte a fait rejeter le sien. On se recale sur main avant de pousser.
+          for i in 1 2 3; do
+            git rebase --abort 2>/dev/null || true
+            git fetch origin main && git rebase origin/main && git push origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1
