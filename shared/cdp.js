@@ -30,11 +30,17 @@
     });
     return h;
   }
-  /* Art. 12, lecture du texte : brûlé pour l'équipe T s'il a joué 3 fois ou plus dans UNE équipe
-     de numéro inférieur. Rend le numéro de cette équipe, ou null. */
-  function brulePour(hj,T){ const t=Object.keys(hj||{}).find(x=>+x<T&&hj[x]>=3); return t?+t:null; }
+  /* Art. 12, lecture validée par Charles le 05/10/2026 : les matchs se CUMULENT sur toutes les équipes de numéro
+     inférieur. 1 match en équipe 1 et 2 en équipe 2 = 3 : brûlé pour les équipes 3, 4 et 5, pas pour la 2.
+     Le règlement admet tout de même un brûlé par groupe de 3 à partir de l'équipe 2 (contrôlé plus bas). */
+  function avant(hj,T){ return Object.keys(hj||{}).reduce((s,t)=>s+(+t<T?(+hj[t]||0):0),0); }
+  // brûlé pour l'équipe T : rend le nombre de matchs cumulés dans les équipes de numéro inférieur (3 ou plus), sinon null
+  function brulePour(hj,T){ const n=avant(hj,T); return n>=3?n:null; }
   function premierBrule(hj){ for(let T=2;T<=5;T++) if(brulePour(hj,T)) return T; return null; }
-  function aUnMatch(hj){ const t=Object.keys(hj||{}).find(x=>hj[x]===2&&+x<5); return t?+t:null; }
+  // un match de plus en équipe n : première équipe pour laquelle il deviendrait brûlé (il l'est alors jusqu'à la 5), sinon null
+  function bruleApres(hj,n){ for(let T=n+1;T<=5;T++){ const k=avant(hj,T); if(k===2) return T; } return null; }
+  // à un match du brûlage : 2 matchs cumulés dans les équipes 1 à 4 (ceux de l'équipe 5 ne comptent jamais)
+  function aUnMatch(hj){ return avant(hj,5)===2; }
 
   /* Contrôle d'une composition. points : { licence: points de la licence } ; hist : historique() ;
      dispo : { licence: true|false } pour la journée (facultatif). Rend les alertes par équipe et
@@ -72,6 +78,6 @@
     });
     return res;
   }
-  const CDP={ECHEANCE,JOURNEES,EQUIPES,PLACES,compoVide,historique,brulePour,premierBrule,aUnMatch,controler};
+  const CDP={ECHEANCE,JOURNEES,EQUIPES,PLACES,compoVide,historique,brulePour,premierBrule,bruleApres,aUnMatch,controler};
   if(typeof module!=='undefined'&&module.exports) module.exports=CDP; else racine.CDP=CDP;
 })(typeof window!=='undefined'?window:globalThis);

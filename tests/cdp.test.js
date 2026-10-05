@@ -11,10 +11,17 @@ test('historique : seules les journées antérieures comptent',()=>{
   const h=CDP.historique(compos,4);
   assert.deepEqual(h.m,{1:3});assert.deepEqual(h.n,{1:2});
 });
-test('brûlage (art. 12) : 3 matchs dans une équipe de numéro inférieur',()=>{
-  assert.equal(CDP.brulePour({1:3},2),1);assert.equal(CDP.brulePour({1:2},2),null);
+test('brûlage (art. 12) : 3 matchs cumulés dans les équipes de numéro inférieur',()=>{
+  assert.equal(CDP.brulePour({1:3},2),3);assert.equal(CDP.brulePour({1:2},2),null);
   assert.equal(CDP.brulePour({3:3},3),null);assert.equal(CDP.brulePour({3:3},4),3);
-  assert.equal(CDP.premierBrule({3:3}),4);assert.equal(CDP.aUnMatch({1:2}),1);
+  assert.equal(CDP.premierBrule({3:3}),4);
+  // l'exemple de Charles : 1 match en équipe 1 et 2 en équipe 2 → encore qualifié en 2, brûlé en 3, 4 et 5
+  const ex={1:1,2:2};
+  assert.equal(CDP.brulePour(ex,2),null);assert.equal(CDP.brulePour(ex,3),3);assert.equal(CDP.premierBrule(ex),3);
+  // à un match du brûlage, et ce que change un match de plus
+  assert.equal(CDP.aUnMatch({1:2}),true);assert.equal(CDP.aUnMatch({1:1,3:1}),true);assert.equal(CDP.aUnMatch({5:2}),false);
+  assert.equal(CDP.bruleApres({2:2},2),3);assert.equal(CDP.bruleApres({1:1,3:1},3),4);assert.equal(CDP.bruleApres({1:1},1),null);
+  assert.equal(CDP.bruleApres({1:3},1),null);   // déjà brûlé partout au-dessus : rien de neuf
 });
 test('deux brûlés dans un même groupe de l’équipe 2 : erreur sur ce groupe',()=>{
   const c=CDP.compoVide();c[2][1]=['m','n','o'];
@@ -22,6 +29,10 @@ test('deux brûlés dans un même groupe de l’équipe 2 : erreur sur ce groupe
   assert.equal(r.equipes[2].groupes[1].alertes.filter(a=>a.type==='brulage').length,1);
   const un=CDP.controler(c,P,{m:{1:3}});
   assert.equal(un.equipes[2].groupes[1].alertes.filter(a=>a.type==='brulage').length,0);
+  // en équipe 3 : m (1 en équipe 1 + 2 en équipe 2) et n (3 en équipe 2) sont tous deux brûlés
+  const c3=CDP.compoVide();c3[3][0]=['m','n','o'];
+  const r3=CDP.controler(c3,P,{m:{1:1,2:2},n:{2:3}});
+  assert.deepEqual(r3.equipes[3].groupes[0].alertes.find(a=>a.type==='brulage').licences,['m','n']);
 });
 test('ordre des groupes (art. 8) : un joueur plus fort en dessous est une erreur, l’ordre interne est libre',()=>{
   const ok=CDP.controler(pe(['c','a','b'],['d','e','f'],['g','h','i']),P,{});

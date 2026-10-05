@@ -149,7 +149,7 @@
       </aside>
     </div>
 
-    <div class="pied" id="pied">Règlement du Championnat de Paris Île-de-France du 15/06/2026 · articles 8, 9, 12 et 13 · équipes numérotées 1 = PE1, 2 = PE2, 3 = Honneur, 4 = Promo Honneur, 5 = D2.<br>Brûlage, lecture retenue : 3 matchs ou plus dans une même équipe de numéro inférieur, comptés sur les compositions enregistrées des journées précédentes. Points : classement officiel 26/27 (licence). Les compositions ne sont jamais publiées sur le site.</div>
+    <div class="pied" id="pied">Règlement du Championnat de Paris Île-de-France du 15/06/2026 · articles 8, 9, 12 et 13 · équipes numérotées 1 = PE1, 2 = PE2, 3 = Honneur, 4 = Promo Honneur, 5 = D2.<br>Brûlage : 3 matchs ou plus cumulés dans les équipes de numéro inférieur (1 en PE1 et 2 en PE2 → brûlé pour l'Honneur, la PH et la D2), comptés sur les compositions enregistrées des journées précédentes ; un brûlé par groupe de 3 reste admis à partir de l'équipe 2. Points : classement officiel 26/27 (licence). Les compositions ne sont jamais publiées sur le site.</div>
   </main>
 </div>
 <script src="../shared/api.js"></script>
@@ -185,6 +185,8 @@ const ligne=()=>COMPOS[j]||null;
 // dispo du vendredi : true / false pour ceux qui ont répondu, undefined sinon
 function dispoDe(l){ const r=R[l]; if(!r) return undefined; return !!(r.joue&&r.dates&&r.dates['j'+j]); }
 function histo(h){ return Object.keys(h||{}).sort().map(t=>COURT[t]+' ×'+h[t]).join(' · '); }
+function histoAvant(h,n){ const r={}; Object.keys(h||{}).forEach(t=>{ if(+t<n) r[t]=h[t]; }); return histo(r); }
+const pour=T=>T===5?'la D2':T===4?'PH et D2':'les équipes '+T+' à 5';
 function ou(l){ for(const e of CDP.EQUIPES) for(let g=0;g<C[e.n].length;g++) for(let k=0;k<3;k++) if(C[e.n][g][k]===l) return {n:e.n,g,k}; return null; }
 const cleDe=o=>o.n+'-'+o.g+'-'+o.k, deCle=s=>{ const a=s.split('-').map(Number); return {n:a[0],g:a[1],k:a[2]}; };
 
@@ -205,7 +207,7 @@ function placer(l,cle){
 function retirer(l){ const o=ou(l); if(o){ C[o.n][o.g][o.k]=null; } if(sel===l) sel=null; render(); }
 
 function texteAlerte(a,gi){
-  if(a.type==='brulage') return a.licences.length+' brûlés dans ce groupe, un seul est admis (art. 12) : '+a.licences.map(nomDe).join(' et ')+' ont joué 3 fois ou plus dans une équipe de numéro inférieur.';
+  if(a.type==='brulage') return a.licences.length+' brûlés dans ce groupe, un seul est admis (art. 12) : '+a.licences.map(nomDe).join(' et ')+' ont déjà joué 3 matchs ou plus dans les équipes de numéro inférieur.';
   if(a.type==='ordre') return nomDe(a.fort)+' ('+ptsDe(a.fort)+') a plus de points que '+nomDe(a.faible)+' ('+ptsDe(a.faible)+'), du groupe '+gi+' : à inverser (art. 8).';
   if(a.type==='double') return nomDe(a.licence)+' figure dans deux équipes : un joueur ne joue que dans une équipe par journée (art. 12).';
   if(a.type==='indispo') return nomDe(a.licence)+' a répondu ne pas être disponible ce vendredi.';
@@ -237,9 +239,8 @@ function render(){
         const cle=e.n+'-'+gi+'-'+k;
         if(!l) return '<button type="button" class="case vide'+(cc===cle?' cible':'')+'" data-case="'+cle+'" aria-label="'+esc(e.nom)+', groupe '+(gi+1)+', case '+(k+1)+' : vide"><span class="v1">'+(cc===cle?'Choisis un joueur':sel?'Placer ici':autorise&&!vide?'Absent autorisé':'Glisser un joueur')+'</span><span class="v2">Déposer ici</span></button>';
         const h=hist[l], b=CDP.brulePour(h,e.n), t=[];
-        if(b) t.push(tag('brûlé · '+COURT[b]+' ×'+h[b],'rouge'));
-        else if(CDP.aUnMatch(h)===e.n) t.push(tag('3e en '+COURT[e.n]+' : brûlé ensuite','jaune'));
-        else if(histo(h)) t.push(tag(histo(h),'gris'));
+        if(b) t.push(tag('brûlé · '+histoAvant(h,e.n),'rouge'));
+        else { const T=CDP.bruleApres(h,e.n); if(T) t.push(tag('brûlé ensuite pour '+pour(T),'jaune')); else if(histo(h)) t.push(tag(histo(h),'gris')); }
         const d=dispo[l]; if(d===false) t.push(tag('pas dispo','rouge')); else if(d===undefined) t.push(tag('pas répondu','contour'));
         return '<div class="case plein'+(sel===l?' sel':'')+'" data-case="'+cle+'"><div class="pc" role="button" tabindex="0" draggable="true" data-carte="'+l+'" data-at="'+cle+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts'+(histo(h)?' · avant J'+j+' : '+histo(h):''))+'"><span class="nm">'+esc(nomDe(l))+'</span><span class="l2"><span class="pt">'+ptsDe(l)+'</span>'+t.join('')+'</span></div><button type="button" class="x" data-retirer="'+l+'" aria-label="Retirer '+esc(nomDe(l))+' de l’équipe">'+ICX+'</button></div>';
       }).join('');
@@ -255,9 +256,9 @@ function render(){
   const qq=sansAccent(q), trouve=l=>!qq||sansAccent(nomDe(l)).indexOf(qq)>=0;
   const tous=Object.keys(P).filter(l=>!places.has(l)&&trouve(l)).sort((a,b)=>(ptsDe(b)-ptsDe(a))||nomDe(a).localeCompare(nomDe(b),'fr'));
   const carte=l=>{
-    const h=hist[l], T=CDP.premierBrule(h), a2=CDP.aUnMatch(h), t=[];
-    if(T) t.push(tag('brûlé pour '+(T===5?'la D2':T===4?'PH et D2':'les équipes '+T+' à 5'),'rouge'));
-    else if(a2) t.push(tag(COURT[a2]+' ×2 · à 1 match du brûlage','jaune'));
+    const h=hist[l], T=CDP.premierBrule(h), t=[];
+    if(T) t.push(tag('brûlé pour '+pour(T),'rouge'));
+    else if(CDP.aUnMatch(h)) t.push(tag('à 1 match du brûlage','jaune'));
     if(histo(h)) t.push(tag(histo(h),'gris'));
     if(R[l]&&R[l].joue===false) t.push(tag('ne joue pas le CDP','contour'));
     return '<div class="lc'+(sel===l?' sel':'')+'" role="button" tabindex="0" draggable="true" data-carte="'+l+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts')+'"><span class="l1"><span class="nm">'+esc(nomDe(l))+'</span><span class="pt">'+ptsDe(l)+'</span></span>'+(t.length?'<span class="tgs">'+t.join('')+'</span>':'')+'</div>';

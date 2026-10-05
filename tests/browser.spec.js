@@ -343,13 +343,16 @@ test('CDP sportive : tableau des dispos, compteurs par vendredi et filtres',asyn
 test('CDP sportive : glisser-déposer, clic puis case, règles en direct et enregistrement',async({page,context})=>{
  const state=fixture(),errors=[];const L=state.players.map(p=>p.lic);
  state.cdpReponses=Object.fromEntries(L.map(l=>[l,cdpRep(true)]));
- // J1 à J3 : Alex et Sam en équipe 1 trois fois, donc brûlés pour l'équipe 2
- state.cdpCompos=Object.fromEntries([1,2,3].map(k=>[k,{id:k,journee:k,statut:'envoyee',created_at:'2026-09-20T10:00:00Z',auteur:'Test',compo:compoAvec(1,0,[L[0],L[1]])}]));
+ // J1 à J3 : Alex et Sam en équipe 1 trois fois, donc brûlés pour l'équipe 2 ;
+ // Jo une fois en équipe 1 puis deux fois en équipe 2 : les matchs se cumulent, brûlé pour les équipes 3 à 5 seulement
+ state.cdpCompos=Object.fromEntries([1,2,3].map(k=>{const c=compoAvec(1,0,k===1?[L[0],L[1],L[3]]:[L[0],L[1]]);if(k>1)c[2][0][0]=L[3];
+  return [k,{id:k,journee:k,statut:'envoyee',created_at:'2026-09-20T10:00:00Z',auteur:'Test',compo:c}];}));
  await install(context,state);page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/sportive/cdp-compo.html?j=4');
  await expect(page.locator('#hJ')).toHaveText('J4');
  await expect(page.locator('#lDisp [data-carte]')).toHaveCount(5);
  await expect(page.locator('#lDisp [data-carte="'+L[0]+'"]')).toContainText('brûlé pour les équipes 2 à 5');
+ await expect(page.locator('#lDisp [data-carte="'+L[3]+'"]')).toContainText('brûlé pour les équipes 3 à 5');
  // glisser-déposer : Alex en PE2 groupe 1
  await page.locator('#lDisp [data-carte="'+L[0]+'"]').dragTo(page.locator('[data-case="2-0-0"]'));
  await expect(page.locator('[data-case="2-0-0"]')).toContainText('Alex EXEMPLE1');
