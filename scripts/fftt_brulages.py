@@ -129,6 +129,10 @@ def main():
           f"{nb} joueurs brûlés sur {len(equipes)} équipes · clubs illisibles : {len(erreurs_club)}")
     if a_lire and not any(x[2] is not None for x in lus):
         sys.exit("Aucune feuille lue : rien n'est écrit (API indisponible ?)")
+    try: avant = json.load(open('data/brulages2627.json')).get('equipes')
+    except Exception: avant = None
+    if avant == equipes:   # rien de neuf : pas de réécriture, donc pas de publication pour rien
+        print("Inchangé — data/brulages2627.json conservé."); return
     json.dump(out, open('data/brulages2627.json', 'w'), ensure_ascii=False)
     print("OK — data/brulages2627.json écrit.")
 
