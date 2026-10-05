@@ -100,7 +100,7 @@
   <div id="hdr"></div>
   <div id="gateMsg" class="gatemsg" hidden>
     <div class="h1">Accès réservé à la <em>sportive</em></div>
-    <p>Accès réservé à la sportive · ouvre ton lien personnel.</p>
+    <p>Accès réservé à la sportive et aux sous-sportives du Championnat de Paris · ouvre ton lien personnel.</p>
     <p id="gateErr" class="mono" style="font-size:11px;min-height:14px"></p>
     <a href="../cdp.html">← Retour au Championnat de Paris</a>
   </div>
@@ -390,13 +390,13 @@ async function start(){
   let me=null, err=null;
   try{ me=await api('me'); }catch(e){ err=e; }
   const role=(me&&me.role)||'';
-  if(role!=='sportive'){
+  if(role!=='sportive'&&role!=='cdp'){   // la sportive, ou une sous-sportive CDP (lien limité au Championnat de Paris)
     renderNav({active:'Compositions CDP',role:role,team:me&&me.equipe});
     document.getElementById('gateMsg').hidden=false;
     document.getElementById('gateErr').textContent=gateErrTxt(err,role);
     return;
   }
-  renderNav({active:'Compositions CDP',role:'sportive',name:me.nom,team:me.equipe||null});
+  renderNav({active:'Compositions CDP',role:role,name:me.nom,team:me.equipe||null});
   document.getElementById('main').hidden=false;
   boot().catch(e=>{ document.getElementById('err').innerHTML='<div class="srverr">Erreur de chargement : '+esc(e.message)+'</div>'; });
 }

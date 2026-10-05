@@ -53,7 +53,13 @@
         ? '<nav class="subnav spo" aria-label="Espace sportive · Championnat de Paris"><span class="grp"><span class="lab">Championnat de Paris</span>'+SPO_CDP.map(([l,h])=>pill(l,h,'spo',here===l)).join('')+'</span></nav>'
         : '<nav class="subnav spo" aria-label="Espace sportive">'+capPart+SPO_GROUPS.map(([g,items])=>'<span class="grp"><span class="lab">'+g+'</span>'+items.map(([l,h])=>pill(l,h,'spo',here===l)).join('')+'</span>').join('<span class="sep"></span>')+'</nav>';
     }
-    const right=role==='capitaine'?'<span class="pill cap">Capitaine'+(team?' · '+team:'')+'</span>':role==='sportive'?'<span class="pill spo">Sportive'+(opts.name?' · '+opts.name:'')+(team?' · capitaine '+team:'')+'</span>':'<span class="lab" style="align-self:center">Saison 2026/27 · Phase 1</span>';
+    // Sous-sportive CDP : les outils du Championnat de Paris sous sa tuile ; si elle est aussi capitaine, ses deux onglets bleus.
+    if(role==='cdp'){
+      const capOnly=team?CAP.map(([l,h])=>pill(l,h,'cap',here===l)).join(''):'';
+      if(ici==='paris') sub='<nav class="subnav spo" aria-label="Espace sous-sportive · Championnat de Paris">'+(team?'<span class="grp"><span class="lab">Capitaine '+team+'</span>'+capOnly+'</span><span class="sep"></span>':'')+'<span class="grp"><span class="lab">Championnat de Paris</span>'+SPO_CDP.map(([l,h])=>pill(l,h,'spo',here===l)).join('')+'</span></nav>';
+      else if(team) sub='<nav class="subnav cap" aria-label="Espace capitaine">'+capOnly+'</nav>';
+    }
+    const right=role==='capitaine'?'<span class="pill cap">Capitaine'+(team?' · '+team:'')+'</span>':role==='cdp'?'<span class="pill spo">Sous-sportive CDP'+(opts.name?' · '+opts.name:'')+(team?' · capitaine '+team:'')+'</span>':role==='sportive'?'<span class="pill spo">Sportive'+(opts.name?' · '+opts.name:'')+(team?' · capitaine '+team:'')+'</span>':'<span class="lab" style="align-self:center">Saison 2026/27 · Phase 1</span>';
     const el=document.getElementById('hdr'); if(!el) return;
     el.className='hdr';
     el.innerHTML='<div class="hdr1"><a class="brand" href="'+base+'/index.html"><img src="'+base+'/logo.png" alt="ACBB"><span><span class="b1">ACBB TT</span><br><span class="b2">Tennis de table · Boulogne-Billancourt</span></span></a><div class="row">'+right+'</div></div>'+tiles+sub;

@@ -289,13 +289,14 @@
 
   /* ---------- rôle ---------- */
   ACBB.api('me').then(me=>{
-    const sportiveCap=!!(me&&me.role==='sportive'&&me.equipe);   // sportive qui est aussi capitaine : même espace, sur son équipe
+    // sportive (ou sous-sportive CDP) qui est aussi capitaine : même espace, sur son équipe
+    const sportiveCap=!!(me&&(me.role==='sportive'||me.role==='cdp')&&me.equipe);
     if(!me||(me.role!=='capitaine'&&!sportiveCap)){
-      if(me&&me.role==='sportive'){ renderNav({active:'',role:'sportive',name:me.nom}); showGate('Page réservée aux capitaines','Ton lien sportive n\'est rattaché à aucune équipe. Depuis Accès, associe-lui ton équipe pour ouvrir cet espace.'); return; }
+      if(me&&(me.role==='sportive'||me.role==='cdp')){ renderNav({active:'',role:me.role,name:me.nom}); showGate('Page réservée aux capitaines','Ton lien '+(me.role==='cdp'?'sous-sportive CDP':'sportive')+' n\'est rattaché à aucune équipe. Depuis Accès, la sportive peut lui associer ton équipe pour ouvrir cet espace.'); return; }
       renderNav({active:''}); showGate('Lien invalide ou révoqué','Ce lien capitaine n\'est plus reconnu. Demande un nouveau lien à la sportive, puis ouvre-le depuis ton téléphone.'); return;
     }
     S.me=me; S.team=me.equipe;
-    renderNav({active:TAB==='poule'?'Ma poule':'Mon équipe',role:sportiveCap?'sportive':'capitaine',team:S.team,name:me.nom});
+    renderNav({active:TAB==='poule'?'Ma poule':'Mon équipe',role:sportiveCap?me.role:'capitaine',team:S.team,name:me.nom});
     boot();
   }).catch(err=>{
     const code=err&&err.body&&err.body.error;

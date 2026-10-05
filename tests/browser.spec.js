@@ -390,3 +390,20 @@ test('CDP sportive : un enregistrement concurrent est signalé, rien n’est éc
  expect(state.cdpCompoSaves).toHaveLength(2);expect(state.cdpCompoSaves[1].expected_id).toBe(41);
  expect(errors).toEqual([]);
 });
+
+test('sous-sportive CDP : les outils du Championnat de Paris seulement, son espace capitaine conservé',async({page,context})=>{
+ const state=fixture(),errors=[];state.role='cdp';state.cdpReponses={};
+ await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/sportive/cdp-dispos.html');
+ await expect(page.locator('#main')).toBeVisible();await expect(page.locator('#gateMsg')).toBeHidden();
+ const sub=page.locator('.subnav.spo');await expect(sub).toContainText('Compositions CDP');await expect(sub).not.toContainText('Compos journée');
+ await expect(page.locator('#hdr')).toContainText('Sous-sportive CDP');
+ await page.goto('/sportive/cdp-compo.html');await expect(page.locator('#main')).toBeVisible();
+ for(const p of ['/sportive/journee.html','/sportive/acces.html','/sportive/debriefs.html','/sportive/suivi-dispos.html']){
+  await page.goto(p);await expect(page.locator('#gateMsg')).toBeVisible();
+ }
+ // la maquette rattache l'équipe M11 au lien : ses onglets capitaine restent, aucun onglet sportive
+ await page.goto('/index.html');await expect(page.locator('.subnav.cap')).toContainText('Mon équipe');
+ await expect(page.locator('#hdr')).not.toContainText('Compos journée');
+ expect(errors).toEqual([]);
+});

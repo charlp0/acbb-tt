@@ -73,7 +73,7 @@ const sb: any = createClient(SUPABASE_URL || 'http://localhost', SERVICE_KEY || 
 
 // ─────────────────────────────── Types ──────────────────────────────────────
 type Json = Record<string, any>;
-type Role = 'capitaine' | 'sportive';
+type Role = 'capitaine' | 'sportive' | 'cdp';   // cdp : sous-sportive du Championnat de Paris (outils CDP seulement)
 type Lien = { id: number; role: Role; equipe: string | null; nom: string; actif: boolean };
 type Identite = { nom: string; prenom: string };
 type DisposRow = { id: number; created_at: string; licence: string; nom: string | null; prenom: string | null; dispos: Json | null };
@@ -431,10 +431,22 @@ async function exiger(req: Request, role: Role): Promise<Lien> {
   if (!req.headers.get('x-acbb-token')) fail(401, 'jeton_requis');
   const lien = await lienDepuisJeton(req);
   if (!lien) fail(401, 'jeton_invalide');
-  // Un lien sportive rattaché à une équipe (sportive qui est aussi capitaine) ouvre l'espace capitaine de cette équipe.
-  const sportiveCapitaine = role === 'capitaine' && lien.role === 'sportive' && !!lien.equipe;
+  // Un lien sportive (ou sous-sportive CDP) rattaché à une équipe ouvre aussi l'espace capitaine de cette équipe :
+  // un téléphone ne garde qu'un lien, la personne qui est aussi capitaine ne doit rien perdre.
+  const sportiveCapitaine = role === 'capitaine' && (lien.role === 'sportive' || lien.role === 'cdp') && !!lien.equipe;
   if (lien.role !== role && !sportiveCapitaine) fail(403, 'role_incorrect');
   if (role === 'capitaine' && !lien.equipe) fail(403, 'lien_sans_equipe');
+  await toucherLien(lien.id, req);
+  return lien;
+}
+
+/** Outils du Championnat de Paris : la sportive, ou une sous-sportive CDP (lien « cdp »). Un lien cdp n'ouvre RIEN d'autre :
+ *  toutes les autres routes /spo/* exigent le rôle sportive exact. */
+async function exigerCdp(req: Request): Promise<Lien> {
+  if (!req.headers.get('x-acbb-token')) fail(401, 'jeton_requis');
+  const lien = await lienDepuisJeton(req);
+  if (!lien) fail(401, 'jeton_invalide');
+  if (lien.role !== 'sportive' && lien.role !== 'cdp') fail(403, 'role_incorrect');
   await toucherLien(lien.id, req);
   return lien;
 }
@@ -659,9 +671,9 @@ async function router(req: Request): Promise<Response> {
     const lien = await lienDepuisJeton(req);
     if (!lien) return json({ role: null });
     await toucherLien(lien.id, req);
-    return lien.role === 'capitaine'
-      ? json({ role: 'capitaine', equipe: lien.equipe, nom: lien.nom })
-      : json({ role: 'sportive', nom: lien.nom, equipe: lien.equipe ?? null }); // equipe : la sportive est aussi capitaine de cette équipe
+    if (lien.role === 'capitaine') return json({ role: 'capitaine', equipe: lien.equipe, nom: lien.nom });
+    if (lien.role === 'cdp') return json({ role: 'cdp', nom: lien.nom, equipe: lien.equipe ?? null });   // equipe : elle est aussi capitaine
+    return json({ role: 'sportive', nom: lien.nom, equipe: lien.equipe ?? null }); // equipe : la sportive est aussi capitaine de cette équipe
   }
 
   // ── Public ───────────────────────────────────────────────────────────────
@@ -935,45 +947,11 @@ async function router(req: Request): Promise<Response> {
     fail(404, 'route_inconnue');
   }
 
-  // ── Sportive ─────────────────────────────────────────────────────────────
-  if (path.startsWith('/spo/')) {
-    const lien = await exiger(req, 'sportive');
+  // ── Championnat de Paris : sportive ou sous-sportive CDP ────────────────
+  if (path.startsWith('/spo/cdp/')) {
+    const lien = await exigerCdp(req);
     const acteur = lien.nom;
 
-    if (path === '/spo/alerts/dispos' && GET) {
-      const { data, error } = await sb.storage.from('club-backups').download('alerts/dispos/latest.json');
-      if (error) {
-        if (String(error.statusCode ?? error.status) === '404') return json({ message: null });
-        fail(503, 'alerte_indisponible');
-      }
-      return json(JSON.parse(await data.text()));
-    }
-
-    if (path === '/spo/config/extras' && GET) {
-      const { data, error } = await sb.from('private_config').select('value').eq('name', 'extra_communautaires').maybeSingle();
-      if (error || !data) fail(503, 'statuts_indisponibles');
-      return json(data.value);
-    }
-    if (path === '/spo/config/non-participations' && GET) return json(await nonParticipationsConfirmees());
-
-    if (path === '/spo/documents' && POST) {
-      const body=await lireJson(req), kind=String(body.kind ?? ''), changes=body.changes;
-      if (!['tags','fem','contraintes'].includes(kind) || !Number.isSafeInteger(body.expected_id) || body.expected_id<0) fail(400,'version_requise');
-      if (!changes || typeof changes!=='object' || Array.isArray(changes) || !Object.keys(changes).length || Object.keys(changes).length>1000) fail(400,'document_invalide');
-      for (const [key,value] of Object.entries(changes)) {
-        if (!key || key.length>120 || ['_meta','__proto__','constructor','prototype'].includes(key)
-          || (value!==null && (typeof value!=='object' || Array.isArray(value)))) fail(400,'changement_invalide');
-        if (kind==='contraintes' && value!==null && (value as Json).id!==key) fail(400,'contrainte_invalide');
-      }
-      const note=texteCourt(body.note,120), author=note?`${acteur} — ${note}`:acteur;
-      const {data,error}=await sb.rpc('save_club_document',{p_kind:kind,p_expected_id:body.expected_id,p_changes:changes,p_author:author});
-      if (error) fail(503,'enregistrement_indisponible');
-      if (!data?.ok) fail(409,'conflit_document',{conflicts:data?.conflicts ?? [],current:data?.current});
-      await journal(acteur,'sportive','document_enregistre',{kind,id:data.row?.id,keys:Object.keys(changes)});
-      return json(data);
-    }
-
-    // ── Championnat de Paris ────────────────────────────────────────────────
     if (path === '/spo/cdp/dispos' && GET) {
       // Dernière réponse de chaque licence : le journal est lu dans l'ordre, la plus récente l'emporte.
       const { data, error } = await sb.from('cdp_dispos_log').select('id,licence,joue,dates,created_at')
@@ -1028,8 +1006,49 @@ async function router(req: Request): Promise<Response> {
       const { data, error } = await sb.from('cdp_compo_log').insert({ journee, compo: propre, statut, auteur: acteur })
         .select('id,journee,compo,statut,created_at,auteur').single();
       if (error) fail(500, 'ecriture_cdp', { detail: error.message });
-      await journal(acteur, 'sportive', 'cdp_compo', { journee, id: data.id, statut });
+      await journal(acteur, lien.role, 'cdp_compo', { journee, id: data.id, statut });
       return json({ ok: true, row: data });
+    }
+
+    fail(404, 'route_inconnue');
+  }
+
+  // ── Sportive ─────────────────────────────────────────────────────────────
+  if (path.startsWith('/spo/')) {
+    const lien = await exiger(req, 'sportive');
+    const acteur = lien.nom;
+
+    if (path === '/spo/alerts/dispos' && GET) {
+      const { data, error } = await sb.storage.from('club-backups').download('alerts/dispos/latest.json');
+      if (error) {
+        if (String(error.statusCode ?? error.status) === '404') return json({ message: null });
+        fail(503, 'alerte_indisponible');
+      }
+      return json(JSON.parse(await data.text()));
+    }
+
+    if (path === '/spo/config/extras' && GET) {
+      const { data, error } = await sb.from('private_config').select('value').eq('name', 'extra_communautaires').maybeSingle();
+      if (error || !data) fail(503, 'statuts_indisponibles');
+      return json(data.value);
+    }
+    if (path === '/spo/config/non-participations' && GET) return json(await nonParticipationsConfirmees());
+
+    if (path === '/spo/documents' && POST) {
+      const body=await lireJson(req), kind=String(body.kind ?? ''), changes=body.changes;
+      if (!['tags','fem','contraintes'].includes(kind) || !Number.isSafeInteger(body.expected_id) || body.expected_id<0) fail(400,'version_requise');
+      if (!changes || typeof changes!=='object' || Array.isArray(changes) || !Object.keys(changes).length || Object.keys(changes).length>1000) fail(400,'document_invalide');
+      for (const [key,value] of Object.entries(changes)) {
+        if (!key || key.length>120 || ['_meta','__proto__','constructor','prototype'].includes(key)
+          || (value!==null && (typeof value!=='object' || Array.isArray(value)))) fail(400,'changement_invalide');
+        if (kind==='contraintes' && value!==null && (value as Json).id!==key) fail(400,'contrainte_invalide');
+      }
+      const note=texteCourt(body.note,120), author=note?`${acteur} — ${note}`:acteur;
+      const {data,error}=await sb.rpc('save_club_document',{p_kind:kind,p_expected_id:body.expected_id,p_changes:changes,p_author:author});
+      if (error) fail(503,'enregistrement_indisponible');
+      if (!data?.ok) fail(409,'conflit_document',{conflicts:data?.conflicts ?? [],current:data?.current});
+      await journal(acteur,'sportive','document_enregistre',{kind,id:data.row?.id,keys:Object.keys(changes)});
+      return json(data);
     }
 
     if (path === '/spo/compositions' && POST) {
@@ -1128,11 +1147,11 @@ async function router(req: Request): Promise<Response> {
     if (path === '/spo/liens/generer' && POST) {
       const body = await lireJson(req);
       const role = String(body.role ?? '');
-      if (role !== 'capitaine' && role !== 'sportive') fail(400, 'role_invalide');
+      if (role !== 'capitaine' && role !== 'sportive' && role !== 'cdp') fail(400, 'role_invalide');
       const nom = texteCourt(body.nom, 60);
       if (!nom) fail(400, 'nom_requis');
       let equipe: string | null = null;
-      if (role === 'capitaine' || (role === 'sportive' && body.equipe)) {   // sportive : équipe optionnelle (elle est aussi capitaine)
+      if (role === 'capitaine' || ((role === 'sportive' || role === 'cdp') && body.equipe)) {   // sportive, cdp : équipe optionnelle (aussi capitaine)
         equipe = texteCourt(body.equipe, 4).toUpperCase();
         if (!/^[MF]\d{1,2}$/.test(equipe)) fail(400, 'equipe_invalide');
         if (!(await equipeExiste(equipe))) fail(400, 'equipe_inconnue');
@@ -1148,7 +1167,7 @@ async function router(req: Request): Promise<Response> {
       const token_hash = await hashJeton(token);
       const { data, error } = await sb.from('liens').insert({ token_hash, role, equipe, nom, actif: true }).select('id').single();
       if (error) fail(500, 'ecriture_lien', { detail: error.message });
-      const page = role === 'capitaine' ? 'capitaine.html' : 'sportive/index.html';
+      const page = role === 'capitaine' ? 'capitaine.html' : role === 'cdp' ? 'sportive/cdp-compo.html' : 'sportive/index.html';
       const urlLien = `${SITE_URL}/${page}#t=${token}`;
       await journal(acteur, 'sportive', 'lien_genere', { id: data.id, role, equipe, nom, revoques }); // jamais le jeton
       return json({ id: data.id, token, url: urlLien, revoques }); // seule et unique fois où le jeton est renvoyé
@@ -1165,7 +1184,7 @@ async function router(req: Request): Promise<Response> {
         if (!/^[MF]\d{1,2}$/.test(equipe)) fail(400, 'equipe_invalide');
         if (!(await equipeExiste(equipe))) fail(400, 'equipe_inconnue');
       }
-      const { data, error } = await sb.from('liens').update({ equipe }).eq('id', id).eq('role', 'sportive').select('id,nom,equipe');
+      const { data, error } = await sb.from('liens').update({ equipe }).eq('id', id).in('role', ['sportive', 'cdp']).select('id,nom,equipe');
       if (error) fail(500, 'ecriture_lien', { detail: error.message });
       if (!data?.length) fail(404, 'lien_introuvable');
       await journal(acteur, 'sportive', 'lien_equipe', { id, nom: data[0].nom, equipe });
