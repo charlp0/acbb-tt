@@ -80,6 +80,8 @@ def main():
         if c['club'] and c['n'] > 1:
             besoins[(c['club'], c['genre'])] = max(besoins.get((c['club'], c['genre']), 0), c['n'])
     print(f"{len(cibles)} équipes adverses · {len(besoins)} clubs à lire · sans n° de club : {len(sans_club)}")
+    if cibles and len(sans_club) == len(cibles):
+        sys.exit("site.json ne porte aucun n° de club : lancer d'abord « Résultats équipes FFTT » (fftt_site.py)")
     # 2. les équipes plus fortes de ces clubs, puis leurs feuilles de la phase
     def lire_club(cg):
         club, genre = cg
