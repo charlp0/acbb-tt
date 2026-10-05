@@ -26,6 +26,8 @@ async function install(context,state){
    const api=url.pathname.split('/api/')[1],body=req.method()==='POST'?req.postDataJSON():null;
    if(api==='me')return send({role:state.role,equipe:'M11',nom:'Test'});
    if(api==='spo/config/extras')return send({ex:{},a_confirmer:{}});
+   if(api==='spo/liens')return send(state.liens||[]);
+   if(api==='spo/liens/revoquer'||api==='spo/liens/equipe'){(state.lienOps||(state.lienOps=[])).push([api,body]);return send({ok:true});}
    if(api==='spo/config/non-participations')return send(state.nonParticipations);
    if(api==='spo/rest'){
     if(body.method!=='select')throw new Error('Écriture non prévue dans le test');
@@ -405,5 +407,20 @@ test('sous-sportive CDP : les outils du Championnat de Paris seulement, son espa
  // la maquette rattache l'équipe M11 au lien : ses onglets capitaine restent, aucun onglet sportive
  await page.goto('/index.html');await expect(page.locator('.subnav.cap')).toContainText('Mon équipe');
  await expect(page.locator('#hdr')).not.toContainText('Compos journée');
+ expect(errors).toEqual([]);
+});
+
+test('Accès : un lien capitaine devenu sous-sportive CDP reste celui de son équipe, et la fin de phase ne lui retire que l’équipe',async({page,context})=>{
+ const state=fixture(),errors=[];
+ state.liens=[{id:35,role:'cdp',equipe:'F1',nom:'Marion MERIC',actif:true,created_at:'2026-09-16T10:00:00Z',last_used_at:'2026-10-04T16:13:00Z',appareils:1,ips:1},
+  {id:36,role:'capitaine',equipe:'M11',nom:'Alex EXEMPLE1',actif:true,created_at:'2026-09-16T10:00:00Z',last_used_at:null,appareils:0,ips:0}];
+ await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/sportive/acces.html');
+ const f1=page.locator('#capList .lr').filter({has:page.locator('.tn',{hasText:/^F1$/})});
+ await expect(f1).toContainText('Marion MERIC');await expect(f1).toContainText('sous-sportive CDP');await expect(f1.locator('.st')).toContainText('actif');
+ await expect(page.locator('#cdpList')).toContainText('Marion MERIC');await expect(page.locator('#cdpList select.eqsel')).toHaveValue('F1');
+ page.once('dialog',d=>d.accept());await page.locator('#revAll').click();
+ await expect.poll(()=>(state.lienOps||[]).length).toBe(2);
+ expect(state.lienOps).toEqual([['spo/liens/revoquer',{id:36}],['spo/liens/equipe',{id:35,equipe:null}]]);
  expect(errors).toEqual([]);
 });

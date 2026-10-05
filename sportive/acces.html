@@ -192,7 +192,8 @@ async function loadDebs(){ try{ DEBS=rowsOf(await api('spo/debriefs')); }catch(e
 
 /* ===== liens ===== */
 function renderLiens(){
-  const cap=LIENS.filter(l=>l.role==='capitaine'), spo=LIENS.filter(l=>l.role==='sportive');
+  // un lien sous-sportive CDP rattaché à une équipe ouvre aussi l'espace capitaine : il compte comme lien de l'équipe
+  const cap=LIENS.filter(l=>l.role==='capitaine'||(l.role==='cdp'&&l.equipe)), spo=LIENS.filter(l=>l.role==='sportive');
   let act=0, send=0, gen=0, h='';
   TEAMS.forEach(t=>{
     const ls=cap.filter(l=>String(l.equipe)===t), on=ls.filter(l=>l.actif), caps=capOf(t);
@@ -205,10 +206,10 @@ function renderLiens(){
     else { gen++; stCls='todo'; stTxt='à générer'; stTip='aucun lien pour cette équipe'; }
     let nameH;
     if(on.length){
-      nameH=on.map(l=>'<span class="nmx">'+esc(l.nom)+'</span><button class="lnk" type="button" data-revoke="'+l.id+'" data-lbl="'+esc(l.nom+' ('+t+')')+'" title="révoquer ce lien">révoquer</button>').join('');
+      nameH=on.map(l=>'<span class="nmx">'+esc(l.nom)+(l.role==='cdp'?'<small>+ sous-sportive CDP</small>':'')+'</span><button class="lnk" type="button" data-revoke="'+l.id+'" data-lbl="'+esc(l.nom+' ('+t+(l.role==='cdp'?' + sous-sportive CDP : les deux accès':'')+')')+'" title="révoquer ce lien">révoquer</button>').join('');
       if(caps.length&&!on.some(l=>caps.some(c=>nrmK(c.nom)===nrmK(l.nom)))) nameH+='<small>capitaine désigné : '+esc(caps.map(c=>c.nom).join(', '))+'</small>';
     } else nameH=caps.length?'<span class="nmx">'+esc(caps.map(c=>c.nom).join(', '))+'</span>':'<span class="nmx muted">capitaine non renseigné</span>';
-    const acH=on.length?'<button class="btn xs" type="button" data-regen="'+t+'" data-nom="'+esc(on[0].nom)+'" title="révoque l\'ancien lien et en crée un nouveau">Régénérer</button>'
+    const acH=on.length?'<button class="btn xs" type="button" data-regen="'+t+'" data-role="'+on[0].role+'" data-nom="'+esc(on[0].nom)+'" title="révoque l\'ancien lien et en crée un nouveau">Régénérer</button>'
       :'<button class="btn xs primary" type="button" data-gen="'+t+'">Générer</button>';
     h+='<div class="card2 lr"><span class="tn" title="'+esc(TEAMDIV[t]||'')+'">'+t+'</span><span class="nm">'+nameH+'</span><span class="lab st '+stCls+'" title="'+esc(stTip)+'">'+stTxt+'</span>'+acH+'</div>';
   });
@@ -226,7 +227,7 @@ function renderLiens(){
   document.getElementById('cdpList').innerHTML=cdp.length?cdp.map(l=>'<div class="sr"><span class="sn">'+esc(l.nom)
       +(l.actif?'<select class="eqsel" data-id="'+l.id+'" data-prev="'+esc(l.equipe||'')+'" title="équipe dont cette personne est aussi capitaine : son lien CDP ouvre alors aussi cet espace">'+eqOpts.map(t=>'<option value="'+t+'"'+((l.equipe||'')===t?' selected':'')+'>'+(t?'capitaine '+t:'pas capitaine')+'</option>').join('')+'</select>':(l.equipe?'<small>capitaine '+esc(l.equipe)+'</small>':''))+'</span>'
       +'<span class="lab '+(l.actif?'on':'off')+'">'+(l.actif?(l.last_used_at?'actif · '+esc(ago(l.last_used_at)):'à envoyer')+devBadge(l):'révoqué'+(l.created_at?' · créé '+esc(fmtDT(l.created_at)):''))+'</span>'
-      +(l.actif?'<span class="sa"><button class="btn xs" type="button" data-regen="" data-role="cdp" data-eq="'+esc(l.equipe||'')+'" data-nom="'+esc(l.nom)+'">Régénérer</button><button class="btn xs danger" type="button" data-revoke="'+l.id+'" data-lbl="'+esc(l.nom+' (sous-sportive CDP)')+'">Révoquer</button></span>':'')+'</div>').join('')
+      +(l.actif?'<span class="sa"><button class="btn xs" type="button" data-regen="" data-role="cdp" data-eq="'+esc(l.equipe||'')+'" data-nom="'+esc(l.nom)+'">Régénérer</button><button class="btn xs danger" type="button" data-revoke="'+l.id+'" data-lbl="'+esc(l.nom+' (sous-sportive CDP'+(l.equipe?' + capitaine '+l.equipe+' : les deux accès':'')+')')+'">Révoquer</button></span>':'')+'</div>').join('')
     :'<span class="small muted">aucune sous-sportive CDP</span>';
   const cdpOn=cdp.filter(l=>l.actif).length; document.getElementById('cdpN').textContent=cdpOn+' actif'+(cdpOn>1?'s':'');
   document.querySelectorAll('#cdpList select.eqsel').forEach(sel=>{ sel.onchange=()=>changerEquipe(+sel.dataset.id, sel.value, sel); });
@@ -306,11 +307,14 @@ async function revoquer(id,lbl,b){
 }
 async function revoquerTous(b){
   const on=LIENS.filter(l=>l.role==='capitaine'&&l.actif);
-  if(!on.length){ toast('aucun lien capitaine actif'); return; }
-  if(!confirm('Révoquer les '+on.length+' liens capitaines actifs (fin de phase) ?\nLes capitaines ne pourront plus se connecter tant qu\'un nouveau lien ne leur est pas envoyé. Les liens sportive sont conservés.')) return;
-  busy(b,true,'révocation…'); let ok=0, ko=0;
+  const cdpEq=LIENS.filter(l=>l.role==='cdp'&&l.actif&&l.equipe);   // le CDP court toute la saison : on ne retire que l'équipe
+  if(!on.length&&!cdpEq.length){ toast('aucun lien capitaine actif'); return; }
+  if(!confirm('Révoquer les '+on.length+' liens capitaines actifs (fin de phase) ?\nLes capitaines ne pourront plus se connecter tant qu\'un nouveau lien ne leur est pas envoyé. Les liens sportive sont conservés.'
+    +(cdpEq.length?'\n\nSous-sportives CDP ('+cdpEq.map(l=>l.nom+', capitaine '+l.equipe).join(' ; ')+') : elles gardent le Championnat de Paris, seul l\'espace capitaine leur est retiré.':''))) return;
+  busy(b,true,'révocation…'); let ok=0, det=0, ko=0;
   for(const l of on){ try{ await api('spo/liens/revoquer',{id:l.id}); ok++; }catch(e){ ko++; } }
-  busy(b,false); toast(ok+' lien'+(ok>1?'s':'')+' révoqué'+(ok>1?'s':'')+(ko?' · '+ko+' en échec':''));
+  for(const l of cdpEq){ try{ await api('spo/liens/equipe',{id:l.id,equipe:null}); det++; }catch(e){ ko++; } }
+  busy(b,false); toast(ok+' lien'+(ok>1?'s':'')+' révoqué'+(ok>1?'s':'')+(det?' · '+det+' sous-sportive'+(det>1?'s':'')+' CDP sans équipe':'')+(ko?' · '+ko+' en échec':''));
   await loadLiens(); loadJournal();
 }
 /* composeur WhatsApp : message type pour un capitaine (le lien lui-même n'est affiché qu'à la génération) */
