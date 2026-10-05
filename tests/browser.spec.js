@@ -307,8 +307,14 @@ test('CDP joueur : identification, oui puis les vendredis, confirmation ; « non
  await expect(page.locator('#cpt')).toHaveText('dans 21 jours');
  await page.getByRole('button',{name:'Indiquer mes dispos'}).click();
  await expect(page.locator('#cbg')).toBeVisible();
- await page.getByLabel('N° de licence').fill(state.players[0].lic);
- const dob=page.getByLabel('Date de naissance');await dob.fill('01022010');await expect(dob).toHaveValue('01/02/2010');
+ // recherche par prénom et/ou nom : un clic remplit la licence, reste la date de naissance
+ const qq=page.getByRole('combobox',{name:'Ton prénom ou ton nom'});
+ await qq.fill('exem');await expect(page.locator('#cList li[data-i]')).toHaveCount(5);
+ await qq.fill('sam exem');await expect(page.locator('#cList li[data-i]')).toHaveCount(1);
+ await qq.fill('alex');await page.getByRole('option',{name:/Alex EXEMPLE1/}).click();
+ await expect(page.locator('#cMoi')).toContainText('licence '+state.players[0].lic);
+ const dob=page.getByLabel('Date de naissance');await expect(dob).toBeFocused();
+ await dob.fill('01022010');await expect(dob).toHaveValue('01/02/2010');
  await page.getByRole('button',{name:'Continuer'}).click();
  await expect(page.locator('#cErr1')).toContainText('Il te reste 2 essais');
  await dob.fill('07032010');await page.getByRole('button',{name:'Continuer'}).click();
@@ -445,5 +451,22 @@ test('capitaine · poule : classement moyen joué de chaque adversaire, tous ses
  await expect(bob.locator('.tag.lose')).toHaveAttribute('title',/J2 en équipe 1, J3 en équipe 2.*ne peut plus jouer en équipe 3/);
  await expect(al.locator('.card2',{hasText:'Gus Gamma'})).toContainText('1 feuille');
  await expect(sc).toContainText('1 brûlé');await expect(sc).toContainText('Brûlage vérifié sur les feuilles');
+ expect(errors).toEqual([]);
+});
+
+test('CDP joueur : recherche au clavier, « ce n’est pas moi », et saisie manuelle de la licence',async({page,context})=>{
+ const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/cdp.html');await page.locator('#cdpGo').click();
+ const qq=page.getByRole('combobox',{name:'Ton prénom ou ton nom'});await expect(qq).toBeFocused();
+ await qq.fill('nova');await qq.press('ArrowDown');await qq.press('Enter');
+ await expect(page.locator('#cMoiNom')).toHaveText('Nova EXEMPLE5');
+ await page.getByRole('button',{name:'Ce n\'est pas moi'}).click();
+ await expect(qq).toBeVisible();await expect(qq).toHaveValue('');
+ await qq.fill('zzz');await expect(page.locator('#cList')).toContainText('Aucun licencié trouvé');
+ await page.getByRole('button',{name:'Je ne me trouve pas : saisir ma licence'}).click();
+ const lic=page.getByLabel('N° de licence');await expect(lic).toBeVisible();
+ await page.getByRole('button',{name:'Continuer'}).click();await expect(page.locator('#cErr1')).toHaveText('Saisis ton numéro de licence.');
+ await lic.fill(state.players[3].lic);await page.getByLabel('Date de naissance').fill('07032010');
+ await page.getByRole('button',{name:'Continuer'}).click();await expect(page.locator('#cName')).toHaveText('Jo EXEMPLE4');
  expect(errors).toEqual([]);
 });
