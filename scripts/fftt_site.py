@@ -3,7 +3,7 @@
 depuis l'API FFTT live -> ces pages deviennent data-driven (fini les données figées en dur).
 Identifiants via FFTT_ID / FFTT_PWD. Usage : python3 scripts/fftt_site.py
 """
-import os, re, html, json, time, datetime, importlib.util
+import os, re, html, json, time, datetime, importlib.util, urllib.parse
 from fftt_quality import check_site, coverage, retry_missing_pools
 spec=importlib.util.spec_from_file_location("fb","scripts/fftt_build.py")
 fb=importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
@@ -112,6 +112,14 @@ def build_pool(key, cx, d1, org):
             if tpb: jB['team_pts']=tpb
         teams.setdefault(ea,{'name':ea,'journees':[]})['journees'].append(jA)
         teams.setdefault(eb,{'name':eb,'journees':[]})['journees'].append(jB)
+        # n° de club de chaque équipe (lien de rencontre : clubnum_1/2 avec equip_1/2) : sert au brûlage des
+        # adversaires (scripts/fftt_brulages.py). Rattachement par nom, l'ordre du lien n'étant pas garanti.
+        if lm:
+            q=dict(urllib.parse.parse_qsl(html.unescape(lm.group(1))))
+            c1,c2=q.get('clubnum_1'),q.get('clubnum_2')
+            if fb.nrm(q.get('equip_1',''))==fb.nrm(eb) or fb.nrm(q.get('equip_2',''))==fb.nrm(ea): c1,c2=c2,c1
+            if c1: teams[ea]['club']=c1
+            if c2: teams[eb]['club']=c2
         # calendrier ACBB + marquage adverses
         if is_acbb(ea): acbb_cal[jn]={'opponent':eb,'domext':'Dom'}; teams[eb].setdefault('_acbbJ',jn); teams[eb]['_acbbDom']='Ext'
         if is_acbb(eb): acbb_cal[jn]={'opponent':ea,'domext':'Ext'}; teams[ea].setdefault('_acbbJ',jn); teams[ea]['_acbbDom']='Dom'

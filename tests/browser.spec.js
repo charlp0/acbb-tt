@@ -81,6 +81,7 @@ async function install(context,state){
   if(url.pathname==='/data/scoring.json')return send({built:new Date().toISOString(),players:state.players});
   if(url.pathname==='/data/poules2627.json')return send(state.poules);
   if(url.pathname==='/data/site.json')return send(state.site);
+  if(url.pathname==='/data/brulages2627.json')return state.brulages?send(state.brulages):route.fulfill({status:404,body:''});
   if(url.pathname==='/data/officiel2627.json')return send({saison:'2026/2027',officiel:state.officiel||{}});
   if(url.pathname==='/data/sexes.json')return send(Object.fromEntries(state.players.map(p=>[p.lic,'M'])));
   return route.continue();
@@ -422,5 +423,27 @@ test('Accès : un lien capitaine devenu sous-sportive CDP reste celui de son éq
  page.once('dialog',d=>d.accept());await page.locator('#revAll').click();
  await expect.poll(()=>(state.lienOps||[]).length).toBe(2);
  expect(state.lienOps).toEqual([['spo/liens/revoquer',{id:36}],['spo/liens/equipe',{id:35,equipe:null}]]);
+ expect(errors).toEqual([]);
+});
+
+test('capitaine · poule : classement moyen joué de chaque adversaire, tous ses joueurs et le badge brûlé',async({page,context})=>{
+ const state=fixture(),errors=[];
+ const opp=state.site.DATA.M11.teams.find(t=>/PUTEAUX/.test(t.name));
+ const pl=(nom,prenom,cls,vic)=>({nom,prenom,cls,vic});
+ opp.journees=[{journee:1,date:'18 sept. 2026',opponent:'BOURG LA REINE 2',played_games:14,match_score:25,opp_score:17,players:[pl('ALPHA','Ana',1200,3),pl('BETA','Bob',1100,1),pl('GAMMA','Gus',1000,0)]},
+  {journee:2,date:'2 oct. 2026',opponent:'BOULOGNE BILLANCOURT AC 11',played_games:14,match_score:24,opp_score:18,players:[pl('ALPHA','Ana',1200,2),pl('DELTA','Dan',1300,2)]}];
+ state.brulages={built:'2026-10-05T06:10:00Z',equipes:{[opp.name]:{brules:[{nom:'BETA',prenom:'Bob',rencontres:[{j:2,eq:1},{j:3,eq:2}]}],lues:[1,2],manquantes:[]}}};
+ await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/capitaine.html?tab=poule');
+ const row=page.locator('#opps .orow[data-j="2"]');
+ await expect(row.locator('.av')).toHaveText('⌀ 1160');   // (1200+1100+1000+1200+1300)/5
+ await row.click();
+ const sc=page.locator('#scout');
+ await expect(sc).toContainText('Joueurs alignés en 26/27');const al=sc.locator('[data-bloc="alignes"]');await expect(al.locator('.card2')).toHaveCount(4);   // vus une seule fois compris
+ const bob=al.locator('.card2',{hasText:'Bob Beta'});
+ await expect(bob.locator('.tag.lose')).toHaveText('brûlé');await expect(bob).toHaveClass(/brule/);
+ await expect(bob.locator('.tag.lose')).toHaveAttribute('title',/J2 en équipe 1, J3 en équipe 2.*ne peut plus jouer en équipe 3/);
+ await expect(al.locator('.card2',{hasText:'Gus Gamma'})).toContainText('1 feuille');
+ await expect(sc).toContainText('1 brûlé');await expect(sc).toContainText('Brûlage vérifié sur les feuilles');
  expect(errors).toEqual([]);
 });

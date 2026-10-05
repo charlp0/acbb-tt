@@ -25,12 +25,19 @@ jobs:
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
           FFTT_SKIP_IF_FRESH: '0'
         run: python3 scripts/fftt_site.py
+      - name: Brûlage des adversaires (feuilles des équipes plus fortes de leurs clubs)
+        continue-on-error: true   # un échec ici ne doit jamais bloquer les résultats
+        env:
+          FFTT_ID: ${{ secrets.FFTT_ID }}
+          FFTT_PWD: ${{ secrets.FFTT_PWD }}
+        run: python3 scripts/fftt_brulages.py
       - run: python3 scripts/check_data.py
       - name: Conserver le dernier lot complet
         run: |
           git config user.name acbb-data-bot
           git config user.email bot@users.noreply.github.com
           git add data/site.json data/site.js
+          if [ -f data/brulages2627.json ]; then git add data/brulages2627.json; fi
           if ! git diff --staged --quiet; then
             git commit -m "data: résultats équipes FFTT"
             git fetch origin main
