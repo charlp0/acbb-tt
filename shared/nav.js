@@ -8,9 +8,12 @@
   const COMPETS=[
     {id:'cpe',  nom:['Championnat','par équipe'], href:'index.html',     sous:'Saison 2026/27 · Phase 1'},
     {id:'crit', nom:['Critérium','fédéral'],      href:'criterium.html', sous:'Compétition individuelle · 4 tours'},
-    {id:'paris',nom:['Championnat','de Paris'],   soon:true,             sous:'Saison 2026/27'}
+    {id:'paris',nom:['Championnat','de Paris'],   href:'cdp.html',       sous:'Saison 2026/27 · 7 vendredis'}
   ];
-  const ALIAS={'Accueil':'cpe','Équipes':'cpe','Championnat par équipe':'cpe','Critérium':'crit','Critérium fédéral':'crit'};
+  const ALIAS={'Accueil':'cpe','Équipes':'cpe','Championnat par équipe':'cpe','Critérium':'crit','Critérium fédéral':'crit',
+    'Championnat de Paris':'paris','Dispos CDP':'paris','Compositions CDP':'paris'};
+  // Outils de la sportive pour le Championnat de Paris : sa barre les montre quand cette tuile est ouverte.
+  const SPO_CDP=[['Dispos CDP','sportive/cdp-dispos.html'],['Compositions CDP','sportive/cdp-compo.html']];
   const CAP=[['Mon équipe','capitaine.html'],['Ma poule','capitaine.html?tab=poule']];
   // Onglets sportive groupés par usage : la journée (le quotidien), la saison (référence), l'administration.
   const SPO_GROUPS=[
@@ -46,7 +49,9 @@
     if(role==='sportive'){
       // Sportive qui est aussi capitaine : ses deux onglets bleus précèdent les onglets sportive.
       const capPart=team?'<span class="grp"><span class="lab">Capitaine '+team+'</span>'+CAP.map(([l,h])=>pill(l,h,'cap',here===l)).join('')+'</span><span class="sep"></span>':'';
-      sub='<nav class="subnav spo" aria-label="Espace sportive">'+capPart+SPO_GROUPS.map(([g,items])=>'<span class="grp"><span class="lab">'+g+'</span>'+items.map(([l,h])=>pill(l,h,'spo',here===l)).join('')+'</span>').join('<span class="sep"></span>')+'</nav>';
+      sub=ici==='paris'
+        ? '<nav class="subnav spo" aria-label="Espace sportive · Championnat de Paris"><span class="grp"><span class="lab">Championnat de Paris</span>'+SPO_CDP.map(([l,h])=>pill(l,h,'spo',here===l)).join('')+'</span></nav>'
+        : '<nav class="subnav spo" aria-label="Espace sportive">'+capPart+SPO_GROUPS.map(([g,items])=>'<span class="grp"><span class="lab">'+g+'</span>'+items.map(([l,h])=>pill(l,h,'spo',here===l)).join('')+'</span>').join('<span class="sep"></span>')+'</nav>';
     }
     const right=role==='capitaine'?'<span class="pill cap">Capitaine'+(team?' · '+team:'')+'</span>':role==='sportive'?'<span class="pill spo">Sportive'+(opts.name?' · '+opts.name:'')+(team?' · capitaine '+team:'')+'</span>':'<span class="lab" style="align-self:center">Saison 2026/27 · Phase 1</span>';
     const el=document.getElementById('hdr'); if(!el) return;

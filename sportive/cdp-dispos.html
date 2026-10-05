@@ -1,0 +1,173 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>ACBB TT — Dispos CDP (sportive)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:wght@700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0B0B0D">
+<link rel="icon" type="image/png" href="../logo.png">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:22px}
+  .hero .h1{font-size:46px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:6px 12px;border-radius:99px;border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
+  .chip.or{background:rgba(242,106,27,.1);border-color:rgba(242,106,27,.45);color:var(--orange)}
+  .cpt{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin-top:20px}
+  .cj{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:14px;background:var(--panel);border:1px solid var(--line)}
+  .cj.manque{border-color:rgba(242,99,86,.55)}
+  .cj .t{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:800;letter-spacing:.4px;color:var(--dim)}
+  .cj .n{display:flex;align-items:baseline;gap:4px}
+  .cj .n b{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;font-size:36px;line-height:1}
+  .cj .n span{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim)}
+  .bar{display:block;height:6px;border-radius:99px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%}
+  .cj .e{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:800}
+  .tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:20px}
+  .filtres{display:flex;gap:6px;flex-wrap:wrap}
+  .filtres button{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;min-height:36px;padding:0 14px;border-radius:99px;cursor:pointer;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink-2)}
+  .filtres button[aria-pressed="true"]{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+  .filtres button span{opacity:.75}
+  .srch{display:flex;align-items:center;gap:10px;min-width:260px;padding:0 14px;border-radius:12px;background:var(--panel);border:1px solid var(--line-2)}
+  .srch input{flex:1 1 auto;min-width:0;min-height:42px;background:transparent;border:0;padding:0;font-size:14px}
+  .tw{overflow-x:auto;border-radius:14px;border:1px solid var(--line);background:var(--panel);margin-top:14px}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}
+  th{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--dim);font-weight:700;padding:12px 6px;text-align:center}
+  th:first-child{text-align:left;padding-left:16px}th.r{text-align:right}th.l{text-align:left}th:last-child{padding-right:16px}
+  th small{font-weight:400;font-size:9.5px}
+  td{padding:9px 6px;border-top:1px solid var(--line);text-align:center}
+  td:first-child{text-align:left;padding-left:16px;font-weight:600;white-space:nowrap}
+  td.pts{text-align:right;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-2)}
+  td.st{text-align:left}td.tot{text-align:right;padding-right:16px;font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:800}
+  tr:hover td{background:#18181B}
+  .stp{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;border:1px solid;white-space:nowrap}
+  .stp.oui{border-color:rgba(61,214,140,.5);color:var(--win)}.stp.retard{border-color:rgba(250,204,21,.55);color:var(--warn)}
+  .stp.non{border-color:var(--line-2);color:var(--dim)}.stp.sans{border-color:rgba(242,106,27,.6);color:var(--orange)}
+  .cs{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:800;color:rgba(246,245,243,.35)}
+  .cs.y{background:rgba(61,214,140,.14);color:var(--win)}.cs.n{background:rgba(242,99,86,.12);color:var(--lose)}
+  .vide{margin:14px 0 0;font-size:13px;color:var(--dim)}
+  .pied{margin-top:24px;padding-top:16px;border-top:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim);line-height:1.6}
+  .gatemsg{max-width:520px;margin:60px auto;text-align:center;color:var(--dim);font-size:13px}
+  .gatemsg .h1{font-size:34px;margin-bottom:10px}
+  .gatemsg a{color:var(--dim);font-size:12px;text-decoration:none}
+  .srverr{margin-top:16px;background:rgba(242,99,86,.10);border:1px solid rgba(242,99,86,.4);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--lose-lt)}
+  @media(max-width:980px){.cpt{grid-template-columns:repeat(4,minmax(0,1fr))}}
+  @media(max-width:720px){.cpt{grid-template-columns:repeat(2,minmax(0,1fr))}.srch{min-width:0;flex:1 1 100%}.hero .h1{font-size:36px}}
+</style>
+</head><body>
+<div class="wrap">
+  <div id="hdr"></div>
+  <div id="gateMsg" class="gatemsg" hidden>
+    <div class="h1">Accès réservé à la <em>sportive</em></div>
+    <p>Accès réservé à la sportive · ouvre ton lien personnel.</p>
+    <p id="gateErr" class="mono" style="font-size:11px;min-height:14px"></p>
+    <a href="../cdp.html">← Retour au Championnat de Paris</a>
+  </div>
+  <main id="main" hidden>
+    <section class="hero">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <h1 class="h1">Dispos <em>CDP</em></h1>
+        <span class="hsub" style="margin:0">Championnat de Paris · ce que chaque joueur a répondu depuis la page du CDP</span>
+      </div>
+      <div class="chips"><span class="chip or" id="chEch"></span><span class="chip" id="chRep"></span></div>
+    </section>
+
+    <section class="cpt" id="cpt" aria-label="Disponibles par vendredi"></section>
+
+    <section class="tools">
+      <div class="filtres" id="filtres" role="group" aria-label="Filtrer"></div>
+      <label class="srch">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(246,245,243,0.6)" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+        <input id="q" type="search" placeholder="nom ou prénom…" aria-label="Chercher un joueur" autocomplete="off">
+      </label>
+    </section>
+
+    <div class="tw"><table>
+      <thead><tr id="thead"></tr></thead>
+      <tbody id="tbody"><tr><td colspan="11" style="text-align:left;padding:16px;color:var(--dim)">chargement…</td></tr></tbody>
+    </table></div>
+    <p class="vide" id="vide" hidden>Aucun joueur pour ce filtre.</p>
+    <div id="err"></div>
+
+    <div class="pied">Points : classement officiel 26/27, celui de la licence (art. 8). Une réponse après le mercredi 21/10 est acceptée et marquée « en retard ». Le dernier envoi d'un joueur remplace les précédents.</div>
+  </main>
+</div>
+<script src="../shared/api.js"></script>
+<script src="../shared/cdp.js"></script>
+<script src="../shared/nav.js" data-base=".."></script>
+<script>
+/* Données : la fonction serveur (jeton du lien sportive) pour les réponses, les fichiers publics du site pour les noms
+   et les points. ?dev=1 = maquette locale : rôle sportive simulé, aucune réponse, aucun appel au serveur. */
+const DEV=new URLSearchParams(location.search).get('dev')==='1';
+function api(route,body){
+  if(DEV){ if(route==='me') return Promise.resolve({role:'sportive',nom:'Test'}); if(body!==undefined) return Promise.reject(new Error('mode dev : aucune écriture')); if(route==='spo/cdp/dispos') return Promise.resolve({reponses:{}}); return Promise.resolve({}); }
+  return ACBB.api(route,body);
+}
+const esc=ACBB.esc;
+const gj=u=>fetch(u,{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
+const sansAccent=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const dd=iso=>{ const p=iso.split('-'); return p[2]+'/'+p[1]; };
+const fmtTs=iso=>{ const d=new Date(iso); if(isNaN(d)) return ''; const p=n=>(n<10?'0':'')+n; return p(d.getDate())+'/'+p(d.getMonth()+1)+' à '+p(d.getHours())+'h'+p(d.getMinutes()); };
+const STAT={oui:'Joue',retard:'Joue · en retard',non:'Ne joue pas',sans:'Pas répondu'};
+let J=[], filtre='tous', q='';
+
+function statut(rep){ if(!rep) return 'sans'; if(rep.joue===false) return 'non'; return rep.retard?'retard':'oui'; }
+const garde=(p,f)=>f==='tous'||(f==='joue'&&(p.st==='oui'||p.st==='retard'))||p.st===f;
+
+function render(){
+  const T=CDP.PLACES;
+  document.getElementById('cpt').innerHTML=CDP.JOURNEES.map((x,k)=>{
+    const n=J.filter(p=>p.d&&p.d[k]).length, ok=n>=T, juste=ok&&n<T+4, coul=!ok?'var(--lose)':juste?'var(--warn)':'var(--win)';
+    return '<div class="cj'+(ok?'':' manque')+'"><span class="t">J'+x.j+' · '+dd(x.date)+'</span><span class="n"><b>'+n+'</b><span>/ '+T+'</span></span><span class="bar" aria-hidden="true"><i style="width:'+Math.min(100,Math.round(n/T*100))+'%;background:'+coul+'"></i></span><span class="e" style="color:'+coul+'">'+(ok?'complet · +'+(n-T):'manque '+(T-n))+'</span></div>';
+  }).join('');
+  const F=[['tous','Tous'],['joue','Jouent'],['non','Ne jouent pas'],['sans','Pas répondu'],['retard','En retard']];
+  document.getElementById('filtres').innerHTML=F.map(f=>'<button type="button" data-f="'+f[0]+'" aria-pressed="'+(filtre===f[0])+'">'+f[1]+' <span>'+J.filter(p=>garde(p,f[0])).length+'</span></button>').join('');
+  const qq=sansAccent(q);
+  const L=J.filter(p=>garde(p,filtre)).filter(p=>!qq||sansAccent(p.pre+' '+p.nom).indexOf(qq)>=0);
+  document.getElementById('tbody').innerHTML=L.map(p=>{
+    const cases=CDP.JOURNEES.map((x,k)=>{ const v=p.d?p.d[k]:null, lib='J'+x.j+' '+dd(x.date)+' : '+(v===true?'disponible':v===false?'pas disponible':(p.st==='non'?'ne joue pas le CDP':'pas de réponse'));
+      return '<td><span class="cs'+(v===true?' y':v===false?' n':'')+'" title="'+lib+'" aria-label="'+lib+'">'+(v===true?'✓':v===false?'✕':'·')+'</span></td>'; }).join('');
+    return '<tr><td>'+esc((p.pre?p.pre+' ':'')+p.nom)+'</td><td class="pts">'+(p.pts||'—')+'</td><td class="st"><span class="stp '+p.st+'"'+(p.at?' title="répondu le '+fmtTs(p.at)+'"':'')+'>'+STAT[p.st]+'</span></td>'+cases+'<td class="tot">'+(p.d?p.d.filter(Boolean).length+'/7':'—')+'</td></tr>';
+  }).join('');
+  document.getElementById('vide').hidden=L.length>0;
+}
+
+async function boot(){
+  document.getElementById('thead').innerHTML='<th scope="col">Joueur</th><th scope="col" class="r">Points</th><th scope="col" class="l">Réponse</th>'+CDP.JOURNEES.map(x=>'<th scope="col">J'+x.j+'<br><small>'+dd(x.date)+'</small></th>').join('')+'<th scope="col" class="r">Dispo</th>';
+  const auj=new Date(); auj.setHours(0,0,0,0); const [y,m,d]=CDP.ECHEANCE.split('-').map(Number), n=Math.round((new Date(y,m-1,d)-auj)/86400000);
+  document.getElementById('chEch').textContent='Échéance mer. 21/10 · '+(n>1?'dans '+n+' jours':n===1?'demain':n===0?"aujourd'hui":'passée');
+  const [sc,off,rep]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos')]);
+  const OFF=(off&&off.officiel)||{}, R=(rep&&rep.reponses)||{};
+  const vus=new Set();
+  J=((sc&&sc.players)||[]).filter(p=>p.lic).map(p=>{ const l=String(p.lic); vus.add(l); return {lic:l,nom:p.nom||'',pre:p.pre||'',pts:OFF[l]||p.men||0}; });
+  // une réponse d'un licencié absent de la liste des points : on l'affiche quand même, sous son numéro
+  Object.keys(R).forEach(l=>{ if(!vus.has(l)) J.push({lic:l,nom:'Licence '+l,pre:'',pts:OFF[l]||0}); });
+  J.forEach(p=>{ const r=R[p.lic]; p.st=statut(r); p.at=r&&r.saved_at; p.d=r&&r.joue?CDP.JOURNEES.map(x=>!!(r.dates&&r.dates['j'+x.j])):null; });
+  // ceux qui ont répondu d'abord (jouent, puis ne jouent pas), le reste ensuite ; par points à l'intérieur
+  const RANG={oui:0,retard:0,non:1,sans:2};
+  J.sort((a,b)=>(RANG[a.st]-RANG[b.st])||(b.pts-a.pts)||a.nom.localeCompare(b.nom,'fr'));
+  document.getElementById('chRep').textContent=J.filter(p=>p.st!=='sans').length+' réponses sur '+J.length;
+  render();
+}
+document.getElementById('filtres').addEventListener('click',e=>{ const b=e.target.closest('button[data-f]'); if(!b) return; filtre=b.dataset.f; render(); const f=document.querySelector('#filtres button[data-f="'+filtre+'"]'); if(f) f.focus(); });
+document.getElementById('q').addEventListener('input',e=>{ q=e.target.value; render(); });
+
+const gateErrTxt=(err,role)=>err?((err.body&&/jeton_invalide|jeton_requis|role_incorrect/.test(err.body.error||''))?'lien invalide ou révoqué — demande un nouveau lien à la sportive':'serveur : '+err.message):(role==='capitaine'?'ton lien est un lien capitaine':'');
+async function start(){
+  let me=null, err=null;
+  try{ me=await api('me'); }catch(e){ err=e; }
+  const role=(me&&me.role)||'';
+  if(role!=='sportive'){
+    renderNav({active:'Dispos CDP',role:role,team:me&&me.equipe});
+    document.getElementById('gateMsg').hidden=false;
+    document.getElementById('gateErr').textContent=gateErrTxt(err,role);
+    return;
+  }
+  renderNav({active:'Dispos CDP',role:'sportive',name:me.nom,team:me.equipe||null});
+  document.getElementById('main').hidden=false;
+  boot().catch(e=>{ document.getElementById('tbody').innerHTML=''; document.getElementById('err').innerHTML='<div class="srverr">Erreur de chargement : '+esc(e.message)+'</div>'; });
+}
+start();
+</script>
+<script src="../shared/report.js" defer></script>
+<script src="../shared/track.js?v=1" defer></script>
+</body></html>

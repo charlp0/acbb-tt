@@ -1,0 +1,406 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>ACBB TT — Compositions CDP (sportive)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:wght@700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0B0B0D">
+<link rel="icon" type="image/png" href="../logo.png">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:22px}
+  .hero .h1{font-size:46px}
+  .hr{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+  .jp{display:flex;gap:6px;flex-wrap:wrap}
+  .jp a{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;min-height:32px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;border-radius:99px;background:var(--panel-2);color:var(--ink-2);border:1px solid var(--line-2);text-decoration:none}
+  .jp a[aria-current="page"]{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+  .jp a i{width:7px;height:7px;border-radius:99px;display:inline-block}
+  .jp a i.brouillon{background:var(--warn)}.jp a i.envoyee{background:var(--win)}
+  .jp a[aria-current="page"] i{outline:1.5px solid #0B0B0D}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:6px 12px;border-radius:99px;border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
+  .chip.ko{border-color:rgba(242,99,86,.6);color:var(--lose)}.chip.ok{border-color:rgba(61,214,140,.5);color:var(--win)}.chip.av{border-color:rgba(250,204,21,.55);color:var(--warn)}
+  .savebar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;padding:10px 12px 10px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--line)}
+  .savebar.sale{border-color:rgba(242,106,27,.55)}
+  .sv-st{font-size:12.5px;color:var(--ink-2)}.sv-st b{color:var(--orange)}
+  .sv-acts{display:flex;gap:8px;flex-wrap:wrap}
+  .bandeau{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:12.5px;line-height:1.5;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .bandeau.conflit{background:rgba(242,99,86,.08);border:1px solid rgba(242,99,86,.5);color:var(--ink-2)}
+  .bandeau.aide{background:rgba(242,106,27,.08);border:1px solid rgba(242,106,27,.45);color:var(--ink-2)}
+  .bandeau .acts{display:flex;gap:8px;flex-wrap:wrap}
+  .main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start;margin-top:18px}
+  .teams{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+  .eq{display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+  .eqh{display:flex;align-items:center;gap:10px}
+  .num{width:28px;height:28px;flex:0 0 28px;border-radius:99px;background:rgba(242,106,27,.14);border:1px solid rgba(242,106,27,.5);color:var(--orange);font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .eqn{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 auto}
+  .eqn b{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:20px;line-height:1}
+  .eqn span{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim)}
+  .est{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:800;padding:3px 9px;border-radius:99px;white-space:nowrap;border:1px solid var(--line-2);color:var(--dim)}
+  .est.ko{border-color:rgba(242,99,86,.6);color:var(--lose)}.est.ok{border-color:rgba(61,214,140,.5);color:var(--win)}.est.av{border-color:rgba(250,204,21,.55);color:var(--warn)}
+  .cg{display:flex;flex-direction:column;gap:8px;padding:10px;border-radius:12px;border:1px solid var(--line)}
+  .cg.ko{background:rgba(242,99,86,.06);border-color:rgba(242,99,86,.6)}
+  .cg.av{border-color:rgba(250,204,21,.45)}
+  .cases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .case{position:relative;display:flex;align-items:stretch;min-height:58px;padding:8px 9px;border-radius:10px;font:inherit;color:inherit;text-align:left}
+  .case.plein{background:var(--panel-2);border:1px solid rgba(255,255,255,.12)}
+  .case.vide{background:transparent;border:1px dashed rgba(255,255,255,.22);align-items:center;justify-content:center;cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:10px;text-align:center;color:var(--dimmer)}
+  .case.vide:hover,.case.vide.cible{border-color:var(--orange);color:var(--orange)}
+  .case.vide.cible{background:rgba(242,106,27,.1);border-style:solid}
+  .case .v2{display:none}
+  .glisse .case.vide{border-color:var(--orange);color:var(--orange)}
+  .glisse .case.vide .v1{display:none}.glisse .case.vide .v2{display:inline}
+  .case.over{background:rgba(242,106,27,.14)!important;border-color:var(--orange)!important}
+  .pc{display:flex;flex-direction:column;gap:4px;width:100%;min-width:0;cursor:grab;border-radius:6px;padding-right:18px}
+  .pc:active{cursor:grabbing}
+  .pc .nm{font-size:12.5px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pc .l2{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+  .pt{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:800;color:var(--ink-2)}
+  .case.sel,.lc.sel{outline:2px solid var(--orange);outline-offset:1px}
+  .x{position:absolute;top:5px;right:5px;width:24px;height:24px;padding:0;border-radius:99px;background:transparent;border:0;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .x:hover{color:var(--ink);background:rgba(255,255,255,.08)}
+  .tg{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px;white-space:nowrap}
+  .tg.rouge{color:#0B0B0D;background:var(--lose)}.tg.jaune{color:#0B0B0D;background:var(--warn)}.tg.gris{color:var(--dim);background:rgba(255,255,255,.07)}
+  .tg.contour{color:var(--orange);border:1px solid rgba(242,106,27,.6);padding:0 5px}
+  .al{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.45;color:var(--lose-lt)}
+  .al.av{color:#FDE68A}
+  .al svg{flex:0 0 auto;margin-top:2px}
+  .note{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim)}
+  aside{display:flex;flex-direction:column;gap:14px;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow-y:auto}
+  .box{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+  .box.over{border-color:var(--orange);background:rgba(242,106,27,.06)}
+  .box h2{margin:0;font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:800}
+  .lh{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .expl{font-size:11.5px;color:var(--dim);line-height:1.4}
+  .srch input{min-height:38px;font-size:13px}
+  .lc{display:flex;flex-direction:column;gap:4px;padding:9px 11px;border-radius:10px;background:var(--panel-2);border:1px solid rgba(255,255,255,.12);cursor:grab}
+  .lc:hover{border-color:rgba(255,255,255,.3)}
+  .lc .l1{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .lc .nm{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .lc .tgs{display:flex;gap:5px;flex-wrap:wrap}
+  .lst{display:flex;flex-direction:column;gap:6px}
+  details summary{cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;color:var(--ink-2);padding:6px 0}
+  details .lst{margin-top:4px}
+  .rg{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;align-items:start}
+  .ic{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:99px;font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:800}
+  .ic.ok{background:rgba(61,214,140,.14);color:var(--win)}.ic.ko{background:rgba(242,99,86,.14);color:var(--lose)}.ic.av{background:rgba(250,204,21,.14);color:var(--warn)}.ic.in{background:rgba(96,165,250,.14);color:var(--blue)}
+  .rg b{font-size:12.5px;display:block}.rg span span{font-size:11.5px;color:var(--dim);line-height:1.4;display:block;margin-top:2px}
+  .pied{margin-top:24px;padding-top:16px;border-top:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim);line-height:1.6}
+  .gatemsg{max-width:520px;margin:60px auto;text-align:center;color:var(--dim);font-size:13px}
+  .gatemsg .h1{font-size:34px;margin-bottom:10px}
+  .gatemsg a{color:var(--dim);font-size:12px;text-decoration:none}
+  .srverr{margin-top:16px;background:rgba(242,99,86,.10);border:1px solid rgba(242,99,86,.4);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--lose-lt)}
+  [role="button"]:focus-visible,.case:focus-visible,.x:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  @media(max-width:1180px){.teams{grid-template-columns:1fr}}
+  @media(max-width:900px){.main{grid-template-columns:1fr}aside{position:static;max-height:none}.hr{align-items:flex-start}.chips{justify-content:flex-start}}
+  @media(max-width:720px){.hero .h1{font-size:36px}.cases{grid-template-columns:1fr}}
+</style>
+</head><body>
+<div class="wrap">
+  <div id="hdr"></div>
+  <div id="gateMsg" class="gatemsg" hidden>
+    <div class="h1">Accès réservé à la <em>sportive</em></div>
+    <p>Accès réservé à la sportive · ouvre ton lien personnel.</p>
+    <p id="gateErr" class="mono" style="font-size:11px;min-height:14px"></p>
+    <a href="../cdp.html">← Retour au Championnat de Paris</a>
+  </div>
+  <main id="main" hidden>
+    <section class="hero">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <h1 class="h1">Composition <em id="hJ">J1</em></h1>
+        <span class="hsub" id="hDate" style="margin:0"></span>
+      </div>
+      <div class="hr">
+        <nav class="jp" id="jp" aria-label="Journées"></nav>
+        <div class="chips"><span class="chip" id="chPl"></span><span class="chip" id="chLib"></span><span class="chip" id="chAl"></span></div>
+      </div>
+    </section>
+
+    <section class="savebar" id="savebar">
+      <span class="sv-st" id="svSt">chargement…</span>
+      <span class="sv-acts">
+        <button class="btn" id="bAnnul" type="button" hidden>Annuler mes modifications</button>
+        <button class="btn" id="bEnv" type="button" disabled>Marquer comme envoyée</button>
+        <button class="btn primary" id="bSave" type="button" disabled>Enregistrer</button>
+      </span>
+    </section>
+    <div class="bandeau conflit" id="conflit" hidden>
+      <span id="conflitTxt"></span>
+      <span class="acts"><button class="btn" id="cfSa" type="button">Charger sa version</button><button class="btn primary" id="cfMa" type="button">Garder la mienne et enregistrer</button></span>
+    </div>
+    <div class="bandeau aide" id="aide" hidden><span id="aideTxt"></span><button class="btn" id="aideX" type="button">Annuler</button></div>
+    <div id="err"></div>
+
+    <div class="main">
+      <div class="teams" id="teams"></div>
+      <aside>
+        <section class="box" id="liste" aria-labelledby="lT">
+          <div class="lh"><h2 id="lT">Dispos non placés</h2><span class="lab" id="lDate"></span></div>
+          <span class="expl">Glisse un joueur dans une case, ou clique-le puis clique la case. Dépose-le ici pour le retirer d'une équipe.</span>
+          <label class="srch"><input id="q" type="search" placeholder="chercher un joueur…" aria-label="Chercher un joueur" autocomplete="off"></label>
+          <div class="lst" id="lDisp"></div>
+          <details id="dSans"><summary>Pas répondu · <span id="nSans">0</span></summary><div class="lst" id="lSans"></div></details>
+          <details id="dNon"><summary>Pas dispo ce vendredi · <span id="nNon">0</span></summary><div class="lst" id="lNon"></div></details>
+        </section>
+        <section class="box" aria-labelledby="rT">
+          <h2 id="rT">Règles vérifiées</h2>
+          <div id="regles" style="display:flex;flex-direction:column;gap:10px"></div>
+        </section>
+      </aside>
+    </div>
+
+    <div class="pied" id="pied">Règlement du Championnat de Paris Île-de-France du 15/06/2026 · articles 8, 9, 12 et 13 · équipes numérotées 1 = PE1, 2 = PE2, 3 = Honneur, 4 = Promo Honneur, 5 = D2.<br>Brûlage, lecture retenue : 3 matchs ou plus dans une même équipe de numéro inférieur, comptés sur les compositions enregistrées des journées précédentes. Points : classement officiel 26/27 (licence). Les compositions ne sont jamais publiées sur le site.</div>
+  </main>
+</div>
+<script src="../shared/api.js"></script>
+<script src="../shared/cdp.js"></script>
+<script src="../shared/nav.js" data-base=".."></script>
+<script>
+/* Données : la fonction serveur (jeton du lien sportive) pour les dispos et les compositions, les fichiers publics du
+   site pour les noms et les points. Une composition enregistrée n'est jamais réécrite d'office : la page ne modifie que
+   ce que la sportive déplace, et un enregistrement concurrent est signalé au lieu d'être écrasé.
+   ?dev=1 = maquette locale : rôle sportive simulé, aucune donnée, aucune écriture. */
+const DEV=new URLSearchParams(location.search).get('dev')==='1';
+function api(route,body){
+  if(DEV){ if(route==='me') return Promise.resolve({role:'sportive',nom:'Test'}); if(body!==undefined) return Promise.reject(new Error('mode dev : aucune écriture')); if(route==='spo/cdp/dispos') return Promise.resolve({reponses:{}}); if(route==='spo/cdp/compos') return Promise.resolve({compos:{}}); return Promise.resolve({}); }
+  return ACBB.api(route,body);
+}
+const esc=ACBB.esc, toast=ACBB.toast;
+const gj=u=>fetch(u,{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
+const sansAccent=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const jourDe=iso=>{ const [y,m,d]=iso.split('-').map(Number); return new Date(y,m-1,d); };
+const dd=iso=>{ const p=iso.split('-'); return p[2]+'/'+p[1]; };
+const fmtTs=iso=>{ const d=new Date(iso); if(isNaN(d)) return ''; const p=n=>(n<10?'0':'')+n; return p(d.getDate())+'/'+p(d.getMonth()+1)+' à '+p(d.getHours())+'h'+p(d.getMinutes()); };
+const COURT={}; CDP.EQUIPES.forEach(e=>{ COURT[e.n]=e.court; });
+const ICX='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>';
+const ICA='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>';
+
+let P={}, R={}, COMPOS={}, j=1, C=null, BASE='', sel=null, cible=null, drag=null, q='', occupe=false, CONFLIT=null;
+const PTS=new Proxy({},{get:(t,l)=>(P[l]&&P[l].pts)||0});
+const nomDe=l=>P[l]?((P[l].pre?P[l].pre+' ':'')+P[l].nom):'Licence '+l;
+const ptsDe=l=>(P[l]&&P[l].pts)||0;
+const sale=()=>JSON.stringify(C)!==BASE;
+const ligne=()=>COMPOS[j]||null;
+// dispo du vendredi : true / false pour ceux qui ont répondu, undefined sinon
+function dispoDe(l){ const r=R[l]; if(!r) return undefined; return !!(r.joue&&r.dates&&r.dates['j'+j]); }
+function histo(h){ return Object.keys(h||{}).sort().map(t=>COURT[t]+' ×'+h[t]).join(' · '); }
+function ou(l){ for(const e of CDP.EQUIPES) for(let g=0;g<C[e.n].length;g++) for(let k=0;k<3;k++) if(C[e.n][g][k]===l) return {n:e.n,g,k}; return null; }
+const cleDe=o=>o.n+'-'+o.g+'-'+o.k, deCle=s=>{ const a=s.split('-').map(Number); return {n:a[0],g:a[1],k:a[2]}; };
+
+function compoDe(row){
+  const c=CDP.compoVide(); const src=(row&&row.compo)||{};
+  CDP.EQUIPES.forEach(e=>{ for(let g=0;g<e.groupes;g++) for(let k=0;k<3;k++){ const l=src[e.n]&&src[e.n][g]&&src[e.n][g][k]; c[e.n][g][k]=l?String(l):null; } });
+  return c;
+}
+function chargerJournee(n){ j=n; C=compoDe(ligne()); BASE=JSON.stringify(C); sel=null; cible=null; CONFLIT=null; history.replaceState(null,'','?j='+j+(DEV?'&dev=1':'')); render(); }
+
+function placer(l,cle){
+  const to=deCle(cle), from=ou(l), occ=C[to.n][to.g][to.k];
+  if(from&&cleDe(from)===cle) return;
+  if(from) C[from.n][from.g][from.k]=null;
+  if(occ&&occ!==l&&from) C[from.n][from.g][from.k]=occ;   // échange : l'occupant prend la case libérée
+  C[to.n][to.g][to.k]=l; sel=null; cible=null; render();
+}
+function retirer(l){ const o=ou(l); if(o){ C[o.n][o.g][o.k]=null; } if(sel===l) sel=null; render(); }
+
+function texteAlerte(a,gi){
+  if(a.type==='brulage') return a.licences.length+' brûlés dans ce groupe, un seul est admis (art. 12) : '+a.licences.map(nomDe).join(' et ')+' ont joué 3 fois ou plus dans une équipe de numéro inférieur.';
+  if(a.type==='ordre') return nomDe(a.fort)+' ('+ptsDe(a.fort)+') a plus de points que '+nomDe(a.faible)+' ('+ptsDe(a.faible)+'), du groupe '+gi+' : à inverser (art. 8).';
+  if(a.type==='double') return nomDe(a.licence)+' figure dans deux équipes : un joueur ne joue que dans une équipe par journée (art. 12).';
+  if(a.type==='indispo') return nomDe(a.licence)+' a répondu ne pas être disponible ce vendredi.';
+  return a.txt;
+}
+function tag(t,c){ return '<span class="tg '+c+'">'+esc(t)+'</span>'; }
+
+function render(){
+  const x=CDP.JOURNEES[j-1], dt=jourDe(x.date);
+  const hist=CDP.historique(COMPOS,j);
+  const dispo={}; Object.keys(R).forEach(l=>{ dispo[l]=dispoDe(l); });
+  const res=CDP.controler(C,PTS,hist,dispo);
+  document.getElementById('hJ').textContent='J'+j;
+  document.getElementById('hDate').textContent='Vendredi '+dt.getDate()+' '+MOIS[dt.getMonth()]+' '+dt.getFullYear()+' · 20h30 · '+CDP.PLACES+' places';
+  document.getElementById('jp').innerHTML=CDP.JOURNEES.map(y=>{ const r=COMPOS[y.j]; return '<a href="?j='+y.j+'" data-j="'+y.j+'"'+(y.j===j?' aria-current="page"':'')+' title="J'+y.j+' · '+dd(y.date)+(r?' · '+(r.statut==='envoyee'?'envoyée':'brouillon'):' · rien d’enregistré')+'">J'+y.j+(r?'<i class="'+(r.statut==='envoyee'?'envoyee':'brouillon')+'"></i>':'')+'</a>'; }).join('');
+
+  // équipes ; une équipe encore vide est « à composer » : ses absents ne sont pas des alertes tant qu'on n'a rien posé
+  let nErr=0, nAv=0; const cpt={brulage:0,ordre:0,absents:0,double:0,indispo:0};
+  const cc=cible&&cleDe(cible);
+  document.getElementById('teams').innerHTML=CDP.EQUIPES.map(e=>{
+    const R2=res.equipes[e.n], gs=C[e.n], n=gs.reduce((s,g)=>s+g.filter(Boolean).length,0), vide=n===0;
+    let eErr=0, eAv=0;
+    const grp=gs.map((g,gi)=>{
+      const al=vide?[]:R2.groupes[gi].alertes;
+      al.forEach(a=>{ if(a.niveau==='erreur'){ eErr++; } else eAv++; cpt[a.type==='absent'?'absents':a.type]=(cpt[a.type==='absent'?'absents':a.type]||0)+1; });
+      const ko=al.some(a=>a.niveau==='erreur'), av=!ko&&al.length>0;
+      const autorise=R2.absents===1&&gi===gs.length-1;
+      const cases=g.map((l,k)=>{
+        const cle=e.n+'-'+gi+'-'+k;
+        if(!l) return '<button type="button" class="case vide'+(cc===cle?' cible':'')+'" data-case="'+cle+'" aria-label="'+esc(e.nom)+', groupe '+(gi+1)+', case '+(k+1)+' : vide"><span class="v1">'+(cc===cle?'Choisis un joueur':sel?'Placer ici':autorise&&!vide?'Absent autorisé':'Glisser un joueur')+'</span><span class="v2">Déposer ici</span></button>';
+        const h=hist[l], b=CDP.brulePour(h,e.n), t=[];
+        if(b) t.push(tag('brûlé · '+COURT[b]+' ×'+h[b],'rouge'));
+        else if(CDP.aUnMatch(h)===e.n) t.push(tag('3e en '+COURT[e.n]+' : brûlé ensuite','jaune'));
+        else if(histo(h)) t.push(tag(histo(h),'gris'));
+        const d=dispo[l]; if(d===false) t.push(tag('pas dispo','rouge')); else if(d===undefined) t.push(tag('pas répondu','contour'));
+        return '<div class="case plein'+(sel===l?' sel':'')+'" data-case="'+cle+'"><div class="pc" role="button" tabindex="0" draggable="true" data-carte="'+l+'" data-at="'+cle+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts'+(histo(h)?' · avant J'+j+' : '+histo(h):''))+'"><span class="nm">'+esc(nomDe(l))+'</span><span class="l2"><span class="pt">'+ptsDe(l)+'</span>'+t.join('')+'</span></div><button type="button" class="x" data-retirer="'+l+'" aria-label="Retirer '+esc(nomDe(l))+' de l’équipe">'+ICX+'</button></div>';
+      }).join('');
+      return '<div class="cg'+(ko?' ko':av?' av':'')+'"><span class="lab">Groupe '+(gi+1)+'</span><div class="cases">'+cases+'</div>'+al.map(a=>'<div class="al'+(a.niveau==='erreur'?'':' av')+'">'+ICA+'<span>'+esc(texteAlerte(a,gi))+'</span></div>').join('')+'</div>';
+    }).join('');
+    nErr+=eErr; nAv+=eAv;
+    const st=vide?['à composer','']:eErr?[eErr+' alerte'+(eErr>1?'s':''),'ko']:eAv?[eAv+' à vérifier','av']:R2.absents===1?['conforme · 1 absent','ok']:['conforme','ok'];
+    return '<section class="eq" aria-label="Équipe '+e.n+', '+esc(e.nom)+'"><div class="eqh"><span class="num">'+e.n+'</span><span class="eqn"><b>'+esc(e.nom)+'</b><span>'+(3*e.groupes)+' joueurs · '+e.tables+' tables · '+n+' placé'+(n>1?'s':'')+'</span></span><span class="est '+st[1]+'">'+st[0]+'</span></div>'+grp+(R2.note&&!vide&&!eErr?'<span class="note">'+esc(R2.note)+'</span>':'')+'</section>';
+  }).join('');
+
+  // listes : disponibles ce vendredi, pas répondu, pas dispo ; ceux qui ne jouent pas le CDP n'apparaissent qu'en cherchant
+  const places=new Set(); CDP.EQUIPES.forEach(e=>C[e.n].forEach(g=>g.forEach(l=>{ if(l) places.add(l); })));
+  const qq=sansAccent(q), trouve=l=>!qq||sansAccent(nomDe(l)).indexOf(qq)>=0;
+  const tous=Object.keys(P).filter(l=>!places.has(l)&&trouve(l)).sort((a,b)=>(ptsDe(b)-ptsDe(a))||nomDe(a).localeCompare(nomDe(b),'fr'));
+  const carte=l=>{
+    const h=hist[l], T=CDP.premierBrule(h), a2=CDP.aUnMatch(h), t=[];
+    if(T) t.push(tag('brûlé pour '+(T===5?'la D2':T===4?'PH et D2':'les équipes '+T+' à 5'),'rouge'));
+    else if(a2) t.push(tag(COURT[a2]+' ×2 · à 1 match du brûlage','jaune'));
+    if(histo(h)) t.push(tag(histo(h),'gris'));
+    if(R[l]&&R[l].joue===false) t.push(tag('ne joue pas le CDP','contour'));
+    return '<div class="lc'+(sel===l?' sel':'')+'" role="button" tabindex="0" draggable="true" data-carte="'+l+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts')+'"><span class="l1"><span class="nm">'+esc(nomDe(l))+'</span><span class="pt">'+ptsDe(l)+'</span></span>'+(t.length?'<span class="tgs">'+t.join('')+'</span>':'')+'</div>';
+  };
+  const lD=tous.filter(l=>dispo[l]===true), lS=tous.filter(l=>dispo[l]===undefined), lN=tous.filter(l=>R[l]&&R[l].joue&&dispo[l]===false), lX=qq?tous.filter(l=>R[l]&&R[l].joue===false):[];
+  document.getElementById('lDisp').innerHTML=lD.map(carte).join('')+(lD.length?'':'<span class="expl">'+(qq?'Aucun disponible ne correspond.':'Tous les joueurs disponibles ce vendredi sont placés.')+'</span>')+lX.map(carte).join('');
+  document.getElementById('lSans').innerHTML=lS.map(carte).join('');
+  document.getElementById('lNon').innerHTML=lN.map(carte).join('');
+  document.getElementById('nSans').textContent=lS.length; document.getElementById('nNon').textContent=lN.length;
+  if(qq){ document.getElementById('dSans').open=lS.length>0; document.getElementById('dNon').open=lN.length>0; }
+  const nLib=Object.keys(P).filter(l=>dispo[l]===true&&!places.has(l)).length;
+  document.getElementById('lDate').textContent='vendredi '+dd(x.date)+' · '+nLib;
+
+  // en-tête
+  document.getElementById('chPl').textContent=res.places+' / '+CDP.PLACES+' placés';
+  document.getElementById('chLib').textContent=nLib+' dispo'+(nLib>1?'s':'')+' non placé'+(nLib>1?'s':'');
+  const chA=document.getElementById('chAl'); chA.textContent=nErr?nErr+' alerte'+(nErr>1?'s':''):nAv?nAv+' à vérifier':res.places?'aucune alerte':'à composer'; chA.className='chip '+(nErr?'ko':nAv?'av':res.places?'ok':'');
+
+  // règles
+  const R5=[
+    [!cpt.brulage?'ok':'ko','Brûlage · art. 12',cpt.brulage?cpt.brulage+' groupe'+(cpt.brulage>1?'s':'')+' avec deux brûlés ou plus.':'À partir de l’équipe 2, jamais plus d’un brûlé par groupe de 3.'],
+    [!cpt.ordre?'ok':'ko','Ordre des groupes · art. 8',cpt.ordre?cpt.ordre+' groupe'+(cpt.ordre>1?'s':'')+' mal ordonné'+(cpt.ordre>1?'s':'')+' : rencontre perdue par pénalité.':'Groupe 1 ≥ groupe 2 ≥ groupe 3 en points ; l’ordre dans un groupe est libre.'],
+    [!cpt.absents?'ok':'ko','Absents · art. 9',cpt.absents?'Absent mal placé ou en trop.':'Au plus un par équipe, dans le groupe le plus faible.'],
+    [!cpt.double?'ok':'ko','Un joueur, une seule équipe',cpt.double?'Un joueur figure dans deux équipes.':'Garanti : un joueur déplacé quitte sa case précédente.'],
+    [!cpt.indispo?'ok':'av','Dispos du vendredi',cpt.indispo?cpt.indispo+' joueur'+(cpt.indispo>1?'s':'')+' placé'+(cpt.indispo>1?'s':'')+' alors qu’il'+(cpt.indispo>1?'s ont':' a')+' répondu « pas dispo ».':'Aucun joueur placé contre sa réponse.'],
+    ['in','Équipe exempte · art. 13','Une équipe exempte garde une composition obligatoire.']
+  ];
+  document.getElementById('regles').innerHTML=R5.map(r=>'<div class="rg"><span class="ic '+r[0]+'" aria-hidden="true">'+(r[0]==='ok'?'✓':r[0]==='ko'?'✕':r[0]==='av'?'!':'i')+'</span><span><b>'+r[1]+'</b><span>'+r[2]+'</span></span></div>').join('');
+  const manquent=CDP.JOURNEES.filter(y=>y.j<j&&!COMPOS[y.j]).map(y=>'J'+y.j);
+  if(manquent.length) document.getElementById('regles').insertAdjacentHTML('beforeend','<div class="rg"><span class="ic av" aria-hidden="true">!</span><span><b>Historique incomplet</b><span>'+manquent.join(', ')+' sans composition enregistrée : le brûlage ne les compte pas.</span></span></div>');
+
+  // barre d'enregistrement
+  const r=ligne(), s=sale();
+  document.getElementById('savebar').classList.toggle('sale',s);
+  document.getElementById('svSt').innerHTML=(s?'<b>Modifications non enregistrées</b> · ':'')+(r?(r.statut==='envoyee'?'Marquée envoyée':'Brouillon enregistré')+' le '+fmtTs(r.created_at)+(r.auteur?' par '+esc(r.auteur):''):'Rien d’enregistré pour J'+j+'.');
+  document.getElementById('bSave').disabled=occupe||!s;
+  document.getElementById('bAnnul').hidden=!s;
+  const bE=document.getElementById('bEnv'); bE.disabled=occupe||s||!r||r.statut==='envoyee'; bE.textContent=r&&r.statut==='envoyee'&&!s?'Envoyée ✓':'Marquer comme envoyée';
+  bE.dataset.erreurs=nErr;
+  // bandeaux
+  const aide=document.getElementById('aide');
+  if(sel){ aide.hidden=false; document.getElementById('aideTxt').textContent=nomDe(sel)+' sélectionné : clique la case où le placer.'; }
+  else if(cible){ const e=CDP.EQUIPES.find(y=>y.n===cible.n); aide.hidden=false; document.getElementById('aideTxt').textContent='Choisis dans la liste le joueur à placer en '+e.nom+', groupe '+(cible.g+1)+'.'; }
+  else aide.hidden=true;
+  const cf=document.getElementById('conflit'); cf.hidden=!CONFLIT;
+  if(CONFLIT) document.getElementById('conflitTxt').textContent='Une autre version de J'+j+' a été enregistrée'+(CONFLIT.created_at?' le '+fmtTs(CONFLIT.created_at):'')+(CONFLIT.auteur?' par '+CONFLIT.auteur:'')+' pendant que tu composais. Tes changements sont toujours là : choisis.';
+}
+
+async function enregistrer(statut,attendu){
+  if(occupe) return; occupe=true; render();
+  const r=ligne();
+  try{
+    const out=await api('spo/cdp/compos',{journee:j,expected_id:attendu!=null?attendu:(r?Number(r.id):0),statut,compo:C});
+    COMPOS[j]=out.row; BASE=JSON.stringify(C); CONFLIT=null;
+    toast(statut==='envoyee'?'J'+j+' marquée envoyée':'Composition J'+j+' enregistrée');
+  }catch(e){
+    const code=e&&e.body&&e.body.error;
+    if(e&&e.status===409&&code==='conflit_composition'){ CONFLIT=(e.body&&e.body.current)||{}; }
+    else toast('Enregistrement refusé : '+(code||e.message));
+  }finally{ occupe=false; render(); }
+}
+async function rechargerCompos(){ const c=await api('spo/cdp/compos'); COMPOS=(c&&c.compos)||{}; }
+
+/* ---------- interactions : glisser-déposer, ou clic sur le joueur puis sur la case (ou l'inverse) ---------- */
+const main=document.getElementById('main');
+main.addEventListener('click',e=>{
+  const x=e.target.closest('[data-retirer]'); if(x){ retirer(x.dataset.retirer); return; }
+  const jp=e.target.closest('#jp a[data-j]');
+  if(jp){ e.preventDefault(); const n=+jp.dataset.j; if(n===j) return; if(sale()&&!confirm('Tes modifications de J'+j+' ne sont pas enregistrées. Changer de journée quand même ?')) return; chargerJournee(n); return; }
+  const ca=e.target.closest('[data-carte]');
+  if(ca){ const l=ca.dataset.carte, at=ca.dataset.at;
+    if(!at&&cible){ placer(l,cleDe(cible)); return; }
+    if(at&&sel&&sel!==l){ placer(sel,at); return; }
+    sel=sel===l?null:l; cible=null; render(); return; }
+  const v=e.target.closest('.case.vide');
+  if(v){ if(sel){ placer(sel,v.dataset.case); return; }
+    const c=deCle(v.dataset.case); cible=(cible&&cleDe(cible)===v.dataset.case)?null:c; render();
+    if(cible){ const s=document.getElementById('q'); if(window.matchMedia('(max-width:900px)').matches) document.getElementById('liste').scrollIntoView({behavior:'smooth',block:'start'}); s.focus({preventScroll:true}); }
+    return; }
+});
+main.addEventListener('keydown',e=>{
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches('[role="button"][data-carte]')){ e.preventDefault(); e.target.click(); }
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&(sel||cible)){ sel=null; cible=null; render(); } });
+main.addEventListener('dragstart',e=>{
+  const ca=e.target.closest&&e.target.closest('[data-carte]'); if(!ca) return;
+  drag=ca.dataset.carte; try{ e.dataTransfer.setData('text/plain',drag); e.dataTransfer.effectAllowed='move'; }catch(_){}
+  // pas de nouveau rendu ici : remplacer l'élément glissé annulerait le glisser
+  document.getElementById('teams').classList.add('glisse');
+});
+const cibleDrop=t=>t&&t.closest&&(t.closest('[data-case]')||t.closest('#liste'));
+main.addEventListener('dragover',e=>{ const t=cibleDrop(e.target); if(!t||drag==null) return; e.preventDefault(); try{ e.dataTransfer.dropEffect='move'; }catch(_){}
+  document.querySelectorAll('.over').forEach(o=>{ if(o!==t) o.classList.remove('over'); }); t.classList.add('over'); });
+main.addEventListener('dragleave',e=>{ const t=cibleDrop(e.target); if(t&&!t.contains(e.relatedTarget)) t.classList.remove('over'); });
+main.addEventListener('drop',e=>{
+  const t=cibleDrop(e.target); if(!t) return; e.preventDefault();
+  let l=drag; if(l==null){ try{ l=e.dataTransfer.getData('text/plain')||null; }catch(_){} }
+  drag=null; document.getElementById('teams').classList.remove('glisse');
+  if(!l||!P[l]&&!ou(l)) { render(); return; }
+  if(t.id==='liste') retirer(l); else placer(l,t.dataset.case);
+});
+main.addEventListener('dragend',()=>{ drag=null; document.getElementById('teams').classList.remove('glisse'); document.querySelectorAll('.over').forEach(o=>o.classList.remove('over')); });
+document.getElementById('q').addEventListener('input',e=>{ q=e.target.value; render(); });
+document.getElementById('aideX').addEventListener('click',()=>{ sel=null; cible=null; render(); });
+document.getElementById('bSave').addEventListener('click',()=>enregistrer('brouillon'));
+document.getElementById('bAnnul').addEventListener('click',()=>{ if(!confirm('Revenir à la version enregistrée de J'+j+' ? Tes modifications seront perdues.')) return; C=JSON.parse(BASE); sel=null; cible=null; render(); });
+document.getElementById('bEnv').addEventListener('click',e=>{ const n=+e.currentTarget.dataset.erreurs||0; if(n&&!confirm('La composition J'+j+' a '+n+' alerte'+(n>1?'s':'')+'. La marquer envoyée quand même ?')) return; enregistrer('envoyee'); });
+document.getElementById('cfSa').addEventListener('click',async()=>{ try{ await rechargerCompos(); chargerJournee(j); toast('Version enregistrée chargée'); }catch(e){ toast('Lecture impossible : '+e.message); } });
+document.getElementById('cfMa').addEventListener('click',async()=>{ const attendu=CONFLIT&&CONFLIT.id!=null?Number(CONFLIT.id):null; try{ await rechargerCompos(); }catch(_){} enregistrer('brouillon',attendu!=null?attendu:(ligne()?Number(ligne().id):0)); });
+window.addEventListener('beforeunload',e=>{ if(C&&sale()){ e.preventDefault(); e.returnValue=''; } });
+
+async function boot(){
+  const [sc,off,rep,cps]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos'),api('spo/cdp/compos')]);
+  const OFF=(off&&off.officiel)||{};
+  ((sc&&sc.players)||[]).forEach(p=>{ if(p.lic){ const l=String(p.lic); P[l]={nom:p.nom||'',pre:p.pre||'',pts:OFF[l]||p.men||0}; } });
+  R=(rep&&rep.reponses)||{};
+  Object.keys(R).forEach(l=>{ if(!P[l]) P[l]={nom:'Licence '+l,pre:'',pts:OFF[l]||0}; });
+  COMPOS=(cps&&cps.compos)||{};
+  // joueurs d'une composition enregistrée mais absents de la liste des points : on les garde, sous leur numéro
+  Object.values(COMPOS).forEach(r=>Object.values((r&&r.compo)||{}).forEach(gs=>(gs||[]).forEach(g=>(g||[]).forEach(l=>{ if(l&&!P[l]) P[l]={nom:'Licence '+l,pre:'',pts:OFF[l]||0}; }))));
+  const qj=+new URLSearchParams(location.search).get('j');
+  const auj=new Date(); auj.setHours(0,0,0,0);
+  const prochaine=(CDP.JOURNEES.find(y=>jourDe(y.date)>=auj)||CDP.JOURNEES[CDP.JOURNEES.length-1]).j;
+  chargerJournee(qj>=1&&qj<=7?qj:prochaine);
+}
+
+const gateErrTxt=(err,role)=>err?((err.body&&/jeton_invalide|jeton_requis|role_incorrect/.test(err.body.error||''))?'lien invalide ou révoqué — demande un nouveau lien à la sportive':'serveur : '+err.message):(role==='capitaine'?'ton lien est un lien capitaine':'');
+async function start(){
+  let me=null, err=null;
+  try{ me=await api('me'); }catch(e){ err=e; }
+  const role=(me&&me.role)||'';
+  if(role!=='sportive'){
+    renderNav({active:'Compositions CDP',role:role,team:me&&me.equipe});
+    document.getElementById('gateMsg').hidden=false;
+    document.getElementById('gateErr').textContent=gateErrTxt(err,role);
+    return;
+  }
+  renderNav({active:'Compositions CDP',role:'sportive',name:me.nom,team:me.equipe||null});
+  document.getElementById('main').hidden=false;
+  boot().catch(e=>{ document.getElementById('err').innerHTML='<div class="srverr">Erreur de chargement : '+esc(e.message)+'</div>'; });
+}
+start();
+</script>
+<script src="../shared/report.js" defer></script>
+<script src="../shared/track.js?v=1" defer></script>
+</body></html>

@@ -54,6 +54,21 @@ async function install(context,state){
     state.presences={[body.licence]:{present:body.present,at:'2026-10-04T12:00:00Z'}};
     return send({ok:true});
    }
+   if(api==='joueur/cdp/entree'){
+    if(body.dob!=='2010-03-07')return send({error:'date_incorrecte',restants:2},403);
+    const p=state.players.find(x=>x.lic===body.licence);if(!p)return send({error:'licence_inconnue'},404);
+    return send({licence:p.lic,nom:p.nom,prenom:p.pre,echeance:'2026-10-21T21:59:59Z',reponse:state.cdpRep||null});
+   }
+   if(api==='joueur/cdp'){(state.cdpSaves||(state.cdpSaves=[])).push(body);return send({ok:true,saved_at:'2026-09-30T10:00:00Z',retard:false});}
+   if(api==='spo/cdp/dispos')return send({echeance:'2026-10-21T21:59:59Z',reponses:state.cdpReponses||{}});
+   if(api==='spo/cdp/compos'){
+    if(!body)return send({compos:state.cdpCompos||{}});
+    (state.cdpCompoSaves||(state.cdpCompoSaves=[])).push(body);
+    if(state.cdpConflict){state.cdpConflict=false;const current={id:41,journee:body.journee,statut:'brouillon',created_at:'2026-09-30T09:00:00Z',auteur:'Minh'};
+     state.cdpCompos={...(state.cdpCompos||{}),[body.journee]:{...current,compo:body.compo}};return send({error:'conflit_composition',current},409);}
+    const row={id:50+state.cdpCompoSaves.length,journee:body.journee,compo:body.compo,statut:body.statut,created_at:'2026-09-30T10:00:00Z',auteur:'Test'};
+    state.cdpCompos={...(state.cdpCompos||{}),[body.journee]:row};return send({ok:true,row});
+   }
    if(api==='cap/poule')return send({equipe:'M11',resultats:[]});
    if(api==='spo/alerts/dispos')return send({message:'Avis privé fictif'});
    if(api.startsWith('public/'))return send({items:[]});
@@ -64,6 +79,7 @@ async function install(context,state){
   if(url.pathname==='/data/scoring.json')return send({built:new Date().toISOString(),players:state.players});
   if(url.pathname==='/data/poules2627.json')return send(state.poules);
   if(url.pathname==='/data/site.json')return send(state.site);
+  if(url.pathname==='/data/officiel2627.json')return send({saison:'2026/2027',officiel:state.officiel||{}});
   if(url.pathname==='/data/sexes.json')return send(Object.fromEntries(state.players.map(p=>[p.lic,'M'])));
   return route.continue();
  });
@@ -141,8 +157,8 @@ test('accueil : trois compétitions en tuiles, une popup centrée par équipe av
  await expect(page.locator('.nv-tiles .nv-tile')).toHaveCount(3);
  const on=page.locator('.nv-tiles a.nv-tile.on');
  await expect(on).toHaveAttribute('aria-current','page');await expect(on).toContainText('Championnat');
- const paris=page.locator('.nv-tiles .nv-soon');
- await expect(paris).toContainText('Coming soon');expect(await paris.evaluate(e=>e.tagName)).toBe('SPAN');   // pas un lien
+ const paris=page.locator('.nv-tiles a.nv-tile[href$="cdp.html"]');   // le Championnat de Paris est ouvert
+ await expect(paris).toContainText('de Paris');await expect(page.locator('.nv-tiles .nv-soon')).toHaveCount(0);
  await expect(page.locator('#eqgrid .eqb')).toHaveCount(state.poules.poules.length);
  await page.locator('#eqgrid .eqb[data-t="M11"]').click();
  await expect(page.locator('#ebg')).toBeVisible();
@@ -274,4 +290,100 @@ test('debrief capitaine : confirmation durable, relecture et texte conservé apr
  state.debriefError=true;await txt.fill('Texte modifié conservé même en cas d’erreur.');await page.locator('#debSave').click();
  await expect(page.locator('#debErr')).toContainText('Enregistrement refusé');await expect(txt).toHaveValue('Texte modifié conservé même en cas d’erreur.');
  await expect(page.locator('#debSave')).toBeEnabled();expect(errors).toEqual([]);
+});
+
+/* ---------- Championnat de Paris ---------- */
+const cdpRep=(joue,non=[])=>({joue,dates:Object.fromEntries([1,2,3,4,5,6,7].map(k=>['j'+k,joue&&!non.includes(k)])),saved_at:'2026-09-29T09:00:00Z',retard:false});
+const compoAvec=(eq,g,lics)=>{const c={1:[[null,null,null],[null,null,null],[null,null,null]],2:[[null,null,null],[null,null,null],[null,null,null]],3:[[null,null,null],[null,null,null],[null,null,null]],4:[[null,null,null],[null,null,null]],5:[[null,null,null]]};lics.forEach((l,k)=>{c[eq][g][k]=l;});return c;};
+
+test('CDP joueur : identification, oui puis les vendredis, confirmation ; « non » en un clic',async({page,context})=>{
+ const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/cdp.html');
+ await expect(page.locator('.nv-tiles a.nv-tile.on')).toContainText('de Paris');
+ await expect(page.locator('#cdates .cdate')).toHaveCount(7);await expect(page.locator('#ceqs .ceq')).toHaveCount(5);
+ await expect(page.locator('#cpt')).toHaveText('dans 21 jours');
+ await page.getByRole('button',{name:'Indiquer mes dispos'}).click();
+ await expect(page.locator('#cbg')).toBeVisible();
+ await page.getByLabel('N° de licence').fill(state.players[0].lic);
+ const dob=page.getByLabel('Date de naissance');await dob.fill('01022010');await expect(dob).toHaveValue('01/02/2010');
+ await page.getByRole('button',{name:'Continuer'}).click();
+ await expect(page.locator('#cErr1')).toContainText('Il te reste 2 essais');
+ await dob.fill('07032010');await page.getByRole('button',{name:'Continuer'}).click();
+ await expect(page.locator('#cName')).toHaveText('Alex EXEMPLE1');
+ await expect(page.locator('#cSave')).toBeDisabled();   // rien n'est choisi d'office
+ await page.locator('#cOui').click();await expect(page.locator('#cRows .drow')).toHaveCount(7);
+ await page.getByRole('button',{name:/8 janvier 2027 : pas disponible/}).click();
+ await page.locator('#cSave').click();
+ await expect(page.locator('#cStep3')).toBeVisible();await expect(page.locator('#cBilan')).toContainText('6 vendredis sur 7');
+ expect(state.cdpSaves[0]).toEqual({licence:state.players[0].lic,dob:'2010-03-07',joue:true,dates:{j1:true,j2:false,j3:true,j4:true,j5:true,j6:true,j7:true}});
+ await page.locator('#cEdit').click();await page.locator('#cNon').click();await expect(page.locator('#cRows')).toBeHidden();
+ await page.locator('#cSave').click();await expect(page.locator('#cBilan')).toHaveText('Tu ne joues pas le CDP cette saison.');
+ expect(state.cdpSaves[1].joue).toBe(false);expect(Object.values(state.cdpSaves[1].dates).some(Boolean)).toBe(false);
+ await page.keyboard.press('Escape');await expect(page.locator('#cbg')).toBeHidden();
+ expect(errors).toEqual([]);
+});
+
+test('CDP sportive : tableau des dispos, compteurs par vendredi et filtres',async({page,context})=>{
+ const state=fixture(),errors=[];const L=state.players.map(p=>p.lic);
+ state.cdpReponses={[L[0]]:cdpRep(true),[L[1]]:cdpRep(true,[2]),[L[2]]:cdpRep(false)};
+ await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/sportive/cdp-dispos.html');
+ await expect(page.locator('.subnav.spo')).toContainText('Compositions CDP');
+ await expect(page.locator('#cpt .cj')).toHaveCount(7);
+ await expect(page.locator('#cpt .cj').nth(0)).toContainText('2');await expect(page.locator('#cpt .cj').nth(1)).toContainText('manque 35');
+ await expect(page.locator('#chRep')).toHaveText('3 réponses sur 5');
+ await page.getByRole('button',{name:/Pas répondu/}).click();await expect(page.locator('#tbody tr')).toHaveCount(2);
+ await page.getByRole('button',{name:/Ne jouent pas/}).click();await expect(page.locator('#tbody tr')).toHaveCount(1);
+ await expect(page.locator('#tbody')).toContainText('Chris EXEMPLE3');
+ await page.getByRole('button',{name:/^Tous/}).click();await page.getByLabel('Chercher un joueur').fill('sam');
+ await expect(page.locator('#tbody tr')).toHaveCount(1);await expect(page.locator('#tbody tr .tot')).toHaveText('6/7');
+ expect(errors).toEqual([]);
+});
+
+test('CDP sportive : glisser-déposer, clic puis case, règles en direct et enregistrement',async({page,context})=>{
+ const state=fixture(),errors=[];const L=state.players.map(p=>p.lic);
+ state.cdpReponses=Object.fromEntries(L.map(l=>[l,cdpRep(true)]));
+ // J1 à J3 : Alex et Sam en équipe 1 trois fois, donc brûlés pour l'équipe 2
+ state.cdpCompos=Object.fromEntries([1,2,3].map(k=>[k,{id:k,journee:k,statut:'envoyee',created_at:'2026-09-20T10:00:00Z',auteur:'Test',compo:compoAvec(1,0,[L[0],L[1]])}]));
+ await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/sportive/cdp-compo.html?j=4');
+ await expect(page.locator('#hJ')).toHaveText('J4');
+ await expect(page.locator('#lDisp [data-carte]')).toHaveCount(5);
+ await expect(page.locator('#lDisp [data-carte="'+L[0]+'"]')).toContainText('brûlé pour les équipes 2 à 5');
+ // glisser-déposer : Alex en PE2 groupe 1
+ await page.locator('#lDisp [data-carte="'+L[0]+'"]').dragTo(page.locator('[data-case="2-0-0"]'));
+ await expect(page.locator('[data-case="2-0-0"]')).toContainText('Alex EXEMPLE1');
+ // clic puis case : Sam dans le même groupe → deux brûlés
+ await page.locator('#lDisp [data-carte="'+L[1]+'"]').click();await expect(page.locator('#aide')).toContainText('Sam EXEMPLE2 sélectionné');
+ await page.locator('[data-case="2-0-1"]').click();
+ await expect(page.locator('.eq').nth(1).locator('.cg').first()).toHaveClass(/ko/);
+ await expect(page.locator('.eq').nth(1)).toContainText('2 brûlés dans ce groupe');
+ await expect(page.locator('#chAl')).toContainText('alerte');
+ // l'inverse : case vide puis joueur. Nova (moins de points) en groupe 1, Chris en groupe 2 : ordre faux (art. 8)
+ await page.locator('[data-case="1-0-0"]').click();await page.locator('#lDisp [data-carte="'+L[4]+'"]').click();
+ await page.locator('[data-case="1-1-0"]').click();await page.locator('#lDisp [data-carte="'+L[2]+'"]').click();
+ await expect(page.locator('.eq').first()).toContainText('a plus de points que Nova EXEMPLE5');
+ // retirer Sam : l'alerte de brûlage disparaît
+ await page.getByRole('button',{name:'Retirer Sam EXEMPLE2 de l’équipe'}).click();
+ await expect(page.locator('.eq').nth(1)).not.toContainText('2 brûlés');
+ await page.locator('#bSave').click();await expect(page.locator('#svSt')).toContainText('Brouillon enregistré');
+ await expect(page.locator('#bSave')).toBeDisabled();expect(state.cdpCompoSaves).toHaveLength(1);
+ const s=state.cdpCompoSaves[0];expect(s.journee).toBe(4);expect(s.expected_id).toBe(0);expect(s.statut).toBe('brouillon');
+ expect(s.compo['2'][0]).toEqual([L[0],null,null]);expect(s.compo['1'][0][0]).toBe(L[4]);expect(s.compo['1'][1][0]).toBe(L[2]);
+ expect(errors).toEqual([]);
+});
+
+test('CDP sportive : un enregistrement concurrent est signalé, rien n’est écrasé sans choix',async({page,context})=>{
+ const state=fixture(),errors=[];const L=state.players.map(p=>p.lic);
+ state.cdpReponses=Object.fromEntries(L.map(l=>[l,cdpRep(true)]));state.cdpConflict=true;
+ await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/sportive/cdp-compo.html?j=1');
+ await page.locator('#lDisp [data-carte="'+L[0]+'"]').click();await page.locator('[data-case="5-0-0"]').click();
+ await page.locator('#bSave').click();
+ await expect(page.locator('#conflit')).toBeVisible();await expect(page.locator('#conflit')).toContainText('par Minh');
+ await expect(page.locator('[data-case="5-0-0"]')).toContainText('Alex EXEMPLE1');   // la saisie reste à l'écran
+ await page.getByRole('button',{name:'Garder la mienne et enregistrer'}).click();
+ await expect(page.locator('#conflit')).toBeHidden();
+ expect(state.cdpCompoSaves).toHaveLength(2);expect(state.cdpCompoSaves[1].expected_id).toBe(41);
+ expect(errors).toEqual([]);
 });

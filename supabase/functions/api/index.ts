@@ -44,6 +44,11 @@ const FENETRE_LICENCE_MS = 60 * 60_000;
 // Un parent confirme la présence de plusieurs enfants au Critérium depuis le même téléphone,
 // en plus de la sienne : 3 était atteint dès deux enfants. Porté à 6 (02/10/2026).
 const MAX_LICENCES_PAR_APPAREIL = 6;
+// Championnat de Paris : réponse attendue avant le mercredi 21/10/2026 à minuit (heure de Paris).
+// Après, la réponse reste acceptée et la sportive la voit « en retard ».
+const CDP_ECHEANCE = new Date('2026-10-21T21:59:59Z');
+// Forme des équipes CDP, par numéro : nombre de groupes de 3 (règlement du 15/06/2026, art. 3 et 12).
+const CDP_FORME: Record<string, number> = { '1': 3, '2': 3, '3': 3, '4': 2, '5': 1 };
 
 const PHOTO_MAX_OCTETS = 5 * 1024 * 1024;
 const TEXTE_MAX = 6000;
@@ -723,6 +728,40 @@ async function router(req: Request): Promise<Response> {
     return json({ ok: true, saved_at: data.created_at, present: body.present });
   }
 
+  // ── Championnat de Paris : dispos des joueurs ───────────────────────────
+  if (path === '/joueur/cdp/entree' && POST) {
+    // Identification, puis la dernière réponse du joueur : il retrouve ce qu'il a déjà coché.
+    const body = await lireJson(req);
+    const jo = await verifierJoueur(req, body);
+    const ann = await annuaire();
+    const id = identite(ann, jo.licence, null);
+    const { data, error } = await sb.from('cdp_dispos_log').select('joue,dates,created_at')
+      .eq('licence', jo.licence).order('id', { ascending: false }).limit(1);
+    if (error) fail(500, 'lecture_cdp', { detail: error.message });
+    const d = ((data ?? []) as Json[])[0] ?? null;
+    return json({ licence: jo.licence, nom: id.nom, prenom: id.prenom, echeance: CDP_ECHEANCE.toISOString(),
+      reponse: d ? { joue: !!d.joue, dates: d.dates, saved_at: d.created_at } : null });
+  }
+
+  if (path === '/joueur/cdp' && POST) {
+    // Réponse au CDP : d'abord « je joue cette saison », puis oui/non par journée.
+    // La forme est vérifiée AVANT l'identité : une requête mal formée ne compte pas comme un échec.
+    const body = await lireJson(req);
+    if (typeof body.joue !== 'boolean') fail(400, 'reponse_invalide');
+    const dates: Json = {};
+    for (let j = 1; j <= 7; j++) dates['j' + j] = body.joue ? !!(body.dates && (body.dates as Json)['j' + j]) : false;
+    const jo = await verifierJoueur(req, body);
+    const ann = await annuaire();
+    const id = identite(ann, jo.licence, null);
+    const { data, error } = await sb.from('cdp_dispos_log')
+      .insert({ licence: jo.licence, joue: body.joue, dates, ip: jo.ip })
+      .select('created_at').single();
+    if (error) fail(500, 'ecriture_cdp', { detail: error.message });
+    const retard = new Date(data.created_at) > CDP_ECHEANCE;
+    await journal(`${id.prenom} ${id.nom} (joueur)`, 'joueur', 'cdp_dispos', { licence: jo.licence, joue: body.joue, dates, retard });
+    return json({ ok: true, saved_at: data.created_at, retard });
+  }
+
   if (path === '/joueur/entree' && POST) {
     const body = await lireJson(req);
     const jo = await verifierJoueur(req, body);
@@ -932,6 +971,65 @@ async function router(req: Request): Promise<Response> {
       if (!data?.ok) fail(409,'conflit_document',{conflicts:data?.conflicts ?? [],current:data?.current});
       await journal(acteur,'sportive','document_enregistre',{kind,id:data.row?.id,keys:Object.keys(changes)});
       return json(data);
+    }
+
+    // ── Championnat de Paris ────────────────────────────────────────────────
+    if (path === '/spo/cdp/dispos' && GET) {
+      // Dernière réponse de chaque licence : le journal est lu dans l'ordre, la plus récente l'emporte.
+      const { data, error } = await sb.from('cdp_dispos_log').select('id,licence,joue,dates,created_at')
+        .order('id', { ascending: true }).limit(10000);
+      if (error) fail(500, 'lecture_cdp', { detail: error.message });
+      const reponses: Json = {};
+      for (const r of (data ?? []) as Json[]) reponses[String(r.licence)] = { joue: !!r.joue, dates: r.dates, saved_at: r.created_at, retard: new Date(r.created_at) > CDP_ECHEANCE };
+      return json({ echeance: CDP_ECHEANCE.toISOString(), reponses });
+    }
+
+    if (path === '/spo/cdp/compos' && GET) {
+      const { data, error } = await sb.from('cdp_compo_log').select('id,journee,compo,statut,created_at,auteur')
+        .order('id', { ascending: true }).limit(5000);
+      if (error) fail(500, 'lecture_cdp', { detail: error.message });
+      const compos: Json = {};
+      for (const r of (data ?? []) as Json[]) compos[String(r.journee)] = r;
+      return json({ compos });
+    }
+
+    if (path === '/spo/cdp/compos' && POST) {
+      // Une composition = 5 équipes, chacune en groupes de 3 cases (licence ou null pour un absent).
+      // Version attendue (expected_id) : deux sportives sur la même journée ne s'écrasent pas.
+      const body = await lireJson(req);
+      const journee = Number(body.journee);
+      if (!Number.isInteger(journee) || journee < 1 || journee > 7) fail(400, 'journee_invalide');
+      if (!Number.isSafeInteger(body.expected_id) || body.expected_id < 0) fail(400, 'version_requise');
+      const statut = body.statut === 'envoyee' ? 'envoyee' : 'brouillon';
+      const c = body.compo as Json;
+      if (!c || typeof c !== 'object' || Array.isArray(c)) fail(400, 'compo_invalide');
+      const propre: Json = {}; const vus = new Set<string>();
+      for (const [eq, ng] of Object.entries(CDP_FORME)) {
+        const gs = c[eq];
+        if (!Array.isArray(gs) || gs.length !== ng) fail(400, 'compo_invalide');
+        propre[eq] = gs.map((g: unknown) => {
+          if (!Array.isArray(g) || g.length > 3) fail(400, 'compo_invalide');
+          const cases = (g as unknown[]).map((l) => {
+            if (l === null || l === undefined || l === '') return null;
+            const lic = String(l);
+            if (!/^\d{5,9}$/.test(lic)) fail(400, 'licence_invalide');
+            if (vus.has(lic)) fail(400, 'joueur_en_double');   // une seule équipe par journée (art. 12)
+            vus.add(lic); return lic;
+          });
+          while (cases.length < 3) cases.push(null);
+          return cases;
+        });
+      }
+      const { data: dernier, error: e1 } = await sb.from('cdp_compo_log').select('id,created_at,auteur,statut')
+        .eq('journee', journee).order('id', { ascending: false }).limit(1);
+      if (e1) fail(500, 'lecture_cdp', { detail: e1.message });
+      const courant = ((dernier ?? []) as Json[])[0] ?? null;
+      if ((courant ? Number(courant.id) : 0) !== body.expected_id) fail(409, 'conflit_composition', { current: courant });
+      const { data, error } = await sb.from('cdp_compo_log').insert({ journee, compo: propre, statut, auteur: acteur })
+        .select('id,journee,compo,statut,created_at,auteur').single();
+      if (error) fail(500, 'ecriture_cdp', { detail: error.message });
+      await journal(acteur, 'sportive', 'cdp_compo', { journee, id: data.id, statut });
+      return json({ ok: true, row: data });
     }
 
     if (path === '/spo/compositions' && POST) {

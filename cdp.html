@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>ACBB TT — Championnat de Paris</title>
+<meta name="description" content="Championnat de Paris Île-de-France 2026/27 : les 7 vendredis, les 5 équipes du club, et tes dispos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Saira+Condensed:wght@700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0B0B0D">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="stylesheet" href="shared/style.css">
+<style>
+  .hero{display:flex;flex-direction:column;gap:8px;margin-top:22px}
+  .hero .h1 em{color:var(--orange);font-style:italic}
+  /* le bandeau : l'action et l'échéance, rien d'autre ne doit passer devant */
+  .cban{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:22px;align-items:center;margin-top:20px;padding:22px 26px;border-radius:16px;background:rgba(242,106,27,.08);border:1px solid rgba(242,106,27,.45)}
+  .cban h2{margin:0;display:flex;align-items:center;gap:12px;font-size:18px;font-weight:700}
+  .cban h2 svg{color:var(--orange);flex:0 0 22px}
+  .cban p{margin:8px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.55;max-width:560px}
+  .cdl{display:flex;flex-direction:column;gap:12px}
+  .cdl .row1{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .cdl .k{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--orange)}
+  .cdl .d{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:30px;line-height:1}
+  .cdl .cpt{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:800;padding:5px 12px;border-radius:99px;background:var(--orange);color:#0B0B0D;white-space:nowrap}
+  .cdl .cpt.late{background:var(--warn)}
+  .btn.big{min-height:50px;font-size:13px;width:100%}
+  .sec{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+  .sech{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .sech h2{margin:0;font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:800}
+  .cdates{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+  .cdate{display:flex;flex-direction:column;gap:4px;padding:14px 14px 12px;border-radius:14px;background:var(--panel);border:1px solid var(--line)}
+  .cdate .j{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:800;color:var(--orange)}
+  .cdate .n{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;font-size:40px;line-height:.95}
+  .cdate .m{font-size:13px;font-weight:600}
+  .cdate.past{opacity:.5}
+  .ceqs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+  .ceq{display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:14px;background:var(--panel);border:1px solid var(--line)}
+  .ceq .top{display:flex;align-items:center;gap:10px}
+  .num{width:28px;height:28px;flex:0 0 28px;border-radius:99px;background:rgba(242,106,27,.14);border:1px solid rgba(242,106,27,.5);color:var(--orange);font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .ceq .nom{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:20px;line-height:1}
+  .dots{display:flex;gap:8px}.dots span{display:inline-flex;gap:3px}.dots i{width:10px;height:10px;border-radius:3px;background:var(--orange);display:block}
+  .ceq .det{font-size:13px;color:var(--ink-2)}
+  .note{margin:0;font-size:12.5px;color:var(--dim);line-height:1.5}
+  /* popup centrée à toutes les tailles, défile si elle dépasse */
+  .cbg{position:fixed;inset:0;z-index:50;display:flex;padding:24px;overflow-y:auto;background:rgba(11,11,13,.78)}
+  .cmod{margin:auto;width:100%;max-width:560px;background:var(--panel);border:1px solid var(--line-2);border-radius:18px;box-shadow:0 28px 70px rgba(0,0,0,.65);padding:22px 24px 24px;display:flex;flex-direction:column;gap:16px}
+  .chead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+  .chead h2{margin:4px 0 0;font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:30px;line-height:1}
+  .mclose{background:none;border:1px solid var(--line-2);border-radius:99px;color:var(--ink-2);width:44px;height:44px;flex:0 0 44px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+  .mclose:hover{border-color:rgba(255,255,255,.35);color:var(--ink)}
+  .cmod form,.cstep{display:flex;flex-direction:column;gap:14px}
+  .cmod label{display:flex;flex-direction:column;gap:6px}
+  .cmod input{min-height:46px;font-family:"JetBrains Mono",monospace;font-size:15px}
+  .cmod .intro{margin:0;font-size:13px;color:var(--dim);line-height:1.55}
+  .who{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .who b{font-size:16px}
+  .duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .choix{min-height:48px;border-radius:12px;font-family:"JetBrains Mono",monospace;font-size:12.5px;font-weight:800;cursor:pointer;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink-2)}
+  .choix[aria-pressed="true"]{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+  .drow{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:48px;padding:0 6px 0 12px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line)}
+  .drow .j{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:800;color:var(--orange)}
+  .drow .l{font-size:13.5px;font-weight:600}
+  .seg{display:inline-flex;border:1px solid var(--line-2);border-radius:99px;overflow:hidden}
+  .seg button{min-height:40px;min-width:84px;padding:0 12px;border:0;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:800;cursor:pointer;background:transparent;color:var(--dim)}
+  .seg button.oui[aria-pressed="true"]{background:var(--win);color:#0B0B0D}
+  .seg button.non[aria-pressed="true"]{background:var(--lose);color:#0B0B0D}
+  .warnb{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:10px;background:rgba(250,204,21,.08);border:1px solid rgba(250,204,21,.45);font-size:12.5px;color:var(--ink-2);line-height:1.5}
+  .err{color:var(--lose-lt);font-size:12.5px}
+  .okh{display:flex;align-items:center;gap:12px}
+  .okh .ic{width:44px;height:44px;border-radius:99px;background:rgba(61,214,140,.14);border:1px solid rgba(61,214,140,.5);display:flex;align-items:center;justify-content:center;color:var(--win)}
+  @media(max-width:980px){.cdates{grid-template-columns:repeat(4,minmax(0,1fr))}.ceqs{grid-template-columns:repeat(2,minmax(0,1fr))}.cban{grid-template-columns:1fr}}
+  @media(max-width:720px){.cdates{grid-template-columns:1fr 1fr}.ceqs{grid-template-columns:1fr}.cbg{padding:12px}.cmod{padding:18px 16px 20px}.cban{padding:18px 16px}.cdl .d{font-size:26px}}
+</style>
+</head><body>
+<div class="wrap">
+  <div id="hdr" class="hdr"></div>
+
+  <section class="hero">
+    <h1 class="h1">Championnat <em>de Paris</em></h1>
+    <span class="lab" style="font-size:11px">Île-de-France · saison 2026/27 · 7 vendredis à 20h30 · 5 équipes du club engagées</span>
+  </section>
+
+  <section class="cban" aria-labelledby="banT">
+    <div>
+      <h2 id="banT"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>Mes dispos CDP</h2>
+      <p>Dis-nous d'abord si tu joues le Championnat de Paris cette saison, puis tes vendredis. C'est distinct de tes dispos du championnat par équipe, et ouvert à tous les licenciés du club.</p>
+    </div>
+    <div class="cdl">
+      <div class="row1">
+        <span style="display:flex;flex-direction:column;gap:2px"><span class="k">Réponse attendue avant le</span><span class="d">Mercredi 21 octobre</span></span>
+        <span class="cpt" id="cpt"></span>
+      </div>
+      <button class="btn primary big" id="cdpGo" type="button">Indiquer mes dispos</button>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="datesT">
+    <div class="sech"><h2 id="datesT">Les 7 journées</h2><span class="lab">toutes le vendredi à 20h30 · poules de 8, aller simple</span></div>
+    <div class="cdates" id="cdates"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="eqT">
+    <div class="sech"><h2 id="eqT">Les 5 équipes engagées</h2><span class="lab">36 joueurs chaque vendredi</span></div>
+    <div class="ceqs" id="ceqs"></div>
+    <p class="note">Chaque équipe est faite de groupes de 3 joueurs, et chaque groupe dispute 9 simples. La sportive compose les équipes à partir de vos dispos et envoie la convocation à chacun : les compositions ne sont pas publiées sur le site.</p>
+  </section>
+
+  <div class="foot" style="margin-top:28px;padding-top:16px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)">ACBB Tennis de Table · Championnat de Paris Île-de-France, règlement du 15/06/2026</div>
+</div>
+
+<div class="cbg" id="cbg" hidden>
+  <section class="cmod" role="dialog" aria-modal="true" aria-labelledby="cT">
+    <div class="chead">
+      <div><span class="lab" style="color:var(--orange)">Championnat de Paris · saison 2026/27</span><h2 id="cT">Mes dispos CDP</h2></div>
+      <button class="mclose" id="cClose" type="button" aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+    </div>
+    <div class="warnb" id="cLate" hidden><span>L'échéance du mercredi 21 octobre est passée : ta réponse sera bien enregistrée, et la sportive saura qu'elle arrive en retard.</span></div>
+
+    <form id="cStep1" autocomplete="off" novalidate>
+      <p class="intro">Pour que personne ne réponde à ta place : ton numéro de licence et ta date de naissance, comme pour « Mets à jour tes dispos ».</p>
+      <label><span class="lab">N° de licence</span><input id="cLic" type="text" inputmode="numeric" placeholder="ex. 9246007" autocomplete="off"></label>
+      <label><span class="lab">Date de naissance</span><input id="cDob" type="text" inputmode="numeric" placeholder="jj/mm/aaaa" maxlength="10" autocomplete="off"></label>
+      <div class="err" id="cErr1" hidden></div>
+      <button class="btn primary big" id="cGo1" type="submit">Continuer</button>
+    </form>
+
+    <div class="cstep" id="cStep2" hidden>
+      <div class="who"><b id="cName"></b><span class="lab" id="cLast"></span></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:14px;font-weight:600">Je joue le Championnat de Paris cette saison</span>
+        <div class="duo"><button type="button" class="choix" id="cOui" aria-pressed="false">Oui</button><button type="button" class="choix" id="cNon" aria-pressed="false">Non, pas cette saison</button></div>
+      </div>
+      <div id="cDates" hidden style="display:flex;flex-direction:column;gap:6px">
+        <span class="lab">Mes vendredis · 20h30</span>
+        <div id="cRows" style="display:flex;flex-direction:column;gap:6px"></div>
+      </div>
+      <p class="intro" id="cNonTxt" hidden style="padding:12px 14px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);color:var(--ink-2)">C'est noté : tu n'apparaîtras dans aucune composition du CDP. Tu pourras changer d'avis à tout moment depuis cette page.</p>
+      <div class="err" id="cErr2" hidden></div>
+      <button class="btn primary big" id="cSave" type="button" disabled>Enregistrer mes dispos</button>
+    </div>
+
+    <div class="cstep" id="cStep3" hidden>
+      <div class="okh"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>
+        <span style="display:flex;flex-direction:column;gap:2px"><b style="font-size:16px">C'est enregistré</b><span class="lab" id="cWhen"></span></span></div>
+      <p style="margin:0;font-size:14px;color:var(--ink-2);line-height:1.5" id="cBilan"></p>
+      <p class="intro">La sportive compose les équipes à partir de vos réponses et t'envoie ta convocation avant chaque vendredi.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="cEdit" type="button">Modifier</button><button class="btn primary" id="cDone" type="button">Fermer</button></div>
+    </div>
+  </section>
+</div>
+
+<script src="shared/api.js"></script>
+<script src="shared/cdp.js"></script>
+<script src="shared/report.js"></script>
+<script src="shared/track.js?v=1"></script>
+<script src="shared/nav.js" data-base="."></script>
+<script>
+(function(){
+  const esc=ACBB.esc;
+  const MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  const jourDe=iso=>{ const [y,m,d]=iso.split('-').map(Number); return new Date(y,m-1,d); };
+  const auj=new Date(); auj.setHours(0,0,0,0);
+  const ech=jourDe(CDP.ECHEANCE), nJ=Math.round((ech-auj)/86400000), apres=nJ<0;
+
+  ACBB.api('me').then(me=>renderNav({active:'Championnat de Paris',role:(me&&me.role)||'',team:me&&me.equipe,name:me&&me.nom})).catch(()=>renderNav({active:'Championnat de Paris'}));
+
+  const cpt=document.getElementById('cpt');
+  cpt.textContent=nJ>1?'dans '+nJ+' jours':nJ===1?'demain':nJ===0?"aujourd'hui":'échéance passée';
+  if(apres) cpt.classList.add('late');
+
+  document.getElementById('cdates').innerHTML=CDP.JOURNEES.map(x=>{ const d=jourDe(x.date); return '<div class="cdate'+(d<auj?' past':'')+'"><span class="j">J'+x.j+'</span><span class="lab">vendredi</span><span class="n">'+d.getDate()+'</span><span class="m">'+MOIS[d.getMonth()]+' '+d.getFullYear()+'</span><span class="lab">20h30</span></div>'; }).join('');
+  document.getElementById('ceqs').innerHTML=CDP.EQUIPES.map(e=>'<div class="ceq"><div class="top"><span class="num">'+e.n+'</span><span class="nom">'+esc(e.nom)+'</span></div><div class="dots" aria-hidden="true">'+Array.from({length:e.groupes},()=>'<span><i></i><i></i><i></i></span>').join('')+'</div><span class="det">'+(3*e.groupes)+' joueurs · '+(e.groupes>1?e.groupes+' groupes de 3':'1 groupe')+'</span><span class="lab">'+e.tables+' tables</span></div>').join('');
+
+  /* ---------- la popup ---------- */
+  const bg=document.getElementById('cbg'), s1=document.getElementById('cStep1'), s2=document.getElementById('cStep2'), s3=document.getElementById('cStep3');
+  const lic=document.getElementById('cLic'), dob=document.getElementById('cDob');
+  let sess=null, retour=null;   // licence et date restent EN MÉMOIRE, le temps de la popup
+  function etape(n){ s1.hidden=n!==1; s2.hidden=n!==2; s3.hidden=n!==3; }
+  function ouvrir(){ retour=document.activeElement; bg.hidden=false; document.body.style.overflow='hidden'; document.getElementById('cLate').hidden=!apres; etape(sess?2:1); (sess?document.getElementById('cOui'):lic).focus(); }
+  function fermer(){ bg.hidden=true; document.body.style.overflow=''; if(retour&&retour.focus) retour.focus(); }
+  document.getElementById('cdpGo').addEventListener('click',ouvrir);
+  document.getElementById('cClose').addEventListener('click',fermer);
+  document.getElementById('cDone').addEventListener('click',fermer);
+  bg.addEventListener('click',e=>{ if(e.target===bg) fermer(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!bg.hidden) fermer(); });
+
+  lic.addEventListener('input',()=>{ lic.value=lic.value.replace(/\D/g,'').slice(0,10); });
+  dob.addEventListener('input',()=>{ const d=dob.value.replace(/\D/g,'').slice(0,8); dob.value=d.length>4?d.slice(0,2)+'/'+d.slice(2,4)+'/'+d.slice(4):d.length>2?d.slice(0,2)+'/'+d.slice(2):d; });
+  function dobISO(v){ const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v||''); if(!m) return null; const d=+m[1],mo=+m[2],y=+m[3]; const dt=new Date(y,mo-1,d); if(y<1900||dt>new Date()||dt.getDate()!==d||dt.getMonth()!==mo-1) return null; return m[3]+'-'+m[2]+'-'+m[1]; }
+  function errText(err){
+    const code=(err&&err.body&&err.body.error)||(err&&err.message)||''; const b=(err&&err.body)||{};
+    if(code==='licence_inconnue') return 'Licence inconnue. Vérifie ton numéro (il figure sur ta licence FFTT) ou demande à ton capitaine.';
+    if(code==='date_incorrecte') return 'Date de naissance incorrecte.'+(b.restants!=null?' Il te reste '+b.restants+' essai'+(b.restants>1?'s':'')+'.':'');
+    if(code==='trop_essais'){ const mn=Math.max(1,Math.ceil((+b.retry_s||0)/60)); return 'Trop de tentatives. Réessaie dans '+mn+' minute'+(mn>1?'s':'')+'.'; }
+    if(code==='appareil_limite') return 'Cet appareil a déjà servi pour plusieurs licences différentes. Utilise ton propre téléphone ou demande à ton capitaine.';
+    if(err&&err.status) return 'Erreur serveur ('+err.status+'). Réessaie dans quelques minutes.';
+    return 'Serveur indisponible. Vérifie ta connexion et réessaie dans quelques minutes.';
+  }
+  const fmtTs=iso=>{ const d=new Date(iso); if(isNaN(d)) return ''; const p=n=>(n<10?'0':'')+n; return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' à '+p(d.getHours())+'h'+p(d.getMinutes()); };
+
+  // l'état des réponses : null tant que le joueur n'a pas choisi
+  let joue=null, dates={};
+  function renderRep(){
+    const oui=document.getElementById('cOui'), non=document.getElementById('cNon');
+    oui.setAttribute('aria-pressed',String(joue===true)); non.setAttribute('aria-pressed',String(joue===false));
+    document.getElementById('cDates').hidden=joue!==true; document.getElementById('cNonTxt').hidden=joue!==false;
+    document.getElementById('cSave').disabled=joue===null;
+    document.getElementById('cRows').innerHTML=CDP.JOURNEES.map(x=>{ const d=jourDe(x.date), on=dates['j'+x.j]!==false, lib='Vendredi '+d.getDate()+' '+MOIS[d.getMonth()]+' '+d.getFullYear();
+      return '<div class="drow"><span class="j">J'+x.j+'</span><span class="l">'+lib+'</span><span class="seg"><button type="button" class="oui" data-j="'+x.j+'" data-v="1" aria-pressed="'+on+'" aria-label="'+lib+' : disponible">Dispo</button><button type="button" class="non" data-j="'+x.j+'" data-v="0" aria-pressed="'+(!on)+'" aria-label="'+lib+' : pas disponible">Pas dispo</button></span></div>'; }).join('');
+  }
+  document.getElementById('cOui').addEventListener('click',()=>{ joue=true; renderRep(); });
+  document.getElementById('cNon').addEventListener('click',()=>{ joue=false; renderRep(); });
+  document.getElementById('cRows').addEventListener('click',e=>{ const b=e.target.closest('button[data-j]'); if(!b) return; dates['j'+b.dataset.j]=b.dataset.v==='1'; renderRep(); const f=document.querySelector('#cRows button[data-j="'+b.dataset.j+'"][data-v="'+b.dataset.v+'"]'); if(f) f.focus(); });
+
+  s1.addEventListener('submit',async e=>{
+    e.preventDefault(); const err=document.getElementById('cErr1'); err.hidden=true;
+    const l=lic.value.trim(), d=dobISO(dob.value.trim());
+    if(!l||!d){ err.textContent='Saisis ton numéro de licence et ta date de naissance au format JJ/MM/AAAA.'; err.hidden=false; return; }
+    const go=document.getElementById('cGo1'); go.disabled=true; go.textContent='Vérification…';
+    try{
+      const r=await ACBB.api('joueur/cdp/entree',{licence:l,dob:d});
+      sess={licence:l,dob:d};
+      document.getElementById('cName').textContent=(r.prenom||'')+' '+(r.nom||'');
+      const rep=r.reponse; joue=rep?rep.joue:null; dates=rep&&rep.dates?Object.assign({},rep.dates):{};
+      document.getElementById('cLast').textContent=rep?'réponse du '+fmtTs(rep.saved_at):'première réponse';
+      renderRep(); etape(2); document.getElementById('cOui').focus();
+    }catch(x){ err.textContent=errText(x); err.hidden=false; }
+    finally{ go.disabled=false; go.textContent='Continuer'; }
+  });
+  document.getElementById('cSave').addEventListener('click',async()=>{
+    const err=document.getElementById('cErr2'); err.hidden=true; if(joue===null||!sess) return;
+    const btn=document.getElementById('cSave'); btn.disabled=true; btn.textContent='Enregistrement…';
+    const envoi={}; CDP.JOURNEES.forEach(x=>{ envoi['j'+x.j]=joue&&dates['j'+x.j]!==false; });
+    try{
+      const r=await ACBB.api('joueur/cdp',{licence:sess.licence,dob:sess.dob,joue:joue,dates:envoi});
+      const n=Object.values(envoi).filter(Boolean).length;
+      document.getElementById('cWhen').textContent='le '+fmtTs(r.saved_at)+(r.retard?' · après l’échéance':'');
+      document.getElementById('cBilan').textContent=joue?'Tu joues le CDP cette saison, et tu es disponible '+n+' vendredi'+(n>1?'s':'')+' sur 7.':'Tu ne joues pas le CDP cette saison.';
+      document.getElementById('cLast').textContent='réponse du '+fmtTs(r.saved_at);
+      etape(3); document.getElementById('cDone').focus();
+    }catch(x){ err.textContent=errText(x); err.hidden=false; }
+    finally{ btn.disabled=joue===null; btn.textContent='Enregistrer mes dispos'; }
+  });
+  document.getElementById('cEdit').addEventListener('click',()=>{ etape(2); document.getElementById('cOui').focus(); });
+  if(/(^#|&)dispos\b/.test(location.hash)) ouvrir();   // lien direct : cdp.html#dispos
+})();
+</script>
+</body></html>
