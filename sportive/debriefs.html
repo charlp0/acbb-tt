@@ -79,7 +79,7 @@
     <div class="hero">
       <div>
         <div class="h1">Debriefs</div>
-        <div class="hsub" id="hSub">Ce que les capitaines ont écrit après leur match · à relire, corriger si besoin, publier</div>
+        <div class="hsub" id="hSub">Ce que les capitaines ont écrit après leur match · en ligne aussitôt sur l'accueil, à relire, corriger ou retirer si besoin</div>
       </div>
       <div class="jpills" id="jpills"></div>
     </div>
@@ -169,7 +169,7 @@ function renderAll(){ renderHero(); renderList(); renderRail(); }
 function renderHero(){
   document.getElementById('rJ').textContent='J'+J;
   const d=jDate(J), playing=playingAt(J);
-  document.getElementById('hSub').textContent='Ce que les capitaines ont écrit après leur match · à relire, corriger si besoin, publier'+(d?' · '+fmtDay(d):'')+(playing.length?' · '+playing.length+' équipes jouent':'');
+  document.getElementById('hSub').textContent='Ce que les capitaines ont écrit après leur match · en ligne aussitôt sur l\'accueil, à relire, corriger ou retirer si besoin'+(d?' · '+fmtDay(d):'')+(playing.length?' · '+playing.length+' équipes jouent':'');
   document.getElementById('jpills').innerHTML=Array.from({length:NJ},(_,i)=>i+1).map(j=>{ const dj=jDate(j); return '<button type="button" class="pill'+(j===J?' on':'')+'" data-j="'+j+'" title="'+(dj?fmtDay(dj):'date à fixer')+'">J'+j+'</button>'; }).join('');
   document.querySelectorAll('.jpills .pill').forEach(el=>el.onclick=()=>{ J=+el.dataset.j; const q=new URLSearchParams(location.search); q.set('j',J); history.replaceState(null,'','?'+q.toString()); document.getElementById('list').innerHTML='<div class="card empty">chargement…</div>'; load(); });
 }
@@ -198,12 +198,12 @@ function renderList(){
   if(!items.length){ el.innerHTML='<div class="card empty">Aucun debrief saisi par les capitaines pour la J'+J+'.</div>'; return; }
   const open={}; el.querySelectorAll('.renbox:not([hidden])').forEach(bx=>{ open[bx.id]=bx.querySelector('textarea').value; });   // messages en cours de saisie conservés au re-rendu
   el.innerHTML=items.map(r=>{
-    const st=statusOf(r), m=matchOf(r.equipe,J), c=(st!=='pub'&&CORR[r.id])||null;
+    const st=statusOf(r), m=matchOf(r.equipe,J), c=CORR[r.id]||null;   // la correction reste possible une fois en ligne
     const sa=r.score_acbb, sd=r.score_adv, hasScore=sa!=null&&sd!=null;
-    const stTag=st==='pub'?'<span class="pill st pub" title="'+esc((r.publie_par?'par '+r.publie_par:'')+(r.publie_at?' · '+fmtDT(r.publie_at):''))+'">publié</span>':(st==='ren'?'<span class="pill st ren">renvoyé au capitaine</span>':'<span class="pill st wait">à valider</span>');
+    const stTag=st==='pub'?'<span class="pill st pub" title="'+esc((r.publie_par?'par '+r.publie_par:'')+(r.publie_at?' · '+fmtDT(r.publie_at):''))+'">publié</span>':(st==='ren'?'<span class="pill st ren">renvoyé au capitaine</span>':'<span class="pill st wait">retiré de l\'accueil</span>');
     const texte=st==='pub'?(r.texte_final||r.texte||''):(r.texte||'');
     const nch=c?nChanges(r.texte,c.texte):0;
-    const corr=c?'<div class="card2 corr"><div class="corr-h"><span class="lab" style="color:var(--win)">après correction des coquilles · '+(nch?nch+' changement'+(nch>1?'s':''):'aucun changement')+'</span><span class="lab r">ton et phrases inchangés · '+(c.keep?'sera publiée':'l\'original sera publié')+'</span></div>'
+    const corr=c?'<div class="card2 corr"><div class="corr-h"><span class="lab" style="color:var(--win)">après correction des coquilles · '+(nch?nch+' changement'+(nch>1?'s':''):'aucun changement')+'</span><span class="lab r">ton et phrases inchangés · '+(st==='pub'?(c.keep?'remplacera le texte en ligne':'le texte en ligne reste'):(c.keep?'sera publiée':'l\'original sera publié'))+'</span></div>'
       +'<div class="txt">'+rich(c.texte)+'</div>'
       +'<div class="acts"><button class="btn xs'+(c.keep?' primary':'')+'" data-keep="'+r.id+'">Garder la version corrigée</button><button class="btn xs'+(!c.keep?' primary':'')+'" data-orig="'+r.id+'">Revenir à l\'original</button></div></div>':'';
     return '<div class="card db" data-id="'+r.id+'" style="border-color:'+teamBorder(r.equipe)+'">'
@@ -215,9 +215,10 @@ function renderList(){
       +(r.visible_club===false?'<span class="lab" style="color:var(--warn)">le capitaine ne souhaite pas de diffusion au club</span>':'')+'</div></div>'
       +corr
       +'<div class="acts">'
-        +(st!=='pub'?'<button class="btn" data-corr="'+r.id+'" title="orthographe, accents et coquilles uniquement — ni ton ni phrases">Corriger les coquilles (IA)</button>':'')
-        +(st!=='pub'?'<button class="btn primary" data-pub="'+r.id+'">Publier sur l\'accueil</button>':'<button class="btn" data-unpub="'+r.id+'">Dépublier</button>')
-        +(st!=='pub'?'<button class="btn" data-ren="'+r.id+'">Renvoyer au capitaine</button>':'')
+        +((r.texte||'').trim()?'<button class="btn" data-corr="'+r.id+'" title="orthographe, accents et coquilles uniquement — ni ton ni phrases">Corriger les coquilles (IA)</button>':'')
+        +(st!=='pub'?'<button class="btn primary" data-pub="'+r.id+'">Remettre sur l\'accueil</button>'
+          :((c&&c.keep?'<button class="btn primary" data-pub="'+r.id+'">Publier la version corrigée</button>':'')+'<button class="btn" data-unpub="'+r.id+'">Retirer de l\'accueil</button>'))
+        +'<button class="btn" data-ren="'+r.id+'">'+(st==='pub'?'Retirer et renvoyer au capitaine':'Renvoyer au capitaine')+'</button>'
       +'</div>'
       +'<div class="card2 renbox" id="ren'+r.id+'" hidden><span class="lab" style="color:var(--lose)">message pour le capitaine</span><textarea id="renmsg'+r.id+'" placeholder="ex. : photo floue, peux-tu la reprendre ? / précise le score"></textarea><div class="acts"><button class="btn xs danger" data-rensend="'+r.id+'">Envoyer au capitaine</button><button class="btn xs" data-rencancel="'+r.id+'">Annuler</button></div></div>'
       +'</div>';
@@ -275,7 +276,7 @@ async function publier(id,on,b){
   const body={id:id,publie:on}; if(on) body.texte_final=(c&&c.keep)?c.texte:(r.texte_final||r.texte||'');
   if(on&&r.visible_club===false&&!confirm('Le capitaine a indiqué ne pas souhaiter de diffusion au club. Publier quand même ?')) return;
   busy(b,true,on?'publication…':'…');
-  try{ await api('spo/debriefs/publier',body); toast(on?'publié sur l\'accueil':'dépublié'); if(on) delete CORR[id]; await load(); }
+  try{ await api('spo/debriefs/publier',body); toast(on?'en ligne sur l\'accueil':'retiré de l\'accueil'); if(on) delete CORR[id]; await load(); }
   catch(e){ busy(b,false); toast('échec : '+e.message); }
 }
 async function renvoyer(id,b){

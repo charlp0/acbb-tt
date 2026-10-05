@@ -463,7 +463,7 @@
     if(!d) return;
     const at=new Date(d.created_at);
     el.textContent='✓ Debrief enregistré'+(isNaN(at.getTime())?'':' le '+at.toLocaleDateString('fr-FR')+' à '+at.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}))
-      +(d.publie?' · publié sur l’accueil.':' · en attente de publication par la sportive.');
+      +(d.publie?' · publié sur l’accueil.':(d.renvoye_message?' · renvoyé par la sportive, à revoir.':' · retiré de l’accueil par la sportive.'));
   }
   document.getElementById('debForm').addEventListener('input',()=>{
     const el=document.getElementById('debStatus'); el.hidden=false; el.textContent='Modifications en cours : pense à enregistrer.';
@@ -525,7 +525,7 @@
     const body={journee:S.j,score_acbb:a===''?null:+a,score_adv:b===''?null:+b,texte:txt,visible_club:true};
     if(S.photoPath) body.photo_path=S.photoPath;
     const btn=document.getElementById('debSave'); btn.disabled=true; btn.textContent='Enregistrement…';
-    try{ await ACBB.api('cap/debrief',body); statutDebrief({created_at:new Date().toISOString(),publie:false}); ACBB.toast(debFor(S.j)?'Debrief modifié':'Debrief enregistré'); S.photoPath=null; await loadDebriefs(); }
+    try{ const rep=await ACBB.api('cap/debrief',body); statutDebrief({created_at:new Date().toISOString(),publie:!rep||rep.publie!==false}); ACBB.toast(debFor(S.j)?'Debrief modifié':'Debrief enregistré'); S.photoPath=null; await loadDebriefs(); }
     catch(x){ err.hidden=false; const c=x&&x.body&&x.body.error;
       if(c==='jeton_requis'||c==='jeton_invalide'){ err.textContent="Ton lien personnel n'est plus reconnu par ce navigateur. Rouvre-le depuis ton message puis réessaie : ton texte reste dans le champ, rien n'est perdu."; }
       else err.textContent=x&&x.status?'Enregistrement refusé ('+(x.body&&x.body.error||x.status)+').':'Serveur indisponible : le debrief n\'a pas été enregistré. Réessaie dans quelques minutes.'; }
@@ -536,9 +536,9 @@
     const byJ={}; S.debriefs.forEach(x=>{ const j=+x.journee; if(!byJ[j]||String(x.created_at||'')>String(byJ[j].created_at||'')) byJ[j]=x; });
     const js=Object.keys(byJ).map(Number).sort((a,b)=>a-b);
     document.getElementById('dlSub').textContent=js.length?js.length+' journée'+(js.length>1?'s':''):'';
-    if(!js.length){ el.innerHTML='<div class="empty">Aucun debrief pour l\'instant. Après le match, saisis le score et quelques lignes : la sportive publie sur l\'accueil.</div>'; return; }
+    if(!js.length){ el.innerHTML='<div class="empty">Aucun debrief pour l\'instant. Après le match, saisis le score et quelques lignes : ton debrief paraît aussitôt sur l\'accueil.</div>'; return; }
     el.innerHTML=js.map(j=>{ const d=byJ[j]; const sc=(d.score_acbb!=null&&d.score_adv!=null)?'<span class="sc '+scoreClass(+d.score_acbb,+d.score_adv)+'">'+d.score_acbb+' – '+d.score_adv+'</span>':'<span class="lab">sans score</span>';
-      const st=d.publie?'<span class="tag win">publié</span>':(d.renvoye_message?'<span class="tag warn" title="'+esc(d.renvoye_message)+'">à revoir</span>':'<span class="tag">en attente</span>');
+      const st=d.publie?'<span class="tag win">publié</span>':(d.renvoye_message?'<span class="tag warn" title="'+esc(d.renvoye_message)+'">à revoir</span>':'<span class="tag">retiré</span>');
       return '<div class="card2 ditem" data-j="'+j+'" title="Ouvrir dans le formulaire"><span class="j">J'+j+'</span>'+sc+'<span class="tx">'+esc(d.texte||'')+'</span><span class="st2">'+st+'</span></div>'; }).join('');
     el.querySelectorAll('.ditem').forEach(x=>x.addEventListener('click',()=>{ S.j=+x.dataset.j; buildTabs(); hsub(); renderDebForm(); document.getElementById('debForm').scrollIntoView({behavior:'smooth',block:'start'}); }));
   }

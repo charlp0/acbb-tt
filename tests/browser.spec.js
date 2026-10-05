@@ -46,8 +46,8 @@ async function install(context,state){
    if(api==='cap/debriefs')return send({items:state.debriefs||[]});
    if(api==='cap/debrief'){
     if(state.debriefError)return send({error:'ecriture_debrief'},500);
-    const row={...body,id:70,created_at:'2026-10-04T11:16:00Z',publie:false};
-    state.debriefs=[row];return send({id:row.id});
+    const row={...body,id:70,created_at:'2026-10-04T11:16:00Z',publie:true};   // publié aussitôt (06/10/2026)
+    state.debriefs=[row];return send({id:row.id,publie:true});
    }
    if(api==='public/journee')return send({items:[]});
    if(api.startsWith('public/criterium'))return send({presences:state.presences||{}});
@@ -293,7 +293,7 @@ test('debrief capitaine : confirmation durable, relecture et texte conservé apr
  const txt=page.locator('#debTxt');await expect(txt).toBeVisible();
  await page.locator('#scA').fill('7');await page.locator('#scB').fill('7');await txt.fill('Belle rencontre, *bravo* à tous 😅');
  await page.locator('#debSave').click();await expect(page.locator('#debStatus')).toContainText('Debrief enregistré le 04/10/2026');
- await expect(page.locator('#debStatus')).toContainText('en attente de publication');
+ await expect(page.locator('#debStatus')).toContainText('publié sur l’accueil');
  expect(state.debriefs[0].texte).toBe('Belle rencontre, *bravo* à tous 😅');
  await page.reload();await expect(txt).toHaveValue('Belle rencontre, *bravo* à tous 😅');
  await expect(page.locator('#debStatus')).toContainText('Debrief enregistré');

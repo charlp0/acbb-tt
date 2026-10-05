@@ -898,15 +898,18 @@ async function router(req: Request): Promise<Response> {
       const [prec] = await derniersDebriefs({ equipe, journee });
       let photo_path: string | null = prec?.photo_path ?? null;
       if (typeof body.photo_path === 'string' && body.photo_path.startsWith(`${equipe}/`)) photo_path = body.photo_path;
-      const photo_public_url = photo_path && prec?.photo_path === photo_path ? (prec.photo_public_url ?? null) : null;
+      let photo_public_url = photo_path && prec?.photo_path === photo_path ? (prec.photo_public_url ?? null) : null;
+      // Publication directe sur l'accueil (décision de Charles, 06/10/2026) : plus de validation préalable. La sportive
+      // garde la main après coup (retirer, corriger les coquilles, renvoyer au capitaine). Texte publié = celui du capitaine.
+      if (photo_path && !photo_public_url) photo_public_url = await publierPhoto(photo_path);
       const { data, error } = await sb.from('debriefs_log').insert({
         equipe, journee, auteur: acteur, score_acbb, score_adv, texte, visible_club,
         photo_path, photo_public_url,
-        publie: false, // toute nouvelle version repasse par la validation de la sportive
+        publie: true, publie_par: acteur, publie_at: new Date().toISOString(),
       }).select('id').single();
       if (error) fail(500, 'ecriture_debrief', { detail: error.message });
-      await journal(acteur, 'capitaine', 'debrief', { id: data.id, equipe, journee, score_acbb, score_adv, visible_club, longueur: texte.length });
-      return json({ id: data.id });
+      await journal(acteur, 'capitaine', 'debrief', { id: data.id, equipe, journee, score_acbb, score_adv, visible_club, longueur: texte.length, publie: true });
+      return json({ id: data.id, publie: true });
     }
 
     if (path === '/cap/photo' && POST) {
@@ -923,13 +926,14 @@ async function router(req: Request): Promise<Response> {
       const photo_path = `${equipe}/j${journee}/${Date.now()}-${jetonAleatoire().slice(0, 8)}.${type}`;
       const up = await sb.storage.from(BUCKET_PRIVE).upload(photo_path, file, { contentType, upsert: false });
       if (up.error) fail(500, 'stockage_photo', { detail: up.error.message });
-      // Nouvelle ligne = dernière version (equipe, journee) + la photo, à revalider par la sportive.
+      // Nouvelle ligne = dernière version (equipe, journee) + la photo, publiée aussitôt comme le texte.
       const [prec] = await derniersDebriefs({ equipe, journee });
+      const photo_public_url = await publierPhoto(photo_path);
       const { data, error } = await sb.from('debriefs_log').insert({
         equipe, journee, auteur: acteur,
         score_acbb: prec?.score_acbb ?? null, score_adv: prec?.score_adv ?? null,
         texte: prec?.texte ?? null, visible_club: prec?.visible_club ?? true,
-        photo_path, photo_public_url: null, publie: false,
+        photo_path, photo_public_url, publie: true, publie_par: acteur, publie_at: new Date().toISOString(),
       }).select('id').single();
       if (error) fail(500, 'ecriture_debrief', { detail: error.message });
       await journal(acteur, 'capitaine', 'photo', { id: data.id, equipe, journee, photo_path, octets: file.size });

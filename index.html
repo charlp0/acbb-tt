@@ -172,7 +172,7 @@
     <div class="jhead">
       <div>
         <div class="t" id="jTitle">Journée 1 · toutes les équipes</div>
-        <div class="lab" id="jSub">scores dès la fin du match · debriefs et photos publiés par la sportive</div>
+        <div class="lab" id="jSub">scores dès la fin du match · debriefs et photos des capitaines, en ligne aussitôt</div>
       </div>
       <div class="jtabs" id="jtabs" role="tablist"></div>
     </div>
@@ -334,7 +334,7 @@
     const satDate=(S.poules.dates||[])[j-1];
     const dt=parseFR(satDate);
     document.getElementById('jTitle').textContent='Journée '+j+' · toutes les équipes';
-    if(dt){ const ven=new Date(dt); ven.setDate(ven.getDate()-1); document.getElementById('jSub').textContent=JOURS[ven.getDay()]+' '+ven.getDate()+' et '+fmtDate(satDate).replace(/\/\d{2}$/,'')+' '+MOIS_L[dt.getMonth()]+' · scores dès la fin du match · debriefs et photos publiés par la sportive'; }
+    if(dt){ const ven=new Date(dt); ven.setDate(ven.getDate()-1); document.getElementById('jSub').textContent=JOURS[ven.getDay()]+' '+ven.getDate()+' et '+fmtDate(satDate).replace(/\/\d{2}$/,'')+' '+MOIS_L[dt.getMonth()]+' · scores dès la fin du match · debriefs et photos des capitaines, en ligne aussitôt'; }
     const html=TEAMS.map(t=>{
       const poule=S.byTeam[t]; if(!poule) return '';
       const m=matchOf(poule,j);
