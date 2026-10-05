@@ -51,6 +51,13 @@ async function install(context,state){
    }
    if(api==='public/journee')return send({items:[]});
    if(api.startsWith('public/criterium'))return send({presences:state.presences||{}});
+   if(api==='joueur/entree'){
+    (state.entrees||(state.entrees=[])).push(body);
+    if(body.dob!=='2010-03-07')return send({error:'date_incorrecte',restants:2},401);
+    const p=state.players.find(x=>x.lic===body.licence);if(!p)return send({error:'licence_inconnue'},404);
+    return send({licence:p.lic,nom:p.nom,prenom:p.pre,equipe:'M11',dispos:null,saved_at:null,premiere:false});
+   }
+   if(api==='joueur/criterium'&&body&&body.dob==='2010-01-01')return send({error:'date_incorrecte',restants:2},401);
    if(api==='joueur/criterium'){
     (state.presenceSaves||(state.presenceSaves=[])).push(body);
     state.presences={[body.licence]:{present:body.present,at:'2026-10-04T12:00:00Z'}};
@@ -177,7 +184,7 @@ test('accueil : trois compétitions en tuiles, une popup centrée par équipe av
 test('mobile : accueil public et équipe restent consultables',async({page,context})=>{
  const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
  await page.setViewportSize({width:390,height:844});
- await page.goto('/index.html');await expect(page.locator('#iLic')).toBeVisible();
+ await page.goto('/index.html');await expect(page.locator('#iQ')).toBeVisible();
  await page.goto('/capitaine.html');await expect(page.locator('.prow')).toHaveCount(4);
  const overflow=await page.evaluate(()=>Array.from(document.querySelectorAll('body *')).filter(e=>e.getBoundingClientRect().right>innerWidth+1).map(e=>({tag:e.tagName,cls:e.className,width:e.getBoundingClientRect().width})).slice(0,12));
  expect(overflow).toEqual([]);
@@ -468,5 +475,37 @@ test('CDP joueur : recherche au clavier, « ce n’est pas moi », et saisie man
  await page.getByRole('button',{name:'Continuer'}).click();await expect(page.locator('#cErr1')).toHaveText('Saisis ton numéro de licence.');
  await lic.fill(state.players[3].lic);await page.getByLabel('Date de naissance').fill('07032010');
  await page.getByRole('button',{name:'Continuer'}).click();await expect(page.locator('#cName')).toHaveText('Jo EXEMPLE4');
+ expect(errors).toEqual([]);
+});
+
+test('dispos du championnat : on cherche son nom, la licence suit ; la dernière licence revient en carte',async({page,context})=>{
+ const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/index.html');
+ const qq=page.locator('#iQ');await qq.fill('chris');
+ await page.getByRole('option',{name:/Chris EXEMPLE3/}).click();
+ await expect(page.locator('#iMoi')).toContainText('Chris EXEMPLE3');await expect(page.locator('#iDob')).toBeFocused();
+ await page.locator('#iDob').fill('07032010');await page.locator('#iGo').click();
+ await expect(page.locator('#mName')).toHaveText('Chris EXEMPLE3');
+ expect(state.entrees.at(-1)).toEqual({licence:state.players[2].lic,dob:'2010-03-07'});
+ // retour sur la page : la licence mémorisée revient sous forme de carte, il ne reste que la date
+ await page.goto('/index.html');await expect(page.locator('#iMoi')).toBeVisible();await expect(page.locator('#iMoiNom')).toHaveText('Chris EXEMPLE3');
+ await page.getByRole('button',{name:'Ce n\'est pas moi'}).click();await expect(qq).toBeVisible();await expect(qq).toBeFocused();
+ // mauvaise date : la modale garde la personne choisie et dit combien d'essais restent
+ await qq.fill('jo exe');await qq.press('Enter');await page.locator('#iDob').fill('01012011');await page.locator('#iGo').click();
+ await expect(page.locator('#mErr')).toContainText('Il te reste 2 essais');await expect(page.locator('#mMoiNom')).toHaveText('Jo EXEMPLE4');
+ expect(errors).toEqual([]);
+});
+
+test('critérium : la recherche accepte prénom et nom dans n’importe quel ordre ; confirmer ne demande que la date',async({page,context})=>{
+ const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/criterium.html');
+ const carte=page.locator('#vue [data-sel]').first();await expect(carte).toBeVisible();
+ await carte.click();await page.getByRole('button',{name:'Confirmer ma présence',exact:true}).click();
+ await expect(page.locator('#mLic')).toHaveCount(0);await expect(page.getByLabel('Date de naissance')).toBeFocused();
+ await expect(page.locator('#modal')).toContainText('licence ');
+ await page.getByLabel('Date de naissance').fill('01012010');await page.getByRole('button',{name:'Je serai présent',exact:true}).click();
+ await expect(page.locator('#mErr')).toHaveText('Date de naissance incorrecte. Il te reste 2 essais.');
+ await page.getByRole('button',{name:'Ce n\'est pas moi'}).click();
+ await expect(page.locator('#modal')).toBeHidden();await expect(page.locator('#q')).toBeFocused();
  expect(errors).toEqual([]);
 });

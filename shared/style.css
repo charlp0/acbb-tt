@@ -77,3 +77,24 @@ input:focus,textarea:focus{border-color:var(--orange)}
 .modal{width:100%;max-width:480px;background:var(--panel);border:1px solid rgba(61,214,140,.5);border-radius:14px;padding:22px 24px;box-shadow:0 30px 80px rgba(0,0,0,.7)}
 .foot{margin-top:40px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dimmer)}
 [hidden]{display:none!important}
+/* Recherche d'un licencié par son nom (shared/cherche-joueur.js) : liste déroulante, carte « c'est moi », repli licence */
+.cj-cherche,.cj-lic{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cj-champ{position:relative}
+.cj-list{list-style:none;margin:6px 0 0;padding:4px;display:flex;flex-direction:column;gap:2px;max-height:264px;overflow-y:auto;border-radius:12px;background:var(--panel-2);border:1px solid var(--line-2)}
+.cj-list.flottant{position:absolute;left:0;right:0;top:100%;z-index:30;box-shadow:0 18px 40px rgba(0,0,0,.55)}
+.cj-list li{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:0 12px;border-radius:9px;cursor:pointer;font-size:14px;color:var(--ink)}
+.cj-list li .pt{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--dim);white-space:nowrap}
+.cj-list li[aria-selected="true"],.cj-list li:hover{background:rgba(242,106,27,.16)}
+.cj-list li.none{cursor:default;color:var(--dim);font-size:13px;justify-content:flex-start;gap:4px}.cj-list li.none:hover{background:none}
+.cj-moi{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:10px 14px;border-radius:12px;background:rgba(61,214,140,.08);border:1px solid rgba(61,214,140,.45)}
+.cj-moi .cj-id{display:flex;flex-direction:column;gap:2px;min-width:0}
+.cj-moi b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.cj-moi.compact{padding:4px 4px 4px 12px}
+.cj-moi.compact .cj-id{gap:1px}
+.cj-moi.compact .cj-id .lab{font-size:9px}
+.cj-moi.compact b{font-size:14px}
+.cj-moi.compact .cj-x{flex:0 0 36px;width:36px;height:36px;border-radius:99px;background:transparent;border:0;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cj-moi.compact .cj-x:hover{color:var(--ink);background:rgba(255,255,255,.08)}
+.cj-lnk{align-self:flex-start;background:none;border:0;padding:4px 0;color:var(--dim);font:inherit;font-size:12.5px;text-decoration:underline;cursor:pointer;text-align:left}
+.cj-lnk:hover{color:var(--ink)}
+.cj-list .cj-lnk{display:inline;padding:0;font-size:13px}
