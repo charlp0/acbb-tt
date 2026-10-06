@@ -121,9 +121,11 @@ def main():
         return int(m.group(1)) if m else None   # officiel courant (base 26/27)
     MUT_LOOKUP=[('COHEN MELKA','Eytan','9258246'),('VERDIER','Mahé','9253816'),('SERGENT','Enzo','9540663'),
                 ('INTINS','Arthur','9248896'),('STEMLER','Grégoire','9254353'),('INTINS','David','5412783'),
-                ('DELORY','Virgile','9241720'),('BENCHAT','Marius','1421042'),('BOUDJADJA','Nassim','9265298'),('BOTELLA','Milo','9411975')]
+                ('DELORY','Virgile','9241720'),('BENCHAT','Marius','1421042'),('BOUDJADJA','Nassim','9265298'),('BOTELLA','Milo','9411975'),
+                # licences FFTT arrivées depuis leur ajout à la main (06/10/2026) : sans elles, leurs dispos ne se rattachaient pas à leur fiche
+                ('ARGUT','Daniel','9267937'),('MICHON','Clément','9268685')]
     _nk0=lambda x:(x or '')
-    MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('ARGUT','Daniel',1600),('PORTOKALLIS','Antonis',1500)]
+    MUT_HARD=[('GUNDOGDU','Kuzey',2090),('SHAMS','Navid',3320),('PORTOKALLIS','Antonis',1500)]   # ARGUT : licence 9267937, voir MUT_LOOKUP
     # Clés d'alias : ces joueurs ont été tagués/composés sous « NOM|Prénom » avant d'avoir leur licence FFTT ;
     # le champ `key` garde cette clé pour que les compos enregistrées continuent de les retrouver (fiche = lic).
     # (Botella 9411975 : licence FFTT connue → sa clé est la licence, comme dans Scoring et les compos enregistrées ; pas d'alias)
@@ -145,7 +147,7 @@ def main():
         if ALIAS.get((nom,pre)): rec['key']=ALIAS[(nom,pre)]
         out.append(rec)
     # Nouveaux compétiteurs 26/27 sans données FFTT : 500 pts par défaut, badge « nouveau »
-    NEW_HARD=[('MICHON','Clément',500)]   # mail Cyril 11/09/2026 (jeune 2008, inscrit jeudi 20h)
+    NEW_HARD=[]   # MICHON Clément (mail Cyril 11/09/2026) : licence 9268685 depuis, voir MUT_LOOKUP
     _nk=lambda x:re.sub(r'[^A-Z0-9]','',unicodedata.normalize('NFD',x or '').encode('ascii','ignore').decode().upper())
     _have={(_nk(r['nom']),_nk(r['pre'])) for r in out}
     for nom,pre,men in MUT_HARD:
