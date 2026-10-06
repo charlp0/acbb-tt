@@ -18,9 +18,15 @@ fb = fs.fb
 FILS = 5
 
 def numero(nom):
-    """« PUTEAUX TT CSM 3 » -> 3 ; un nom sans numéro final est l'équipe 1."""
-    m = re.search(r'(\d+)\s*$', re.sub(r'\s*\(\d+\)\s*$', '', nom or ''))
+    """« PUTEAUX TT CSM 3 » -> 3, « SM MONTROUGE (5) » -> 5 (la FFTT note ainsi certaines équipes) ;
+    un nom sans numéro final est l'équipe 1."""
+    m = re.search(r'\(?(\d+)\)?\s*$', nom or '')
     return int(m.group(1)) if m else 1
+
+# Seul le championnat par équipes compte pour le brûlage (II.112) : un club engage aussi des équipes dans d'autres
+# compétitions (« D92_Championnat Dimanche Matin », « D92_Championnat du Jeudi soir »…) aux noms presque identiques
+# (« SM MONTROUGE 1 » à côté de « SM MONTROUGE  1 »). Constaté sur Montrouge le 06/10/2026.
+EPREUVE = re.compile(r"Championnats? de France par [eé]quipes", re.I)
 
 def date_iso(d):
     m = re.match(r'(\d{2})/(\d{2})/(\d{4})', d or '')
@@ -31,6 +37,7 @@ def equipes_club(club, genre):
     r = fb.get(f"xml_equipe.php?numclu={club}&type={genre}")
     out = []
     for b in re.findall(r'<equipe>(.*?)</equipe>', r, re.S):
+        if not EPREUVE.search(fs.tg(b, 'libepr')): continue   # autre compétition : ne compte pas
         lib = fs.tg(b, 'libequipe')
         m = re.match(r'^(.*?)\s*-\s*Phase\s*(\d+)\s*$', lib)
         nom, phase = (m.group(1), int(m.group(2))) if m else (lib, 1)
