@@ -135,12 +135,13 @@ async function boot(){
   document.getElementById('thead').innerHTML='<th scope="col">Joueur</th><th scope="col" class="r">Points</th><th scope="col" class="l">Réponse</th>'+CDP.JOURNEES.map(x=>'<th scope="col">J'+x.j+'<br><small>'+dd(x.date)+'</small></th>').join('')+'<th scope="col" class="r">Dispo</th>';
   const auj=new Date(); auj.setHours(0,0,0,0); const [y,m,d]=CDP.ECHEANCE.split('-').map(Number), n=Math.round((new Date(y,m-1,d)-auj)/86400000);
   document.getElementById('chEch').textContent='Échéance mer. 21/10 · '+(n>1?'dans '+n+' jours':n===1?'demain':n===0?"aujourd'hui":'passée');
-  const [sc,off,rep]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos')]);
+  const [sc,off,rep,ix]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos'),gj('../data/players_index.json')]);
   const OFF=(off&&off.officiel)||{}, R=(rep&&rep.reponses)||{};
+  const IX={}; (Array.isArray(ix)?ix:[]).forEach(p=>{ if(p.lic) IX[String(p.lic)]=p; });   // tous les licenciés : nom d'un répondant hors scoring
   const vus=new Set();
   J=((sc&&sc.players)||[]).filter(p=>p.lic).map(p=>{ const l=String(p.lic); vus.add(l); return {lic:l,nom:p.nom||'',pre:p.pre||'',pts:OFF[l]||p.men||0}; });
   // une réponse d'un licencié absent de la liste des points : on l'affiche quand même, sous son numéro
-  Object.keys(R).forEach(l=>{ if(!vus.has(l)) J.push({lic:l,nom:'Licence '+l,pre:'',pts:OFF[l]||0}); });
+  Object.keys(R).forEach(l=>{ if(vus.has(l)) return; const x=IX[l]; J.push(x?{lic:l,nom:x.nom||'',pre:x.prenom||'',pts:OFF[l]||x.officiel||x.mensuel||0}:{lic:l,nom:'Licence '+l,pre:'',pts:OFF[l]||0}); });
   J.forEach(p=>{ const r=R[p.lic]; p.st=statut(r); p.at=r&&r.saved_at; p.d=r&&r.joue?CDP.JOURNEES.map(x=>!!(r.dates&&r.dates['j'+x.j])):null; });
   // ceux qui ont répondu d'abord (jouent, puis ne jouent pas), le reste ensuite ; par points à l'intérieur
   const RANG={oui:0,retard:0,non:1,sans:2};

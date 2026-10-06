@@ -86,6 +86,7 @@ async function install(context,state){
   if(url.hostname!=='127.0.0.1')return route.abort(); // jamais le réseau de production
   if(url.pathname==='/data/scoring.js')return route.fulfill({contentType:'text/javascript',body:'window.__SCORING='+JSON.stringify({players:state.players})+';'});
   if(url.pathname==='/data/scoring.json')return send({built:new Date().toISOString(),players:state.players});
+  if(url.pathname==='/data/players_index.json')return send(state.playersIndex||[]);
   if(url.pathname==='/data/poules2627.json')return send(state.poules);
   if(url.pathname==='/data/site.json')return send(state.site);
   if(url.pathname==='/data/brulages2627.json')return state.brulages?send(state.brulages):route.fulfill({status:404,body:''});
@@ -507,5 +508,20 @@ test('critérium : la recherche accepte prénom et nom dans n’importe quel ord
  await expect(page.locator('#mErr')).toHaveText('Date de naissance incorrecte. Il te reste 2 essais.');
  await page.getByRole('button',{name:'Ce n\'est pas moi'}).click();
  await expect(page.locator('#modal')).toBeHidden();await expect(page.locator('#q')).toBeFocused();
+ expect(errors).toEqual([]);
+});
+
+test('CDP sportive : un licencié absent du scoring s’affiche sous son nom, pas sous sa licence',async({page,context})=>{
+ const state=fixture(),errors=[];
+ state.playersIndex=[{lic:'90000099',nom:'BOILLOT LE GOFFIC',prenom:'Alexandre',officiel:500,mensuel:500}];
+ state.cdpReponses={'90000099':cdpRep(true,[2,3,5,6])};
+ await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/sportive/cdp-dispos.html');
+ await expect(page.locator('#tbody')).toContainText('Alexandre BOILLOT LE GOFFIC');
+ await expect(page.locator('#tbody')).not.toContainText('Licence 90000099');
+ // et il se trouve par son nom sur la page publique
+ await page.goto('/cdp.html');await page.locator('#cdpGo').click();
+ await page.getByRole('combobox',{name:'Ton prénom ou ton nom'}).fill('boillot');
+ await expect(page.getByRole('option',{name:/Alexandre BOILLOT LE GOFFIC/})).toBeVisible();
  expect(errors).toEqual([]);
 });

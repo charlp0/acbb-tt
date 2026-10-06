@@ -371,14 +371,16 @@ document.getElementById('cfMa').addEventListener('click',async()=>{ const attend
 window.addEventListener('beforeunload',e=>{ if(C&&sale()){ e.preventDefault(); e.returnValue=''; } });
 
 async function boot(){
-  const [sc,off,rep,cps]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos'),api('spo/cdp/compos')]);
+  const [sc,off,rep,cps,ix]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos'),api('spo/cdp/compos'),gj('../data/players_index.json')]);
   const OFF=(off&&off.officiel)||{};
+  const IX={}; (Array.isArray(ix)?ix:[]).forEach(p=>{ if(p.lic) IX[String(p.lic)]=p; });   // tous les licenciés : nom d'un joueur hors scoring
+  const inconnu=l=>{ const x=IX[l]; return x?{nom:x.nom||'',pre:x.prenom||'',pts:OFF[l]||x.officiel||x.mensuel||0}:{nom:'Licence '+l,pre:'',pts:OFF[l]||0}; };
   ((sc&&sc.players)||[]).forEach(p=>{ if(p.lic){ const l=String(p.lic); P[l]={nom:p.nom||'',pre:p.pre||'',pts:OFF[l]||p.men||0}; } });
   R=(rep&&rep.reponses)||{};
-  Object.keys(R).forEach(l=>{ if(!P[l]) P[l]={nom:'Licence '+l,pre:'',pts:OFF[l]||0}; });
+  Object.keys(R).forEach(l=>{ if(!P[l]) P[l]=inconnu(l); });
   COMPOS=(cps&&cps.compos)||{};
   // joueurs d'une composition enregistrée mais absents de la liste des points : on les garde, sous leur numéro
-  Object.values(COMPOS).forEach(r=>Object.values((r&&r.compo)||{}).forEach(gs=>(gs||[]).forEach(g=>(g||[]).forEach(l=>{ if(l&&!P[l]) P[l]={nom:'Licence '+l,pre:'',pts:OFF[l]||0}; }))));
+  Object.values(COMPOS).forEach(r=>Object.values((r&&r.compo)||{}).forEach(gs=>(gs||[]).forEach(g=>(g||[]).forEach(l=>{ if(l&&!P[l]) P[l]=inconnu(l); }))));
   const qj=+new URLSearchParams(location.search).get('j');
   const auj=new Date(); auj.setHours(0,0,0,0);
   const prochaine=(CDP.JOURNEES.find(y=>jourDe(y.date)>=auj)||CDP.JOURNEES[CDP.JOURNEES.length-1]).j;

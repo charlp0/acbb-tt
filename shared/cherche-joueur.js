@@ -24,12 +24,20 @@
       .sort((a,b)=>a.r-b.r||a.x.nom.localeCompare(b.x.nom,'fr')||a.x.pre.localeCompare(b.x.pre,'fr'))
       .slice(0,max||8).map(y=>y.x);
   }
+  /* Liste : players_index.json = TOUS les licenciés du club (597), scoring.json = les compétiteurs suivis, dont on
+     garde les points. Un jeune absent du scoring doit pouvoir se trouver (Alexandre Boillot Le Goffic, 06/10/2026). */
   const charges={};
+  const lire=u=>fetch(u,{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
+  function fusion(sc,ix){
+    const m=new Map();
+    ((sc&&sc.players)||[]).forEach(p=>{ if(p.lic&&p.nom) m.set(String(p.lic),p); });
+    (Array.isArray(ix)?ix:[]).forEach(p=>{ if(p.lic&&p.nom&&!m.has(String(p.lic))) m.set(String(p.lic),{lic:p.lic,nom:p.nom,pre:p.prenom,pts:p.officiel||p.mensuel||null}); });
+    return [...m.values()].map(entree);
+  }
   function liste(base){
     base=base||'.';
-    if(!charges[base]) charges[base]=fetch(base+'/data/scoring.json',{cache:'no-cache'})
-      .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-      .then(d=>{ const idx=((d&&d.players)||[]).filter(p=>p.lic&&p.nom).map(entree); if(!idx.length) throw new Error('liste vide'); return idx; });
+    if(!charges[base]) charges[base]=Promise.all([lire(base+'/data/scoring.json'),lire(base+'/data/players_index.json')])
+      .then(([sc,ix])=>{ const idx=fusion(sc,ix); if(!idx.length) throw new Error('liste vide'); return idx; });
     return charges[base];
   }
   const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -96,6 +104,6 @@
       preselection(l){ l=String(l||''); if(!l) return pret; return pret.then(()=>{ const x=idx&&idx.find(y=>y.lic===l); if(x) choisir(x,false); else { mode(true); lic.value=l; } }); }
     };
   }
-  const API={nrm,entree,correspond,trouve,chercher,liste,identite};
+  const API={nrm,entree,correspond,trouve,chercher,liste,identite,fusion};
   if(typeof module!=='undefined'&&module.exports) module.exports=API; else racine.ACBB_CHERCHE=API;
 })(typeof window!=='undefined'?window:globalThis);

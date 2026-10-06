@@ -215,12 +215,20 @@ async function getStatic(fichier: string): Promise<any> {
 
 /** Annuaire nom/prénom : clé = licence, et aussi « NOM|Prenom » (joueurs sans licence). */
 async function annuaire(): Promise<Map<string, Identite>> {
-  const sc = await getStatic('scoring.json');
+  // scoring.json ne liste que les compétiteurs suivis (237) : players_index.json porte TOUS les licenciés du club
+  // (597). Sans lui, un jeune absent du scoring s'affichait sous son numéro (Alexandre Boillot Le Goffic, 06/10/2026).
+  const [sc, idx] = await Promise.all([getStatic('scoring.json'), getStatic('players_index.json').catch(() => null)]);
   const m = new Map<string, Identite>();
   for (const p of sc?.players ?? []) {
     const id: Identite = { nom: String(p.nom ?? ''), prenom: String(p.pre ?? '') };
     if (p.lic) m.set(String(p.lic), id);
     m.set(`${id.nom}|${id.prenom}`, id);
+  }
+  for (const p of (Array.isArray(idx) ? idx : []) as Json[]) {
+    if (!p?.lic || m.has(String(p.lic))) continue;
+    const id: Identite = { nom: String(p.nom ?? ''), prenom: String(p.prenom ?? '') };
+    m.set(String(p.lic), id);
+    if (!m.has(`${id.nom}|${id.prenom}`)) m.set(`${id.nom}|${id.prenom}`, id);
   }
   return m;
 }
