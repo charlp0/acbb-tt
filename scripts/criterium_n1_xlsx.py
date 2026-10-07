@@ -50,7 +50,10 @@ def main():
     wb = openpyxl.load_workbook(chemin, data_only=True)
     groupes, ignores = [], []
     for ws in wb.worksheets:
-        lignes = [[('' if c is None else str(c)).strip() for c in r] for r in ws.iter_rows(values_only=True)]
+        # Les licences arrivent en nombres décimaux (9454825.0) : str() puis « chiffres seulement » donnait
+        # 94548250, un zéro de trop — les 4 joueurs du club en N1 ne pouvaient pas confirmer (07/10/2026).
+        cell = lambda c: '' if c is None else (str(int(c)) if isinstance(c, float) and c.is_integer() else str(c)).strip()
+        lignes = [[cell(c) for c in r] for r in ws.iter_rows(values_only=True)]
         tete = ' '.join(x for r in lignes[:7] for x in r if x)
         if saison not in tete:
             ignores.append(ws.title); continue
