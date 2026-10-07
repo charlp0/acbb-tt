@@ -705,6 +705,7 @@ async function router(req: Request): Promise<Response> {
     const row: Json = {
       page: texteCourt(body.page, 500), type: texteCourt(body.type, 120), message,
       email: texteCourt(body.email, 200), url: texteCourt(body.url, 500), title: texteCourt(body.title, 300), ua: texteCourt(body.ua, 300),
+      ip, // le garde signalements_guard (30/h par IP) compte sur cette colonne ; sans elle, la valeur par défaut était l'IP de la fonction Edge, commune à tous
     };
     const { error } = await sb.from('signalements_log').insert(row);
     if (error) fail(500, 'ecriture_signalement', { detail: error.message });
@@ -1113,6 +1114,9 @@ async function router(req: Request): Promise<Response> {
           if (!r.ok) fail(r.status >= 500 ? 502 : 400, 'postgrest', { status: r.status });
           const rows = await r.json();
           if (!Array.isArray(rows)) fail(502, 'lecture_historique');
+          // Minimisation : la sportive n'a pas à voir les adresses IP ni les navigateurs des joueurs.
+          // Ces deux colonnes ne sortent jamais du proxy, quel que soit le `select=` demandé.
+          for (const row of rows) if (row && typeof row === 'object') { delete row.ip; delete row.ua; }
           all.push(...rows);
           if (rows.length < size) return json(all);
         }

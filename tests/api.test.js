@@ -17,6 +17,7 @@ function server(options={}){
   let filters=[],limit=Infinity,order=null,single=false,write=null;
   const q={select(){return q;},eq(k,v){filters.push(r=>r[k]===v);return q;},in(k,vs){filters.push(r=>vs.includes(r[k]));return q;},
    like(k,v){filters.push(r=>String(r[k]).startsWith(v.replace('%','')));return q;},order(k,o){order=[k,o];return q;},limit(n){limit=n;return q;},
+   contains(k,v){filters.push(r=>Object.entries(v).every(([kk,vv])=>(r[k]??{})[kk]===vv));return q;},gte(k,v){filters.push(r=>String(r[k])>=String(v));return q;},
    maybeSingle(){single=true;return q;},insert(v){write={method:'insert',v};return q;},update(v){write={method:'update',v};return q;},
    then(resolve,reject){try{
     let rows=(tables[table]||[]).filter(r=>filters.every(f=>f(r)));
@@ -41,8 +42,8 @@ function server(options={}){
    throw new Error('Requête inattendue dans le test');
   }});
  vm.runInContext(stripTypeScriptTypes(source,{mode:'strip'}),context);
- const request=(path,token,body)=>handle(new Request('https://fixture.invalid/functions/v1/api/'+path,{
-  method:body?'POST':'GET',headers:{...(token?{'x-acbb-token':token}:{}),'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined}));
+ const request=(path,token,body,headers={})=>handle(new Request('https://fixture.invalid/functions/v1/api/'+path,{
+  method:body?'POST':'GET',headers:{...(token?{'x-acbb-token':token}:{}),'Content-Type':'application/json',...headers},body:body?JSON.stringify(body):undefined}));
  return {request,captain,sportive,rpcCalls,tables};
 }
 test('capitaine : aucun renfort futur ni sa disponibilité ne sort de la réponse',async()=>{
@@ -120,4 +121,22 @@ test('confirmations NJ privées : chaque capitaine ne reçoit que son effectif e
  const cap=await (await s.request('cap/dispos',s.captain)).json();
  assert.deepEqual(cap.joueurs[0].non_participations,[{j:1,championnat:'M',saison:'2026/2027',phase:1,confirmed:true}]);
  assert(!JSON.stringify(cap).includes('note interne'));assert.equal(cap.joueurs.length,1);
+});
+
+test('proxy sportive : les colonnes ip et ua ne sortent jamais, quel que soit le select demandé',async()=>{
+ const s=server();
+ s.tables.dispos_log=[{id:1,licence:'101',dispos:{j2:true},ip:'203.0.113.7',ua:'Mozilla/5.0'},{id:2,licence:'102',dispos:{},ip:'203.0.113.8',ua:'Safari'}];
+ const r=await s.request('spo/rest',s.sportive,{table:'dispos_log',method:'select',query:'select=*&order=id.asc'});
+ assert.equal(r.status,200);const rows=await r.json();
+ assert.deepEqual(rows.map(x=>x.licence),['101','102']);
+ for(const row of rows){assert(!('ip' in row));assert(!('ua' in row));}
+ assert(!JSON.stringify(rows).includes('203.0.113'));
+});
+test('signalement : l’IP du visiteur est écrite dans la ligne, le garde 30/h par IP peut compter dessus',async()=>{
+ const s=server();
+ const r=await s.request('public/signaler',null,{page:'equipe.html',type:'score',message:'Score inversé'},{'x-forwarded-for':'203.0.113.7, 10.0.0.1'});
+ assert.equal(r.status,200);
+ assert.equal(s.tables.signalements_log.length,1);
+ assert.equal(s.tables.signalements_log[0].ip,'203.0.113.7');
+ assert.equal(s.tables.signalements_log[0].message,'Score inversé');
 });
