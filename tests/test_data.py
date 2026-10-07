@@ -152,7 +152,7 @@ class DataTests(unittest.TestCase):
             with self.assertRaises(ValueError):require_xml(value)
 
     def test_all_python_scripts_parse(self):
-        for p in (ROOT/'scripts').glob('*.py'):
+        for p in (ROOT/'scripts').rglob('*.py'):
             ast.parse(p.read_text(),filename=p.name)
 
 
