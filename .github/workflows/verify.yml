@@ -1,5 +1,8 @@
 name: Vérifications du site
-on: [push, pull_request, workflow_dispatch]
+# Sur main, c'est pages.yml (« Publier le site vérifié ») qui exécute cette même suite avant de déployer.
+on:
+  pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
