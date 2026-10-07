@@ -21175,7 +21175,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 2179,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 2,
@@ -21186,7 +21190,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 2099,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 3,
@@ -21197,7 +21205,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 2082,
-       "acbb": false
+       "acbb": false,
+       "v": 7,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 4,
@@ -21208,7 +21220,11 @@
        "cat": "Minimes 2",
        "cats": "",
        "clt": 2035,
-       "acbb": false
+       "acbb": false,
+       "v": 13,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 5,
@@ -21234,7 +21250,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1965,
-       "acbb": false
+       "acbb": false,
+       "v": 10,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 7,
@@ -21245,7 +21265,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1964,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 6,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 8,
@@ -21256,7 +21280,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1963,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 9,
@@ -21267,7 +21295,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1954,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 10,
@@ -21278,7 +21310,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1943,
-       "acbb": false
+       "acbb": false,
+       "v": 11,
+       "d": 7,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 11,
@@ -21289,7 +21325,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1923,
-       "acbb": false
+       "acbb": false,
+       "v": 0,
+       "d": 5,
+       "pf": 0,
+       "ct": 2
       },
       {
        "pos": 12,
@@ -21300,7 +21340,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1917,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 13,
@@ -21311,7 +21355,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1915,
-       "acbb": false
+       "acbb": false,
+       "v": 45,
+       "d": 17,
+       "pf": 0,
+       "ct": 5
       },
       {
        "pos": 14,
@@ -21322,7 +21370,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1900,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 15,
@@ -21333,7 +21385,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1896,
-       "acbb": false
+       "acbb": false,
+       "v": 36,
+       "d": 9,
+       "pf": 9,
+       "ct": 1
       },
       {
        "pos": 16,
@@ -21344,7 +21400,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1862,
-       "acbb": false
+       "acbb": false,
+       "v": 17,
+       "d": 10,
+       "pf": 2,
+       "ct": 0
       },
       {
        "pos": 17,
@@ -21355,7 +21415,11 @@
        "cat": "Minimes 2",
        "cats": "",
        "clt": 1820,
-       "acbb": false
+       "acbb": false,
+       "v": 13,
+       "d": 4,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 18,
@@ -21366,7 +21430,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1814,
-       "acbb": false
+       "acbb": false,
+       "v": 16,
+       "d": 5,
+       "pf": 4,
+       "ct": 3
       },
       {
        "pos": 19,
@@ -21377,7 +21445,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1798,
-       "acbb": false
+       "acbb": false,
+       "v": 17,
+       "d": 4,
+       "pf": 5,
+       "ct": 1
       },
       {
        "pos": 20,
@@ -21399,7 +21471,11 @@
        "cat": "Minimes 2",
        "cats": "",
        "clt": 1760,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 10,
+       "pf": 4,
+       "ct": 2
       },
       {
        "pos": 22,
@@ -21410,7 +21486,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1751,
-       "acbb": false
+       "acbb": false,
+       "v": 17,
+       "d": 13,
+       "pf": 2,
+       "ct": 4
       },
       {
        "pos": 23,
@@ -21432,7 +21512,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1735,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 2,
+       "pf": 1,
+       "ct": 1
       },
       {
        "pos": 25,
@@ -21443,7 +21527,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1725,
-       "acbb": false
+       "acbb": false,
+       "v": 19,
+       "d": 4,
+       "pf": 5,
+       "ct": 0
       },
       {
        "pos": 26,
@@ -21469,7 +21557,11 @@
        "cat": "Minimes 2",
        "cats": "",
        "clt": 1678,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 9,
+       "pf": 1,
+       "ct": 0
       },
       {
        "pos": 28,
@@ -21480,7 +21572,11 @@
        "cat": "Minimes 2",
        "cats": "",
        "clt": 1667,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 29,
@@ -21506,7 +21602,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1581,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 0,
+       "pf": 2,
+       "ct": 0
       },
       {
        "pos": 31,
@@ -22166,7 +22266,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2656,
-       "acbb": false
+       "acbb": false,
+       "v": 9,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 2,
@@ -22177,7 +22281,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2638,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 5,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 3,
@@ -22188,7 +22296,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2601,
-       "acbb": false
+       "acbb": false,
+       "v": 0,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 4,
@@ -22199,7 +22311,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2596,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 2,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 5,
@@ -22210,7 +22326,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2541,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 6,
@@ -22221,7 +22341,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2530,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 7,
@@ -22232,7 +22356,11 @@
        "cat": "Juniors 2",
        "cats": "",
        "clt": 2497,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 8,
@@ -22243,7 +22371,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2469,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 9,
@@ -22254,7 +22386,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2468,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 10,
@@ -22265,7 +22401,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2465,
-       "acbb": false
+       "acbb": false,
+       "v": 19,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 11,
@@ -22277,7 +22417,11 @@
        "cats": "",
        "clt": 2443,
        "acbb": true,
-       "lic": "5973223"
+       "lic": "5973223",
+       "v": 9,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 12,
@@ -22288,7 +22432,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2395,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 13,
@@ -22299,7 +22447,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2369,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 14,
@@ -22310,7 +22462,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2347,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 15,
@@ -22321,7 +22477,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2237,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 16,
@@ -22332,7 +22492,11 @@
        "cat": "Juniors 2",
        "cats": "",
        "clt": 2133,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       }
      ],
      "date_fin": "11/10/2026",
@@ -22366,7 +22530,11 @@
        "cats": "",
        "clt": 2332,
        "acbb": true,
-       "lic": "9454825"
+       "lic": "9454825",
+       "v": 13,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 2,
@@ -22377,7 +22545,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2330,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 3,
@@ -22388,7 +22560,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2330,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 5,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 4,
@@ -22399,7 +22575,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2329,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 5,
@@ -22410,7 +22590,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2325,
-       "acbb": false
+       "acbb": false,
+       "v": 10,
+       "d": 7,
+       "pf": 0,
+       "ct": 4
       },
       {
        "pos": 6,
@@ -22432,7 +22616,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2281,
-       "acbb": false
+       "acbb": false,
+       "v": 13,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 8,
@@ -22443,7 +22631,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2277,
-       "acbb": false
+       "acbb": false,
+       "v": 5,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 9,
@@ -22454,7 +22646,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2263,
-       "acbb": false
+       "acbb": false,
+       "v": 14,
+       "d": 6,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 10,
@@ -22465,7 +22661,11 @@
        "cat": "Juniors 2",
        "cats": "",
        "clt": 2257,
-       "acbb": false
+       "acbb": false,
+       "v": 17,
+       "d": 5,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 11,
@@ -22476,7 +22676,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2250,
-       "acbb": false
+       "acbb": false,
+       "v": 5,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 12,
@@ -22487,7 +22691,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2245,
-       "acbb": false
+       "acbb": false,
+       "v": 0,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 13,
@@ -22498,7 +22706,11 @@
        "cat": "Juniors 2",
        "cats": "",
        "clt": 2239,
-       "acbb": false
+       "acbb": false,
+       "v": 7,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 14,
@@ -22509,7 +22721,11 @@
        "cat": "Juniors 2",
        "cats": "",
        "clt": 2214,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 15,
@@ -22520,7 +22736,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2198,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 16,
@@ -22531,7 +22751,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2193,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 17,
@@ -22542,7 +22766,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2183,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 18,
@@ -22553,7 +22781,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 2179,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 19,
@@ -22564,7 +22796,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2177,
-       "acbb": false
+       "acbb": false,
+       "v": 5,
+       "d": 8,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 20,
@@ -22575,7 +22811,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2173,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 21,
@@ -22586,7 +22826,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2166,
-       "acbb": false
+       "acbb": false,
+       "v": 7,
+       "d": 6,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 22,
@@ -22597,7 +22841,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2159,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 23,
@@ -22608,7 +22856,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2151,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 24,
@@ -22619,7 +22871,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2134,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 25,
@@ -22630,7 +22886,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2115,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 26,
@@ -22641,7 +22901,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2111,
-       "acbb": false
+       "acbb": false,
+       "v": 12,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 27,
@@ -22652,7 +22916,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 2099,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 28,
@@ -22663,7 +22931,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 2082,
-       "acbb": false
+       "acbb": false,
+       "v": 7,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 29,
@@ -22674,7 +22946,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2052,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 30,
@@ -22685,7 +22961,11 @@
        "cat": "Minimes 2",
        "cats": "",
        "clt": 2035,
-       "acbb": false
+       "acbb": false,
+       "v": 13,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 31,
@@ -22711,7 +22991,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1965,
-       "acbb": false
+       "acbb": false,
+       "v": 10,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 33,
@@ -22722,7 +23006,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1964,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 6,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 34,
@@ -22733,7 +23021,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1963,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 35,
@@ -22744,7 +23036,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1954,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 36,
@@ -22755,7 +23051,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1943,
-       "acbb": false
+       "acbb": false,
+       "v": 11,
+       "d": 7,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 37,
@@ -22766,7 +23066,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1923,
-       "acbb": false
+       "acbb": false,
+       "v": 0,
+       "d": 5,
+       "pf": 0,
+       "ct": 2
       },
       {
        "pos": 38,
@@ -22777,7 +23081,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1917,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 39,
@@ -22788,7 +23096,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1915,
-       "acbb": false
+       "acbb": false,
+       "v": 45,
+       "d": 17,
+       "pf": 0,
+       "ct": 5
       },
       {
        "pos": 40,
@@ -22799,7 +23111,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 1914,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 7,
+       "pf": 1,
+       "ct": 0
       },
       {
        "pos": 41,
@@ -22810,7 +23126,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 1905,
-       "acbb": false
+       "acbb": false,
+       "v": 23,
+       "d": 8,
+       "pf": 1,
+       "ct": 4
       },
       {
        "pos": 42,
@@ -22821,7 +23141,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1900,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 43,
@@ -22832,7 +23156,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1896,
-       "acbb": false
+       "acbb": false,
+       "v": 36,
+       "d": 9,
+       "pf": 9,
+       "ct": 1
       },
       {
        "pos": 44,
@@ -22843,7 +23171,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1862,
-       "acbb": false
+       "acbb": false,
+       "v": 17,
+       "d": 10,
+       "pf": 2,
+       "ct": 0
       },
       {
        "pos": 45,
@@ -22854,7 +23186,11 @@
        "cat": "Minimes 2",
        "cats": "",
        "clt": 1820,
-       "acbb": false
+       "acbb": false,
+       "v": 13,
+       "d": 4,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 46,
@@ -22865,7 +23201,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1814,
-       "acbb": false
+       "acbb": false,
+       "v": 16,
+       "d": 5,
+       "pf": 4,
+       "ct": 3
       },
       {
        "pos": 47,
@@ -22876,7 +23216,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1798,
-       "acbb": false
+       "acbb": false,
+       "v": 17,
+       "d": 4,
+       "pf": 5,
+       "ct": 1
       },
       {
        "pos": 48,
@@ -22887,7 +23231,11 @@
        "cat": "Minimes 2",
        "cats": "",
        "clt": 1760,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 10,
+       "pf": 4,
+       "ct": 2
       },
       {
        "pos": 49,
@@ -22898,7 +23246,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1751,
-       "acbb": false
+       "acbb": false,
+       "v": 17,
+       "d": 13,
+       "pf": 2,
+       "ct": 4
       },
       {
        "pos": 50,
@@ -22909,7 +23261,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1735,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 2,
+       "pf": 1,
+       "ct": 1
       },
       {
        "pos": 51,
@@ -22920,7 +23276,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1725,
-       "acbb": false
+       "acbb": false,
+       "v": 19,
+       "d": 4,
+       "pf": 5,
+       "ct": 0
       },
       {
        "pos": 52,
@@ -22946,7 +23306,11 @@
        "cat": "Minimes 2",
        "cats": "",
        "clt": 1678,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 9,
+       "pf": 1,
+       "ct": 0
       },
       {
        "pos": 54,
@@ -22957,7 +23321,11 @@
        "cat": "Minimes 2",
        "cats": "",
        "clt": 1667,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 55,
@@ -22983,7 +23351,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 1581,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 0,
+       "pf": 2,
+       "ct": 0
       }
      ],
      "date_fin": "11/10/2026",
@@ -23720,7 +24092,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 3235,
-       "acbb": false
+       "acbb": false,
+       "v": 7,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 2,
@@ -23731,7 +24107,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 3223,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 3,
@@ -23742,7 +24122,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 3172,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 4,
@@ -23753,7 +24137,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 3172,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 5,
@@ -23764,7 +24152,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 3118,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 6,
@@ -23775,7 +24167,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 3035,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 7,
@@ -23786,7 +24182,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 3002,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 8,
@@ -23798,7 +24198,11 @@
        "cats": "",
        "clt": 2965,
        "acbb": true,
-       "lic": "319369"
+       "lic": "319369",
+       "v": 1,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 9,
@@ -23809,7 +24213,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2952,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 10,
@@ -23820,7 +24228,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2861,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 11,
@@ -23831,7 +24243,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2834,
-       "acbb": false
+       "acbb": false,
+       "v": 0,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 12,
@@ -23864,7 +24280,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2735,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 15,
@@ -23875,7 +24295,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2713,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 16,
@@ -23886,7 +24310,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2656,
-       "acbb": false
+       "acbb": false,
+       "v": 9,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 17,
@@ -23897,7 +24325,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2653,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 18,
@@ -23908,7 +24340,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2638,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 5,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 19,
@@ -23919,7 +24355,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2582,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 20,
@@ -23930,7 +24370,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2537,
-       "acbb": false
+       "acbb": false,
+       "v": 0,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 21,
@@ -23941,7 +24385,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2523,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 22,
@@ -23952,7 +24400,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2494,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 23,
@@ -23974,7 +24426,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2369,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       }
      ],
      "date_fin": "11/10/2026",
@@ -24007,7 +24463,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2807,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 2,
@@ -24018,7 +24478,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2763,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 3,
@@ -24040,7 +24504,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2746,
-       "acbb": false
+       "acbb": false,
+       "v": 0,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 5,
@@ -24051,7 +24519,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2720,
-       "acbb": false
+       "acbb": false,
+       "v": 5,
+       "d": 5,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 6,
@@ -24062,7 +24534,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2709,
-       "acbb": false
+       "acbb": false,
+       "v": 0,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 7,
@@ -24073,7 +24549,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2691,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 8,
@@ -24084,7 +24564,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2658,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 1,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 9,
@@ -24095,7 +24579,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2637,
-       "acbb": false
+       "acbb": false,
+       "v": 5,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 10,
@@ -24106,7 +24594,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2629,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 11,
@@ -24117,7 +24609,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2600,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 12,
@@ -24128,7 +24624,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2598,
-       "acbb": false
+       "acbb": false,
+       "v": 5,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 13,
@@ -24139,7 +24639,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2598,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 14,
@@ -24150,7 +24654,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2596,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 2,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 15,
@@ -24161,7 +24669,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2595,
-       "acbb": false
+       "acbb": false,
+       "v": 21,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 16,
@@ -24172,7 +24684,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2565,
-       "acbb": false
+       "acbb": false,
+       "v": 19,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 17,
@@ -24183,7 +24699,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2542,
-       "acbb": false
+       "acbb": false,
+       "v": 11,
+       "d": 8,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 18,
@@ -24194,7 +24714,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2541,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 19,
@@ -24205,7 +24729,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2530,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 20,
@@ -24217,7 +24745,11 @@
        "cats": "",
        "clt": 2521,
        "acbb": true,
-       "lic": "9238431"
+       "lic": "9238431",
+       "v": 2,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 21,
@@ -24228,7 +24760,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2504,
-       "acbb": false
+       "acbb": false,
+       "v": 5,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 22,
@@ -24239,7 +24775,11 @@
        "cat": "Juniors 2",
        "cats": "",
        "clt": 2497,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 23,
@@ -24250,7 +24790,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2486,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 24,
@@ -24261,7 +24805,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2480,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 25,
@@ -24272,7 +24820,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2477,
-       "acbb": false
+       "acbb": false,
+       "v": 23,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 26,
@@ -24283,7 +24835,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2469,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 27,
@@ -24294,7 +24850,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2465,
-       "acbb": false
+       "acbb": false,
+       "v": 19,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 28,
@@ -24305,7 +24865,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2464,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 29,
@@ -24316,7 +24880,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2452,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 30,
@@ -24328,7 +24896,11 @@
        "cats": "",
        "clt": 2443,
        "acbb": true,
-       "lic": "5973223"
+       "lic": "5973223",
+       "v": 9,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 31,
@@ -24339,7 +24911,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2437,
-       "acbb": false
+       "acbb": false,
+       "v": 11,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 32,
@@ -24350,7 +24926,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2408,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 33,
@@ -24361,7 +24941,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2406,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 34,
@@ -24372,7 +24956,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2400,
-       "acbb": false
+       "acbb": false,
+       "v": 5,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 35,
@@ -24383,7 +24971,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2395,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 36,
@@ -24394,7 +24986,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2392,
-       "acbb": false
+       "acbb": false,
+       "v": 17,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 37,
@@ -24405,7 +25001,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2382,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 38,
@@ -24416,7 +25016,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2354,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 39,
@@ -24427,7 +25031,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2347,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 40,
@@ -24438,7 +25046,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2335,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 41,
@@ -24450,7 +25062,11 @@
        "cats": "",
        "clt": 2332,
        "acbb": true,
-       "lic": "9454825"
+       "lic": "9454825",
+       "v": 13,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 42,
@@ -24461,7 +25077,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2330,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 5,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 43,
@@ -24472,7 +25092,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2325,
-       "acbb": false
+       "acbb": false,
+       "v": 10,
+       "d": 7,
+       "pf": 0,
+       "ct": 4
       },
       {
        "pos": 44,
@@ -24483,7 +25107,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2302,
-       "acbb": false
+       "acbb": false,
+       "v": 12,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 45,
@@ -24494,7 +25122,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2297,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 46,
@@ -24516,7 +25148,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2281,
-       "acbb": false
+       "acbb": false,
+       "v": 13,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 48,
@@ -24527,7 +25163,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2277,
-       "acbb": false
+       "acbb": false,
+       "v": 5,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 49,
@@ -24538,7 +25178,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2263,
-       "acbb": false
+       "acbb": false,
+       "v": 14,
+       "d": 6,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 50,
@@ -24549,7 +25193,11 @@
        "cat": "Juniors 2",
        "cats": "",
        "clt": 2257,
-       "acbb": false
+       "acbb": false,
+       "v": 17,
+       "d": 5,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 51,
@@ -24560,7 +25208,11 @@
        "cat": "Seniors",
        "cats": "",
        "clt": 2253,
-       "acbb": false
+       "acbb": false,
+       "v": 11,
+       "d": 6,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 52,
@@ -24571,7 +25223,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2250,
-       "acbb": false
+       "acbb": false,
+       "v": 5,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 53,
@@ -24582,7 +25238,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2245,
-       "acbb": false
+       "acbb": false,
+       "v": 0,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 54,
@@ -24593,7 +25253,11 @@
        "cat": "Juniors 2",
        "cats": "",
        "clt": 2239,
-       "acbb": false
+       "acbb": false,
+       "v": 7,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 55,
@@ -24604,7 +25268,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2237,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 56,
@@ -24615,7 +25283,11 @@
        "cat": "Juniors 2",
        "cats": "",
        "clt": 2214,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 57,
@@ -24626,7 +25298,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2198,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 58,
@@ -24637,7 +25313,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2193,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 59,
@@ -24648,7 +25328,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2183,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 1,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 60,
@@ -24659,7 +25343,11 @@
        "cat": "Cadets 2",
        "cats": "",
        "clt": 2179,
-       "acbb": false
+       "acbb": false,
+       "v": 8,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 61,
@@ -24670,7 +25358,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2173,
-       "acbb": false
+       "acbb": false,
+       "v": 1,
+       "d": 4,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 62,
@@ -24681,7 +25373,11 @@
        "cat": "Juniors 3",
        "cats": "",
        "clt": 2166,
-       "acbb": false
+       "acbb": false,
+       "v": 7,
+       "d": 6,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 63,
@@ -24692,7 +25388,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2159,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 64,
@@ -24703,7 +25403,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2151,
-       "acbb": false
+       "acbb": false,
+       "v": 6,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 65,
@@ -24714,7 +25418,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2134,
-       "acbb": false
+       "acbb": false,
+       "v": 4,
+       "d": 0,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 66,
@@ -24725,7 +25433,11 @@
        "cat": "Juniors 2",
        "cats": "",
        "clt": 2133,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 67,
@@ -24736,7 +25448,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2115,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 68,
@@ -24747,7 +25463,11 @@
        "cat": "Juniors 1",
        "cats": "",
        "clt": 2111,
-       "acbb": false
+       "acbb": false,
+       "v": 12,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 69,
@@ -24758,7 +25478,11 @@
        "cat": "Veteran 40",
        "cats": "",
        "clt": 2106,
-       "acbb": false
+       "acbb": false,
+       "v": 2,
+       "d": 3,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 70,
@@ -24769,7 +25493,11 @@
        "cat": "Juniors 4",
        "cats": "",
        "clt": 2052,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       },
       {
        "pos": 71,
@@ -24780,7 +25508,11 @@
        "cat": "Minimes 2",
        "cats": "",
        "clt": 2035,
-       "acbb": false
+       "acbb": false,
+       "v": 13,
+       "d": 3,
+       "pf": 0,
+       "ct": 1
       },
       {
        "pos": 72,
@@ -24791,7 +25523,11 @@
        "cat": "Cadets 1",
        "cats": "",
        "clt": 1963,
-       "acbb": false
+       "acbb": false,
+       "v": 3,
+       "d": 2,
+       "pf": 0,
+       "ct": 0
       }
      ],
      "date_fin": "11/10/2026",
@@ -24810,6 +25546,6 @@
  "bilans": {
   "depuis": "01/07/2026",
   "jusqu": "04/10/2026",
-  "le": "2026-10-06"
+  "le": "2026-10-07"
  }
 }
