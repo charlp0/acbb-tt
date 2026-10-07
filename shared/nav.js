@@ -32,14 +32,6 @@
     if(c.soon) return '<span class="nv-tile nv-soon"><span class="nv-row"><span class="nv-lab">'+c.sous+'</span><span class="nv-tag">Coming soon</span></span>'+nom+'</span>';
     return '<a class="nv-tile'+(on?' on':'')+'" href="'+base+'/'+c.href+'"'+(on?' aria-current="page"':'')+'><span class="nv-lab">'+c.sous+'</span>'+nom+'</a>';
   }
-  /* La barre charge elle-même ses deux polices : chaque page a son propre lien Google Fonts, pas toujours
-     le même. Le critérium ne demandait que la Saira Condensed ITALIQUE — que Google ne fournit pas (le site
-     incline la version droite) — et ses tuiles comme son titre retombaient sur une police par défaut. */
-  if(!document.getElementById('nv-polices')){
-    const l=document.createElement('link'); l.id='nv-polices'; l.rel='stylesheet';
-    l.href='https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@800&family=JetBrains+Mono:wght@800&display=swap';
-    document.head.appendChild(l);
-  }
   window.renderNav=function(opts){
     opts=Object.assign({},opts||{}); ['name','team'].forEach(k=>{opts[k]=ACBB.esc(opts[k]||'');}); const here=sansSigne(opts.active||''); const role=opts.role||''; const team=opts.team||'';
     const ici=ALIAS[here]||(ROLE.includes(here)?'cpe':'');
