@@ -106,3 +106,5 @@ dans les fiches 25/26) ; `archive_acbb_index.py` (index `data/archive/2025-2026/
 des rencontres de l'ACBB en 25/26, lu par `sportive/poules.html` — l'archive source est figée,
 le script ne se relance que si elle changeait). Leur racine est recalculée pour rester
 exécutables depuis ce dossier.
+
+- `sync_licences_valides.py` — lancé par « Mise à jour données FFTT » : ajoute à `licences_valides` les licences de `data/players_index.json` qui y manquent (jamais de retrait). Ajouté le 07/10/2026 après le blocage des nouveaux licenciés.
