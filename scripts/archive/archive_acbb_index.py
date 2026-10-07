@@ -15,7 +15,7 @@ Relancer si l'archive change (elle est figée : la saison 2025/26 n'est plus ser
 """
 import glob, json, os, re, unicodedata, datetime
 
-ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'archive', '2025-2026')
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'data', 'archive', '2025-2026')  # script rangé dans scripts/archive/
 DIV = {
     'D92D1MESSIEURS': 'D1', 'D92D2MESSIEURS': 'D2', 'D92PREREGIONALEMESSIEURS': 'PR', 'D92PREREGIONALEDAMES': 'PR D',
     'L08PNDAMES': 'PN D', 'L08R1DAMES': 'R1 D', 'L08R2MESSIEURS': 'R2', 'L08R3MESSIEURS': 'R3',

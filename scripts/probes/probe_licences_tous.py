@@ -8,6 +8,7 @@ aussi ce point. `certif` est reporte tel quel, sans interpretation : ses valeurs
 (C / P / U) ne sont pas documentees ici, et Le Gall montre qu'un `certif` rempli
 peut coexister avec une licence NON validee — ce n'est donc pas le bon critere.
 Le script n'ecrit rien."""
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_site, fftt_brulages, fftt_quality (et fftt_build via importlib)
 import re, time, importlib.util
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)

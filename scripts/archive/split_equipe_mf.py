@@ -16,7 +16,7 @@ Usage : python3 scripts/split_equipe_mf.py
 """
 import json, glob, os, re, unicodedata
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # racine du dépôt (script rangé dans scripts/archive/)
 
 def nrm(s):
     s = unicodedata.normalize('NFD', s or '').encode('ascii', 'ignore').decode().upper()

@@ -6,6 +6,7 @@ Si oui, inutile d'agréger nous-mêmes. Sinon, la liste des parties reste la sou
 et l'agrégation se fait chez nous. On teste les noms plausibles et on regarde aussi
 si xml_licence_b cache un champ de bilan qu'on aurait manqué.
 """
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_site, fftt_brulages, fftt_quality (et fftt_build via importlib)
 import re, time, importlib.util
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)

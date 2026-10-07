@@ -3,6 +3,7 @@
 La sonde precedente ne renvoyait ni type ni date de validation pour lui, alors que
 les 21 autres joueurs concernes sont en type T avec une date. Avant d'annoncer a
 Charles qu'un joueur ne peut pas jouer ce soir, on verifie sur la reponse brute."""
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_site, fftt_brulages, fftt_quality (et fftt_build via importlib)
 import re, time, importlib.util
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)

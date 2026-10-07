@@ -1,4 +1,5 @@
 """Diagnostic en lecture seule des feuilles J2 M14/M16, sans données joueurs."""
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_site, fftt_brulages, fftt_quality (et fftt_build via importlib)
 import html
 import json
 import re

@@ -6,6 +6,7 @@ conclure que la federation ne publie pas encore cette saison, essayer les autres
 ecritures : xml_partie.php prend peut-etre « numlic » et non « licence ».
 Aucune licence n'est imprimee.
 """
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_site, fftt_brulages, fftt_quality (et fftt_build via importlib)
 import json, os, re, urllib.request, importlib.util, collections
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)

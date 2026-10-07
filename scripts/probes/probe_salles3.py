@@ -3,6 +3,7 @@
 Pour chaque nom non résolu, on montre CE QU'ON A (libellé PDF CD92 + libellé FFTT
 de site.json) et CE QUE LA FFTT PROPOSE (clubs candidats + leurs libellés d'équipe).
 Charles tranche à la lecture ; rien n'est écrit."""
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_site, fftt_brulages, fftt_quality (et fftt_build via importlib)
 import json, re, time, unicodedata, importlib.util
 
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")

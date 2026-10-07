@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       script:
-        description: "Script de sonde à exécuter"
+        description: "Script de sonde à exécuter (dossier scripts/probes/, lancé depuis la racine du dépôt)"
         required: false
-        default: "scripts/probe_partie.py"
+        default: "scripts/probes/probe_partie.py"
 permissions:
   contents: read
 jobs:
@@ -17,9 +17,9 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
       - run: pip install requests
-      - name: Sonde parties 25/26
+      - name: Exécuter la sonde
         env:
           FFTT_ID: ${{ secrets.FFTT_ID }}
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
           SUPA_SERVICE_KEY: ${{ secrets.SUPA_SERVICE_KEY }}
-        run: python3 "${{ github.event.inputs.script || 'scripts/probe_partie.py' }}"
+        run: python3 "${{ github.event.inputs.script || 'scripts/probes/probe_partie.py' }}"

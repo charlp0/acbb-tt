@@ -2,6 +2,7 @@
 """Sonde ponctuelle : qui peut renforcer une équipe adverse (règlement II.112).
 Lit les feuilles de la phase des équipes plus fortes du club de CIBLE (nom exact de site.json) et sépare les
 joueurs encore autorisés à descendre (moins de 2 rencontres plus haut) des brûlés. Lancer via « Sonde API FFTT »."""
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_site, fftt_brulages, fftt_quality (et fftt_build via importlib)
 import os, json, datetime
 import fftt_brulages as B
 fb = B.fb

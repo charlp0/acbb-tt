@@ -6,6 +6,7 @@ sans la moindre erreur reseau. Donc les reponses arrivent mais ne contiennent pa
 que j'attends. Cette sonde regarde la forme brute, sur trois licences tirees de la
 table deposee — aucune licence n'est imprimee, seulement la structure et les dates.
 """
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_site, fftt_brulages, fftt_quality (et fftt_build via importlib)
 import json, os, re, sys, urllib.request, importlib.util, collections
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)

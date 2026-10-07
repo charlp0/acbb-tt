@@ -4,6 +4,7 @@ Demande de Charles le 02/10/2026, jour de la J2 : ces joueurs n'ont pas ete
 "testes" par une premiere rencontre, une licence non validee passerait inapercue.
 L'export du club du 17/09 est inutilisable (302 licences encore « non valide »
 a cette date), seule l'API fait foi. Le script n'ecrit rien."""
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_site, fftt_brulages, fftt_quality (et fftt_build via importlib)
 import re, time, importlib.util
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)

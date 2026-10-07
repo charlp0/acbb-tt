@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Sonde ponctuelle : champs bruts de xml_equipe.php pour quelques clubs adverses (épreuve, division, poule),
 pour ne compter dans le brûlage que les équipes du championnat par équipes. Lancer via « Sonde API FFTT »."""
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_site, fftt_brulages, fftt_quality (et fftt_build via importlib)
 import re, html, urllib.parse
 import fftt_site as fs
 fb = fs.fb

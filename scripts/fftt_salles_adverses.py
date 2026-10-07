@@ -72,7 +72,7 @@ GEN = {'TT','AS','US','CS','ES','AC','CSM','USM','SC','ATT','UMS','SMTT','VGA','
 
 # Correspondances forcées : numéro de club donné à la main quand le rapprochement
 # automatique échoue. Numéros fournis par Charles le 29/09/2026 après lecture du
-# diagnostic (scripts/probe_salles3.py). Les noms FFTT de ces clubs ne partagent
+# diagnostic (scripts/probes/probe_salles3.py). Les noms FFTT de ces clubs ne partagent
 # aucun mot distinctif avec le libellé de nos poules, aucune heuristique ne les
 # trouverait — d'où la saisie manuelle, qui reste la seule voie sûre.
 FORCE = {

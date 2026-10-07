@@ -10,6 +10,7 @@ nom que porte notre poule. La fiche club (xml_club_detail) donne alors la salle.
 
 Le script n'écrit rien : il mesure le taux de résolution et imprime les échecs.
 """
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_site, fftt_brulages, fftt_quality (et fftt_build via importlib)
 import json, re, time, unicodedata, importlib.util, collections
 
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
