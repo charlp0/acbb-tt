@@ -134,10 +134,11 @@ class DataTests(unittest.TestCase):
     def test_new_file_is_not_public_by_default(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder)
-            for name in ['index.html','data/meta.json','data/private-notes.json','data/backup-supabase/dispos_log.json','private.csv']:
+            # data/scoring.json est dans l'allowlist ; data/meta.json n'est plus publié depuis le 07/10/2026 (aucune page ne le lit)
+            for name in ['index.html','data/scoring.json','data/meta.json','data/private-notes.json','data/backup-supabase/dispos_log.json','private.csv']:
                 path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('{}')
             published={str(p.relative_to(root)) for p in public_files(root)}
-            self.assertEqual(published,{'index.html','data/meta.json'})
+            self.assertEqual(published,{'index.html','data/scoring.json'})
 
     def test_team_identity_separates_men_and_women(self):
         label='BOULOGNE BILLANCOURT AC 2 - Phase 1'

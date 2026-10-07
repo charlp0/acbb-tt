@@ -788,7 +788,7 @@ async function loadHisto(more){
   }catch(e){ el.innerHTML='<div class="tm-sub" style="padding:6px 0">historique indisponible ('+esc(e.message)+')</div>'; }
 }
 
-/* chargement initial : serveur (dernière version), repli data/tags.json */
+/* chargement initial : serveur uniquement (dernière ligne du journal tags_log) ; en cas d'échec les tags restent non chargés et non enregistrables (plus de repli data/tags.json, qui n'est plus publié) */
 onAuth(async function(){
   try{
     const a=await spoSelect('tags_log','select=id,tags&order=id.desc&limit=1');

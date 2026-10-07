@@ -11,10 +11,12 @@ import re
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
+# Seuls les fichiers lus par une page ou un module publié (07/10/2026). meta.json, tags.json, numerotes2526.json,
+# renumerotation2627.json et salles_domicile2627.json restent dans data/ pour les scripts, sans être publiés.
 DATA = {
-    'teams.json', 'sexes.json', 'scoring.json', 'scoring.js', 'numerotes2526.json', 'meta.json',
-    'resultats2627.json', 'tags.json', 'poules2627.json', 'renumerotation2627.json',
-    'officiel2627.json', 'brulages2627.json', 'capitaines.json', 'salles_domicile2627.json', 'salles2627.json',
+    'teams.json', 'sexes.json', 'scoring.json', 'scoring.js',
+    'resultats2627.json', 'poules2627.json',
+    'officiel2627.json', 'brulages2627.json', 'capitaines.json', 'salles2627.json',
     'site.json', 'salles_adverses.json', 'categories.json', 'players_index.json',
     'lieux.json', 'freshness.json', 'criterium2627.json',
 }
