@@ -20,9 +20,7 @@
   /* en-tête : menu commun (shared/nav.js) dans une barre collante */
   .header{position:sticky;top:0;z-index:50;padding:12px 16px 11px;background:rgba(11,11,13,0.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
   .header .hdr{max-width:1408px;margin:0 auto}
-  .gatemsg{max-width:520px;margin:0 auto;padding:70px 20px;text-align:center;color:var(--dim);font-size:13px}
-  .gatemsg .h1{font-size:34px;margin-bottom:10px}
-  .gatemsg a{color:var(--dim);font-size:12px;text-decoration:none}
+  .gatemsg{margin:0 auto;padding:70px 20px}   /* règle commune dans shared/style.css ; ici le retrait vient du padding, pas de la marge */
   body.locked .hero,body.locked .statebar,body.locked .filters,body.locked .body,body.locked .savebar{display:none!important}
   /* hero */
   .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:20px 20px 6px;flex-wrap:wrap}
@@ -260,6 +258,7 @@
 <div class="scbg" id="scBg" hidden></div>
 <aside class="scpop" id="scPop" hidden aria-label="Scouting adversaire"></aside>
 <script src="../shared/api.js"></script>
+<script src="../shared/ui.js"></script>
 <script src="../shared/lieux.js?v=1"></script>
 <script src="../shared/participations.js?v=1"></script>
 <script src="../shared/regles.js?v=1"></script>
@@ -1072,7 +1071,7 @@ function exportImg(t){
     const a=document.createElement('a'); a.download='ACBB-'+t+'-J'+J+'.png'; a.href=cv.toDataURL('image/png'); document.body.appendChild(a); a.click(); a.remove(); host.innerHTML='';
   }).catch(()=>{ toast('⚠ export image impossible — utilise le texte'); host.innerHTML=''; });
 }
-const gateErrTxt=(err,role)=>err?((err.body&&/jeton_invalide|jeton_requis|role_incorrect/.test(err.body.error||''))?'lien invalide ou révoqué — demande un nouveau lien à la sportive':'serveur : '+err.message):(role==='capitaine'?'ton lien est un lien capitaine':'');
+const gateErrTxt=ACBB_UI.gateErrTxt;
 async function start(){
   let me=null, err=null;
   try{ me=await api('me'); }catch(e){ err=e; }

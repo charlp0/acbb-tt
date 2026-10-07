@@ -81,6 +81,7 @@
 </div>
 
 <script src="shared/api.js"></script>
+<script src="shared/ui.js"></script>
 <script src="shared/report.js" defer></script>
 <script src="shared/track.js?v=1" defer></script>
 <script src="shared/nav.js" data-base="."></script>
@@ -89,18 +90,13 @@
   'use strict';
   const esc=ACBB.esc;
   const TEAMS=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
-  const JOURS=['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'];
-  const ACR=new Set(['ASML','ASPN','SCTT','USMT','ESTT','CSTT','ACBB','ASPTT','ASMB','AVTT','TTMC','PPCM','SLTT','ASTT','ESCP','ASGB']);
-  const PART={LE:'Le',LA:'La',LES:'Les',DE:'de',DU:'du',DES:'des',ST:'St',STE:'Ste',SUR:'sur',EN:'en',ET:'et'};
-  function capWord(w){ const u=w.toUpperCase(); if(/^\d+$/.test(w)||!w) return w; if(PART[u]) return PART[u]; if(u.length<=3||ACR.has(u)||!/[AEIOUY]/.test(u)) return u; return u[0]+u.slice(1).toLowerCase(); }
-  function shortName(n){ return String(n||'').trim().split(/\s+/).map(w=>w.split('-').map(capWord).join('-')).join(' '); }
+  const shortName=ACBB_UI.shortName;
   function divShort(d){ d=String(d||''); if(/^Pro/i.test(d)) return d.replace(/\s+(Messieurs|Dames)\b/i,'').trim(); return d.replace(/Pré-?Régionale/i,'PR').replace(/Nationale\s*/i,'N').replace(/Régionale\s*/i,'R').replace(/\s*\(\d+\)/,'').replace(/\s+(Messieurs|Dames)\b/i,'').trim(); }
   function divLabel(p){ return divShort(p.division)+(p.poule?' poule '+p.poule:''); }
-  function parseFR(d){ const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(d||''); return m?new Date(+m[3],+m[2]-1,+m[1]):null; }
-  function fmtDate(d){ const dt=parseFR(d); if(!dt) return d||'à fixer'; return JOURS[dt.getDay()]+' '+d.slice(0,5); }
+  const parseFR=ACBB_UI.parseFR;
+  const fmtDate=ACBB_UI.fmtDate;
   function scoreClass(a,b){ return a>b?'win':(a<b?'lose':'draw'); }
-  function normName(s){ return String(s||'').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
-  function sameTeam(a,b){ a=normName(a); b=normName(b); if(!a||!b) return false; if(a===b) return true; const na=a.match(/(\d+)$/),nb=b.match(/(\d+)$/); const fa=a.split(' ')[0],fb=b.split(' ')[0]; return !!(na&&nb&&na[1]===nb[1]&&fa===fb&&fa.length>=4); }
+  const sameTeam=ACBB_UI.sameTeam;
   function standingsFor(site,poule){ const st=site&&site.STANDINGS&&site.STANDINGS[poule.acbb]; if(!Array.isArray(st)||!st.length||!poule.teams) return null; const _joue=st.some(r=>(+r.mp||0)>0||(+r.pts||0)>0); if(!_joue) return null; /* avant la J1 : positions masquées, tout s'affiche dès que la FFTT remonte les premiers résultats */ let hits=0; poule.teams.forEach(t=>{ if(st.some(r=>sameTeam(r.name,t.name))) hits++; }); return hits>=Math.max(4,Math.ceil(poule.teams.length*0.6))?st:null; }
 
   const S={team:null,poules:null,byTeam:{},scores:{},resultats:{},site:null,apiFail:false};

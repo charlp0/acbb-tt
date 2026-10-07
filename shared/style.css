@@ -98,3 +98,9 @@ input:focus,textarea:focus{border-color:var(--orange)}
 .cj-lnk{align-self:flex-start;background:none;border:0;padding:4px 0;color:var(--dim);font:inherit;font-size:12.5px;text-decoration:underline;cursor:pointer;text-align:left}
 .cj-lnk:hover{color:var(--ink)}
 .cj-list .cj-lnk{display:inline;padding:0;font-size:13px}
+
+/* Accès réservé (pages sportive) : message affiché à la place de la page quand le jeton manque, est révoqué
+   ou n'ouvre pas ce rôle (#gateMsg). sportive/journee.html garde ses propres retraits. */
+.gatemsg{max-width:520px;margin:60px auto;text-align:center;color:var(--dim);font-size:13px}
+.gatemsg .h1{font-size:34px;margin-bottom:10px}
+.gatemsg a{color:var(--dim);font-size:12px;text-decoration:none}

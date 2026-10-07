@@ -223,6 +223,7 @@
 </div>
 
 <script src="shared/api.js"></script>
+<script src="shared/ui.js"></script>
 <script src="shared/cherche-joueur.js"></script>
 <script src="shared/report.js" defer></script>
 <script src="shared/track.js?v=1" defer></script>
@@ -232,16 +233,13 @@
   'use strict';
   const esc=ACBB.esc;
   const TEAMS=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','F1','F2','F3'];
-  const JOURS=['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'];
+  const JOURS=ACBB_UI.JOURS;
   const JOURS_L=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
   const MOIS_L=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-  const ACR=new Set(['ASML','ASPN','SCTT','USMT','ESTT','CSTT','ACBB','ASPTT','ASMB','AVTT','TTMC','PPCM','SLTT','ASTT','ESCP','ASGB']);
-  const PART={LE:'Le',LA:'La',LES:'Les',DE:'de',DU:'du',DES:'des',ST:'St',STE:'Ste',SUR:'sur',EN:'en',ET:'et'};
-  function capWord(w){ const u=w.toUpperCase(); if(/^\d+$/.test(w)||!w) return w; if(PART[u]) return PART[u]; if(u.length<=3||ACR.has(u)||!/[AEIOUY]/.test(u)) return u; return u[0]+u.slice(1).toLowerCase(); }
-  function shortName(n){ return String(n||'').trim().split(/\s+/).map(w=>w.split('-').map(capWord).join('-')).join(' '); }
+  const shortName=ACBB_UI.shortName;
   function divShort(d){ d=String(d||''); if(/^Pro/i.test(d)) return d.replace(/\s+(Messieurs|Dames)\b/i,'').trim(); return d.replace(/Pré-?Régionale/i,'PR').replace(/Nationale\s*/i,'N').replace(/Régionale\s*/i,'R').replace(/\s*\(\d+\)/,'').replace(/\s+(Messieurs|Dames)\b/i,'').trim(); }
   function divLabel(p){ return divShort(p.division)+(p.poule?' p.'+p.poule:''); }
-  function parseFR(d){ const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(d||''); return m?new Date(+m[3],+m[2]-1,+m[1]):null; }
+  const parseFR=ACBB_UI.parseFR;
   /* Les dates de la Pro B arrivent déjà mises en forme (« mar. 29/09 ») : on en tire jour et mois, l'année
      se déduit de la saison (de juillet à décembre, l'année de la première journée ; ensuite, la suivante). */
   function dateMatch(d){
@@ -250,7 +248,7 @@
     const d0=parseFR(((S.poules&&S.poules.dates)||[])[0]), an=d0?d0.getFullYear():new Date().getFullYear();
     return new Date(+m[2]>=7?an:an+1,+m[2]-1,+m[1]);
   }
-  function fmtDate(d){ const dt=parseFR(d); if(!dt) return d||'à fixer'; return JOURS[dt.getDay()]+' '+d.slice(0,5); }
+  const fmtDate=ACBB_UI.fmtDate;
   function fmtLong(d){ const dt=parseFR(d); if(!dt) return d||''; return JOURS_L[dt.getDay()]+' '+dt.getDate()+' '+MOIS_L[dt.getMonth()]; }
   function nrm(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); }
   function currentJ(dates){ const today=new Date(); today.setHours(0,0,0,0); let cur=1; (dates||[]).forEach((d,i)=>{ const dt=parseFR(d); if(dt){ const open=new Date(dt); open.setDate(open.getDate()-3); if(open<=today) cur=i+1; } }); return cur; }
@@ -496,16 +494,7 @@
   document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!mbg.hidden) closeModal(); });
   mDob.addEventListener('input',()=>{ const d=mDob.value.replace(/\D/g,'').slice(0,8); let v=d; if(d.length>4) v=d.slice(0,2)+'/'+d.slice(2,4)+'/'+d.slice(4); else if(d.length>2) v=d.slice(0,2)+'/'+d.slice(2); mDob.value=v; });
   function dobISO(v){ const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v||''); if(!m) return null; const d=+m[1],mo=+m[2],y=+m[3]; if(d<1||d>31||mo<1||mo>12||y<1900||y>2030) return null; const dt=new Date(y,mo-1,d); if(dt.getDate()!==d||dt.getMonth()!==mo-1) return null; return m[3]+'-'+m[2]+'-'+m[1]; }
-  function errText(err){
-    const code=(err&&err.body&&err.body.error)||(err&&err.message)||'';
-    const b=(err&&err.body)||{};
-    if(code==='licence_inconnue') return 'Licence inconnue. Vérifie ton numéro (il figure sur ta licence FFTT) ou demande à ton capitaine.';
-    if(code==='date_incorrecte') return 'Date de naissance incorrecte.'+(b.restants!=null?' Il te reste '+b.restants+' essai'+(b.restants>1?'s':'')+'.':'');
-    if(code==='trop_essais'){ const s=+b.retry_s||0; const mn=Math.max(1,Math.ceil(s/60)); return 'Trop de tentatives. Réessaie dans '+mn+' minute'+(mn>1?'s':'')+'.'; }
-    if(code==='appareil_limite') return 'Cet appareil a déjà servi à saisir pour 6 licences différentes. Utilise ton propre téléphone ou demande à ton capitaine.';
-    if(err&&err.status) return 'Erreur serveur ('+err.status+'). Réessaie dans quelques minutes.';
-    return 'Serveur indisponible. Vérifie ta connexion et réessaie dans quelques minutes.';
-  }
+  const errText=ACBB_UI.errText;
   step1.addEventListener('submit',async e=>{
     e.preventDefault(); mErr.hidden=true;
     const lic=mId.licence(), dob=dobISO(mDob.value.trim());
@@ -520,7 +509,7 @@
     }catch(err){ mErr.textContent=errText(err); mErr.hidden=false; }
     finally{ go.disabled=false; go.textContent='Voir et modifier mes dispos'; }
   });
-  function fmtTs(iso){ if(!iso) return ''; const d=new Date(iso); if(isNaN(d)) return String(iso); const p=n=>(n<10?'0':'')+n; return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' à '+p(d.getHours())+'h'+p(d.getMinutes()); }
+  const fmtTs=ACBB_UI.fmtTs;
   function renderStep2(){
     step1.hidden=true; step2.hidden=false; mOk.hidden=true; mErr2.hidden=true;
     document.getElementById('mName').textContent=((session.prenom||'')+' '+(session.nom||'')).trim()||('Licence '+session.licence);

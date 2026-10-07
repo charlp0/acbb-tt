@@ -148,6 +148,7 @@
 </div>
 
 <script src="shared/api.js"></script>
+<script src="shared/ui.js"></script>
 <script src="shared/cdp.js"></script>
 <script src="shared/cherche-joueur.js"></script>
 <script src="shared/report.js"></script>
@@ -188,16 +189,8 @@
   const ID=ACBB_CHERCHE.identite(document.getElementById('cId'),{prefix:'c',base:'.',apres:()=>{ document.getElementById('cErr1').hidden=true; dob.focus(); }});
   dob.addEventListener('input',()=>{ const d=dob.value.replace(/\D/g,'').slice(0,8); dob.value=d.length>4?d.slice(0,2)+'/'+d.slice(2,4)+'/'+d.slice(4):d.length>2?d.slice(0,2)+'/'+d.slice(2):d; });
   function dobISO(v){ const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v||''); if(!m) return null; const d=+m[1],mo=+m[2],y=+m[3]; const dt=new Date(y,mo-1,d); if(y<1900||dt>new Date()||dt.getDate()!==d||dt.getMonth()!==mo-1) return null; return m[3]+'-'+m[2]+'-'+m[1]; }
-  function errText(err){
-    const code=(err&&err.body&&err.body.error)||(err&&err.message)||''; const b=(err&&err.body)||{};
-    if(code==='licence_inconnue') return 'Licence inconnue. Vérifie ton numéro (il figure sur ta licence FFTT) ou demande à ton capitaine.';
-    if(code==='date_incorrecte') return 'Date de naissance incorrecte.'+(b.restants!=null?' Il te reste '+b.restants+' essai'+(b.restants>1?'s':'')+'.':'');
-    if(code==='trop_essais'){ const mn=Math.max(1,Math.ceil((+b.retry_s||0)/60)); return 'Trop de tentatives. Réessaie dans '+mn+' minute'+(mn>1?'s':'')+'.'; }
-    if(code==='appareil_limite') return 'Cet appareil a déjà servi à saisir pour 6 licences différentes. Utilise ton propre téléphone ou demande à ton capitaine.';
-    if(err&&err.status) return 'Erreur serveur ('+err.status+'). Réessaie dans quelques minutes.';
-    return 'Serveur indisponible. Vérifie ta connexion et réessaie dans quelques minutes.';
-  }
-  const fmtTs=iso=>{ const d=new Date(iso); if(isNaN(d)) return ''; const p=n=>(n<10?'0':'')+n; return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' à '+p(d.getHours())+'h'+p(d.getMinutes()); };
+  const errText=ACBB_UI.errText;
+  const fmtTs=ACBB_UI.fmtTs;
 
   // l'état des réponses : null tant que le joueur n'a pas choisi
   let joue=null, dates={};
