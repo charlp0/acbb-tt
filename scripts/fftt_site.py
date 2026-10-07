@@ -225,6 +225,7 @@ def main():
     out['coverage']=coverage(out)
     json.dump(out, open("data/site.json","w"), ensure_ascii=False)
     # site.js : chargé en <script> AVANT le script de page -> DATA/STANDINGS dispo en synchrone (pas de réécriture async)
+    # plus publié depuis le 07/10/2026 (aucune page ne l'utilise), conservé pour compatibilité
     with open("data/site.js","w",encoding="utf-8") as f:
         f.write("window.__SITE="+json.dumps(out,ensure_ascii=False)+";")
     print(f"OK — data/site.json + data/site.js écrits ({len(DATA)} équipes).")

@@ -15,7 +15,7 @@ DATA = {
     'teams.json', 'sexes.json', 'scoring.json', 'scoring.js', 'numerotes2526.json', 'meta.json',
     'resultats2627.json', 'tags.json', 'poules2627.json', 'renumerotation2627.json',
     'officiel2627.json', 'brulages2627.json', 'capitaines.json', 'salles_domicile2627.json', 'salles2627.json',
-    'site.json', 'site.js', 'salles_adverses.json', 'categories.json', 'players_index.json',
+    'site.json', 'salles_adverses.json', 'categories.json', 'players_index.json',
     'lieux.json', 'freshness.json', 'criterium2627.json',
 }
 ASSETS = {'bande-noire.png', 'logo.png', 'icon-180.png', 'icon-192.png', 'icon-512.png',
