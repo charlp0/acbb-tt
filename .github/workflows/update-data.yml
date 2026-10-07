@@ -95,6 +95,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # une seule issue ouverte à la fois (même motif que results.yml) : pas une par échec
+          N=$(gh issue list -R "$GITHUB_REPOSITORY" --state open --search 'Échec mise à jour données FFTT in:title' --json number -q length)
+          [ "$N" != 0 ] && { echo "issue déjà ouverte"; exit 0; }
           gh issue create --repo "$GITHUB_REPOSITORY" \
             --title "🤖 Échec mise à jour données FFTT — $(date -u +%d/%m/%Y)" \
             --body "Le run a échoué : https://github.com/$GITHUB_REPOSITORY/actions/runs/${{ github.run_id }}

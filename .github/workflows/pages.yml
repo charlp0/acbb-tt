@@ -6,7 +6,7 @@ on:
   # Les commits du robot utilisent GITHUB_TOKEN : workflow_run permet de publier
   # leur sortie même lorsqu'ils ne déclenchent pas un nouvel événement push.
   workflow_run:
-    workflows: ['Résultats équipes FFTT', 'Mise à jour données FFTT', 'Catégories d’âge FFTT', "Catégories d'âge FFTT", 'Salles des adversaires (FFTT)', 'Bilans critérium (FFTT)']
+    workflows: ['Résultats équipes FFTT', 'Mise à jour données FFTT', 'Catégories d’âge FFTT', "Catégories d'âge FFTT", 'Salles des adversaires (FFTT)', 'Bilans critérium (FFTT)', 'Brûlage des adversaires (FFTT)']
     types: [completed]
     branches: [main]
 permissions:

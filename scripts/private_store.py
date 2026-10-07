@@ -12,6 +12,8 @@ TABLES = {
     'liens': 'id', 'naissances': 'licence', 'tentatives': 'id',
     'appareils': 'device_id,licence', 'debriefs_log': 'id', 'journal': 'id',
     'liens_usages': 'lien_id,device_id', 'private_config': 'name',
+    # tables ajoutées en octobre 2026 : critérium (05) et Championnat de Paris (06) ; oubli relevé par l'audit du 07/10
+    'criterium_log': 'id', 'cdp_dispos_log': 'id', 'cdp_compo_log': 'id',
 }
 
 
