@@ -73,6 +73,11 @@ jobs:
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
           FFTT_SKIP_IF_FRESH: '0'
         run: python3 scripts/fftt_scoring.py
+      - name: Licences valides alignées sur l'effectif FFTT (ajouts seulement)
+        continue-on-error: true   # un échec ici ne doit pas bloquer la publication des données
+        env:
+          SUPA_SERVICE_KEY: ${{ secrets.SUPA_SERVICE_KEY }}
+        run: python3 scripts/sync_licences_valides.py
       - name: Vérifier les sorties et dater chaque source
         run: python3 scripts/check_data.py
       - name: Commit si changement
