@@ -464,7 +464,7 @@ async function envoyer(j,present){
     err.textContent = c==='licence_inconnue' ? 'Cette licence n\'est pas reconnue dans l\'effectif du club : préviens la sportive.'
       : c==='date_incorrecte' ? 'Date de naissance incorrecte.'+(b.restants!=null?' Il te reste '+b.restants+' essai'+(b.restants>1?'s':'')+'.':'')
       : c==='trop_essais' ? 'Trop de tentatives. Réessaie dans '+mn+' minute'+(mn>1?'s':'')+'.'
-      : c==='appareil_limite' ? 'Cet appareil a déjà servi pour plusieurs licences différentes. Utilise ton propre téléphone.'
+      : c==='appareil_limite' ? 'Cet appareil a déjà servi à saisir pour 6 licences différentes. Utilise ton propre téléphone.'
       : 'Enregistrement impossible pour le moment.' + (c?' ('+c+')':'');
   }finally{
     document.getElementById('mOui').disabled=false; document.getElementById('mNon').disabled=false;

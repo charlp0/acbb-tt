@@ -209,7 +209,7 @@
       <div class="field" style="margin-bottom:12px"><label class="lab" for="mDob">Date de naissance</label><input id="mDob" inputmode="numeric" placeholder="jj/mm/aaaa" autocomplete="off" maxlength="10"></div>
       <div class="merr" id="mErr" hidden style="margin-bottom:12px"></div>
       <button class="btn primary big" id="mGo" type="submit">Voir et modifier mes dispos</button>
-      <p class="mnote" style="margin-top:12px">Tu retrouves tes dispos J1 à J7 telles que tu les as saisies, tu changes ce qu'il faut, tu enregistres. Première connexion : la date que tu tapes devient ta référence. Un même appareil peut saisir pour 3 joueurs au maximum. Ta date de naissance n'est jamais mémorisée sur cet appareil.</p>
+      <p class="mnote" style="margin-top:12px">Tu retrouves tes dispos J1 à J7 telles que tu les as saisies, tu changes ce qu'il faut, tu enregistres. Première connexion : la date que tu tapes devient ta référence. Un même appareil peut saisir pour 6 joueurs au maximum. Ta date de naissance n'est jamais mémorisée sur cet appareil.</p>
     </form>
     <div id="mStep2" hidden>
       <div class="mwho"><b id="mName"></b><span class="lab" id="mTeam"></span></div>
@@ -502,7 +502,7 @@
     if(code==='licence_inconnue') return 'Licence inconnue. Vérifie ton numéro (il figure sur ta licence FFTT) ou demande à ton capitaine.';
     if(code==='date_incorrecte') return 'Date de naissance incorrecte.'+(b.restants!=null?' Il te reste '+b.restants+' essai'+(b.restants>1?'s':'')+'.':'');
     if(code==='trop_essais'){ const s=+b.retry_s||0; const mn=Math.max(1,Math.ceil(s/60)); return 'Trop de tentatives. Réessaie dans '+mn+' minute'+(mn>1?'s':'')+'.'; }
-    if(code==='appareil_limite') return 'Cet appareil a déjà servi à saisir pour 3 licences différentes. Utilise ton propre téléphone ou demande à ton capitaine.';
+    if(code==='appareil_limite') return 'Cet appareil a déjà servi à saisir pour 6 licences différentes. Utilise ton propre téléphone ou demande à ton capitaine.';
     if(err&&err.status) return 'Erreur serveur ('+err.status+'). Réessaie dans quelques minutes.';
     return 'Serveur indisponible. Vérifie ta connexion et réessaie dans quelques minutes.';
   }

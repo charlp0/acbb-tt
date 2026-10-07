@@ -193,7 +193,7 @@
     if(code==='licence_inconnue') return 'Licence inconnue. Vérifie ton numéro (il figure sur ta licence FFTT) ou demande à ton capitaine.';
     if(code==='date_incorrecte') return 'Date de naissance incorrecte.'+(b.restants!=null?' Il te reste '+b.restants+' essai'+(b.restants>1?'s':'')+'.':'');
     if(code==='trop_essais'){ const mn=Math.max(1,Math.ceil((+b.retry_s||0)/60)); return 'Trop de tentatives. Réessaie dans '+mn+' minute'+(mn>1?'s':'')+'.'; }
-    if(code==='appareil_limite') return 'Cet appareil a déjà servi pour plusieurs licences différentes. Utilise ton propre téléphone ou demande à ton capitaine.';
+    if(code==='appareil_limite') return 'Cet appareil a déjà servi à saisir pour 6 licences différentes. Utilise ton propre téléphone ou demande à ton capitaine.';
     if(err&&err.status) return 'Erreur serveur ('+err.status+'). Réessaie dans quelques minutes.';
     return 'Serveur indisponible. Vérifie ta connexion et réessaie dans quelques minutes.';
   }
