@@ -17,9 +17,33 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
       - name: Vérifier chaque source (18 heures maximum)
+        id: fraicheur
         run: python3 scripts/check_data.py --require-fresh
+      - name: Serveur joignable
+        # Sans ce contrôle, rien ne signalait une fonction Edge `api` tombée : le site statique
+        # restait en ligne mais plus aucun accès joueur, capitaine ou sportive ne fonctionnait.
+        # La clé est la clé publique du front (shared/api.js, ANON) : elle n'ouvre aucune table.
+        # Tourne même si la fraîcheur a échoué : les deux pannes sont indépendantes.
+        id: serveur
+        if: ${{ !cancelled() }}
+        env:
+          API: https://vhhmageufrcenruywawg.supabase.co/functions/v1/api
+          ANON: sb_publishable_NuRpgtxqVQ87R6K8txw57Q_oBUt4qay
+        run: |
+          ko=0
+          for route in 'me' 'public/journee?j=1'; do   # /me -> 200 {"role":null} ; journée publique -> 200
+            code=000
+            for essai in 1 2 3; do                     # trois essais espacés de 20 s : un hoquet réseau n'ouvre pas d'issue
+              code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 -H "apikey: $ANON" -H "Authorization: Bearer $ANON" "$API/$route") || code=000
+              [ "$code" = 200 ] && break
+              sleep 20
+            done
+            echo "$API/$route -> HTTP $code"
+            [ "$code" = 200 ] || ko=1
+          done
+          exit $ko
       - name: Signaler le retard
-        if: failure()
+        if: failure() && steps.fraicheur.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -29,4 +53,16 @@ jobs:
           Au moins une source FFTT est périmée ou incohérente. Consulter le traitement de collecte et la date de chaque source dans l'espace sportive.
           NOTICE
             gh issue create -R "$GITHUB_REPOSITORY" --title "Données FFTT à vérifier" --body-file notice.md
+          fi
+      - name: Signaler un serveur injoignable
+        if: failure() && steps.serveur.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > serveur.md <<'NOTICE'
+          La fonction Edge `api` (Supabase) ne répond pas en 200 sur /me ou /public/journee : les accès joueur, capitaine et sportive sont probablement hors service, le site statique reste en ligne. Consulter les journaux de la fonction dans le tableau de bord Supabase et le traitement « Vérif fraîcheur des données » dans Actions.
+          NOTICE
+          N=$(gh issue list -R "$GITHUB_REPOSITORY" --state open --search 'Serveur du site injoignable à vérifier in:title' --json number -q length)
+          if [ "$N" = 0 ]; then
+            gh issue create -R "$GITHUB_REPOSITORY" --title "Serveur du site injoignable à vérifier" --body-file serveur.md
           fi
