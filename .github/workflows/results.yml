@@ -1,7 +1,14 @@
 name: Résultats équipes FFTT
 on:
-  schedule:
-    - cron: '5 6,11,17,21 * * *'
+  # Démarre à la fin de « Mise à jour données FFTT » (update-data.yml) au lieu d'un cron à :05 :
+  # les deux collectes tournaient en même temps (update-data dure 15-20 min), poussaient toutes
+  # deux sur main et déclenchaient chacune une publication. La publication reste assurée par
+  # pages.yml, qui écoute la fin de ce workflow (un run lancé par workflow_run déclenche bien
+  # les workflow_run suivants, alors qu'un push avec GITHUB_TOKEN ne déclenche aucun push).
+  workflow_run:
+    workflows: ['Mise à jour données FFTT']
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: write
@@ -11,11 +18,14 @@ concurrency:
   cancel-in-progress: false
 jobs:
   results:
-    if: github.ref == 'refs/heads/main'
+    # Quel que soit le résultat de la mise à jour des données : les feuilles et classements
+    # ne dépendent pas des profils joueurs (c'est la raison d'être de ce workflow séparé).
+    if: (github.event_name != 'workflow_run' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with: {ref: main}
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
       - run: pip install requests
