@@ -59,8 +59,15 @@
     const $=s=>box.querySelector(s);
     const q=$('#'+p+'Q'), ul=$('#'+p+'List'), moi=$('.cj-moi'), licBox=$('.cj-lic'), lic=$('#'+p+'Lic'), lien=$('.cj-lnk'), cherche=$('.cj-cherche');
     if(o.lienDans) o.lienDans.appendChild(lien);
-    let idx=null, manuel=false, actif=-1, trouves=[], choisi=null;
-    const pret=liste(o.base).then(i=>{ idx=i; return i; }).catch(()=>{ idx=null; mode(true); lien.hidden=true; return null; });
+    let idx=null, manuel=false, actif=-1, trouves=[], choisi=null, pret=null, echec=false;
+    /* La liste (~143 Ko) n'est demandée qu'au premier besoin (07/10/2026) : focus ou saisie dans le champ de recherche,
+       ou préselection d'une licence mémorisée. Un visiteur qui n'ouvre pas la recherche ne la télécharge pas. Une seule
+       tentative, comme avant : en cas d'échec, repli définitif sur la saisie manuelle de la licence. */
+    function charger(){
+      if(!pret) pret=liste(o.base).then(i=>{ idx=i; return i; })
+        .catch(()=>{ idx=null; echec=true; mode(true); lien.hidden=true; if(document.activeElement===q) lic.focus(); return null; });
+      return pret;
+    }
     const ouvert=on=>{ ul.hidden=!on; q.setAttribute('aria-expanded',String(on)); if(!on) q.removeAttribute('aria-activedescendant'); };
     function dessiner(){
       const t=q.value.trim(); actif=-1;
@@ -80,8 +87,9 @@
     }
     function mode(on){ manuel=on; choisi=null; ouvert(false); moi.hidden=true; cherche.hidden=on; licBox.hidden=!on;
       lien.hidden=false; lien.textContent=on?'Chercher mon nom dans la liste':'Je ne me trouve pas : saisir ma licence'; if(on) lic.value=''; }
-    function vider(){ q.value=''; mode(false); if(!idx){ mode(true); lien.hidden=true; } }
-    q.addEventListener('input',()=>{ if(idx) dessiner(); else pret.then(()=>{ if(idx) dessiner(); }); });
+    function vider(){ q.value=''; mode(false); if(echec){ mode(true); lien.hidden=true; } }
+    q.addEventListener('focus',()=>{ charger(); });
+    q.addEventListener('input',()=>{ charger(); if(idx) dessiner(); else pret.then(()=>{ if(idx) dessiner(); }); });
     q.addEventListener('keydown',e=>{
       if(e.key==='ArrowDown'){ e.preventDefault(); if(ul.hidden) dessiner(); surligner(actif+1); }
       else if(e.key==='ArrowUp'){ e.preventDefault(); surligner(actif-1); }
@@ -100,8 +108,9 @@
       choisi:()=>choisi,
       champ:()=>manuel?lic:q,                       // le champ à remplir (recherche ou licence)
       vider,
-      // licence connue d'avance (dernière saisie mémorisée, échec à reprendre) : la carte si le joueur est dans la liste
-      preselection(l){ l=String(l||''); if(!l) return pret; return pret.then(()=>{ const x=idx&&idx.find(y=>y.lic===l); if(x) choisir(x,false); else { mode(true); lic.value=l; } }); }
+      // licence connue d'avance (dernière saisie mémorisée, échec à reprendre) : la carte si le joueur est dans la liste ;
+      // vide (visiteur sans licence mémorisée) : rien à chercher, la liste n'est pas chargée
+      preselection(l){ l=String(l||''); if(!l) return pret||Promise.resolve(null); return charger().then(()=>{ const x=idx&&idx.find(y=>y.lic===l); if(x) choisir(x,false); else { mode(true); lic.value=l; } }); }
     };
   }
   const API={nrm,entree,correspond,trouve,chercher,liste,identite,fusion};

@@ -314,8 +314,10 @@
     Promise.all([ACBB.json('data/site.json'),ACBB.json('data/scoring.json')]).then(([s,sc])=>{ S.site=s; S.players=(sc&&sc.players)||[]; S.feuilles=null; if(TAB==='poule') renderPoule(); else if(S.dispos) renderDispos(); }).catch(()=>{ S.historyError=true; if(S.dispos)renderDispos(); });
     ACBB.json('data/resultats2627.json').then(r=>{ if(r&&r.resultats) S.resultats=r.resultats; if(TAB==='poule') renderPoule(); }).catch(()=>{});
     /* Brûlage des adversaires (II.112), calculé chaque jour par scripts/fftt_brulages.py depuis les feuilles des équipes
-       plus fortes de leur club. Facultatif : sans ce fichier, la fiche scouting s'affiche sans badge. */
-    ACBB.json('data/brulages2627.json').then(b=>{ S.brul=b||null; if(TAB==='poule') renderPoule(); }).catch(()=>{ S.brul=null; });
+       plus fortes de leur club. Facultatif : sans ce fichier, la fiche scouting s'affiche sans badge. Lu seulement pour
+       « Ma poule » (138 Ko, exploité par renderScout) : « Mon équipe » ne s'en sert pas, et le passage d'un onglet à
+       l'autre recharge la page par l'URL ?tab=poule (shared/nav.js). */
+    if(TAB==='poule') ACBB.json('data/brulages2627.json').then(b=>{ S.brul=b||null; renderPoule(); }).catch(()=>{ S.brul=null; });
     /* Adresses des déplacements. Deux sources, dans cet ordre : le planning tenu à la main par la
        sportive (salles2627.json), qui connaît les exceptions — notre F1 reçoit une journée à Marly ;
        puis, à défaut, la salle DÉCLARÉE par le club adverse à la FFTT (salles_adverses.json), la même
