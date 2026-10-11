@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """Sonde : parties du critérium fédéral des joueurs ACBB d'un tour, lues dans le flux provisoire
 xml_partie.php?numlic= (dispo le soir même). Joueurs et groupes pris dans data/criterium2627.json.
-Env : TOUR (défaut 1), DIVS (défaut "D1,D2"), GENRE (défaut M), NIVEAU (défaut D). Lecture seule."""
+Env : TOUR (défaut 1), DIVS (défaut "D1,D2"), GENRE (défaut M), NIVEAU (défaut D), AGE (défaut ELITE, * = toutes). Lecture seule."""
 import os, re, sys, json, time, importlib.util
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
 TOUR = os.environ.get('TOUR', '1'); DIVS = set((os.environ.get('DIVS') or 'D1,D2').split(','))
-GENRE = os.environ.get('GENRE', 'M'); NIVEAU = os.environ.get('NIVEAU', 'D')
+GENRE = os.environ.get('GENRE', 'M'); NIVEAU = os.environ.get('NIVEAU', 'D'); AGE = os.environ.get('AGE', 'ELITE')  # ELITE = seniors ; '*' = toutes catégories
 
 def tg(b, t):
     m = re.search('<'+t+'>(.*?)</'+t+'>', b, re.S); return m.group(1).strip() if m else ''
@@ -27,7 +27,7 @@ def pts(my, adv, gagne):
 
 d = json.load(open('data/criterium2627.json', encoding='utf-8'))
 tour = d['tours'][TOUR]
-groups = [g for g in tour['groupes'] if g.get('niveau') == NIVEAU and g.get('genre') == GENRE and g.get('div') in DIVS]
+groups = [g for g in tour['groupes'] if g.get('niveau') == NIVEAU and g.get('genre') == GENRE and g.get('div') in DIVS and (AGE == '*' or g.get('age') == AGE)]
 print('Tour %s — %d groupe(s) : %s' % (TOUR, len(groups), ', '.join(g['nom'] for g in groups)))
 resume = []
 for g in groups:
