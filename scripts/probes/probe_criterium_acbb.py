@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Sonde : parties du critérium fédéral des joueurs ACBB d'un tour, lues dans le flux provisoire
 xml_partie.php?numlic= (dispo le soir même). Joueurs et groupes pris dans data/criterium2627.json.
-Env : TOUR (défaut 1), DIVS (défaut "D1,D2"), GENRE (défaut M), NIVEAU (défaut D), AGE (défaut ELITE, * = toutes). Lecture seule."""
+Env : TOUR (défaut 1), DIVS (défaut "D1,D2"), GENRE (défaut M), NIVEAU (défaut D), AGE (défaut ELITE ; JEUNES = tout sauf ELITE ; * = toutes). '*' accepté aussi pour DIVS/GENRE/NIVEAU. Lecture seule."""
 import os, re, sys, json, time, importlib.util
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
@@ -27,7 +27,13 @@ def pts(my, adv, gagne):
 
 d = json.load(open('data/criterium2627.json', encoding='utf-8'))
 tour = d['tours'][TOUR]
-groups = [g for g in tour['groupes'] if g.get('niveau') == NIVEAU and g.get('genre') == GENRE and g.get('div') in DIVS and (AGE == '*' or g.get('age') == AGE)]
+def ok(g):
+    if NIVEAU != '*' and g.get('niveau') != NIVEAU: return False
+    if GENRE != '*' and g.get('genre') != GENRE: return False
+    if '*' not in DIVS and g.get('div') not in DIVS: return False
+    if AGE == 'JEUNES': return g.get('age') != 'ELITE'
+    return AGE == '*' or g.get('age') == AGE
+groups = [g for g in tour['groupes'] if ok(g)]
 print('Tour %s — %d groupe(s) : %s' % (TOUR, len(groups), ', '.join(g['nom'] for g in groups)))
 resume = []
 for g in groups:
