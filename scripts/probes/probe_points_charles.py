@@ -4,6 +4,7 @@ Lit xml_licence_b (pointm = points mensuels), xml_joueur (point / apoint / valcl
 et xml_partie.php?numlic= (parties de la saison en cours, avec coefchamp), puis recalcule le
 solde avec le barème FFTT × coefchamp. Lecture seule, ne modifie rien."""
 import os, re, sys, importlib.util
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))  # scripts/ : fftt_quality etc.
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
 LIC = os.environ.get('LIC') or (sys.argv[1] if len(sys.argv) > 1 else '7824630')
