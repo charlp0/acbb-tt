@@ -36,7 +36,7 @@ def pts(my, adv, gagne):
 def num(s):
     m = re.search(r'\d+(?:[.,]\d+)?', s or ''); return float(m.group(0).replace(',', '.')) if m else None
 
-base = num(os.environ.get('MYPTS') or '') or num(tg(lic_b, 'initm')) or num(tg(jou, 'valinit')) or num(tg(jou, 'apoint')) or 1042.0
+base = num(os.environ.get('MYPTS') or '') or num(tg(jou, 'valcla')) or num(tg(lic_b, 'point')) or num(tg(jou, 'point')) or 1042.0  # valcla = points officiels (initm/valinit = début de saison précédente)
 print('\nBase de calcul (points officiels) : %s' % base)
 
 r = fb.get('xml_partie.php?numlic=%s' % LIC)
