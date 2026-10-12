@@ -2,12 +2,12 @@
 """Sonde (lecture seule) : divisions du critérium fédéral du CD92 (organisme 116) via xml_division
 (autorisé) en testant l'épreuve 18367 vue dans les liens de tours, puis par balayage d'identifiants
 d'épreuve ; pour chaque division : tours (action=poule), classement du T1 (cx_tableau) et joueurs ACBB.
-Env : ORG (116), EPR (18367), SCAN (18000-18800), CLUB_NOM."""
+Env : ORGS (116,16,1 = CD92, ligue IDF, FFTT), EPR (18367 = critérium 2026-27), SCAN (18000-18800), CLUB_NOM."""
 import os, re, sys, html, importlib.util, requests, time
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
-ORG = os.environ.get('ORG', '116'); EPR = os.environ.get('EPR', '18367'); CLUB = os.environ.get('CLUB_NOM', 'BOULOGNE BILLANCOURT')
+ORGS = (os.environ.get('ORGS') or '116,16,1').split(','); ORG = ORGS[0]; EPR = os.environ.get('EPR', '18367'); CLUB = os.environ.get('CLUB_NOM', 'BOULOGNE BILLANCOURT')
 a, b = (os.environ.get('SCAN') or '18000-18800').split('-')
 def get(ep, pause=0.15):
     for _ in range(3):
@@ -24,7 +24,7 @@ def divisions(org, epr):
     r = get('xml_division.php?organisme=%s&epreuve=%s&type=I' % (org, epr))
     return [(tg(d, 'iddivision'), sq(tg(d, 'libelle'))) for d in re.findall(r'<division>(.*?)</division>', r, re.S)]
 found = {}
-for org in (ORG, '16', '1'):
+for org in ORGS:
     divs = divisions(org, EPR); print('épreuve %s, organisme %s → %d divisions' % (EPR, org, len(divs)), flush=True)
     if divs: found[(org, EPR)] = divs
 if (ORG, EPR) not in found:
@@ -35,7 +35,6 @@ if (ORG, EPR) not in found:
 for (org, epr), divs in found.items():
     print('\n#### organisme %s, épreuve %s : %d divisions' % (org, epr, len(divs)), flush=True)
     for iddiv, lib in divs: print('   %s  %s' % (iddiv, lib))
-    if org != ORG: continue
     for iddiv, lib in divs:
         tours = [(sq(tg(t, 'libelle')), tg(t, 'date'), html.unescape(re.sub(r'<!\[CDATA\[|\]\]>', '', tg(t, 'lien')))) for t in re.findall(r'<tour>(.*?)</tour>', get('xml_result_indiv.php?action=poule&epr=%s&res_division=%s' % (epr, iddiv)), re.S)]
         t1 = [t for t in tours if t[0].upper().startswith('T1') or t[1] in ('10/10/2026', '11/10/2026')] or tours[-1:]
