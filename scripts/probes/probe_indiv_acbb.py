@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
 CLUB = os.environ.get('CLUB_NOM', 'BOULOGNE BILLANCOURT')
-RANGES = os.environ.get('RANGES', '233800-236200')
+RANGES = os.environ.get('RANGES', '264601-268400')
 WORKERS = int(os.environ.get('WORKERS', '6'))
 def tg(b, t):
     m = re.search('<'+t+'>(.*?)</'+t+'>', b, re.S); return m.group(1).strip() if m else ''
