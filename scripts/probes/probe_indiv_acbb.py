@@ -2,14 +2,15 @@
 """Sonde (lecture seule) : classements de critérium fédéral des divisions où joue un licencié ACBB.
 xml_result_indiv.php?action=classement&epr=0&res_division=<id> rend <classement><rang/nom/clt/club/points>.
 Sans xml_epreuve (bloqué), on balaie les identifiants de division (env RANGES, défaut
-"233800-236200,262000-264600") et on garde les divisions contenant le club. 4 fils."""
+"233800-236200") et on garde les divisions contenant le club. WORKERS fils (défaut 6), progression affichée."""
 import os, re, sys, importlib.util, requests, time, collections
 from concurrent.futures import ThreadPoolExecutor
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
 CLUB = os.environ.get('CLUB_NOM', 'BOULOGNE BILLANCOURT')
-RANGES = os.environ.get('RANGES', '233800-236200,262000-264600')
+RANGES = os.environ.get('RANGES', '233800-236200')
+WORKERS = int(os.environ.get('WORKERS', '6'))
 def tg(b, t):
     m = re.search('<'+t+'>(.*?)</'+t+'>', b, re.S); return m.group(1).strip() if m else ''
 def fetch(div):
@@ -25,9 +26,13 @@ ids = []
 for part in RANGES.split(','):
     a, b = part.split('-'); ids += list(range(int(a), int(b) + 1))
 t0 = time.time(); hits = {}
-with ThreadPoolExecutor(max_workers=4) as ex:
+done = 0
+with ThreadPoolExecutor(max_workers=WORKERS) as ex:
     for div, txt in ex.map(fetch, ids):
-        if CLUB.upper() in txt.upper(): hits[div] = txt
+        done += 1
+        if done % 250 == 0: print('  … %d/%d ids, %d hits, %.0f s' % (done, len(ids), len(hits), time.time() - t0), flush=True)
+        if CLUB.upper() in txt.upper():
+            hits[div] = txt; print('  HIT division %d' % div, flush=True)
 print('balayage de %d ids en %.0f s → %d divisions avec %s' % (len(ids), time.time() - t0, len(hits), CLUB))
 resume = []
 for div in sorted(hits):
