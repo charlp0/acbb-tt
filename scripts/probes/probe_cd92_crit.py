@@ -39,12 +39,23 @@ for (org, epr), divs in found.items():
         tours = [(sq(tg(t, 'libelle')), tg(t, 'date'), html.unescape(re.sub(r'<!\[CDATA\[|\]\]>', '', tg(t, 'lien')))) for t in re.findall(r'<tour>(.*?)</tour>', get('xml_result_indiv.php?action=poule&epr=%s&res_division=%s' % (epr, iddiv)), re.S)]
         t1 = [t for t in tours if t[0].upper().startswith('T1') or t[1] in ('09/10/2026', '10/10/2026', '11/10/2026')] or tours[-1:]
         if not t1: print('\n== %s (%s) : aucun tour' % (lib, iddiv)); continue
+        others = {int(m.group(1)) for t in tours for m in [re.search(r'cx_tableau=(\d+)', t[2])] if m}
         for grp in t1:
-            lien = grp[2]; cx = re.search(r'cx_tableau=(\d+)', lien)
-            r = get('xml_result_indiv.php?action=classement&' + lien) if cx else ''
-            rows = [(tg(c, 'rang'), tg(c, 'nom'), tg(c, 'clt'), tg(c, 'club'), tg(c, 'points')) for c in re.findall(r'<classement>(.*?)</classement>', r, re.S)]
-            acbb = [x for x in rows if CLUB.upper() in x[3].upper()]
-            print('\n== %s (div %s) — %s %s — %d classés, %d ACBB' % (lib, iddiv, grp[0], grp[1], len(rows), len(acbb)), flush=True)
-            for rang, nom, clt, club, pts in rows:
-                if (acbb and 'ELITE' in lib.upper() and 'MESS' in lib.upper() and len(rows) <= 40) or CLUB.upper() in club.upper():
-                    print('  %s %4s/%-3d %-28s %5s %-30s %s' % ('★' if CLUB.upper() in club.upper() else ' ', rang, len(rows), nom[:28], clt, club[:30], pts))
+            cx0 = re.search(r'cx_tableau=(\d+)', grp[2])
+            if not cx0: continue
+            cx0 = int(cx0.group(1)); seen = set(); letter = None
+            for k in range(0, 8):
+                cx = cx0 + k
+                if k and cx in others: break  # id du tour suivant
+                r = get('xml_result_indiv.php?action=classement&epr=%s&res_division=%s&cx_tableau=%d' % (epr, iddiv, cx))
+                rows = [(tg(c, 'rang'), tg(c, 'nom'), tg(c, 'clt'), tg(c, 'club'), tg(c, 'points')) for c in re.findall(r'<classement>(.*?)</classement>', r, re.S)]
+                if not rows: break
+                let = ''.join(ch for ch in rows[0][4] if ch.isalpha())[-1:] if rows[0][4] else ''
+                names = {x[1] + '|' + x[3] for x in rows}
+                if k and (names & seen or (letter and let != letter)): print('   (cx %d ignoré : autre division probable)' % cx); break
+                seen |= names; letter = letter or let
+                acbb = [x for x in rows if CLUB.upper() in x[3].upper()]
+                print('\n== %s (div %s) — %s%s %s — %d classés, %d ACBB' % (lib, iddiv, grp[0], (' +%d' % k) if k else '', grp[1], len(rows), len(acbb)), flush=True)
+                for rang, nom, clt, club, pts in rows:
+                    if (acbb and 'ELITE' in lib.upper() and 'MESS' in lib.upper() and len(rows) <= 40) or CLUB.upper() in club.upper():
+                        print('  %s %4s/%-3d %-28s %5s %-30s %s' % ('★' if CLUB.upper() in club.upper() else ' ', rang, len(rows), nom[:28], clt, club[:30], pts))
