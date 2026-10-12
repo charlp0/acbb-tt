@@ -37,13 +37,14 @@ for (org, epr), divs in found.items():
     for iddiv, lib in divs: print('   %s  %s' % (iddiv, lib))
     for iddiv, lib in divs:
         tours = [(sq(tg(t, 'libelle')), tg(t, 'date'), html.unescape(re.sub(r'<!\[CDATA\[|\]\]>', '', tg(t, 'lien')))) for t in re.findall(r'<tour>(.*?)</tour>', get('xml_result_indiv.php?action=poule&epr=%s&res_division=%s' % (epr, iddiv)), re.S)]
-        t1 = [t for t in tours if t[0].upper().startswith('T1') or t[1] in ('10/10/2026', '11/10/2026')] or tours[-1:]
+        t1 = [t for t in tours if t[0].upper().startswith('T1') or t[1] in ('09/10/2026', '10/10/2026', '11/10/2026')] or tours[-1:]
         if not t1: print('\n== %s (%s) : aucun tour' % (lib, iddiv)); continue
-        lien = t1[0][2]; cx = re.search(r'cx_tableau=(\d+)', lien)
-        r = get('xml_result_indiv.php?action=classement&' + lien) if cx else ''
-        rows = [(tg(c, 'rang'), tg(c, 'nom'), tg(c, 'clt'), tg(c, 'club'), tg(c, 'points')) for c in re.findall(r'<classement>(.*?)</classement>', r, re.S)]
-        acbb = [x for x in rows if CLUB.upper() in x[3].upper()]
-        print('\n== %s (div %s) — %s %s — %d classés, %d ACBB' % (lib, iddiv, t1[0][0], t1[0][1], len(rows), len(acbb)), flush=True)
-        for rang, nom, clt, club, pts in rows:
-            if acbb and ('MESSIEURS' in lib.upper() or 'ELITE' in lib.upper()) and len(rows) <= 40 or CLUB.upper() in club.upper():
-                print('  %s %4s/%-3d %-28s %5s %-30s %s' % ('★' if CLUB.upper() in club.upper() else ' ', rang, len(rows), nom[:28], clt, club[:30], pts))
+        for grp in t1:
+            lien = grp[2]; cx = re.search(r'cx_tableau=(\d+)', lien)
+            r = get('xml_result_indiv.php?action=classement&' + lien) if cx else ''
+            rows = [(tg(c, 'rang'), tg(c, 'nom'), tg(c, 'clt'), tg(c, 'club'), tg(c, 'points')) for c in re.findall(r'<classement>(.*?)</classement>', r, re.S)]
+            acbb = [x for x in rows if CLUB.upper() in x[3].upper()]
+            print('\n== %s (div %s) — %s %s — %d classés, %d ACBB' % (lib, iddiv, grp[0], grp[1], len(rows), len(acbb)), flush=True)
+            for rang, nom, clt, club, pts in rows:
+                if (acbb and 'ELITE' in lib.upper() and 'MESS' in lib.upper() and len(rows) <= 40) or CLUB.upper() in club.upper():
+                    print('  %s %4s/%-3d %-28s %5s %-30s %s' % ('★' if CLUB.upper() in club.upper() else ' ', rang, len(rows), nom[:28], clt, club[:30], pts))
