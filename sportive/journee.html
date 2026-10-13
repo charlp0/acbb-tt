@@ -968,7 +968,11 @@ async function waText(t,j,opts){
   const ph=renforts.length?await getPhones():null;
   let s='🏓 ACBB TT — '+t+' · J'+j+' ('+div+(m.poule?' poule '+m.poule:'')+')\n';
   s+='📅 '+fmtD(m.date)+' · '+(m.exempt?'Exemption · composition réglementaire':(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp))+'\n';
-  if(withVenue&&m.dom&&m.salle) s+='📍 '+(m.venue||m.salle)+(m.venueNote?' — '+m.venueNote:'')+'\n';
+  // Domicile à Bartholdi : toujours dit, même dans l'export groupé sans adresses (demande de Charles, 13/10/2026) —
+  // la salle habituelle est la piscine, un joueur qui n'a pas lu le planning s'y rend par réflexe.
+  const bartholdi=m.dom&&/bartholdi/i.test((m.salle||'')+' '+(m.venue||''));
+  if(bartholdi) s+='📍 ⚠️ Match à *Bartholdi* (gymnase Bartholdi, rue de l’Ancienne-Mairie), pas à la piscine\n';
+  else if(withVenue&&m.dom&&m.salle) s+='📍 '+(m.venue||m.salle)+(m.venueNote?' — '+m.venueNote:'')+'\n';
   else if(withVenue&&m.venue) s+='📍 '+m.venue+(m.venueSrc==='club'?' (salle déclarée du club à la FFTT — sauf avis contraire)':'')+'\n';
   /* niveau adverse : moyenne des joueurs que l'adversaire a RÉELLEMENT alignés depuis la J1. On date
      la source, sinon le capitaine ne sait pas si le chiffre décrit l'équipe de cette saison ou celle

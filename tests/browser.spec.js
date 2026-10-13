@@ -525,3 +525,18 @@ test('CDP sportive : un licencié absent du scoring s’affiche sous son nom, pa
  await expect(page.getByRole('option',{name:/Alexandre BOILLOT LE GOFFIC/})).toBeVisible();
  expect(errors).toEqual([]);
 });
+
+test('export WhatsApp : un match à domicile à Bartholdi est signalé, même sans les adresses',async({page,context})=>{
+ const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/sportive/journee.html?j=2');await expect(page.locator('[data-note="M11"]')).toBeVisible();
+ const avant=await page.evaluate(()=>waText('M11',2,{adresse:false}));
+ expect(avant).toContain('🏠 Domicile');expect(avant).not.toContain('📍');   // piscine : rien à dire sans adresses
+ const salles=read('salles2627');const j2=salles.salles.M11.cal.find(c=>c.j===2);j2.salle='Bartholdi';j2.lieu_id='bartholdi';delete j2.venue;
+ await context.route('**/data/salles2627.json',r=>r.fulfill({json:salles}));
+ await page.reload();await expect(page.locator('[data-note="M11"]')).toBeVisible();
+ for(const o of [{adresse:false},undefined]){
+  const t=await page.evaluate(o=>waText('M11',2,o),o);
+  expect(t).toContain('⚠️ Match à *Bartholdi*');expect(t).toContain('pas à la piscine');expect(t.split('📍').length).toBe(2);
+ }
+ expect(errors).toEqual([]);
+});
