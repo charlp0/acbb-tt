@@ -71,6 +71,7 @@
     const ouvert=on=>{ ul.hidden=!on; q.setAttribute('aria-expanded',String(on)); if(!on) q.removeAttribute('aria-activedescendant'); };
     function dessiner(){
       const t=q.value.trim(); actif=-1;
+      if(!idx){ ouvert(false); return; }                 // liste pas encore arrivée : rien à montrer (surtout pas « aucun licencié »)
       if(nrm(t).length<2){ ouvert(false); return; }
       trouves=chercher(idx,t,8);
       ul.innerHTML=trouves.length?trouves.map((x,i)=>'<li role="option" id="'+p+'Opt'+i+'" data-i="'+i+'" aria-selected="false">'+esc(x.pre+' '+x.nom)+(x.pts?'<span class="pt">'+x.pts+' pts</span>':'')+'</li>').join('')
@@ -90,10 +91,13 @@
     function vider(){ q.value=''; mode(false); if(echec){ mode(true); lien.hidden=true; } }
     q.addEventListener('focus',()=>{ charger(); });
     q.addEventListener('input',()=>{ charger(); if(idx) dessiner(); else pret.then(()=>{ if(idx) dessiner(); }); });
+    /* Flèches et Entrée pressées pendant que la liste se charge (frappe rapide, réseau lent) : on attend la liste,
+       puis on rejoue l'action — l'affichage déclenché par la frappe passe avant, l'ordre des .then le garantit. */
+    const quandPrete=f=>{ if(idx||echec) f(); else charger().then(()=>{ if(idx) f(); }); };
     q.addEventListener('keydown',e=>{
-      if(e.key==='ArrowDown'){ e.preventDefault(); if(ul.hidden) dessiner(); surligner(actif+1); }
-      else if(e.key==='ArrowUp'){ e.preventDefault(); surligner(actif-1); }
-      else if(e.key==='Enter'){ e.preventDefault(); if(!ul.hidden&&trouves.length) choisir(trouves[actif>=0?actif:0]); }
+      if(e.key==='ArrowDown'){ e.preventDefault(); quandPrete(()=>{ if(ul.hidden) dessiner(); surligner(actif+1); }); }
+      else if(e.key==='ArrowUp'){ e.preventDefault(); quandPrete(()=>surligner(actif-1)); }
+      else if(e.key==='Enter'){ e.preventDefault(); quandPrete(()=>{ if(!ul.hidden&&trouves.length) choisir(trouves[actif>=0?actif:0]); }); }
       else if(e.key==='Escape'&&!ul.hidden){ e.preventDefault(); e.stopPropagation(); ouvert(false); }
     });
     q.addEventListener('blur',()=>setTimeout(()=>ouvert(false),150));
