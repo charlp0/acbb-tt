@@ -63,3 +63,14 @@ test('busy : libellé provisoire et bouton désactivé, puis libellé d’origin
   UI.busy(b,true);assert.equal(b.textContent,'…');
   UI.busy(null,true);   // sans bouton : rien ne casse
 });
+
+test('score en tableau : ACBB d’abord, l’adversaire en étiquette courte',()=>{
+  assert.equal(UI.advLabel('Stains ES-Pierrefitte AS 1'),'STAINS');
+  assert.equal(UI.advLabel('USM Malakoff 4'),'USM MALAKOFF');
+  assert.equal(UI.advLabel('Plessis Robins. 3'),'PLESSIS');
+  assert.equal(UI.advLabel('Chesnay 78 AS 4'),'CHESNAY');
+  assert.equal(UI.advLabel(''),'ADV.');
+  const h=UI.scoreboard(14,0,'Stains ES-Pierrefitte AS 1','win');
+  assert.match(h,/^<span class="sb win"><b>14<\/b><i>–<\/i><b>0<\/b><small>ACBB<\/small><small><\/small><small>STAINS<\/small><\/span>$/);
+  assert.ok(UI.scoreboard('<x>',1,'<y>').indexOf('<x>')<0);
+});

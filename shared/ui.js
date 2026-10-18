@@ -43,6 +43,18 @@
   function gateErrTxt(err,role){ return err?((err.body&&/jeton_invalide|jeton_requis|role_incorrect/.test(err.body.error||''))?'lien invalide ou révoqué — demande un nouveau lien à la sportive':'serveur : '+err.message):(role==='capitaine'?'ton lien est un lien capitaine':''); }
   // Bouton occupé : libellé provisoire et désactivé le temps d'une requête, puis libellé d'origine.
   function busy(b,on,txt){ if(!b) return; if(on){ b.dataset.txt=b.textContent; b.textContent=txt||'…'; b.disabled=true; } else { b.textContent=b.dataset.txt||b.textContent; b.disabled=false; } }
-  const UI={JOURS,PART,ACR,parseFR,fmtDate,capWord,shortName,normName,sameTeam,fmtTs,fmtTsCourt,fmtDT,errText,gateErrTxt,busy};
+  const escH=x=>String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  // Étiquette courte d'un adversaire sous un score : « STAINS », « USM MALAKOFF », « PLESSIS » — 12 caractères au plus.
+  function advLabel(name){
+    const mots=String(name||'').replace(/\s*\(\d+\)\s*$/,'').replace(/\s+\d+\s*$/,'').trim().split(/\s+/).filter(Boolean);
+    const out=[]; for(const m of mots){ out.push(m); if(out.join(' ').length>=6) break; }
+    const s=out.join(' ').toUpperCase().slice(0,12).trim(); return s||'ADV.';
+  }
+  /* Score présenté comme un tableau d'affichage : les chiffres, et dessous « ACBB » et l'adversaire. L'ordre
+     (ACBB d'abord, à domicile comme en déplacement) ne se devine plus (demande de Charles, 18/10/2026). */
+  function scoreboard(a,b,adv,cls){
+    return '<span class="sb'+(cls?' '+cls:'')+'"><b>'+escH(a)+'</b><i>–</i><b>'+escH(b)+'</b><small>ACBB</small><small></small><small>'+escH(advLabel(adv))+'</small></span>';
+  }
+  const UI={JOURS,PART,ACR,parseFR,fmtDate,capWord,shortName,normName,sameTeam,fmtTs,fmtTsCourt,fmtDT,errText,gateErrTxt,busy,advLabel,scoreboard};
   if(typeof module!=='undefined'&&module.exports) module.exports=UI; else racine.ACBB_UI=UI;
 })(typeof window!=='undefined'?window:globalThis);

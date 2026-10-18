@@ -149,7 +149,7 @@
     document.getElementById('hSub').textContent=(p.division||'')+(acbbTeam?' · '+shortName(acbbTeam.name):'')+' · '+(p.teams||[]).length+' équipes';
     const today=new Date(); today.setHours(0,0,0,0);
     const cal=(p.cal||[]);
-    document.getElementById('calSub').textContent=cal.length+' journée'+(cal.length>1?'s':'')+(S.team==='M1'?' · dates FFTT Pro B':' · Phase 1');
+    document.getElementById('calSub').textContent=cal.length+' journée'+(cal.length>1?'s':'')+(S.team==='M1'?' · dates FFTT Pro B':' · Phase 1')+' · score ACBB – adv.';
     document.getElementById('cal').innerHTML=cal.map(c=>{
       let name=c.oppName||null; if(!name&&c.opp!=null){ const t=(p.teams||[]).find(x=>x.pos===c.opp); name=t?t.name:null; }
       const dt=parseFR(c.date); const past=dt&&dt<today;

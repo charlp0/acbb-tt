@@ -170,10 +170,12 @@ test('accueil : trois compétitions en tuiles, une popup centrée par équipe av
  await expect(on).toHaveAttribute('aria-current','page');await expect(on).toContainText('Championnat');
  const paris=page.locator('.nv-tiles a.nv-tile[href$="cdp.html"]');   // le Championnat de Paris est ouvert
  await expect(paris).toContainText('de Paris');await expect(page.locator('.nv-tiles .nv-soon')).toHaveCount(0);
+ await page.locator('[role="tab"][data-j="1"]').click();   // la J1 a un score ; par défaut l'accueil montre la journée en cours
+ await expect(page.locator('.tc-score.sb').first()).toContainText('ACBB');   // le score dit qui est qui
  await expect(page.locator('#eqgrid .eqb')).toHaveCount(state.poules.poules.length);
  await page.locator('#eqgrid .eqb[data-t="M11"]').click();
  await expect(page.locator('#ebg')).toBeVisible();
- await expect(page.locator('#eCode')).toContainText('M11');
+ await expect(page.locator('#eCode')).toContainText('M11');await expect(page.locator('#eCalSub')).toContainText('ACBB – adv.');
  await expect(page.locator('#eCal .erow')).toHaveCount(state.poules.poules.find(p=>p.acbb==='M11').cal.length);
  await expect(page.locator('#eCal .erow').first()).toContainText('8 – 6');   // 22 – 20 FFTT, en parties gagnées
  await expect(page.locator('#eSt tr.me')).toContainText('ACBB · M11');
@@ -442,6 +444,7 @@ test('Accès : un lien capitaine devenu sous-sportive CDP reste celui de son éq
 
 test('capitaine · poule : classement moyen joué de chaque adversaire, tous ses joueurs et le badge brûlé',async({page,context})=>{
  const state=fixture(),errors=[];
+ state.site.DATA.M11.teams.find(t=>t.acbb).journees[0].opponent='ASNIERES TT 5';   // la vraie J1 de la M11 : score 8 – 6 pour « Notre rencontre »
  const opp=state.site.DATA.M11.teams.find(t=>/PUTEAUX/.test(t.name));
  const pl=(nom,prenom,cls,vic)=>({nom,prenom,cls,vic});
  opp.journees=[{journee:1,date:'18 sept. 2026',opponent:'BOURG LA REINE 2',played_games:14,match_score:25,opp_score:17,players:[pl('ALPHA','Ana',1200,3),pl('BETA','Bob',1100,1),pl('GAMMA','Gus',1000,0)]},
@@ -459,6 +462,9 @@ test('capitaine · poule : classement moyen joué de chaque adversaire, tous ses
  await expect(bob.locator('.tag.lose')).toHaveAttribute('title',/J2 en équipe 1, J3 en équipe 2.*ne peut plus jouer en équipe 3/);
  await expect(al.locator('.card2',{hasText:'Gus Gamma'})).toContainText('1 feuille');
  await expect(sc).toContainText('1 brûlé');await expect(sc).toContainText('Brûlage vérifié sur les feuilles');
+ await expect(page.locator('#oppSub')).toContainText('ACBB – adv.');
+ await page.locator('#opps .orow[data-j="1"]').click();   // J1 a un score (feuille de la maquette) : le tableau d'affichage nomme les deux camps
+ await expect(sc.locator('.face .sb small').first()).toHaveText('ACBB');await expect(sc.locator('.face .sb small').last()).toHaveText('ASNIERES');
  expect(errors).toEqual([]);
 });
 
