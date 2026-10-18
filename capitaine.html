@@ -474,6 +474,9 @@
     document.getElementById('debTitle').textContent='Debrief J'+S.j;
     document.getElementById('debMatch').textContent=m?(fmtDate(m.date)+' · '+(m.exempt?'exempte':shortName(m.opp)+' · '+(m.dom?'domicile':'extérieur'))):'';
     document.getElementById('scBLab').textContent=m&&m.opp&&!m.exempt?shortName(m.opp):'Adversaire';
+    // En déplacement, la feuille FFTT met le recevant d'abord : un capitaine a saisi « 0 – 14 » pour une victoire 14 – 0 (M5 J3, 18/10/2026)
+    var sh0=document.getElementById('scHint'); if(sh0){ if(!sh0.dataset.def) sh0.dataset.def=sh0.innerHTML;
+      sh0.innerHTML=(m&&!m.dom&&!m.exempt)?'Déplacement : le score d’<b style="color:var(--ink-2)">ACBB d’abord</b>, même si la feuille met '+esc(shortName(m.opp))+' en premier. En parties gagnées (ex. 14 – 0).':sh0.dataset.def; }
     const d=debFor(S.j);
     statutDebrief(d);
     /* pré-remplissage : score officiel FFTT s'il existe, sinon ce que le capitaine avait saisi */
