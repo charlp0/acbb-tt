@@ -33,7 +33,7 @@ def sheet_final(site, key):
             continue
         for row in team.get('journees', []):
             if row.get('journee') == j:
-                return row.get('match_score') is not None and row.get('opp_score') is not None
+                return row.get('match_score') is not None
     return False
 
 
