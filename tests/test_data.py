@@ -34,6 +34,10 @@ class DataTests(unittest.TestCase):
         with self.assertRaises(ValueError): check_site(old,new,['M11'])
         with self.assertRaises(ValueError): check_site({},new,['M11','M9'])
         check_site(old,old,['M11'])
+        # une feuille SANS score final (rencontre interrompue) peut disparaître : la FFTT l'a retirée (Puteaux, 02/10/2026)
+        partial=json.loads(json.dumps(old)); row=partial['DATA']['M11']['teams'][0]['journees'][0]
+        row['match_score']=None; row['opp_score']=None; row['played_games']=6
+        check_site(partial,new,['M11'])
 
     def test_generic_club_words_and_team_numbers_never_match(self):
         self.assertFalse(same_team('AS PARIS 2','AS NANTERRE 2'))

@@ -25,6 +25,18 @@ def missing_sheets(previous, current):
     return sorted(sheet_keys(previous) - sheet_keys(current))
 
 
+def sheet_final(site, key):
+    """Vrai si, dans ce lot, la feuille (équipe ACBB, nom d'équipe, journée) portait un score final."""
+    t, name, j = key
+    for team in site.get('DATA', {}).get(t, {}).get('teams', []):
+        if team.get('name') != name:
+            continue
+        for row in team.get('journees', []):
+            if row.get('journee') == j:
+                return row.get('match_score') is not None and row.get('opp_score') is not None
+    return False
+
+
 def describe_sheets(sheets):
     # Noms d'équipes et journées seulement, jamais les joueurs ni les accès API.
     return '; '.join('%s / %s / J%s' % item for item in sheets)
@@ -56,9 +68,17 @@ def check_site(previous, current, expected):
     if missing:
         raise ValueError('Poules FFTT absentes : ' + ', '.join(sorted(missing)))
     lost = missing_sheets(previous, current)
-    if lost:
+    # Une feuille SANS score final peut disparaître légitimement : rencontre interrompue (panne de lumière à
+    # Puteaux le 02/10/2026, M14 et M16) puis annulée par la FFTT en attendant qu'elle soit rejouée. La
+    # bloquer gelait tout le site (aucune publication du 13 au 18/10). Une feuille AVEC score final qui
+    # disparaît reste une régression : rien n'est écrit.
+    finales = [k for k in lost if sheet_final(previous, k)]
+    partielles = [k for k in lost if k not in finales]
+    if partielles:
+        print('Feuille(s) sans score retirée(s) par la FFTT (rencontre interrompue ?), tolérée(s) : ' + describe_sheets(partielles), flush=True)
+    if finales:
         raise ValueError('%d feuille(s) précédemment connue(s) manquante(s) : %s — publication refusée' %
-                         (len(lost), describe_sheets(lost)))
+                         (len(finales), describe_sheets(finales)))
     for t, pool in current['DATA'].items():
         if not pool.get('teams') or not any(x.get('acbb') for x in pool['teams']):
             raise ValueError('Poule sans équipe ACBB : ' + t)
