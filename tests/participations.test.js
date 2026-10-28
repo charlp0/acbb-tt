@@ -134,3 +134,32 @@ test('une feuille réelle ultérieure prime sur une déclaration NJ',()=>{
  assert.equal(m.parcours('101','M11').joue,1);assert.equal(m.parcours('101','M11').jours[0].t,'M11');
  assert.equal(PART.historyRules(m,'101','M15',2,{}).descendedJ2,true);
 });
+
+test('une rencontre à rejouer (reportée) n’est ni une feuille manquante ni une journée comptée',()=>{
+ const poules={M9:pool('M9'),M11:pool('M11')}; poules.M11.cal[1].reporte=true;   // M11 J2 interrompue, à rejouer
+ const m=PART.create({today:'2026-10-28',players,poules,site:{DATA:sheet('M11',1)},plans:{2:{M11:{p:['101'],st:'sent'}}}});
+ assert.deepEqual(m.missing(3,'M').filter(x=>x.t==='M11'),[]);
+ assert.equal(m.isPending('M11',2),true);
+ assert.deepEqual(m.rounds('M11'),[1]);
+ assert.equal(m.parcours('101','M11').inconnus,0);
+ // reprogrammée par la FFTT : la journée porte une date réelle à venir et aucun résultat
+ const site=sheet('M11',1); site.M11.teams[0].journees.push({journee:2,date:'30 oct. 2026',match_score:null,opp_score:null,played_games:0,players:[]});
+ const m2=PART.create({today:'2026-10-28',players,poules:{M9:pool('M9'),M11:pool('M11')},site:{DATA:site}});
+ assert.equal(m2.isPending('M11',2),true);assert.deepEqual(m2.missing(3,'M').filter(x=>x.t==='M11'),[]);
+ // la même journée passée sans nouvelle date reste une feuille manquante
+ const m3=PART.create({today:'2026-10-28',players,poules:{M9:pool('M9'),M11:pool('M11')},site:{DATA:sheet('M11',1)}});
+ assert.equal(m3.isPending('M11',2),false);assert.ok(m3.missing(3,'M').some(x=>x.t==='M11'&&x.j===2));
+});
+
+test('la deuxième rencontre au-dessus de l’équipe de base avertit : le joueur sera brûlé pour elle',()=>{
+ const poules={M9:pool('M9'),M10:pool('M10'),M11:pool('M11')};
+ const base=k=>k==='101'?'M11':null;
+ const m=PART.create({today:'2026-10-28',players,poules,site:{DATA:sheet('M9',1,[players[0]])},plans:{2:{M10:{p:['101'],st:'draft'}}}});
+ const alertes=RULES.check({model:m,t:'M10',j:2,players:byKey,poules,homeTeam:base,size:4,sexes:{'101':'M','102':'M'},extras:{ex:{},a_confirmer:{}}});
+ const a=alertes.find(x=>x.code==='brulage_base');
+ assert.ok(a);assert.equal(a.lvl,'warn');assert.match(a.msg,/Alex TEST : 2e rencontre au-dessus de son équipe M11 \(M9 J1, puis M10 J2\)/);
+ // première rencontre au-dessus (aucune feuille antérieure) : rien ; équipe de base plus forte que l'équipe composée : rien
+ const m0=PART.create({today:'2026-10-28',players,poules,plans:{2:{M10:{p:['101'],st:'draft'}}}});
+ assert.equal(RULES.check({model:m0,t:'M10',j:2,players:byKey,poules,homeTeam:base,size:4,sexes:{'101':'M'},extras:{ex:{},a_confirmer:{}}}).some(x=>x.code==='brulage_base'),false);
+ assert.equal(RULES.check({model:m,t:'M11',j:2,players:byKey,poules,homeTeam:()=>'M9',size:4,sexes:{'101':'M'},extras:{ex:{},a_confirmer:{}}}).some(x=>x.code==='brulage_base'),false);
+});

@@ -554,6 +554,7 @@
   /* score d'une journée : saisie du capitaine (cap/poule) → resultats2627.json → feuille FFTT 26/27 de site.json (si la poule correspond) */
   function scoreOf(j){ if(S.capRes[j]) return S.capRes[j]; const rr=(S.resultats[S.team]||[]).find(x=>x.j===j); if(rr&&rr.score_acbb!=null&&rr.score_adv!=null) return [+rr.score_acbb,+rr.score_adv]; return siteScore(matchOf(S.poule,j)); }
   /* Score FFTT -> parties gagnées : ACBB.parties(journée), dans shared/api.js (une seule règle). */
+  function ffttRow(t,j){ const pool=S.site&&S.site.DATA&&S.site.DATA[t]; const me=pool&&(pool.teams||[]).find(x=>x.acbb); return me?(me.journees||[]).find(r=>+r.journee===+j)||null:null; }
   function sitePools(){ if(S.poolsFor!==S.site){ S.poolsFor=S.site; S.pools=poolFor(S.site,S.poule); } return S.pools||null; }
   function siteScore(m){ /* rencontre retrouvée par le nom de l'adversaire (pas par le numéro de journée, qui peut différer du calendrier club) */
     if(!m||!m.opp||m.exempt) return null; const pools=sitePools(); if(!pools) return null;
@@ -691,6 +692,7 @@
     const vsAll=acbbTeam?played.filter(j=>sameTeam(j.opponent,acbbTeam.name)):[];
     const vsUs=vsAll.find(j=>+j.journee===m.j)||vsAll[0]||null;
     const sc=scoreOf(m.j)||(vsUs?(p=>p&&[p[1],p[0]])(ACBB.parties(vsUs)):null); /* dernier repli : la feuille adverse, score inversé */
+    const rep=sc?null:ACBB_UI.reportee((S.poule.cal||[]).find(c=>c.j===m.j),ffttRow(S.team,m.j));   // rencontre à rejouer
 
     let h='<div class="ch"><span class="lab" style="color:var(--blue)">Scouting · J'+m.j+' · '+esc(fmtDate(m.date))+' · '+(m.dom?'domicile':'extérieur')+'</span>'+(diff?'<span class="tag'+(diff.cls?' '+diff.cls:'')+'" title="Estimation : moyenne de la dernière compo adverse et place au classement">'+diff.label+'</span>':'')+'</div>';
     h+='<div class="h2">'+esc(shortName(t.name))+'</div>';
@@ -704,7 +706,7 @@
     const asc=avgScore(played); if(asc!=null) chips.push('<span class="chip" title="score moyen marqué par match">Score moy. <b>'+asc+'</b></span>');
     if(chips.length) h+='<div class="chips">'+chips.join('')+'</div>';
 
-    h+='<div class="sblock"><span class="lab">Notre rencontre</span><div class="card2 face"><span>J'+m.j+' · '+(m.dom?'domicile':'extérieur')+' · '+esc(fmtDate(m.date))+'</span>'+(sc?ACBB_UI.scoreboard(sc[0],sc[1],shortName(t.name),'sc '+scoreClass(sc[0],sc[1])):'<span class="lab">'+(vsUs?'score en attente':'à jouer')+'</span>')+'</div></div>';
+    h+='<div class="sblock"><span class="lab">Notre rencontre</span><div class="card2 face"><span>J'+m.j+' · '+(m.dom?'domicile':'extérieur')+' · '+esc(fmtDate(m.date))+'</span>'+(sc?ACBB_UI.scoreboard(sc[0],sc[1],shortName(t.name),'sc '+scoreClass(sc[0],sc[1])):'<span class="lab">'+(rep?(rep.date?'reportée au '+rep.date.slice(0,5):'à rejouer'):(vsUs?'score en attente':'à jouer'))+'</span>')+'</div></div>';
 
     if(pools){
       h+='<div class="sblock"><span class="lab">Compo récente</span>';

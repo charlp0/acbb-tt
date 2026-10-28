@@ -401,6 +401,8 @@ function jDate(j){ // date de référence : la plus fréquente parmi les équipe
 }
 const DOW=['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'];
 function fmtD(s){ const d=parseDate(s); return d?DOW[d.getDay()]+' '+s.slice(0,5):(s||'—'); }
+// journée FFTT de notre équipe (site.json) : date réelle et résultat, pour repérer une rencontre reportée
+function ffttRowJ(t,j){ const me=SITE&&SITE.DATA&&SITE.DATA[t]&&(SITE.DATA[t].teams||[]).find(x=>x.acbb); return me?(me.journees||[]).find(r=>+r.journee===+j)||null:null; }
 function matchOf(t,j){
   const P=POULES[t], cl=calOf(t,j); if(!P||!cl) return null;
   if(cl.exempt) return {exempt:true,date:cl.date};
@@ -530,7 +532,7 @@ function checkTeam(t,j){
   if(n<size) add(n?'warn':'info', n?('compo incomplète — '+(size-n)+' place'+(size-n>1?'s':'')+' à pourvoir')
     :(m.exempt?'feuille d\'exemption non saisie — le règlement impose de l\'envoyer quand même':'aucun joueur aligné'));
   if(n>size) add('err','trop de joueurs ('+n+'/'+size+')');
-  ACBB_RULES.check({model:PARTS,t,j,lineup:PARTS.lineup(t,j),players:BYKEY,
+  ACBB_RULES.check({model:PARTS,t,j,lineup:PARTS.lineup(t,j),players:BYKEY,homeTeam:homeTeam,
     poules:POULES,division:TEAMDIV[t],size,sexes:SEXE,extras:EXJ})
     .forEach(i=>add(i.lvl,i.msg,i.keys,i.code));
   // dispos
@@ -967,7 +969,8 @@ async function waText(t,j,opts){
   const renforts=sorted.filter(k=>{ const o=origin(k); return o&&o!==t; });
   const ph=renforts.length?await getPhones():null;
   let s='🏓 ACBB TT — '+t+' · J'+j+' ('+div+(m.poule?' poule '+m.poule:'')+')\n';
-  s+='📅 '+fmtD(m.date)+' · '+(m.exempt?'Exemption · composition réglementaire':(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp))+'\n';
+  const rep=(PARTS&&PARTS.isPending&&PARTS.isPending(t,j))?ACBB_UI.reportee(calOf(t,j),ffttRowJ(t,j)):null;
+  s+='📅 '+(rep?(rep.date?'Rencontre reportée au '+rep.date:'Rencontre à rejouer, date à fixer'):fmtD(m.date))+' · '+(m.exempt?'Exemption · composition réglementaire':(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp))+'\n';
   // Domicile à Bartholdi : toujours dit, même dans l'export groupé sans adresses (demande de Charles, 13/10/2026) —
   // la salle habituelle est la piscine, un joueur qui n'a pas lu le planning s'y rend par réflexe.
   const bartholdi=m.dom&&/bartholdi/i.test((m.salle||'')+' '+(m.venue||''));

@@ -242,6 +242,9 @@
   const parseFR=ACBB_UI.parseFR;
   /* Les dates de la Pro B arrivent déjà mises en forme (« mar. 29/09 ») : on en tire jour et mois, l'année
      se déduit de la saison (de juillet à décembre, l'année de la première journée ; ensuite, la suivante). */
+  // journée FFTT de notre équipe (site.json) ; « reportée au … » si la FFTT l'a reprogrammée ou si le calendrier la marque à rejouer
+  function ffttRow(t,j){ const pool=S.site&&S.site.DATA&&S.site.DATA[t]; const me=pool&&(pool.teams||[]).find(x=>x.acbb); return me?(me.journees||[]).find(r=>+r.journee===+j)||null:null; }
+  function lblAttente(t,c){ const rep=ACBB_UI.reportee(c,ffttRow(t,c.j)); return rep?(rep.date?'reportée au '+rep.date.slice(0,5):'à rejouer'):'en attente'; }
   function dateMatch(d){
     const dt=parseFR(d); if(dt) return dt;
     const m=/(\d{1,2})\/(\d{1,2})(?!\/)/.exec(d||''); if(!m) return null;
@@ -353,7 +356,8 @@
         // Sans score : « à venir » seulement si la rencontre n'a pas encore eu lieu. Passée, elle est
         // « en attente » de sa feuille (M14 en J2, interrompue par une panne de lumière, s'affichait « à venir »).
         const dm=dateMatch(m.date), auj=new Date(); auj.setHours(0,0,0,0);
-        const sc=(sa!=null)?ACBB_UI.scoreboard(sa,sb,shortName(m.opp),'tc-score '+scoreClass(sa,sb)):'<span class="tc-wait">'+(dm&&dm<auj?'en attente':'à venir')+'</span>';
+        const rep=(sa==null)?ACBB_UI.reportee((poule.cal||[]).find(c=>c.j===j),ffttRow(t,j)):null;   // rencontre à rejouer (panne, report FFTT)
+        const sc=(sa!=null)?ACBB_UI.scoreboard(sa,sb,shortName(m.opp),'tc-score '+scoreClass(sa,sb)):'<span class="tc-wait">'+(rep?(rep.date?'reportée au '+rep.date.slice(0,5):'à rejouer'):(dm&&dm<auj?'en attente':'à venir'))+'</span>';
         mid='<div class="tc-mid"><span class="tc-opp" title="'+esc(m.opp||'')+'">'+esc(shortName(m.opp)||'adversaire à confirmer')+'</span>'+sc+'</div>';
         if(it&&it.publie&&(it.texte||it.photo_url)){
           bot='<div class="tc-deb">'+(it.photo_url?'<img class="tc-thumb" src="'+esc(it.photo_url)+'" data-full="'+esc(it.photo_url)+'" data-cap="'+esc(t+' · J'+j+(m.opp?' · '+shortName(m.opp):'')+(it.auteur?' · photo du debrief de '+it.auteur:''))+'" alt="Photo '+t+' J'+j+' (cliquer pour agrandir)" loading="lazy">':'')+'<div><p>'+rich(it.texte||'')+'</p>'+(it.texte?'<button type="button" class="tc-more" hidden>lire la suite</button>':'')+'</div></div>'+(it.auteur?'<span class="lab tc-by">debrief de '+esc(it.auteur)+'</span>':'');
@@ -425,7 +429,7 @@
       if(m.exempt) droite='<span class="lab">exempte</span>';
       else { const sc=scoreEquipe(t,c.j,m.opp);
         droite=sc?'<span class="sc '+scoreClass(sc[0],sc[1])+'">'+sc[0]+' – '+sc[1]+'</span>'
-                 :'<span class="lab">'+(dt&&dt<auj?(t==='M1'?'non relié':'en attente'):'à venir')+'</span>'; }
+                 :'<span class="lab">'+(dt&&dt<auj?(t==='M1'?'non relié':lblAttente(t,c)):'à venir')+'</span>'; }
       return '<div class="erow"><span class="j">J'+c.j+'</span><span class="lab">'+esc(fmtDate(c.date))+'</span><span class="lab">'+(m.exempt?'':(m.dom?'dom.':'ext.'))+'</span><span class="o" title="'+esc(m.opp||'')+'">'+esc(m.exempt?'Repos':(shortName(m.opp)||'adversaire à confirmer'))+'</span>'+droite+'</div>';
     }).join('')||'<div class="evide">Calendrier non publié.</div>';
     const st=(S.site&&S.site.STANDINGS&&S.site.STANDINGS[t])||[];

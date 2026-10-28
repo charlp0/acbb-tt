@@ -55,6 +55,20 @@
   function scoreboard(a,b,adv,cls){
     return '<span class="sb'+(cls?' '+cls:'')+'"><b>'+escH(a)+'</b><i>–</i><b>'+escH(b)+'</b><small>ACBB</small><small></small><small>'+escH(advLabel(adv))+'</small></span>';
   }
-  const UI={JOURS,PART,ACR,parseFR,fmtDate,capWord,shortName,normName,sameTeam,fmtTs,fmtTsCourt,fmtDT,errText,gateErrTxt,busy,advLabel,scoreboard};
+  // Date FFTT en français (« 30 oct. 2026 ») ou jj/mm/aaaa → ISO, sinon null.
+  const MOIS_FR={'janv.':1,'févr.':2,'mars':3,'avr.':4,'mai':5,'juin':6,'juil.':7,'août':8,'sept.':9,'oct.':10,'nov.':11,'déc.':12};
+  function dateFR(s){ s=String(s||'').trim(); let m=/^(\d{1,2}) (janv\.|févr\.|mars|avr\.|mai|juin|juil\.|août|sept\.|oct\.|nov\.|déc\.) (\d{4})$/.exec(s);
+    if(m) return m[3]+'-'+String(MOIS_FR[m[2]]).padStart(2,'0')+'-'+m[1].padStart(2,'0'); m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s); return m?m[3]+'-'+m[2]+'-'+m[1]:null; }
+  /* Rencontre à rejouer (interrompue puis annulée par la FFTT : M14 et M16 à Puteaux le 02/10/2026) : marquée `reporte`
+     dans le calendrier (data/poules2627.json), ou reprogrammée par la FFTT (date réelle différente, à venir, sans
+     résultat). `cal` = l'entrée du calendrier, `row` = la journée FFTT de notre équipe (site.json). Rend {date} ou null. */
+  function reportee(cal,row,today){
+    if(!cal||cal.exempt) return null; const auj=today||new Date().toISOString().slice(0,10);
+    if(row&&!(row.match_score==null&&!(row.played_games>0))) return null;   // jouée : rien à dire
+    const dr=row?dateFR(row.date):null, dc=dateFR(cal.date), neuve=dr&&dc&&dr!==dc?dr.split('-').reverse().join('/'):null;
+    if(neuve&&dr>auj) return {date:neuve};
+    return cal.reporte?{date:neuve}:null;
+  }
+  const UI={JOURS,PART,ACR,parseFR,fmtDate,capWord,shortName,normName,sameTeam,fmtTs,fmtTsCourt,fmtDT,errText,gateErrTxt,busy,advLabel,scoreboard,dateFR,reportee};
   if(typeof module!=='undefined'&&module.exports) module.exports=UI; else racine.ACBB_UI=UI;
 })(typeof window!=='undefined'?window:globalThis);

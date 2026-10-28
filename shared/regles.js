@@ -30,6 +30,16 @@
       const elsewhere=model.assignments(k,j).filter(e=>e.t!==t&&e.t[0]===t[0]);
       if(elsewhere.length) add('doublon','err',label(k)+' également aligné en '+elsewhere.map(e=>e.t).join(', ')+' pour la même journée du championnat',[k]);
     });
+    /* Deuxième rencontre dans une équipe plus forte que l'équipe de base : celle qui brûle le joueur pour son équipe
+       jusqu'à la fin de la phase (II.112). Avertissement, pas interdiction : c'est un choix, mais il doit être conscient
+       (demande de Charles, 28/10/2026). Seules les participations confirmées comptent pour la première. */
+    if(typeof o.homeTeam==='function') keys.forEach(k=>{
+      const base=o.homeTeam(k); if(!base||base===t||base[0]!==t[0]) return;
+      const nb=+base.slice(1), nt=+t.slice(1); if(!(nt<nb)) return;
+      const parJ=new Map(); model.history(k,j,t[0]).forEach(e=>{ const n=+e.t.slice(1), cur=parJ.get(e.j); if(!cur||n<cur.n) parJ.set(e.j,{n,t:e.t}); });
+      const dessus=[...parJ.entries()].filter(([,v])=>v.n<nb).sort((a,b)=>a[0]-b[0]);
+      if(dessus.length===1) add('brulage_base','warn',label(k)+' : 2e rencontre au-dessus de son équipe '+base+' ('+dessus[0][1].t+' J'+dessus[0][0]+', puis '+t+' J'+j+') — il sera brûlé pour '+base+' jusqu’à la fin de la phase',[k]);
+    });
     const descended=statuses.filter(x=>x[1].descendedJ2).map(x=>x[0]);
     if(descended.length>1) add('brulage','err','Règle J2 (II.112.1) : '+descended.length+' joueurs descendus d’une équipe supérieure en J1 (max 1)',descended);
     const min=MIN[division];

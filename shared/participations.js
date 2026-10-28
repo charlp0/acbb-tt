@@ -42,9 +42,13 @@
     }
     return {resolve,canonical};
   }
+  const MOIS_FR={'janv.':1,'févr.':2,'mars':3,'avr.':4,'mai':5,'juin':6,'juil.':7,'août':8,'sept.':9,'oct.':10,'nov.':11,'déc.':12};
   function dateISO(s){
     const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s||'');
-    return m?m[3]+'-'+m[2]+'-'+m[1]:(/^\d{4}-\d{2}-\d{2}/.test(s||'')?s.slice(0,10):null);
+    if(m) return m[3]+'-'+m[2]+'-'+m[1];
+    if(/^\d{4}-\d{2}-\d{2}/.test(s||'')) return s.slice(0,10);
+    const f=/^(\d{1,2}) (janv\.|févr\.|mars|avr\.|mai|juin|juil\.|août|sept\.|oct\.|nov\.|déc\.) (\d{4})$/.exec(String(s||'').trim());   // date FFTT (« 30 oct. 2026 »)
+    return f?f[3]+'-'+String(MOIS_FR[f[2]]).padStart(2,'0')+'-'+f[1].padStart(2,'0'):null;
   }
   function create(options){
     const o=options||{}, ids=identities(o.players||[]), plans=o.plans||{}, confirmed=o.confirmedPlans||plans;
@@ -71,6 +75,20 @@
         sheets[t+':'+j]=s;
         resolved.forEach((k,i)=>{if(!k) unknown.push({t,j,reason:'identite',name:name(raw[i])});});
         p.forEach(k=>events.push({...context,championnat:t[0],k,t,j,source:'fftt',reel:true,played:true}));
+      });
+    });
+    /* Rencontres à rejouer : interrompues puis annulées par la FFTT (M14 et M16 à Puteaux, 02/10/2026). Tant qu'elles
+       ne sont pas rejouées, aucune feuille n'est attendue : ni manque, ni compteur « ? », ni journée comptée. Détection :
+       entrée `reporte` du calendrier, ou date FFTT différente du calendrier et à venir, sans résultat. */
+    const pending=new Set();
+    Object.keys(poules).filter(team).forEach(t=>{
+      const me=((((o.site&&o.site.DATA)||{})[t]||{}).teams||[]).find(x=>x.acbb)||null;
+      (poules[t].cal||[]).forEach(c=>{
+        if(c.exempt||sheets[t+':'+c.j]) return;
+        const row=me?(me.journees||[]).find(r=>+r.journee===+c.j)||null:null;
+        if(row&&!(row.match_score==null&&!(row.played_games>0))) return;
+        const dr=row?dateISO(row.date):null, dc=dateISO(c.date);
+        if(c.reporte||(dr&&dc&&dr!==dc&&dr>today)) pending.add(t+':'+c.j);
       });
     });
     function calendar(t,j){return ((poules[t]||{}).cal||[]).find(c=>+c.j===+j)||null;}
@@ -100,7 +118,7 @@
       const out=[];
       Object.keys(poules).filter(t=>team(t)&&(!genre||t[0]===genre)).forEach(t=>{
         (poules[t].cal||[]).forEach(c=>{
-          if(+c.j>=before) return;
+          if(+c.j>=before||pending.has(t+':'+c.j)) return;
           const s=sheets[t+':'+c.j];
           if(!s||!s.complete) out.push({t,j:+c.j,reason:s?'identite':c.exempt?'declaration_exemption':'feuille'});
         });
@@ -129,7 +147,7 @@
       return out;
     }
     function rounds(t){
-      return ((poules[t]||{}).cal||[]).filter(c=>sheets[t+':'+c.j]||(dateISO(c.date)&&dateISO(c.date)<today)).map(c=>+c.j).sort((a,b)=>a-b);
+      return ((poules[t]||{}).cal||[]).filter(c=>sheets[t+':'+c.j]||(dateISO(c.date)&&dateISO(c.date)<today&&!pending.has(t+':'+c.j))).map(c=>+c.j).sort((a,b)=>a-b);
     }
     function parcours(k,t){
       const js=rounds(t), jours=js.map(j=>{
@@ -141,7 +159,7 @@
         inconnus:jours.filter(x=>x.unknown).length,exemptions:jours.filter(x=>x.exempt).length,
         ailleurs:jours.filter(x=>x.t&&x.t!==t).map(x=>({j:x.j,t:x.t})),jours};
     }
-    return {context,events,sheets,unknown,canonical:ids.canonical,resolve:ids.resolve,calendar,lineup,history,missing,missingFor,assignments,rounds,parcours};
+    return {context,events,sheets,unknown,canonical:ids.canonical,resolve:ids.resolve,calendar,lineup,history,missing,missingFor,assignments,rounds,parcours,isPending:(t,j)=>pending.has(t+':'+j)};
   }
   function historyRules(model,k,t,j,poules){
     const h=model.history(k,j,t[0]), perRound=new Map();

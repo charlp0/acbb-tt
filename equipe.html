@@ -96,6 +96,7 @@
   const parseFR=ACBB_UI.parseFR;
   const fmtDate=ACBB_UI.fmtDate;
   function scoreClass(a,b){ return a>b?'win':(a<b?'lose':'draw'); }
+  function ffttRow(t,j){ const pool=S.site&&S.site.DATA&&S.site.DATA[t]; const me=pool&&(pool.teams||[]).find(x=>x.acbb); return me?(me.journees||[]).find(r=>+r.journee===+j)||null:null; }
   const sameTeam=ACBB_UI.sameTeam;
   function standingsFor(site,poule){ const st=site&&site.STANDINGS&&site.STANDINGS[poule.acbb]; if(!Array.isArray(st)||!st.length||!poule.teams) return null; const _joue=st.some(r=>(+r.mp||0)>0||(+r.pts||0)>0); if(!_joue) return null; /* avant la J1 : positions masquées, tout s'affiche dès que la FFTT remonte les premiers résultats */ let hits=0; poule.teams.forEach(t=>{ if(st.some(r=>sameTeam(r.name,t.name))) hits++; }); return hits>=Math.max(4,Math.ceil(poule.teams.length*0.6))?st:null; }
 
@@ -157,7 +158,7 @@
       let right;
       if(c.exempt) right='<span class="lab wait">exempte</span>';
       else if(sc) right='<span class="sc '+scoreClass(sc[0],sc[1])+'">'+sc[0]+' – '+sc[1]+'</span>';
-      else right='<span class="lab wait">'+(past?'en attente':'à venir')+'</span>';
+      else { const rep=ACBB_UI.reportee(c,ffttRow(S.team,c.j)); right='<span class="lab wait">'+(rep?(rep.date?'reportée au '+rep.date.slice(0,5):'à rejouer'):(past?'en attente':'à venir'))+'</span>'; }
       return '<div class="card2 crow'+(past?' past':'')+'"><span class="j">J'+c.j+'</span><span class="lab dt">'+esc(fmtDate(c.date))+'</span>'+(c.exempt?'<span class="ph"></span>':'<span class="tag c'+(c.dom?' dom':'')+'">'+(c.dom?'Dom.':'Ext.')+'</span>')+'<span class="opp" title="'+esc(name||'')+'">'+(c.exempt?'Exempte':esc(shortName(name)||'adversaire à confirmer'))+'</span>'+right+'</div>';
     }).join('')||'<div class="empty">Calendrier non publié.</div>';
 
