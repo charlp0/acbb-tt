@@ -110,6 +110,7 @@
       <label class="fld wide"><span class="lab" id="labNote">commentaire · qui l’a demandé</span><textarea id="edNote" rows="3" placeholder="ex. demande de Minh, WhatsApp 16/09" maxlength="1000"></textarea><span class="hint">affiché sous la contrainte ; la signature (ton prénom, la date) est ajoutée automatiquement. Les retours à la ligne sont conservés — utile pour un rappel de règlement en plusieurs points.</span></label>
       <div class="fld" id="fA"><span class="lab" id="labA">joueur(s)</span><div class="chips" id="chA"></div><div class="ac"><input id="qA" placeholder="tape un nom ou un prénom…" autocomplete="off"><div class="sug" id="sA" hidden></div></div></div>
       <div class="fld" id="fB" hidden><span class="lab">groupe B — jamais avec</span><div class="chips" id="chB"></div><div class="ac"><input id="qB" placeholder="tape un nom ou un prénom…" autocomplete="off"><div class="sug" id="sB" hidden></div></div></div>
+      <div class="fld" id="fJ" hidden><label><span class="lab">journée concernée</span><select id="edJ"><option value="">toutes les journées</option><option value="1">J1</option><option value="2">J2</option><option value="3">J3</option><option value="4">J4</option><option value="5">J5</option><option value="6">J6</option><option value="7">J7</option></select></label></div>
       <div class="fld two wide" id="fAdv" hidden><label><span class="lab">équipe ACBB</span><select id="edTeam"></select></label><label><span class="lab">adversaire (dans sa poule)</span><select id="edAdv"></select></label><span class="hint" id="edMatch"></span></div>
     </div>
     <div class="edf"><span class="err" id="edErr"></span><button class="btn primary" id="edSave" type="button">Enregistrer la contrainte</button></div>
@@ -369,6 +370,7 @@
     var teams=ORDER.filter(function(t){ return POULES[t]&&(POULES[t].teams||[]).length; });
     $('edTeam').innerHTML='<option value="">— choisir —</option>'+teams.map(function(t){ return '<option value="'+t+'">'+t+' · '+esc((POULES[t].division||'')+(POULES[t].poule!=null?' p'+POULES[t].poule:''))+'</option>'; }).join('');
     $('edTeam').onchange=function(){ ED.equipe=this.value; ED.adversaire=''; fillAdv(); };
+    $('edJ').onchange=function(){ ED.journee=this.value; };
     $('edAdv').onchange=function(){ ED.adversaire=this.value; showMatch(); };
     $('addBtn').onclick=function(){ openEditor(null); };
     $('edCancel').onclick=closeEditor;
@@ -377,7 +379,7 @@
     autocomplete('qB','sB',function(cp){ addChip('B',cp); });
   }
   function openEditor(c){
-    ED=c?{id:c.id,type:c.type,A:(c.joueurs||[]).slice(),B:(c.joueurs2||[]).slice(),equipe:c.equipe||'',adversaire:c.adversaire||'',orig:c}:{id:null,type:'ensemble',A:[],B:[],equipe:'',adversaire:'',orig:null};
+    ED=c?{id:c.id,type:c.type,A:(c.joueurs||[]).slice(),B:(c.joueurs2||[]).slice(),equipe:c.equipe||'',adversaire:c.adversaire||'',journee:c.journee||'',orig:c}:{id:null,type:'ensemble',A:[],B:[],equipe:'',adversaire:'',journee:'',orig:null};
     $('edTitle').textContent=c?'modifier la contrainte':'nouvelle contrainte';
     $('edType').value=ED.type; $('edNote').value=c?(c.note||''):''; $('edErr').textContent='';
     $('qA').value=''; $('qB').value='';
@@ -389,8 +391,8 @@
   function refreshFields(){
     var t=ED.type, T=C.TYPES[t]||{};
     $('edHelp').textContent=T.help||'';
-    $('fA').hidden=(t==='rappel'); $('fB').hidden=(t!=='separes'); $('fAdv').hidden=(t!=='adversaire');
-    $('labA').textContent=t==='separes'?'groupe A':(t==='ensemble'?'joueurs (au moins deux)':'joueur(s)');
+    $('fA').hidden=(t==='rappel'); $('fB').hidden=(t!=='separes'); $('fAdv').hidden=(t!=='adversaire'); $('fJ').hidden=(t!=='lieu'); $('edJ').value=ED.journee||'';
+    $('labA').textContent=t==='separes'?'groupe A':((t==='ensemble'||t==='lieu')?'joueurs (au moins deux)':'joueur(s)');
     $('labNote').textContent=t==='rappel'?'rappel (texte affiché)':'commentaire · qui l’a demandé';
     renderChips('A'); renderChips('B');
     $('edTeam').value=ED.equipe||''; fillAdv();
@@ -434,6 +436,7 @@
     var c={id:ED.id||C.newId(),type:ED.type,joueurs:ED.type==='rappel'?[]:ED.A.slice(),note:$('edNote').value.trim()};
     if(ED.type==='separes') c.joueurs2=ED.B.slice();
     if(ED.type==='adversaire'){ c.equipe=ED.equipe; c.adversaire=ED.adversaire; }
+    if(ED.type==='lieu'&&ED.journee) c.journee=+ED.journee;
     if(ED.orig){ c.par=ED.orig.par||''; c.le=ED.orig.le||''; c.modif={par:ME.nom||'',le:today}; } else { c.par=ME.nom||''; c.le=today; }
     var err=C.valider(c,POULES); if(err){ $('edErr').textContent=err; return; }
     $('edErr').textContent='';

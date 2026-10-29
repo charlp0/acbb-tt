@@ -541,7 +541,10 @@ function checkTeam(t,j){
   const ou=cp=>{ for(const o of TEAMS){ if(o!==t&&((PARTS.lineup(o,j)||{}).p||[]).some(k=>ACBB_CONTR.isP(cp,k,BYKEY))) return 'aligné en '+o; } return 'non aligné'; };
   // une exemption n'a ni adversaire ni lieu : on n'évalue que les contraintes qui s'en passent
   const _ctr=m.exempt?CONTR.filter(x=>x.type==='ensemble'||x.type==='separes'):CONTR;
-  ACBB_CONTR.check(_ctr,{t,j,P:c.p,dom:!!m.dom,adv:m.opp,BYKEY,POULES,ou}).forEach(i=>add(i.lvl,i.msg,i.keys,i.cid));
+  // « même endroit » : équipe où chaque joueur est aligné cette journée, et lieu de chaque équipe (salle à domicile, club adverse sinon)
+  const equipeDe=cp=>{ for(const o of TEAMS){ if(((PARTS.lineup(o,j)||{}).p||[]).some(k=>ACBB_CONTR.isP(cp,k,BYKEY))) return o; } return null; };
+  const lieuDe=o=>{ const mm=matchOf(o,j); return mm?{venue:mm.exempt?'':(mm.venue||(mm.dom?'domicile ACBB':'')),dom:!!mm.dom,opp:mm.opp||'',exempt:!!mm.exempt}:null; };
+  ACBB_CONTR.check(_ctr,{t,j,P:c.p,dom:!!m.dom,adv:m.opp,BYKEY,POULES,ou,equipeDe,lieuDe}).forEach(i=>add(i.lvl,i.msg,i.keys,i.cid));
   return {issues,flags};
 }
 function lvlOf(issues){ return issues.some(i=>i.lvl==='err')?'err':(issues.some(i=>i.lvl==='warn')?'warn':'ok'); }

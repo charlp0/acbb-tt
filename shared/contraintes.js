@@ -11,6 +11,7 @@
     separes:   {lab:'Jamais ensemble',         col:'red',    help:'Aucun joueur du groupe A ne doit être aligné avec un joueur du groupe B.'},
     domicile:  {lab:'Domicile de préférence',  col:'gold',   help:'Avertissement quand le joueur est aligné sur une rencontre à l’extérieur.'},
     adversaire:{lab:'Veut jouer contre…',      col:'orange', help:'Le joueur doit être aligné dans l’équipe choisie la journée où elle rencontre cet adversaire.'},
+    lieu:      {lab:'Même endroit (une journée)', col:'red', help:'Les joueurs listés doivent jouer dans la même salle la journée indiquée : même équipe, ou équipes qui jouent au même endroit. Erreur si les deux sont alignés dans des lieux différents.'},
     rappel:    {lab:'Rappel libre',            col:'grey',   help:'Affiché dans la liste, sans vérification automatique.'}
   };
   var ANT={k:'9257190',nom:'ALLEGRE-GUILLAUME',pre:'Antoine'}, BAP={k:'9257191',nom:'ALLEGRE-GUILLAUME',pre:'Baptiste'};
@@ -58,6 +59,7 @@
       case 'separes':    return lst(A,long_)+' jamais avec '+lst(B,long_,' ou ');
       case 'domicile':   return 'Éviter '+lst(A,long_,' et ')+' en déplacement';
       case 'adversaire': return lst(A,long_,' et ')+' veut jouer contre '+(c.adversaire||'?')+' avec '+(c.equipe||'?');
+      case 'lieu':       return lst(A,long_,' et ')+' au même endroit'+(c.journee?' (J'+c.journee+')':'');
       default:           return c.titre||c.note||'Rappel';
     }
   }
@@ -68,13 +70,14 @@
       case 'separes':    return lst(A,court)+' ≠ '+lst(B,court,' / ');
       case 'domicile':   return lst(A,court)+' à domicile';
       case 'adversaire': return lst(A,court)+' vs '+(c.adversaire||'?')+' ('+(c.equipe||'?')+')';
+      case 'lieu':       return lst(A,court,' + ')+' même lieu'+(c.journee?' J'+c.journee:'');
       default:           return (c.titre||c.note||'Rappel').slice(0,60);
     }
   }
   function valider(c,POULES){
     var T=TYPES[c.type]; if(!T) return 'type inconnu';
     var nA=(c.joueurs||[]).length, nB=(c.joueurs2||[]).length;
-    if(c.type==='ensemble'&&nA<2) return 'il faut au moins deux joueurs';
+    if((c.type==='ensemble'||c.type==='lieu')&&nA<2) return 'il faut au moins deux joueurs';
     if(c.type==='separes'&&(!nA||!nB)) return 'il faut au moins un joueur dans chaque groupe';
     if(c.type==='domicile'&&!nA) return 'il faut au moins un joueur';
     if(c.type==='adversaire'){ if(!nA) return 'il faut au moins un joueur'; if(!c.equipe) return 'choisis l’équipe'; if(!c.adversaire) return 'choisis l’adversaire'; if(POULES&&!journeeAdv(POULES,c.equipe,c.adversaire)) return 'cet adversaire n’est pas dans la poule de '+c.equipe; }
@@ -99,6 +102,21 @@
       } else if(c.type==='domicile'){
         var pd=present(A,P,BYKEY);
         if(pd.length){ if(ctx.dom===false) add('warn',lst(pd,court)+' à l’extérieur — à éviter (préférer le domicile)',keysOf(pd,P,BYKEY)); else if(ctx.j==null) add('info',lst(pd,court)+' : de préférence à domicile — à vérifier journée par journée (Compos journée)'); }
+      } else if(c.type==='lieu'){
+        /* même salle une journée donnée (frères Allegre-Guillaume en J4, demande de Charles 29/10/2026) : on compare le lieu
+           de l'équipe vérifiée à celui des équipes où sont alignés les autres joueurs (ctx.equipeDe, ctx.lieuDe). */
+        if(ctx.j!=null&&c.journee&&+c.journee!==+ctx.j) return;
+        var pl=present(A,P,BYKEY); if(!pl.length) return;
+        if(ctx.j==null){ add('info',lst(A,court,' et ')+' : au même endroit'+(c.journee?' en J'+c.journee:'')+' — à vérifier dans la compo de la journée'); return; }
+        var ab3=absent(A,P,BYKEY), ailleurs=[], manquent=[];
+        ab3.forEach(function(cp){ var o=ctx.equipeDe?ctx.equipeDe(cp):null; if(o) ailleurs.push({cp:cp,t:o}); else manquent.push(cp); });
+        if(manquent.length) add('warn',lst(A,court,' et ')+' doivent jouer au même endroit'+(c.journee?' en J'+c.journee:'')+' — pas aligné : '+lst(manquent,court),keysOf(pl,P,BYKEY));
+        var ici=ctx.lieuDe?ctx.lieuDe(ctx.t):null, ou_=function(l,t){ return t+(l?(l.dom?', domicile':(l.opp?', chez '+l.opp:'')):''); };
+        ailleurs.forEach(function(x){ var la=ctx.lieuDe?ctx.lieuDe(x.t):null, vi=ici&&nrmK(ici.venue), va=la&&nrmK(la.venue);
+          if(vi&&va&&vi===va) return;
+          if(!vi||!va) add('warn',lst(pl,court)+' ('+ou_(ici,ctx.t)+') et '+court(x.cp)+' ('+ou_(la,x.t)+') : lieu non renseigné, vérifier qu’ils jouent au même endroit',keysOf(pl,P,BYKEY));
+          else add('err',lst(pl,court)+' ('+ou_(ici,ctx.t)+') et '+court(x.cp)+' ('+ou_(la,x.t)+') doivent impérativement jouer au même endroit'+(c.journee?' en J'+c.journee:''),keysOf(pl,P,BYKEY));
+        });
       } else if(c.type==='adversaire'){
         if(ctx.t!==c.equipe) return;
         var r=ctx.POULES?journeeAdv(ctx.POULES,c.equipe,c.adversaire):null;
@@ -120,5 +138,6 @@
   function payload(liste,by){ return {slot:SLOT,author:'Contraintes',tags:{liste:liste,_meta:{saved:new Date().toISOString(),by:by||'',n:liste.length}}}; }
   function newId(){ return 'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
 
-  window.ACBB_CONTR={SLOT:SLOT,TYPES:TYPES,QUERY:QUERY,defauts:function(){ return clone(DEFAUTS); },nrmK:nrmK,fk:fk,court:court,long:long_,isP:isP,joueursDe:joueursDe,advOf:advOf,journeeAdv:journeeAdv,titre:titre,courtLab:courtLab,valider:valider,check:check,fromRows:fromRows,payload:payload,newId:newId};
+  var API={SLOT:SLOT,TYPES:TYPES,QUERY:QUERY,defauts:function(){ return clone(DEFAUTS); },nrmK:nrmK,fk:fk,court:court,long:long_,isP:isP,joueursDe:joueursDe,advOf:advOf,journeeAdv:journeeAdv,titre:titre,courtLab:courtLab,valider:valider,check:check,fromRows:fromRows,payload:payload,newId:newId};
+  if(typeof module!=="undefined"&&module.exports) module.exports=API; else window.ACBB_CONTR=API;
 })();
