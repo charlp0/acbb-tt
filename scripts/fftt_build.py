@@ -173,7 +173,10 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None, lb=None, pmysql=
         d=tag(b,'date'); pr=tag(b,'pointres'); idp=tag(b,'idpartie'); al=tag(b,'advlic')
         if d and dn(d)<SEASON_START: continue          # parties des saisons précédentes : hors récap
         if d and pr: hist.append((d,float(pr)))
-        if idp and pr: pts_by_id[idp]=float(pr)
+        # pointres = 0 : partie enregistrée mais pas encore calculée (feuille de championnat saisie, points au prochain
+        # calcul mensuel). L'appli FFTT la range dans « non validées » et l'estime ; on fait pareil (capture Charles,
+        # M11 du 02/10/2026 : 0 / +10 / -4 estimés). Un vrai zéro homologué (défaite à +400) s'estime aussi à 0.
+        if idp and pr and float(pr)!=0: pts_by_id[idp]=float(pr)
         if idp and al: advlic_by_id[idp]=al
     # base de la saison = classement officiel 26/27 (l'initm de l'API reste celui de la saison passée tant que le
     # mensuel n'a pas basculé) ; repli initm puis niveau de référence.
