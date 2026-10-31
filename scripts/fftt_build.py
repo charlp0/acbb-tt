@@ -199,7 +199,10 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None, lb=None, pmysql=
         my=mensuel_at(date) or base_level
         # niveau adversaire : exact = mensuel au moment du match (via licence des matchs homologués) ; sinon classement courant
         olvl=None
-        if EXACT: olvl=opp_mensuel_at(advlic_by_id.get(idp), date)
+        # Parties non homologuées : <licence> de xml_partie est celle de l'adversaire (vérifié par sonde le 31/10/2026),
+        # et son mensuel actuel, pas le <classement> officiel, est ce que l'appli FFTT utilise pour ses points virtuels
+        # (écart ramené de -11/-7 à +0,7/+1,5 sur d'Avout et Allegre-Guillaume). Les parties homologuées gardent advlic.
+        if EXACT: olvl=opp_mensuel_at(advlic_by_id.get(idp) or (tag(b,'licence') if tag(b,'licence')!=lic else None), date)
         if olvl is None: olvl=ocls
         olvl=round(olvl)
         homol = idp in pts_by_id
