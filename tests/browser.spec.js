@@ -563,7 +563,8 @@ test('progression des points : tri par progression, groupes d’âge, recherche,
  await expect(noms).toHaveText(['EXEMPLE4','EXEMPLE1','EXEMPLE2']);   // par progression, sans ceux qui n'ont pas joué
  await expect(page.locator('#tb tr').first().locator('.dl')).toHaveText('+88');
  await expect(page.locator('#tb tr').first().locator('td.vt')).toHaveText('788');
- await expect(page.locator('#kTop')).toHaveText('+88');
+ await expect(page.locator('#kTop-jeunes')).toHaveText('+88');await expect(page.locator('#kTops-jeunes')).toContainText('EXEMPLE4');
+ await expect(page.locator('#kTop-seniors')).toHaveText('+51');await expect(page.locator('#kTop-veterans')).toHaveText('−12');
  await page.locator('#joue').uncheck();
  await expect(noms).toHaveCount(4);
  await page.locator('#seg button[data-g="veterans"]').click();
