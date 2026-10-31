@@ -565,7 +565,7 @@ test('progression des points : tri par progression, groupes d’âge, recherche,
  await expect(page.locator('#tb tr').first().locator('td.vt')).toHaveText('788');
  await expect(page.locator('#pod-jeunes li').first()).toContainText('+88');await expect(page.locator('#pod-jeunes li').first()).toContainText('EXEMPLE4');
  await expect(page.locator('#pod-seniors li')).toHaveCount(1);await expect(page.locator('#pod-seniors li .d')).toHaveText('+51');   // EXEMPLE3 n'a pas joué
- await expect(page.locator('#pod-veterans li .d')).toHaveText('−12');await expect(page.locator('#pod-veterans li .w i')).toHaveText('V55');
+ await expect(page.locator('#pod-veterans li .d')).toHaveText('−12');await expect(page.locator('#pod-veterans li .w i')).toHaveText('1208 pts');   // le virtuel, pas la catégorie
  await page.locator('#joue').uncheck();
  await expect(noms).toHaveCount(4);
  await page.locator('#seg button[data-g="veterans"]').click();

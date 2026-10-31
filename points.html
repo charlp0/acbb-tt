@@ -212,7 +212,7 @@ function compteurs(){
   ['jeunes','seniors','veterans'].forEach(g=>{
     const top=joue.filter(r=>r.g===g).sort((a,b)=>b.prog-a.prog||(b.vir||0)-(a.vir||0)).slice(0,3);
     const ol=document.getElementById('pod-'+g);
-    if(top.length) ol.innerHTML=top.map((r,i)=>'<li><span class="n">'+(i+1)+'</span><span class="d'+(r.prog>0?'':r.prog<0?' dn':' eq')+'">'+fmtD(r.prog)+'</span><span class="w"><a href="joueur.html?lic='+encodeURIComponent(r.lic)+'" style="color:inherit;text-decoration:none">'+esc(r.prenom+' '+r.nom)+'</a><i>'+esc(r.cat)+'</i></span></li>').join('');
+    if(top.length) ol.innerHTML=top.map((r,i)=>'<li><span class="n">'+(i+1)+'</span><span class="d'+(r.prog>0?'':r.prog<0?' dn':' eq')+'">'+fmtD(r.prog)+'</span><span class="w"><a href="joueur.html?lic='+encodeURIComponent(r.lic)+'" style="color:inherit;text-decoration:none">'+esc(r.prenom+' '+r.nom)+'</a><i title="points virtuels">'+(r.vir!=null?r.vir+' pts':'')+'</i></span></li>').join('');
     else ol.innerHTML='<li class="vide">'+(g==='veterans'&&!S.vet?'catégories vétérans attendues à la prochaine collecte':'personne n’a encore joué')+'</li>';
   });
   document.getElementById('kpis').hidden=!S.rows.length;
