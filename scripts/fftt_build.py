@@ -276,6 +276,10 @@ def build_player(lic, nom, prenom, team_detail=None, allp=None, lb=None, pmysql=
         'team_levels':team_levels,
     }
 STATE_PATH='data/_state.json'; OPP_PATH='data/_oppcache.json'
+# À incrémenter à chaque changement du calcul des points (barème, estimation, règle d'homologation) : la signature
+# des profils en cache change et tous sont reconstruits au passage suivant. Sinon un profil « inchangé » côté API
+# garderait l'ancien calcul (constaté le 31/10/2026 : 615 profils réutilisés malgré deux correctifs).
+CALC_VERSION=2
 
 def team_info():
     pools=json.load(open('data/poules2627.json'))['poules']
@@ -371,7 +375,7 @@ def main():
             allp=get(f"xml_partie.php?numlic={lic}")   # appel léger : sert à la signature ET au build si besoin
             lb=get(f"xml_licence_b.php?licence={lic}")
             pmysql=get(f"xml_partie_mysql.php?licence={lic}")
-            sig=match_sig(allp,lb,pmysql,{'detail':team_detail.get(nrm(nom+prenom)), 'opponent_cache_epoch':int(OPPC_AT)})
+            sig=match_sig(allp,lb,pmysql,{'detail':team_detail.get(nrm(nom+prenom)), 'opponent_cache_epoch':int(OPPC_AT), 'calc':CALC_VERSION})
             fpath=f"data/players/{lic}.json"
             unchanged = (not FULL) and (not args) and prev.get(lic)==sig and os.path.exists(fpath)
             if unchanged:
