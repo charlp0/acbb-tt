@@ -362,22 +362,38 @@ def main():
     team_detail=build_team_detail(CLUB)
     print(f"  {len(team_detail)} joueurs ACBB avec détail championnat.")
     os.makedirs('data/players', exist_ok=True); index=[]; profiles=[]; kept=0; skipped=0; rebuilt=0; reused=0; new_sig={}; failed=0
-    for (lic,nom,prenom,pts) in candidates:
-        if kept>=need: break
+    # Les joueurs sont traités par un petit pool de threads (FFTT_WORKERS, défaut 4) : trois appels API par joueur
+    # pour la signature, puis les adversaires de ceux qui ont de nouveaux matchs. Séquentiel, un passage complet
+    # prenait 25 min ; les écritures sont des fichiers distincts et le cache adverse tolère un doublon de lecture.
+    def traiter(cand):
+        lic,nom,prenom,pts=cand
         try:
             allp=get(f"xml_partie.php?numlic={lic}")   # appel léger : sert à la signature ET au build si besoin
             lb=get(f"xml_licence_b.php?licence={lic}")
             pmysql=get(f"xml_partie_mysql.php?licence={lic}")
-            sig=match_sig(allp,lb,pmysql,{'detail':team_detail.get(nrm(nom+prenom)), 'opponent_cache_epoch':int(OPPC_AT)}); new_sig[lic]=sig
+            sig=match_sig(allp,lb,pmysql,{'detail':team_detail.get(nrm(nom+prenom)), 'opponent_cache_epoch':int(OPPC_AT)})
             fpath=f"data/players/{lic}.json"
             unchanged = (not FULL) and (not args) and prev.get(lic)==sig and os.path.exists(fpath)
             if unchanged:
-                prof=json.load(open(fpath)); reused+=1
+                prof=json.load(open(fpath))
             else:
-                prof=build_player(lic,nom,prenom,team_detail,allp=allp,lb=lb,pmysql=pmysql); rebuilt+=1
+                prof=build_player(lic,nom,prenom,team_detail,allp=allp,lb=lb,pmysql=pmysql)
                 # 26/27 : on garde TOUS les licenciés, même sans match (la fiche affiche alors le classement officiel
                 # et « reviens après tes premiers matchs ») — indispensable pour la recherche joueur du nouveau site.
                 json.dump(prof, open(fpath,"w"), ensure_ascii=False)
+            return (lic,nom,prenom,sig,prof,unchanged,None)
+        except Exception as e:
+            return (lic,nom,prenom,None,None,False,e)
+    a_traiter=candidates if need>=len(candidates) else candidates[:need]
+    workers=max(1,int(os.environ.get('FFTT_WORKERS','4') or 1))
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        for (lic,nom,prenom,sig,prof,unchanged,err) in ex.map(traiter,a_traiter):
+            if err is not None:
+                failed+=1; print(f"Profil non collecté ({lic}) : publication du lot annulée — {err}"); continue
+            new_sig[lic]=sig
+            if unchanged: reused+=1
+            else: rebuilt+=1
             index.append({'lic':lic,'nom':nom,'prenom':prenom,
                           'mensuel':prof['classement']['mensuel'],'parties':prof['saison']['parties'],
                           'officiel':prof['classement']['officiel'],'debut':prof['classement']['debut'],
@@ -386,10 +402,6 @@ def main():
             profiles.append(prof); kept+=1
             flag='=' if unchanged else '↻'
             print(f"[{kept}/{need}] {flag} {lic} {nom} {prenom} — {prof['saison']['parties']}p {prof['saison']['V']}V/{prof['saison']['D']}D")
-        except Exception as e:
-            failed+=1
-            print("Profil non collecté : publication du lot annulée")
-        time.sleep(0.15)
     if failed: sys.exit(f"ABORT: {failed} profil(s) incomplet(s), aucune publication.")
     # garde-fou : si l'API a flanché (collecte très incomplète), on n'écrase RIEN —
     # le run échoue, les données en prod restent intactes.
