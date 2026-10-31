@@ -1,0 +1,230 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ACBB TT — Progression des points</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/style.css">
+<style>
+  /* ---- Progression des points : tous les licenciés, du plus en forme au moins en forme ---- */
+  .top{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:18px 0 16px}
+  .maj{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dimmer);text-align:right}
+  /* Trois chiffres qui situent la saison avant la liste. */
+  .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+  .kpi b{display:block;font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;font-size:30px;line-height:1;margin-top:6px;letter-spacing:.3px}
+  .kpi b.up{color:var(--win)} .kpi small{display:block;font-size:11.5px;color:var(--dim);margin-top:4px}
+  @media(max-width:600px){.kpis{gap:6px}.kpi{padding:10px}.kpi b{font-size:22px}.kpi small{font-size:10.5px}}
+  /* Barre de contrôle : qui (groupe d'âge), quoi (recherche), lesquels (ayant joué ou tous). */
+  .ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+  .seg{display:inline-flex;background:var(--panel);border:1px solid var(--line-2);border-radius:99px;padding:3px;gap:2px}
+  .seg button{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:6px 12px;border-radius:99px;border:0;background:transparent;color:var(--ink-2);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+  .seg button[aria-pressed="true"]{background:var(--orange);color:#0B0B0D}
+  .seg button:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .seg button i{font-style:normal;font-size:9.5px;opacity:.7}
+  .find{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;padding:0 14px;flex:1 1 220px;min-width:0}
+  .find input{flex:1 1 auto;min-width:0;background:transparent;border:0;color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;font-size:15px;padding:10px 0;outline:none}
+  .tgl{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:12.5px;color:var(--ink-2);white-space:nowrap}
+  .tgl input{width:16px;height:16px;accent-color:var(--orange)}
+  .cnt{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dimmer);white-space:nowrap}
+  /* Le tableau : la progression porte la couleur, le reste reste calme. */
+  .tw{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--dimmer);background:var(--panel-2);position:sticky;top:0;z-index:1;user-select:none}
+  th[data-k]{cursor:pointer} th[data-k]:hover{color:var(--ink)}
+  th[aria-sort]{color:var(--orange)} th[aria-sort]::after{content:" ↓";font-size:9px} th[aria-sort="ascending"]::after{content:" ↑"}
+  th.n,td.n{text-align:right} th.c,td.c{text-align:center}
+  td.rk{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dimmer);width:34px;text-align:right}
+  td.rk.m1,td.rk.m2,td.rk.m3{color:var(--orange);font-weight:800}
+  td.nm{font-weight:700} td.nm a{color:var(--ink);text-decoration:none} td.nm a:hover{color:var(--orange)}
+  td.pr{color:var(--ink-2);font-weight:500}
+  td.pt{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-2)}
+  td.vt{font-family:"JetBrains Mono",monospace;font-size:12.5px;font-weight:800;color:var(--ink)}
+  .cat{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;border:1px solid var(--line-2);color:var(--ink-2);background:var(--panel-2)}
+  .cat.j{border-color:rgba(96,165,250,.5);color:var(--blue)} .cat.v{border-color:rgba(167,139,250,.5);color:var(--violet)}
+  .dl{display:inline-block;min-width:54px;text-align:right;font-family:"JetBrains Mono",monospace;font-size:12.5px;font-weight:800;padding:3px 9px;border-radius:99px}
+  .dl.up{color:var(--win-lt);background:rgba(61,214,140,.14)} .dl.dn{color:var(--lose-lt);background:rgba(242,99,86,.14)} .dl.eq{color:var(--dimmer)}
+  td.vd{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim)} td.vd .v{color:var(--win)} td.vd .d{color:var(--lose)}
+  tr.hit td{background:rgba(242,106,27,.08)}
+  tr:hover td{background:rgba(255,255,255,.025)}
+  .vide{padding:28px 16px;text-align:center;color:var(--dim);font-size:13.5px;line-height:1.6}
+  .leg{margin-top:12px;font-size:12px;color:var(--dimmer);line-height:1.6}
+  .leg b{color:var(--dim);font-weight:700}
+  @media(max-width:720px){
+    th,td{padding:8px 7px}
+    .hide-m{display:none}
+    td.nm{white-space:normal;line-height:1.2}
+    .dl{min-width:46px;font-size:11.5px;padding:2px 7px}
+    td.vt{font-size:12px}
+  }
+</style>
+</head><body>
+<div class="wrap">
+  <header id="hdr"></header>
+
+  <div class="top">
+    <div>
+      <h1 class="h1">Progression <em>des points</em></h1>
+      <div class="hsub">tous les licenciés du club · phase 1 de la saison 2026/27 · du plus en forme au moins en forme</div>
+    </div>
+    <div class="maj" id="maj"></div>
+  </div>
+
+  <div class="kpis" id="kpis" hidden>
+    <div class="kpi"><span class="lab">Ont déjà joué</span><b id="kN">–</b><small id="kNs"></small></div>
+    <div class="kpi"><span class="lab">Points gagnés par le club</span><b id="kTot">–</b><small>solde des parties de la saison</small></div>
+    <div class="kpi"><span class="lab">Plus forte progression</span><b id="kTop" class="up">–</b><small id="kTops"></small></div>
+  </div>
+
+  <div class="ctl">
+    <div class="seg" role="group" aria-label="Groupe d'âge" id="seg">
+      <button type="button" data-g="tous" aria-pressed="true">Tous <i id="cTous"></i></button>
+      <button type="button" data-g="jeunes" aria-pressed="false">Jeunes <i id="cJeunes"></i></button>
+      <button type="button" data-g="seniors" aria-pressed="false">Séniors <i id="cSeniors"></i></button>
+      <button type="button" data-g="veterans" aria-pressed="false">Vétérans <i id="cVeterans"></i></button>
+    </div>
+    <label class="find">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--dimmer);flex:0 0 auto" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <input id="q" type="search" placeholder="prénom ou nom…" autocomplete="off" aria-label="Chercher un joueur">
+    </label>
+    <label class="tgl"><input type="checkbox" id="joue" checked> <span>Seulement ceux qui <b>ont joué</b></span></label>
+    <span class="cnt" id="cnt"></span>
+    <button type="button" class="pill" id="xls" title="Télécharger le tableau affiché (filtres et tri compris) au format Excel">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M4 19h16"></path></svg>
+      Exporter en Excel
+    </button>
+  </div>
+
+  <div class="tw">
+    <table id="tbl" aria-label="Progression des points">
+      <thead><tr>
+        <th class="n">#</th>
+        <th data-k="nom">Nom</th>
+        <th data-k="prenom" class="hide-m">Prénom</th>
+        <th data-k="cat" class="c">Cat.</th>
+        <th data-k="off" class="n hide-m" title="Classement officiel de la phase 1 (points au 1er juillet 2026)">Officiel P1</th>
+        <th data-k="men" class="n hide-m" title="Points mensuels FFTT, recalculés chaque début de mois">Mensuel</th>
+        <th data-k="vir" class="n" title="Officiel + solde des parties de la saison (homologuées, estimées sinon)">Virtuel</th>
+        <th data-k="prog" class="n" aria-sort="descending" title="Virtuel moins officiel phase 1">Progression</th>
+        <th data-k="parties" class="n hide-m">V / D</th>
+      </tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+    <div class="vide" id="vide" hidden></div>
+  </div>
+  <div class="leg"><b>Officiel P1</b> : classement officiel de la phase 1, figé au 1ᵉʳ juillet. <b>Mensuel</b> : points FFTT recalculés au début de chaque mois. <b>Virtuel</b> : officiel + solde de toutes les parties de la saison, homologuées au réel ou estimées en attendant. <b>Progression</b> = virtuel − officiel P1. Le classement officiel de la phase 2 sera publié début janvier 2027.</div>
+</div>
+
+<script src="shared/api.js"></script>
+<script src="shared/xlsx-min.js"></script>
+<script src="shared/report.js" defer></script>
+<script src="shared/nav.js" data-base="."></script>
+<script src="shared/track.js?v=1" defer></script>
+<script>
+/* ===================== PROGRESSION DES POINTS =====================
+   Sources publiques : data/players_index.json (officiel, mensuel, solde de la saison, V/D, construit par
+   scripts/fftt_build.py), data/categories.json (catégorie d'âge FFTT), data/officiel2627.json (repli pour
+   le classement officiel de la phase). Aucune donnée personnelle au-delà de ce que la FFTT publie. */
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const nrm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+const S={rows:[],g:'tous',q:'',joue:true,k:'prog',asc:false,vet:false};
+const CATL={P:'Poussin',B1:'Benjamin 1',B2:'Benjamin 2',M1:'Minime 1',M2:'Minime 2',C1:'Cadet 1',C2:'Cadet 2',J1:'Junior 1',J2:'Junior 2',J3:'Junior 3',J4:'Junior 4',S:'Sénior',V1:'Vétéran 1 (40-49)',V2:'Vétéran 2 (50-59)',V3:'Vétéran 3 (60-69)',V4:'Vétéran 4 (70-79)',V5:'Vétéran 5 (80+)'};
+function groupe(c){ if(!c) return ''; if(/^V/.test(c)) return 'veterans'; if(c==='S') return 'seniors'; return 'jeunes'; }
+function build(index,cats,off){
+  return (index||[]).filter(p=>p&&p.lic).map(p=>{
+    const base=p.debut!=null?p.debut:(off[String(p.lic)]!=null?off[String(p.lic)]:(typeof p.officiel==='number'?p.officiel:p.mensuel));
+    const solde=Number.isFinite(+p.solde)?+p.solde:0;
+    const vir=base!=null?Math.round(base+solde):null;
+    const cat=cats[String(p.lic)]||'';
+    return {lic:String(p.lic),nom:p.nom||'',prenom:p.prenom||'',cat,g:groupe(cat),off:base,men:p.mensuel!=null?p.mensuel:null,vir,
+            prog:vir!=null&&base!=null?vir-base:0,parties:+p.parties||0,V:+p.V||0,D:+p.D||0};
+  });
+}
+function visibles(){
+  const q=nrm(S.q).trim(), mots=q?q.split(/\s+/):[];
+  return S.rows.filter(r=>(S.g==='tous'||r.g===S.g)&&(!S.joue||r.parties>0)
+    &&mots.every(m=>(nrm(r.nom)+' '+nrm(r.prenom)).includes(m)));
+}
+function tri(list){
+  const k=S.k, dir=S.asc?1:-1;
+  const txt=['nom','prenom','cat'].includes(k);
+  return list.slice().sort((a,b)=>{
+    let x=a[k],y=b[k];
+    if(txt){ const c=String(x).localeCompare(String(y),'fr'); return c?c*(S.asc?1:-1):String(a.prenom).localeCompare(String(b.prenom),'fr'); }
+    x=x==null?-Infinity:x; y=y==null?-Infinity:y;
+    if(x!==y) return (x-y)*dir;
+    if(a.vir!==b.vir) return ((b.vir||0)-(a.vir||0));   // à progression égale, le mieux classé d'abord
+    return String(a.nom).localeCompare(String(b.nom),'fr');
+  });
+}
+const fmtD=d=>d>0?'+'+d:d<0?'−'+Math.abs(d):'0';
+function render(){
+  const list=tri(visibles()), tb=document.getElementById('tb'), vide=document.getElementById('vide');
+  tb.innerHTML=list.map((r,i)=>{
+    const rk=i+1;
+    const cls=r.prog>0?'up':r.prog<0?'dn':'eq';
+    const cc=r.cat?'<span class="cat'+(r.g==='jeunes'?' j':r.g==='veterans'?' v':'')+'" title="'+esc(CATL[r.cat]||r.cat)+'">'+esc(r.cat)+'</span>':'<span class="cat" title="catégorie inconnue">—</span>';
+    return '<tr'+(S.q&&i<1?' class="hit"':'')+' data-lic="'+esc(r.lic)+'">'
+      +'<td class="rk'+(rk<=3&&S.k==='prog'&&!S.asc&&!S.q?' m'+rk:'')+'">'+rk+'</td>'
+      +'<td class="nm"><a href="joueur.html?lic='+encodeURIComponent(r.lic)+'">'+esc(r.nom)+'</a></td>'
+      +'<td class="pr hide-m">'+esc(r.prenom)+'</td>'
+      +'<td class="c">'+cc+'</td>'
+      +'<td class="pt n hide-m">'+(r.off!=null?r.off:'–')+'</td>'
+      +'<td class="pt n hide-m">'+(r.men!=null?r.men:'–')+'</td>'
+      +'<td class="vt n">'+(r.vir!=null?r.vir:'–')+'</td>'
+      +'<td class="n"><span class="dl '+cls+'">'+fmtD(r.prog)+'</span></td>'
+      +'<td class="vd n hide-m">'+(r.parties?'<span class="v">'+r.V+'</span> / <span class="d">'+r.D+'</span>':'<span style="opacity:.5">pas encore joué</span>')+'</td>'
+      +'</tr>';
+  }).join('');
+  // au téléphone, le prénom rejoint le nom
+  if(window.matchMedia('(max-width:720px)').matches) list.forEach((r,i)=>{ const td=tb.rows[i]&&tb.rows[i].cells[1]; if(td) td.innerHTML='<a href="joueur.html?lic='+encodeURIComponent(r.lic)+'">'+esc(r.nom)+'</a><br><span style="font-weight:500;color:var(--ink-2);font-size:12px">'+esc(r.prenom)+'</span>'; });
+  document.getElementById('cnt').textContent=list.length+' joueur'+(list.length>1?'s':'')+(S.joue?' ayant joué':'');
+  let msg='';
+  if(!list.length){
+    if(S.g==='veterans'&&!S.vet) msg='Les catégories vétérans arrivent avec la prochaine collecte FFTT (chaque nuit). D’ici là, les plus de 40 ans sont comptés avec les séniors.';
+    else if(S.q) msg='Personne ne correspond à « '+esc(S.q)+' »'+(S.joue?' parmi ceux qui ont joué. Décoche « seulement ceux qui ont joué » pour voir tout le monde.':'.');
+    else msg='Aucun joueur dans ce groupe'+(S.joue?' n’a encore joué cette saison.':'.');
+  }
+  vide.hidden=!msg; vide.innerHTML=msg; document.getElementById('tbl').hidden=!list.length;
+  document.querySelectorAll('th[data-k]').forEach(th=>{ if(th.dataset.k===S.k) th.setAttribute('aria-sort',S.asc?'ascending':'descending'); else th.removeAttribute('aria-sort'); });
+}
+function compteurs(){
+  const base=S.rows.filter(r=>!S.joue||r.parties>0);
+  const n=g=>base.filter(r=>g==='tous'||r.g===g).length;
+  ['Tous','Jeunes','Seniors','Veterans'].forEach(g=>{ document.getElementById('c'+g).textContent=n(g.toLowerCase()); });
+  const joue=S.rows.filter(r=>r.parties>0), tot=Math.round(joue.reduce((s,r)=>s+r.prog,0));
+  const top=joue.slice().sort((a,b)=>b.prog-a.prog)[0];
+  document.getElementById('kN').textContent=joue.length; document.getElementById('kNs').textContent='sur '+S.rows.length+' licenciés';
+  const kt=document.getElementById('kTot'); kt.textContent=fmtD(tot); kt.className=tot>0?'up':'';
+  document.getElementById('kTop').textContent=top?fmtD(top.prog):'–';
+  document.getElementById('kTops').textContent=top?top.prenom+' '+top.nom+(top.cat?' · '+(CATL[top.cat]||top.cat):''):'';
+  document.getElementById('kpis').hidden=!S.rows.length;
+}
+document.getElementById('seg').addEventListener('click',e=>{ const b=e.target.closest('button[data-g]'); if(!b) return;
+  S.g=b.dataset.g; document.querySelectorAll('#seg button').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); render(); });
+document.getElementById('q').addEventListener('input',e=>{ S.q=e.target.value; render(); });
+document.getElementById('joue').addEventListener('change',e=>{ S.joue=e.target.checked; compteurs(); render(); });
+document.querySelector('thead').addEventListener('click',e=>{ const th=e.target.closest('th[data-k]'); if(!th) return;
+  const k=th.dataset.k; if(S.k===k) S.asc=!S.asc; else { S.k=k; S.asc=['nom','prenom','cat'].includes(k); } render(); });
+window.addEventListener('resize',()=>render());
+/* Export Excel du tableau tel qu'il est affiché : même groupe, même recherche, même tri. */
+document.getElementById('xls').addEventListener('click',()=>{
+  const list=tri(visibles()), g={tous:'tous',jeunes:'jeunes',seniors:'seniors',veterans:'veterans'}[S.g];
+  const rows=[['#','Nom','Prénom','Catégorie','Officiel phase 1','Mensuel','Virtuel','Progression','Victoires','Défaites','Parties','Licence']]
+    .concat(list.map((r,i)=>[i+1,r.nom,r.prenom,r.cat?(CATL[r.cat]||r.cat):'',r.off,r.men,r.vir,r.prog,r.V,r.D,r.parties,r.lic]));
+  const jour=new Date().toISOString().slice(0,10);
+  ACBB_XLSX.telecharger('ACBB-progression-points-'+g+'-'+jour+'.xlsx','Progression '+jour,rows,[5,22,16,18,16,11,11,13,10,10,9,11]);
+});
+const gj=u=>fetch(u,{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
+Promise.all([gj('data/players_index.json'),gj('data/categories.json'),gj('data/officiel2627.json'),gj('data/freshness.json')]).then(([idx,cats,off,fr])=>{
+  cats=cats||{}; S.vet=Object.values(cats).some(c=>/^V/.test(String(c)));
+  S.rows=build(idx,cats,(off&&off.officiel)||{});
+  const at=fr&&fr.sources&&fr.sources.joueurs&&fr.sources.joueurs.collected_at;
+  if(at&&Number.isFinite(Date.parse(at))){ const d=new Date(at); document.getElementById('maj').textContent='Données FFTT du '+d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+  if(!idx){ document.getElementById('vide').hidden=false; document.getElementById('vide').textContent='Les données ne sont pas disponibles pour le moment. Réessaie dans quelques minutes.'; document.getElementById('tbl').hidden=true; return; }
+  compteurs(); render();
+});
+renderNav({active:'Progression des points'});
+</script>
+</body></html>

@@ -160,12 +160,13 @@ test('capitaine : compteurs réels, cases vertes/rouges conservées, vues sporti
  expect(errors).toEqual([]);
 });
 
-test('accueil : trois compétitions en tuiles, une popup centrée par équipe avec calendrier et classement',async({page,context})=>{
+test('accueil : quatre tuiles (trois compétitions et la progression des points), une popup centrée par équipe avec calendrier et classement',async({page,context})=>{
  const state=fixture(),errors=[];
  state.site.DATA.M11.teams.find(t=>t.acbb).journees[0].opponent='ASNIERES TT 5';   // la vraie J1 de la M11
  await install(context,state);page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/index.html');
- await expect(page.locator('.nv-tiles .nv-tile')).toHaveCount(3);
+ await expect(page.locator('.nv-tiles .nv-tile')).toHaveCount(4);
+ await expect(page.locator('.nv-tiles a.nv-tile[href$="points.html"]')).toContainText('Progression');
  const on=page.locator('.nv-tiles a.nv-tile.on');
  await expect(on).toHaveAttribute('aria-current','page');await expect(on).toContainText('Championnat');
  const paris=page.locator('.nv-tiles a.nv-tile[href$="cdp.html"]');   // le Championnat de Paris est ouvert
@@ -544,5 +545,41 @@ test('export WhatsApp : un match à domicile à Bartholdi est signalé, même sa
   const t=await page.evaluate(o=>waText('M11',2,o),o);
   expect(t).toContain('⚠️ Match à *Bartholdi*');expect(t).toContain('pas à la piscine');expect(t.split('📍').length).toBe(2);
  }
+ expect(errors).toEqual([]);
+});
+
+test('progression des points : tri par progression, groupes d’âge, recherche, et export Excel du tableau affiché',async({page,context})=>{
+ const state=fixture(),errors=[];
+ state.playersIndex=[
+  {lic:'9000001',nom:'EXEMPLE1',prenom:'Alex',mensuel:1250,officiel:1250,debut:1250,solde:51,parties:6,V:5,D:1},
+  {lic:'9000002',nom:'EXEMPLE2',prenom:'Sam',mensuel:1220,officiel:1220,debut:1220,solde:-12.4,parties:4,V:1,D:3},
+  {lic:'9000003',nom:'EXEMPLE3',prenom:'Chris',mensuel:1190,officiel:1190,debut:1190,solde:0,parties:0,V:0,D:0},
+  {lic:'9000004',nom:'EXEMPLE4',prenom:'Jo',mensuel:700,officiel:700,debut:700,solde:88,parties:8,V:7,D:1}];
+ await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await context.route('**/data/categories.json',r=>r.fulfill({json:{'9000001':'S','9000002':'V2','9000003':'S','9000004':'C1'}}));
+ await page.goto('/points.html');
+ await expect(page.locator('.nv-tiles a.nv-tile.on')).toContainText('Progression');
+ const noms=page.locator('#tb td.nm');
+ await expect(noms).toHaveText(['EXEMPLE4','EXEMPLE1','EXEMPLE2']);   // par progression, sans ceux qui n'ont pas joué
+ await expect(page.locator('#tb tr').first().locator('.dl')).toHaveText('+88');
+ await expect(page.locator('#tb tr').first().locator('td.vt')).toHaveText('788');
+ await expect(page.locator('#kTop')).toHaveText('+88');
+ await page.locator('#joue').uncheck();
+ await expect(noms).toHaveCount(4);
+ await page.locator('#seg button[data-g="veterans"]').click();
+ await expect(noms).toHaveText(['EXEMPLE2']);
+ await page.locator('#seg button[data-g="jeunes"]').click();
+ await expect(noms).toHaveText(['EXEMPLE4']);await expect(page.locator('#tb .cat.j')).toHaveText('C1');
+ await page.locator('#seg button[data-g="tous"]').click();
+ await page.locator('#q').fill('sam');
+ await expect(noms).toHaveText(['EXEMPLE2']);
+ await page.locator('#q').fill('');
+ await page.locator('th[data-k="vir"]').click();   // tri par points virtuels, décroissant
+ await expect(noms.first()).toHaveText('EXEMPLE1');
+ const dl=page.waitForEvent('download');await page.locator('#xls').click();const file=await dl;
+ expect(file.suggestedFilename()).toMatch(/^ACBB-progression-points-tous-\d{4}-\d{2}-\d{2}\.xlsx$/);
+ const buf=require('node:fs').readFileSync(await file.path());
+ expect([...buf.slice(0,4)]).toEqual([80,75,3,4]);expect(buf.toString('latin1')).toContain('xl/worksheets/sheet1.xml');
+ expect(buf.toString('utf8')).toContain('EXEMPLE1');expect(buf.toString('utf8')).toContain('Vétéran 2');
  expect(errors).toEqual([]);
 });

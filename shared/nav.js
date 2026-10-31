@@ -1,4 +1,4 @@
-/* En-tête commun : les trois compétitions du club en tuiles, puis la barre du rôle connu par le jeton
+/* En-tête commun : les trois compétitions du club et la progression des points en tuiles, puis la barre du rôle connu par le jeton
    (capitaine bleu, sportive orange). */
 (function(){
   const base=(document.currentScript.getAttribute('data-base')||'.');
@@ -8,10 +8,11 @@
   const COMPETS=[
     {id:'cpe',  nom:['Championnat','par équipe'], href:'index.html',     sous:'Saison 2026/27 · Phase 1'},
     {id:'crit', nom:['Critérium','fédéral'],      href:'criterium.html', sous:'Compétition individuelle · 4 tours'},
-    {id:'paris',nom:['Championnat','de Paris'],   href:'cdp.html',       sous:'Saison 2026/27 · 7 vendredis'}
+    {id:'paris',nom:['Championnat','de Paris'],   href:'cdp.html',       sous:'Saison 2026/27 · 7 vendredis'},
+    {id:'pts',  nom:['Progression','des points'],  href:'points.html',    sous:'Saison 2026/27 · tous les licenciés'}
   ];
   const ALIAS={'Accueil':'cpe','Équipes':'cpe','Championnat par équipe':'cpe','Critérium':'crit','Critérium fédéral':'crit',
-    'Championnat de Paris':'paris','Dispos CDP':'paris','Compositions CDP':'paris'};
+    'Championnat de Paris':'paris','Dispos CDP':'paris','Compositions CDP':'paris','Points':'pts','Progression des points':'pts'};
   // Outils de la sportive pour le Championnat de Paris : sa barre les montre quand cette tuile est ouverte.
   const SPO_CDP=[['Dispos CDP','sportive/cdp-dispos.html'],['Compositions CDP','sportive/cdp-compo.html']];
   const CAP=[['Mon équipe','capitaine.html'],['Ma poule','capitaine.html?tab=poule']];

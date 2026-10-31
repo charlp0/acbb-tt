@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Récupère, pour chaque licencié, la catégorie d'âge FFTT (xml_licence_b, champ <cat>)
 et le sexe (champ <sexe>), et écrit deux fichiers :
-  - data/categories.json : { "licence": "M1|M2|C1|C2|J1..J4|B1|B2|P|S" } — au-dessus de junior = "S"
+  - data/categories.json : { "licence": "M1|M2|C1|C2|J1..J4|B1|B2|P|S|V1..V5" } — senior = "S",
+    vétérans = code FFTT conservé (V1 40-49 ans … V5 80 ans et plus) depuis le 31/10/2026 (page Progression des points)
   - data/sexes.json      : { "licence": "M"|"F" }
 Le sexe sert à la règle « 2 joueuses au maximum en régional messieurs » (M3, M4, M5) vérifiée
 dans sportive/journee.html. Le fichier livré le 26/09/2026 a été généré depuis l'export licences
@@ -15,11 +16,12 @@ spec = importlib.util.spec_from_file_location("fb", "scripts/fftt_build.py")
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
 
 JEUNE = re.compile(r'^(B[12]|M[12]|C[12]|J[1-4]|P[0-9]?)$')
+VETERAN = re.compile(r'^V[1-5]$')
 
 def norm(cat):
     c = (cat or '').strip().upper()
     if not c: return None
-    return c if JEUNE.match(c) else 'S'
+    return c if (JEUNE.match(c) or VETERAN.match(c)) else 'S'
 
 # corrections manuelles (cat absente ou fausse côté FFTT)
 OVERRIDES = {'9254353': 'S',            # Grégoire STEMLER (cat absente côté FFTT)
