@@ -5,7 +5,7 @@ Sortie : data/players/<licence>.json + data/players_index.json
 Usage : python3 fftt_build.py [licence1 licence2 ...]   (sans arg = tout le club)
 """
 import os, sys, json, re, html, time, hashlib, hmac, datetime, random, string, unicodedata
-from fftt_quality import profile_signature, require_xml, acbb_team_key
+from fftt_quality import profile_signature, require_xml, acbb_team_key, est_championnat_equipes
 APPID=os.environ.get('FFTT_ID'); MDP=os.environ.get('FFTT_PWD'); CLUB="08920049"
 # Joueurs partis du club à exclure du roster (annuaire + scoring), même si la FFTT les liste encore.
 EXCLUDE_LIC = {'9236792', '7871729'}   # partis du club : Douss, Mondino (14/09/2026)  # Mehdi DOUSS (départ 08/2026) — German RODRIGUEZ réintégré le 03/09 (pool D2)
@@ -107,10 +107,11 @@ def build_team_detail(club=CLUB):
     for block in re.findall(r'<equipe>(.*?)</equipe>',eq,re.S):
         label=tag(block,'libequipe')
         if 'Phase' not in label: continue
+        if not est_championnat_equipes(tag(block,'libepr')): continue   # Championnat Jeunes CD92, Dimanche matin… : hors périmètre
         link=re.search(r'<liendivision><!\[CDATA\[(.*?)\]\]>',block,re.S)
         if not link: continue
         tkey=acbb_team_key(label,tag(block,'libdivision'))
-        if not tkey: raise RuntimeError('Équipe FFTT sans championnat identifiable')
+        if not tkey: raise RuntimeError('Équipe FFTT sans championnat identifiable : '+label+' / '+tag(block,'libdivision'))
         links.append((tkey,html.unescape(link.group(1))))
     ACBB=set()
     for (nm,pr) in roster(club).values(): ACBB.add(nrm(nm+pr))

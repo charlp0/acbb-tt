@@ -104,6 +104,16 @@ def coverage(site):
             'pending_sheets': pending, 'pending_scores': pending_scores}
 
 
+# Épreuve « championnat par équipes » (masculin, féminin, Pro). Depuis le 22/10/2026 xml_equipe liste aussi les
+# équipes du Championnat Jeunes CD92 (« D92_Champt Jeunes 26_27 », divisions « Tableau A - D1 - Journee 1 ») : hors
+# périmètre, et sans numéro d'équipe résoluble — la collecte s'arrêtait dessus pendant dix jours.
+CHAMPIONNAT_EQUIPES = re.compile(r"Championnats? de France par [eé]quipes", re.I)
+
+
+def est_championnat_equipes(libepr):
+    return bool(CHAMPIONNAT_EQUIPES.search(libepr or ''))
+
+
 def acbb_team_key(label, division):
     """Le même libellé FFTT existe en messieurs et dames : jamais le nom seul."""
     import unicodedata

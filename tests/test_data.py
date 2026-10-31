@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'scripts'))
-from fftt_quality import profile_signature, check_site, acbb_team_key, require_xml, retry_missing_pools, coverage
+from fftt_quality import profile_signature, check_site, acbb_team_key, require_xml, retry_missing_pools, coverage, est_championnat_equipes
 import fftt_site
 from team_identity import same_team, unique_alias
 from backup_private import encode, verify, main as backup
@@ -161,3 +161,18 @@ class DataTests(unittest.TestCase):
 
 
 if __name__=='__main__':unittest.main()
+
+
+class EpreuveTests(unittest.TestCase):
+    def test_seules_les_epreuves_du_championnat_par_equipes_sont_retenues(self):
+        self.assertTrue(est_championnat_equipes('FED_Championnat de France par Equipes Masculin'))
+        self.assertTrue(est_championnat_equipes('FED_Championnat de France par Equipes Féminin'))
+        self.assertTrue(est_championnat_equipes('FED_Championnats de France par équipes Pro'))
+        for autre in ('D92_Champt Jeunes 26_27', 'D92_Championnat Dimanche Matin', 'D92_Championnat du Jeudi soir', '', None):
+            self.assertFalse(est_championnat_equipes(autre), autre)
+        # l'équipe jeunes qui bloquait la collecte n'a pas de clé ACBB : elle doit être ignorée avant acbb_team_key
+        self.assertIsNone(acbb_team_key('BOULOGNE BILLAN (1) - Phase 1', 'D92_Tableau A - D1 - Journee 1 Poule 1'))
+
+
+if __name__ == '__main__':
+    unittest.main()
