@@ -556,15 +556,16 @@ test('progression des points : tri par progression, groupes d’âge, recherche,
   {lic:'9000003',nom:'EXEMPLE3',prenom:'Chris',mensuel:1190,officiel:1190,debut:1190,solde:0,parties:0,V:0,D:0},
   {lic:'9000004',nom:'EXEMPLE4',prenom:'Jo',mensuel:700,officiel:700,debut:700,solde:88,parties:8,V:7,D:1}];
  await install(context,state);page.on('pageerror',e=>errors.push(e.message));
- await context.route('**/data/categories.json',r=>r.fulfill({json:{'9000001':'S','9000002':'V2','9000003':'S','9000004':'C1'}}));
+ await context.route('**/data/categories.json',r=>r.fulfill({json:{'9000001':'S','9000002':'V55','9000003':'S','9000004':'C1'}}));
  await page.goto('/points.html');
  await expect(page.locator('.nv-tiles a.nv-tile.on')).toContainText('Progression');
  const noms=page.locator('#tb td.nm');
  await expect(noms).toHaveText(['EXEMPLE4','EXEMPLE1','EXEMPLE2']);   // par progression, sans ceux qui n'ont pas joué
  await expect(page.locator('#tb tr').first().locator('.dl')).toHaveText('+88');
  await expect(page.locator('#tb tr').first().locator('td.vt')).toHaveText('788');
- await expect(page.locator('#kTop-jeunes')).toHaveText('+88');await expect(page.locator('#kTops-jeunes')).toContainText('EXEMPLE4');
- await expect(page.locator('#kTop-seniors')).toHaveText('+51');await expect(page.locator('#kTop-veterans')).toHaveText('−12');
+ await expect(page.locator('#pod-jeunes li').first()).toContainText('+88');await expect(page.locator('#pod-jeunes li').first()).toContainText('EXEMPLE4');
+ await expect(page.locator('#pod-seniors li')).toHaveCount(1);await expect(page.locator('#pod-seniors li .d')).toHaveText('+51');   // EXEMPLE3 n'a pas joué
+ await expect(page.locator('#pod-veterans li .d')).toHaveText('−12');await expect(page.locator('#pod-veterans li .w i')).toHaveText('V55');
  await page.locator('#joue').uncheck();
  await expect(noms).toHaveCount(4);
  await page.locator('#seg button[data-g="veterans"]').click();
@@ -581,7 +582,7 @@ test('progression des points : tri par progression, groupes d’âge, recherche,
  expect(file.suggestedFilename()).toMatch(/^ACBB-progression-points-tous-\d{4}-\d{2}-\d{2}\.xlsx$/);
  const buf=require('node:fs').readFileSync(await file.path());
  expect([...buf.slice(0,4)]).toEqual([80,75,3,4]);expect(buf.toString('latin1')).toContain('xl/worksheets/sheet1.xml');
- expect(buf.toString('utf8')).toContain('EXEMPLE1');expect(buf.toString('utf8')).toContain('Vétéran 2');
+ expect(buf.toString('utf8')).toContain('EXEMPLE1');expect(buf.toString('utf8')).toContain('Vétéran 55-59 ans');
  expect(errors).toEqual([]);
 });
 
