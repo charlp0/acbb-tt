@@ -583,3 +583,11 @@ test('progression des points : tri par progression, groupes d’âge, recherche,
  expect(buf.toString('utf8')).toContain('EXEMPLE1');expect(buf.toString('utf8')).toContain('Vétéran 2');
  expect(errors).toEqual([]);
 });
+
+test('critérium à 600 px (écran plié ou fenêtre étroite) : le rail des catégories défile seul, jamais la page',async({page,context})=>{
+ const state=fixture();await install(context,state);
+ await page.setViewportSize({width:600,height:800});await page.goto('/criterium.html');
+ await expect(page.locator('#rail a').first()).toBeVisible();
+ const m=await page.evaluate(()=>({W:document.documentElement.clientWidth,S:document.documentElement.scrollWidth,rail:document.querySelector('.rail').getBoundingClientRect().width,nav:document.querySelector('.rail nav').scrollWidth}));
+ expect(m.S).toBe(m.W);expect(m.rail).toBeLessThanOrEqual(m.W);expect(m.nav).toBeGreaterThan(m.rail);   // le contenu dépasse, mais dans le rail
+});

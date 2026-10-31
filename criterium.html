@@ -90,8 +90,10 @@
   .jauge i{display:block;height:5px;border-radius:99px;background:var(--panel-3);margin-top:9px;overflow:hidden}
   .jauge i em{display:block;height:100%;background:var(--win)}
   @media(max-width:780px){
-    .rail{position:static;max-width:none;flex-basis:100%}
-    .rail nav{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:8px}
+    /* min-width:0 obligatoire : sans lui, l'aside prend la largeur de toutes les pastilles (925 px dans 600 px)
+       et c'est la page entière qui défile de côté au lieu du rail seul (constaté le 31/10/2026, iPhone Duo). */
+    .rail{position:static;max-width:100%;flex-basis:100%;min-width:0;width:100%}
+    .rail nav{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:8px;min-width:0;max-width:100%;-webkit-overflow-scrolling:touch}
     .rail a{flex:0 0 auto;border:1px solid var(--line-2);border-radius:99px;padding:8px 12px}
     .jauge{display:none}
   }
