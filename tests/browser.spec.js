@@ -594,14 +594,15 @@ test('critérium à 600 px (écran plié ou fenêtre étroite) : le rail des cat
  expect(m.S).toBe(m.W);expect(m.rail).toBeLessThanOrEqual(m.W);expect(m.nav).toBeGreaterThan(m.rail);   // le contenu dépasse, mais dans le rail
 });
 
-test('exports Compos : les équipes exemptes de la journée sont listées, même sans compo saisie',async({page,context})=>{
+test('exports Compos : une équipe exempte est un bloc au même gabarit que les autres, même sans compo saisie',async({page,context})=>{
  const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/sportive/journee.html?j=4');await expect(page.locator('[data-note="M11"]')).toBeVisible();
- const ex=await page.evaluate(()=>exemptText(4));
- expect(ex).toContain('Exemptes à J4');for(const t of ['M12','M14','M16']) expect(ex).toContain(t+' (aucune compo saisie)');
- expect(ex).toContain('s.pietu.cd92@orange.fr');
- const d=await page.evaluate(()=>draftText('M14',4));expect(d).toContain('EXEMPTE');expect(d).not.toContain('undefined');
+ for(const t of ['M12','M14','M16']) expect(await page.evaluate(t=>exempte(4,t),t)).toBe(true);
+ expect(await page.evaluate(()=>exempte(2,'M11'))).toBe(false);   // J2 : personne n'est exempt
+ const w=await page.evaluate(()=>waText('M14',4));
+ expect(w).toMatch(/^🏓 ACBB TT — M14 · J4 \(/);expect(w).toMatch(/\n📅 [a-z]+\. \d\d\/\d\d · EXEMPTE\n/);   // en-tête d'équipe, « EXEMPTE » à la place de l'adversaire
+ expect(w).toContain('s.pietu.cd92@orange.fr');expect(w).toContain('aucune compo saisie');expect(w).not.toContain('place(s) à pourvoir');expect(w).not.toContain('undefined');
+ const d=await page.evaluate(()=>draftText('M14',4));expect(d).toMatch(/^M14 · J4 — [a-z]+\. \d\d\/\d\d · EXEMPTE\n/);expect(d).toContain('aucune compo saisie');expect(d).not.toContain('undefined');
  const d2=await page.evaluate(()=>draftText('M11',2));expect(d2).toMatch(/📍 .*(piscine|vieux pont)/i);   // l'adresse du match, aussi dans le draft (texte du lieu résolu)
- expect(await page.evaluate(()=>exemptText(2))).toBe('');   // J2 : personne n'est exempt
  expect(errors).toEqual([]);
 });

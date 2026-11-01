@@ -636,8 +636,10 @@ function renderState(){
 ;
   document.getElementById('fillAll').onclick=()=>{ let n=0; pl.forEach(t=>{ if(!compo(J,t).p.length){ propose(t); n++; } }); toast(n?n+' compo'+(n>1?'s':'')+' proposée'+(n>1?'s':''):'toutes les équipes ont déjà une compo'); renderAll(); };
   document.getElementById('exportFree').onclick=()=>copy(freeText(J));
-  document.getElementById('exportDraft').onclick=()=>copy([...pl.filter(t=>compo(J,t).p.length).map(t=>draftText(t,J)),exemptText(J)].filter(Boolean).join('\n\n'));
-  document.getElementById('exportAll').onclick=async()=>{ const parts=[]; for(const t of pl.filter(t=>compo(J,t).p.length)) parts.push(await waText(t,J)); const ex=exemptText(J); if(ex) parts.push(ex); copy(parts.join('\n\n———\n\n')); };   // export groupé AVEC l'adresse de chaque match (demande de Charles, 01/11/2026)
+  // Équipes exportées : celles qui ont une compo, plus les exemptes même sans compo (bloc au même gabarit, 01/11/2026)
+  const exportes=()=>pl.filter(t=>compo(J,t).p.length||exempte(J,t));
+  document.getElementById('exportDraft').onclick=()=>copy(exportes().map(t=>draftText(t,J)).join('\n\n'));
+  document.getElementById('exportAll').onclick=async()=>{ const parts=[]; for(const t of exportes()) parts.push(await waText(t,J)); copy(parts.join('\n\n———\n\n')); };   // export groupé AVEC l'adresse de chaque match (demande de Charles, 01/11/2026)
 }
 function renderFilters(){
   document.getElementById('filters').innerHTML=GROUPS.map(g=>'<span class="fp'+(FILTER===g[0]?' on':'')+'" data-f="'+g[0]+'">'+g[1]+'</span>').join('');
@@ -973,7 +975,7 @@ async function waText(t,j,opts){
   const ph=renforts.length?await getPhones():null;
   let s='🏓 ACBB TT — '+t+' · J'+j+' ('+div+(m.poule?' poule '+m.poule:'')+')\n';
   const rep=(PARTS&&PARTS.isPending&&PARTS.isPending(t,j))?ACBB_UI.reportee(calOf(t,j),ffttRowJ(t,j)):null;
-  s+='📅 '+(rep?'Rencontre '+(rep.date?ACBB_UI.libReportee(rep):'à rejouer, date à fixer'):fmtD(m.date))+' · '+(m.exempt?'Exemption · composition réglementaire':(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp))+'\n';
+  s+='📅 '+(rep?'Rencontre '+(rep.date?ACBB_UI.libReportee(rep):'à rejouer, date à fixer'):fmtD(m.date))+' · '+(m.exempt?'EXEMPTE':(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp))+'\n';
   // Domicile à Bartholdi : toujours dit, même dans l'export groupé sans adresses (demande de Charles, 13/10/2026) —
   // la salle habituelle est la piscine, un joueur qui n'a pas lu le planning s'y rend par réflexe.
   const bartholdi=m.dom&&/bartholdi/i.test((m.salle||'')+' '+(m.venue||''));
@@ -991,8 +993,12 @@ async function waText(t,j,opts){
     s+='🎯 Niveau adverse ≈ '+m.oppAvg+' de moyenne ('+(m.oppAvgSrc==='26/27'&&quand
         ? "d'après "+quand : 'repère 25/26, pas encore de feuille cette saison')+')\n';
   }
-  s+='\n👥 Compo :\n'+sorted.map((k,i)=>{ const p=BYKEY[k]; const nm=p?full(p):k; const o=origin(k); const ren=o&&o!==t; return (i+1)+'. '+(ren?'*'+nm+'* ('+o+')':nm)+(p?' ('+(p.men||'—')+')':''); }).join('\n');
-  if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
+  /* Équipe exempte : même gabarit que les autres (demande de Charles, 01/11/2026). Le règlement impose quand même
+     une feuille (II.112.2) : les joueurs inscrits comptent comme ayant joué, d'où le rappel, compo saisie ou non. */
+  if(m.exempt) s+='📝 Feuille d’exemption à envoyer au CD92 (s.pietu.cd92@orange.fr) : les joueurs inscrits comptent comme ayant joué cette journée\n';
+  if(c.p.length||!m.exempt) s+='\n👥 Compo :\n'+sorted.map((k,i)=>{ const p=BYKEY[k]; const nm=p?full(p):k; const o=origin(k); const ren=o&&o!==t; return (i+1)+'. '+(ren?'*'+nm+'* ('+o+')':nm)+(p?' ('+(p.men||'—')+')':''); }).join('\n');
+  else s+='\n👥 Compo : aucune compo saisie';
+  if(c.p.length<sizeOf(t)&&!m.exempt) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
   if(renforts.length){
     s+='\n\n📞 Joueurs à contacter en dehors de l\'équipe :\n'+renforts.map(k=>{ const p=BYKEY[k]; const tel=ph?ph.phones[phoneKey(k)]:null; const ex=ph?ph.extra[phoneKey(k)]:null;
       return '• '+(p?full(p):k)+' ('+origin(k)+') — '+(ph?(tel?fmtTel(tel)+(ex?' · '+ex:''):'numéro non renseigné'):'numéro : voir PDF capitaines'); }).join('\n');
@@ -1022,23 +1028,20 @@ async function getPhones(){
 }
 const phoneKey=k=>{ const p=BYKEY[k]; return p?nrmK(p.nom)+'|'+nrmK(p.pre):''; };
 const fmtTel=t=>t&&/^\d{10}$/.test(t)?t.replace(/(\d{2})(?=\d)/g,'$1 '):t;
-/* Équipes exemptes de la journée, pour les deux exports groupés : celles qui ont une compo sont déjà dans la liste,
-   celles qui n'en ont pas n'apparaissaient nulle part alors que le règlement impose quand même une feuille (II.112.2). */
-function exemptText(j){
-  const ex=TEAMS.filter(t=>{ const m=matchOf(t,j); return m&&m.exempt; }); if(!ex.length) return '';
-  return '🛋️ Exempte'+(ex.length>1?'s':'')+' à J'+j+' : '+ex.map(t=>{ const n=compo(j,t).p.length; return t+(n?' (compo saisie, '+n+' joueur'+(n>1?'s':'')+')':' (aucune compo saisie)'); }).join(', ')
-    +'\nFeuille d’exemption à envoyer dans les délais au CD92 (s.pietu.cd92@orange.fr) : les joueurs inscrits comptent comme ayant joué cette journée.';
-}
+/* Une équipe exempte entre dans les exports groupés comme les autres, même sans compo saisie :
+   le règlement impose quand même une feuille (II.112.2). */
+function exempte(j,t){ const m=matchOf(t,j); return !!(m&&m.exempt); }
 function draftText(t,j){ // version « draft » : texte brut pour discuter des compos (pas de gras, pas de téléphones)
   const m=matchOf(t,j), actual=PARTS.lineup(t,j,false), c=actual?{p:actual.p,st:'sent',note:''}:compo(j,t); if(!m)return t+' · J'+j+' : calendrier inconnu';
   const sorted=c.p.slice().sort((a,b)=>((BYKEY[b]||{}).men||0)-((BYKEY[a]||{}).men||0));
   const origin=k=>{ if(GENRE(t)==='F') return (FEM[k]&&FEM[k].e)||homeTeam(k)||''; const g=TAGS[k]||{}; if(g.e) return g.e; if(g.r==='R'&&g.d) return 'pool '+g.d; const f=FEM[k]; return f&&f.e?f.e:''; };
-  let s=t+' · J'+j+' — '+fmtD(m.date)+' · '+(m.exempt?'EXEMPTE — feuille d’exemption à envoyer quand même':(m.dom?'dom. vs ':'ext. à ')+m.opp+(m.oppAvg?' (≈'+m.oppAvg+')':''))+'\n';
+  let s=t+' · J'+j+' — '+fmtD(m.date)+' · '+(m.exempt?'EXEMPTE':(m.dom?'dom. vs ':'ext. à ')+m.opp+(m.oppAvg?' (≈'+m.oppAvg+')':''))+'\n';
   if(!m.exempt){ const bart=m.dom&&/bartholdi/i.test((m.salle||'')+' '+(m.venue||''));
     const adr=bart?'⚠️ Bartholdi (gymnase Bartholdi, rue de l’Ancienne-Mairie), pas à la piscine':(m.dom?(m.venue||m.salle||''):(m.venue||''));
     if(adr) s+='📍 '+adr+(m.dom&&m.venueNote&&!bart?' — '+m.venueNote:'')+'\n'; }
-  s+=sorted.map((k,i)=>{ const p=BYKEY[k]; const o=origin(k); return (i+1)+'. '+(p?full(p):k)+(o&&o!==t?' ('+o+')':'')+(p?' '+(p.men||'—'):''); }).join('\n');
-  if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
+  if(m.exempt) s+='feuille d’exemption à envoyer quand même (CD92)\n';
+  s+=c.p.length?sorted.map((k,i)=>{ const p=BYKEY[k]; const o=origin(k); return (i+1)+'. '+(p?full(p):k)+(o&&o!==t?' ('+o+')':'')+(p?' '+(p.men||'—'):''); }).join('\n'):(m.exempt?'aucune compo saisie':'');
+  if(c.p.length<sizeOf(t)&&!m.exempt) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
   return s;
 }
 function freeText(j){ // titulaires (compo officielle, hors pools) disponibles à Jj et non alignés dans aucune équipe
