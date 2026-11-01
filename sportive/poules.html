@@ -30,6 +30,18 @@
   .p-title small{color:var(--dim);font-size:14px;font-weight:700;margin-left:6px}
   .p-badge{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:800;padding:5px 12px;border-radius:99px;background:rgba(242,106,27,0.14);border:1px solid rgba(242,106,27,0.5);color:var(--orange)}
   .pt-wrap{overflow-x:auto}
+  /* classement FFTT actualisé de la poule (data/site.json STANDINGS), sous le tableau des niveaux */
+  .st-wrap{border-top:1px solid rgba(255,255,255,0.06);padding:10px 12px 12px}
+  .st-h{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--dim)}
+  .st-h span{font-weight:600;letter-spacing:0;text-transform:none;color:var(--dimmer)}
+  table.st{border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;min-width:420px}
+  .st th{font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--dimmer);padding:4px 10px;text-align:right}
+  .st th.l,.st td.l{text-align:left}
+  .st td{padding:4px 10px;text-align:right;border-top:1px solid rgba(255,255,255,0.04);white-space:nowrap}
+  .st td.pos{font-family:"JetBrains Mono",monospace;color:var(--dimmer);font-weight:800}
+  .st td.pts{font-family:"JetBrains Mono",monospace;font-weight:800;color:var(--ink)}
+  .st tr.me td{background:rgba(242,106,27,.10);color:var(--ink)} .st tr.me td.l{color:var(--orange);font-weight:800}
+  .st td.diff.p{color:var(--win)} .st td.diff.n{color:var(--lose)}
   table.pt{width:100%;min-width:560px;border-collapse:collapse;font-size:13px}
   .pt th{background:rgba(255,255,255,0.03);font-size:9.5px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;color:var(--dim);padding:9px 10px;text-align:left;white-space:nowrap}
   .pt th.r,.pt td.r{text-align:right}
@@ -386,6 +398,20 @@
     openFiche(+b.dataset.p,+b.dataset.pos);
   });
 
+  /* ===== classement FFTT actualisé (data/site.json STANDINGS, collecté 4 fois par jour) ===== */
+  function classementHtml(P){
+    var st=(SITE&&SITE.STANDINGS&&SITE.STANDINGS[P.acbb])||[]; if(!st.length) return '';
+    var jMax=st.reduce(function(a,r){return Math.max(a,+r.mp||0);},0);
+    var me=st.filter(function(r){return /BOULOGNE/i.test(r.name||'');});
+    if(me.length>1) me=me.filter(function(r){return new RegExp('\\b'+P.acbb.slice(1)+'\\s*$').test(String(r.name).trim());});
+    var moi=me[0]||null;
+    return '<div class="st-wrap"><div class="st-h">Classement FFTT<span>'+(jMax?'après J'+jMax:'phase 1')+' · Pts · J · V · N · D · parties pour/contre</span></div>'
+      +'<div style="overflow-x:auto"><table class="st"><thead><tr><th></th><th class="l">Équipe</th><th>Pts</th><th>J</th><th>V</th><th>N</th><th>D</th><th>+/−</th></tr></thead><tbody>'
+      +st.map(function(r){ var d=(+r.diff||0);
+        return '<tr'+(r===moi?' class="me"':'')+'><td class="pos">'+esc(r.pos)+'</td><td class="l">'+esc(r===moi?P.acbb+' · '+r.name:r.name)+'</td><td class="pts">'+esc(r.pts)+'</td><td>'+esc(r.mp)+'</td><td>'+esc(r.V)+'</td><td>'+esc(r.N)+'</td><td>'+esc(r.D)+'</td><td class="diff '+(d>0?'p':d<0?'n':'')+'">'+(d>0?'+':'')+d+'</td></tr>'; }).join('')
+      +'</tbody></table></div></div>';
+  }
+
   /* ===== rendu (identique à l'ancienne page + statut journée + équipes cliquables) ===== */
   function render(data, tags, players){
     var pkey=function(p){return String(p.lic||(p.nom+'|'+p.pre));};
@@ -458,6 +484,7 @@
         +'<div class="pt-wrap"><table class="pt">'
         +'<thead><tr><th>#</th><th>Équipe <span style="font-weight:600;letter-spacing:0;text-transform:none">· ↗ fiche</span></th><th>Dépt</th><th class="r" title="moyenne des points des joueurs réellement alignés depuis la J1 (feuilles FFTT)">Niveau 26/27</th><th class="r">Niveau ph2 25/26</th><th class="r" title="moyenne des 4 meilleurs joueurs alignés au moins une fois en phase 2 25/26">Plafond</th><th>25/26 (identité · div · clt)</th></tr></thead>'
         +'<tbody>'+rows+'</tbody></table></div>'
+        +classementHtml(P)
         +'<div class="cal-leg"><span>Calendrier '+esc(P.acbb)+' · statut journée par journée :</span><span><i style="background:var(--win)"></i>joué (score ACBB – adverse)</span><span><i style="background:var(--dimmer)"></i>à venir</span><span><i style="background:var(--gold)"></i>joué, score en attente</span><span><i style="background:#FB923C"></i>reporté</span></div>'
         +'<div class="cal" style="border-top:none">'+cal+'</div>'
         +'</div>';
