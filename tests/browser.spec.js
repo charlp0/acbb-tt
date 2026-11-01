@@ -601,6 +601,7 @@ test('exports Compos : les équipes exemptes de la journée sont listées, même
  expect(ex).toContain('Exemptes à J4');for(const t of ['M12','M14','M16']) expect(ex).toContain(t+' (aucune compo saisie)');
  expect(ex).toContain('s.pietu.cd92@orange.fr');
  const d=await page.evaluate(()=>draftText('M14',4));expect(d).toContain('EXEMPTE');expect(d).not.toContain('undefined');
+ const d2=await page.evaluate(()=>draftText('M11',2));expect(d2).toContain('📍 SOUS-SOL PISCINE');   // l'adresse du match, aussi dans le draft
  expect(await page.evaluate(()=>exemptText(2))).toBe('');   // J2 : personne n'est exempt
  expect(errors).toEqual([]);
 });

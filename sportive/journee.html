@@ -631,13 +631,13 @@ function renderState(){
     +'<span style="flex-grow:1"></span>'
     +'<button class="btn sm" id="fillAll" type="button" title="Pré-remplit les équipes vides avec leurs titulaires disponibles (par ordre de points)">⚡ Proposer les compos vides</button>'
     +'<button class="btn" id="exportDraft" type="button" title="texte brut pour les échanges de la sportive : compos + situation des autres joueurs, sans gras, sans téléphones">📝 Compos draft ('+pl.length+')</button>'
-    +'<button class="btn" id="exportAll" type="button" title="export complet pour les capitaines : renforts en gras, téléphones, situation des autres joueurs">📋 Compos finales ('+pl.length+')</button>'
+    +'<button class="btn" id="exportAll" type="button" title="export complet pour les capitaines : adresse de chaque match, renforts en gras, téléphones, situation des autres joueurs">📋 Compos finales ('+pl.length+')</button>'
     +'<button class="btn" id="exportFree" type="button" title="titulaires disponibles ce jour-là mais non alignés (pools exclus)">📋 Copier titulaires non engagés</button>'
 ;
   document.getElementById('fillAll').onclick=()=>{ let n=0; pl.forEach(t=>{ if(!compo(J,t).p.length){ propose(t); n++; } }); toast(n?n+' compo'+(n>1?'s':'')+' proposée'+(n>1?'s':''):'toutes les équipes ont déjà une compo'); renderAll(); };
   document.getElementById('exportFree').onclick=()=>copy(freeText(J));
   document.getElementById('exportDraft').onclick=()=>copy([...pl.filter(t=>compo(J,t).p.length).map(t=>draftText(t,J)),exemptText(J)].filter(Boolean).join('\n\n'));
-  document.getElementById('exportAll').onclick=async()=>{ const parts=[]; for(const t of pl.filter(t=>compo(J,t).p.length)) parts.push(await waText(t,J,{adresse:false})); const ex=exemptText(J); if(ex) parts.push(ex); copy(parts.join('\n\n———\n\n')); };   // export groupé : sans adresses de gymnases
+  document.getElementById('exportAll').onclick=async()=>{ const parts=[]; for(const t of pl.filter(t=>compo(J,t).p.length)) parts.push(await waText(t,J)); const ex=exemptText(J); if(ex) parts.push(ex); copy(parts.join('\n\n———\n\n')); };   // export groupé AVEC l'adresse de chaque match (demande de Charles, 01/11/2026)
 }
 function renderFilters(){
   document.getElementById('filters').innerHTML=GROUPS.map(g=>'<span class="fp'+(FILTER===g[0]?' on':'')+'" data-f="'+g[0]+'">'+g[1]+'</span>').join('');
@@ -1034,6 +1034,9 @@ function draftText(t,j){ // version « draft » : texte brut pour discuter des c
   const sorted=c.p.slice().sort((a,b)=>((BYKEY[b]||{}).men||0)-((BYKEY[a]||{}).men||0));
   const origin=k=>{ if(GENRE(t)==='F') return (FEM[k]&&FEM[k].e)||homeTeam(k)||''; const g=TAGS[k]||{}; if(g.e) return g.e; if(g.r==='R'&&g.d) return 'pool '+g.d; const f=FEM[k]; return f&&f.e?f.e:''; };
   let s=t+' · J'+j+' — '+fmtD(m.date)+' · '+(m.exempt?'EXEMPTE — feuille d’exemption à envoyer quand même':(m.dom?'dom. vs ':'ext. à ')+m.opp+(m.oppAvg?' (≈'+m.oppAvg+')':''))+'\n';
+  if(!m.exempt){ const bart=m.dom&&/bartholdi/i.test((m.salle||'')+' '+(m.venue||''));
+    const adr=bart?'⚠️ Bartholdi (gymnase Bartholdi, rue de l’Ancienne-Mairie), pas à la piscine':(m.dom?(m.venue||m.salle||''):(m.venue||''));
+    if(adr) s+='📍 '+adr+(m.dom&&m.venueNote&&!bart?' — '+m.venueNote:'')+'\n'; }
   s+=sorted.map((k,i)=>{ const p=BYKEY[k]; const o=origin(k); return (i+1)+'. '+(p?full(p):k)+(o&&o!==t?' ('+o+')':'')+(p?' '+(p.men||'—'):''); }).join('\n');
   if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
   return s;
