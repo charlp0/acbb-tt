@@ -593,3 +593,14 @@ test('critérium à 600 px (écran plié ou fenêtre étroite) : le rail des cat
  const m=await page.evaluate(()=>({W:document.documentElement.clientWidth,S:document.documentElement.scrollWidth,rail:document.querySelector('.rail').getBoundingClientRect().width,nav:document.querySelector('.rail nav').scrollWidth}));
  expect(m.S).toBe(m.W);expect(m.rail).toBeLessThanOrEqual(m.W);expect(m.nav).toBeGreaterThan(m.rail);   // le contenu dépasse, mais dans le rail
 });
+
+test('exports Compos : les équipes exemptes de la journée sont listées, même sans compo saisie',async({page,context})=>{
+ const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/sportive/journee.html?j=4');await expect(page.locator('[data-note="M11"]')).toBeVisible();
+ const ex=await page.evaluate(()=>exemptText(4));
+ expect(ex).toContain('Exemptes à J4');for(const t of ['M12','M14','M16']) expect(ex).toContain(t+' (aucune compo saisie)');
+ expect(ex).toContain('s.pietu.cd92@orange.fr');
+ const d=await page.evaluate(()=>draftText('M14',4));expect(d).toContain('EXEMPTE');expect(d).not.toContain('undefined');
+ expect(await page.evaluate(()=>exemptText(2))).toBe('');   // J2 : personne n'est exempt
+ expect(errors).toEqual([]);
+});

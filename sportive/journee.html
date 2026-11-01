@@ -636,8 +636,8 @@ function renderState(){
 ;
   document.getElementById('fillAll').onclick=()=>{ let n=0; pl.forEach(t=>{ if(!compo(J,t).p.length){ propose(t); n++; } }); toast(n?n+' compo'+(n>1?'s':'')+' proposée'+(n>1?'s':''):'toutes les équipes ont déjà une compo'); renderAll(); };
   document.getElementById('exportFree').onclick=()=>copy(freeText(J));
-  document.getElementById('exportDraft').onclick=()=>copy(pl.filter(t=>compo(J,t).p.length).map(t=>draftText(t,J)).join('\n\n'));
-  document.getElementById('exportAll').onclick=async()=>{ const parts=[]; for(const t of pl.filter(t=>compo(J,t).p.length)) parts.push(await waText(t,J,{adresse:false})); copy(parts.join('\n\n———\n\n')); };   // export groupé : sans adresses de gymnases
+  document.getElementById('exportDraft').onclick=()=>copy([...pl.filter(t=>compo(J,t).p.length).map(t=>draftText(t,J)),exemptText(J)].filter(Boolean).join('\n\n'));
+  document.getElementById('exportAll').onclick=async()=>{ const parts=[]; for(const t of pl.filter(t=>compo(J,t).p.length)) parts.push(await waText(t,J,{adresse:false})); const ex=exemptText(J); if(ex) parts.push(ex); copy(parts.join('\n\n———\n\n')); };   // export groupé : sans adresses de gymnases
 }
 function renderFilters(){
   document.getElementById('filters').innerHTML=GROUPS.map(g=>'<span class="fp'+(FILTER===g[0]?' on':'')+'" data-f="'+g[0]+'">'+g[1]+'</span>').join('');
@@ -1022,11 +1022,18 @@ async function getPhones(){
 }
 const phoneKey=k=>{ const p=BYKEY[k]; return p?nrmK(p.nom)+'|'+nrmK(p.pre):''; };
 const fmtTel=t=>t&&/^\d{10}$/.test(t)?t.replace(/(\d{2})(?=\d)/g,'$1 '):t;
+/* Équipes exemptes de la journée, pour les deux exports groupés : celles qui ont une compo sont déjà dans la liste,
+   celles qui n'en ont pas n'apparaissaient nulle part alors que le règlement impose quand même une feuille (II.112.2). */
+function exemptText(j){
+  const ex=TEAMS.filter(t=>{ const m=matchOf(t,j); return m&&m.exempt; }); if(!ex.length) return '';
+  return '🛋️ Exempte'+(ex.length>1?'s':'')+' à J'+j+' : '+ex.map(t=>{ const n=compo(j,t).p.length; return t+(n?' (compo saisie, '+n+' joueur'+(n>1?'s':'')+')':' (aucune compo saisie)'); }).join(', ')
+    +'\nFeuille d’exemption à envoyer dans les délais au CD92 (s.pietu.cd92@orange.fr) : les joueurs inscrits comptent comme ayant joué cette journée.';
+}
 function draftText(t,j){ // version « draft » : texte brut pour discuter des compos (pas de gras, pas de téléphones)
   const m=matchOf(t,j), actual=PARTS.lineup(t,j,false), c=actual?{p:actual.p,st:'sent',note:''}:compo(j,t); if(!m)return t+' · J'+j+' : calendrier inconnu';
   const sorted=c.p.slice().sort((a,b)=>((BYKEY[b]||{}).men||0)-((BYKEY[a]||{}).men||0));
   const origin=k=>{ if(GENRE(t)==='F') return (FEM[k]&&FEM[k].e)||homeTeam(k)||''; const g=TAGS[k]||{}; if(g.e) return g.e; if(g.r==='R'&&g.d) return 'pool '+g.d; const f=FEM[k]; return f&&f.e?f.e:''; };
-  let s=t+' · J'+j+' — '+fmtD(m.date)+' · '+(m.dom?'dom. vs ':'ext. à ')+m.opp+(m.oppAvg?' (≈'+m.oppAvg+')':'')+'\n';
+  let s=t+' · J'+j+' — '+fmtD(m.date)+' · '+(m.exempt?'EXEMPTE — feuille d’exemption à envoyer quand même':(m.dom?'dom. vs ':'ext. à ')+m.opp+(m.oppAvg?' (≈'+m.oppAvg+')':''))+'\n';
   s+=sorted.map((k,i)=>{ const p=BYKEY[k]; const o=origin(k); return (i+1)+'. '+(p?full(p):k)+(o&&o!==t?' ('+o+')':'')+(p?' '+(p.men||'—'):''); }).join('\n');
   if(c.p.length<sizeOf(t)) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
   return s;
