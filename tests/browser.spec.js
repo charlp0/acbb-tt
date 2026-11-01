@@ -601,7 +601,7 @@ test('exports Compos : une équipe exempte est un bloc au même gabarit que les 
  expect(await page.evaluate(()=>exempte(2,'M11'))).toBe(false);   // J2 : personne n'est exempt
  const w=await page.evaluate(()=>waText('M14',4));
  expect(w).toMatch(/^🏓 ACBB TT — M14 · J4 \(/);expect(w).toMatch(/\n📅 [a-z]+\. \d\d\/\d\d · EXEMPTE\n/);   // en-tête d'équipe, « EXEMPTE » à la place de l'adversaire
- expect(w).toContain('s.pietu.cd92@orange.fr');expect(w).toContain('aucune compo saisie');expect(w).not.toContain('place(s) à pourvoir');expect(w).not.toContain('undefined');
+ expect(w).not.toContain('s.pietu.cd92');expect(w).toContain('aucune compo saisie');expect(w).not.toContain('place(s) à pourvoir');expect(w).not.toContain('undefined');
  const d=await page.evaluate(()=>draftText('M14',4));expect(d).toMatch(/^M14 · J4 — [a-z]+\. \d\d\/\d\d · EXEMPTE\n/);expect(d).toContain('aucune compo saisie');expect(d).not.toContain('undefined');
  const d2=await page.evaluate(()=>draftText('M11',2));expect(d2).toMatch(/📍 .*(piscine|vieux pont)/i);   // l'adresse du match, aussi dans le draft (texte du lieu résolu)
  expect(errors).toEqual([]);

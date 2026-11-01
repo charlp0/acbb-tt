@@ -993,9 +993,7 @@ async function waText(t,j,opts){
     s+='🎯 Niveau adverse ≈ '+m.oppAvg+' de moyenne ('+(m.oppAvgSrc==='26/27'&&quand
         ? "d'après "+quand : 'repère 25/26, pas encore de feuille cette saison')+')\n';
   }
-  /* Équipe exempte : même gabarit que les autres (demande de Charles, 01/11/2026). Le règlement impose quand même
-     une feuille (II.112.2) : les joueurs inscrits comptent comme ayant joué, d'où le rappel, compo saisie ou non. */
-  if(m.exempt) s+='📝 Feuille d’exemption à envoyer au CD92 (s.pietu.cd92@orange.fr) : les joueurs inscrits comptent comme ayant joué cette journée\n';
+  // Équipe exempte : même gabarit que les autres, sans rappel réglementaire (demande de Charles, 01/11/2026).
   if(c.p.length||!m.exempt) s+='\n👥 Compo :\n'+sorted.map((k,i)=>{ const p=BYKEY[k]; const nm=p?full(p):k; const o=origin(k); const ren=o&&o!==t; return (i+1)+'. '+(ren?'*'+nm+'* ('+o+')':nm)+(p?' ('+(p.men||'—')+')':''); }).join('\n');
   else s+='\n👥 Compo : aucune compo saisie';
   if(c.p.length<sizeOf(t)&&!m.exempt) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
@@ -1039,7 +1037,6 @@ function draftText(t,j){ // version « draft » : texte brut pour discuter des c
   if(!m.exempt){ const bart=m.dom&&/bartholdi/i.test((m.salle||'')+' '+(m.venue||''));
     const adr=bart?'⚠️ Bartholdi (gymnase Bartholdi, rue de l’Ancienne-Mairie), pas à la piscine':(m.dom?(m.venue||m.salle||''):(m.venue||''));
     if(adr) s+='📍 '+adr+(m.dom&&m.venueNote&&!bart?' — '+m.venueNote:'')+'\n'; }
-  if(m.exempt) s+='feuille d’exemption à envoyer quand même (CD92)\n';
   s+=c.p.length?sorted.map((k,i)=>{ const p=BYKEY[k]; const o=origin(k); return (i+1)+'. '+(p?full(p):k)+(o&&o!==t?' ('+o+')':'')+(p?' '+(p.men||'—'):''); }).join('\n'):(m.exempt?'aucune compo saisie':'');
   if(c.p.length<sizeOf(t)&&!m.exempt) s+='\n'+(sizeOf(t)-c.p.length)+' place(s) à pourvoir';
   return s;
