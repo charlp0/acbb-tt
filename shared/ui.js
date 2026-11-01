@@ -71,6 +71,25 @@
   }
   // « reportée au 28/11 », « avancée au 28/11 » ou « à rejouer » ; court = jj/mm seulement.
   function libReportee(rep,court){ if(!rep) return ''; if(!rep.date) return 'à rejouer'; return (rep.avancee?'avancée au ':'reportée au ')+(court?rep.date.slice(0,5):rep.date); }
-  const UI={JOURS,PART,ACR,parseFR,fmtDate,capWord,shortName,normName,sameTeam,fmtTs,fmtTsCourt,fmtDT,errText,gateErrTxt,busy,advLabel,scoreboard,dateFR,reportee,libReportee};
+  /* Apparie les équipes d'une poule (noms du PDF / de poules2627.json) aux lignes du classement FFTT (noms SPID),
+     qui diffèrent souvent : « USM MALAKOFF 4 » / « MALAKOFF USM 4 », « PARIS US 2 » / « PARIS US 2 1 », « BOIS COLOMBES S 3 » / « BCS TT 3 ».
+     1) sameTeam ; 2) mots significatifs communs, candidat unique parmi les lignes encore libres ; 3) un seul couple restant.
+     Retourne, pour chaque nom d'équipe, la ligne appariée ou null. */
+  const GENERIQUE=new Set(['TT','T','US','CS','CSM','ES','USM','AS','SPORT','S','STT','ENT','AL','ALCL','SM','ASPN','UMS','VGA','E','P','EP','TTMC','ASV','ASVTT','CSTT','USTT','CAM','AC','ATT']);
+  function motsSig(n){ return new Set(String(n||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,' ').split(' ').filter(w=>w&&!/^\d+$/.test(w)&&!GENERIQUE.has(w))); }
+  function matchTeams(names,rows){
+    const out=names.map(()=>null), libres=new Set((rows||[]).map((_,i)=>i));
+    names.forEach((n,i)=>{ for(const k of libres){ if(sameTeam(rows[k].name,n)){ out[i]=rows[k]; libres.delete(k); break; } } });
+    let progres=true;
+    while(progres){ progres=false;
+      names.forEach((n,i)=>{ if(out[i]) return; const a=motsSig(n);
+        const cand=[...libres].filter(k=>{ const b=motsSig(rows[k].name); for(const w of a) if(b.has(w)) return true; return false; });
+        if(cand.length===1){ out[i]=rows[cand[0]]; libres.delete(cand[0]); progres=true; } });
+    }
+    const restants=names.map((n,i)=>i).filter(i=>!out[i]);
+    if(restants.length===1&&libres.size===1){ out[restants[0]]=rows[[...libres][0]]; libres.clear(); }
+    return out;
+  }
+  const UI={JOURS,PART,ACR,parseFR,fmtDate,capWord,shortName,normName,sameTeam,fmtTs,fmtTsCourt,fmtDT,errText,gateErrTxt,busy,advLabel,scoreboard,dateFR,reportee,libReportee,matchTeams};
   if(typeof module!=='undefined'&&module.exports) module.exports=UI; else racine.ACBB_UI=UI;
 })(typeof window!=='undefined'?window:globalThis);

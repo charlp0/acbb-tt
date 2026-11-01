@@ -426,7 +426,8 @@
       /* classement FFTT actualisé (data/site.json STANDINGS) : il donne l'ordre des lignes et six colonnes.
          Les noms FFTT diffèrent parfois de ceux de la poule (« BOULOGNE BILLANCOURT AC 5 » / « BOULOGNE BILLANCOURT 5 ») : rapprochement par sameTeam. */
       var st=(SITE&&SITE.STANDINGS&&SITE.STANDINGS[P.acbb])||[];
-      var rkOf=function(t){ return st.find(function(r){ return ACBB_UI.sameTeam(r.name,t.name); })||null; };
+      var appar=ACBB_UI.matchTeams(P.teams.map(function(t){return t.name;}),st);
+      var rkOf=function(t){ return appar[P.teams.indexOf(t)]||null; };
       var jMax=st.reduce(function(a,r){return Math.max(a,+r.mp||0);},0);
       var ordre=P.teams.slice().sort(function(a,b){ var ra=rkOf(a),rb=rkOf(b); return ((ra?+ra.pos:99)-(rb?+rb.pos:99))||(a.pos-b.pos); });
       var rows=ordre.map(function(t){

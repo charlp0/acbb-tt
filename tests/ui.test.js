@@ -1,4 +1,4 @@
-const test=require('node:test'),assert=require('node:assert/strict');
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs');
 const UI=require('../shared/ui.js');
 test('parseFR / fmtDate : dates jj/mm/aaaa valides et invalides',()=>{
   const d=UI.parseFR('26/09/2026');
@@ -89,3 +89,15 @@ test('rencontre reportée : date FFTT à venir ou calendrier marqué « à rejou
   assert.equal(UI.reportee(cal,{date:'30 oct. 2026',match_score:25,opp_score:17,played_games:14},'2026-11-02'),null);   // jouée : rien
   assert.equal(UI.reportee({...cal,exempt:true},null,'2026-10-28'),null);
 });
+
+test('matchTeams : chaque équipe des 19 poules retrouve sa ligne du classement FFTT, sans doublon',()=>{
+  const site=JSON.parse(fs.readFileSync('data/site.json','utf8')), P=JSON.parse(fs.readFileSync('data/poules2627.json','utf8')).poules;
+  P.forEach(p=>{ const st=(site.STANDINGS||{})[p.acbb]||[]; if(!st.length) return;
+    const m=UI.matchTeams(p.teams.map(t=>t.name),st);
+    m.forEach((r,i)=>assert.ok(r,p.acbb+' : '+p.teams[i].name+' sans ligne FFTT'));
+    assert.equal(new Set(m.map(r=>r.name)).size,m.length,p.acbb+' : deux équipes sur la même ligne'); });
+  // cas vus le 01/11/2026
+  const rows=[{name:'PARIS US 2 1'},{name:'PING PARIS 14 1'},{name:'BCS TT 3'},{name:'NANTERRE ES (1)'},{name:'MALAKOFF USM 4'}];
+  assert.deepEqual(UI.matchTeams(['PING PARIS 14 1','PARIS US 2','ES NANTERRE 1','USM MALAKOFF 4','BOIS COLOMBES S 3'],rows).map(r=>r.name),['PING PARIS 14 1','PARIS US 2 1','NANTERRE ES (1)','MALAKOFF USM 4','BCS TT 3']);
+});
+
