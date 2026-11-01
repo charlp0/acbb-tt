@@ -706,7 +706,7 @@
     const asc=avgScore(played); if(asc!=null) chips.push('<span class="chip" title="score moyen marqué par match">Score moy. <b>'+asc+'</b></span>');
     if(chips.length) h+='<div class="chips">'+chips.join('')+'</div>';
 
-    h+='<div class="sblock"><span class="lab">Notre rencontre</span><div class="card2 face"><span>J'+m.j+' · '+(m.dom?'domicile':'extérieur')+' · '+esc(fmtDate(m.date))+'</span>'+(sc?ACBB_UI.scoreboard(sc[0],sc[1],shortName(t.name),'sc '+scoreClass(sc[0],sc[1])):'<span class="lab">'+(rep?(rep.date?'reportée au '+rep.date.slice(0,5):'à rejouer'):(vsUs?'score en attente':'à jouer'))+'</span>')+'</div></div>';
+    h+='<div class="sblock"><span class="lab">Notre rencontre</span><div class="card2 face"><span>J'+m.j+' · '+(m.dom?'domicile':'extérieur')+' · '+esc(fmtDate(m.date))+'</span>'+(sc?ACBB_UI.scoreboard(sc[0],sc[1],shortName(t.name),'sc '+scoreClass(sc[0],sc[1])):'<span class="lab">'+(rep?ACBB_UI.libReportee(rep,true):(vsUs?'score en attente':'à jouer'))+'</span>')+'</div></div>';
 
     if(pools){
       h+='<div class="sblock"><span class="lab">Compo récente</span>';

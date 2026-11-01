@@ -973,7 +973,7 @@ async function waText(t,j,opts){
   const ph=renforts.length?await getPhones():null;
   let s='🏓 ACBB TT — '+t+' · J'+j+' ('+div+(m.poule?' poule '+m.poule:'')+')\n';
   const rep=(PARTS&&PARTS.isPending&&PARTS.isPending(t,j))?ACBB_UI.reportee(calOf(t,j),ffttRowJ(t,j)):null;
-  s+='📅 '+(rep?(rep.date?'Rencontre reportée au '+rep.date:'Rencontre à rejouer, date à fixer'):fmtD(m.date))+' · '+(m.exempt?'Exemption · composition réglementaire':(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp))+'\n';
+  s+='📅 '+(rep?'Rencontre '+(rep.date?ACBB_UI.libReportee(rep):'à rejouer, date à fixer'):fmtD(m.date))+' · '+(m.exempt?'Exemption · composition réglementaire':(m.dom?'🏠 Domicile vs '+m.opp:'🚗 Déplacement à '+m.opp))+'\n';
   // Domicile à Bartholdi : toujours dit, même dans l'export groupé sans adresses (demande de Charles, 13/10/2026) —
   // la salle habituelle est la piscine, un joueur qui n'a pas lu le planning s'y rend par réflexe.
   const bartholdi=m.dom&&/bartholdi/i.test((m.salle||'')+' '+(m.venue||''));

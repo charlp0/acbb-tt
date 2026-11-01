@@ -66,9 +66,11 @@
     if(!cal||cal.exempt) return null; const auj=today||new Date().toISOString().slice(0,10);
     if(row&&!(row.match_score==null&&!(row.played_games>0))) return null;   // jouée : rien à dire
     const dr=row?dateFR(row.date):null, dc=dateFR(cal.date), neuve=dr&&dc&&dr!==dc?dr.split('-').reverse().join('/'):null;
-    if(neuve&&dr>auj) return {date:neuve};
-    return cal.reporte?{date:neuve}:null;
+    if(neuve&&dr>auj) return {date:neuve,avancee:dr<dc};   // avancée : la FFTT l'a placée AVANT la date du calendrier (M5 J6 → 28/11/2026)
+    return cal.reporte?{date:neuve,avancee:false}:null;
   }
-  const UI={JOURS,PART,ACR,parseFR,fmtDate,capWord,shortName,normName,sameTeam,fmtTs,fmtTsCourt,fmtDT,errText,gateErrTxt,busy,advLabel,scoreboard,dateFR,reportee};
+  // « reportée au 28/11 », « avancée au 28/11 » ou « à rejouer » ; court = jj/mm seulement.
+  function libReportee(rep,court){ if(!rep) return ''; if(!rep.date) return 'à rejouer'; return (rep.avancee?'avancée au ':'reportée au ')+(court?rep.date.slice(0,5):rep.date); }
+  const UI={JOURS,PART,ACR,parseFR,fmtDate,capWord,shortName,normName,sameTeam,fmtTs,fmtTsCourt,fmtDT,errText,gateErrTxt,busy,advLabel,scoreboard,dateFR,reportee,libReportee};
   if(typeof module!=='undefined'&&module.exports) module.exports=UI; else racine.ACBB_UI=UI;
 })(typeof window!=='undefined'?window:globalThis);

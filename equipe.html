@@ -158,7 +158,7 @@
       let right;
       if(c.exempt) right='<span class="lab wait">exempte</span>';
       else if(sc) right='<span class="sc '+scoreClass(sc[0],sc[1])+'">'+sc[0]+' – '+sc[1]+'</span>';
-      else { const rep=ACBB_UI.reportee(c,ffttRow(S.team,c.j)); right='<span class="lab wait">'+(rep?(rep.date?'reportée au '+rep.date.slice(0,5):'à rejouer'):(past?'en attente':'à venir'))+'</span>'; }
+      else { const rep=ACBB_UI.reportee(c,ffttRow(S.team,c.j)); right='<span class="lab wait">'+(rep?ACBB_UI.libReportee(rep,true):(past?'en attente':'à venir'))+'</span>'; }
       return '<div class="card2 crow'+(past?' past':'')+'"><span class="j">J'+c.j+'</span><span class="lab dt">'+esc(fmtDate(c.date))+'</span>'+(c.exempt?'<span class="ph"></span>':'<span class="tag c'+(c.dom?' dom':'')+'">'+(c.dom?'Dom.':'Ext.')+'</span>')+'<span class="opp" title="'+esc(name||'')+'">'+(c.exempt?'Exempte':esc(shortName(name)||'adversaire à confirmer'))+'</span>'+right+'</div>';
     }).join('')||'<div class="empty">Calendrier non publié.</div>';
 

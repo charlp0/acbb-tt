@@ -78,9 +78,14 @@ test('score en tableau : ACBB d’abord, l’adversaire en étiquette courte',()
 test('rencontre reportée : date FFTT à venir ou calendrier marqué « à rejouer »',()=>{
   assert.equal(UI.dateFR('30 oct. 2026'),'2026-10-30');assert.equal(UI.dateFR('2 oct. 2026'),'2026-10-02');assert.equal(UI.dateFR('02/10/2026'),'2026-10-02');
   const cal={j:2,date:'02/10/2026'};
-  assert.deepEqual(UI.reportee(cal,{date:'30 oct. 2026',match_score:null,played_games:0},'2026-10-28'),{date:'30/10/2026'});
+  assert.deepEqual(UI.reportee(cal,{date:'30 oct. 2026',match_score:null,played_games:0},'2026-10-28'),{date:'30/10/2026',avancee:false});
+  // M5 J6 : calendrier 05/12, FFTT 28/11 → avancée
+  assert.deepEqual(UI.reportee({j:6,date:'05/12/2026'},{date:'28 nov. 2026',match_score:null,played_games:0},'2026-11-01'),{date:'28/11/2026',avancee:true});
+  assert.equal(UI.libReportee({date:'28/11/2026',avancee:true},true),'avancée au 28/11');
+  assert.equal(UI.libReportee({date:'30/10/2026',avancee:false}),'reportée au 30/10/2026');
+  assert.equal(UI.libReportee({date:null,avancee:false}),'à rejouer');
   assert.equal(UI.reportee(cal,{date:'2 oct. 2026',match_score:null,played_games:0},'2026-10-28'),null);           // en attente de feuille, pas reportée
-  assert.deepEqual(UI.reportee({...cal,reporte:true},{date:'2 oct. 2026',match_score:null,played_games:0},'2026-10-28'),{date:null});
+  assert.deepEqual(UI.reportee({...cal,reporte:true},{date:'2 oct. 2026',match_score:null,played_games:0},'2026-10-28'),{date:null,avancee:false});
   assert.equal(UI.reportee(cal,{date:'30 oct. 2026',match_score:25,opp_score:17,played_games:14},'2026-11-02'),null);   // jouée : rien
   assert.equal(UI.reportee({...cal,exempt:true},null,'2026-10-28'),null);
 });
