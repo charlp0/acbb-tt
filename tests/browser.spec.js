@@ -594,6 +594,21 @@ test('critérium à 600 px (écran plié ou fenêtre étroite) : le rail des cat
  expect(m.S).toBe(m.W);expect(m.rail).toBeLessThanOrEqual(m.W);expect(m.nav).toBeGreaterThan(m.rail);   // le contenu dépasse, mais dans le rail
 });
 
+test('Suivi dispos : « Dernières saisies » détaille ce qui a changé et signale un joueur déjà aligné',async({page,context})=>{
+ const state=fixture(),errors=[];
+ state.rows.unshift({id:13,slot:'j7',author:'Test A',created_at:'2026-10-01T10:00:00Z',tags:{M11:{p:[state.players[0].lic],st:'draft',note:''}}});   // compo J7 (à venir) avec Alex
+ state.votes.push({id:9,licence:state.players[0].lic,nom:state.players[0].nom,prenom:state.players[0].pre,created_at:'2026-10-02T09:00:00Z',dispos:{j1:true,j2:true,j3:false,j4:true,j5:true,j6:true,j7:false,roles:['R']},n:5});
+ await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/sportive/suivi-dispos.html');await expect(page.locator('#lastList .li')).toHaveCount(6);
+ const first=page.locator('#lastList .li').first();
+ await expect(first).toContainText('Alex EXEMPLE1');await expect(first).toContainText('5/7');
+ await expect(first).toContainText('J3 (16-17/10) : plus dispo');await expect(first).toContainText('J7 (11-12/12) : plus dispo — ⚠️ aligné en M11');await expect(first).toContainText('souhait : — → remplaçant');
+ await expect(first).toHaveClass(/warn/);await expect(first.locator('.ticks .tick')).toHaveCount(7);
+ await expect(page.locator('#lastList .li').nth(1)).toContainText('première saisie · dispo partout');   // Nova, J1..J7 cochés
+ await expect(page.locator('#lastList .li').nth(4)).toContainText('première saisie · indispo J2');      // Sam (i=1) : j2 décoché
+ expect(errors).toEqual([]);
+});
+
 test('exports Compos : une équipe exempte est un bloc au même gabarit que les autres, même sans compo saisie',async({page,context})=>{
  const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/sportive/journee.html?j=4');await expect(page.locator('[data-note="M11"]')).toBeVisible();

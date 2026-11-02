@@ -38,9 +38,16 @@
   .ti{padding:9px 12px;display:flex;flex-direction:column;gap:2px}
   .ti .t{font-size:12.5px;font-weight:700}
   .ti .d{font-size:11.5px;color:var(--dim)}
-  .llist{display:flex;flex-direction:column;gap:5px;font-size:12.5px}
-  .llist .li{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
-  .llist .li .lab{white-space:nowrap}
+  .llist{display:flex;flex-direction:column;gap:9px;font-size:12.5px}
+  .llist .li{display:flex;flex-direction:column;gap:3px;padding-left:8px;border-left:2px solid var(--line)}
+  .llist .li.warn{border-left-color:var(--warn)}
+  .llist .li.same{opacity:.6}
+  .llist .l1{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .llist .l1 .lab{white-space:nowrap}
+  .llist .l2{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:11.5px;color:var(--ink-2)}
+  .llist .ticks{display:inline-flex;gap:3px}
+  .llist .ticks .tick{width:9px;height:9px}
+  .llist .chg.w{color:var(--warn);font-weight:600}
   /* blocs conservés sous la grille : « À relancer », « Toutes les réponses » */
   .sec2{display:flex;flex-direction:column;gap:12px}
   .sec2 .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
@@ -327,13 +334,44 @@
       copyText(lines.join('\n'));
     };
 
-    /* ===== Dernières saisies : 5 dernières lignes de dispos_log ===== */
-    var lastRows=rows.filter(function(r){return r.licence&&!/^(TEST|0000)/i.test(r.licence);}).slice(-5).reverse();
+    /* ===== Dernières saisies : 8 dernières lignes de dispos_log, AVEC ce qui a changé =====
+       Le mail d'alerte dit « avant / après » ; ici on détaille : journées passées de dispo à indispo (et l'inverse),
+       souhait modifié, première saisie — et l'alerte si le joueur est déjà aligné dans une compo enregistrée
+       d'une journée à venir (demande de Charles, 02/11/2026 : « je vois l'update mais je n'ai pas plus d'info »). */
+    var hist={}; rows.forEach(function(r){ if(r.licence&&!/^(TEST|0000)/i.test(r.licence)) (hist[canon(r)]=hist[canon(r)]||[]).push(r); });
+    var RLS={T:'titulaire',R:'remplaçant',N:'ne veut pas jouer',REF:'capitaine'};
+    var todayISO=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Paris'});
+    var jdateISO=function(e,j){ var c=calOf(e,j); var m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec((c&&c.date)||''); return m?m[3]+'-'+m[2]+'-'+m[1]:null; };
+    function alignes(k,j){   // équipes où k est dans la compo enregistrée de Jj, journée à venir
+      var out=[]; Object.keys(SCEN[j]||{}).forEach(function(e){ var c=SCEN[j][e]; var d=jdateISO(e,j); if(c&&(c.p||[]).indexOf(k)>=0&&(!d||d>=todayISO)) out.push(e); }); return out;
+    }
+    function diffSaisie(r){   // {items:[{txt,warn}], first:bool, same:bool}
+      var k=canon(r), rs=hist[k]||[], i=rs.indexOf(r), prev=i>0?rs[i-1]:null, a=r.dispos||{}, b=prev?(prev.dispos||{}):null;
+      var items=[], roles=a.roles||[], rolesB=b?(b.roles||[]):[];
+      if(!prev){ var dispo=[], indispo=[]; JOURS.forEach(function(J,ji){ (a['j'+(ji+1)]?dispo:indispo).push(J); });
+        items.push({txt:'première saisie'+(indispo.length&&indispo.length<7?' · indispo '+indispo.join(', '):(indispo.length===7?' · indisponible partout':' · dispo partout'))});
+        var ex=roles.filter(function(x){return x!=='T';}).map(function(x){return RLS[x]||x;}); if(ex.length) items.push({txt:ex.join(', ')});
+        if(roles.indexOf('N')>=0) JOURS.forEach(function(_,ji){ alignes(k,ji+1).forEach(function(e){ items.push({txt:'⚠️ aligné en '+e+' pour la J'+(ji+1),warn:true}); }); });
+        return {items:items,first:true};
+      }
+      JOURS.forEach(function(J,ji){ var j=ji+1, av=!!b['j'+j], ap=!!a['j'+j]; if(av===ap) return;
+        var lib=J+' ('+DATES[ji]+')';
+        if(ap) items.push({txt:lib+' : de nouveau dispo'});
+        else { var al=alignes(k,j); items.push({txt:lib+' : plus dispo'+(al.length?' — ⚠️ aligné en '+al.join(', '):''),warn:!!al.length}); } });
+      if(roles.join()!==rolesB.join()){ var rb=rolesB.map(function(x){return RLS[x]||x;}).join(' + ')||'—', ra=roles.map(function(x){return RLS[x]||x;}).join(' + ')||'—';
+        var it={txt:'souhait : '+rb+' → '+ra}; if(roles.indexOf('N')>=0){ var al2=[]; JOURS.forEach(function(_,ji){ alignes(k,ji+1).forEach(function(e){ al2.push(e+' J'+(ji+1)); }); }); if(al2.length){ it.txt+=' — ⚠️ aligné en '+al2.join(', '); it.warn=true; } } items.push(it); }
+      if(!items.length) items.push({txt:'ressaisie sans changement'});
+      return {items:items,same:items.length===1&&items[0].txt==='ressaisie sans changement'};
+    }
+    var lastRows=rows.filter(function(r){return r.licence&&!/^(TEST|0000)/i.test(r.licence);}).slice(-8).reverse();
     document.getElementById('lastList').innerHTML=lastRows.length?lastRows.map(function(r){
       var k=canon(r), p=byLic[k]||bySN[k]||null; var nm=p?full(p):((r.prenom||'')+' '+(r.nom||''));
       var t=p?tags[pkey(p)]:null; var team=(t&&t.e)?t.e:((t&&t.r==='R'&&t.d)?'pool '+t.d:'');
       var n=0; JOURS.forEach(function(_,i){ if(r.dispos&&r.dispos['j'+(i+1)]) n++; });
-      return '<div class="li"><span>'+esc(nm)+(team?' <span class="muted">('+esc(team)+')</span>':'')+'</span><span class="lab">'+n+'/7 · '+esc(ago(r.created_at))+'</span></div>';
+      var d=diffSaisie(r), warn=d.items.some(function(x){return x.warn;});
+      var grid=JOURS.map(function(J,i){ var on=!!(r.dispos&&r.dispos['j'+(i+1)]); return '<span class="tick'+(on?'':' off')+'" title="'+J+(on?' : disponible':' : indisponible')+'"></span>'; }).join('');
+      return '<div class="li'+(warn?' warn':'')+(d.same?' same':'')+'"><div class="l1"><span>'+esc(nm)+(team?' <span class="muted">('+esc(team)+')</span>':'')+'</span><span class="lab">'+n+'/7 · '+esc(ago(r.created_at))+'</span></div>'
+        +'<div class="l2"><span class="ticks">'+grid+'</span>'+d.items.map(function(x){return '<span class="chg'+(x.warn?' w':'')+'">'+esc(x.txt)+'</span>';}).join('')+'</div></div>';
     }).join(''):'<div class="muted small">aucune saisie pour l\'instant</div>';
 
     /* ===== répondants — tableau triable + recherche + colonne équipe (conservé sous la grille) ===== */
