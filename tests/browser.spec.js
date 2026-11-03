@@ -266,7 +266,7 @@ test('critérium : chaque fiche utilise son groupe, y compris les compétitions 
   await page.getByRole('button',{name:'fermer',exact:true}).click();
  }
  // Une date absente ne doit pas être remplacée par le dimanche du tour.
- const withoutDate=structuredClone(data),g=withoutDate.tours['1'].groupes.find(g=>g.joueurs.some(j=>j.acbb));delete g.date;
+ const dernier=Object.keys(data.tours).sort().at(-1),withoutDate=structuredClone(data),g=withoutDate.tours[dernier].groupes.find(g=>g.joueurs.some(j=>j.acbb));delete g.date;   // la page ouvre le dernier tour publié
  await context.route('**/data/criterium2627.json',r=>r.fulfill({json:withoutDate}));
  await page.reload();await page.locator('#vue [data-sel]').first().click();
  await expect(page.locator('[data-date-groupe]')).toHaveText('Date à confirmer');
@@ -606,6 +606,16 @@ test('Suivi dispos : « Dernières saisies » détaille ce qui a changé et sign
  await expect(first).toHaveClass(/warn/);await expect(first.locator('.ticks .tick')).toHaveCount(7);
  await expect(page.locator('#lastList .li').nth(1)).toContainText('première saisie · dispo partout');   // Nova, J1..J7 cochés
  await expect(page.locator('#lastList .li').nth(4)).toContainText('première saisie · indispo J2');      // Sam (i=1) : j2 décoché
+ expect(errors).toEqual([]);
+});
+
+test('Critérium : ?tour=1 ouvre le tour demandé, la date limite du CD92 suit le tour',async({page,context})=>{
+ const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/criterium.html?tour=1');await expect(page.locator('#sub .t')).toHaveText('Tour 1');
+ await expect(page.locator('#limDep')).toHaveText('par écrit, avant le 16 octobre');
+ await page.goto('/criterium.html?tour=2');await expect(page.locator('#sub .t')).toHaveText('Tour 2');
+ await expect(page.locator('#sub .d')).toContainText('14 et 15 novembre 2026');await expect(page.locator('#limDep')).toHaveText('par écrit, avant le 21 novembre');
+ await page.goto('/criterium.html?tour=9');await expect(page.locator('#sub .t')).toHaveText('Tour 2');   // tour inconnu : dernier publié
  expect(errors).toEqual([]);
 });
 

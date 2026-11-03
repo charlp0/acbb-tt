@@ -37,11 +37,14 @@ stockage privés), `team_identity.py` (rapprochement prudent des noms d'équipes
 **`criterium_pdf.py`** — groupes du Critérium Fédéral départemental (CD92) : convertit les deux
 PDF du comité (jeunes, puis -19 ans et adultes) en `data/criterium2627.json`, une à deux semaines
 avant chaque tour. `python3 scripts/criterium_pdf.py <tour> <date JJ/MM/AAAA> <pdf> [pdf…]`
-(dépend de `pdfplumber`).
+(dépend de `pdfplumber`). La date de chaque groupe est lue sur la couverture de son PDF (la date
+passée en argument n'est qu'un repli), la date limite des excuses au bas des salles (`tours.<n>.limite`) ;
+`tours.<n>.weekend` (libellé du bandeau) se renseigne à la main ou depuis le classeur N1.
 
 **`criterium_reg_nat_pdf.py`** — échelons régional (R1/R2) et national (N2) du critérium, depuis
 les PDF de la ligue Île-de-France et de la FFTT (liste globale + qualifiés N2) ; salles et
-horaires sont repris en dur dans le script, à mettre à jour à chaque tour.
+horaires sont repris en dur dans le script, **par tour** (`SALLES_R_PAR_TOUR`, `N2_PAR_TOUR`) :
+compléter le nouveau tour avant de lancer, le script refuse un tour inconnu.
 `python3 scripts/criterium_reg_nat_pdf.py <tour> <liste_globale.pdf> <n2.pdf> [n2.pdf…]`.
 
 **`criterium_n1_xlsx.py`** — Nationale 1 du critérium, depuis l'export xlsx du classeur Google

@@ -24,28 +24,64 @@ import pdfplumber
 CLUB_ACBB_NOM = 'BOULOGNE BILLANCOURT AC'
 SORTIE = 'data/criterium2627.json'
 
-# Salles et horaires — « Salles Régionales » (samedi 10/10 pointage 9h30 début 10h ;
-# dimanche 11/10 pointage 9h début 10h) et les deux convocations N2.
-SALLES_R = {
-  ('R1', 'BENJAMINES'):       ('Ponthierry (77) — Salle Jean-Pierre Pelletier, rue du Stade, 77310 St Fargeau Ponthierry', '10/10/2026', '9h30', '10h00'),
-  ('R1', 'MINIMES FILLES'):   ('Combs-la-Ville (77) — Gymnase Le Paloisel, avenue Le Paloisel', '10/10/2026', '9h30', '10h00'),
-  ('R1', 'CADETTES'):         ('Corbeil-Essonnes (91) — Gymnase de la Nacelle, rue de la Nacelle', '10/10/2026', '9h30', '10h00'),
+# Salles et horaires, PAR TOUR — « Salles Régionales » de la ligue et convocations N2 de la FFTT,
+# repris en dur (quelques lignes stables, plus sûr que les parser). À compléter à chaque tour.
+_VIRY   = 'Viry-Châtillon (91) — Gymnase du Bellay, 27 avenue du Bellay'
+_MONTM  = 'Montmorency (95) — Complexe sportif des Champeaux, chemin de la Butte aux Pères'
+_CORB   = 'Corbeil-Essonnes (91) — Gymnase de la Nacelle, rue de la Nacelle'
+_DRAV   = 'Draveil (91) — Salle Alborghetti, 53 rue Ferdinand Buisson'
+_STCYR  = "Saint-Cyr-l'École (78) — Complexe sportif Pierre Mazeaud (3ᵉ étage), 5 rue de Lattre de Tassigny"
+_PONTH  = 'Ponthierry (77) — Salle Jean-Pierre Pelletier, rue du Stade, 77310 St Fargeau Ponthierry'
+_COMBS  = 'Combs-la-Ville (77) — Gymnase Le Paloisel, avenue Le Paloisel'
+SALLES_R_PAR_TOUR = {
+ # tour 1 : samedi 10/10 pointage 9h30 début 10h ; dimanche 11/10 pointage 9h début 10h
+ '1': {
+  ('R1', 'BENJAMINES'):       (_PONTH, '10/10/2026', '9h30', '10h00'),
+  ('R1', 'MINIMES FILLES'):   (_COMBS, '10/10/2026', '9h30', '10h00'),
+  ('R1', 'CADETTES'):         (_CORB, '10/10/2026', '9h30', '10h00'),
   ('R1', 'BENJAMINS'):        ('Viry-Châtillon (91) — Gymnase du Bellay, avenue du Bellay', '10/10/2026', '9h30', '10h00'),
   ('R2', 'BENJAMINS'):        ('Viry-Châtillon (91) — Gymnase du Bellay, avenue du Bellay', '10/10/2026', '9h30', '10h00'),
-  ('R1', 'MINIMES GARÇONS'):  ('Montmorency (95) — Complexe sportif des Champeaux, chemin de la Butte aux Pères', '10/10/2026', '9h30', '10h00'),
-  ('R2', 'MINIMES GARÇONS'):  ('Montmorency (95) — Complexe sportif des Champeaux, chemin de la Butte aux Pères', '10/10/2026', '9h30', '10h00'),
-  ('R1', 'CADETS'):           ('Corbeil-Essonnes (91) — Gymnase de la Nacelle, rue de la Nacelle', '10/10/2026', '9h30', '10h00'),
-  ('R2', 'CADETS'):           ('Corbeil-Essonnes (91) — Gymnase de la Nacelle, rue de la Nacelle', '10/10/2026', '9h30', '10h00'),
-  ('R1', 'JUNIORS FILLES'):   ('Viry-Châtillon (91) — Gymnase du Bellay, 27 avenue du Bellay', '11/10/2026', '9h00', '10h00'),
-  ('R1', 'JUNIORS GARÇONS'):  ('Montmorency (95) — Complexe sportif des Champeaux, chemin de la Butte aux Pères', '11/10/2026', '9h00', '10h00'),
-  ('R2', 'JUNIORS GARÇONS'):  ('Montmorency (95) — Complexe sportif des Champeaux, chemin de la Butte aux Pères', '11/10/2026', '9h00', '10h00'),
-  ('R1', 'SENIORS DAMES'):    ("Saint-Cyr-l'École (78) — Complexe sportif Pierre Mazeaud (3ᵉ étage), 5 rue de Lattre de Tassigny", '11/10/2026', '9h00', '10h00'),
-  ('R2', 'SENIORS DAMES'):    ("Saint-Cyr-l'École (78) — Complexe sportif Pierre Mazeaud (3ᵉ étage), 5 rue de Lattre de Tassigny", '11/10/2026', '9h00', '10h00'),
-  ('R1', 'SENIORS MESSIEURS'):('Viry-Châtillon (91) — Gymnase du Bellay, 27 avenue du Bellay', '11/10/2026', '9h00', '10h00'),
-  ('R2', 'SENIORS MESSIEURS'):('Corbeil-Essonnes (91) — Gymnase de la Nacelle, rue de la Nacelle', '11/10/2026', '9h00', '10h00'),
+  ('R1', 'MINIMES GARÇONS'):  (_MONTM, '10/10/2026', '9h30', '10h00'),
+  ('R2', 'MINIMES GARÇONS'):  (_MONTM, '10/10/2026', '9h30', '10h00'),
+  ('R1', 'CADETS'):           (_CORB, '10/10/2026', '9h30', '10h00'),
+  ('R2', 'CADETS'):           (_CORB, '10/10/2026', '9h30', '10h00'),
+  ('R1', 'JUNIORS FILLES'):   (_VIRY, '11/10/2026', '9h00', '10h00'),
+  ('R1', 'JUNIORS GARÇONS'):  (_MONTM, '11/10/2026', '9h00', '10h00'),
+  ('R2', 'JUNIORS GARÇONS'):  (_MONTM, '11/10/2026', '9h00', '10h00'),
+  ('R1', 'SENIORS DAMES'):    (_STCYR, '11/10/2026', '9h00', '10h00'),
+  ('R2', 'SENIORS DAMES'):    (_STCYR, '11/10/2026', '9h00', '10h00'),
+  ('R1', 'SENIORS MESSIEURS'):(_VIRY, '11/10/2026', '9h00', '10h00'),
+  ('R2', 'SENIORS MESSIEURS'):(_CORB, '11/10/2026', '9h00', '10h00'),
+ },
+ # tour 2 (« Salles Régionales » du 14-15/11/2026) : samedi pointage 9h30 début 10h ; dimanche pointage 9h début 10h
+ '2': {
+  ('R1', 'BENJAMINES'):       (_COMBS, '14/11/2026', '9h30', '10h00'),
+  ('R1', 'MINIMES FILLES'):   (_PONTH, '14/11/2026', '9h30', '10h00'),
+  ('R1', 'CADETTES'):         (_CORB, '14/11/2026', '9h30', '10h00'),
+  ('R1', 'BENJAMINS'):        (_DRAV, '14/11/2026', '9h30', '10h00'),
+  ('R2', 'BENJAMINS'):        (_DRAV, '14/11/2026', '9h30', '10h00'),
+  ('R1', 'MINIMES GARÇONS'):  ('Viry-Châtillon (91) — Gymnase du Bellay, avenue du Bellay', '14/11/2026', '9h30', '10h00'),
+  ('R2', 'MINIMES GARÇONS'):  ('Viry-Châtillon (91) — Gymnase du Bellay, avenue du Bellay', '14/11/2026', '9h30', '10h00'),
+  ('R1', 'CADETS'):           (_MONTM, '14/11/2026', '9h30', '10h00'),
+  ('R2', 'CADETS'):           (_MONTM, '14/11/2026', '9h30', '10h00'),
+  ('R1', 'JUNIORS FILLES'):   (_CORB, '15/11/2026', '9h00', '10h00'),
+  ('R1', 'SENIORS DAMES'):    (_STCYR, '15/11/2026', '9h00', '10h00'),
+  ('R1', 'JUNIORS GARÇONS'):  (_VIRY, '15/11/2026', '9h00', '10h00'),
+  ('R2', 'JUNIORS GARÇONS'):  (_VIRY, '15/11/2026', '9h00', '10h00'),
+  ('R1', 'SENIORS MESSIEURS'):(_DRAV, '15/11/2026', '9h00', '10h00'),
+  ('R2', 'SENIORS DAMES'):    (_DRAV, '15/11/2026', '9h00', '10h00'),
+  ('R2', 'SENIORS MESSIEURS'):(_MONTM, '15/11/2026', '9h00', '10h00'),
+ },
 }
-SALLE_N2_JEUNES  = ('Le Mans (72) — Salle de tennis de table, 51 rue Garnier Pages, 72000 Le Mans', '10/10/2026', '9h30', '10h30')
-SALLE_N2_SENIORS = ('Draveil (91) — Salle Alborghetti, 53 rue Ferdinand Buisson, 91210 Draveil', '10/10/2026', '9h00', '10h30')
+# N2 : (salle, date du 1er jour, pointage, début, date de fin). Tour 2 jeunes : samedi 14 ET dimanche 15 à
+# Chilly-Mazarin, pointage dès 9h30, début 10h15 — sauf benjamines et minimes filles qui commencent à 14h00.
+N2_PAR_TOUR = {
+ '1': {'jeunes':  ('Le Mans (72) — Salle de tennis de table, 51 rue Garnier Pages, 72000 Le Mans', '10/10/2026', '9h30', '10h30', '11/10/2026'),
+       'seniors': ('Draveil (91) — Salle Alborghetti, 53 rue Ferdinand Buisson, 91210 Draveil', '10/10/2026', '9h00', '10h30', '11/10/2026')},
+ '2': {'jeunes':  ("Chilly-Mazarin (91) — Complexe sportif Jesse Owens, 5 rue de l'Europe, 91380 Chilly-Mazarin", '14/11/2026', '9h30', '10h15', '15/11/2026')},
+}
+N2_DEBUT_14H = {('2', 'BENJAMINES'), ('2', 'MINIMES FILLES')}
+TOUR = '1'   # fixé par main()
 
 # catégorie FFTT -> (âge affiché, genre), pour ranger comme le départemental
 AGE = {'BENJAMINES': ('-11', 'F'), 'BENJAMINS': ('-11', 'M'),
@@ -82,7 +118,7 @@ def lire_regional(chemin):
                 if t:
                     div, cat = t.group(1).upper(), t.group(2).upper().strip()
                     age, genre = AGE.get(cat, ('', ''))
-                    salle, date, pointage, debut = SALLES_R.get((div, cat), ('', '', '', ''))
+                    salle, date, pointage, debut = SALLES_R_PAR_TOUR.get(TOUR, {}).get((div, cat), ('', '', '', ''))
                     courant = {'nom': div + ' ' + cat, 'niveau': 'R', 'div': div, 'age': age, 'genre': genre,
                                'cat': LIB.get((age, genre)) or (age + ' ans ' + ('Filles' if genre == 'F' else 'Garçons')),
                                'salle': salle, 'date': date, 'pointage': pointage, 'debut': debut,
@@ -115,11 +151,14 @@ def lire_national(chemin):
                     if cle not in AGE and base in ('CADETTES', 'BENJAMINES'): cle = base
                     age, genre = AGE.get(cle, ('', ''))
                     if not age: continue
-                    salle, date, pointage, debut = SALLE_N2_SENIORS if seniors else SALLE_N2_JEUNES
+                    conv = N2_PAR_TOUR.get(TOUR, {}).get('seniors' if seniors else 'jeunes')
+                    if not conv: sys.exit('convocation N2 %s du tour %s inconnue : compléter N2_PAR_TOUR' % ('seniors' if seniors else 'jeunes', TOUR))
+                    salle, date, pointage, debut, date_fin = conv
+                    if (TOUR, cle) in N2_DEBUT_14H: debut = '14h00'
                     courant = {'nom': 'N2 ' + cle, 'niveau': 'N', 'div': 'N2', 'age': age, 'genre': genre,
                                'cat': LIB.get((age, genre)) or (age + ' ans ' + ('Filles' if genre == 'F' else 'Garçons')),
                                'salle': salle, 'date': date, 'pointage': pointage, 'debut': debut,
-                               'date_fin': '11/10/2026',  # convocations du tour 1 : samedi ET dimanche
+                               'date_fin': date_fin,   # convocations : samedi ET dimanche
                                'contact': '', 'joueurs': []}
                     groupes.append(courant); continue
                 m = RE_JOUEUR_N.match(l)
@@ -155,6 +194,8 @@ def separer_licences(groupes, chemin='data/_criterium_lic.json'):
 def main():
     if len(sys.argv) < 3: sys.exit('usage : criterium_reg_nat_pdf.py <tour> <pdf> [pdf...]')
     tour, pdfs = sys.argv[1], sys.argv[2:]
+    global TOUR; TOUR = str(tour)
+    if TOUR not in SALLES_R_PAR_TOUR: sys.exit('salles régionales du tour %s inconnues : compléter SALLES_R_PAR_TOUR' % TOUR)
     nouveaux = []
     for p in pdfs:
         p = os.path.expanduser(p); base = os.path.basename(p)

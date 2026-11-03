@@ -170,7 +170,7 @@
       <div class="d">Cette page prévient le club. Pour être excusé officiellement, il faut écrire et prévenir
         <span class="vite">dès que possible</span>, et l'adresse dépend de l'échelon :</div>
       <ul class="ech">
-        <li><span class="n">Départemental</span><span><a href="mailto:cdtt92@gmail.com">cdtt92@gmail.com</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a> — <span class="q">par écrit, avant le 16 octobre</span></span></li>
+        <li><span class="n">Départemental</span><span><a href="mailto:cdtt92@gmail.com">cdtt92@gmail.com</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a> — <span class="q" id="limDep">par écrit, dès que possible</span></span></li>
         <li><span class="n">Régional</span><span><a href="mailto:mtangee@orange.fr">mtangee@orange.fr</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a></span></li>
         <li><span class="n">Nationale 2 Seniors</span><span><a href="mailto:mtangee@orange.fr">mtangee@orange.fr</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a> — <span class="q">appeler aussi le 06 86 95 18 16</span></span></li>
         <li><span class="n">Nationale 2 Jeunes</span><span><a href="mailto:eric.duberos@gmail.com">eric.duberos@gmail.com</a> + <a href="mailto:mickael.mandard@gmail.com">mickael.mandard@gmail.com</a> + <a href="mailto:cyril.camion@gmail.com">cyril.camion@gmail.com</a></span></li>
@@ -266,8 +266,10 @@ function contactAbsence(g){
     ? {qui:'Nationale 2 Seniors',delai:'d\'urgence',mails:['mtangee@orange.fr',cyril],note:'la convocation demande aussi un appel au 06 86 95 18 16'}
     : {qui:'Nationale 2 Jeunes',delai:vite,mails:['eric.duberos@gmail.com','mickael.mandard@gmail.com',cyril]};
   if(g.niveau==='N') return {qui:'Nationale 1',delai:vite,mails:[cyril],note:'interlocuteur FFTT à confirmer'};
-  /* Seul le CD92 publie une date limite, au bas de ses deux listes de groupes. */
-  return {qui:'départemental',delai:'<b>avant le 16 octobre</b>',mails:['cdtt92@gmail.com',cyril]};
+  /* Seul le CD92 publie une date limite, au bas de ses deux listes de groupes (tours.<n>.limite). */
+  const t=(S.data&&S.data.tours&&S.data.tours[S.tour])||{}, m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(t.limite||'');
+  const MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  return {qui:'départemental',delai:m?'<b>avant le '+(+m[1])+' '+MOIS[+m[2]-1]+'</b>':vite,mails:['cdtt92@gmail.com',cyril]};
 }
 const titre=g=>g.nom+(lieu(g)?' · '+lieu(g):'');
 const texte=j=>!S.q||ACBB_CHERCHE.trouve(j.pre,j.nom,S.q);
@@ -288,6 +290,7 @@ function render(){
      plupart des joueurs — la majorité des jeunes jouait le samedi et lisait « dimanche ». */
   /* La date est l'information la plus utile de la page : quand est-ce que je joue.
      Elle était noyée dans un sous-titre gris — elle a maintenant son propre bandeau. */
+  const limDep=document.getElementById('limDep'); if(limDep){ const c=contactAbsence({niveau:'D'}); limDep.innerHTML='par écrit, '+c.delai; }
   document.getElementById('sub').innerHTML = t
     ? '<span class="t">Tour '+esc(S.tour)+'</span><span class="d">'
         +(t.weekend?'week-end du <b>'+esc(t.weekend)+'</b>':'<b>'+esc(t.date)+'</b>')+'</span>'
@@ -482,7 +485,9 @@ async function charger(){
   try{ S.data=await ACBB.json('data/criterium2627.json'); }
   catch(e){ document.getElementById('vue').innerHTML='<div class="empty">Les groupes du critérium ne sont pas disponibles pour le moment.</div>'; return; }
   const tours=Object.keys(S.data.tours||{}).sort();
-  S.tour=tours[tours.length-1]||'1';
+  /* ?tour=2 : lien direct vers un tour publié (pour les groupes WhatsApp du critérium), sinon le dernier publié. */
+  const voulu=new URLSearchParams(location.search).get('tour');
+  S.tour=(voulu&&tours.includes(voulu))?voulu:(tours[tours.length-1]||'1');
   await charger(); render();
   const sr=document.getElementById('sansrep');
   if(sr) sr.addEventListener('change',e=>{ S.sansRep=e.target.checked; render(); });

@@ -39,7 +39,11 @@ def heure(t):
 # ajouté, parfois collé à la licence (« FEJ9237736 »), quelques licences mal saisies
 # (« 9F3849 », « 92134 ») et des numéros de club qui ont perdu leur zéro de tête (« 8920389 »).
 # Une ligne qui ne passait pas le filtre faisait simplement disparaître le joueur du groupe.
-RE_JOUEUR  = re.compile(r'^(?:(\d{1,3})\s+|(FEJ?)\s*)(\d[0-9A-Z]{3,7})\s+(.+?)\s+(\d{7,8})\s+(.+?)\s+(\S+)\s+(\S+)\s+(\d+)\s*$')
+# Depuis le tour 2 (PDF du 02/11/2026) une colonne « cumul pts » suit le classement (« 80I », « 4G »,
+# vide pour un joueur sans point) : elle est tolérée et ignorée.
+# Tour 2 aussi : préfixe « FEX » (en plus de FE/FEJ) et quelques joueurs SANS numéro de position
+# (ligne qui commence directement par la licence) — position absente, pas de ligne perdue.
+RE_JOUEUR  = re.compile(r'^(?:(\d{1,3})\s+|(FE[JX]?)\s*)?(\d[0-9A-Z]{3,7})\s+(.+?)\s+(\d{7,8})\s+(.+?)\s+(\S+)\s+(\S+)\s+(\d+)(?:\s+\d{1,4}[A-Z]{1,2})?\s*$')
 RE_SOUS_GROUPE = re.compile(r'^Groupe\s+\d+$', re.I)
 
 def coupe_nom(bloc):
@@ -172,13 +176,27 @@ def separer_licences(groupes, chemin='data/_criterium_lic.json'):
     _json.dump(anc, open(chemin, 'w'), ensure_ascii=False, indent=1, sort_keys=True)
     return sum(len(v) for v in table.values())
 
+def limite_excuses(pdf):
+    """« Toutes les excuses devront parvenir par écrit pour le 21 novembre au plus tard » : la date
+    limite du CD92 est au bas de la page des salles ; elle change à chaque tour (16/10 au tour 1,
+    21/11 au tour 2) et la page l'affichait en dur."""
+    import unicodedata
+    for page in pdf.pages[:3]:
+        txt = unicodedata.normalize('NFD', page.extract_text() or '').encode('ascii', 'ignore').decode().lower()
+        m = re.search(r'excuses.{0,80}?pour le (\d{1,2})(?:er)?\s+(' + '|'.join(MOIS) + r')(?:\s+(\d{4}))?', txt, re.S)
+        if m:
+            annee = m.group(3) or (date_du_pdf(pdf)[-4:] if date_du_pdf(pdf) else '')
+            return '%02d/%02d/%s' % (int(m.group(1)), MOIS[m.group(2)], annee)
+    return ''
+
 def main():
     if len(sys.argv) < 4:
         sys.exit(__doc__.strip().splitlines()[-2])
     tour, date, pdfs = sys.argv[1], sys.argv[2], sys.argv[3:]
-    groupes = []
+    groupes, limite = [], ''
     for p in pdfs:
         g = lire(os.path.expanduser(p))
+        with pdfplumber.open(os.path.expanduser(p)) as pdf: limite = limite_excuses(pdf) or limite
         for x in g:
             if not x.get('date'): x['date'] = date
         jours = sorted({x['date'] for x in g if x.get('date')})
@@ -194,7 +212,8 @@ def main():
     except Exception:
         doc = {'source': "PDF « GROUPES DEPART CRIT FED » du CD92 (cdtt92@gmail.com), un fichier jeunes et un fichier -19 ans/adultes par tour", 'tours': {}}
     doc['maj'] = datetime.date.today().isoformat()
-    doc['tours'][str(tour)] = {'date': date, 'groupes': groupes}
+    anc = doc['tours'].get(str(tour)) or {}
+    doc['tours'][str(tour)] = {'date': date, **({'weekend': anc['weekend']} if anc.get('weekend') else {}), **({'limite': limite} if limite else {}), 'groupes': groupes}
     with open(SORTIE, 'w') as f:
         json.dump(doc, f, ensure_ascii=False, indent=1, sort_keys=False)
     acbb = sum(1 for g in groupes for j in g['joueurs'] if j['acbb'])
