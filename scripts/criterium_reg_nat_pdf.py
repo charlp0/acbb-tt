@@ -90,6 +90,27 @@ AGE = {'BENJAMINES': ('-11', 'F'), 'BENJAMINS': ('-11', 'M'),
        'JUNIORS FILLES': ('-19', 'F'), 'JUNIORS GARÇONS': ('-19', 'M'), 'JUNIORS GARCONS': ('-19', 'M'),
        'SENIORS DAMES': ('ELITE', 'F'), 'SENIORS MESSIEURS': ('ELITE', 'M')}
 ORDRE = ['-11', '-13', '-15', '-19', 'ELITE']
+
+# Joueurs oubliés par la ligue et ajoutés à la main (confirmés par le club) : (div, catégorie) -> joueurs.
+# Ils apparaissent sans position (« + » sur le site) et sont réappliqués à chaque régénération du tour.
+AJOUTS_PAR_TOUR = {
+    '2': {('R2', 'CADETS'): [
+        {'nom': 'VERDIER', 'pre': 'Mahé', 'club': 'BOULOGNE BILLANCOURT AC', 'cat': 'C2', 'clt': 1594,
+         'lic': '9253816'},   # oublié par la ligue au T2, ajouté le 04/11/2026 à la demande de Charles
+    ]},
+}
+
+def appliquer_ajouts(groupes):
+    n = 0
+    for (div, cat), joueurs in AJOUTS_PAR_TOUR.get(TOUR, {}).items():
+        g = next((x for x in groupes if x['niveau'] == 'R' and x['div'] == div and x['nom'] == div + ' ' + cat), None)
+        if g is None: sys.exit('ajout manuel : groupe %s %s introuvable au tour %s' % (div, cat, TOUR))
+        for a in joueurs:
+            if any(j['nom'] == a['nom'] and j['pre'] == a['pre'] for j in g['joueurs']): continue
+            j = {'pos': None, 'ajoute': True, 'nom': a['nom'], 'pre': a['pre'], 'club': a['club'],
+                 'cat': a.get('cat', ''), 'cats': '', 'clt': a['clt'], 'acbb': True, 'lic': a['lic']}
+            g['joueurs'].append(j); n += 1
+    return n
 LIB = {('ELITE', 'F'): 'Élite Dames', ('ELITE', 'M'): 'Élite Messieurs'}
 
 RE_TITRE = re.compile(r'^QUALIFI[ÉE]{1,2}S?\s+(R[12])\s+(.+?)\s*-\s*TOUR', re.I)
@@ -206,6 +227,8 @@ def main():
     t = doc['tours'][str(tour)]
     # on remplace les échelons R et N, on ne touche jamais au départemental
     t['groupes'] = [x for x in t['groupes'] if x.get('niveau', 'D') == 'D'] + nouveaux
+    najout = appliquer_ajouts(nouveaux)
+    if najout: print('  %d joueur(s) ajouté(s) à la main (AJOUTS_PAR_TOUR)' % najout)
     for g in t['groupes']:
         g.setdefault('niveau', 'D')
         g['rang'] = [ORDRE.index(g['age']) if g.get('age') in ORDRE else 9,

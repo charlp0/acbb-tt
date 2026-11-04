@@ -39744,6 +39744,18 @@
        "cats": "",
        "clt": 853,
        "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "VERDIER",
+       "pre": "Mahé",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "C2",
+       "cats": "",
+       "clt": 1594,
+       "acbb": true,
+       "lic": "9253816"
       }
      ],
      "rang": [
@@ -43675,7 +43687,7 @@
    ]
   }
  },
- "maj": "2026-11-03",
+ "maj": "2026-11-04",
  "bilans": {
   "depuis": "01/07/2026",
   "jusqu": "04/10/2026",

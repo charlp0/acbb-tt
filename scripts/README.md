@@ -44,7 +44,9 @@ passée en argument n'est qu'un repli), la date limite des excuses au bas des sa
 **`criterium_reg_nat_pdf.py`** — échelons régional (R1/R2) et national (N2) du critérium, depuis
 les PDF de la ligue Île-de-France et de la FFTT (liste globale + qualifiés N2) ; salles et
 horaires sont repris en dur dans le script, **par tour** (`SALLES_R_PAR_TOUR`, `N2_PAR_TOUR`) :
-compléter le nouveau tour avant de lancer, le script refuse un tour inconnu.
+compléter le nouveau tour avant de lancer, le script refuse un tour inconnu. Un joueur oublié par la
+ligue se rajoute dans `AJOUTS_PAR_TOUR` (sans position, affiché « + ») : il est réappliqué à chaque
+régénération du tour.
 `python3 scripts/criterium_reg_nat_pdf.py <tour> <liste_globale.pdf> <n2.pdf> [n2.pdf…]`.
 
 **`criterium_n1_xlsx.py`** — Nationale 1 du critérium, depuis l'export xlsx du classeur Google
