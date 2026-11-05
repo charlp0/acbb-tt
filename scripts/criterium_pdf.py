@@ -20,6 +20,7 @@ majuscules. La première colonne vaut un rang, ou « FEJ » (joueur ajouté).
 Usage :  python3 scripts/criterium_pdf.py <tour> <date> <pdf> [pdf...]
 Exemple : python3 scripts/criterium_pdf.py 1 11/10/2026 ~/Downloads/..._Jeunes.pdf ~/Downloads/..._M19.pdf
 """
+import criterium_ajouts
 import json, os, re, sys, unicodedata, datetime
 import pdfplumber
 
@@ -204,6 +205,8 @@ def main():
               sum(len(x['joueurs']) for x in g), ', '.join(jours) or date))
         groupes += g
     classer(groupes)
+    najout = criterium_ajouts.appliquer(groupes, tour, niveaux={'D'})
+    if najout: print('  %d joueur(s) ajouté(s) à la main (criterium_ajouts.py)' % najout)
     for i, g in enumerate(groupes):
         g['id'] = 't%s-g%02d' % (tour, i + 1)
     nlic = separer_licences(groupes)

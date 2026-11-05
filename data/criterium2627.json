@@ -31361,6 +31361,18 @@
        "cats": "45+",
        "clt": 898,
        "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "HAREL",
+       "pre": "Marie",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 500,
+       "acbb": true,
+       "lic": "4930753"
       }
      ],
      "div": "D1",
@@ -43687,7 +43699,7 @@
    ]
   }
  },
- "maj": "2026-11-04",
+ "maj": "2026-11-05",
  "bilans": {
   "depuis": "01/07/2026",
   "jusqu": "04/10/2026",
