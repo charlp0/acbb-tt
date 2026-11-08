@@ -48,6 +48,26 @@ def classement(cx, d1, org):
     return rows
 
 
+def rencontres(cx, d1, org):
+    """Rencontres d'une poule : journée, équipes, score en parties si joué (28-14 → 14-0, cf. shared/api.js)."""
+    cal = fb.get(f"xml_result_equ.php?cx_poule={cx}&D1={d1}&organisme_pere={org}")
+    out = []
+    for t in re.findall(r'<tour>(.*?)</tour>', cal, re.S):
+        ea, eb = tg(t, 'equa'), tg(t, 'equb')
+        if not (ea and eb):
+            continue
+        jn = re.search(r'tour\s*n°?\s*(\d+)', tg(t, 'libelle')); jn = int(jn.group(1)) if jn else 0
+        sa, sb = tg(t, 'scorea'), tg(t, 'scoreb')
+        row = {'j': jn, 'a': ea, 'b': eb, 'date': tg(t, 'datereelle') or tg(t, 'dateprevue')}
+        if sa.isdigit() and sb.isdigit():
+            A, B = int(sa), int(sb)
+            if A + B == 42 and A >= 14 and B >= 14:
+                A, B = A - 14, B - 14
+            row['wa'], row['wb'] = A, B
+        out.append(row)
+    return out
+
+
 def main():
     if not fb.APPID or not fb.MDP:
         sys.exit('FFTT_ID / FFTT_PWD manquants')
@@ -68,18 +88,19 @@ def main():
         num = rows[0].get('poule') or len(poules) + 1
         if num in poules:
             continue
-        poules[num] = {'cx': cx_acbb + delta, 'poule': num, 'equipes': rows}
+        poules[num] = {'cx': cx_acbb + delta, 'poule': num, 'equipes': rows, 'rencontres': rencontres(cx_acbb + delta, d1, org)}
     poules = [poules[k] for k in sorted(poules)]
     # Équipes du 92 en zone de descente : 8ᵉ = descente sûre, 7ᵉ = selon les descentes de R2 (≈ 1 sur 2).
-    sur = [(p['cx'], e['equipe']) for p in poules for e in p['equipes'] if e['dept'] == '92' and e['clt'] == len(p['equipes'])]
-    risque = [(p['cx'], e['equipe']) for p in poules for e in p['equipes'] if e['dept'] == '92' and e['clt'] == len(p['equipes']) - 1]
+    sur = [(p['poule'], e['equipe']) for p in poules for e in p['equipes'] if e['dept'] == '92' and e['clt'] == len(p['equipes'])]
+    risque = [(p['poule'], e['equipe']) for p in poules for e in p['equipes'] if e['dept'] == '92' and e['clt'] == len(p['equipes']) - 1]
+    sixiemes = [(p['poule'], e['equipe'], e['pts']) for p in poules for e in p['equipes'] if e['dept'] == '92' and e['clt'] == len(p['equipes']) - 2]
     doc = {'built': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'division': libdiv, 'D1': d1, 'organisme': org,
            'poules': poules, 'n92': sum(1 for p in poules for e in p['equipes'] if e['dept'] == '92'),
-           'descentes_92': {'sures': sur, 'a_risque': risque, 'estimation': len(sur) + 0.5 * len(risque)}}
+           'descentes_92': {'sures': sur, 'a_risque': risque, 'sixiemes': sixiemes, 'estimation': len(sur) + 0.5 * len(risque)}}
     OUT.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + '\n')
     print(f"r3_92.json : {len(poules)} poules de R3, {doc['n92']} équipes du 92, descentes sûres {len(sur)} + à risque {len(risque)} → X ≈ {doc['descentes_92']['estimation']}")
     for p in poules:
-        print(f"  poule {p['poule']} (cx {p['cx']}) : " + ' · '.join(f"{e['clt']}. {e['equipe']} ({e['dept']}) {e['pts']}" for e in p['equipes']))
+        print(f"  poule {p['poule']} (cx {p['cx']}, {sum(1 for r in p['rencontres'] if 'wa' in r)} rencontres jouées / {len(p['rencontres'])}) : " + ' · '.join(f"{e['clt']}. {e['equipe']} ({e['dept']}) {e['pts']}" for e in p['equipes']))
     if os.environ.get('R3_92_DUMP') == '1':
         print('<<<R3_92_JSON>>>'); print(json.dumps(doc, ensure_ascii=False)); print('<<<END>>>')
 
