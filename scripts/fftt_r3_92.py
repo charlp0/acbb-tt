@@ -20,6 +20,7 @@ import html
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'scripts'))   # fftt_build importe fftt_quality
 spec = importlib.util.spec_from_file_location('fb', ROOT / 'scripts/fftt_build.py')
 fb = importlib.util.module_from_spec(spec); spec.loader.exec_module(fb)
 OUT = ROOT / 'data/r3_92.json'
