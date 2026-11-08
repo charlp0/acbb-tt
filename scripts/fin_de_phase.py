@@ -45,8 +45,8 @@ QUOTAS = [
     ('D92_D1', {'code': 'D1', 'up': 1, 'down': 2, 'risk': 1, 'frac': 0.67, 'note': 'D1 92, réforme phase 2 (6 → 5 poules) : le 1ᵉʳ monte en PR, 7ᵉ et 8ᵉ descendent en D2, quatre 6ᵉ sur six aussi.'}),
     ('D92_D2', {'code': 'D2', 'up': 0, 'down': 4, 'risk': 1, 'frac': 0.33, 'note': 'D2 92, réforme phase 2 (création de la D3) : aucune montée en D1 ; 1ᵉʳ et 2ᵉ maintenus, 8 des 12 3ᵉ aussi, 4ᵉ à 7ᵉ descendent en D3.'}),
 ]
-# Objectifs fixés par la sportive (Charles, 08/11/2026) ; les autres équipes : auto (montée si 1ʳᵉ ou 2ᵉ et montée possible).
-OBJECTIFS = {'M4': 'maintien', 'M6': 'maintien', 'M5': 'montee', 'M7': 'montee'}
+# Objectifs fixés par la sportive (Charles, 08/11/2026 : M3 et M9 maintien ajoutés le soir même) ; les autres équipes : auto (montée si 1ʳᵉ ou 2ᵉ et montée possible).
+OBJECTIFS = {'M3': 'maintien', 'M4': 'maintien', 'M6': 'maintien', 'M9': 'maintien', 'M5': 'montee', 'M7': 'montee'}
 
 
 def sigmoid(d, s):
