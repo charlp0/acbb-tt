@@ -67,12 +67,14 @@
   .mt li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;border-top:1px solid rgba(255,255,255,0.05)}
   .mt li:first-child{border-top:0}
   .mt .j{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:800;color:var(--dimmer)}
-  .mt .who{font-weight:600;font-size:13px;min-width:0;overflow-wrap:anywhere}
+  .mt .who{font-weight:600;font-size:13px;min-width:0}
   .mt .who b{color:var(--orange)}
   .mt .who small{display:block;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--dim);font-weight:500}
   .mt .pr{text-align:right;font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-2);white-space:nowrap}
   .mt .pr b{font-size:13px}
   .mt li.key{background:linear-gradient(90deg,rgba(250,204,21,0.10),transparent);margin:0 -16px;padding-left:16px;padding-right:16px}
+  /* Téléphone : la barre et les pourcentages passent sous le nom de la rencontre, sinon la colonne du nom s'écrase (retour de Minh, 08/11/2026). */
+  @media(max-width:640px){.mt li{grid-template-columns:34px minmax(0,1fr)}.mt .pr{grid-column:2;text-align:left;white-space:normal;font-size:11px}.bar{width:70px}.sim .row{grid-template-columns:62px minmax(0,1fr) 72px 30px}.res{grid-template-columns:1fr 1fr}}
   .tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:99px;margin-left:6px;vertical-align:1px}
   .tag.key{background:rgba(250,204,21,0.14);border:1px solid rgba(250,204,21,0.5);color:var(--gold)}
   .tag.warn{background:rgba(242,99,86,0.12);border:1px solid rgba(242,99,86,0.45);color:var(--lose-lt)}
@@ -160,8 +162,8 @@
   var ACTIVE='Fin de phase', DATA='../data/';
   var esc=ACBB.esc, FDP=window.ACBB_FDP;
   var gj=function(u){ return fetch(DATA+u,{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}); };
-  // Renforts signalés par Charles le 08/11/2026. « Antonis » n'a pas de fiche dans l'effectif FFTT du site : points approximatifs, à préciser.
-  var RENFORTS_DISPO=[{nom:'BOUDJADJA',pre:'Mohamed Sofiane',cls:2267},{nom:'SUEDE',pre:'Samuel',cls:1391},{nom:'LE BOURG',pre:'Virginie',cls:1353},{nom:'ANTONIS',pre:'(externe)',cls:1500,externe:true}];
+  // Renforts signalés par Charles le 08/11/2026. « Antonis » (1 800 pts selon Charles) n'a pas de fiche dans l'effectif FFTT du site.
+  var RENFORTS_DISPO=[{nom:'BOUDJADJA',pre:'Mohamed Sofiane',cls:2267},{nom:'SUEDE',pre:'Samuel',cls:1391},{nom:'LE BOURG',pre:'Virginie',cls:1353},{nom:'ANTONIS',pre:'(externe)',cls:1800,externe:true}];
   var CYRIL=['M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13'];
   var DOC=null, PLAYERS=[], SITE=null, FILTER='cyril', PLANS={};
 
