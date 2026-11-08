@@ -41,10 +41,53 @@ QUOTAS = [
     ('L08_R2', {'code': 'R2', 'up': 1, 'down': 1, 'risk': 1, 'frac': 0.5, 'note': 'Régionale (Ligue IDF) : le 1ᵉʳ monte, le 8ᵉ descend ; le 7ᵉ descend selon les descentes de la division supérieure (≈ 1 sur 2).'}),
     ('L08_R3', {'code': 'R3', 'up': 1, 'down': 1, 'risk': 1, 'frac': 0.5, 'note': 'Régionale (Ligue IDF) : le 1ᵉʳ monte, le 8ᵉ descend ; le 7ᵉ descend selon les descentes de la division supérieure (≈ 1 sur 2).'}),
     ('D92_Pre-Regionale Dames', {'code': 'PRD', 'up': 1, 'down': 4, 'risk': 0, 'frac': 0.0, 'note': 'PR Dames 92 (avenant du 14/09/2026) : barrage pour la montée, les 4 dernières de chaque poule descendent en D1 féminine.'}),
-    ('D92_Pré-Regionale', {'code': 'PR', 'up': 1, 'down': 3, 'risk': 1, 'frac': 0.5, 'note': 'PR 92, art. IV.2.1 (règlement CD92 2026/27) : les 1ᵉʳ montent en R3 ; 6ᵉ, 7ᵉ et 8ᵉ descendent en D1, plus les 2 plus mauvais 5ᵉ (sur 4 poules) au classement inter-poules ; ajusté si R3 compte plus ou moins de 4 descentes.'}),
-    ('D92_D1', {'code': 'D1', 'up': 1, 'down': 2, 'risk': 1, 'frac': 0.67, 'note': 'D1 92, art. IV.2.2 : les 1ᵉʳ montent en PR ; 7ᵉ et 8ᵉ descendent en D2, plus les 4 plus mauvais 6ᵉ (sur 6 poules) au classement inter-poules ; ajusté selon les descentes de R3.'}),
-    ('D92_D2', {'code': 'D2', 'up': 0, 'down': 1, 'risk': 1, 'frac': 0.67, 'note': 'D2 92, art. IV.2.3 : exceptionnellement aucune montée en D1 ; les 32 meilleures sur 42 se maintiennent (classement inter-poules), soit les 6 derniers de poule et 4 des six 6ᵉ en D3 ; ajusté selon les descentes de R3.'}),
 ]
+# Départemental 92 (règlement CD92 2026/27, art. IV.2) : le nombre de descentes dépend de X = équipes du 92 qui
+# descendent de R3 en PR. Avec X = 4 : 14 descentes de PR (6ᵉ-7ᵉ-8ᵉ + 2 des quatre 5ᵉ), 16 de D1 (7ᵉ-8ᵉ + 4 des six 6ᵉ),
+# 10 de D2 (32 maintiens sur 42). Une équipe de plus (ou de moins) descend par échelon pour chaque descente de R3
+# au-delà (ou en deçà) de 4 ; les places se prennent par le bas, au classement inter-poules pour la place partagée.
+DEP = {'PR': {'prefix': 'D92_Pré-Regionale', 'npools': 4, 'base': 10, 'up': 1, 'bas': 'D1', 'nom': 'PR 92'},
+       'D1': {'prefix': 'D92_D1', 'npools': 6, 'base': 12, 'up': 1, 'bas': 'D2', 'nom': 'D1 92'},
+       'D2': {'prefix': 'D92_D2', 'npools': 6, 'base': 6, 'up': 0, 'bas': 'D3', 'nom': 'D2 92'}}
+X_R3_DEFAUT = 4
+R3_FILE = ROOT / 'data/r3_92.json'
+
+
+def quotas_dep(code, x):
+    """Quotas d'une division départementale pour X descentes de R3 vers la PR."""
+    d = DEP[code]
+    total = max(0, d['base'] + x)
+    sure, reste = divmod(total, d['npools'])
+    places = {4: 'quatre', 6: 'six'}[d['npools']]
+    detail = f"{sure} dernier{'s' if sure > 1 else ''} de chaque poule" if sure else 'aucune place sûre'
+    if reste:
+        detail += f" + {reste} des {places} {ordinal(8 - sure if code != 'D2' else 7 - sure)} au classement inter-poules"
+    montee = 'le 1ᵉʳ monte en R3' if code == 'PR' else 'le 1ᵉʳ monte en PR' if code == 'D1' else 'aucune montée en D1 cette phase'
+    return {'code': code, 'up': d['up'], 'down': sure, 'risk': 1 if reste else 0, 'frac': round(reste / d['npools'], 4),
+            'x': x, 'total': total,
+            'note': f"{d['nom']}, art. IV.2 : {montee} ; avec {x} descente{'s' if x > 1 else ''} de R3 vers la PR, {total} équipes descendent en {d['bas']} : {detail}."}
+
+
+def ordinal(n):
+    return {1: '1ᵉʳˢ'}.get(n, f'{n}ᵉˢ')
+
+
+def x_r3():
+    """X retenu et son origine : estimation d'après les classements de R3 (8ᵉ = sûr, 7ᵉ = 1 sur 2), sinon 4."""
+    info = {'value': X_R3_DEFAUT, 'estimation': None, 'sures': [], 'a_risque': [], 'source': None}
+    if R3_FILE.exists():
+        try:
+            r3 = json.loads(R3_FILE.read_text())
+            d = r3.get('descentes_92') or {}
+            info.update({'estimation': d.get('estimation'), 'sures': d.get('sures') or [], 'a_risque': d.get('a_risque') or [],
+                         'source': r3.get('built'), 'n_poules': len(r3.get('poules') or []), 'n92': r3.get('n92')})
+            if d.get('estimation') is not None:
+                info['value'] = int(round(d['estimation']))
+        except (ValueError, OSError):
+            pass
+    return info
+
+
 # Objectifs fixés par la sportive (Charles, 08/11/2026 : M3 et M9 maintien ajoutés le soir même) ; les autres équipes : auto (montée si 1ʳᵉ ou 2ᵉ et montée possible).
 OBJECTIFS = {'M2': 'montee', 'M3': 'maintien', 'M4': 'maintien', 'M6': 'maintien', 'M9': 'maintien', 'M5': 'montee', 'M7': 'montee'}  # M2 : « montée » = top 4 → N1A
 
@@ -54,10 +97,13 @@ def sigmoid(d, s):
     return 1.0 / (1.0 + 10 ** (-d / s))
 
 
-def quotas_for(pool_name):
+def quotas_for(pool_name, x=X_R3_DEFAUT):
     for prefix, q in QUOTAS:
         if pool_name.startswith(prefix):
             return q
+    for code, d in DEP.items():
+        if pool_name.startswith(d['prefix']):
+            return quotas_dep(code, x)
     return {'code': '?', 'up': 1, 'down': 2, 'risk': 0, 'frac': 0.0, 'note': 'Division inconnue : 1 montée, 2 descentes par défaut.'}
 
 
@@ -422,9 +468,10 @@ def main(site_path=SITE, out_path=OUT, nsim=NSIM, seed=2026):
     s, nparties = calibrate(pools)
     form = player_form(pools, s)
     rnd = random.Random(seed)
+    xinfo = x_r3()
     out_teams = {}
     for key, P in pools.items():
-        quota = quotas_for(P['pool'])
+        quota = quotas_for(P['pool'], xinfo['value'])
         n = len(P['teams'])
         standings_pos = {row['name']: row.get('pos') for row in P['standings']}
         auto = 'montee' if quota['up'] and (standings_pos.get(P['acbb']) or 99) <= 2 else 'maintien'
@@ -472,6 +519,7 @@ def main(site_path=SITE, out_path=OUT, nsim=NSIM, seed=2026):
                           'quota': quota, 'standings': P['standings'], 'teams': teams_out, 'played': played, 'remaining': remaining}
     doc = {'built': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'source_built': site.get('built'),
            'season': site.get('season'), 'nsim': nsim, 's': s, 'nparties': nparties, 'mix': 0.5,
+           'x_r3': xinfo, 'quotas_by_x': {str(x): {code: quotas_dep(code, x) for code in DEP} for x in range(0, 9)},
            'methode': 'A = ratings Bradley-Terry sur les parties (confrontations directes, transitivité) ; B = modèle joueur (logistique calibrée + forme) ; combinaison 50/50 ; classement art. 14 IDF.',
            'teams': out_teams}
     Path(out_path).write_text(json.dumps(doc, ensure_ascii=False, separators=(',', ':')) + '\n')

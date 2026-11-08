@@ -52,7 +52,14 @@ class FinDePhaseTests(unittest.TestCase):
         self.assertEqual(fdp.goal_reached(6, 8, q, 'maintien'), 1)
         self.assertEqual(fdp.goal_reached(7, 8, q, 'maintien'), 0)
         d2 = fdp.quotas_for('D92_D2 Messieurs_Ph1 Poule 4')
-        self.assertEqual(d2['up'], 0)
+        self.assertEqual((d2['up'], d2['down'], d2['risk'], d2['frac']), (0, 1, 1, 0.6667))
+        pr = fdp.quotas_for('D92_Pré-Regionale Messieurs_Ph1 Poule 3')
+        self.assertEqual((pr['down'], pr['risk'], pr['frac']), (3, 1, 0.5))          # X = 4 : 14 descentes
+        self.assertEqual((fdp.quotas_dep('PR', 6)['down'], fdp.quotas_dep('PR', 6)['risk']), (4, 0))   # 16 : les 4 derniers
+        self.assertEqual((fdp.quotas_dep('PR', 3)['down'], fdp.quotas_dep('PR', 3)['frac']), (3, 0.25))
+        self.assertEqual((fdp.quotas_dep('D1', 4)['down'], fdp.quotas_dep('D1', 4)['frac']), (2, 0.6667))
+        self.assertEqual(fdp.quotas_dep('D2', 0)['down'], 1)                            # 6 descentes : le dernier de chaque poule
+        self.assertIn('14 équipes descendent en D1', pr['note'])
         # D2 : art. IV.2.3 CD92, 32 maintiens sur 42 → le dernier et une partie des 6ᵉ descendent ; maintien sûr = top 5
         self.assertEqual(fdp.goal_reached(5, 7, d2, 'maintien'), 1)
         self.assertEqual(fdp.goal_reached(6, 7, d2, 'maintien'), 0)

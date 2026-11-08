@@ -29,6 +29,9 @@
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
   .chip{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:6px 12px;border-radius:99px;border:1px solid var(--line-2);color:var(--ink-2);background:var(--panel);cursor:pointer}
   .chip.on{border-color:var(--orange);color:var(--orange);background:rgba(242,106,27,0.12)}
+  .xbox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 0;padding:10px 14px;background:var(--paper);border:1px solid var(--line);border-radius:12px;font-size:12.5px;color:var(--ink-2)}
+  .xbox select{background:var(--panel);border:1px solid var(--line-2);color:var(--ink);border-radius:8px;padding:6px 10px;font:inherit;font-weight:700}
+  .xbox .meta{flex-basis:100%}
   .pcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:22px}
   .p-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
   .p-title{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:22px;letter-spacing:0.4px}
@@ -125,6 +128,11 @@
     <button class="chip on" data-f="cyril" type="button">M2 à M13</button>
     <button class="chip" data-f="all" type="button">Toutes les équipes</button>
   </div>
+  <div class="xbox" id="xbox" hidden>
+    <label for="xsel"><b>Descentes de R3 vers la PR</b> (équipes du 92, règle d'ajustement art. IV.2)</label>
+    <select id="xsel" aria-label="nombre de descentes de R3 vers la PR"></select>
+    <span class="meta" id="xnote"></span>
+  </div>
 </div>
 
 <section class="sec">
@@ -165,7 +173,10 @@
   // Renforts signalés par Charles le 08/11/2026. « Antonis » (1 700 pts selon Charles) n'a pas de fiche dans l'effectif FFTT du site.
   var RENFORTS_DISPO=[{nom:'BOUDJADJA',pre:'Mohamed Sofiane',cls:2267},{nom:'SUEDE',pre:'Samuel',cls:1391},{nom:'LE BOURG',pre:'Virginie',cls:1353},{nom:'ANTONIS',pre:'(externe)',cls:1700,externe:true}];
   var CYRIL=['M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13'];
-  var DOC=null, PLAYERS=[], SITE=null, FILTER='cyril', PLANS={};
+  var DOC=null, PLAYERS=[], SITE=null, FILTER='cyril', PLANS={}, X=null, OVR={};
+  var DEP=['PR','D1','D2'];
+  // Vue d'une équipe : résultat recalculé en JS pour un autre X (OVR), sinon le calcul publié.
+  var view=function(k){ var T=DOC.teams[k], o=OVR[k]; return {quota:o?o.quota:T.quota, pObjectif:o?o.pObjectif:T.pObjectif, stat:function(t){ return o?o.teams[t.name]:t; }}; };
 
   (async function(){
     var me={role:null};
@@ -181,7 +192,7 @@
     Promise.all([gj('fin_de_phase.json'),gj('players_index.json'),gj('site.json')]).then(function(res){
       DOC=res[0]; PLAYERS=res[1]||[]; SITE=res[2];
       if(!DOC) throw new Error('fin_de_phase.json introuvable : la projection n’a pas encore été calculée');
-      render();
+      initX(); render();
     }).catch(function(e){ document.getElementById('srcMeta').textContent='Erreur de chargement : '+e.message; });
   })();
 
@@ -205,18 +216,42 @@
   var probFor=function(m,me,p){ p=p||m.p; return m.a===me?p:{V:p.D,N:p.N,D:p.V}; };
   var impactFor=function(m,me){ var i=m.impact||{}; return m.a===me?i:{V:i.D,N:i.N,D:i.V}; };
 
+  /* ===== Règle d'ajustement CD92 : X descentes de R3 vers la PR (équipes du 92) ===== */
+  function initX(){
+    var xi=DOC.x_r3, byx=DOC.quotas_by_x; if(!xi||!byx) return;
+    X=xi.value; var sel=document.getElementById('xsel');
+    sel.innerHTML=Object.keys(byx).sort(function(a,b){return a-b;}).map(function(x){ return '<option value="'+x+'"'+(+x===X?' selected':'')+'>'+x+(+x===xi.value?' (retenu)':'')+'</option>'; }).join('');
+    var est=xi.estimation==null?'aucune lecture des poules de R3 : valeur du règlement (4)':'estimation d’après les classements de R3 : <b>'+String(xi.estimation).replace('.',',')+'</b> ('+xi.sures.length+' équipe'+(xi.sures.length>1?'s':'')+' du 92 à la dernière place'+(xi.sures.length?' : '+xi.sures.map(function(e){return e[1];}).join(', '):'')+' ; '+xi.a_risque.length+' à l’avant-dernière'+(xi.a_risque.length?' : '+xi.a_risque.map(function(e){return e[1];}).join(', '):'')+')';
+    document.getElementById('xnote').innerHTML=est+'. Changer la valeur recalcule PR, D1 et D2 dans le navigateur (3 000 tirages par poule).';
+    document.getElementById('xbox').hidden=false;
+    sel.addEventListener('change',function(){ applyX(+sel.value); });
+  }
+  function applyX(x){
+    X=x; OVR={};
+    if(x!==DOC.x_r3.value){
+      Object.keys(DOC.teams).forEach(function(k){
+        var T=DOC.teams[k]; if(DEP.indexOf(T.quota.code)<0) return; T.key=k;
+        var q=DOC.quotas_by_x[String(x)][T.quota.code];
+        var r=FDP.simulate(T,{s:DOC.s,nsim:3000,seed:2026,quota:q});
+        OVR[k]={quota:q,pObjectif:r.pObjectif,teams:r.teams};
+      });
+    }
+    render();
+  }
+
   function render(){
     var built=DOC.built, s=Math.round(DOC.s);
     document.getElementById('srcMeta').innerHTML='Calcul du <b>'+esc(fmtDate(built))+'</b> sur les feuilles FFTT du '+esc(fmtDate(DOC.source_built))+' · <b>'+DOC.nsim.toLocaleString('fr-FR')+'</b> simulations par poule · courbe joueur : <b>'+s+' pts</b> d’écart = 10 contre 1 ('+DOC.nparties.toLocaleString('fr-FR')+' parties) · combinaison <b>50 / 50</b>.';
     var tb=document.querySelector('#synth tbody'); tb.innerHTML='';
     var ks=keys();
     ks.forEach(function(k){
-      var T=DOC.teams[k], me=T.teams.find(function(t){return t.acbb;}); if(!me) return;
+      var T=DOC.teams[k], me0=T.teams.find(function(t){return t.acbb;}); if(!me0) return;
+      var V=view(k), me=V.stat(me0), q=V.quota;
       var km=keyMatch(T);
       var tr=document.createElement('tr'); tr.className='link'; tr.setAttribute('data-team',k);
-      tr.innerHTML='<td class="tname">'+esc(k)+'</td><td class="mono">'+esc(T.quota.code)+'</td><td class="r mono">'+(me.pos||'?')+'ᵉ · '+(me.pts==null?'?':me.pts)+' pts</td>'
-        +'<td>'+objLabel(T.objectif,T.quota)+'</td>'
-        +'<td><span class="bar obj"><i style="width:'+Math.round((T.pObjectif||0)*100)+'%"></i></span><span class="pct">'+pctCls(T.pObjectif)+'</span></td>'
+      tr.innerHTML='<td class="tname">'+esc(k)+'</td><td class="mono">'+esc(q.code)+'</td><td class="r mono">'+(me0.pos||'?')+'ᵉ · '+(me0.pts==null?'?':me0.pts)+' pts</td>'
+        +'<td>'+objLabel(T.objectif,q)+'</td>'
+        +'<td><span class="bar obj"><i style="width:'+Math.round((V.pObjectif||0)*100)+'%"></i></span><span class="pct">'+pctCls(V.pObjectif)+'</span></td>'
         +'<td class="r"><span class="pct '+(me.pUp>=0.05?'up':'dim')+'">'+pctCls(me.pUp)+'</span></td>'
         +'<td class="r"><span class="pct '+(me.pDown>=0.05?'down':'dim')+'">'+pctCls(me.pDown)+'</span></td>'
         +'<td>'+(km&&km.swing>0.02?'<span class="mono">J'+km.j+' · '+esc(shortName(oppOf(km,T.acbb)))+'</span><span class="tag key">±'+Math.round(km.swing*100)+' pts</span>':'<span class="mono" style="color:var(--dimmer)">—</span>')+'</td>';
@@ -254,12 +289,12 @@
   function card(k){
     var T=DOC.teams[k]; T.key=k;
     var me=T.teams.find(function(t){return t.acbb;});
-    var n=T.n, q=T.quota, km=keyMatch(T);
+    var V=view(k), n=T.n, q=V.quota, km=keyMatch(T);
     var el=document.createElement('article'); el.className='pcard'; el.id='card-'+k;
     var rows=T.teams.slice().sort(function(a,b){ return (a.pos||99)-(b.pos||99); }).map(function(t){
       return '<tr'+(t.acbb?' class="me"':'')+'><td class="pos">'+(t.pos||'?')+'</td><td class="tname">'+esc(shortName(t.name))+'</td><td class="r mono">'+(t.pts==null?'?':t.pts)+'</td>'
         +'<td class="r mono" title="moyenne des points alignés J1-J4">'+(t.avg||'—')+'</td><td class="r mono" title="rating A (confrontations directes), en points">'+(t.rating>0?'+':'')+Math.round(t.rating)+'</td>'
-        +'<td>'+heat(t.ranks,n,q)+'</td><td class="r"><span class="pct '+(t.pUp>=0.05?'up':'dim')+'">'+pctCls(t.pUp)+'</span></td><td class="r"><span class="pct '+(t.pDown>=0.05?'down':'dim')+'">'+pctCls(t.pDown)+'</span></td></tr>';
+        +'<td>'+heat(V.stat(t).ranks,n,q)+'</td><td class="r"><span class="pct '+(V.stat(t).pUp>=0.05?'up':'dim')+'">'+pctCls(V.stat(t).pUp)+'</span></td><td class="r"><span class="pct '+(V.stat(t).pDown>=0.05?'down':'dim')+'">'+pctCls(V.stat(t).pDown)+'</span></td></tr>';
     }).join('');
     var byJ={}; T.remaining.forEach(function(m){ (byJ[m.j]=byJ[m.j]||[]).push(m); });
     var lists=Object.keys(byJ).sort().map(function(j){
@@ -271,7 +306,7 @@
       return '<tr><td class="tname">'+esc(p.nom)+' <span style="font-weight:500;color:var(--ink-2)">'+esc(p.pre)+'</span></td><td class="r mono">'+p.cls+'</td><td class="r"><span class="forme '+(f>0?'p':f<0?'m':'')+'">'+(f>0?'+':'')+f+'</span></td><td class="r mono">'+(p.parties?p.vic+' / '+p.parties:'—')+'</td></tr>';
     }).join('');
     el.innerHTML='<div class="p-head"><div class="p-title">'+esc(k)+'<small>'+esc(T.pool.replace(/_/g,' '))+'</small></div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'
-      +'<span class="p-badge obj">Objectif <b>'+objLabel(T.objectif,T.quota)+'</b> · <b>'+pctCls(T.pObjectif)+'</b></span><span class="p-badge">'+esc(q.code)+'</span></div></div>'
+      +'<span class="p-badge obj">Objectif <b>'+objLabel(T.objectif,q)+'</b> · <b>'+pctCls(V.pObjectif)+'</b></span><span class="p-badge">'+esc(q.code)+(OVR[k]?' · X = '+X:'')+'</span></div></div>'
       +'<div class="grid"><div><div class="pt-wrap"><table class="pt"><thead><tr><th>#</th><th>Équipe</th><th class="r">Pts</th><th class="r" title="moyenne des points alignés">Niveau</th><th class="r" title="rating A">A</th><th>Place finale 1 → '+n+'</th><th class="r">↑</th><th class="r">↓</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
       +'<div class="blk"><div class="meta">'+esc(q.note)+'</div></div></div>'
       +'<div class="blk"><h3>Rencontres restantes</h3><ul class="mt">'+lists+'</ul></div></div>'
@@ -342,7 +377,7 @@
       });
       note.textContent='calcul…';
       setTimeout(function(){
-        var opts={s:DOC.s,nsim:4000,seed:2026};
+        var opts={s:DOC.s,nsim:4000,seed:2026,quota:view(k).quota};
         var base=FDP.simulate(T,opts);
         var byJ={}; rows.forEach(function(r){ (byJ[r.j]=byJ[r.j]||[]).push({nom:r.nom,pre:r.pre,cls:+r.cls,adj:0}); });
         var scen=FDP.simulate(T,Object.assign({},opts,{override:function(j,team,lineup){ return team===T.acbb&&byJ[j]?FDP.withRenforts(lineup,byJ[j]):null; }}));

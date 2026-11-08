@@ -52,6 +52,10 @@ def main():
     if not fb.APPID or not fb.MDP:
         sys.exit('FFTT_ID / FFTT_PWD manquants')
     d1, org, cx_acbb, libdiv = coords_r3()
+    print(f"R3 : {libdiv} | D1={d1} organisme={org} cx_poule ACBB={cx_acbb}")
+    if os.environ.get('R3_92_DUMP') == '1':
+        raw = fb.get(f"xml_result_equ.php?cx_poule={cx_acbb}&D1={d1}&organisme_pere={org}&action=classement")
+        print('brut classement poule ACBB :', len(raw), 'car.', raw[:600].replace('\n', ' '))
     poules = []
     vides = 0
     for cx in range(1, 25):

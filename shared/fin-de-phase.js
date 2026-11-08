@@ -78,7 +78,7 @@
      renvoyer un alignement modifié (scénario de renfort) ; opts.objectif remplace l'objectif ; opts.nsim, opts.seed. */
   function simulate(T,opts){
     opts=opts||{}; const nsim=opts.nsim||4000, rnd=rng(opts.seed||2026), s=opts.s, mix=opts.mix==null?0.5:opts.mix;
-    const teams=T.teams.map(t=>t.name), n=teams.length, acbb=T.acbb, objectif=opts.objectif||T.objectif, quota=T.quota;
+    const teams=T.teams.map(t=>t.name), n=teams.length, acbb=T.acbb, objectif=opts.objectif||T.objectif, quota=opts.quota||T.quota;
     const byName={}; T.teams.forEach(t=>byName[t.name]=t);
     const basePts={}, baseDiff={}, baseMini={};
     teams.forEach(t=>{basePts[t]=0;baseDiff[t]=0;baseMini[t]={};});
