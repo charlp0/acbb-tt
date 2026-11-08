@@ -16,6 +16,7 @@ import datetime
 import json
 import math
 import random
+import re
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -46,44 +47,104 @@ QUOTAS = [
 # descendent de R3 en PR. Avec X = 4 : 14 descentes de PR (6ᵉ-7ᵉ-8ᵉ + 2 des quatre 5ᵉ), 16 de D1 (7ᵉ-8ᵉ + 4 des six 6ᵉ),
 # 10 de D2 (32 maintiens sur 42). Une équipe de plus (ou de moins) descend par échelon pour chaque descente de R3
 # au-delà (ou en deçà) de 4 ; les places se prennent par le bas, au classement inter-poules pour la place partagée.
-DEP = {'PR': {'prefix': 'D92_Pré-Regionale', 'npools': 4, 'base': 10, 'up': 1, 'bas': 'D1', 'nom': 'PR 92'},
-       'D1': {'prefix': 'D92_D1', 'npools': 6, 'base': 12, 'up': 1, 'bas': 'D2', 'nom': 'D1 92'},
-       'D2': {'prefix': 'D92_D2', 'npools': 6, 'base': 6, 'up': 0, 'bas': 'D3', 'nom': 'D2 92'}}
+# Phase 1 (art. IV.2) : descentes = base + X, réparties par le bas (PR 4 poules, D1 6, D2 6).
+# Phase 2 (art. IV.2 bis, encodé le 08/11/2026 à la demande de Cyril) : PR 3 poules, les 1ᵉʳˢ + le meilleur 2ᵉ montent
+# en R3, 7ᵉ-8ᵉ descendent (2+X) ; D1 5 poules, 1ᵉʳˢ + meilleur 2ᵉ montent en PR, 8ᵉ + 3 des cinq 7ᵉ descendent (4+X) ;
+# D2 6 poules, 1ᵉʳˢ + 2 meilleurs 2ᵉ montent en D1, au moins le dernier descend, davantage si l'effectif dépasse 48 (2+X).
+DEP = {
+    1: {'PR': {'prefix': 'D92_Pré-Regionale', 'npools': 4, 'base': 10, 'up': 1, 'up_extra': 0, 'bas': 'D1', 'haut': 'R3', 'nom': 'PR 92', 'art': 'IV.2.1'},
+        'D1': {'prefix': 'D92_D1', 'npools': 6, 'base': 12, 'up': 1, 'up_extra': 0, 'bas': 'D2', 'haut': 'PR', 'nom': 'D1 92', 'art': 'IV.2.2'},
+        'D2': {'prefix': 'D92_D2', 'npools': 6, 'base': 6, 'up': 0, 'up_extra': 0, 'bas': 'D3', 'haut': 'D1', 'nom': 'D2 92', 'art': 'IV.2.3'}},
+    2: {'PR': {'prefix': 'D92_Pré-Regionale', 'npools': 3, 'base': 2, 'up': 1, 'up_extra': 1, 'bas': 'D1', 'haut': 'R3', 'nom': 'PR 92', 'art': 'IV.2.1 bis'},
+        'D1': {'prefix': 'D92_D1', 'npools': 5, 'base': 4, 'up': 1, 'up_extra': 1, 'bas': 'D2', 'haut': 'PR', 'nom': 'D1 92', 'art': 'IV.2.2 bis'},
+        'D2': {'prefix': 'D92_D2', 'npools': 6, 'base': 2, 'up': 1, 'up_extra': 2, 'bas': 'D3', 'haut': 'D1', 'nom': 'D2 92', 'art': 'IV.2.3 bis'}},
+}
 X_R3_DEFAUT = 4
 R3_FILE = ROOT / 'data/r3_92.json'
 
 
-def quotas_dep(code, x):
-    """Quotas d'une division départementale pour X descentes de R3 vers la PR."""
-    d = DEP[code]
+def quotas_dep(code, x, phase=1):
+    """Quotas d'une division départementale pour X descentes de R3 vers la PR, selon la phase."""
+    d = DEP[phase][code]
     total = max(0, d['base'] + x)
     sure, reste = divmod(total, d['npools'])
-    places = {4: 'quatre', 6: 'six'}[d['npools']]
+    places = {3: 'trois', 4: 'quatre', 5: 'cinq', 6: 'six'}[d['npools']]
+    taille = 7 if code == 'D2' and phase == 1 else 8
     detail = f"{sure} dernier{'s' if sure > 1 else ''} de chaque poule" if sure else 'aucune place sûre'
     if reste:
-        detail += f" + {reste} des {places} {ordinal(8 - sure if code != 'D2' else 7 - sure)} au classement inter-poules"
-    montee = 'le 1ᵉʳ monte en R3' if code == 'PR' else 'le 1ᵉʳ monte en PR' if code == 'D1' else 'aucune montée en D1 cette phase'
-    return {'code': code, 'up': d['up'], 'down': sure, 'risk': 1 if reste else 0, 'frac': round(reste / d['npools'], 4),
-            'x': x, 'total': total,
-            'note': f"{d['nom']}, art. IV.2 : {montee} ; avec {x} descente{'s' if x > 1 else ''} de R3 vers la PR, {total} équipes descendent en {d['bas']} : {detail}."}
+        detail += f" + {reste} des {places} {ordinal(taille - sure)} au classement inter-poules"
+    if d['up'] and d['up_extra']:
+        montee = f"les 1ᵉʳˢ + {'le meilleur 2ᵉ' if d['up_extra'] == 1 else str(d['up_extra']) + ' meilleurs 2ᵉˢ'} montent en {d['haut']}"
+    elif d['up']:
+        montee = f"le 1ᵉʳ monte en {d['haut']}"
+    else:
+        montee = f"aucune montée en {d['haut']} cette phase"
+    return {'code': code, 'phase': phase, 'up': d['up'], 'upRisk': 1 if d['up_extra'] else 0,
+            'upFrac': round(d['up_extra'] / d['npools'], 4) if d['up_extra'] else 0.0,
+            'down': sure, 'risk': 1 if reste else 0, 'frac': round(reste / d['npools'], 4), 'x': x, 'total': total,
+            'note': f"{d['nom']}, art. {d['art']} (phase {phase}) : {montee} ; avec {x} descente{'s' if x > 1 else ''} de R3 vers la PR, {total} équipes descendent en {d['bas']} : {detail}."}
 
 
 def ordinal(n):
     return {1: '1ᵉʳˢ'}.get(n, f'{n}ᵉˢ')
 
 
-def x_r3():
-    """X retenu et son origine : estimation d'après les classements de R3 (8ᵉ = sûr, 7ᵉ = 1 sur 2), sinon 4."""
-    info = {'value': X_R3_DEFAUT, 'estimation': None, 'sures': [], 'a_risque': [], 'source': None}
+def project_r3(r3, s, rnd, nsim=4000):
+    """Projette la fin de phase des poules de R3 avec le seul modèle A (scores des rencontres jouées, pas d'alignements).
+    Retourne pour chaque équipe du 92 ses probabilités de 7ᵉ et 8ᵉ place, et la distribution de X (8ᵉ sûr, 7ᵉ = 1 sur 2)."""
+    equipes, xdist = [], defaultdict(float)
+    par_poule = []
+    for pl in r3.get('poules') or []:
+        names = [e['equipe'] for e in pl['equipes']]
+        if not names or not pl.get('rencontres'):
+            continue
+        played = [{'j': m['j'], 'a': m['a'], 'b': m['b'], 'wa': m['wa'], 'wb': m['wb'], 'la': [], 'lb': []} for m in pl['rencontres'] if 'wa' in m and m['a'] in names and m['b'] in names]
+        remaining = [{'j': m['j'], 'a': m['a'], 'b': m['b']} for m in pl['rencontres'] if 'wa' not in m and m['a'] in names and m['b'] in names]
+        P = {'teams': names, 'played': played, 'remaining': remaining, 'objectif': 'maintien',
+             'standings': [{'name': e['equipe'], 'pos': e['clt'], 'pts': e['pts']} for e in pl['equipes']], 'acbb': None}
+        ratings, _ = fit_ratings(P, s)
+        lineups = {t: [] for t in names}
+        rank_count, _, _, _ = simulate(P, ratings, lineups, s, None, None, rnd, nsim)
+        n = len(names)
+        probs = {t: (rank_count[t][n - 2] / nsim, rank_count[t][n - 1] / nsim) for t in names}
+        par_poule.append({t: probs[t] for t in names})
+        for e in pl['equipes']:
+            if e['dept'] == '92':
+                p7, p8 = probs[e['equipe']]
+                equipes.append({'poule': pl['poule'], 'equipe': e['equipe'], 'pos': e['clt'], 'pts': e['pts'], 'p7': round(p7, 4), 'p8': round(p8, 4),
+                                'risque': round(p8 + 0.5 * p7, 4)})
+    # Distribution de X : somme des contributions indépendantes (une équipe = 1 si 8ᵉ, 1/2 si 7ᵉ, arrondi à l'unité en fin).
+    dist = {0.0: 1.0}
+    for e in equipes:
+        nd = defaultdict(float)
+        for x, p in dist.items():
+            nd[x] += p * (1 - e['p7'] - e['p8'])
+            nd[x + 0.5] += p * e['p7']
+            nd[x + 1.0] += p * e['p8']
+        dist = nd
+    for x, p in dist.items():
+        xdist[int(round(x))] += p
+    esperance = sum(e['risque'] for e in equipes)
+    return equipes, {str(k): round(v, 4) for k, v in sorted(xdist.items()) if v >= 0.0005}, esperance
+
+
+def x_r3(s=None, rnd=None):
+    """X retenu et son origine : espérance d'après la projection des poules de R3, sinon 4 (règlement)."""
+    info = {'value': X_R3_DEFAUT, 'nominal': X_R3_DEFAUT, 'estimation': None, 'sures': [], 'a_risque': [], 'sixiemes': [], 'equipes': [], 'distribution': {}, 'source': None}
     if R3_FILE.exists():
         try:
             r3 = json.loads(R3_FILE.read_text())
             d = r3.get('descentes_92') or {}
-            info.update({'estimation': d.get('estimation'), 'sures': d.get('sures') or [], 'a_risque': d.get('a_risque') or [],
+            info.update({'sures': d.get('sures') or [], 'a_risque': d.get('a_risque') or [], 'sixiemes': d.get('sixiemes') or [],
                          'source': r3.get('built'), 'n_poules': len(r3.get('poules') or []), 'n92': r3.get('n92')})
-            if d.get('estimation') is not None:
-                info['value'] = int(round(d['estimation']))
-        except (ValueError, OSError):
+            if s is not None and any(pl.get('rencontres') for pl in r3.get('poules') or []):
+                equipes, dist, esperance = project_r3(r3, s, rnd or random.Random(92))
+                info.update({'equipes': sorted(equipes, key=lambda e: -e['risque']), 'distribution': dist, 'estimation': round(esperance, 2)})
+            elif d.get('estimation') is not None:
+                info['estimation'] = d['estimation']
+            if info['estimation'] is not None:
+                info['value'] = int(round(info['estimation']))
+        except (ValueError, OSError, KeyError):
             pass
     return info
 
@@ -97,13 +158,18 @@ def sigmoid(d, s):
     return 1.0 / (1.0 + 10 ** (-d / s))
 
 
+def phase_of(pool_name):
+    return 2 if re.search(r'(?i)ph(ase)?\s*_?2', pool_name or '') else 1
+
+
 def quotas_for(pool_name, x=X_R3_DEFAUT):
     for prefix, q in QUOTAS:
         if pool_name.startswith(prefix):
             return q
-    for code, d in DEP.items():
+    phase = phase_of(pool_name)
+    for code, d in DEP[phase].items():
         if pool_name.startswith(d['prefix']):
-            return quotas_dep(code, x)
+            return quotas_dep(code, x, phase)
     return {'code': '?', 'up': 1, 'down': 2, 'risk': 0, 'frac': 0.0, 'note': 'Division inconnue : 1 montée, 2 descentes par défaut.'}
 
 
@@ -451,6 +517,13 @@ def lineup_shift(lineup, lineups):
     return cur - usual
 
 
+def ascent_probability(rank_dist, quota):
+    up = sum(rank_dist[:quota['up']]) if quota['up'] else 0.0
+    if quota.get('upRisk') and len(rank_dist) > quota['up']:
+        up += quota.get('upFrac', 0.0) * rank_dist[quota['up']]
+    return up
+
+
 def descent_probability(rank_dist, n, quota):
     down = sum(rank_dist[n - quota['down']:]) if quota['down'] else 0.0
     if quota['risk']:
@@ -468,7 +541,8 @@ def main(site_path=SITE, out_path=OUT, nsim=NSIM, seed=2026):
     s, nparties = calibrate(pools)
     form = player_form(pools, s)
     rnd = random.Random(seed)
-    xinfo = x_r3()
+    xinfo = x_r3(s, rnd)
+    phase = max([phase_of(P['pool']) for P in pools.values()] or [1])
     out_teams = {}
     for key, P in pools.items():
         quota = quotas_for(P['pool'], xinfo['value'])
@@ -491,7 +565,7 @@ def main(site_path=SITE, out_path=OUT, nsim=NSIM, seed=2026):
             teams_out.append({'name': t, 'acbb': t == P['acbb'], 'rating': ratings[t],
                               'pos': standings_pos.get(t), 'pts': next((r.get('pts') for r in P['standings'] if r['name'] == t), None),
                               'ranks': [round(x, 4) for x in dist],
-                              'pUp': round(sum(dist[:quota['up']]), 4) if quota['up'] else 0.0,
+                              'pUp': round(ascent_probability(dist, quota), 4),
                               'pDown': round(descent_probability(dist, n, quota), 4),
                               'avg': round(sum(sum(p['cls'] for p in l) / len(l) for l in lineups[t]) / len(lineups[t])) if lineups[t] else None,
                               'lineups': lineups[t], 'players': seen})
@@ -519,7 +593,8 @@ def main(site_path=SITE, out_path=OUT, nsim=NSIM, seed=2026):
                           'quota': quota, 'standings': P['standings'], 'teams': teams_out, 'played': played, 'remaining': remaining}
     doc = {'built': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'source_built': site.get('built'),
            'season': site.get('season'), 'nsim': nsim, 's': s, 'nparties': nparties, 'mix': 0.5,
-           'x_r3': xinfo, 'quotas_by_x': {str(x): {code: quotas_dep(code, x) for code in DEP} for x in range(0, 9)},
+           'x_r3': xinfo, 'quotas_by_x': {str(x): {code: quotas_dep(code, x, phase) for code in DEP[phase]} for x in range(0, 9)}, 'phase': phase,
+           'quotas_phase2_by_x': {str(x): {code: quotas_dep(code, x, 2) for code in DEP[2]} for x in range(0, 9)},
            'methode': 'A = ratings Bradley-Terry sur les parties (confrontations directes, transitivité) ; B = modèle joueur (logistique calibrée + forme) ; combinaison 50/50 ; classement art. 14 IDF.',
            'teams': out_teams}
     Path(out_path).write_text(json.dumps(doc, ensure_ascii=False, separators=(',', ':')) + '\n')

@@ -35,6 +35,11 @@ jobs:
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
           FFTT_SKIP_IF_FRESH: '0'
         run: python3 scripts/fftt_site.py
+      - name: Classements et rencontres de R3 (descentes du 92 vers la PR)
+        env:
+          FFTT_ID: ${{ secrets.FFTT_ID }}
+          FFTT_PWD: ${{ secrets.FFTT_PWD }}
+        run: python3 scripts/fftt_r3_92.py || echo "R3 indisponible : dernière lecture conservée"
       - name: Projection de fin de phase (sportive/fin-de-phase.html)
         run: python3 scripts/fin_de_phase.py
       - run: python3 scripts/check_data.py
@@ -42,7 +47,7 @@ jobs:
         run: |
           git config user.name acbb-data-bot
           git config user.email bot@users.noreply.github.com
-          git add data/site.json data/site.js data/fin_de_phase.json
+          git add data/site.json data/site.js data/fin_de_phase.json data/r3_92.json
           if ! git diff --staged --quiet; then
             git commit -m "data: résultats équipes FFTT"
             git fetch origin main

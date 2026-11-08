@@ -68,6 +68,7 @@
 
   function goalReached(pos,n,quota,objectif){ return objectif==='montee'?(pos<=quota.up?1:0):(pos<=n-quota.down-quota.risk?1:0); }
 
+  function ascentProbability(dist,quota){ let up=quota.up?dist.slice(0,quota.up).reduce((x,y)=>x+y,0):0; if(quota.upRisk&&dist.length>quota.up) up+=(quota.upFrac||0)*dist[quota.up]; return up; }
   function descentProbability(dist,n,quota){
     let down=quota.down?dist.slice(n-quota.down).reduce((x,y)=>x+y,0):0;
     if(quota.risk) down+=quota.frac*dist[n-quota.down-1];
@@ -119,7 +120,7 @@
       }
     }
     const out={nsim,objectif,teams:{},remaining:[],pObjectif:acbb?goalHits/nsim:null};
-    teams.forEach(t=>{ const dist=rankCount[t].map(c=>c/nsim); out.teams[t]={ranks:dist,pUp:quota.up?dist.slice(0,quota.up).reduce((x,y)=>x+y,0):0,pDown:descentProbability(dist,n,quota)}; });
+    teams.forEach(t=>{ const dist=rankCount[t].map(c=>c/nsim); out.teams[t]={ranks:dist,pUp:ascentProbability(dist,quota),pDown:descentProbability(dist,n,quota)}; });
     T.remaining.forEach((m,idx)=>{
       const o=matchOut[idx], tot=(o.V+o.N+o.D)||1, ta=(o.A.V+o.A.N+o.A.D)||1, tb=(o.B.V+o.B.N+o.B.D)||1;
       const row={j:m.j,a:m.a,b:m.b,p:{V:o.V/tot,N:o.N/tot,D:o.D/tot},pA:{V:o.A.V/ta,N:o.A.N/ta,D:o.A.D/ta},pB:{V:o.B.V/tb,N:o.B.N/tb,D:o.B.D/tb}};
@@ -147,5 +148,5 @@
     return {burned:ns.length>=2&&targetN>ns[1],limit:ns[1]||null,journees:ns.length};
   }
 
-  return {PTS,SINGLES,sigmoid,rng,expectedSingles,simMatchA,simMatchB,lineupShift,rankTeams,goalReached,descentProbability,simulate,withRenforts,brulage,force};
+  return {PTS,SINGLES,sigmoid,rng,expectedSingles,simMatchA,simMatchB,lineupShift,rankTeams,goalReached,ascentProbability,descentProbability,simulate,withRenforts,brulage,force};
 });

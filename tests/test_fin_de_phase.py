@@ -60,6 +60,17 @@ class FinDePhaseTests(unittest.TestCase):
         self.assertEqual((fdp.quotas_dep('D1', 4)['down'], fdp.quotas_dep('D1', 4)['frac']), (2, 0.6667))
         self.assertEqual(fdp.quotas_dep('D2', 0)['down'], 1)                            # 6 descentes : le dernier de chaque poule
         self.assertIn('14 équipes descendent en D1', pr['note'])
+        # phase 2 (art. IV.2 bis) : PR 3 poules, 1ᵉʳˢ + meilleur 2ᵉ montent, 7ᵉ-8ᵉ descendent ; D1 8ᵉ + 3 des cinq 7ᵉ ; D2 au moins le dernier
+        pr2 = fdp.quotas_dep('PR', 4, 2)
+        self.assertEqual((pr2['up'], pr2['upRisk'], pr2['upFrac'], pr2['down'], pr2['risk']), (1, 1, 0.3333, 2, 0))
+        d12 = fdp.quotas_dep('D1', 4, 2)
+        self.assertEqual((d12['down'], d12['risk'], d12['frac'], d12['total']), (1, 1, 0.6, 8))
+        d22 = fdp.quotas_dep('D2', 4, 2)
+        self.assertEqual((d22['up'], d22['upFrac'], d22['down'], d22['risk']), (1, 0.3333, 1, 0))
+        self.assertEqual(fdp.phase_of('D92_D1 Messieurs_Ph2 Poule 3'), 2)
+        self.assertEqual(fdp.phase_of('D92_D1 Messieurs_Ph1 Poule 3'), 1)
+        self.assertAlmostEqual(fdp.ascent_probability([0.5, 0.3, 0.2], pr2), 0.6, places=3)
+        self.assertEqual(fdp.quotas_for('D92_Pré-Regionale Messieurs_Ph2 Poule 1')['phase'], 2)
         # D2 : art. IV.2.3 CD92, 32 maintiens sur 42 → le dernier et une partie des 6ᵉ descendent ; maintien sûr = top 5
         self.assertEqual(fdp.goal_reached(5, 7, d2, 'maintien'), 1)
         self.assertEqual(fdp.goal_reached(6, 7, d2, 'maintien'), 0)

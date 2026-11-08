@@ -132,6 +132,7 @@
     <label for="xsel"><b>Descentes de R3 vers la PR</b> (équipes du 92, règle d'ajustement art. IV.2)</label>
     <select id="xsel" aria-label="nombre de descentes de R3 vers la PR"></select>
     <span class="meta" id="xnote"></span>
+    <div id="xteams" class="pt-wrap" style="flex-basis:100%" hidden></div>
   </div>
 </div>
 
@@ -221,8 +222,17 @@
     var xi=DOC.x_r3, byx=DOC.quotas_by_x; if(!xi||!byx) return;
     X=xi.value; var sel=document.getElementById('xsel');
     sel.innerHTML=Object.keys(byx).sort(function(a,b){return a-b;}).map(function(x){ return '<option value="'+x+'"'+(+x===X?' selected':'')+'>'+x+(+x===xi.value?' (retenu)':'')+'</option>'; }).join('');
-    var est=xi.estimation==null?'aucune lecture des poules de R3 : valeur du règlement (4)':'estimation d’après les classements de R3 : <b>'+String(xi.estimation).replace('.',',')+'</b> ('+xi.sures.length+' équipe'+(xi.sures.length>1?'s':'')+' du 92 à la dernière place'+(xi.sures.length?' : '+xi.sures.map(function(e){return e[1];}).join(', '):'')+' ; '+xi.a_risque.length+' à l’avant-dernière'+(xi.a_risque.length?' : '+xi.a_risque.map(function(e){return e[1];}).join(', '):'')+')';
-    document.getElementById('xnote').innerHTML=est+'. Changer la valeur recalcule PR, D1 et D2 dans le navigateur (3 000 tirages par poule).';
+    var noms=function(l){ return l.length?' : '+l.map(function(e){return e[1]+(e[2]!=null?' ('+e[2]+' pts)':'');}).join(', '):''; };
+    var est;
+    if(xi.estimation==null) est='aucune lecture des poules de R3 : valeur nominale du règlement ('+xi.nominal+')';
+    else if(xi.equipes&&xi.equipes.length){
+      var dist=Object.keys(xi.distribution||{}).map(function(x){ return x+' : '+pct(xi.distribution[x]); }).join(' · ');
+      est='espérance <b>'+String(xi.estimation).replace('.',',')+'</b> d’après la projection des '+(xi.n_poules||16)+' poules de R3 (classements et rencontres du '+esc(fmtDate(xi.source))+', confrontations directes, 8ᵉ = descente sûre, 7ᵉ = une fois sur deux) · distribution '+dist+' · valeur nominale du règlement : '+xi.nominal;
+      document.getElementById('xteams').innerHTML='<table class="pt"><thead><tr><th>Équipe du 92 en R3</th><th class="r">Poule</th><th class="r">Clt</th><th class="r">Pts</th><th class="r">7ᵉ</th><th class="r">8ᵉ</th><th class="r">Risque PR</th></tr></thead><tbody>'
+        +xi.equipes.map(function(e){ return '<tr><td class="tname">'+esc(e.equipe)+'</td><td class="r mono">'+e.poule+'</td><td class="r mono">'+e.pos+'</td><td class="r mono">'+e.pts+'</td><td class="r mono">'+pct(e.p7)+'</td><td class="r mono">'+pct(e.p8)+'</td><td class="r"><span class="pct '+(e.risque>=0.2?'down':'dim')+'">'+pctCls(e.risque)+'</span></td></tr>'; }).join('')+'</tbody></table>';
+      document.getElementById('xteams').hidden=false;
+    } else est='<b>'+String(xi.estimation).replace('.',',')+'</b> d’après les classements de R3 du '+esc(fmtDate(xi.source))+' : '+xi.sures.length+' équipe'+(xi.sures.length>1?'s':'')+' du 92 à la dernière place'+noms(xi.sures)+' ; '+xi.a_risque.length+' à l’avant-dernière'+noms(xi.a_risque)+' ; '+(xi.sixiemes||[]).length+' en 6ᵉ position'+noms(xi.sixiemes||[])+' · valeur nominale du règlement : '+xi.nominal;
+    document.getElementById('xnote').innerHTML='Estimation : '+est+'. Changer la valeur recalcule PR, D1 et D2 dans le navigateur (3 000 tirages par poule).';
     document.getElementById('xbox').hidden=false;
     sel.addEventListener('change',function(){ applyX(+sel.value); });
   }

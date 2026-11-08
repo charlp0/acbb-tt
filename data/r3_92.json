@@ -1,0 +1,4513 @@
+{
+ "built": "2026-11-08T22:18:14.474330+00:00",
+ "division": "L08_R3 Messieurs phase 1 Poule 1",
+ "D1": "263434",
+ "organisme": "16",
+ "poules": [
+  {
+   "cx": 1503039,
+   "poule": 1,
+   "equipes": [
+    {
+     "poule": 1,
+     "clt": 1,
+     "equipe": "BOULOGNE BILLANCOURT 5",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08920049",
+     "dept": "92"
+    },
+    {
+     "poule": 1,
+     "clt": 2,
+     "equipe": "VINCENNOIS TT 2",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08940096",
+     "dept": "94"
+    },
+    {
+     "poule": 1,
+     "clt": 3,
+     "equipe": "VITRY ES 1",
+     "pts": 10,
+     "joue": 4,
+     "numero": "08940448",
+     "dept": "94"
+    },
+    {
+     "poule": 1,
+     "clt": 4,
+     "equipe": "PING PARIS 14 1",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08751456",
+     "dept": "75"
+    },
+    {
+     "poule": 1,
+     "clt": 5,
+     "equipe": "PONTAULT UMS TT 5",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08771170",
+     "dept": "77"
+    },
+    {
+     "poule": 1,
+     "clt": 6,
+     "equipe": "PARIS US 2 1",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08751249",
+     "dept": "75"
+    },
+    {
+     "poule": 1,
+     "clt": 7,
+     "equipe": "ATT XV 1",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08751260",
+     "dept": "75"
+    },
+    {
+     "poule": 1,
+     "clt": 8,
+     "equipe": "STAINS ES-PIERREFITTE AS 1",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08931032",
+     "dept": "93"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "PARIS US 2 1",
+     "b": "STAINS ES-PIERREFITTE AS 1",
+     "date": "19/09/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 1,
+     "a": "ATT XV 1",
+     "b": "BOULOGNE BILLANCOURT 5",
+     "date": "19/09/2026",
+     "wa": 12,
+     "wb": 26
+    },
+    {
+     "j": 1,
+     "a": "VITRY ES 1",
+     "b": "PONTAULT UMS TT 5",
+     "date": "19/09/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 1,
+     "a": "PING PARIS 14 1",
+     "b": "VINCENNOIS TT 2",
+     "date": "19/09/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 2,
+     "a": "BOULOGNE BILLANCOURT 5",
+     "b": "PARIS US 2 1",
+     "date": "03/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 2,
+     "a": "PONTAULT UMS TT 5",
+     "b": "ATT XV 1",
+     "date": "03/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 2,
+     "a": "VINCENNOIS TT 2",
+     "b": "VITRY ES 1",
+     "date": "03/10/2026",
+     "wa": 26,
+     "wb": 15
+    },
+    {
+     "j": 2,
+     "a": "STAINS ES-PIERREFITTE AS 1",
+     "b": "PING PARIS 14 1",
+     "date": "03/10/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 3,
+     "a": "PARIS US 2 1",
+     "b": "PONTAULT UMS TT 5",
+     "date": "17/10/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 3,
+     "a": "ATT XV 1",
+     "b": "VINCENNOIS TT 2",
+     "date": "17/10/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 3,
+     "a": "VITRY ES 1",
+     "b": "PING PARIS 14 1",
+     "date": "17/10/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 3,
+     "a": "STAINS ES-PIERREFITTE AS 1",
+     "b": "BOULOGNE BILLANCOURT 5",
+     "date": "17/10/2026",
+     "wa": 0,
+     "wb": 14
+    },
+    {
+     "j": 4,
+     "a": "VINCENNOIS TT 2",
+     "b": "PARIS US 2 1",
+     "date": "07/11/2026",
+     "wa": 13,
+     "wb": 1
+    },
+    {
+     "j": 4,
+     "a": "PING PARIS 14 1",
+     "b": "ATT XV 1",
+     "date": "07/11/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 4,
+     "a": "VITRY ES 1",
+     "b": "STAINS ES-PIERREFITTE AS 1",
+     "date": "07/11/2026",
+     "wa": 24,
+     "wb": 14
+    },
+    {
+     "j": 4,
+     "a": "PONTAULT UMS TT 5",
+     "b": "BOULOGNE BILLANCOURT 5",
+     "date": "07/11/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 5,
+     "a": "PARIS US 2 1",
+     "b": "PING PARIS 14 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "ATT XV 1",
+     "b": "VITRY ES 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "BOULOGNE BILLANCOURT 5",
+     "b": "VINCENNOIS TT 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "STAINS ES-PIERREFITTE AS 1",
+     "b": "PONTAULT UMS TT 5",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "VITRY ES 1",
+     "b": "PARIS US 2 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "ATT XV 1",
+     "b": "STAINS ES-PIERREFITTE AS 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "PING PARIS 14 1",
+     "b": "BOULOGNE BILLANCOURT 5",
+     "date": "28/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "VINCENNOIS TT 2",
+     "b": "PONTAULT UMS TT 5",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "PARIS US 2 1",
+     "b": "ATT XV 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "BOULOGNE BILLANCOURT 5",
+     "b": "VITRY ES 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "PONTAULT UMS TT 5",
+     "b": "PING PARIS 14 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "STAINS ES-PIERREFITTE AS 1",
+     "b": "VINCENNOIS TT 2",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503048,
+   "poule": 2,
+   "equipes": [
+    {
+     "poule": 2,
+     "clt": 1,
+     "equipe": "FONTENAY-TRESIGNY TT 1",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08771518",
+     "dept": "77"
+    },
+    {
+     "poule": 2,
+     "clt": 2,
+     "equipe": "RUEIL ATHLETIC 5",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08920309",
+     "dept": "92"
+    },
+    {
+     "poule": 2,
+     "clt": 3,
+     "equipe": "CLAMART CSM 3",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08920111",
+     "dept": "92"
+    },
+    {
+     "poule": 2,
+     "clt": 4,
+     "equipe": "FRANCONVILLE 1",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08950103",
+     "dept": "95"
+    },
+    {
+     "poule": 2,
+     "clt": 5,
+     "equipe": "CSMF PARIS TT 1",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08750007",
+     "dept": "75"
+    },
+    {
+     "poule": 2,
+     "clt": 6,
+     "equipe": "MONTMAGNY-GROSLAY 2",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08950348",
+     "dept": "95"
+    },
+    {
+     "poule": 2,
+     "clt": 7,
+     "equipe": "CRETEIL USTT 3",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08940655",
+     "dept": "94"
+    },
+    {
+     "poule": 2,
+     "clt": 8,
+     "equipe": "BOIS D ARCY AS 1",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08780447",
+     "dept": "78"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "BOIS D ARCY AS 1",
+     "b": "FRANCONVILLE 1",
+     "date": "19/09/2026",
+     "wa": 1,
+     "wb": 13
+    },
+    {
+     "j": 1,
+     "a": "CLAMART CSM 3",
+     "b": "MONTMAGNY-GROSLAY 2",
+     "date": "19/09/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 1,
+     "a": "CSMF PARIS TT 1",
+     "b": "RUEIL ATHLETIC 5",
+     "date": "19/09/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 1,
+     "a": "FONTENAY-TRESIGNY TT 1",
+     "b": "CRETEIL USTT 3",
+     "date": "19/09/2026",
+     "wa": 13,
+     "wb": 1
+    },
+    {
+     "j": 2,
+     "a": "MONTMAGNY-GROSLAY 2",
+     "b": "BOIS D ARCY AS 1",
+     "date": "03/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 2,
+     "a": "RUEIL ATHLETIC 5",
+     "b": "CLAMART CSM 3",
+     "date": "03/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 2,
+     "a": "CRETEIL USTT 3",
+     "b": "CSMF PARIS TT 1",
+     "date": "03/10/2026",
+     "wa": 2,
+     "wb": 12
+    },
+    {
+     "j": 2,
+     "a": "FRANCONVILLE 1",
+     "b": "FONTENAY-TRESIGNY TT 1",
+     "date": "03/10/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 3,
+     "a": "BOIS D ARCY AS 1",
+     "b": "RUEIL ATHLETIC 5",
+     "date": "17/10/2026",
+     "wa": 1,
+     "wb": 13
+    },
+    {
+     "j": 3,
+     "a": "CLAMART CSM 3",
+     "b": "CRETEIL USTT 3",
+     "date": "17/10/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 3,
+     "a": "CSMF PARIS TT 1",
+     "b": "FONTENAY-TRESIGNY TT 1",
+     "date": "17/10/2026",
+     "wa": 2,
+     "wb": 12
+    },
+    {
+     "j": 3,
+     "a": "FRANCONVILLE 1",
+     "b": "MONTMAGNY-GROSLAY 2",
+     "date": "17/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 4,
+     "a": "CRETEIL USTT 3",
+     "b": "BOIS D ARCY AS 1",
+     "date": "07/11/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 4,
+     "a": "FONTENAY-TRESIGNY TT 1",
+     "b": "CLAMART CSM 3",
+     "date": "07/11/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 4,
+     "a": "CSMF PARIS TT 1",
+     "b": "FRANCONVILLE 1",
+     "date": "07/11/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 4,
+     "a": "RUEIL ATHLETIC 5",
+     "b": "MONTMAGNY-GROSLAY 2",
+     "date": "07/11/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 5,
+     "a": "BOIS D ARCY AS 1",
+     "b": "FONTENAY-TRESIGNY TT 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "CLAMART CSM 3",
+     "b": "CSMF PARIS TT 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "MONTMAGNY-GROSLAY 2",
+     "b": "CRETEIL USTT 3",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "FRANCONVILLE 1",
+     "b": "RUEIL ATHLETIC 5",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "CSMF PARIS TT 1",
+     "b": "BOIS D ARCY AS 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "CLAMART CSM 3",
+     "b": "FRANCONVILLE 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "FONTENAY-TRESIGNY TT 1",
+     "b": "MONTMAGNY-GROSLAY 2",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "CRETEIL USTT 3",
+     "b": "RUEIL ATHLETIC 5",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "BOIS D ARCY AS 1",
+     "b": "CLAMART CSM 3",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "MONTMAGNY-GROSLAY 2",
+     "b": "CSMF PARIS TT 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "RUEIL ATHLETIC 5",
+     "b": "FONTENAY-TRESIGNY TT 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "FRANCONVILLE 1",
+     "b": "CRETEIL USTT 3",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503049,
+   "poule": 3,
+   "equipes": [
+    {
+     "poule": 3,
+     "clt": 1,
+     "equipe": "CHELLES TT 2",
+     "pts": 11,
+     "joue": 4,
+     "numero": "08770237",
+     "dept": "77"
+    },
+    {
+     "poule": 3,
+     "clt": 2,
+     "equipe": "BUSSY SAINT GEORGES CTT 1",
+     "pts": 10,
+     "joue": 4,
+     "numero": "08771398",
+     "dept": "77"
+    },
+    {
+     "poule": 3,
+     "clt": 3,
+     "equipe": "CHILLY-MORANGIS CTT 3",
+     "pts": 10,
+     "joue": 4,
+     "numero": "08910918",
+     "dept": "91"
+    },
+    {
+     "poule": 3,
+     "clt": 4,
+     "equipe": "PALAISEAU 5",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08910042",
+     "dept": "91"
+    },
+    {
+     "poule": 3,
+     "clt": 5,
+     "equipe": "ACHERES CLOC 1",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08780935",
+     "dept": "78"
+    },
+    {
+     "poule": 3,
+     "clt": 6,
+     "equipe": "LA FERTE ALAIS 1",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08911161",
+     "dept": "91"
+    },
+    {
+     "poule": 3,
+     "clt": 7,
+     "equipe": "SAINT REMY TT 1",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08780674",
+     "dept": "78"
+    },
+    {
+     "poule": 3,
+     "clt": 8,
+     "equipe": "SAINT-DENIS TT93 5",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08931466",
+     "dept": "93"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "CHELLES TT 2",
+     "b": "BUSSY SAINT GEORGES CTT 1",
+     "date": "19/09/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 1,
+     "a": "CHILLY-MORANGIS CTT 3",
+     "b": "SAINT REMY TT 1",
+     "date": "19/09/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 1,
+     "a": "ACHERES CLOC 1",
+     "b": "PALAISEAU 5",
+     "date": "19/09/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 1,
+     "a": "LA FERTE ALAIS 1",
+     "b": "SAINT-DENIS TT93 5",
+     "date": "19/09/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 2,
+     "a": "SAINT REMY TT 1",
+     "b": "CHELLES TT 2",
+     "date": "03/10/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 2,
+     "a": "PALAISEAU 5",
+     "b": "CHILLY-MORANGIS CTT 3",
+     "date": "03/10/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 2,
+     "a": "SAINT-DENIS TT93 5",
+     "b": "ACHERES CLOC 1",
+     "date": "03/10/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 2,
+     "a": "BUSSY SAINT GEORGES CTT 1",
+     "b": "LA FERTE ALAIS 1",
+     "date": "03/10/2026",
+     "wa": 24,
+     "wb": 14
+    },
+    {
+     "j": 3,
+     "a": "CHELLES TT 2",
+     "b": "PALAISEAU 5",
+     "date": "17/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "CHILLY-MORANGIS CTT 3",
+     "b": "SAINT-DENIS TT93 5",
+     "date": "17/10/2026",
+     "wa": 14,
+     "wb": 0
+    },
+    {
+     "j": 3,
+     "a": "ACHERES CLOC 1",
+     "b": "LA FERTE ALAIS 1",
+     "date": "17/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "BUSSY SAINT GEORGES CTT 1",
+     "b": "SAINT REMY TT 1",
+     "date": "17/10/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 4,
+     "a": "SAINT-DENIS TT93 5",
+     "b": "CHELLES TT 2",
+     "date": "07/11/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 4,
+     "a": "LA FERTE ALAIS 1",
+     "b": "CHILLY-MORANGIS CTT 3",
+     "date": "07/11/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 4,
+     "a": "ACHERES CLOC 1",
+     "b": "BUSSY SAINT GEORGES CTT 1",
+     "date": "07/11/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 4,
+     "a": "PALAISEAU 5",
+     "b": "SAINT REMY TT 1",
+     "date": "07/11/2026",
+     "wa": 25,
+     "wb": 16
+    },
+    {
+     "j": 5,
+     "a": "CHELLES TT 2",
+     "b": "LA FERTE ALAIS 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "CHILLY-MORANGIS CTT 3",
+     "b": "ACHERES CLOC 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "SAINT REMY TT 1",
+     "b": "SAINT-DENIS TT93 5",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "BUSSY SAINT GEORGES CTT 1",
+     "b": "PALAISEAU 5",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "ACHERES CLOC 1",
+     "b": "CHELLES TT 2",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "CHILLY-MORANGIS CTT 3",
+     "b": "BUSSY SAINT GEORGES CTT 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "LA FERTE ALAIS 1",
+     "b": "SAINT REMY TT 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "SAINT-DENIS TT93 5",
+     "b": "PALAISEAU 5",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "CHELLES TT 2",
+     "b": "CHILLY-MORANGIS CTT 3",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "SAINT REMY TT 1",
+     "b": "ACHERES CLOC 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "PALAISEAU 5",
+     "b": "LA FERTE ALAIS 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "BUSSY SAINT GEORGES CTT 1",
+     "b": "SAINT-DENIS TT93 5",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503050,
+   "poule": 4,
+   "equipes": [
+    {
+     "poule": 4,
+     "clt": 1,
+     "equipe": "MAISONS-ALFORT TT 3",
+     "pts": 11,
+     "joue": 4,
+     "numero": "08940033",
+     "dept": "94"
+    },
+    {
+     "poule": 4,
+     "clt": 2,
+     "equipe": "PANTIN CTT 1",
+     "pts": 11,
+     "joue": 4,
+     "numero": "08931468",
+     "dept": "93"
+    },
+    {
+     "poule": 4,
+     "clt": 3,
+     "equipe": "NOISY LE GRAND 6",
+     "pts": 10,
+     "joue": 4,
+     "numero": "08930610",
+     "dept": "93"
+    },
+    {
+     "poule": 4,
+     "clt": 4,
+     "equipe": "OZOIR AP 1",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08771236",
+     "dept": "77"
+    },
+    {
+     "poule": 4,
+     "clt": 5,
+     "equipe": "PARIS SP20 TT 3",
+     "pts": 6,
+     "joue": 3,
+     "numero": "08751061",
+     "dept": "75"
+    },
+    {
+     "poule": 4,
+     "clt": 6,
+     "equipe": "ESP REUILLY 4",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08750074",
+     "dept": "75"
+    },
+    {
+     "poule": 4,
+     "clt": 7,
+     "equipe": "ADAMOIS TT 1",
+     "pts": 5,
+     "joue": 3,
+     "numero": "08951458",
+     "dept": "95"
+    },
+    {
+     "poule": 4,
+     "clt": 8,
+     "equipe": "ELANCOURT CTT 5",
+     "pts": 5,
+     "joue": 4,
+     "numero": "08780496",
+     "dept": "78"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "ELANCOURT CTT 5",
+     "b": "PANTIN CTT 1",
+     "date": "19/09/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 1,
+     "a": "PARIS SP20 TT 3",
+     "b": "ADAMOIS TT 1",
+     "date": "28/11/2026"
+    },
+    {
+     "j": 1,
+     "a": "NOISY LE GRAND 6",
+     "b": "MAISONS-ALFORT TT 3",
+     "date": "19/09/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 1,
+     "a": "OZOIR AP 1",
+     "b": "ESP REUILLY 4",
+     "date": "19/09/2026",
+     "wa": 14,
+     "wb": 0
+    },
+    {
+     "j": 2,
+     "a": "ADAMOIS TT 1",
+     "b": "ELANCOURT CTT 5",
+     "date": "03/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 2,
+     "a": "MAISONS-ALFORT TT 3",
+     "b": "PARIS SP20 TT 3",
+     "date": "03/10/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 2,
+     "a": "ESP REUILLY 4",
+     "b": "NOISY LE GRAND 6",
+     "date": "03/10/2026",
+     "wa": 2,
+     "wb": 12
+    },
+    {
+     "j": 2,
+     "a": "PANTIN CTT 1",
+     "b": "OZOIR AP 1",
+     "date": "03/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 3,
+     "a": "ELANCOURT CTT 5",
+     "b": "MAISONS-ALFORT TT 3",
+     "date": "17/10/2026",
+     "wa": 2,
+     "wb": 12
+    },
+    {
+     "j": 3,
+     "a": "PARIS SP20 TT 3",
+     "b": "ESP REUILLY 4",
+     "date": "17/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "NOISY LE GRAND 6",
+     "b": "OZOIR AP 1",
+     "date": "17/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 3,
+     "a": "PANTIN CTT 1",
+     "b": "ADAMOIS TT 1",
+     "date": "17/10/2026",
+     "wa": 23,
+     "wb": 18
+    },
+    {
+     "j": 4,
+     "a": "ESP REUILLY 4",
+     "b": "ELANCOURT CTT 5",
+     "date": "07/11/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 4,
+     "a": "OZOIR AP 1",
+     "b": "PARIS SP20 TT 3",
+     "date": "07/11/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 4,
+     "a": "NOISY LE GRAND 6",
+     "b": "PANTIN CTT 1",
+     "date": "07/11/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 4,
+     "a": "MAISONS-ALFORT TT 3",
+     "b": "ADAMOIS TT 1",
+     "date": "07/11/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 5,
+     "a": "ELANCOURT CTT 5",
+     "b": "OZOIR AP 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "PARIS SP20 TT 3",
+     "b": "NOISY LE GRAND 6",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "ADAMOIS TT 1",
+     "b": "ESP REUILLY 4",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "PANTIN CTT 1",
+     "b": "MAISONS-ALFORT TT 3",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "NOISY LE GRAND 6",
+     "b": "ELANCOURT CTT 5",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "PARIS SP20 TT 3",
+     "b": "PANTIN CTT 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "OZOIR AP 1",
+     "b": "ADAMOIS TT 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "ESP REUILLY 4",
+     "b": "MAISONS-ALFORT TT 3",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "ELANCOURT CTT 5",
+     "b": "PARIS SP20 TT 3",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "ADAMOIS TT 1",
+     "b": "NOISY LE GRAND 6",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "MAISONS-ALFORT TT 3",
+     "b": "OZOIR AP 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "PANTIN CTT 1",
+     "b": "ESP REUILLY 4",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503051,
+   "poule": 5,
+   "equipes": [
+    {
+     "poule": 5,
+     "clt": 1,
+     "equipe": "CRETEIL USTT 1",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08940655",
+     "dept": "94"
+    },
+    {
+     "poule": 5,
+     "clt": 2,
+     "equipe": "PALAISEAU US 4",
+     "pts": 11,
+     "joue": 4,
+     "numero": "08910042",
+     "dept": "91"
+    },
+    {
+     "poule": 5,
+     "clt": 3,
+     "equipe": "CHESNAY 78 AS 5",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08780080",
+     "dept": "78"
+    },
+    {
+     "poule": 5,
+     "clt": 4,
+     "equipe": "SAINT REMY TT 2",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08780674",
+     "dept": "78"
+    },
+    {
+     "poule": 5,
+     "clt": 5,
+     "equipe": "HERBLAY ASTT 5",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08950479",
+     "dept": "95"
+    },
+    {
+     "poule": 5,
+     "clt": 6,
+     "equipe": "TRIEL TT 3",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08781471",
+     "dept": "78"
+    },
+    {
+     "poule": 5,
+     "clt": 7,
+     "equipe": "KREMLIN BICETRE US 2",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08940975",
+     "dept": "94"
+    },
+    {
+     "poule": 5,
+     "clt": 8,
+     "equipe": "VERRIERES TU 1",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08911206",
+     "dept": "91"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "HERBLAY ASTT 5",
+     "b": "VERRIERES TU 1",
+     "date": "19/09/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 1,
+     "a": "TRIEL TT 3",
+     "b": "SAINT REMY TT 2",
+     "date": "19/09/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 1,
+     "a": "KREMLIN BICETRE US 2",
+     "b": "PALAISEAU US 4",
+     "date": "19/09/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 1,
+     "a": "CHESNAY 78 AS 5",
+     "b": "CRETEIL USTT 1",
+     "date": "19/09/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 2,
+     "a": "SAINT REMY TT 2",
+     "b": "HERBLAY ASTT 5",
+     "date": "03/10/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 2,
+     "a": "PALAISEAU US 4",
+     "b": "TRIEL TT 3",
+     "date": "03/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 2,
+     "a": "CRETEIL USTT 1",
+     "b": "KREMLIN BICETRE US 2",
+     "date": "03/10/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 2,
+     "a": "VERRIERES TU 1",
+     "b": "CHESNAY 78 AS 5",
+     "date": "03/10/2026",
+     "wa": 2,
+     "wb": 12
+    },
+    {
+     "j": 3,
+     "a": "HERBLAY ASTT 5",
+     "b": "PALAISEAU US 4",
+     "date": "17/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "TRIEL TT 3",
+     "b": "CRETEIL USTT 1",
+     "date": "17/10/2026",
+     "wa": 2,
+     "wb": 12
+    },
+    {
+     "j": 3,
+     "a": "KREMLIN BICETRE US 2",
+     "b": "CHESNAY 78 AS 5",
+     "date": "17/10/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 3,
+     "a": "VERRIERES TU 1",
+     "b": "SAINT REMY TT 2",
+     "date": "17/10/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 4,
+     "a": "CRETEIL USTT 1",
+     "b": "HERBLAY ASTT 5",
+     "date": "07/11/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 4,
+     "a": "CHESNAY 78 AS 5",
+     "b": "TRIEL TT 3",
+     "date": "07/11/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 4,
+     "a": "KREMLIN BICETRE US 2",
+     "b": "VERRIERES TU 1",
+     "date": "07/11/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 4,
+     "a": "PALAISEAU US 4",
+     "b": "SAINT REMY TT 2",
+     "date": "07/11/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 5,
+     "a": "HERBLAY ASTT 5",
+     "b": "CHESNAY 78 AS 5",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "TRIEL TT 3",
+     "b": "KREMLIN BICETRE US 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "SAINT REMY TT 2",
+     "b": "CRETEIL USTT 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "VERRIERES TU 1",
+     "b": "PALAISEAU US 4",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "KREMLIN BICETRE US 2",
+     "b": "HERBLAY ASTT 5",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "TRIEL TT 3",
+     "b": "VERRIERES TU 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "CHESNAY 78 AS 5",
+     "b": "SAINT REMY TT 2",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "CRETEIL USTT 1",
+     "b": "PALAISEAU US 4",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "HERBLAY ASTT 5",
+     "b": "TRIEL TT 3",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "SAINT REMY TT 2",
+     "b": "KREMLIN BICETRE US 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "PALAISEAU US 4",
+     "b": "CHESNAY 78 AS 5",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "VERRIERES TU 1",
+     "b": "CRETEIL USTT 1",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503052,
+   "poule": 6,
+   "equipes": [
+    {
+     "poule": 6,
+     "clt": 1,
+     "equipe": "ERMONT-PLESSIS 2",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08951411",
+     "dept": "95"
+    },
+    {
+     "poule": 6,
+     "clt": 2,
+     "equipe": "EAUBONNE CMS 3",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08950978",
+     "dept": "95"
+    },
+    {
+     "poule": 6,
+     "clt": 3,
+     "equipe": "LEVALLOIS SPORT 9",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08921458",
+     "dept": "92"
+    },
+    {
+     "poule": 6,
+     "clt": 4,
+     "equipe": "ORMESSON US 24",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08940894",
+     "dept": "94"
+    },
+    {
+     "poule": 6,
+     "clt": 5,
+     "equipe": "VINCENNOIS TT 3",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08940096",
+     "dept": "94"
+    },
+    {
+     "poule": 6,
+     "clt": 6,
+     "equipe": "FRESNES AAS 1",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08940012",
+     "dept": "94"
+    },
+    {
+     "poule": 6,
+     "clt": 7,
+     "equipe": "LIVRY-GARGAN EP 2",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08930430",
+     "dept": "93"
+    },
+    {
+     "poule": 6,
+     "clt": 8,
+     "equipe": "ROISSY TT US 2",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08770408",
+     "dept": "77"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "EAUBONNE CMS 3",
+     "b": "LIVRY-GARGAN EP 2",
+     "date": "19/09/2026",
+     "wa": 13,
+     "wb": 1
+    },
+    {
+     "j": 1,
+     "a": "ROISSY TT US 2",
+     "b": "ORMESSON US 24",
+     "date": "19/09/2026",
+     "wa": 18,
+     "wb": 23
+    },
+    {
+     "j": 1,
+     "a": "FRESNES AAS 1",
+     "b": "LEVALLOIS SPORT 9",
+     "date": "19/09/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 1,
+     "a": "ERMONT-PLESSIS 2",
+     "b": "VINCENNOIS TT 3",
+     "date": "19/09/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 2,
+     "a": "ORMESSON US 24",
+     "b": "EAUBONNE CMS 3",
+     "date": "03/10/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 2,
+     "a": "LEVALLOIS SPORT 9",
+     "b": "ROISSY TT US 2",
+     "date": "03/10/2026",
+     "wa": 13,
+     "wb": 1
+    },
+    {
+     "j": 2,
+     "a": "VINCENNOIS TT 3",
+     "b": "FRESNES AAS 1",
+     "date": "03/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 2,
+     "a": "LIVRY-GARGAN EP 2",
+     "b": "ERMONT-PLESSIS 2",
+     "date": "03/10/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 3,
+     "a": "EAUBONNE CMS 3",
+     "b": "LEVALLOIS SPORT 9",
+     "date": "17/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 3,
+     "a": "ROISSY TT US 2",
+     "b": "VINCENNOIS TT 3",
+     "date": "17/10/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 3,
+     "a": "FRESNES AAS 1",
+     "b": "ERMONT-PLESSIS 2",
+     "date": "17/10/2026",
+     "wa": 2,
+     "wb": 12
+    },
+    {
+     "j": 3,
+     "a": "LIVRY-GARGAN EP 2",
+     "b": "ORMESSON US 24",
+     "date": "17/10/2026",
+     "wa": 24,
+     "wb": 17
+    },
+    {
+     "j": 4,
+     "a": "VINCENNOIS TT 3",
+     "b": "EAUBONNE CMS 3",
+     "date": "07/11/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 4,
+     "a": "ERMONT-PLESSIS 2",
+     "b": "ROISSY TT US 2",
+     "date": "07/11/2026",
+     "wa": 28,
+     "wb": 10
+    },
+    {
+     "j": 4,
+     "a": "FRESNES AAS 1",
+     "b": "LIVRY-GARGAN EP 2",
+     "date": "07/11/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 4,
+     "a": "LEVALLOIS SPORT 9",
+     "b": "ORMESSON US 24",
+     "date": "07/11/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 5,
+     "a": "EAUBONNE CMS 3",
+     "b": "ERMONT-PLESSIS 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "ROISSY TT US 2",
+     "b": "FRESNES AAS 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "ORMESSON US 24",
+     "b": "VINCENNOIS TT 3",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "LIVRY-GARGAN EP 2",
+     "b": "LEVALLOIS SPORT 9",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "FRESNES AAS 1",
+     "b": "EAUBONNE CMS 3",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "ROISSY TT US 2",
+     "b": "LIVRY-GARGAN EP 2",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "ERMONT-PLESSIS 2",
+     "b": "ORMESSON US 24",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "VINCENNOIS TT 3",
+     "b": "LEVALLOIS SPORT 9",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "EAUBONNE CMS 3",
+     "b": "ROISSY TT US 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "ORMESSON US 24",
+     "b": "FRESNES AAS 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "LEVALLOIS SPORT 9",
+     "b": "ERMONT-PLESSIS 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "LIVRY-GARGAN EP 2",
+     "b": "VINCENNOIS TT 3",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503053,
+   "poule": 7,
+   "equipes": [
+    {
+     "poule": 7,
+     "clt": 1,
+     "equipe": "PARIS 13 TT 4",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08751163",
+     "dept": "75"
+    },
+    {
+     "poule": 7,
+     "clt": 2,
+     "equipe": "MALAKOFF USM 3",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08920018",
+     "dept": "92"
+    },
+    {
+     "poule": 7,
+     "clt": 3,
+     "equipe": "COMBS SENART TT 4",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08770426",
+     "dept": "77"
+    },
+    {
+     "poule": 7,
+     "clt": 4,
+     "equipe": "POISSY USC 2",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08780108",
+     "dept": "78"
+    },
+    {
+     "poule": 7,
+     "clt": 5,
+     "equipe": "HERBLAY ASTT 7",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08950479",
+     "dept": "95"
+    },
+    {
+     "poule": 7,
+     "clt": 6,
+     "equipe": "NOISY LE GRAND CSTT 7",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08930610",
+     "dept": "93"
+    },
+    {
+     "poule": 7,
+     "clt": 7,
+     "equipe": "CHATENAY ASVTT 1",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08920063",
+     "dept": "92"
+    },
+    {
+     "poule": 7,
+     "clt": 8,
+     "equipe": "BREVANNAISE AS 2",
+     "pts": 5,
+     "joue": 4,
+     "numero": "08940866",
+     "dept": "94"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "HERBLAY ASTT 7",
+     "b": "CHATENAY ASVTT 1",
+     "date": "19/09/2026",
+     "wa": 26,
+     "wb": 15
+    },
+    {
+     "j": 1,
+     "a": "BREVANNAISE AS 2",
+     "b": "MALAKOFF USM 3",
+     "date": "19/09/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 1,
+     "a": "NOISY LE GRAND CSTT 7",
+     "b": "PARIS 13 TT 4",
+     "date": "19/09/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 1,
+     "a": "POISSY USC 2",
+     "b": "COMBS SENART TT 4",
+     "date": "19/09/2026",
+     "wa": 26,
+     "wb": 15
+    },
+    {
+     "j": 2,
+     "a": "MALAKOFF USM 3",
+     "b": "HERBLAY ASTT 7",
+     "date": "03/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 2,
+     "a": "PARIS 13 TT 4",
+     "b": "BREVANNAISE AS 2",
+     "date": "03/10/2026",
+     "wa": 14,
+     "wb": 0
+    },
+    {
+     "j": 2,
+     "a": "COMBS SENART TT 4",
+     "b": "NOISY LE GRAND CSTT 7",
+     "date": "03/10/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 2,
+     "a": "CHATENAY ASVTT 1",
+     "b": "POISSY USC 2",
+     "date": "03/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 3,
+     "a": "HERBLAY ASTT 7",
+     "b": "PARIS 13 TT 4",
+     "date": "17/10/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 3,
+     "a": "BREVANNAISE AS 2",
+     "b": "COMBS SENART TT 4",
+     "date": "17/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "NOISY LE GRAND CSTT 7",
+     "b": "POISSY USC 2",
+     "date": "17/10/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 3,
+     "a": "CHATENAY ASVTT 1",
+     "b": "MALAKOFF USM 3",
+     "date": "17/10/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 4,
+     "a": "COMBS SENART TT 4",
+     "b": "HERBLAY ASTT 7",
+     "date": "07/11/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 4,
+     "a": "POISSY USC 2",
+     "b": "BREVANNAISE AS 2",
+     "date": "07/11/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 4,
+     "a": "NOISY LE GRAND CSTT 7",
+     "b": "CHATENAY ASVTT 1",
+     "date": "07/11/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 4,
+     "a": "PARIS 13 TT 4",
+     "b": "MALAKOFF USM 3",
+     "date": "07/11/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 5,
+     "a": "HERBLAY ASTT 7",
+     "b": "POISSY USC 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "BREVANNAISE AS 2",
+     "b": "NOISY LE GRAND CSTT 7",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "MALAKOFF USM 3",
+     "b": "COMBS SENART TT 4",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "CHATENAY ASVTT 1",
+     "b": "PARIS 13 TT 4",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "NOISY LE GRAND CSTT 7",
+     "b": "HERBLAY ASTT 7",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "BREVANNAISE AS 2",
+     "b": "CHATENAY ASVTT 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "POISSY USC 2",
+     "b": "MALAKOFF USM 3",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "COMBS SENART TT 4",
+     "b": "PARIS 13 TT 4",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "HERBLAY ASTT 7",
+     "b": "BREVANNAISE AS 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "MALAKOFF USM 3",
+     "b": "NOISY LE GRAND CSTT 7",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "PARIS 13 TT 4",
+     "b": "POISSY USC 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "CHATENAY ASVTT 1",
+     "b": "COMBS SENART TT 4",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503054,
+   "poule": 8,
+   "equipes": [
+    {
+     "poule": 8,
+     "clt": 1,
+     "equipe": "PONTOISE-CERGY 4",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08950330",
+     "dept": "95"
+    },
+    {
+     "poule": 8,
+     "clt": 2,
+     "equipe": "NEUILLY ASPN 4",
+     "pts": 11,
+     "joue": 4,
+     "numero": "08920312",
+     "dept": "92"
+    },
+    {
+     "poule": 8,
+     "clt": 3,
+     "equipe": "PARIS 13 TT 5",
+     "pts": 10,
+     "joue": 4,
+     "numero": "08751163",
+     "dept": "75"
+    },
+    {
+     "poule": 8,
+     "clt": 4,
+     "equipe": "MERY 1",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08951312",
+     "dept": "95"
+    },
+    {
+     "poule": 8,
+     "clt": 5,
+     "equipe": "MONTESSON TT 2",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08781017",
+     "dept": "78"
+    },
+    {
+     "poule": 8,
+     "clt": 6,
+     "equipe": "ANTONY SPORT TT 3",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08920031",
+     "dept": "92"
+    },
+    {
+     "poule": 8,
+     "clt": 7,
+     "equipe": "HERBLAY ASTT 6",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08950479",
+     "dept": "95"
+    },
+    {
+     "poule": 8,
+     "clt": 8,
+     "equipe": "JUMP 5",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08750120",
+     "dept": "75"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "HERBLAY ASTT 6",
+     "b": "NEUILLY ASPN 4",
+     "date": "19/09/2026",
+     "wa": 2,
+     "wb": 12
+    },
+    {
+     "j": 1,
+     "a": "PONTOISE-CERGY 4",
+     "b": "ANTONY SPORT TT 3",
+     "date": "19/09/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 1,
+     "a": "MERY 1",
+     "b": "PARIS 13 TT 5",
+     "date": "19/09/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 1,
+     "a": "MONTESSON TT 2",
+     "b": "JUMP 5",
+     "date": "19/09/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 2,
+     "a": "ANTONY SPORT TT 3",
+     "b": "HERBLAY ASTT 6",
+     "date": "03/10/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 2,
+     "a": "PARIS 13 TT 5",
+     "b": "PONTOISE-CERGY 4",
+     "date": "03/10/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 2,
+     "a": "JUMP 5",
+     "b": "MERY 1",
+     "date": "03/10/2026",
+     "wa": 2,
+     "wb": 12
+    },
+    {
+     "j": 2,
+     "a": "NEUILLY ASPN 4",
+     "b": "MONTESSON TT 2",
+     "date": "03/10/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 3,
+     "a": "HERBLAY ASTT 6",
+     "b": "PARIS 13 TT 5",
+     "date": "17/10/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 3,
+     "a": "PONTOISE-CERGY 4",
+     "b": "JUMP 5",
+     "date": "17/10/2026",
+     "wa": 14,
+     "wb": 0
+    },
+    {
+     "j": 3,
+     "a": "MERY 1",
+     "b": "MONTESSON TT 2",
+     "date": "17/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 3,
+     "a": "NEUILLY ASPN 4",
+     "b": "ANTONY SPORT TT 3",
+     "date": "17/10/2026",
+     "wa": 25,
+     "wb": 16
+    },
+    {
+     "j": 4,
+     "a": "JUMP 5",
+     "b": "HERBLAY ASTT 6",
+     "date": "07/11/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 4,
+     "a": "MONTESSON TT 2",
+     "b": "PONTOISE-CERGY 4",
+     "date": "07/11/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 4,
+     "a": "MERY 1",
+     "b": "NEUILLY ASPN 4",
+     "date": "07/11/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 4,
+     "a": "PARIS 13 TT 5",
+     "b": "ANTONY SPORT TT 3",
+     "date": "07/11/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 5,
+     "a": "HERBLAY ASTT 6",
+     "b": "MONTESSON TT 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "PONTOISE-CERGY 4",
+     "b": "MERY 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "ANTONY SPORT TT 3",
+     "b": "JUMP 5",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "NEUILLY ASPN 4",
+     "b": "PARIS 13 TT 5",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "MERY 1",
+     "b": "HERBLAY ASTT 6",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "PONTOISE-CERGY 4",
+     "b": "NEUILLY ASPN 4",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "MONTESSON TT 2",
+     "b": "ANTONY SPORT TT 3",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "JUMP 5",
+     "b": "PARIS 13 TT 5",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "HERBLAY ASTT 6",
+     "b": "PONTOISE-CERGY 4",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "ANTONY SPORT TT 3",
+     "b": "MERY 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "PARIS 13 TT 5",
+     "b": "MONTESSON TT 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "NEUILLY ASPN 4",
+     "b": "JUMP 5",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503040,
+   "poule": 9,
+   "equipes": [
+    {
+     "poule": 9,
+     "clt": 1,
+     "equipe": "VILLEMOMBLE SP 2",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08930113",
+     "dept": "93"
+    },
+    {
+     "poule": 9,
+     "clt": 2,
+     "equipe": "CORBEIL-ESSONNES AS 1",
+     "pts": 11,
+     "joue": 4,
+     "numero": "08910402",
+     "dept": "91"
+    },
+    {
+     "poule": 9,
+     "clt": 3,
+     "equipe": "DOMONT TT 1",
+     "pts": 10,
+     "joue": 4,
+     "numero": "08950262",
+     "dept": "95"
+    },
+    {
+     "poule": 9,
+     "clt": 4,
+     "equipe": "VERSAILLES SCTT 4",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08780329",
+     "dept": "78"
+    },
+    {
+     "poule": 9,
+     "clt": 5,
+     "equipe": "PARIS IX ATT 4",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08751124",
+     "dept": "75"
+    },
+    {
+     "poule": 9,
+     "clt": 6,
+     "equipe": "BONDOUFLE DUCKS 3",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08910667",
+     "dept": "91"
+    },
+    {
+     "poule": 9,
+     "clt": 7,
+     "equipe": "COMBS SENART TT 3",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08770426",
+     "dept": "77"
+    },
+    {
+     "poule": 9,
+     "clt": 7,
+     "equipe": "JUMP 6",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08750120",
+     "dept": "75"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "VILLEMOMBLE SP 2",
+     "b": "PARIS IX ATT 4",
+     "date": "19/09/2026",
+     "wa": 14,
+     "wb": 0
+    },
+    {
+     "j": 1,
+     "a": "DOMONT TT 1",
+     "b": "COMBS SENART TT 3",
+     "date": "19/09/2026",
+     "wa": 13,
+     "wb": 1
+    },
+    {
+     "j": 1,
+     "a": "CORBEIL-ESSONNES AS 1",
+     "b": "VERSAILLES SCTT 4",
+     "date": "19/09/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 1,
+     "a": "BONDOUFLE DUCKS 3",
+     "b": "JUMP 6",
+     "date": "19/09/2026",
+     "wa": 13,
+     "wb": 1
+    },
+    {
+     "j": 2,
+     "a": "COMBS SENART TT 3",
+     "b": "VILLEMOMBLE SP 2",
+     "date": "03/10/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 2,
+     "a": "VERSAILLES SCTT 4",
+     "b": "DOMONT TT 1",
+     "date": "03/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 2,
+     "a": "JUMP 6",
+     "b": "CORBEIL-ESSONNES AS 1",
+     "date": "03/10/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 2,
+     "a": "PARIS IX ATT 4",
+     "b": "BONDOUFLE DUCKS 3",
+     "date": "03/10/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 3,
+     "a": "VILLEMOMBLE SP 2",
+     "b": "VERSAILLES SCTT 4",
+     "date": "17/10/2026",
+     "wa": 14,
+     "wb": 0
+    },
+    {
+     "j": 3,
+     "a": "DOMONT TT 1",
+     "b": "JUMP 6",
+     "date": "17/10/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 3,
+     "a": "CORBEIL-ESSONNES AS 1",
+     "b": "BONDOUFLE DUCKS 3",
+     "date": "17/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 3,
+     "a": "PARIS IX ATT 4",
+     "b": "COMBS SENART TT 3",
+     "date": "17/10/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 4,
+     "a": "JUMP 6",
+     "b": "VILLEMOMBLE SP 2",
+     "date": "07/11/2026",
+     "wa": 0,
+     "wb": 14
+    },
+    {
+     "j": 4,
+     "a": "BONDOUFLE DUCKS 3",
+     "b": "DOMONT TT 1",
+     "date": "07/11/2026",
+     "wa": 13,
+     "wb": 25
+    },
+    {
+     "j": 4,
+     "a": "CORBEIL-ESSONNES AS 1",
+     "b": "PARIS IX ATT 4",
+     "date": "07/11/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 4,
+     "a": "VERSAILLES SCTT 4",
+     "b": "COMBS SENART TT 3",
+     "date": "07/11/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 5,
+     "a": "VILLEMOMBLE SP 2",
+     "b": "BONDOUFLE DUCKS 3",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "DOMONT TT 1",
+     "b": "CORBEIL-ESSONNES AS 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "COMBS SENART TT 3",
+     "b": "JUMP 6",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "PARIS IX ATT 4",
+     "b": "VERSAILLES SCTT 4",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "CORBEIL-ESSONNES AS 1",
+     "b": "VILLEMOMBLE SP 2",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "DOMONT TT 1",
+     "b": "PARIS IX ATT 4",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "BONDOUFLE DUCKS 3",
+     "b": "COMBS SENART TT 3",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "JUMP 6",
+     "b": "VERSAILLES SCTT 4",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "VILLEMOMBLE SP 2",
+     "b": "DOMONT TT 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "COMBS SENART TT 3",
+     "b": "CORBEIL-ESSONNES AS 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "VERSAILLES SCTT 4",
+     "b": "BONDOUFLE DUCKS 3",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "PARIS IX ATT 4",
+     "b": "JUMP 6",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503041,
+   "poule": 10,
+   "equipes": [
+    {
+     "poule": 10,
+     "clt": 1,
+     "equipe": "COMBS SENART TT 5",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08770426",
+     "dept": "77"
+    },
+    {
+     "poule": 10,
+     "clt": 2,
+     "equipe": "VILLECRESNES ALTT 3",
+     "pts": 10,
+     "joue": 4,
+     "numero": "08940458",
+     "dept": "94"
+    },
+    {
+     "poule": 10,
+     "clt": 3,
+     "equipe": "JOSASSIEN TT 2",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08780440",
+     "dept": "78"
+    },
+    {
+     "poule": 10,
+     "clt": 4,
+     "equipe": "AUBERGENVILLE C 1",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08780401",
+     "dept": "78"
+    },
+    {
+     "poule": 10,
+     "clt": 5,
+     "equipe": "LAGNY SMTT 2",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08770166",
+     "dept": "77"
+    },
+    {
+     "poule": 10,
+     "clt": 6,
+     "equipe": "FONTENAY USTT 6",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08940073",
+     "dept": "94"
+    },
+    {
+     "poule": 10,
+     "clt": 7,
+     "equipe": "LEVALLOIS SPORT 8",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08921458",
+     "dept": "92"
+    },
+    {
+     "poule": 10,
+     "clt": 8,
+     "equipe": "ESP REUILLY 3",
+     "pts": 5,
+     "joue": 4,
+     "numero": "08750074",
+     "dept": "75"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "VILLECRESNES ALTT 3",
+     "b": "FONTENAY USTT 6",
+     "date": "19/09/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 1,
+     "a": "LAGNY SMTT 2",
+     "b": "AUBERGENVILLE C 1",
+     "date": "19/09/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 1,
+     "a": "COMBS SENART TT 5",
+     "b": "LEVALLOIS SPORT 8",
+     "date": "19/09/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 1,
+     "a": "JOSASSIEN TT 2",
+     "b": "ESP REUILLY 3",
+     "date": "19/09/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 2,
+     "a": "AUBERGENVILLE C 1",
+     "b": "VILLECRESNES ALTT 3",
+     "date": "03/10/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 2,
+     "a": "LEVALLOIS SPORT 8",
+     "b": "LAGNY SMTT 2",
+     "date": "03/10/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 2,
+     "a": "ESP REUILLY 3",
+     "b": "COMBS SENART TT 5",
+     "date": "03/10/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 2,
+     "a": "FONTENAY USTT 6",
+     "b": "JOSASSIEN TT 2",
+     "date": "03/10/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 3,
+     "a": "VILLECRESNES ALTT 3",
+     "b": "LEVALLOIS SPORT 8",
+     "date": "17/10/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 3,
+     "a": "LAGNY SMTT 2",
+     "b": "ESP REUILLY 3",
+     "date": "17/10/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 3,
+     "a": "COMBS SENART TT 5",
+     "b": "JOSASSIEN TT 2",
+     "date": "17/10/2026",
+     "wa": 23,
+     "wb": 15
+    },
+    {
+     "j": 3,
+     "a": "FONTENAY USTT 6",
+     "b": "AUBERGENVILLE C 1",
+     "date": "17/10/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 4,
+     "a": "ESP REUILLY 3",
+     "b": "VILLECRESNES ALTT 3",
+     "date": "07/11/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 4,
+     "a": "JOSASSIEN TT 2",
+     "b": "LAGNY SMTT 2",
+     "date": "07/11/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 4,
+     "a": "COMBS SENART TT 5",
+     "b": "FONTENAY USTT 6",
+     "date": "07/11/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 4,
+     "a": "LEVALLOIS SPORT 8",
+     "b": "AUBERGENVILLE C 1",
+     "date": "07/11/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 5,
+     "a": "VILLECRESNES ALTT 3",
+     "b": "JOSASSIEN TT 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "LAGNY SMTT 2",
+     "b": "COMBS SENART TT 5",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "AUBERGENVILLE C 1",
+     "b": "ESP REUILLY 3",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "FONTENAY USTT 6",
+     "b": "LEVALLOIS SPORT 8",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "COMBS SENART TT 5",
+     "b": "VILLECRESNES ALTT 3",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "LAGNY SMTT 2",
+     "b": "FONTENAY USTT 6",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "JOSASSIEN TT 2",
+     "b": "AUBERGENVILLE C 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "ESP REUILLY 3",
+     "b": "LEVALLOIS SPORT 8",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "VILLECRESNES ALTT 3",
+     "b": "LAGNY SMTT 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "AUBERGENVILLE C 1",
+     "b": "COMBS SENART TT 5",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "LEVALLOIS SPORT 8",
+     "b": "JOSASSIEN TT 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "FONTENAY USTT 6",
+     "b": "ESP REUILLY 3",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503042,
+   "poule": 11,
+   "equipes": [
+    {
+     "poule": 11,
+     "clt": 1,
+     "equipe": "ES VITRY 2",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08940448",
+     "dept": "94"
+    },
+    {
+     "poule": 11,
+     "clt": 2,
+     "equipe": "AP 17 2",
+     "pts": 11,
+     "joue": 4,
+     "numero": "08751177",
+     "dept": "75"
+    },
+    {
+     "poule": 11,
+     "clt": 3,
+     "equipe": "CHILLY-MORANGIS CTT 4",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08910918",
+     "dept": "91"
+    },
+    {
+     "poule": 11,
+     "clt": 4,
+     "equipe": "CPS 10eme 1",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08751271",
+     "dept": "75"
+    },
+    {
+     "poule": 11,
+     "clt": 5,
+     "equipe": "EZANVILLE 3",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08950481",
+     "dept": "95"
+    },
+    {
+     "poule": 11,
+     "clt": 6,
+     "equipe": "BOIS COLOMBES S 4",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08920075",
+     "dept": "92"
+    },
+    {
+     "poule": 11,
+     "clt": 7,
+     "equipe": "DRANCY JA 3",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08931057",
+     "dept": "93"
+    },
+    {
+     "poule": 11,
+     "clt": 8,
+     "equipe": "PARIS IX ATT 3",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08751124",
+     "dept": "75"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "AP 17 2",
+     "b": "PARIS IX ATT 3",
+     "date": "19/09/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 1,
+     "a": "CHILLY-MORANGIS CTT 4",
+     "b": "CPS 10eme 1",
+     "date": "19/09/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 1,
+     "a": "ES VITRY 2",
+     "b": "EZANVILLE 3",
+     "date": "19/09/2026",
+     "wa": 24,
+     "wb": 16
+    },
+    {
+     "j": 1,
+     "a": "BOIS COLOMBES S 4",
+     "b": "DRANCY JA 3",
+     "date": "19/09/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 2,
+     "a": "CPS 10eme 1",
+     "b": "AP 17 2",
+     "date": "03/10/2026",
+     "wa": 2,
+     "wb": 12
+    },
+    {
+     "j": 2,
+     "a": "EZANVILLE 3",
+     "b": "CHILLY-MORANGIS CTT 4",
+     "date": "03/10/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 2,
+     "a": "DRANCY JA 3",
+     "b": "ES VITRY 2",
+     "date": "03/10/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 2,
+     "a": "PARIS IX ATT 3",
+     "b": "BOIS COLOMBES S 4",
+     "date": "03/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 3,
+     "a": "AP 17 2",
+     "b": "EZANVILLE 3",
+     "date": "17/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "CHILLY-MORANGIS CTT 4",
+     "b": "DRANCY JA 3",
+     "date": "17/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 3,
+     "a": "ES VITRY 2",
+     "b": "BOIS COLOMBES S 4",
+     "date": "17/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 3,
+     "a": "PARIS IX ATT 3",
+     "b": "CPS 10eme 1",
+     "date": "17/10/2026",
+     "wa": 16,
+     "wb": 25
+    },
+    {
+     "j": 4,
+     "a": "DRANCY JA 3",
+     "b": "AP 17 2",
+     "date": "31/10/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 4,
+     "a": "BOIS COLOMBES S 4",
+     "b": "CHILLY-MORANGIS CTT 4",
+     "date": "07/11/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 4,
+     "a": "ES VITRY 2",
+     "b": "PARIS IX ATT 3",
+     "date": "07/11/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 4,
+     "a": "EZANVILLE 3",
+     "b": "CPS 10eme 1",
+     "date": "07/11/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 5,
+     "a": "AP 17 2",
+     "b": "BOIS COLOMBES S 4",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "CHILLY-MORANGIS CTT 4",
+     "b": "ES VITRY 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "CPS 10eme 1",
+     "b": "DRANCY JA 3",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "PARIS IX ATT 3",
+     "b": "EZANVILLE 3",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "ES VITRY 2",
+     "b": "AP 17 2",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "CHILLY-MORANGIS CTT 4",
+     "b": "PARIS IX ATT 3",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "BOIS COLOMBES S 4",
+     "b": "CPS 10eme 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "DRANCY JA 3",
+     "b": "EZANVILLE 3",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "AP 17 2",
+     "b": "CHILLY-MORANGIS CTT 4",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "CPS 10eme 1",
+     "b": "ES VITRY 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "EZANVILLE 3",
+     "b": "BOIS COLOMBES S 4",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "PARIS IX ATT 3",
+     "b": "DRANCY JA 3",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503043,
+   "poule": 12,
+   "equipes": [
+    {
+     "poule": 12,
+     "clt": 1,
+     "equipe": "ESSARTS AGSE 1",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08781266",
+     "dept": "78"
+    },
+    {
+     "poule": 12,
+     "clt": 2,
+     "equipe": "LIVRY-GARGAN EP 1",
+     "pts": 10,
+     "joue": 4,
+     "numero": "08930430",
+     "dept": "93"
+    },
+    {
+     "poule": 12,
+     "clt": 3,
+     "equipe": "LOGNES EP 8",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08771184",
+     "dept": "77"
+    },
+    {
+     "poule": 12,
+     "clt": 4,
+     "equipe": "SAINT MAUR VGA US 3",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08940976",
+     "dept": "94"
+    },
+    {
+     "poule": 12,
+     "clt": 4,
+     "equipe": "PONTOISE-CERGY AS 3",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08950330",
+     "dept": "95"
+    },
+    {
+     "poule": 12,
+     "clt": 6,
+     "equipe": "TRIEL TT 2",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08781471",
+     "dept": "78"
+    },
+    {
+     "poule": 12,
+     "clt": 7,
+     "equipe": "DRANCY JA 4",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08931057",
+     "dept": "93"
+    },
+    {
+     "poule": 12,
+     "clt": 8,
+     "equipe": "ATHIS MONS  1",
+     "pts": 5,
+     "joue": 4,
+     "numero": "08910102",
+     "dept": "91"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "ESSARTS AGSE 1",
+     "b": "SAINT MAUR VGA US 3",
+     "date": "19/09/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 1,
+     "a": "TRIEL TT 2",
+     "b": "LOGNES EP 8",
+     "date": "19/09/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 1,
+     "a": "ATHIS MONS  1",
+     "b": "PONTOISE-CERGY AS 3",
+     "date": "19/09/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 1,
+     "a": "LIVRY-GARGAN EP 1",
+     "b": "DRANCY JA 4",
+     "date": "19/09/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 2,
+     "a": "LOGNES EP 8",
+     "b": "ESSARTS AGSE 1",
+     "date": "03/10/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 2,
+     "a": "PONTOISE-CERGY AS 3",
+     "b": "TRIEL TT 2",
+     "date": "03/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 2,
+     "a": "DRANCY JA 4",
+     "b": "ATHIS MONS  1",
+     "date": "03/10/2026",
+     "wa": 13,
+     "wb": 1
+    },
+    {
+     "j": 2,
+     "a": "SAINT MAUR VGA US 3",
+     "b": "LIVRY-GARGAN EP 1",
+     "date": "03/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "ESSARTS AGSE 1",
+     "b": "PONTOISE-CERGY AS 3",
+     "date": "17/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 3,
+     "a": "TRIEL TT 2",
+     "b": "DRANCY JA 4",
+     "date": "17/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 3,
+     "a": "ATHIS MONS  1",
+     "b": "LIVRY-GARGAN EP 1",
+     "date": "17/10/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 3,
+     "a": "SAINT MAUR VGA US 3",
+     "b": "LOGNES EP 8",
+     "date": "17/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 4,
+     "a": "DRANCY JA 4",
+     "b": "ESSARTS AGSE 1",
+     "date": "07/11/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 4,
+     "a": "LIVRY-GARGAN EP 1",
+     "b": "TRIEL TT 2",
+     "date": "07/11/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 4,
+     "a": "ATHIS MONS  1",
+     "b": "SAINT MAUR VGA US 3",
+     "date": "07/11/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 4,
+     "a": "PONTOISE-CERGY AS 3",
+     "b": "LOGNES EP 8",
+     "date": "07/11/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 5,
+     "a": "ESSARTS AGSE 1",
+     "b": "LIVRY-GARGAN EP 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "TRIEL TT 2",
+     "b": "ATHIS MONS  1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "LOGNES EP 8",
+     "b": "DRANCY JA 4",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "SAINT MAUR VGA US 3",
+     "b": "PONTOISE-CERGY AS 3",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "ATHIS MONS  1",
+     "b": "ESSARTS AGSE 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "TRIEL TT 2",
+     "b": "SAINT MAUR VGA US 3",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "LIVRY-GARGAN EP 1",
+     "b": "LOGNES EP 8",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "DRANCY JA 4",
+     "b": "PONTOISE-CERGY AS 3",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "ESSARTS AGSE 1",
+     "b": "TRIEL TT 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "LOGNES EP 8",
+     "b": "ATHIS MONS  1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "PONTOISE-CERGY AS 3",
+     "b": "LIVRY-GARGAN EP 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "SAINT MAUR VGA US 3",
+     "b": "DRANCY JA 4",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503044,
+   "poule": 13,
+   "equipes": [
+    {
+     "poule": 13,
+     "clt": 1,
+     "equipe": "MENUCOURT 2",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08951449",
+     "dept": "95"
+    },
+    {
+     "poule": 13,
+     "clt": 2,
+     "equipe": "POISSY USC 1",
+     "pts": 11,
+     "joue": 4,
+     "numero": "08780108",
+     "dept": "78"
+    },
+    {
+     "poule": 13,
+     "clt": 3,
+     "equipe": "PARIS SP20 TT 2",
+     "pts": 10,
+     "joue": 4,
+     "numero": "08751061",
+     "dept": "75"
+    },
+    {
+     "poule": 13,
+     "clt": 4,
+     "equipe": "CHATOU CROISSY 1",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08781473",
+     "dept": "78"
+    },
+    {
+     "poule": 13,
+     "clt": 5,
+     "equipe": "CHATILLON TTM 3",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08920151",
+     "dept": "92"
+    },
+    {
+     "poule": 13,
+     "clt": 6,
+     "equipe": "CRETEIL USTT 2",
+     "pts": 6,
+     "joue": 4,
+     "numero": "08940655",
+     "dept": "94"
+    },
+    {
+     "poule": 13,
+     "clt": 7,
+     "equipe": "SAVIGNY SO PING 2",
+     "pts": 5,
+     "joue": 4,
+     "numero": "08910310",
+     "dept": "91"
+    },
+    {
+     "poule": 13,
+     "clt": 8,
+     "equipe": "CSMF PARIS TT 2",
+     "pts": 3,
+     "joue": 4,
+     "numero": "08750007",
+     "dept": "75"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "MENUCOURT 2",
+     "b": "CHATOU CROISSY 1",
+     "date": "19/09/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 1,
+     "a": "PARIS SP20 TT 2",
+     "b": "SAVIGNY SO PING 2",
+     "date": "19/09/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 1,
+     "a": "CSMF PARIS TT 2",
+     "b": "CHATILLON TTM 3",
+     "date": "19/09/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 1,
+     "a": "POISSY USC 1",
+     "b": "CRETEIL USTT 2",
+     "date": "19/09/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 2,
+     "a": "SAVIGNY SO PING 2",
+     "b": "MENUCOURT 2",
+     "date": "03/10/2026",
+     "wa": 5,
+     "wb": 9
+    },
+    {
+     "j": 2,
+     "a": "CHATILLON TTM 3",
+     "b": "PARIS SP20 TT 2",
+     "date": "03/10/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 2,
+     "a": "CRETEIL USTT 2",
+     "b": "CSMF PARIS TT 2",
+     "date": "03/10/2026",
+     "wa": 28,
+     "wb": 0
+    },
+    {
+     "j": 2,
+     "a": "CHATOU CROISSY 1",
+     "b": "POISSY USC 1",
+     "date": "03/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "MENUCOURT 2",
+     "b": "CHATILLON TTM 3",
+     "date": "17/10/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 3,
+     "a": "PARIS SP20 TT 2",
+     "b": "CRETEIL USTT 2",
+     "date": "17/10/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 3,
+     "a": "CSMF PARIS TT 2",
+     "b": "POISSY USC 1",
+     "date": "17/10/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 3,
+     "a": "CHATOU CROISSY 1",
+     "b": "SAVIGNY SO PING 2",
+     "date": "17/10/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 4,
+     "a": "CRETEIL USTT 2",
+     "b": "MENUCOURT 2",
+     "date": "07/11/2026",
+     "wa": 0,
+     "wb": 14
+    },
+    {
+     "j": 4,
+     "a": "POISSY USC 1",
+     "b": "PARIS SP20 TT 2",
+     "date": "07/11/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 4,
+     "a": "CSMF PARIS TT 2",
+     "b": "CHATOU CROISSY 1",
+     "date": "07/11/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 4,
+     "a": "CHATILLON TTM 3",
+     "b": "SAVIGNY SO PING 2",
+     "date": "07/11/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 5,
+     "a": "MENUCOURT 2",
+     "b": "POISSY USC 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "PARIS SP20 TT 2",
+     "b": "CSMF PARIS TT 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "SAVIGNY SO PING 2",
+     "b": "CRETEIL USTT 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "CHATOU CROISSY 1",
+     "b": "CHATILLON TTM 3",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "CSMF PARIS TT 2",
+     "b": "MENUCOURT 2",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "PARIS SP20 TT 2",
+     "b": "CHATOU CROISSY 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "POISSY USC 1",
+     "b": "SAVIGNY SO PING 2",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "CRETEIL USTT 2",
+     "b": "CHATILLON TTM 3",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "MENUCOURT 2",
+     "b": "PARIS SP20 TT 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "SAVIGNY SO PING 2",
+     "b": "CSMF PARIS TT 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "CHATILLON TTM 3",
+     "b": "POISSY USC 1",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "CHATOU CROISSY 1",
+     "b": "CRETEIL USTT 2",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503045,
+   "poule": 14,
+   "equipes": [
+    {
+     "poule": 14,
+     "clt": 1,
+     "equipe": "RUEIL ATHLETIC 4",
+     "pts": 11,
+     "joue": 4,
+     "numero": "08920309",
+     "dept": "92"
+    },
+    {
+     "poule": 14,
+     "clt": 2,
+     "equipe": "STAINS ES-PIERREFITTE AS 2",
+     "pts": 10,
+     "joue": 4,
+     "numero": "08931032",
+     "dept": "93"
+    },
+    {
+     "poule": 14,
+     "clt": 3,
+     "equipe": "NEUILLY S/M TT 1",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08930928",
+     "dept": "93"
+    },
+    {
+     "poule": 14,
+     "clt": 4,
+     "equipe": "CHESNAY 78 AS 6",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08780080",
+     "dept": "78"
+    },
+    {
+     "poule": 14,
+     "clt": 5,
+     "equipe": "SAINT DENIS TT93 4",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08931466",
+     "dept": "93"
+    },
+    {
+     "poule": 14,
+     "clt": 6,
+     "equipe": "CPS 10eme 2",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08751271",
+     "dept": "75"
+    },
+    {
+     "poule": 14,
+     "clt": 7,
+     "equipe": "CHARENTON TT 4",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08940052",
+     "dept": "94"
+    },
+    {
+     "poule": 14,
+     "clt": 8,
+     "equipe": "LOGNES EP 7",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08771184",
+     "dept": "77"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "NEUILLY S/M TT 1",
+     "b": "STAINS ES-PIERREFITTE AS 2",
+     "date": "19/09/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 1,
+     "a": "CHARENTON TT 4",
+     "b": "LOGNES EP 7",
+     "date": "19/09/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 1,
+     "a": "CPS 10eme 2",
+     "b": "RUEIL ATHLETIC 4",
+     "date": "19/09/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 1,
+     "a": "CHESNAY 78 AS 6",
+     "b": "SAINT DENIS TT93 4",
+     "date": "19/09/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 2,
+     "a": "LOGNES EP 7",
+     "b": "NEUILLY S/M TT 1",
+     "date": "03/10/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 2,
+     "a": "RUEIL ATHLETIC 4",
+     "b": "CHARENTON TT 4",
+     "date": "03/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 2,
+     "a": "SAINT DENIS TT93 4",
+     "b": "CPS 10eme 2",
+     "date": "03/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 2,
+     "a": "STAINS ES-PIERREFITTE AS 2",
+     "b": "CHESNAY 78 AS 6",
+     "date": "03/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 3,
+     "a": "NEUILLY S/M TT 1",
+     "b": "RUEIL ATHLETIC 4",
+     "date": "17/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "CHARENTON TT 4",
+     "b": "SAINT DENIS TT93 4",
+     "date": "17/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "CPS 10eme 2",
+     "b": "CHESNAY 78 AS 6",
+     "date": "17/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "STAINS ES-PIERREFITTE AS 2",
+     "b": "LOGNES EP 7",
+     "date": "17/10/2026",
+     "wa": 22,
+     "wb": 19
+    },
+    {
+     "j": 4,
+     "a": "SAINT DENIS TT93 4",
+     "b": "NEUILLY S/M TT 1",
+     "date": "07/11/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 4,
+     "a": "CHESNAY 78 AS 6",
+     "b": "CHARENTON TT 4",
+     "date": "07/11/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 4,
+     "a": "CPS 10eme 2",
+     "b": "STAINS ES-PIERREFITTE AS 2",
+     "date": "07/11/2026",
+     "wa": 23,
+     "wb": 15
+    },
+    {
+     "j": 4,
+     "a": "RUEIL ATHLETIC 4",
+     "b": "LOGNES EP 7",
+     "date": "07/11/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 5,
+     "a": "NEUILLY S/M TT 1",
+     "b": "CHESNAY 78 AS 6",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "CHARENTON TT 4",
+     "b": "CPS 10eme 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "LOGNES EP 7",
+     "b": "SAINT DENIS TT93 4",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "STAINS ES-PIERREFITTE AS 2",
+     "b": "RUEIL ATHLETIC 4",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "CPS 10eme 2",
+     "b": "NEUILLY S/M TT 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "CHARENTON TT 4",
+     "b": "STAINS ES-PIERREFITTE AS 2",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "CHESNAY 78 AS 6",
+     "b": "LOGNES EP 7",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "SAINT DENIS TT93 4",
+     "b": "RUEIL ATHLETIC 4",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "NEUILLY S/M TT 1",
+     "b": "CHARENTON TT 4",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "LOGNES EP 7",
+     "b": "CPS 10eme 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "RUEIL ATHLETIC 4",
+     "b": "CHESNAY 78 AS 6",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "STAINS ES-PIERREFITTE AS 2",
+     "b": "SAINT DENIS TT93 4",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503046,
+   "poule": 15,
+   "equipes": [
+    {
+     "poule": 15,
+     "clt": 1,
+     "equipe": "CHARENTON TT 3",
+     "pts": 12,
+     "joue": 4,
+     "numero": "08940052",
+     "dept": "94"
+    },
+    {
+     "poule": 15,
+     "clt": 2,
+     "equipe": "ROMAINVILLOIS TT 1",
+     "pts": 10,
+     "joue": 4,
+     "numero": "08930148",
+     "dept": "93"
+    },
+    {
+     "poule": 15,
+     "clt": 3,
+     "equipe": "SAINT GRATIEN 2",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08950083",
+     "dept": "95"
+    },
+    {
+     "poule": 15,
+     "clt": 4,
+     "equipe": "COURBEVOIE STT 7",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08920025",
+     "dept": "92"
+    },
+    {
+     "poule": 15,
+     "clt": 5,
+     "equipe": "LIMAY ALJ 1",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08780002",
+     "dept": "78"
+    },
+    {
+     "poule": 15,
+     "clt": 6,
+     "equipe": "THIAIS AS TT 4",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08940459",
+     "dept": "94"
+    },
+    {
+     "poule": 15,
+     "clt": 7,
+     "equipe": "MONTREUIL ES 1",
+     "pts": 7,
+     "joue": 4,
+     "numero": "08931358",
+     "dept": "93"
+    },
+    {
+     "poule": 15,
+     "clt": 8,
+     "equipe": "PONTHIERRY COMT 3",
+     "pts": 5,
+     "joue": 4,
+     "numero": "08770474",
+     "dept": "77"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "LIMAY ALJ 1",
+     "b": "ROMAINVILLOIS TT 1",
+     "date": "19/09/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 1,
+     "a": "CHARENTON TT 3",
+     "b": "SAINT GRATIEN 2",
+     "date": "19/09/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 1,
+     "a": "PONTHIERRY COMT 3",
+     "b": "MONTREUIL ES 1",
+     "date": "19/09/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 1,
+     "a": "COURBEVOIE STT 7",
+     "b": "THIAIS AS TT 4",
+     "date": "19/09/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 2,
+     "a": "SAINT GRATIEN 2",
+     "b": "LIMAY ALJ 1",
+     "date": "03/10/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 2,
+     "a": "MONTREUIL ES 1",
+     "b": "CHARENTON TT 3",
+     "date": "03/10/2026",
+     "wa": 1,
+     "wb": 13
+    },
+    {
+     "j": 2,
+     "a": "THIAIS AS TT 4",
+     "b": "PONTHIERRY COMT 3",
+     "date": "03/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 2,
+     "a": "ROMAINVILLOIS TT 1",
+     "b": "COURBEVOIE STT 7",
+     "date": "03/10/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 3,
+     "a": "LIMAY ALJ 1",
+     "b": "MONTREUIL ES 1",
+     "date": "17/10/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 3,
+     "a": "CHARENTON TT 3",
+     "b": "THIAIS AS TT 4",
+     "date": "17/10/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 3,
+     "a": "PONTHIERRY COMT 3",
+     "b": "COURBEVOIE STT 7",
+     "date": "17/10/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 3,
+     "a": "ROMAINVILLOIS TT 1",
+     "b": "SAINT GRATIEN 2",
+     "date": "17/10/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 4,
+     "a": "THIAIS AS TT 4",
+     "b": "LIMAY ALJ 1",
+     "date": "07/11/2026",
+     "wa": 8,
+     "wb": 6
+    },
+    {
+     "j": 4,
+     "a": "COURBEVOIE STT 7",
+     "b": "CHARENTON TT 3",
+     "date": "07/11/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 4,
+     "a": "PONTHIERRY COMT 3",
+     "b": "ROMAINVILLOIS TT 1",
+     "date": "07/11/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 4,
+     "a": "MONTREUIL ES 1",
+     "b": "SAINT GRATIEN 2",
+     "date": "07/11/2026",
+     "wa": 2,
+     "wb": 12
+    },
+    {
+     "j": 5,
+     "a": "LIMAY ALJ 1",
+     "b": "COURBEVOIE STT 7",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "CHARENTON TT 3",
+     "b": "PONTHIERRY COMT 3",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "SAINT GRATIEN 2",
+     "b": "THIAIS AS TT 4",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "ROMAINVILLOIS TT 1",
+     "b": "MONTREUIL ES 1",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "PONTHIERRY COMT 3",
+     "b": "LIMAY ALJ 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "CHARENTON TT 3",
+     "b": "ROMAINVILLOIS TT 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "COURBEVOIE STT 7",
+     "b": "SAINT GRATIEN 2",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "THIAIS AS TT 4",
+     "b": "MONTREUIL ES 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "LIMAY ALJ 1",
+     "b": "CHARENTON TT 3",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "SAINT GRATIEN 2",
+     "b": "PONTHIERRY COMT 3",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "MONTREUIL ES 1",
+     "b": "COURBEVOIE STT 7",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "ROMAINVILLOIS TT 1",
+     "b": "THIAIS AS TT 4",
+     "date": "12/12/2026"
+    }
+   ]
+  },
+  {
+   "cx": 1503047,
+   "poule": 16,
+   "equipes": [
+    {
+     "poule": 16,
+     "clt": 1,
+     "equipe": "SCEAUX TT 1",
+     "pts": 11,
+     "joue": 4,
+     "numero": "08921164",
+     "dept": "92"
+    },
+    {
+     "poule": 16,
+     "clt": 2,
+     "equipe": "PONTHIERRY COMT 2",
+     "pts": 11,
+     "joue": 4,
+     "numero": "08770474",
+     "dept": "77"
+    },
+    {
+     "poule": 16,
+     "clt": 3,
+     "equipe": "IGNY 5",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08910861",
+     "dept": "91"
+    },
+    {
+     "poule": 16,
+     "clt": 4,
+     "equipe": "SAINTE GENEVIEVE 2",
+     "pts": 9,
+     "joue": 4,
+     "numero": "08910876",
+     "dept": "91"
+    },
+    {
+     "poule": 16,
+     "clt": 5,
+     "equipe": "ASNIERES TT 2",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08920646",
+     "dept": "92"
+    },
+    {
+     "poule": 16,
+     "clt": 6,
+     "equipe": "MELUNAISE US 1",
+     "pts": 8,
+     "joue": 4,
+     "numero": "08771337",
+     "dept": "77"
+    },
+    {
+     "poule": 16,
+     "clt": 7,
+     "equipe": "CHARENTON TT 5",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08940052",
+     "dept": "94"
+    },
+    {
+     "poule": 16,
+     "clt": 8,
+     "equipe": "DRANCY JA 2",
+     "pts": 4,
+     "joue": 4,
+     "numero": "08931057",
+     "dept": "93"
+    }
+   ],
+   "rencontres": [
+    {
+     "j": 1,
+     "a": "MELUNAISE US 1",
+     "b": "SCEAUX TT 1",
+     "date": "19/09/2026",
+     "wa": 9,
+     "wb": 28
+    },
+    {
+     "j": 1,
+     "a": "IGNY 5",
+     "b": "SAINTE GENEVIEVE 2",
+     "date": "19/09/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 1,
+     "a": "PONTHIERRY COMT 2",
+     "b": "CHARENTON TT 5",
+     "date": "19/09/2026",
+     "wa": 14,
+     "wb": 0
+    },
+    {
+     "j": 1,
+     "a": "ASNIERES TT 2",
+     "b": "DRANCY JA 2",
+     "date": "19/09/2026",
+     "wa": 13,
+     "wb": 1
+    },
+    {
+     "j": 2,
+     "a": "SAINTE GENEVIEVE 2",
+     "b": "MELUNAISE US 1",
+     "date": "03/10/2026",
+     "wa": 11,
+     "wb": 3
+    },
+    {
+     "j": 2,
+     "a": "CHARENTON TT 5",
+     "b": "IGNY 5",
+     "date": "03/10/2026",
+     "wa": 4,
+     "wb": 10
+    },
+    {
+     "j": 2,
+     "a": "DRANCY JA 2",
+     "b": "PONTHIERRY COMT 2",
+     "date": "03/10/2026",
+     "wa": 3,
+     "wb": 11
+    },
+    {
+     "j": 2,
+     "a": "SCEAUX TT 1",
+     "b": "ASNIERES TT 2",
+     "date": "03/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 3,
+     "a": "MELUNAISE US 1",
+     "b": "CHARENTON TT 5",
+     "date": "17/10/2026",
+     "wa": 9,
+     "wb": 5
+    },
+    {
+     "j": 3,
+     "a": "IGNY 5",
+     "b": "DRANCY JA 2",
+     "date": "17/10/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 3,
+     "a": "PONTHIERRY COMT 2",
+     "b": "ASNIERES TT 2",
+     "date": "17/10/2026",
+     "wa": 10,
+     "wb": 4
+    },
+    {
+     "j": 3,
+     "a": "SCEAUX TT 1",
+     "b": "SAINTE GENEVIEVE 2",
+     "date": "17/10/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 4,
+     "a": "DRANCY JA 2",
+     "b": "MELUNAISE US 1",
+     "date": "07/11/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 4,
+     "a": "ASNIERES TT 2",
+     "b": "IGNY 5",
+     "date": "07/11/2026",
+     "wa": 12,
+     "wb": 2
+    },
+    {
+     "j": 4,
+     "a": "PONTHIERRY COMT 2",
+     "b": "SCEAUX TT 1",
+     "date": "07/11/2026",
+     "wa": 7,
+     "wb": 7
+    },
+    {
+     "j": 4,
+     "a": "CHARENTON TT 5",
+     "b": "SAINTE GENEVIEVE 2",
+     "date": "07/11/2026",
+     "wa": 6,
+     "wb": 8
+    },
+    {
+     "j": 5,
+     "a": "MELUNAISE US 1",
+     "b": "ASNIERES TT 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "IGNY 5",
+     "b": "PONTHIERRY COMT 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "SAINTE GENEVIEVE 2",
+     "b": "DRANCY JA 2",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 5,
+     "a": "SCEAUX TT 1",
+     "b": "CHARENTON TT 5",
+     "date": "21/11/2026"
+    },
+    {
+     "j": 6,
+     "a": "PONTHIERRY COMT 2",
+     "b": "MELUNAISE US 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "IGNY 5",
+     "b": "SCEAUX TT 1",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "ASNIERES TT 2",
+     "b": "SAINTE GENEVIEVE 2",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 6,
+     "a": "DRANCY JA 2",
+     "b": "CHARENTON TT 5",
+     "date": "05/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "MELUNAISE US 1",
+     "b": "IGNY 5",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "SAINTE GENEVIEVE 2",
+     "b": "PONTHIERRY COMT 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "CHARENTON TT 5",
+     "b": "ASNIERES TT 2",
+     "date": "12/12/2026"
+    },
+    {
+     "j": 7,
+     "a": "SCEAUX TT 1",
+     "b": "DRANCY JA 2",
+     "date": "12/12/2026"
+    }
+   ]
+  }
+ ],
+ "n92": 15,
+ "descentes_92": {
+  "sures": [],
+  "a_risque": [
+   [
+    7,
+    "CHATENAY ASVTT 1"
+   ],
+   [
+    10,
+    "LEVALLOIS SPORT 8"
+   ]
+  ],
+  "sixiemes": [
+   [
+    8,
+    "ANTONY SPORT TT 3",
+    6
+   ],
+   [
+    11,
+    "BOIS COLOMBES S 4",
+    6
+   ]
+  ],
+  "estimation": 1.0
+ }
+}
