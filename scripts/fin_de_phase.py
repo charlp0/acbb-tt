@@ -120,6 +120,15 @@ def build_pool(key, pool, standings):
     played.sort(key=lambda m: m['j'])
     remaining.sort(key=lambda m: m['j'])
     acbb = next((t['name'] for t in pool['teams'] if t.get('acbb')), None)
+    # Lieu : connu pour l'équipe ACBB (calendrier FFTT « Dom »/« Ext » de site.json), inconnu entre deux adversaires.
+    cal = next((t.get('calendar') or {} for t in pool['teams'] if t.get('acbb')), {})
+    for m in remaining:
+        c = cal.get(str(m['j'])) or {}
+        if acbb in (m['a'], m['b']) and c.get('domext') in ('Dom', 'Ext'):
+            other = m['b'] if m['a'] == acbb else m['a']
+            m['home'] = acbb if c['domext'] == 'Dom' else other
+        else:
+            m['home'] = None
     return {'key': key, 'pool': pool['pool'], 'level': pool.get('level'), 'teams': teams, 'acbb': acbb,
             'played': played, 'remaining': remaining, 'standings': standings or []}
 
@@ -444,7 +453,7 @@ def main(site_path=SITE, out_path=OUT, nsim=NSIM, seed=2026):
             o = match_out[idx]
             tot = sum(o[r] for r in 'VND') or 1
             ta, tb = sum(o['A'].values()) or 1, sum(o['B'].values()) or 1
-            row = {'j': m['j'], 'a': m['a'], 'b': m['b'],
+            row = {'j': m['j'], 'a': m['a'], 'b': m['b'], 'home': m.get('home'),
                    'p': {r: round(o[r] / tot, 4) for r in 'VND'},
                    'pA': {r: round(o['A'][r] / ta, 4) for r in 'VND'},
                    'pB': {r: round(o['B'][r] / tb, 4) for r in 'VND'}}

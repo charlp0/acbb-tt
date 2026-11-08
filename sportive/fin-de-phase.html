@@ -238,7 +238,8 @@
   function matchRow(m,T,sim){
     var me=T.acbb, mine=m.a===me||m.b===me;
     var p=mine?probFor(m,me):m.p, pA=mine?probFor(m,me,m.pA):m.pA, pB=mine?probFor(m,me,m.pB):m.pB;
-    var who=mine?'<b>'+esc(acbbLabel(T,T.key))+'</b> '+(m.a===me?'reçoit':'va à')+' '+esc(shortName(oppOf(m,me))):esc(shortName(m.a))+' – '+esc(shortName(m.b));
+    var lieu=m.home===me?'reçoit':m.home?'va à':'–';
+    var who=mine?'<b>'+esc(acbbLabel(T,T.key))+'</b> '+lieu+' '+esc(shortName(oppOf(m,me))):esc(shortName(m.a))+' – '+esc(shortName(m.b));
     var bar='<span class="bar"><i class="v" style="width:'+Math.round(p.V*100)+'%"></i><i class="n" style="width:'+Math.round(p.N*100)+'%"></i><i class="d" style="width:'+Math.round(p.D*100)+'%"></i></span>';
     var txt='<b>'+pct(p.V)+'</b> V · '+pct(p.N)+' N · '+pct(p.D)+' D';
     var sub='A '+pct(pA.V)+' · B '+pct(pB.V)+(Math.abs(pA.V-pB.V)>=0.2?' · <span style="color:var(--gold)">divergent</span>':'');
