@@ -43,7 +43,7 @@ def classement(cx, d1, org):
     rows = []
     for c in re.findall(r'<classement>(.*?)</classement>', r, re.S):
         numero = re.sub(r'\D', '', tg(c, 'numero'))
-        rows.append({'clt': int(tg(c, 'clt') or 0), 'equipe': tg(c, 'equipe'), 'pts': int(tg(c, 'pts') or 0),
+        rows.append({'poule': int(tg(c, 'poule') or 0), 'clt': int(tg(c, 'clt') or 0), 'equipe': tg(c, 'equipe'), 'pts': int(tg(c, 'pts') or 0),
                      'joue': int(tg(c, 'joue') or 0), 'numero': numero, 'dept': numero[2:4] if len(numero) >= 4 else ''})
     return rows
 
@@ -56,16 +56,20 @@ def main():
     if os.environ.get('R3_92_DUMP') == '1':
         raw = fb.get(f"xml_result_equ.php?cx_poule={cx_acbb}&D1={d1}&organisme_pere={org}&action=classement")
         print('brut classement poule ACBB :', len(raw), 'car.', raw[:600].replace('\n', ' '))
-    poules = []
-    vides = 0
-    for cx in range(1, 25):
-        rows = classement(cx, d1, org)
+    # cx_poule est un identifiant interne (1503039 pour la poule 1 de l'ACBB) : les poules d'une même division
+    # portent des identifiants voisins. On balaye autour, on garde une réponse par numéro de poule.
+    poules = {}
+    for delta in list(range(0, 41)) + list(range(-1, -41, -1)):
+        if len(poules) >= 16:
+            break
+        rows = classement(cx_acbb + delta, d1, org)
         if not rows:
-            vides += 1
-            if vides >= 2 and cx > cx_acbb:
-                break
             continue
-        poules.append({'cx': cx, 'equipes': rows})
+        num = rows[0].get('poule') or len(poules) + 1
+        if num in poules:
+            continue
+        poules[num] = {'cx': cx_acbb + delta, 'poule': num, 'equipes': rows}
+    poules = [poules[k] for k in sorted(poules)]
     # Équipes du 92 en zone de descente : 8ᵉ = descente sûre, 7ᵉ = selon les descentes de R2 (≈ 1 sur 2).
     sur = [(p['cx'], e['equipe']) for p in poules for e in p['equipes'] if e['dept'] == '92' and e['clt'] == len(p['equipes'])]
     risque = [(p['cx'], e['equipe']) for p in poules for e in p['equipes'] if e['dept'] == '92' and e['clt'] == len(p['equipes']) - 1]
@@ -75,7 +79,7 @@ def main():
     OUT.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + '\n')
     print(f"r3_92.json : {len(poules)} poules de R3, {doc['n92']} équipes du 92, descentes sûres {len(sur)} + à risque {len(risque)} → X ≈ {doc['descentes_92']['estimation']}")
     for p in poules:
-        print(f"  poule {p['cx']} : " + ' · '.join(f"{e['clt']}. {e['equipe']} ({e['dept']}) {e['pts']}" for e in p['equipes']))
+        print(f"  poule {p['poule']} (cx {p['cx']}) : " + ' · '.join(f"{e['clt']}. {e['equipe']} ({e['dept']}) {e['pts']}" for e in p['equipes']))
     if os.environ.get('R3_92_DUMP') == '1':
         print('<<<R3_92_JSON>>>'); print(json.dumps(doc, ensure_ascii=False)); print('<<<END>>>')
 
