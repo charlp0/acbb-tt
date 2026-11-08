@@ -41,7 +41,7 @@ QUOTAS = [
     ('L08_R2', {'code': 'R2', 'up': 1, 'down': 1, 'risk': 1, 'frac': 0.5, 'note': 'Régionale (Ligue IDF) : le 1ᵉʳ monte, le 8ᵉ descend ; le 7ᵉ descend selon les descentes de la division supérieure (≈ 1 sur 2).'}),
     ('L08_R3', {'code': 'R3', 'up': 1, 'down': 1, 'risk': 1, 'frac': 0.5, 'note': 'Régionale (Ligue IDF) : le 1ᵉʳ monte, le 8ᵉ descend ; le 7ᵉ descend selon les descentes de la division supérieure (≈ 1 sur 2).'}),
     ('D92_Pre-Regionale Dames', {'code': 'PRD', 'up': 1, 'down': 4, 'risk': 0, 'frac': 0.0, 'note': 'PR Dames 92 (avenant du 14/09/2026) : barrage pour la montée, les 4 dernières de chaque poule descendent en D1 féminine.'}),
-    ('D92_Pré-Regionale', {'code': 'PR', 'up': 1, 'down': 3, 'risk': 1, 'frac': 0.5, 'note': 'PR 92, réforme phase 2 (PR 4 → 3 poules) : le 1ᵉʳ monte en R3, les 6ᵉ-7ᵉ-8ᵉ descendent en D1, deux 5ᵉ sur quatre aussi.'}),
+    ('D92_Pré-Regionale', {'code': 'PR', 'up': 1, 'down': 4, 'risk': 0, 'frac': 0.0, 'note': 'PR 92, réforme phase 2 (PR 4 → 3 poules) : le 1ᵉʳ monte en R3, les 4 derniers descendent en D1 (Cyril et Minh, 08/11/2026 : « 3 à 4 descentes selon les descentes de régionale », on retient 4).'}),
     ('D92_D1', {'code': 'D1', 'up': 1, 'down': 2, 'risk': 1, 'frac': 0.67, 'note': 'D1 92, réforme phase 2 (6 → 5 poules) : le 1ᵉʳ monte en PR, 7ᵉ et 8ᵉ descendent en D2, quatre 6ᵉ sur six aussi.'}),
     ('D92_D2', {'code': 'D2', 'up': 0, 'down': 4, 'risk': 1, 'frac': 0.33, 'note': 'D2 92, réforme phase 2 (création de la D3) : aucune montée en D1 ; 1ᵉʳ et 2ᵉ maintenus, 8 des 12 3ᵉ aussi, 4ᵉ à 7ᵉ descendent en D3.'}),
 ]
