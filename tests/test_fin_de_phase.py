@@ -53,8 +53,9 @@ class FinDePhaseTests(unittest.TestCase):
         self.assertEqual(fdp.goal_reached(7, 8, q, 'maintien'), 0)
         d2 = fdp.quotas_for('D92_D2 Messieurs_Ph1 Poule 4')
         self.assertEqual(d2['up'], 0)
-        self.assertEqual(fdp.goal_reached(2, 7, d2, 'maintien'), 1)
-        self.assertEqual(fdp.goal_reached(3, 7, d2, 'maintien'), 0)
+        # D2 : art. IV.2.3 CD92, 32 maintiens sur 42 → le dernier et une partie des 6ᵉ descendent ; maintien sûr = top 5
+        self.assertEqual(fdp.goal_reached(5, 7, d2, 'maintien'), 1)
+        self.assertEqual(fdp.goal_reached(6, 7, d2, 'maintien'), 0)
         self.assertAlmostEqual(fdp.descent_probability([0, 0, 0, 0, 0, 0.5, 0.5, 0], 8, q), 0.25)
         self.assertAlmostEqual(fdp.descent_probability([0, 0, 0, 0, 0, 0, 0.5, 0.5], 8, q), 0.75)
 
