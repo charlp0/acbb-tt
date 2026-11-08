@@ -130,7 +130,7 @@
 <section class="sec">
   <h2>Synthèse</h2>
   <div class="pcard"><div class="pt-wrap"><table class="pt" id="synth"><thead><tr>
-    <th>Équipe</th><th>Division</th><th class="r">Clt</th><th>Objectif</th><th>Chances</th><th class="r">Montée</th><th class="r">Descente</th><th>Match-clé</th>
+    <th>Équipe</th><th>Division</th><th class="r">Clt</th><th>Objectif</th><th>Chances</th><th class="r" title="1ᵉʳ de poule ; N1 : top 4 = N1A">Montée</th><th class="r">Descente</th><th>Match-clé</th>
   </tr></thead><tbody></tbody></table></div></div>
 </section>
 
@@ -162,8 +162,8 @@
   var ACTIVE='Fin de phase', DATA='../data/';
   var esc=ACBB.esc, FDP=window.ACBB_FDP;
   var gj=function(u){ return fetch(DATA+u,{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}); };
-  // Renforts signalés par Charles le 08/11/2026. « Antonis » (1 800 pts selon Charles) n'a pas de fiche dans l'effectif FFTT du site.
-  var RENFORTS_DISPO=[{nom:'BOUDJADJA',pre:'Mohamed Sofiane',cls:2267},{nom:'SUEDE',pre:'Samuel',cls:1391},{nom:'LE BOURG',pre:'Virginie',cls:1353},{nom:'ANTONIS',pre:'(externe)',cls:1800,externe:true}];
+  // Renforts signalés par Charles le 08/11/2026. « Antonis » (1 700 pts selon Charles) n'a pas de fiche dans l'effectif FFTT du site.
+  var RENFORTS_DISPO=[{nom:'BOUDJADJA',pre:'Mohamed Sofiane',cls:2267},{nom:'SUEDE',pre:'Samuel',cls:1391},{nom:'LE BOURG',pre:'Virginie',cls:1353},{nom:'ANTONIS',pre:'(externe)',cls:1700,externe:true}];
   var CYRIL=['M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13'];
   var DOC=null, PLAYERS=[], SITE=null, FILTER='cyril', PLANS={};
 
@@ -196,7 +196,7 @@
   var pctCls=function(p){ return p>=0.995?'100 %':p<0.005?'< 1 %':pct(p); };
   var teamNum=function(k){ return +String(k).slice(1); };
   var keys=function(){ return Object.keys(DOC.teams).filter(function(k){ return FILTER==='all'||CYRIL.indexOf(k)>=0; }).sort(function(a,b){ return a[0]===b[0]?teamNum(a)-teamNum(b):(a[0]==='M'?-1:1); }); };
-  var objLabel=function(o){ return o==='montee'?'Montée':'Maintien'; };
+  var objLabel=function(o,q){ return o==='montee'?((q&&q.upLabel)||'Montée'):'Maintien'; };
   var fmtDate=function(iso){ var d=new Date(iso); return isNaN(d)?'—':d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); };
   var shortName=function(n){ return String(n).replace(/\s+/g,' ').trim(); };
   var acbbLabel=function(T,k){ return k; };
@@ -215,7 +215,7 @@
       var km=keyMatch(T);
       var tr=document.createElement('tr'); tr.className='link'; tr.setAttribute('data-team',k);
       tr.innerHTML='<td class="tname">'+esc(k)+'</td><td class="mono">'+esc(T.quota.code)+'</td><td class="r mono">'+(me.pos||'?')+'ᵉ · '+(me.pts==null?'?':me.pts)+' pts</td>'
-        +'<td>'+objLabel(T.objectif)+'</td>'
+        +'<td>'+objLabel(T.objectif,T.quota)+'</td>'
         +'<td><span class="bar obj"><i style="width:'+Math.round((T.pObjectif||0)*100)+'%"></i></span><span class="pct">'+pctCls(T.pObjectif)+'</span></td>'
         +'<td class="r"><span class="pct '+(me.pUp>=0.05?'up':'dim')+'">'+pctCls(me.pUp)+'</span></td>'
         +'<td class="r"><span class="pct '+(me.pDown>=0.05?'down':'dim')+'">'+pctCls(me.pDown)+'</span></td>'
@@ -246,7 +246,7 @@
     var txt='<b>'+pct(p.V)+'</b> V · '+pct(p.N)+' N · '+pct(p.D)+' D';
     var sub='A '+pct(pA.V)+' · B '+pct(pB.V)+(Math.abs(pA.V-pB.V)>=0.2?' · <span style="color:var(--gold)">divergent</span>':'');
     var imp='';
-    if(mine&&m.impact){ var i=impactFor(m,me); imp='<span class="impact">'+objLabel(T.objectif).toLowerCase()+' si V <b>'+pct(i.V)+'</b> · si N <b>'+pct(i.N)+'</b> · si D <b>'+pct(i.D)+'</b></span>'; }
+    if(mine&&m.impact){ var i=impactFor(m,me); imp='<span class="impact">'+objLabel(T.objectif,T.quota).toLowerCase()+' si V <b>'+pct(i.V)+'</b> · si N <b>'+pct(i.N)+'</b> · si D <b>'+pct(i.D)+'</b></span>'; }
     var key=mine&&sim&&sim.key===m?'<span class="tag key">match-clé</span>':'';
     return '<li'+(mine&&sim&&sim.key===m?' class="key"':'')+'><span class="j">J'+m.j+'</span><span class="who">'+who+key+'<small>'+sub+'</small>'+imp+'</span><span class="pr">'+bar+txt+'</span></li>';
   }
@@ -271,7 +271,7 @@
       return '<tr><td class="tname">'+esc(p.nom)+' <span style="font-weight:500;color:var(--ink-2)">'+esc(p.pre)+'</span></td><td class="r mono">'+p.cls+'</td><td class="r"><span class="forme '+(f>0?'p':f<0?'m':'')+'">'+(f>0?'+':'')+f+'</span></td><td class="r mono">'+(p.parties?p.vic+' / '+p.parties:'—')+'</td></tr>';
     }).join('');
     el.innerHTML='<div class="p-head"><div class="p-title">'+esc(k)+'<small>'+esc(T.pool.replace(/_/g,' '))+'</small></div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'
-      +'<span class="p-badge obj">Objectif <b>'+objLabel(T.objectif)+'</b> · <b>'+pctCls(T.pObjectif)+'</b></span><span class="p-badge">'+esc(q.code)+'</span></div></div>'
+      +'<span class="p-badge obj">Objectif <b>'+objLabel(T.objectif,T.quota)+'</b> · <b>'+pctCls(T.pObjectif)+'</b></span><span class="p-badge">'+esc(q.code)+'</span></div></div>'
       +'<div class="grid"><div><div class="pt-wrap"><table class="pt"><thead><tr><th>#</th><th>Équipe</th><th class="r">Pts</th><th class="r" title="moyenne des points alignés">Niveau</th><th class="r" title="rating A">A</th><th>Place finale 1 → '+n+'</th><th class="r">↑</th><th class="r">↓</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
       +'<div class="blk"><div class="meta">'+esc(q.note)+'</div></div></div>'
       +'<div class="blk"><h3>Rencontres restantes</h3><ul class="mt">'+lists+'</ul></div></div>'
@@ -348,7 +348,7 @@
         var scen=FDP.simulate(T,Object.assign({},opts,{override:function(j,team,lineup){ return team===T.acbb&&byJ[j]?FDP.withRenforts(lineup,byJ[j]):null; }}));
         var mb=base.teams[T.acbb], ms=scen.teams[T.acbb];
         var kpi=function(l,a,b,cls){ var d=b-a; return '<div class="kpi"><div class="l">'+l+'</div><div class="v '+(cls||'')+'">'+pct(b)+'<small>'+(d>=0?'+':'')+Math.round(d*100)+' pts · était '+pct(a)+'</small></div></div>'; };
-        res.innerHTML=kpi(objLabel(T.objectif)+' avec renfort',base.pObjectif,scen.pObjectif)+kpi('Montée',mb.pUp,ms.pUp,'pct up')+kpi('Descente',mb.pDown,ms.pDown,'pct down')
+        res.innerHTML=kpi(objLabel(T.objectif,T.quota)+' avec renfort',base.pObjectif,scen.pObjectif)+kpi('Montée',mb.pUp,ms.pUp,'pct up')+kpi('Descente',mb.pDown,ms.pDown,'pct down')
           +scen.remaining.filter(function(m){ return (m.a===T.acbb||m.b===T.acbb)&&byJ[m.j]; }).map(function(m,i){
             var p=probFor(m,T.acbb), b0=base.remaining.find(function(x){ return x.j===m.j&&x.a===m.a&&x.b===m.b; }), p0=probFor(b0,T.acbb);
             return '<div class="kpi"><div class="l">J'+m.j+' · '+esc(shortName(oppOf(m,T.acbb)))+'</div><div class="v">'+pct(p.V)+' V<small>était '+pct(p0.V)+'</small></div></div>';

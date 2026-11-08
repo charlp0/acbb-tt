@@ -35,7 +35,7 @@ EXCLUS = {'M1'}
 # « les descentes sont fonction des descentes des divisions supérieures », aucun dernier ne se maintient).
 # PR/D1/D2 : schéma de la réforme CD92 phase 2 (Xavier C., 05/09/2026) ; en D2 aucune montée en D1 en phase 2.
 QUOTAS = [
-    ('FED_Nationale 1', {'code': 'N1', 'up': 1, 'down': 2, 'risk': 0, 'frac': 0.0, 'note': 'Nationale 1 : 1ᵉʳ de poule qualifié, 7ᵉ et 8ᵉ descendent (à confirmer sur le règlement fédéral).'}),
+    ('FED_Nationale 1', {'code': 'N1', 'up': 4, 'upLabel': 'N1A', 'down': 2, 'risk': 0, 'frac': 0.0, 'note': 'Nationale 1 : les 4 premiers de poule jouent en N1A en phase 2 (Charles, 08/11/2026), les autres en N1B ; 7ᵉ et 8ᵉ descendent (à confirmer).'}),
     ('FED_Nationale 2', {'code': 'N2', 'up': 1, 'down': 2, 'risk': 0, 'frac': 0.0, 'note': 'Nationale 2 : 1ʳᵉ de poule qualifiée, 7ᵉ et 8ᵉ descendent (à confirmer sur le règlement fédéral).'}),
     ('L08_R1', {'code': 'R1', 'up': 1, 'down': 1, 'risk': 1, 'frac': 0.5, 'note': 'Régionale (Ligue IDF) : le 1ᵉʳ monte, le 8ᵉ descend ; le 7ᵉ descend selon les descentes de la division supérieure (≈ 1 sur 2).'}),
     ('L08_R2', {'code': 'R2', 'up': 1, 'down': 1, 'risk': 1, 'frac': 0.5, 'note': 'Régionale (Ligue IDF) : le 1ᵉʳ monte, le 8ᵉ descend ; le 7ᵉ descend selon les descentes de la division supérieure (≈ 1 sur 2).'}),
@@ -46,7 +46,7 @@ QUOTAS = [
     ('D92_D2', {'code': 'D2', 'up': 0, 'down': 4, 'risk': 1, 'frac': 0.33, 'note': 'D2 92, réforme phase 2 (création de la D3) : aucune montée en D1 ; 1ᵉʳ et 2ᵉ maintenus, 8 des 12 3ᵉ aussi, 4ᵉ à 7ᵉ descendent en D3.'}),
 ]
 # Objectifs fixés par la sportive (Charles, 08/11/2026 : M3 et M9 maintien ajoutés le soir même) ; les autres équipes : auto (montée si 1ʳᵉ ou 2ᵉ et montée possible).
-OBJECTIFS = {'M3': 'maintien', 'M4': 'maintien', 'M6': 'maintien', 'M9': 'maintien', 'M5': 'montee', 'M7': 'montee'}
+OBJECTIFS = {'M2': 'montee', 'M3': 'maintien', 'M4': 'maintien', 'M6': 'maintien', 'M9': 'maintien', 'M5': 'montee', 'M7': 'montee'}  # M2 : « montée » = top 4 → N1A
 
 
 def sigmoid(d, s):
