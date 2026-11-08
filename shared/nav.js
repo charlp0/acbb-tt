@@ -19,7 +19,7 @@
   // Onglets sportive groupés par usage : la journée (le quotidien), la saison (référence), l'administration.
   const SPO_GROUPS=[
     ['Journée',[['Compos journée','sportive/journee.html'],['Suivi des dispos','sportive/suivi-dispos.html'],['Debriefs','sportive/debriefs.html']]],
-    ['Saison',[['Scoring & compos','sportive/index.html'],['Poules 26/27','sportive/poules.html'],['Contraintes','sportive/contraintes.html']]],
+    ['Saison',[['Scoring & compos','sportive/index.html'],['Poules 26/27','sportive/poules.html'],['Fin de phase','sportive/fin-de-phase.html'],['Contraintes','sportive/contraintes.html']]],
     ['Admin',[['Accès','sportive/acces.html']]]
   ];
   const SPO=SPO_GROUPS.flatMap(g=>g[1]);

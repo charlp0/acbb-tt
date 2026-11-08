@@ -631,3 +631,24 @@ test('exports Compos : une équipe exempte est un bloc au même gabarit que les 
  const d2=await page.evaluate(()=>draftText('M11',2));expect(d2).toMatch(/📍 .*(piscine|vieux pont)/i);   // l'adresse du match, aussi dans le draft (texte du lieu résolu)
  expect(errors).toEqual([]);
 });
+
+test('Fin de phase : synthèse M2-M13, filtre toutes équipes, scénario de renfort reproductible et brûlage contrôlé',async({page,context})=>{
+ const state=fixture(),errors=[];await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/sportive/fin-de-phase.html');
+ await expect(page.locator('#synth tbody tr')).toHaveCount(12);                       // périmètre convenu avec Cyril : M2 à M13
+ const m5=page.locator('#synth tbody tr[data-team="M5"]');await expect(m5).toContainText('Montée');await expect(m5).toContainText('%');
+ await expect(page.locator('#srcMeta')).toContainText('50 / 50');
+ await page.locator('#filters .chip[data-f="all"]').click();await expect(page.locator('#synth tbody tr')).toHaveCount(19);
+ await page.locator('#filters .chip[data-f="cyril"]').click();
+ const card=page.locator('#card-M5');await expect(card.locator('.grid .pt tbody tr')).toHaveCount(8);
+ await expect(card.locator('.mt li')).toHaveCount(12);await expect(card.locator('.mt li.key')).toHaveCount(1);   // 12 rencontres restantes, un match-clé
+ await card.locator('[data-renfort="0"]').click();                                       // Boudjadja 2267 à la J5
+ await expect(card.locator('.plan .row')).toHaveCount(1);await expect(card.locator('.plan .cls')).toHaveValue('2267');
+ await card.locator('.run').click();
+ await expect(card.locator('.alerts div').first()).toContainText('aucune rencontre jouée');
+ await expect(card.locator('.res .kpi').first()).toContainText('Montée avec renfort');
+ const txt=await card.locator('.res .kpi').first().locator('.v').innerText();
+ const apres=parseInt(txt,10), avant=parseInt(/était (\d+)/.exec(txt)[1],10);expect(apres).toBeGreaterThan(avant);
+ await card.locator('.plan .x').click();await expect(card.locator('.plan .row')).toHaveCount(0);
+ expect(errors).toEqual([]);
+});

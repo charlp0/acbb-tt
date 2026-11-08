@@ -32,6 +32,15 @@ dans la plupart des collecteurs ; schéma des fiches dans `SCHEMA.md`), `fftt_qu
 (contrôles de cache et de régression), `private_store.py` (accès service aux tables et au
 stockage privés), `team_identity.py` (rapprochement prudent des noms d'équipes).
 
+**`fin_de_phase.py`** — projection des trois dernières journées de chaque poule (onglet sportive
+« Fin de phase ») : ratings d'équipe sur les confrontations directes (Bradley-Terry sur les parties, rencontres
+à alignement inhabituel sous-pondérées), modèle joueur (logistique calibrée sur toutes les parties de la saison
++ forme individuelle rétrécie), combinaison 50/50, classement final simulé 10 000 fois avec le départage de
+l'art. 14 IDF. Écrit `data/fin_de_phase.json`, relancé par `results.yml` après chaque collecte des feuilles.
+Quotas de montée/descente et objectifs par équipe en tête du script (`QUOTAS`, `OBJECTIFS`). Le navigateur
+rejoue la même simulation avec `shared/fin-de-phase.js` pour les scénarios de renfort : les deux fichiers
+doivent rester identiques (contrôle croisé dans les tests).
+
 ## Outils manuels
 
 **`criterium_pdf.py`** — groupes du Critérium Fédéral départemental (CD92) : convertit les deux

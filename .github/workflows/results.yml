@@ -35,12 +35,14 @@ jobs:
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
           FFTT_SKIP_IF_FRESH: '0'
         run: python3 scripts/fftt_site.py
+      - name: Projection de fin de phase (sportive/fin-de-phase.html)
+        run: python3 scripts/fin_de_phase.py
       - run: python3 scripts/check_data.py
       - name: Conserver le dernier lot complet
         run: |
           git config user.name acbb-data-bot
           git config user.email bot@users.noreply.github.com
-          git add data/site.json data/site.js
+          git add data/site.json data/site.js data/fin_de_phase.json
           if ! git diff --staged --quiet; then
             git commit -m "data: résultats équipes FFTT"
             git fetch origin main
