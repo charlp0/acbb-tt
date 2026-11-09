@@ -396,6 +396,7 @@ test('CDP sportive : glisser-déposer, clic puis case, règles en direct et enre
  await page.getByRole('button',{name:'Retirer Nova EXEMPLE5 de l’équipe'}).click();await expect(page.locator('#lDisp [data-carte]')).toHaveCount(5);
  // cartes de l'effectif sous l'équipe (glissables) ; rencontre saisie → enregistrée ; texte WhatsApp
  await expect(page.locator('.eq').first().locator('.effg [data-carte="'+L[4]+'"]')).toHaveCount(1);
+ await expect(page.locator('.eq').first().locator('.effg [data-carte="'+L[4]+'"] .tk i')).toHaveCount(7);await expect(page.locator('.eq').first().locator('.effg [data-carte="'+L[4]+'"] .tk i.cur')).toHaveClass(/g/);
  await page.locator('.eq').first().locator('select[data-rc="dom"]').selectOption('E');await page.locator('.eq').first().locator('input[data-rc="adv"]').fill('Paris 13 TT');
  await expect.poll(()=>state.cdpRencSaves?state.cdpRencSaves.length:0,{timeout:4000}).toBeGreaterThan(0);
  expect(state.cdpRencSaves[state.cdpRencSaves.length-1].rencontres.j4['1']).toMatchObject({dom:'E',adv:'Paris 13 TT'});

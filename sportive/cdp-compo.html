@@ -81,6 +81,12 @@
   .effg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
   .effg .lc{padding:7px 9px}.effg .lc .nm{font-size:12px}
   .lc.off{opacity:.55}
+  .tk{display:inline-flex;gap:2px;align-items:flex-end;flex-shrink:0;margin-left:6px;cursor:help}
+  .tk i{display:block;width:4px;height:9px;border-radius:1px;background:#3a3a40}
+  .tk i.g{background:#4ADE80}.tk i.r{background:#F87171}
+  .tk i.cur{height:12px;outline:1px solid rgba(246,245,243,.7);outline-offset:1px}
+  .lc .l1 .nm{flex:1 1 auto}.lc .l1{align-items:center}
+  .tgs .tk{margin-left:0;align-self:center}
   @media(max-width:720px){.effg{grid-template-columns:1fr}.rc{grid-template-columns:auto minmax(0,1fr)}.rc .adr{grid-column:1/-1}}
   .al{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.45;color:var(--lose-lt)}
   .al.av{color:#FDE68A}
@@ -208,6 +214,10 @@ function histo(h){ return Object.keys(h||{}).sort().map(t=>COURT[t]+' ×'+h[t]).
 function histoAvant(h,n){ const r={}; Object.keys(h||{}).forEach(t=>{ if(+t<n) r[t]=h[t]; }); return histo(r); }
 const pour=CDP.pourEquipes;
 const effDe=l=>EFF[l]?COURT[EFF[l]]:'';
+/* 7 traits, un par vendredi : vert dispo, rouge pas dispo (ou ne joue pas le CDP), gris sans réponse ; la journée affichée est surlignée. */
+function ticks(l){ const r=R[l]; let h='', tip=[]; for(let k=1;k<=7;k++){ const st=!r?'y':(!r.joue||!(r.dates&&r.dates['j'+k]))?'r':'g'; h+='<i class="'+st+(k===j?' cur':'')+'"></i>'; tip.push('J'+k+' '+(st==='g'?'✓':st==='r'?'✗':'?')); }
+  const n=r&&r.joue?CDP.JOURNEES.filter(x=>r.dates&&r.dates['j'+x.j]).length:null;
+  return '<span class="tk" title="dispos CDP : '+tip.join(' · ')+(r?(r.joue?' — '+n+' vendredi'+(n>1?'s':'')+' sur 7':' — ne joue pas le CDP'):' — pas de réponse')+'">'+h+'</span>'; }
 const SALLE_ACBB='Piscine de Boulogne, 165 rue du Vieux Pont de Sèvres, 92100 Boulogne-Billancourt';
 const rencDe=(jj,n)=>Object.assign({adv:'',dom:'',adresse:'',rdv:''},(RENC['j'+jj]||{})[n]||{});
 /* Texte WhatsApp d'une équipe : même esprit que l'export des compos du championnat par équipe (demande de Cyril, 09/11/2026). */
@@ -289,7 +299,7 @@ function render(){
     if(R[l]&&R[l].joue===false) t.push(tag('ne joue pas le CDP','contour'));
     if(avecDispo){ const d=dispo[l]; if(d===false) t.push(tag('pas dispo','rouge')); else if(d===undefined) t.push(tag('pas répondu','contour')); }
     else if(EFF[l]) t.push(tag(effDe(l),'eff'));
-    return '<div class="lc'+(sel===l?' sel':'')+(avecDispo&&dispo[l]===false?' off':'')+'" role="button" tabindex="0" draggable="true" data-carte="'+l+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts')+'"><span class="l1"><span class="nm">'+esc(nomDe(l))+'</span><span class="pt">'+ptsDe(l)+'</span></span>'+(t.length?'<span class="tgs">'+t.join('')+'</span>':'')+'</div>';
+    return '<div class="lc'+(sel===l?' sel':'')+(avecDispo&&dispo[l]===false?' off':'')+'" role="button" tabindex="0" draggable="true" data-carte="'+l+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts')+'"><span class="l1"><span class="nm">'+esc(nomDe(l))+'</span>'+(avecDispo?'':ticks(l))+'<span class="pt">'+ptsDe(l)+'</span></span>'+(avecDispo||t.length?'<span class="tgs">'+(avecDispo?ticks(l):'')+t.join('')+'</span>':'')+'</div>';
   };
   const places=new Set(); CDP.EQUIPES.forEach(e=>C[e.n].forEach(g=>g.forEach(l=>{ if(l) places.add(l); })));
   document.getElementById('teams').innerHTML=CDP.EQUIPES.map(e=>{
@@ -308,7 +318,7 @@ function render(){
         else { const T=CDP.bruleApres(h,e.n); if(T) t.push(tag('brûlé ensuite pour '+pour(T),'jaune')); else if(histo(h)) t.push(tag(histo(h),'gris')); }
         const d=dispo[l]; if(d===false) t.push(tag('pas dispo','rouge')); else if(d===undefined) t.push(tag('pas répondu','contour'));
         if(EFF[l]&&EFF[l]!==e.n) t.push(tag('effectif '+effDe(l),'eff'));
-        return '<div class="case plein'+(sel===l?' sel':'')+'" data-case="'+cle+'"><div class="pc" role="button" tabindex="0" draggable="true" data-carte="'+l+'" data-at="'+cle+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts'+(histo(h)?' · avant J'+j+' : '+histo(h):''))+'"><span class="nm">'+esc(nomDe(l))+'</span><span class="l2"><span class="pt">'+ptsDe(l)+'</span>'+t.join('')+'</span></div><button type="button" class="x" data-retirer="'+l+'" aria-label="Retirer '+esc(nomDe(l))+' de l’équipe">'+ICX+'</button></div>';
+        return '<div class="case plein'+(sel===l?' sel':'')+'" data-case="'+cle+'"><div class="pc" role="button" tabindex="0" draggable="true" data-carte="'+l+'" data-at="'+cle+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts'+(histo(h)?' · avant J'+j+' : '+histo(h):''))+'"><span class="nm">'+esc(nomDe(l))+'</span><span class="l2"><span class="pt">'+ptsDe(l)+'</span>'+ticks(l)+t.join('')+'</span></div><button type="button" class="x" data-retirer="'+l+'" aria-label="Retirer '+esc(nomDe(l))+' de l’équipe">'+ICX+'</button></div>';
       }).join('');
       return '<div class="cg'+(ko?' ko':av?' av':'')+'"><span class="lab">Groupe '+(gi+1)+'</span><div class="cases">'+cases+'</div>'+al.map(a=>'<div class="al'+(a.niveau==='erreur'?'':' av')+'">'+ICA+'<span>'+esc(texteAlerte(a,gi))+'</span></div>').join('')+'</div>';
     }).join('');
