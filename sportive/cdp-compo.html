@@ -62,6 +62,13 @@
   .tg{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:800;padding:1px 6px;border-radius:99px;white-space:nowrap}
   .tg.rouge{color:#0B0B0D;background:var(--lose)}.tg.jaune{color:#0B0B0D;background:var(--warn)}.tg.gris{color:var(--dim);background:rgba(255,255,255,.07)}
   .tg.contour{color:var(--orange);border:1px solid rgba(242,106,27,.6);padding:0 5px}
+  .tg.eff{color:var(--orange);background:rgba(242,106,27,.14)}
+  .fe{display:flex;gap:5px;flex-wrap:wrap}
+  .fe button{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;min-height:26px;padding:0 9px;border-radius:99px;cursor:pointer;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink-2)}
+  .fe button[aria-pressed="true"]{background:var(--orange);border-color:var(--orange);color:#0B0B0D}
+  .fe button span{opacity:.7;margin-left:3px}
+  .beff{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;min-height:26px;padding:0 9px;border-radius:99px;cursor:pointer;background:transparent;border:1px dashed rgba(242,106,27,.6);color:var(--orange);white-space:nowrap}
+  .beff:hover{background:rgba(242,106,27,.1)}
   .al{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.45;color:var(--lose-lt)}
   .al.av{color:#FDE68A}
   .al svg{flex:0 0 auto;margin-top:2px}
@@ -135,6 +142,7 @@
           <div class="lh"><h2 id="lT">Dispos non placés</h2><span class="lab" id="lDate"></span></div>
           <span class="expl">Glisse un joueur dans une case, ou clique-le puis clique la case. Dépose-le ici pour le retirer d'une équipe.</span>
           <label class="srch"><input id="q" type="search" placeholder="chercher un joueur…" aria-label="Chercher un joueur" autocomplete="off"></label>
+          <div class="fe" id="fe" role="group" aria-label="Filtrer par équipe d’effectif"></div>
           <div class="lst" id="lDisp"></div>
           <details id="dSans"><summary>Pas répondu · <span id="nSans">0</span></summary><div class="lst" id="lSans"></div></details>
           <details id="dNon"><summary>Pas dispo ce vendredi · <span id="nNon">0</span></summary><div class="lst" id="lNon"></div></details>
@@ -146,7 +154,7 @@
       </aside>
     </div>
 
-    <div class="pied" id="pied">Règlement du Championnat de Paris Île-de-France du 15/06/2026 · articles 8, 9, 12 et 13 · équipes numérotées 1 = PE1, 2 = PE2, 3 = Honneur, 4 = Promo Honneur, 5 = D2.<br>Brûlage : 3 matchs ou plus cumulés dans les équipes de numéro inférieur (1 en PE1 et 2 en PE2 → brûlé pour l'Honneur, la PH et la D2), comptés sur les compositions enregistrées des journées précédentes ; un brûlé par groupe de 3 reste admis à partir de l'équipe 2. Points : classement officiel 26/27 (licence). Les compositions ne sont jamais publiées sur le site.</div>
+    <div class="pied" id="pied">Règlement du Championnat de Paris Île-de-France du 15/06/2026 · articles 8, 9, 12 et 13 · équipes numérotées 1 = PE1, 2 = PE2, 3 = Promo Honneur, 4 = D2 (équipe 4), 5 = D2 (équipe 5), engagement de Cyril et Marion du 09/11/2026.<br>Brûlage : 3 matchs ou plus cumulés dans les équipes de numéro inférieur (1 en PE1 et 2 en PE2 → brûlé pour la PH et les deux D2), comptés sur les compositions enregistrées des journées précédentes ; un brûlé par groupe de 3 reste admis à partir de l'équipe 2. Points : classement officiel 26/27 (licence). Effectif : l'équipe de rattachement de chaque joueur (liste de Cyril et Marion, modifiable dans Dispos CDP) ; il guide la composition sans la contraindre. Les compositions ne sont jamais publiées sur le site.</div>
   </main>
 </div>
 <script src="../shared/api.js"></script>
@@ -160,7 +168,7 @@
    ?dev=1 = maquette locale : rôle sportive simulé, aucune donnée, aucune écriture. */
 const DEV=new URLSearchParams(location.search).get('dev')==='1';
 function api(route,body){
-  if(DEV){ if(route==='me') return Promise.resolve({role:'sportive',nom:'Test'}); if(body!==undefined) return Promise.reject(new Error('mode dev : aucune écriture')); if(route==='spo/cdp/dispos') return Promise.resolve({reponses:{}}); if(route==='spo/cdp/compos') return Promise.resolve({compos:{}}); return Promise.resolve({}); }
+  if(DEV){ if(route==='me') return Promise.resolve({role:'sportive',nom:'Test'}); if(body!==undefined) return Promise.reject(new Error('mode dev : aucune écriture')); if(route==='spo/cdp/dispos') return Promise.resolve({reponses:{}}); if(route==='spo/cdp/compos') return Promise.resolve({compos:{}}); if(route==='spo/cdp/effectif') return Promise.resolve({effectif:{}}); return Promise.resolve({}); }
   return ACBB.api(route,body);
 }
 const esc=ACBB.esc, toast=ACBB.toast;
@@ -174,7 +182,7 @@ const COURT={}; CDP.EQUIPES.forEach(e=>{ COURT[e.n]=e.court; });
 const ICX='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>';
 const ICA='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>';
 
-let P={}, R={}, COMPOS={}, j=1, C=null, BASE='', sel=null, cible=null, drag=null, q='', occupe=false, CONFLIT=null;
+let P={}, R={}, COMPOS={}, EFF={}, fe=0, j=1, C=null, BASE='', sel=null, cible=null, drag=null, q='', occupe=false, CONFLIT=null;   // EFF : licence → équipe d'effectif ; fe : filtre de la liste (0 tous, 1..5, -1 sans équipe)
 const PTS=new Proxy({},{get:(t,l)=>(P[l]&&P[l].pts)||0});
 const nomDe=l=>P[l]?((P[l].pre?P[l].pre+' ':'')+P[l].nom):'Licence '+l;
 const ptsDe=l=>(P[l]&&P[l].pts)||0;
@@ -184,7 +192,8 @@ const ligne=()=>COMPOS[j]||null;
 function dispoDe(l){ const r=R[l]; if(!r) return undefined; return !!(r.joue&&r.dates&&r.dates['j'+j]); }
 function histo(h){ return Object.keys(h||{}).sort().map(t=>COURT[t]+' ×'+h[t]).join(' · '); }
 function histoAvant(h,n){ const r={}; Object.keys(h||{}).forEach(t=>{ if(+t<n) r[t]=h[t]; }); return histo(r); }
-const pour=T=>T===5?'la D2':T===4?'PH et D2':'les équipes '+T+' à 5';
+const pour=CDP.pourEquipes;
+const effDe=l=>EFF[l]?COURT[EFF[l]]:'';
 function ou(l){ for(const e of CDP.EQUIPES) for(let g=0;g<C[e.n].length;g++) for(let k=0;k<3;k++) if(C[e.n][g][k]===l) return {n:e.n,g,k}; return null; }
 const cleDe=o=>o.n+'-'+o.g+'-'+o.k, deCle=s=>{ const a=s.split('-').map(Number); return {n:a[0],g:a[1],k:a[2]}; };
 
@@ -203,6 +212,15 @@ function placer(l,cle){
   C[to.n][to.g][to.k]=l; sel=null; cible=null; render();
 }
 function retirer(l){ const o=ou(l); if(o){ C[o.n][o.g][o.k]=null; } if(sel===l) sel=null; render(); }
+/* Remplit les cases VIDES de l'équipe n avec son effectif non placé : les disponibles ce vendredi d'abord, puis ceux qui n'ont pas
+   répondu, jamais ceux qui ont dit non ; par points décroissants, groupe 1 puis 2 puis 3 (ordre de l'art. 8). Ne déplace personne. */
+function placerEffectif(n){
+  const cand=Object.keys(P).filter(l=>EFF[l]===n&&!ou(l)&&dispoDe(l)!==false).sort((a,b)=>((dispoDe(b)===true)-(dispoDe(a)===true))||(ptsDe(b)-ptsDe(a))||nomDe(a).localeCompare(nomDe(b),'fr'));
+  let k=0; C[n].forEach(g=>{ for(let i=0;i<3;i++) if(!g[i]&&k<cand.length) g[i]=cand[k++]; });
+  // réordonner par points les cases que l'on vient de remplir n'est pas nécessaire : les candidats arrivent triés ; mais si des
+  // joueurs étaient déjà posés, l'art. 8 est contrôlé par render() comme pour un placement à la main
+  sel=null; cible=null; render();
+}
 
 function texteAlerte(a,gi){
   if(a.type==='brulage') return a.licences.length+' brûlés dans ce groupe, un seul est admis (art. 12) : '+a.licences.map(nomDe).join(' et ')+' ont déjà joué 3 matchs ou plus dans les équipes de numéro inférieur.';
@@ -225,6 +243,7 @@ function render(){
   // équipes ; une équipe encore vide est « à composer » : ses absents ne sont pas des alertes tant qu'on n'a rien posé
   let nErr=0, nAv=0; const cpt={brulage:0,ordre:0,absents:0,double:0,indispo:0};
   const cc=cible&&cleDe(cible);
+  const places=new Set(); CDP.EQUIPES.forEach(e=>C[e.n].forEach(g=>g.forEach(l=>{ if(l) places.add(l); })));
   document.getElementById('teams').innerHTML=CDP.EQUIPES.map(e=>{
     const R2=res.equipes[e.n], gs=C[e.n], n=gs.reduce((s,g)=>s+g.filter(Boolean).length,0), vide=n===0;
     let eErr=0, eAv=0;
@@ -240,18 +259,23 @@ function render(){
         if(b) t.push(tag('brûlé · '+histoAvant(h,e.n),'rouge'));
         else { const T=CDP.bruleApres(h,e.n); if(T) t.push(tag('brûlé ensuite pour '+pour(T),'jaune')); else if(histo(h)) t.push(tag(histo(h),'gris')); }
         const d=dispo[l]; if(d===false) t.push(tag('pas dispo','rouge')); else if(d===undefined) t.push(tag('pas répondu','contour'));
+        if(EFF[l]&&EFF[l]!==e.n) t.push(tag('effectif '+effDe(l),'eff'));
         return '<div class="case plein'+(sel===l?' sel':'')+'" data-case="'+cle+'"><div class="pc" role="button" tabindex="0" draggable="true" data-carte="'+l+'" data-at="'+cle+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts'+(histo(h)?' · avant J'+j+' : '+histo(h):''))+'"><span class="nm">'+esc(nomDe(l))+'</span><span class="l2"><span class="pt">'+ptsDe(l)+'</span>'+t.join('')+'</span></div><button type="button" class="x" data-retirer="'+l+'" aria-label="Retirer '+esc(nomDe(l))+' de l’équipe">'+ICX+'</button></div>';
       }).join('');
       return '<div class="cg'+(ko?' ko':av?' av':'')+'"><span class="lab">Groupe '+(gi+1)+'</span><div class="cases">'+cases+'</div>'+al.map(a=>'<div class="al'+(a.niveau==='erreur'?'':' av')+'">'+ICA+'<span>'+esc(texteAlerte(a,gi))+'</span></div>').join('')+'</div>';
     }).join('');
     nErr+=eErr; nAv+=eAv;
     const st=vide?['à composer','']:eErr?[eErr+' alerte'+(eErr>1?'s':''),'ko']:eAv?[eAv+' à vérifier','av']:R2.absents===1?['conforme · 1 absent','ok']:['conforme','ok'];
-    return '<section class="eq" aria-label="Équipe '+e.n+', '+esc(e.nom)+'"><div class="eqh"><span class="num">'+e.n+'</span><span class="eqn"><b>'+esc(e.nom)+'</b><span>'+(3*e.groupes)+' joueurs · '+e.tables+' tables · '+n+' placé'+(n>1?'s':'')+'</span></span><span class="est '+st[1]+'">'+st[0]+'</span></div>'+grp+(R2.note&&!vide&&!eErr?'<span class="note">'+esc(R2.note)+'</span>':'')+'</section>';
+    const effL=Object.keys(EFF).filter(l=>EFF[l]===e.n&&P[l]), effD=effL.filter(l=>dispo[l]===true), effLibres=effL.filter(l=>!places.has(l)&&dispo[l]!==false);
+    const vides=gs.reduce((s,g)=>s+g.filter(x=>!x).length,0);
+    const beff=effL.length&&vides&&effLibres.length?'<button type="button" class="beff" data-eff="'+e.n+'" title="Remplir les cases vides avec l’effectif de l’équipe non encore placé (dispos d’abord)">+ effectif</button>':'';
+    return '<section class="eq" aria-label="Équipe '+e.n+', '+esc(e.nom)+'"><div class="eqh"><span class="num">'+e.n+'</span><span class="eqn"><b>'+esc(e.nom)+'</b><span>'+(3*e.groupes)+' joueurs · '+e.tables+' tables · '+n+' placé'+(n>1?'s':'')+(effL.length?' · effectif '+effL.length+' ('+effD.length+' dispo'+(effD.length>1?'s':'')+')':'')+'</span></span>'+beff+'<span class="est '+st[1]+'">'+st[0]+'</span></div>'+grp+(R2.note&&!vide&&!eErr?'<span class="note">'+esc(R2.note)+'</span>':'')+'</section>';
   }).join('');
 
   // listes : disponibles ce vendredi, pas répondu, pas dispo ; ceux qui ne jouent pas le CDP n'apparaissent qu'en cherchant
-  const places=new Set(); CDP.EQUIPES.forEach(e=>C[e.n].forEach(g=>g.forEach(l=>{ if(l) places.add(l); })));
-  const qq=sansAccent(q), trouve=l=>!qq||sansAccent(nomDe(l)).indexOf(qq)>=0;
+  const qq=sansAccent(q), trouve=l=>(!qq||sansAccent(nomDe(l)).indexOf(qq)>=0)&&(!fe||(fe===-1?!EFF[l]:EFF[l]===fe));
+  const nEff=x=>Object.keys(P).filter(l=>!places.has(l)&&(x===-1?!EFF[l]:EFF[l]===x)).length;
+  document.getElementById('fe').innerHTML=[[0,'Tous',null]].concat(CDP.EQUIPES.map(e=>[e.n,e.court,nEff(e.n)])).concat([[-1,'sans équipe',nEff(-1)]]).map(f=>'<button type="button" data-fe="'+f[0]+'" aria-pressed="'+(fe===f[0])+'">'+esc(f[1])+(f[2]!=null?'<span>'+f[2]+'</span>':'')+'</button>').join('');
   const tous=Object.keys(P).filter(l=>!places.has(l)&&trouve(l)).sort((a,b)=>(ptsDe(b)-ptsDe(a))||nomDe(a).localeCompare(nomDe(b),'fr'));
   const carte=l=>{
     const h=hist[l], T=CDP.premierBrule(h), t=[];
@@ -259,6 +283,7 @@ function render(){
     else if(CDP.aUnMatch(h)) t.push(tag('à 1 match du brûlage','jaune'));
     if(histo(h)) t.push(tag(histo(h),'gris'));
     if(R[l]&&R[l].joue===false) t.push(tag('ne joue pas le CDP','contour'));
+    if(EFF[l]) t.push(tag(effDe(l),'eff'));
     return '<div class="lc'+(sel===l?' sel':'')+'" role="button" tabindex="0" draggable="true" data-carte="'+l+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts')+'"><span class="l1"><span class="nm">'+esc(nomDe(l))+'</span><span class="pt">'+ptsDe(l)+'</span></span>'+(t.length?'<span class="tgs">'+t.join('')+'</span>':'')+'</div>';
   };
   const lD=tous.filter(l=>dispo[l]===true), lS=tous.filter(l=>dispo[l]===undefined), lN=tous.filter(l=>R[l]&&R[l].joue&&dispo[l]===false), lX=qq?tous.filter(l=>R[l]&&R[l].joue===false):[];
@@ -324,6 +349,8 @@ async function rechargerCompos(){ const c=await api('spo/cdp/compos'); COMPOS=(c
 const main=document.getElementById('main');
 main.addEventListener('click',e=>{
   const x=e.target.closest('[data-retirer]'); if(x){ retirer(x.dataset.retirer); return; }
+  const be=e.target.closest('[data-eff]'); if(be){ placerEffectif(+be.dataset.eff); return; }
+  const bf=e.target.closest('#fe button[data-fe]'); if(bf){ fe=+bf.dataset.fe; render(); return; }
   const jp=e.target.closest('#jp a[data-j]');
   if(jp){ e.preventDefault(); const n=+jp.dataset.j; if(n===j) return; if(sale()&&!confirm('Tes modifications de J'+j+' ne sont pas enregistrées. Changer de journée quand même ?')) return; chargerJournee(n); return; }
   const ca=e.target.closest('[data-carte]');
@@ -369,7 +396,7 @@ document.getElementById('cfMa').addEventListener('click',async()=>{ const attend
 window.addEventListener('beforeunload',e=>{ if(C&&sale()){ e.preventDefault(); e.returnValue=''; } });
 
 async function boot(){
-  const [sc,off,rep,cps,ix]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos'),api('spo/cdp/compos'),gj('../data/players_index.json')]);
+  const [sc,off,rep,cps,ix,eff]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos'),api('spo/cdp/compos'),gj('../data/players_index.json'),api('spo/cdp/effectif').catch(()=>null)]);
   const OFF=(off&&off.officiel)||{};
   const IX={}; (Array.isArray(ix)?ix:[]).forEach(p=>{ if(p.lic) IX[String(p.lic)]=p; });   // tous les licenciés : nom d'un joueur hors scoring
   const inconnu=l=>{ const x=IX[l]; return x?{nom:x.nom||'',pre:x.prenom||'',pts:OFF[l]||x.officiel||x.mensuel||0}:{nom:'Licence '+l,pre:'',pts:OFF[l]||0}; };
@@ -377,6 +404,7 @@ async function boot(){
   R=(rep&&rep.reponses)||{};
   Object.keys(R).forEach(l=>{ if(!P[l]) P[l]=inconnu(l); });
   COMPOS=(cps&&cps.compos)||{};
+  EFF={}; Object.entries((eff&&eff.effectif)||{}).forEach(([l,n])=>{ if(n>=1&&n<=5){ EFF[String(l)]=+n; if(!P[l]) P[l]=inconnu(l); } });
   // joueurs d'une composition enregistrée mais absents de la liste des points : on les garde, sous leur numéro
   Object.values(COMPOS).forEach(r=>Object.values((r&&r.compo)||{}).forEach(gs=>(gs||[]).forEach(g=>(g||[]).forEach(l=>{ if(l&&!P[l]) P[l]=inconnu(l); }))));
   const qj=+new URLSearchParams(location.search).get('j');

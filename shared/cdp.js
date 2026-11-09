@@ -8,14 +8,18 @@
     {j:5,date:'2027-04-02'},{j:6,date:'2027-05-14'},{j:7,date:'2027-06-04'}
   ];
   // Numérotées dans l'ordre des divisions (art. 12) : le numéro sert au brûlage.
+  // Engagement définitif de Cyril et Marion (mail du 09/11/2026) : deux Promo Excellence, une Promo Honneur, deux D2.
+  // L'équipe « Honneur » prévue en octobre n'existe plus. Même forme côté serveur : CDP_FORME dans supabase/functions/api/index.ts.
   const EQUIPES=[
     {n:1,nom:'Promo Excellence 1',court:'PE1',groupes:3,tables:5},
     {n:2,nom:'Promo Excellence 2',court:'PE2',groupes:3,tables:5},
-    {n:3,nom:'Honneur',court:'HO',groupes:3,tables:5},
-    {n:4,nom:'Promo Honneur',court:'PH',groupes:2,tables:3},
-    {n:5,nom:'Division 2',court:'D2',groupes:1,tables:2}
+    {n:3,nom:'Promo Honneur',court:'PH',groupes:2,tables:3},
+    {n:4,nom:'Départementale 2 · équipe 4',court:'D2·4',groupes:1,tables:2},
+    {n:5,nom:'Départementale 2 · équipe 5',court:'D2·5',groupes:1,tables:2}
   ];
-  const PLACES=EQUIPES.reduce((s,e)=>s+3*e.groupes,0);   // 36
+  const PLACES=EQUIPES.reduce((s,e)=>s+3*e.groupes,0);   // 30
+  // « brûlé pour … » : les équipes de numéro T et au-delà, par leur nom court
+  function pourEquipes(T){ const l=EQUIPES.filter(e=>e.n>=T).map(e=>e.court); return l.length===1?'la '+l[0]:l.length===2?l.join(' et '):'les équipes '+T+' à '+EQUIPES[EQUIPES.length-1].n+' ('+l.join(', ')+')'; }
 
   function compoVide(){ const c={}; EQUIPES.forEach(e=>{ c[e.n]=Array.from({length:e.groupes},()=>[null,null,null]); }); return c; }
 
@@ -78,6 +82,6 @@
     });
     return res;
   }
-  const CDP={ECHEANCE,JOURNEES,EQUIPES,PLACES,compoVide,historique,brulePour,premierBrule,bruleApres,aUnMatch,controler};
+  const CDP={ECHEANCE,JOURNEES,EQUIPES,PLACES,pourEquipes,compoVide,historique,brulePour,premierBrule,bruleApres,aUnMatch,controler};
   if(typeof module!=='undefined'&&module.exports) module.exports=CDP; else racine.CDP=CDP;
 })(typeof window!=='undefined'?window:globalThis);

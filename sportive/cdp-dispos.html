@@ -48,6 +48,12 @@
   .pied{margin-top:24px;padding-top:16px;border-top:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--dim);line-height:1.6}
   .srverr{margin-top:16px;background:rgba(242,99,86,.10);border:1px solid rgba(242,99,86,.4);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--lose-lt)}
   @media(max-width:980px){.cpt{grid-template-columns:repeat(4,minmax(0,1fr))}}
+  .eqs{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;min-height:28px;padding:0 6px;border-radius:8px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink-2)}
+  .eqs.vide{color:var(--dim)}.eqs.chg{border-color:var(--orange);color:var(--orange)}
+  .savebar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;padding:10px 12px 10px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--line)}
+  .savebar.sale{border-color:rgba(242,106,27,.55)}
+  .sv-st{font-size:12.5px;color:var(--ink-2)}.sv-st b{color:var(--orange)}
+  .sv-acts{display:flex;gap:8px;flex-wrap:wrap}
   @media(max-width:720px){.cpt{grid-template-columns:repeat(2,minmax(0,1fr))}.srch{min-width:0;flex:1 1 100%}.hero .h1{font-size:36px}}
 </style>
 </head><body>
@@ -80,12 +86,16 @@
 
     <div class="tw"><table>
       <thead><tr id="thead"></tr></thead>
-      <tbody id="tbody"><tr><td colspan="11" style="text-align:left;padding:16px;color:var(--dim)">chargement…</td></tr></tbody>
+      <tbody id="tbody"><tr><td colspan="12" style="text-align:left;padding:16px;color:var(--dim)">chargement…</td></tr></tbody>
     </table></div>
     <p class="vide" id="vide" hidden>Aucun joueur pour ce filtre.</p>
+    <section class="savebar" id="savebar">
+      <span class="sv-st" id="svSt">Effectif des équipes : chargement…</span>
+      <span class="sv-acts"><button class="btn" id="bAnnul" type="button" hidden>Annuler</button><button class="btn primary" id="bSave" type="button" disabled>Enregistrer l’effectif</button></span>
+    </section>
     <div id="err"></div>
 
-    <div class="pied">Points : classement officiel 26/27, celui de la licence (art. 8). Une réponse après le mercredi 21/10 est acceptée et marquée « en retard ». Le dernier envoi d'un joueur remplace les précédents.</div>
+    <div class="pied">Points : classement officiel 26/27, celui de la licence (art. 8). Une réponse après le mercredi 21/10 est acceptée et marquée « en retard ». Le dernier envoi d'un joueur remplace les précédents.<br>Équipe : l'effectif de rattachement de chaque joueur (liste de Cyril et Marion du 09/11/2026 : PE1, PE2, Promo Honneur, deux D2), repris dans Compositions CDP pour guider la compo. Modifie la colonne puis « Enregistrer l’effectif » ; il n'est jamais publié.</div>
   </main>
 </div>
 <script src="../shared/api.js"></script>
@@ -97,7 +107,7 @@
    et les points. ?dev=1 = maquette locale : rôle sportive simulé, aucune réponse, aucun appel au serveur. */
 const DEV=new URLSearchParams(location.search).get('dev')==='1';
 function api(route,body){
-  if(DEV){ if(route==='me') return Promise.resolve({role:'sportive',nom:'Test'}); if(body!==undefined) return Promise.reject(new Error('mode dev : aucune écriture')); if(route==='spo/cdp/dispos') return Promise.resolve({reponses:{}}); return Promise.resolve({}); }
+  if(DEV){ if(route==='me') return Promise.resolve({role:'sportive',nom:'Test'}); if(body!==undefined) return Promise.reject(new Error('mode dev : aucune écriture')); if(route==='spo/cdp/dispos') return Promise.resolve({reponses:{}}); if(route==='spo/cdp/effectif') return Promise.resolve({effectif:{}}); return Promise.resolve({}); }
   return ACBB.api(route,body);
 }
 const esc=ACBB.esc;
@@ -106,10 +116,12 @@ const sansAccent=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ
 const dd=iso=>{ const p=iso.split('-'); return p[2]+'/'+p[1]; };
 const fmtTs=ACBB_UI.fmtTsCourt;
 const STAT={oui:'Joue',retard:'Joue · en retard',non:'Ne joue pas',sans:'Pas répondu'};
-let J=[], filtre='tous', q='';
+let J=[], filtre='tous', q='', EFF={}, BASE='{}', EFFMETA=null, occupe=false;   // EFF : licence → équipe (1..5), BASE : version enregistrée
+const COURT={}; CDP.EQUIPES.forEach(e=>{ COURT[e.n]=e.court; });
+const sale=()=>JSON.stringify(EFF)!==BASE;
 
 function statut(rep){ if(!rep) return 'sans'; if(rep.joue===false) return 'non'; return rep.retard?'retard':'oui'; }
-const garde=(p,f)=>f==='tous'||(f==='joue'&&(p.st==='oui'||p.st==='retard'))||p.st===f;
+const garde=(p,f)=>f==='tous'||(f==='joue'&&(p.st==='oui'||p.st==='retard'))||(/^e\d$/.test(f)?EFF[p.lic]===+f[1]:f==='e0'?!EFF[p.lic]:p.st===f);
 
 function render(){
   const T=CDP.PLACES;
@@ -117,29 +129,43 @@ function render(){
     const n=J.filter(p=>p.d&&p.d[k]).length, ok=n>=T, juste=ok&&n<T+4, coul=!ok?'var(--lose)':juste?'var(--warn)':'var(--win)';
     return '<div class="cj'+(ok?'':' manque')+'"><span class="t">J'+x.j+' · '+dd(x.date)+'</span><span class="n"><b>'+n+'</b><span>/ '+T+'</span></span><span class="bar" aria-hidden="true"><i style="width:'+Math.min(100,Math.round(n/T*100))+'%;background:'+coul+'"></i></span><span class="e" style="color:'+coul+'">'+(ok?'complet · +'+(n-T):'manque '+(T-n))+'</span></div>';
   }).join('');
-  const F=[['tous','Tous'],['joue','Jouent'],['non','Ne jouent pas'],['sans','Pas répondu'],['retard','En retard']];
+  const F=[['tous','Tous'],['joue','Jouent'],['non','Ne jouent pas'],['sans','Pas répondu'],['retard','En retard']].concat(CDP.EQUIPES.map(e=>['e'+e.n,e.court])).concat([['e0','Sans équipe']]);
   document.getElementById('filtres').innerHTML=F.map(f=>'<button type="button" data-f="'+f[0]+'" aria-pressed="'+(filtre===f[0])+'">'+f[1]+' <span>'+J.filter(p=>garde(p,f[0])).length+'</span></button>').join('');
   const qq=sansAccent(q);
   const L=J.filter(p=>garde(p,filtre)).filter(p=>!qq||sansAccent(p.pre+' '+p.nom).indexOf(qq)>=0);
   document.getElementById('tbody').innerHTML=L.map(p=>{
     const cases=CDP.JOURNEES.map((x,k)=>{ const v=p.d?p.d[k]:null, lib='J'+x.j+' '+dd(x.date)+' : '+(v===true?'disponible':v===false?'pas disponible':(p.st==='non'?'ne joue pas le CDP':'pas de réponse'));
       return '<td><span class="cs'+(v===true?' y':v===false?' n':'')+'" title="'+lib+'" aria-label="'+lib+'">'+(v===true?'✓':v===false?'✕':'·')+'</span></td>'; }).join('');
-    return '<tr><td>'+esc((p.pre?p.pre+' ':'')+p.nom)+'</td><td class="pts">'+(p.pts||'—')+'</td><td class="st"><span class="stp '+p.st+'"'+(p.at?' title="répondu le '+fmtTs(p.at)+'"':'')+'>'+STAT[p.st]+'</span></td>'+cases+'<td class="tot">'+(p.d?p.d.filter(Boolean).length+'/7':'—')+'</td></tr>';
+    const b0=JSON.parse(BASE)[p.lic]||0, e0=EFF[p.lic]||0;
+    const sel='<select class="eqs'+(e0?'':' vide')+(e0!==b0?' chg':'')+'" data-lic="'+p.lic+'" aria-label="Équipe d’effectif de '+esc((p.pre?p.pre+' ':'')+p.nom)+'">'+[['0','—']].concat(CDP.EQUIPES.map(e=>[String(e.n),e.court])).map(o=>'<option value="'+o[0]+'"'+(+o[0]===e0?' selected':'')+'>'+esc(o[1])+'</option>').join('')+'</select>';
+    return '<tr><td>'+esc((p.pre?p.pre+' ':'')+p.nom)+'</td><td class="pts">'+(p.pts||'—')+'</td><td class="eq">'+sel+'</td><td class="st"><span class="stp '+p.st+'"'+(p.at?' title="répondu le '+fmtTs(p.at)+'"':'')+'>'+STAT[p.st]+'</span></td>'+cases+'<td class="tot">'+(p.d?p.d.filter(Boolean).length+'/7':'—')+'</td></tr>';
   }).join('');
   document.getElementById('vide').hidden=L.length>0;
+  // barre d'enregistrement de l'effectif
+  const s=sale(), n=Object.keys(EFF).length;
+  document.getElementById('savebar').classList.toggle('sale',s);
+  document.getElementById('svSt').innerHTML=(s?'<b>Effectif modifié, non enregistré</b> · ':'')+'Effectif : '+n+' joueur'+(n>1?'s':'')+' rattaché'+(n>1?'s':'')+(EFFMETA&&EFFMETA.saved_at?' · enregistré le '+fmtTs(EFFMETA.saved_at)+(EFFMETA.auteur?' par '+esc(EFFMETA.auteur):''):'');
+  document.getElementById('bSave').disabled=occupe||!s; document.getElementById('bAnnul').hidden=!s;
+}
+async function enregistrerEffectif(){
+  if(occupe) return; occupe=true; render();
+  try{ const out=await api('spo/cdp/effectif',{effectif:EFF}); EFF=Object.assign({},out.effectif||EFF); BASE=JSON.stringify(EFF); EFFMETA={saved_at:out.saved_at,auteur:null}; ACBB.toast('Effectif enregistré'); }
+  catch(e){ ACBB.toast('Enregistrement refusé : '+((e&&e.body&&e.body.error)||e.message)); }
+  finally{ occupe=false; render(); }
 }
 
 async function boot(){
-  document.getElementById('thead').innerHTML='<th scope="col">Joueur</th><th scope="col" class="r">Points</th><th scope="col" class="l">Réponse</th>'+CDP.JOURNEES.map(x=>'<th scope="col">J'+x.j+'<br><small>'+dd(x.date)+'</small></th>').join('')+'<th scope="col" class="r">Dispo</th>';
+  document.getElementById('thead').innerHTML='<th scope="col">Joueur</th><th scope="col" class="r">Points</th><th scope="col">Équipe</th><th scope="col" class="l">Réponse</th>'+CDP.JOURNEES.map(x=>'<th scope="col">J'+x.j+'<br><small>'+dd(x.date)+'</small></th>').join('')+'<th scope="col" class="r">Dispo</th>';
   const auj=new Date(); auj.setHours(0,0,0,0); const [y,m,d]=CDP.ECHEANCE.split('-').map(Number), n=Math.round((new Date(y,m-1,d)-auj)/86400000);
   document.getElementById('chEch').textContent='Échéance mer. 21/10 · '+(n>1?'dans '+n+' jours':n===1?'demain':n===0?"aujourd'hui":'passée');
-  const [sc,off,rep,ix]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos'),gj('../data/players_index.json')]);
+  const [sc,off,rep,ix,eff]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos'),gj('../data/players_index.json'),api('spo/cdp/effectif').catch(()=>null)]);
+  EFF={}; Object.entries((eff&&eff.effectif)||{}).forEach(([l,n])=>{ if(n>=1&&n<=5) EFF[String(l)]=+n; }); BASE=JSON.stringify(EFF); EFFMETA=eff||null;
   const OFF=(off&&off.officiel)||{}, R=(rep&&rep.reponses)||{};
   const IX={}; (Array.isArray(ix)?ix:[]).forEach(p=>{ if(p.lic) IX[String(p.lic)]=p; });   // tous les licenciés : nom d'un répondant hors scoring
   const vus=new Set();
   J=((sc&&sc.players)||[]).filter(p=>p.lic).map(p=>{ const l=String(p.lic); vus.add(l); return {lic:l,nom:p.nom||'',pre:p.pre||'',pts:OFF[l]||p.men||0}; });
   // une réponse d'un licencié absent de la liste des points : on l'affiche quand même, sous son numéro
-  Object.keys(R).forEach(l=>{ if(vus.has(l)) return; const x=IX[l]; J.push(x?{lic:l,nom:x.nom||'',pre:x.prenom||'',pts:OFF[l]||x.officiel||x.mensuel||0}:{lic:l,nom:'Licence '+l,pre:'',pts:OFF[l]||0}); });
+  new Set([...Object.keys(R),...Object.keys(EFF)]).forEach(l=>{ if(vus.has(l)) return; vus.add(l); const x=IX[l]; J.push(x?{lic:l,nom:x.nom||'',pre:x.prenom||'',pts:OFF[l]||x.officiel||x.mensuel||0}:{lic:l,nom:'Licence '+l,pre:'',pts:OFF[l]||0}); });
   J.forEach(p=>{ const r=R[p.lic]; p.st=statut(r); p.at=r&&r.saved_at; p.d=r&&r.joue?CDP.JOURNEES.map(x=>!!(r.dates&&r.dates['j'+x.j])):null; });
   // ceux qui ont répondu d'abord (jouent, puis ne jouent pas), le reste ensuite ; par points à l'intérieur
   const RANG={oui:0,retard:0,non:1,sans:2};
@@ -149,6 +175,10 @@ async function boot(){
 }
 document.getElementById('filtres').addEventListener('click',e=>{ const b=e.target.closest('button[data-f]'); if(!b) return; filtre=b.dataset.f; render(); const f=document.querySelector('#filtres button[data-f="'+filtre+'"]'); if(f) f.focus(); });
 document.getElementById('q').addEventListener('input',e=>{ q=e.target.value; render(); });
+document.getElementById('tbody').addEventListener('change',e=>{ const s=e.target.closest('select[data-lic]'); if(!s) return; const n=+s.value; if(n) EFF[s.dataset.lic]=n; else delete EFF[s.dataset.lic]; render(); });
+document.getElementById('bSave').addEventListener('click',enregistrerEffectif);
+document.getElementById('bAnnul').addEventListener('click',()=>{ EFF=JSON.parse(BASE); render(); });
+window.addEventListener('beforeunload',e=>{ if(sale()){ e.preventDefault(); e.returnValue=''; } });
 
 const gateErrTxt=ACBB_UI.gateErrTxt;
 async function start(){

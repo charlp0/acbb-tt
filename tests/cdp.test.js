@@ -2,8 +2,10 @@ const test=require('node:test'),assert=require('node:assert/strict');
 const CDP=require('../shared/cdp.js');
 const P={a:1822,b:1811,c:1703,d:1698,e:1660,f:1637,g:1624,h:1617,i:1600,j:1594,k:1587,l:1586,m:1577,n:1539,o:1525,p:1500,q:1465,r:1430};
 const pe=(g1,g2,g3)=>({...CDP.compoVide(),1:[g1,g2,g3]});
-test('36 places, 5 équipes, 7 vendredis',()=>{
-  assert.equal(CDP.PLACES,36);assert.equal(CDP.EQUIPES.length,5);assert.equal(CDP.JOURNEES.length,7);
+test('30 places, 5 équipes (PE1, PE2, PH, deux D2), 7 vendredis',()=>{
+  assert.equal(CDP.PLACES,30);assert.equal(CDP.EQUIPES.length,5);assert.equal(CDP.JOURNEES.length,7);
+  assert.deepEqual(CDP.EQUIPES.map(e=>e.groupes),[3,3,2,1,1]);assert.deepEqual(CDP.EQUIPES.map(e=>e.court),['PE1','PE2','PH','D2·4','D2·5']);
+  assert.equal(CDP.pourEquipes(5),'la D2·5');assert.equal(CDP.pourEquipes(4),'D2·4 et D2·5');assert.equal(CDP.pourEquipes(3),'les équipes 3 à 5 (PH, D2·4, D2·5)');
   CDP.JOURNEES.forEach(x=>assert.equal(new Date(x.date+'T12:00:00Z').getUTCDay(),5));   // tous des vendredis
 });
 test('historique : seules les journées antérieures comptent',()=>{

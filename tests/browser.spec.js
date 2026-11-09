@@ -70,6 +70,11 @@ async function install(context,state){
    }
    if(api==='joueur/cdp'){(state.cdpSaves||(state.cdpSaves=[])).push(body);return send({ok:true,saved_at:'2026-09-30T10:00:00Z',retard:false});}
    if(api==='spo/cdp/dispos')return send({echeance:'2026-10-21T21:59:59Z',reponses:state.cdpReponses||{}});
+   if(api==='spo/cdp/effectif'){
+    if(!body)return send({effectif:state.cdpEffectif||{},id:state.cdpEffectif?7:0,saved_at:state.cdpEffectif?'2026-11-09T11:30:00Z':null,auteur:state.cdpEffectif?'Charles':null});
+    (state.cdpEffSaves||(state.cdpEffSaves=[])).push(body);state.cdpEffectif=body.effectif;
+    return send({ok:true,id:8,saved_at:'2026-11-09T12:00:00Z',effectif:body.effectif});
+   }
    if(api==='spo/cdp/compos'){
     if(!body)return send({compos:state.cdpCompos||{}});
     (state.cdpCompoSaves||(state.cdpCompoSaves=[])).push(body);
@@ -345,18 +350,25 @@ test('CDP joueur : identification, oui puis les vendredis, confirmation ; « non
 
 test('CDP sportive : tableau des dispos, compteurs par vendredi et filtres',async({page,context})=>{
  const state=fixture(),errors=[];const L=state.players.map(p=>p.lic);
- state.cdpReponses={[L[0]]:cdpRep(true),[L[1]]:cdpRep(true,[2]),[L[2]]:cdpRep(false)};
+ state.cdpReponses={[L[0]]:cdpRep(true),[L[1]]:cdpRep(true,[2]),[L[2]]:cdpRep(false)};state.cdpEffectif={[L[0]]:1};
  await install(context,state);page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/sportive/cdp-dispos.html');
  await expect(page.locator('.subnav.spo')).toContainText('Compositions CDP');
  await expect(page.locator('#cpt .cj')).toHaveCount(7);
- await expect(page.locator('#cpt .cj').nth(0)).toContainText('2');await expect(page.locator('#cpt .cj').nth(1)).toContainText('manque 35');
+ await expect(page.locator('#cpt .cj').nth(0)).toContainText('2');await expect(page.locator('#cpt .cj').nth(1)).toContainText('manque 29');
  await expect(page.locator('#chRep')).toHaveText('3 réponses sur 5');
  await page.getByRole('button',{name:/Pas répondu/}).click();await expect(page.locator('#tbody tr')).toHaveCount(2);
  await page.getByRole('button',{name:/Ne jouent pas/}).click();await expect(page.locator('#tbody tr')).toHaveCount(1);
  await expect(page.locator('#tbody')).toContainText('Chris EXEMPLE3');
  await page.getByRole('button',{name:/^Tous/}).click();await page.getByLabel('Chercher un joueur').fill('sam');
  await expect(page.locator('#tbody tr')).toHaveCount(1);await expect(page.locator('#tbody tr .tot')).toHaveText('6/7');
+ // effectif des équipes : colonne Équipe, filtre par équipe, enregistrement
+ await page.getByLabel('Chercher un joueur').fill('');await page.getByRole('button',{name:/^PE1/}).click();await expect(page.locator('#tbody tr')).toHaveCount(1);
+ await expect(page.locator('#tbody tr')).toContainText('Alex EXEMPLE1');await expect(page.locator('#svSt')).toContainText('1 joueur rattaché');
+ await page.getByRole('button',{name:/^Tous/}).click();await expect(page.locator('#bSave')).toBeDisabled();
+ await page.locator('select[data-lic="'+L[1]+'"]').selectOption('2');await expect(page.locator('#svSt')).toContainText('Effectif modifié');
+ await page.locator('#bSave').click();await expect(page.locator('#svSt')).toContainText('2 joueurs rattachés');await expect(page.locator('#bSave')).toBeDisabled();
+ expect(state.cdpEffSaves).toHaveLength(1);expect(state.cdpEffSaves[0].effectif).toEqual({[L[0]]:1,[L[1]]:2});
  expect(errors).toEqual([]);
 });
 
@@ -368,9 +380,16 @@ test('CDP sportive : glisser-déposer, clic puis case, règles en direct et enre
  state.cdpCompos=Object.fromEntries([1,2,3].map(k=>{const c=compoAvec(1,0,k===1?[L[0],L[1],L[3]]:[L[0],L[1]]);if(k>1)c[2][0][0]=L[3];
   return [k,{id:k,journee:k,statut:'envoyee',created_at:'2026-09-20T10:00:00Z',auteur:'Test',compo:c}];}));
  await install(context,state);page.on('pageerror',e=>errors.push(e.message));
+ state.cdpEffectif={[L[4]]:1,[L[2]]:3};
  await page.goto('/sportive/cdp-compo.html?j=4');
  await expect(page.locator('#hJ')).toHaveText('J4');
  await expect(page.locator('#lDisp [data-carte]')).toHaveCount(5);
+ // effectif : badge sur la carte, filtre de la liste, « + effectif » remplit les cases vides de l'équipe sans déplacer personne
+ await expect(page.locator('#lDisp [data-carte="'+L[4]+'"] .tg.eff')).toHaveText('PE1');await expect(page.locator('#fe button')).toHaveCount(7);
+ await page.locator('#fe button[data-fe="3"]').click();await expect(page.locator('#lDisp [data-carte]')).toHaveCount(1);await page.locator('#fe button[data-fe="0"]').click();
+ await expect(page.locator('.eq').first()).toContainText('effectif 1 (1 dispo)');await page.locator('.eq').first().locator('[data-eff="1"]').click();
+ await expect(page.locator('[data-case="1-0-0"]')).toContainText('Nova EXEMPLE5');await expect(page.locator('.eq').first().locator('[data-eff]')).toHaveCount(0);
+ await page.getByRole('button',{name:'Retirer Nova EXEMPLE5 de l’équipe'}).click();await expect(page.locator('#lDisp [data-carte]')).toHaveCount(5);
  await expect(page.locator('#lDisp [data-carte="'+L[0]+'"]')).toContainText('brûlé pour les équipes 2 à 5');
  await expect(page.locator('#lDisp [data-carte="'+L[3]+'"]')).toContainText('brûlé pour les équipes 3 à 5');
  // glisser-déposer : Alex en PE2 groupe 1

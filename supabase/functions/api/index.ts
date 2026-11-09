@@ -48,7 +48,8 @@ const MAX_LICENCES_PAR_APPAREIL = 6;
 // Après, la réponse reste acceptée et la sportive la voit « en retard ».
 const CDP_ECHEANCE = new Date('2026-10-21T21:59:59Z');
 // Forme des équipes CDP, par numéro : nombre de groupes de 3 (règlement du 15/06/2026, art. 3 et 12).
-const CDP_FORME: Record<string, number> = { '1': 3, '2': 3, '3': 3, '4': 2, '5': 1 };
+// Groupes de 3 par équipe (shared/cdp.js) : PE1, PE2, Promo Honneur, D2 (équipe 4), D2 (équipe 5) — engagement du 09/11/2026.
+const CDP_FORME: Record<string, number> = { '1': 3, '2': 3, '3': 2, '4': 1, '5': 1 };
 
 const PHOTO_MAX_OCTETS = 5 * 1024 * 1024;
 const TEXTE_MAX = 6000;
@@ -1021,6 +1022,33 @@ async function router(req: Request): Promise<Response> {
       if (error) fail(500, 'ecriture_cdp', { detail: error.message });
       await journal(acteur, lien.role, 'cdp_compo', { journee, id: data.id, statut });
       return json({ ok: true, row: data });
+    }
+
+    // Effectif des équipes du CDP (liste de Cyril et Marion) : { licence: numéro d'équipe 1..5 }. Dernière version du
+    // slot `cdp_effectif` de scenarios_log ; indicatif pour composer, jamais publié (le site public ne lit pas cette route).
+    if (path === '/spo/cdp/effectif' && GET) {
+      const { data, error } = await sb.from('scenarios_log').select('id,tags,author,created_at').eq('slot', 'cdp_effectif')
+        .order('id', { ascending: false }).limit(1).maybeSingle();
+      if (error) fail(500, 'lecture_cdp', { detail: error.message });
+      return json({ effectif: (data?.tags as Json) ?? {}, id: data?.id ?? 0, saved_at: data?.created_at ?? null, auteur: data?.author ?? null });
+    }
+
+    if (path === '/spo/cdp/effectif' && POST) {
+      const body = await lireJson(req);
+      const src = body.effectif as Json;
+      if (!src || typeof src !== 'object' || Array.isArray(src)) fail(400, 'effectif_invalide');
+      const propre: Json = {};
+      for (const [l, n] of Object.entries(src)) {
+        if (!/^\d{5,9}$/.test(l)) fail(400, 'licence_invalide');
+        const eq = Number(n);
+        if (!Number.isInteger(eq) || !(String(eq) in CDP_FORME)) fail(400, 'equipe_invalide');
+        propre[l] = eq;
+      }
+      if (Object.keys(propre).length > 300) fail(400, 'effectif_invalide');
+      const { data, error } = await sb.from('scenarios_log').insert({ slot: 'cdp_effectif', tags: propre, author: acteur }).select('id,created_at').single();
+      if (error) fail(500, 'ecriture_cdp', { detail: error.message });
+      await journal(acteur, lien.role, 'cdp_effectif', { id: data.id, n: Object.keys(propre).length });
+      return json({ ok: true, id: data.id, saved_at: data.created_at, effectif: propre });
     }
 
     fail(404, 'route_inconnue');

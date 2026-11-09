@@ -98,7 +98,7 @@
   </section>
 
   <section class="sec" aria-labelledby="eqT">
-    <div class="sech"><h2 id="eqT">Les 5 équipes engagées</h2><span class="lab">36 joueurs chaque vendredi</span></div>
+    <div class="sech"><h2 id="eqT">Les 5 équipes engagées</h2><span class="lab" id="eqPl">30 joueurs chaque vendredi</span></div>
     <div class="ceqs" id="ceqs"></div>
     <p class="note">Chaque équipe est faite de groupes de 3 joueurs, et chaque groupe dispute 9 simples. La sportive compose les équipes à partir de vos dispos et envoie la convocation à chacun : les compositions ne sont pas publiées sur le site.</p>
   </section>
@@ -169,6 +169,7 @@
   if(apres) cpt.classList.add('late');
 
   document.getElementById('cdates').innerHTML=CDP.JOURNEES.map(x=>{ const d=jourDe(x.date); return '<div class="cdate'+(d<auj?' past':'')+'"><span class="j">J'+x.j+'</span><span class="lab">vendredi</span><span class="n">'+d.getDate()+'</span><span class="m">'+MOIS[d.getMonth()]+' '+d.getFullYear()+'</span><span class="lab">20h30</span></div>'; }).join('');
+  document.getElementById('eqPl').textContent=CDP.PLACES+' joueurs chaque vendredi';
   document.getElementById('ceqs').innerHTML=CDP.EQUIPES.map(e=>'<div class="ceq"><div class="top"><span class="num">'+e.n+'</span><span class="nom">'+esc(e.nom)+'</span></div><div class="dots" aria-hidden="true">'+Array.from({length:e.groupes},()=>'<span><i></i><i></i><i></i></span>').join('')+'</div><span class="det">'+(3*e.groupes)+' joueurs · '+(e.groupes>1?e.groupes+' groupes de 3':'1 groupe')+'</span><span class="lab">'+e.tables+' tables</span></div>').join('');
 
   /* ---------- la popup ---------- */
