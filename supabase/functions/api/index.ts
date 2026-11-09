@@ -1051,6 +1051,37 @@ async function router(req: Request): Promise<Response> {
       return json({ ok: true, id: data.id, saved_at: data.created_at, effectif: propre });
     }
 
+    // Rencontres du CDP : { j1..j7: { 1..5: { adv, dom: 'D'|'E'|'', adresse, rdv } } } — adversaire, lieu, adresse et heure de
+    // rendez-vous de chaque équipe, pour le texte WhatsApp des convocations. Slot `cdp_rencontres`, jamais publié.
+    if (path === '/spo/cdp/rencontres' && GET) {
+      const { data, error } = await sb.from('scenarios_log').select('id,tags,author,created_at').eq('slot', 'cdp_rencontres')
+        .order('id', { ascending: false }).limit(1).maybeSingle();
+      if (error) fail(500, 'lecture_cdp', { detail: error.message });
+      return json({ rencontres: (data?.tags as Json) ?? {}, id: data?.id ?? 0, saved_at: data?.created_at ?? null, auteur: data?.author ?? null });
+    }
+
+    if (path === '/spo/cdp/rencontres' && POST) {
+      const body = await lireJson(req);
+      const src = body.rencontres as Json;
+      if (!src || typeof src !== 'object' || Array.isArray(src)) fail(400, 'rencontres_invalides');
+      const propre: Json = {};
+      for (const [j, eqs] of Object.entries(src)) {
+        if (!/^j[1-7]$/.test(j) || !eqs || typeof eqs !== 'object' || Array.isArray(eqs)) fail(400, 'rencontres_invalides');
+        const pj: Json = {};
+        for (const [n, r] of Object.entries(eqs as Json)) {
+          if (!(n in CDP_FORME) || !r || typeof r !== 'object' || Array.isArray(r)) fail(400, 'rencontres_invalides');
+          const x = r as Json;
+          const dom = x.dom === 'D' || x.dom === 'E' ? x.dom : '';
+          pj[n] = { adv: texteCourt(x.adv, 120), dom, adresse: texteCourt(x.adresse, 240), rdv: texteCourt(x.rdv, 40) };
+        }
+        propre[j] = pj;
+      }
+      const { data, error } = await sb.from('scenarios_log').insert({ slot: 'cdp_rencontres', tags: propre, author: acteur }).select('id,created_at').single();
+      if (error) fail(500, 'ecriture_cdp', { detail: error.message });
+      await journal(acteur, lien.role, 'cdp_rencontres', { id: data.id, journees: Object.keys(propre) });
+      return json({ ok: true, id: data.id, saved_at: data.created_at, rencontres: propre });
+    }
+
     fail(404, 'route_inconnue');
   }
 

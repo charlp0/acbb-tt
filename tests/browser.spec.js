@@ -70,6 +70,10 @@ async function install(context,state){
    }
    if(api==='joueur/cdp'){(state.cdpSaves||(state.cdpSaves=[])).push(body);return send({ok:true,saved_at:'2026-09-30T10:00:00Z',retard:false});}
    if(api==='spo/cdp/dispos')return send({echeance:'2026-10-21T21:59:59Z',reponses:state.cdpReponses||{}});
+   if(api==='spo/cdp/rencontres'){
+    if(!body)return send({rencontres:state.cdpRenc||{},id:0,saved_at:null,auteur:null});
+    (state.cdpRencSaves||(state.cdpRencSaves=[])).push(body);state.cdpRenc=body.rencontres;return send({ok:true,id:9,saved_at:'2026-11-09T12:00:00Z',rencontres:body.rencontres});
+   }
    if(api==='spo/cdp/effectif'){
     if(!body)return send({effectif:state.cdpEffectif||{},id:state.cdpEffectif?7:0,saved_at:state.cdpEffectif?'2026-11-09T11:30:00Z':null,auteur:state.cdpEffectif?'Charles':null});
     (state.cdpEffSaves||(state.cdpEffSaves=[])).push(body);state.cdpEffectif=body.effectif;
@@ -390,6 +394,12 @@ test('CDP sportive : glisser-déposer, clic puis case, règles en direct et enre
  await expect(page.locator('.eq').first()).toContainText('effectif 1 (1 dispo)');await page.locator('.eq').first().locator('[data-eff="1"]').click();
  await expect(page.locator('[data-case="1-0-0"]')).toContainText('Nova EXEMPLE5');await expect(page.locator('.eq').first().locator('[data-eff]')).toHaveCount(0);
  await page.getByRole('button',{name:'Retirer Nova EXEMPLE5 de l’équipe'}).click();await expect(page.locator('#lDisp [data-carte]')).toHaveCount(5);
+ // cartes de l'effectif sous l'équipe (glissables) ; rencontre saisie → enregistrée ; texte WhatsApp
+ await expect(page.locator('.eq').first().locator('.effg [data-carte="'+L[4]+'"]')).toHaveCount(1);
+ await page.locator('.eq').first().locator('select[data-rc="dom"]').selectOption('E');await page.locator('.eq').first().locator('input[data-rc="adv"]').fill('Paris 13 TT');
+ await expect.poll(()=>state.cdpRencSaves?state.cdpRencSaves.length:0,{timeout:4000}).toBeGreaterThan(0);
+ expect(state.cdpRencSaves[state.cdpRencSaves.length-1].rencontres.j4['1']).toMatchObject({dom:'E',adv:'Paris 13 TT'});
+ const wa=await page.evaluate(()=>waTexte(1));expect(wa).toContain('Promo Excellence 1 · J4');expect(wa).toContain('🚗 Déplacement à Paris 13 TT');expect(wa).toContain('aucune compo saisie');
  await expect(page.locator('#lDisp [data-carte="'+L[0]+'"]')).toContainText('brûlé pour les équipes 2 à 5');
  await expect(page.locator('#lDisp [data-carte="'+L[3]+'"]')).toContainText('brûlé pour les équipes 3 à 5');
  // glisser-déposer : Alex en PE2 groupe 1

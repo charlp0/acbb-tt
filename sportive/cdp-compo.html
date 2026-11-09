@@ -69,6 +69,19 @@
   .fe button span{opacity:.7;margin-left:3px}
   .beff{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;min-height:26px;padding:0 9px;border-radius:99px;cursor:pointer;background:transparent;border:1px dashed rgba(242,106,27,.6);color:var(--orange);white-space:nowrap}
   .beff:hover{background:rgba(242,106,27,.1)}
+  .bwa{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;min-height:26px;padding:0 9px;border-radius:99px;cursor:pointer;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
+  .bwa:hover{border-color:rgba(255,255,255,.35);color:var(--ink)}
+  .eqh .acts2{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .rc{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:center;padding:8px 10px;border-radius:12px;border:1px dashed var(--line-2)}
+  .rc .lab{grid-column:1/-1}
+  .rc select,.rc input{font-family:"JetBrains Mono",monospace;font-size:11px;min-height:30px;padding:0 8px;border-radius:8px;background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink);min-width:0;width:100%}
+  .rc input::placeholder{color:var(--dimmer)}
+  .rc .adr{grid-column:1/3}
+  .effz{display:flex;flex-direction:column;gap:6px}
+  .effg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .effg .lc{padding:7px 9px}.effg .lc .nm{font-size:12px}
+  .lc.off{opacity:.55}
+  @media(max-width:720px){.effg{grid-template-columns:1fr}.rc{grid-template-columns:auto minmax(0,1fr)}.rc .adr{grid-column:1/-1}}
   .al{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.45;color:var(--lose-lt)}
   .al.av{color:#FDE68A}
   .al svg{flex:0 0 auto;margin-top:2px}
@@ -123,6 +136,7 @@
     <section class="savebar" id="savebar">
       <span class="sv-st" id="svSt">chargement…</span>
       <span class="sv-acts">
+        <button class="btn" id="bWaAll" type="button" title="Copier les convocations des 5 équipes pour WhatsApp">📋 Texte WhatsApp</button>
         <button class="btn" id="bAnnul" type="button" hidden>Annuler mes modifications</button>
         <button class="btn" id="bEnv" type="button" disabled>Marquer comme envoyée</button>
         <button class="btn primary" id="bSave" type="button" disabled>Enregistrer</button>
@@ -154,7 +168,7 @@
       </aside>
     </div>
 
-    <div class="pied" id="pied">Règlement du Championnat de Paris Île-de-France du 15/06/2026 · articles 8, 9, 12 et 13 · équipes numérotées 1 = PE1, 2 = PE2, 3 = Promo Honneur, 4 = D2 (équipe 4), 5 = D2 (équipe 5), engagement de Cyril et Marion du 09/11/2026.<br>Brûlage : 3 matchs ou plus cumulés dans les équipes de numéro inférieur (1 en PE1 et 2 en PE2 → brûlé pour la PH et les deux D2), comptés sur les compositions enregistrées des journées précédentes ; un brûlé par groupe de 3 reste admis à partir de l'équipe 2. Points : classement officiel 26/27 (licence). Effectif : l'équipe de rattachement de chaque joueur (liste de Cyril et Marion, modifiable dans Dispos CDP) ; il guide la composition sans la contraindre. Les compositions ne sont jamais publiées sur le site.</div>
+    <div class="pied" id="pied">Règlement du Championnat de Paris Île-de-France du 15/06/2026 · articles 8, 9, 12 et 13 · équipes numérotées 1 = PE1, 2 = PE2, 3 = Promo Honneur, 4 = D2 (équipe 4), 5 = D2 (équipe 5), engagement de Cyril et Marion du 09/11/2026.<br>Brûlage : 3 matchs ou plus cumulés dans les équipes de numéro inférieur (1 en PE1 et 2 en PE2 → brûlé pour la PH et les deux D2), comptés sur les compositions enregistrées des journées précédentes ; un brûlé par groupe de 3 reste admis à partir de l'équipe 2. Points : classement officiel 26/27 (licence). Effectif : l'équipe de rattachement de chaque joueur (liste de Cyril et Marion, modifiable dans Dispos CDP) ; il guide la composition sans la contraindre, ses cartes sous chaque équipe se glissent dans les cases. Rencontre : adversaire, lieu, adresse et rendez-vous, enregistrés dès la saisie, repris dans le texte WhatsApp (📋) de l'équipe ou des cinq. Les compositions ne sont jamais publiées sur le site.</div>
   </main>
 </div>
 <script src="../shared/api.js"></script>
@@ -168,7 +182,7 @@
    ?dev=1 = maquette locale : rôle sportive simulé, aucune donnée, aucune écriture. */
 const DEV=new URLSearchParams(location.search).get('dev')==='1';
 function api(route,body){
-  if(DEV){ if(route==='me') return Promise.resolve({role:'sportive',nom:'Test'}); if(body!==undefined) return Promise.reject(new Error('mode dev : aucune écriture')); if(route==='spo/cdp/dispos') return Promise.resolve({reponses:{}}); if(route==='spo/cdp/compos') return Promise.resolve({compos:{}}); if(route==='spo/cdp/effectif') return Promise.resolve({effectif:{}}); return Promise.resolve({}); }
+  if(DEV){ if(route==='me') return Promise.resolve({role:'sportive',nom:'Test'}); if(body!==undefined) return Promise.reject(new Error('mode dev : aucune écriture')); if(route==='spo/cdp/dispos') return Promise.resolve({reponses:{}}); if(route==='spo/cdp/compos') return Promise.resolve({compos:{}}); if(route==='spo/cdp/effectif') return Promise.resolve({effectif:{}}); if(route==='spo/cdp/rencontres') return Promise.resolve({rencontres:{}}); return Promise.resolve({}); }
   return ACBB.api(route,body);
 }
 const esc=ACBB.esc, toast=ACBB.toast;
@@ -182,7 +196,7 @@ const COURT={}; CDP.EQUIPES.forEach(e=>{ COURT[e.n]=e.court; });
 const ICX='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>';
 const ICA='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>';
 
-let P={}, R={}, COMPOS={}, EFF={}, fe=0, j=1, C=null, BASE='', sel=null, cible=null, drag=null, q='', occupe=false, CONFLIT=null;   // EFF : licence → équipe d'effectif ; fe : filtre de la liste (0 tous, 1..5, -1 sans équipe)
+let P={}, R={}, COMPOS={}, EFF={}, RENC={}, rencTimer=null, fe=0, j=1, C=null, BASE='', sel=null, cible=null, drag=null, q='', occupe=false, CONFLIT=null;   // EFF : licence → équipe d'effectif ; fe : filtre de la liste (0 tous, 1..5, -1 sans équipe)
 const PTS=new Proxy({},{get:(t,l)=>(P[l]&&P[l].pts)||0});
 const nomDe=l=>P[l]?((P[l].pre?P[l].pre+' ':'')+P[l].nom):'Licence '+l;
 const ptsDe=l=>(P[l]&&P[l].pts)||0;
@@ -194,6 +208,30 @@ function histo(h){ return Object.keys(h||{}).sort().map(t=>COURT[t]+' ×'+h[t]).
 function histoAvant(h,n){ const r={}; Object.keys(h||{}).forEach(t=>{ if(+t<n) r[t]=h[t]; }); return histo(r); }
 const pour=CDP.pourEquipes;
 const effDe=l=>EFF[l]?COURT[EFF[l]]:'';
+const SALLE_ACBB='Piscine de Boulogne, 165 rue du Vieux Pont de Sèvres, 92100 Boulogne-Billancourt';
+const rencDe=(jj,n)=>Object.assign({adv:'',dom:'',adresse:'',rdv:''},(RENC['j'+jj]||{})[n]||{});
+/* Texte WhatsApp d'une équipe : même esprit que l'export des compos du championnat par équipe (demande de Cyril, 09/11/2026). */
+function waTexte(n){
+  const e=CDP.EQUIPES.find(y=>y.n===n), x=CDP.JOURNEES[j-1], dt=jourDe(x.date), r=rencDe(j,n);
+  let s='🏓 ACBB TT — Championnat de Paris · '+e.nom+' · J'+j+'\n';
+  s+='📅 Vendredi '+dt.getDate()+' '+MOIS[dt.getMonth()]+' '+dt.getFullYear()+' · 20h30'+(r.rdv?' · rendez-vous '+r.rdv:'')+'\n';
+  if(r.dom==='D') s+='🏠 Domicile'+(r.adv?' vs '+r.adv:'')+'\n📍 '+(r.adresse||SALLE_ACBB)+'\n';
+  else if(r.dom==='E') s+='🚗 Déplacement'+(r.adv?' à '+r.adv:'')+'\n📍 '+(r.adresse||'adresse à confirmer')+'\n';
+  else s+='📍 Lieu à confirmer'+(r.adv?' · vs '+r.adv:'')+'\n';
+  const gs=C[n]; const n0=gs.reduce((t,g)=>t+g.filter(Boolean).length,0);
+  if(!n0) return s+'\n👥 Compo : aucune compo saisie';
+  s+='\n👥 Compo :';
+  gs.forEach((g,gi)=>{ const pl=g.filter(Boolean); s+='\n'+(gs.length>1?'Groupe '+(gi+1)+' : ':'')+(pl.length?pl.map(l=>nomDe(l)+' ('+ptsDe(l)+')').join(', '):'—')+(pl.length<3?' · '+(3-pl.length)+' absent'+(3-pl.length>1?'s':''):''); });
+  return s;
+}
+function copier(txt){
+  const repli=()=>{ const ta=document.createElement('textarea'); ta.value=txt; ta.setAttribute('readonly',''); ta.style.cssText='position:fixed;left:0;top:0;width:1px;height:1px;opacity:0'; document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,txt.length); let ok=false; try{ ok=document.execCommand('copy'); }catch(_){} document.body.removeChild(ta);
+    if(ok) toast('📋 copié — colle dans WhatsApp'); else { const z=document.createElement('textarea'); z.value=txt; z.style.cssText='position:fixed;inset:6% 5%;z-index:9999;width:90%;height:88%;padding:12px;font:12px/1.5 monospace'; document.body.appendChild(z); z.select(); toast('copie impossible automatiquement — le texte est sélectionné, fais Cmd+C puis Échap'); z.onkeydown=ev=>{ if(ev.key==='Escape') document.body.removeChild(z); }; } };
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(()=>toast('📋 copié — colle dans WhatsApp'),repli); else repli();
+}
+/* Rencontres : enregistrées 800 ms après la dernière frappe (toutes journées, document complet). */
+function majRenc(n,champ,val){ RENC['j'+j]=RENC['j'+j]||{}; RENC['j'+j][n]=Object.assign(rencDe(j,n),{[champ]:val}); clearTimeout(rencTimer); rencTimer=setTimeout(enregistrerRenc,800); }
+async function enregistrerRenc(){ try{ const out=await api('spo/cdp/rencontres',{rencontres:RENC}); if(out&&out.rencontres) RENC=out.rencontres; toast('Rencontre enregistrée'); }catch(e){ toast('Rencontre non enregistrée : '+((e&&e.body&&e.body.error)||e.message)); } }
 function ou(l){ for(const e of CDP.EQUIPES) for(let g=0;g<C[e.n].length;g++) for(let k=0;k<3;k++) if(C[e.n][g][k]===l) return {n:e.n,g,k}; return null; }
 const cleDe=o=>o.n+'-'+o.g+'-'+o.k, deCle=s=>{ const a=s.split('-').map(Number); return {n:a[0],g:a[1],k:a[2]}; };
 
@@ -243,6 +281,16 @@ function render(){
   // équipes ; une équipe encore vide est « à composer » : ses absents ne sont pas des alertes tant qu'on n'a rien posé
   let nErr=0, nAv=0; const cpt={brulage:0,ordre:0,absents:0,double:0,indispo:0};
   const cc=cible&&cleDe(cible);
+  const carte=(l,avecDispo)=>{
+    const h=hist[l], T=CDP.premierBrule(h), t=[];
+    if(T) t.push(tag('brûlé pour '+pour(T),'rouge'));
+    else if(CDP.aUnMatch(h)) t.push(tag('à 1 match du brûlage','jaune'));
+    if(histo(h)) t.push(tag(histo(h),'gris'));
+    if(R[l]&&R[l].joue===false) t.push(tag('ne joue pas le CDP','contour'));
+    if(avecDispo){ const d=dispo[l]; if(d===false) t.push(tag('pas dispo','rouge')); else if(d===undefined) t.push(tag('pas répondu','contour')); }
+    else if(EFF[l]) t.push(tag(effDe(l),'eff'));
+    return '<div class="lc'+(sel===l?' sel':'')+(avecDispo&&dispo[l]===false?' off':'')+'" role="button" tabindex="0" draggable="true" data-carte="'+l+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts')+'"><span class="l1"><span class="nm">'+esc(nomDe(l))+'</span><span class="pt">'+ptsDe(l)+'</span></span>'+(t.length?'<span class="tgs">'+t.join('')+'</span>':'')+'</div>';
+  };
   const places=new Set(); CDP.EQUIPES.forEach(e=>C[e.n].forEach(g=>g.forEach(l=>{ if(l) places.add(l); })));
   document.getElementById('teams').innerHTML=CDP.EQUIPES.map(e=>{
     const R2=res.equipes[e.n], gs=C[e.n], n=gs.reduce((s,g)=>s+g.filter(Boolean).length,0), vide=n===0;
@@ -269,7 +317,18 @@ function render(){
     const effL=Object.keys(EFF).filter(l=>EFF[l]===e.n&&P[l]), effD=effL.filter(l=>dispo[l]===true), effLibres=effL.filter(l=>!places.has(l)&&dispo[l]!==false);
     const vides=gs.reduce((s,g)=>s+g.filter(x=>!x).length,0);
     const beff=effL.length&&vides&&effLibres.length?'<button type="button" class="beff" data-eff="'+e.n+'" title="Remplir les cases vides avec l’effectif de l’équipe non encore placé (dispos d’abord)">+ effectif</button>':'';
-    return '<section class="eq" aria-label="Équipe '+e.n+', '+esc(e.nom)+'"><div class="eqh"><span class="num">'+e.n+'</span><span class="eqn"><b>'+esc(e.nom)+'</b><span>'+(3*e.groupes)+' joueurs · '+e.tables+' tables · '+n+' placé'+(n>1?'s':'')+(effL.length?' · effectif '+effL.length+' ('+effD.length+' dispo'+(effD.length>1?'s':'')+')':'')+'</span></span>'+beff+'<span class="est '+st[1]+'">'+st[0]+'</span></div>'+grp+(R2.note&&!vide&&!eErr?'<span class="note">'+esc(R2.note)+'</span>':'')+'</section>';
+    const bwa='<button type="button" class="bwa" data-wa="'+e.n+'" title="Copier la convocation de l’équipe pour WhatsApp">📋 WhatsApp</button>';
+    const r=rencDe(j,e.n);
+    const renc='<div class="rc"><span class="lab">Rencontre J'+j+'</span>'
+      +'<select data-rc="dom" data-eq="'+e.n+'" aria-label="Lieu"><option value=""'+(r.dom===''?' selected':'')+'>lieu ?</option><option value="D"'+(r.dom==='D'?' selected':'')+'>🏠 Domicile</option><option value="E"'+(r.dom==='E'?' selected':'')+'>🚗 Déplacement</option></select>'
+      +'<input data-rc="adv" data-eq="'+e.n+'" value="'+esc(r.adv)+'" placeholder="adversaire" aria-label="Adversaire">'
+      +'<input data-rc="rdv" data-eq="'+e.n+'" value="'+esc(r.rdv)+'" placeholder="rendez-vous (ex. 19h45)" aria-label="Heure de rendez-vous">'
+      +'<input class="adr" data-rc="adresse" data-eq="'+e.n+'" value="'+esc(r.adresse)+'" placeholder="'+esc(r.dom==='D'?SALLE_ACBB:'adresse de la salle')+'" aria-label="Adresse de la salle">'
+      +'</div>';
+    // effectif de l'équipe non encore placé, en cartes glissables sous les groupes (demande de Charles, 09/11/2026)
+    const effCards=effL.filter(l=>!places.has(l)).sort((a,b)=>((dispo[b]===true)-(dispo[a]===true))||((dispo[b]!==false)-(dispo[a]!==false))||(ptsDe(b)-ptsDe(a))||nomDe(a).localeCompare(nomDe(b),'fr'));
+    const effz=effL.length?'<div class="effz"><span class="lab">Effectif '+esc(e.court)+' · '+(effCards.length?effCards.length+' non placé'+(effCards.length>1?'s':''):'tous placés')+'</span>'+(effCards.length?'<div class="effg">'+effCards.map(l=>carte(l,true)).join('')+'</div>':'')+'</div>':'';
+    return '<section class="eq" aria-label="Équipe '+e.n+', '+esc(e.nom)+'"><div class="eqh"><span class="num">'+e.n+'</span><span class="eqn"><b>'+esc(e.nom)+'</b><span>'+(3*e.groupes)+' joueurs · '+e.tables+' tables · '+n+' placé'+(n>1?'s':'')+(effL.length?' · effectif '+effL.length+' ('+effD.length+' dispo'+(effD.length>1?'s':'')+')':'')+'</span></span><span class="acts2">'+beff+bwa+'<span class="est '+st[1]+'">'+st[0]+'</span></span></div>'+grp+(R2.note&&!vide&&!eErr?'<span class="note">'+esc(R2.note)+'</span>':'')+renc+effz+'</section>';
   }).join('');
 
   // listes : disponibles ce vendredi, pas répondu, pas dispo ; ceux qui ne jouent pas le CDP n'apparaissent qu'en cherchant
@@ -277,19 +336,10 @@ function render(){
   const nEff=x=>Object.keys(P).filter(l=>!places.has(l)&&(x===-1?!EFF[l]:EFF[l]===x)).length;
   document.getElementById('fe').innerHTML=[[0,'Tous',null]].concat(CDP.EQUIPES.map(e=>[e.n,e.court,nEff(e.n)])).concat([[-1,'sans équipe',nEff(-1)]]).map(f=>'<button type="button" data-fe="'+f[0]+'" aria-pressed="'+(fe===f[0])+'">'+esc(f[1])+(f[2]!=null?'<span>'+f[2]+'</span>':'')+'</button>').join('');
   const tous=Object.keys(P).filter(l=>!places.has(l)&&trouve(l)).sort((a,b)=>(ptsDe(b)-ptsDe(a))||nomDe(a).localeCompare(nomDe(b),'fr'));
-  const carte=l=>{
-    const h=hist[l], T=CDP.premierBrule(h), t=[];
-    if(T) t.push(tag('brûlé pour '+pour(T),'rouge'));
-    else if(CDP.aUnMatch(h)) t.push(tag('à 1 match du brûlage','jaune'));
-    if(histo(h)) t.push(tag(histo(h),'gris'));
-    if(R[l]&&R[l].joue===false) t.push(tag('ne joue pas le CDP','contour'));
-    if(EFF[l]) t.push(tag(effDe(l),'eff'));
-    return '<div class="lc'+(sel===l?' sel':'')+'" role="button" tabindex="0" draggable="true" data-carte="'+l+'" aria-pressed="'+(sel===l)+'" title="'+esc(nomDe(l)+' · '+ptsDe(l)+' pts')+'"><span class="l1"><span class="nm">'+esc(nomDe(l))+'</span><span class="pt">'+ptsDe(l)+'</span></span>'+(t.length?'<span class="tgs">'+t.join('')+'</span>':'')+'</div>';
-  };
   const lD=tous.filter(l=>dispo[l]===true), lS=tous.filter(l=>dispo[l]===undefined), lN=tous.filter(l=>R[l]&&R[l].joue&&dispo[l]===false), lX=qq?tous.filter(l=>R[l]&&R[l].joue===false):[];
-  document.getElementById('lDisp').innerHTML=lD.map(carte).join('')+(lD.length?'':'<span class="expl">'+(qq?'Aucun disponible ne correspond.':'Tous les joueurs disponibles ce vendredi sont placés.')+'</span>')+lX.map(carte).join('');
-  document.getElementById('lSans').innerHTML=lS.map(carte).join('');
-  document.getElementById('lNon').innerHTML=lN.map(carte).join('');
+  document.getElementById('lDisp').innerHTML=lD.map(l=>carte(l)).join('')+(lD.length?'':'<span class="expl">'+(qq?'Aucun disponible ne correspond.':'Tous les joueurs disponibles ce vendredi sont placés.')+'</span>')+lX.map(l=>carte(l)).join('');
+  document.getElementById('lSans').innerHTML=lS.map(l=>carte(l)).join('');
+  document.getElementById('lNon').innerHTML=lN.map(l=>carte(l)).join('');
   document.getElementById('nSans').textContent=lS.length; document.getElementById('nNon').textContent=lN.length;
   if(qq){ document.getElementById('dSans').open=lS.length>0; document.getElementById('dNon').open=lN.length>0; }
   const nLib=Object.keys(P).filter(l=>dispo[l]===true&&!places.has(l)).length;
@@ -350,6 +400,8 @@ const main=document.getElementById('main');
 main.addEventListener('click',e=>{
   const x=e.target.closest('[data-retirer]'); if(x){ retirer(x.dataset.retirer); return; }
   const be=e.target.closest('[data-eff]'); if(be){ placerEffectif(+be.dataset.eff); return; }
+  const bw=e.target.closest('[data-wa]'); if(bw){ copier(waTexte(+bw.dataset.wa)); return; }
+  if(e.target.closest('.rc')) return;   // saisie de la rencontre : pas de sélection de joueur
   const bf=e.target.closest('#fe button[data-fe]'); if(bf){ fe=+bf.dataset.fe; render(); return; }
   const jp=e.target.closest('#jp a[data-j]');
   if(jp){ e.preventDefault(); const n=+jp.dataset.j; if(n===j) return; if(sale()&&!confirm('Tes modifications de J'+j+' ne sont pas enregistrées. Changer de journée quand même ?')) return; chargerJournee(n); return; }
@@ -389,6 +441,9 @@ main.addEventListener('dragend',()=>{ drag=null; document.getElementById('teams'
 document.getElementById('q').addEventListener('input',e=>{ q=e.target.value; render(); });
 document.getElementById('aideX').addEventListener('click',()=>{ sel=null; cible=null; render(); });
 document.getElementById('bSave').addEventListener('click',()=>enregistrer('brouillon'));
+document.getElementById('bWaAll').addEventListener('click',()=>copier(CDP.EQUIPES.map(e=>waTexte(e.n)).join('\n\n')));
+main.addEventListener('input',e=>{ const f=e.target.closest('[data-rc]'); if(f) majRenc(+f.dataset.eq,f.dataset.rc,f.value); });
+main.addEventListener('change',e=>{ const f=e.target.closest('select[data-rc]'); if(f){ majRenc(+f.dataset.eq,f.dataset.rc,f.value); render(); } });
 document.getElementById('bAnnul').addEventListener('click',()=>{ if(!confirm('Revenir à la version enregistrée de J'+j+' ? Tes modifications seront perdues.')) return; C=JSON.parse(BASE); sel=null; cible=null; render(); });
 document.getElementById('bEnv').addEventListener('click',e=>{ const n=+e.currentTarget.dataset.erreurs||0; if(n&&!confirm('La composition J'+j+' a '+n+' alerte'+(n>1?'s':'')+'. La marquer envoyée quand même ?')) return; enregistrer('envoyee'); });
 document.getElementById('cfSa').addEventListener('click',async()=>{ try{ await rechargerCompos(); chargerJournee(j); toast('Version enregistrée chargée'); }catch(e){ toast('Lecture impossible : '+e.message); } });
@@ -396,7 +451,7 @@ document.getElementById('cfMa').addEventListener('click',async()=>{ const attend
 window.addEventListener('beforeunload',e=>{ if(C&&sale()){ e.preventDefault(); e.returnValue=''; } });
 
 async function boot(){
-  const [sc,off,rep,cps,ix,eff]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos'),api('spo/cdp/compos'),gj('../data/players_index.json'),api('spo/cdp/effectif').catch(()=>null)]);
+  const [sc,off,rep,cps,ix,eff,rc]=await Promise.all([gj('../data/scoring.json'),gj('../data/officiel2627.json'),api('spo/cdp/dispos'),api('spo/cdp/compos'),gj('../data/players_index.json'),api('spo/cdp/effectif').catch(()=>null),api('spo/cdp/rencontres').catch(()=>null)]);
   const OFF=(off&&off.officiel)||{};
   const IX={}; (Array.isArray(ix)?ix:[]).forEach(p=>{ if(p.lic) IX[String(p.lic)]=p; });   // tous les licenciés : nom d'un joueur hors scoring
   const inconnu=l=>{ const x=IX[l]; return x?{nom:x.nom||'',pre:x.prenom||'',pts:OFF[l]||x.officiel||x.mensuel||0}:{nom:'Licence '+l,pre:'',pts:OFF[l]||0}; };
@@ -404,7 +459,9 @@ async function boot(){
   R=(rep&&rep.reponses)||{};
   Object.keys(R).forEach(l=>{ if(!P[l]) P[l]=inconnu(l); });
   COMPOS=(cps&&cps.compos)||{};
+  RENC=(rc&&rc.rencontres)||{};
   EFF={}; Object.entries((eff&&eff.effectif)||{}).forEach(([l,n])=>{ if(n>=1&&n<=5){ EFF[String(l)]=+n; if(!P[l]) P[l]=inconnu(l); } });
+  if(DEV){ const top=Object.keys(P).sort((a,b)=>ptsDe(b)-ptsDe(a)).slice(0,38); top.forEach((l,i)=>{ EFF[l]=i<12?1:i<24?2:i<32?3:i<35?4:5; }); }   // maquette : un effectif plausible
   // joueurs d'une composition enregistrée mais absents de la liste des points : on les garde, sous leur numéro
   Object.values(COMPOS).forEach(r=>Object.values((r&&r.compo)||{}).forEach(gs=>(gs||[]).forEach(g=>(g||[]).forEach(l=>{ if(l&&!P[l]) P[l]=inconnu(l); }))));
   const qj=+new URLSearchParams(location.search).get('j');
