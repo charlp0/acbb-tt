@@ -39,7 +39,7 @@ jobs:
         env:
           FFTT_ID: ${{ secrets.FFTT_ID }}
           FFTT_PWD: ${{ secrets.FFTT_PWD }}
-        run: python3 scripts/fftt_r3_92.py || echo "R3 indisponible : dernière lecture conservée"
+        run: python3 scripts/fftt_r3_92.py || echo "R3 indisponible, dernière lecture conservée"
       - name: Projection de fin de phase (sportive/fin-de-phase.html)
         run: python3 scripts/fin_de_phase.py
       - run: python3 scripts/check_data.py
