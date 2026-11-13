@@ -25652,11 +25652,9 @@
      "cat": "-11 ans Filles",
      "rang": [
       0,
-      0,
       0
      ],
-     "id": "t2-g01",
-     "niveau": "D"
+     "id": "t2-g01"
     },
     {
      "nom": "D1 -13 FILLES",
@@ -25667,7 +25665,7 @@
      "date": "14/11/2026",
      "joueurs": [
       {
-       "pos": 1,
+       "pos": 2,
        "ajoute": false,
        "nom": "LAGRANGE",
        "pre": "Enora",
@@ -25678,7 +25676,7 @@
        "acbb": false
       },
       {
-       "pos": 2,
+       "pos": 3,
        "ajoute": false,
        "nom": "BONNET",
        "pre": "Loucia",
@@ -25689,7 +25687,7 @@
        "acbb": false
       },
       {
-       "pos": 3,
+       "pos": 4,
        "ajoute": false,
        "nom": "LIN",
        "pre": "Valentine",
@@ -25700,7 +25698,7 @@
        "acbb": false
       },
       {
-       "pos": 4,
+       "pos": 5,
        "ajoute": false,
        "nom": "BETKAOUI",
        "pre": "Asna",
@@ -25711,7 +25709,7 @@
        "acbb": false
       },
       {
-       "pos": 5,
+       "pos": 6,
        "ajoute": false,
        "nom": "SAAD",
        "pre": "Clara",
@@ -25723,7 +25721,7 @@
        "lic": "9268714"
       },
       {
-       "pos": 6,
+       "pos": 7,
        "ajoute": false,
        "nom": "MAKHLOUF GENILLARD",
        "pre": "Eva",
@@ -25734,7 +25732,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 8,
        "ajoute": false,
        "nom": "LEROY",
        "pre": "Ellana",
@@ -25745,7 +25743,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 9,
        "ajoute": false,
        "nom": "JANOD",
        "pre": "Romy",
@@ -25756,7 +25754,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 10,
        "ajoute": false,
        "nom": "MAURIZE",
        "pre": "Ania-Rose",
@@ -25768,7 +25766,7 @@
        "lic": "9268092"
       },
       {
-       "pos": 10,
+       "pos": 11,
        "ajoute": false,
        "nom": "RAFI",
        "pre": "Sofia",
@@ -25779,7 +25777,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 12,
        "ajoute": false,
        "nom": "THOLLON PAYO",
        "pre": "Cyllene",
@@ -25790,7 +25788,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 13,
        "ajoute": false,
        "nom": "CHARTIN",
        "pre": "Charlotte",
@@ -25801,7 +25799,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 14,
        "ajoute": false,
        "nom": "CHARTIN",
        "pre": "Juliette",
@@ -25818,11 +25816,9 @@
      "cat": "-13 ans Filles",
      "rang": [
       1,
-      0,
       0
      ],
-     "id": "t2-g02",
-     "niveau": "D"
+     "id": "t2-g02"
     },
     {
      "nom": "D1 -15 FILLES",
@@ -25971,11 +25967,9 @@
      "cat": "-15 ans Filles",
      "rang": [
       2,
-      0,
       0
      ],
-     "id": "t2-g03",
-     "niveau": "D"
+     "id": "t2-g03"
     },
     {
      "nom": "D1 -11 GARCONS",
@@ -26170,11 +26164,9 @@
      "cat": "-11 ans Garçons",
      "rang": [
       0,
-      1,
-      0
+      1
      ],
-     "id": "t2-g04",
-     "niveau": "D"
+     "id": "t2-g04"
     },
     {
      "nom": "D2 -11 GARCONS",
@@ -26369,11 +26361,9 @@
      "cat": "-11 ans Garçons",
      "rang": [
       0,
-      1,
-      0
+      1
      ],
-     "id": "t2-g05",
-     "niveau": "D"
+     "id": "t2-g05"
     },
     {
      "nom": "D2 -11 GARCONS",
@@ -26569,11 +26559,9 @@
      "cat": "-11 ans Garçons",
      "rang": [
       0,
-      1,
-      0
+      1
      ],
-     "id": "t2-g06",
-     "niveau": "D"
+     "id": "t2-g06"
     },
     {
      "nom": "D3 -11 GARCONS",
@@ -26598,17 +26586,6 @@
       {
        "pos": 2,
        "ajoute": false,
-       "nom": "BENTOLILA",
-       "pre": "Taylor",
-       "club": "PUTEAUX TT CSM",
-       "cat": "B1",
-       "cats": "-10",
-       "clt": 500,
-       "acbb": false
-      },
-      {
-       "pos": 3,
-       "ajoute": false,
        "nom": "RIT",
        "pre": "Noah",
        "club": "ISSY-LES-MOULINEAUX",
@@ -26618,7 +26595,7 @@
        "acbb": false
       },
       {
-       "pos": 4,
+       "pos": 3,
        "ajoute": false,
        "nom": "HANVICHID MARTEAU",
        "pre": "Nathan",
@@ -26629,7 +26606,7 @@
        "acbb": false
       },
       {
-       "pos": 5,
+       "pos": 4,
        "ajoute": false,
        "nom": "PITIOT",
        "pre": "Maxime",
@@ -26640,7 +26617,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
+       "pos": 5,
        "ajoute": false,
        "nom": "LOZANO",
        "pre": "Raphaël",
@@ -26651,7 +26628,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 6,
        "ajoute": false,
        "nom": "PARA",
        "pre": "Lukas",
@@ -26662,7 +26639,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 7,
        "ajoute": false,
        "nom": "BONNET",
        "pre": "Paul",
@@ -26673,7 +26650,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 8,
        "ajoute": false,
        "nom": "LEJUIF",
        "pre": "Thomas",
@@ -26684,7 +26661,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 9,
        "ajoute": false,
        "nom": "MANADER",
        "pre": "Baptiste",
@@ -26695,7 +26672,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 10,
        "ajoute": false,
        "nom": "POPOT",
        "pre": "Erwan",
@@ -26706,7 +26683,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 11,
        "ajoute": false,
        "nom": "PETIT",
        "pre": "Benjamin",
@@ -26718,7 +26695,7 @@
        "lic": "9269302"
       },
       {
-       "pos": 13,
+       "pos": 12,
        "ajoute": false,
        "nom": "HAZAC",
        "pre": "Aaron-Ly",
@@ -26729,7 +26706,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 13,
        "ajoute": false,
        "nom": "ROCK",
        "pre": "Axel",
@@ -26740,7 +26717,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
+       "pos": 14,
        "ajoute": false,
        "nom": "BOUGEARD",
        "pre": "Aydan",
@@ -26757,11 +26734,9 @@
      "cat": "-11 ans Garçons",
      "rang": [
       0,
-      1,
-      0
+      1
      ],
-     "id": "t2-g07",
-     "niveau": "D"
+     "id": "t2-g07"
     },
     {
      "nom": "D3 -11 GARCONS",
@@ -26807,17 +26782,6 @@
       {
        "pos": 4,
        "ajoute": false,
-       "nom": "BENTOLILA",
-       "pre": "Adryan",
-       "club": "PUTEAUX TT CSM",
-       "cat": "B1",
-       "cats": "-10",
-       "clt": 500,
-       "acbb": false
-      },
-      {
-       "pos": 5,
-       "ajoute": false,
        "nom": "GARCIA",
        "pre": "Jacques",
        "club": "BOULOGNE BILLANCOURT AC",
@@ -26828,7 +26792,7 @@
        "lic": "9264491"
       },
       {
-       "pos": 6,
+       "pos": 5,
        "ajoute": false,
        "nom": "PIRES",
        "pre": "Mathis",
@@ -26839,7 +26803,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 6,
        "ajoute": false,
        "nom": "MOURSOUX",
        "pre": "Anthony",
@@ -26850,7 +26814,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 7,
        "ajoute": false,
        "nom": "LALOUM",
        "pre": "Merlin",
@@ -26861,7 +26825,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 8,
        "ajoute": false,
        "nom": "BRILLAUD",
        "pre": "Yanis",
@@ -26872,7 +26836,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 9,
        "ajoute": false,
        "nom": "SAVOUREUX D ASSISE",
        "pre": "Mahelo",
@@ -26883,7 +26847,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 10,
        "ajoute": false,
        "nom": "MERITE CORTES",
        "pre": "Paul",
@@ -26894,7 +26858,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 11,
        "ajoute": false,
        "nom": "MORONVALLE",
        "pre": "Ewen",
@@ -26905,7 +26869,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 12,
        "ajoute": false,
        "nom": "BIDAULT",
        "pre": "Noah",
@@ -26916,19 +26880,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
-       "ajoute": false,
-       "nom": "COSTE",
-       "pre": "Valentin",
-       "club": "BOULOGNE BILLANCOURT AC",
-       "cat": "B2",
-       "cats": "-11",
-       "clt": 500,
-       "acbb": true,
-       "lic": "9264440"
-      },
-      {
-       "pos": 15,
+       "pos": 13,
        "ajoute": false,
        "nom": "LE FRAPPER",
        "pre": "Artur",
@@ -26939,7 +26891,7 @@
        "acbb": false
       },
       {
-       "pos": 16,
+       "pos": 14,
        "ajoute": false,
        "nom": "MAHFOUD",
        "pre": "Ghailan",
@@ -26948,6 +26900,18 @@
        "cats": "-11",
        "clt": 500,
        "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "COSTE",
+       "pre": "Valentin",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "B2",
+       "cats": "-11",
+       "clt": 500,
+       "acbb": true,
+       "lic": "9264440"
       }
      ],
      "div": "D3",
@@ -26956,11 +26920,9 @@
      "cat": "-11 ans Garçons",
      "rang": [
       0,
-      1,
-      0
+      1
      ],
-     "id": "t2-g08",
-     "niveau": "D"
+     "id": "t2-g08"
     },
     {
      "nom": "D3-11 Groupe 3",
@@ -27159,11 +27121,9 @@
      "cat": "-11 ans Garçons",
      "rang": [
       0,
-      1,
-      0
+      1
      ],
-     "id": "t2-g09",
-     "niveau": "D"
+     "id": "t2-g09"
     },
     {
      "nom": "D1 -13 GARCONS",
@@ -27359,11 +27319,9 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1,
-      0
+      1
      ],
-     "id": "t2-g10",
-     "niveau": "D"
+     "id": "t2-g10"
     },
     {
      "nom": "D2 -13 GARCONS",
@@ -27557,11 +27515,9 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1,
-      0
+      1
      ],
-     "id": "t2-g11",
-     "niveau": "D"
+     "id": "t2-g11"
     },
     {
      "nom": "D2 -13 GARCONS",
@@ -27747,17 +27703,6 @@
        "cats": "-12",
        "clt": 500,
        "acbb": false
-      },
-      {
-       "pos": null,
-       "ajoute": true,
-       "nom": "LEPAGE BOUSLIMI",
-       "pre": "Eddy",
-       "club": "RUEIL ATHLETIC CLUB TT",
-       "cat": "M1",
-       "cats": "-12",
-       "clt": 585,
-       "acbb": false
       }
      ],
      "div": "D2",
@@ -27766,11 +27711,9 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1,
-      0
+      1
      ],
-     "id": "t2-g12",
-     "niveau": "D"
+     "id": "t2-g12"
     },
     {
      "nom": "D3 -13 GARCONS",
@@ -27958,17 +27901,6 @@
        "cats": "-12",
        "clt": 500,
        "acbb": false
-      },
-      {
-       "pos": 17,
-       "ajoute": false,
-       "nom": "TESTU",
-       "pre": "Gabriel",
-       "club": "BOIS COLOMBES SPORTS",
-       "cat": "M1",
-       "cats": "-12",
-       "clt": 500,
-       "acbb": false
       }
      ],
      "div": "D3",
@@ -27977,11 +27909,9 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1,
-      0
+      1
      ],
-     "id": "t2-g13",
-     "niveau": "D"
+     "id": "t2-g13"
     },
     {
      "nom": "D3 -13 GARCONS",
@@ -28187,11 +28117,9 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1,
-      0
+      1
      ],
-     "id": "t2-g14",
-     "niveau": "D"
+     "id": "t2-g14"
     },
     {
      "nom": "D3 -13 GARCONS",
@@ -28248,17 +28176,6 @@
       {
        "pos": 5,
        "ajoute": false,
-       "nom": "CALMELS",
-       "pre": "Gaspard",
-       "club": "LES VOLTIGEURS DE BILLANCOURT",
-       "cat": "M1",
-       "cats": "-12",
-       "clt": 522,
-       "acbb": false
-      },
-      {
-       "pos": 6,
-       "ajoute": false,
        "nom": "GADAYAN",
        "pre": "Léo",
        "club": "PLESSIS ROBINSON TT",
@@ -28268,7 +28185,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 6,
        "ajoute": false,
        "nom": "DESPLATS",
        "pre": "Axel",
@@ -28279,7 +28196,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 7,
        "ajoute": false,
        "nom": "ALAMI AROUSSI",
        "pre": "Naël",
@@ -28290,7 +28207,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 8,
        "ajoute": false,
        "nom": "STEPHAN",
        "pre": "Ayden",
@@ -28301,7 +28218,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 9,
        "ajoute": false,
        "nom": "LEJARS",
        "pre": "Marius",
@@ -28312,7 +28229,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 10,
        "ajoute": false,
        "nom": "LAUTIE-LAUDAT",
        "pre": "Hector",
@@ -28323,7 +28240,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 11,
        "ajoute": false,
        "nom": "DESCOUX",
        "pre": "Leo",
@@ -28334,7 +28251,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 12,
        "ajoute": false,
        "nom": "IVANOVIC",
        "pre": "Kosta",
@@ -28345,7 +28262,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 13,
        "ajoute": false,
        "nom": "PLISSON BRIDOUX",
        "pre": "Alister",
@@ -28356,18 +28273,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
-       "ajoute": false,
-       "nom": "GAGELIN",
-       "pre": "Amaury",
-       "club": "ANTONY SP TENNIS DE TABLE",
-       "cat": "M1",
-       "cats": "-12",
-       "clt": 519,
-       "acbb": false
-      },
-      {
-       "pos": 16,
+       "pos": 14,
        "ajoute": false,
        "nom": "VIALARD",
        "pre": "Alexandre",
@@ -28378,7 +28284,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 15,
        "ajoute": false,
        "nom": "BEURIER",
        "pre": "Charles",
@@ -28395,11 +28301,9 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1,
-      0
+      1
      ],
-     "id": "t2-g15",
-     "niveau": "D"
+     "id": "t2-g15"
     },
     {
      "nom": "D3 -13 GARCONS",
@@ -28487,17 +28391,6 @@
        "acbb": false
       },
       {
-       "pos": 8,
-       "ajoute": false,
-       "nom": "VARLET JOURDAN",
-       "pre": "Alexis",
-       "club": "ASNIERES TT",
-       "cat": "M2",
-       "cats": "-13",
-       "clt": 513,
-       "acbb": false
-      },
-      {
        "pos": 9,
        "ajoute": false,
        "nom": "LENOIR",
@@ -28511,17 +28404,6 @@
       {
        "pos": 10,
        "ajoute": false,
-       "nom": "CALLEAU ZAKKA BAJJANI",
-       "pre": "Hugo",
-       "club": "ASNIERES TT",
-       "cat": "M1",
-       "cats": "-12",
-       "clt": 510,
-       "acbb": false
-      },
-      {
-       "pos": 11,
-       "ajoute": false,
        "nom": "PORTIER JOUANJEAN",
        "pre": "Victor",
        "club": "CLICHY SUR SEINE CS",
@@ -28531,7 +28413,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 11,
        "ajoute": false,
        "nom": "AGBODJAN-PRINCE",
        "pre": "Côme",
@@ -28542,7 +28424,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 12,
        "ajoute": false,
        "nom": "SELWYN",
        "pre": "James",
@@ -28553,7 +28435,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 13,
        "ajoute": false,
        "nom": "MIRON",
        "pre": "Laurentiu",
@@ -28564,7 +28446,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
+       "pos": 14,
        "ajoute": false,
        "nom": "ALIPAO",
        "pre": "Jairus",
@@ -28575,7 +28457,7 @@
        "acbb": false
       },
       {
-       "pos": 16,
+       "pos": 15,
        "ajoute": false,
        "nom": "MASSONNAT",
        "pre": "Nils",
@@ -28586,7 +28468,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 16,
        "ajoute": false,
        "nom": "DOMERGUE",
        "pre": "Joseph",
@@ -28596,6 +28478,17 @@
        "clt": 500,
        "acbb": true,
        "lic": "9268630"
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "CALLEAU ZAKKA BAJJANI",
+       "pre": "Hugo",
+       "club": "ASNIERES TT",
+       "cat": "M1",
+       "cats": "-12",
+       "clt": 510,
+       "acbb": false
       }
      ],
      "div": "D3",
@@ -28604,11 +28497,9 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1,
-      0
+      1
      ],
-     "id": "t2-g16",
-     "niveau": "D"
+     "id": "t2-g16"
     },
     {
      "nom": "D3 -13 GARCONS",
@@ -28815,11 +28706,9 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1,
-      0
+      1
      ],
-     "id": "t2-g17",
-     "niveau": "D"
+     "id": "t2-g17"
     },
     {
      "nom": "D3 -13 GARCONS",
@@ -28865,17 +28754,6 @@
       {
        "pos": 4,
        "ajoute": false,
-       "nom": "BRANDO",
-       "pre": "Evan",
-       "club": "CHATENAY MALABRY T T ASV",
-       "cat": "M1",
-       "cats": "-12",
-       "clt": 501,
-       "acbb": false
-      },
-      {
-       "pos": 5,
-       "ajoute": false,
        "nom": "DEMENTHON JAFFRE",
        "pre": "Arthur",
        "club": "STADE DE VANVES",
@@ -28885,7 +28763,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
+       "pos": 5,
        "ajoute": false,
        "nom": "BOILLOT LE GOFFIC",
        "pre": "Alexandre",
@@ -28897,7 +28775,7 @@
        "lic": "9267188"
       },
       {
-       "pos": 7,
+       "pos": 6,
        "ajoute": false,
        "nom": "LEVY",
        "pre": "Joshua",
@@ -28908,7 +28786,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 7,
        "ajoute": false,
        "nom": "MARTIN",
        "pre": "Valentin",
@@ -28919,7 +28797,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 8,
        "ajoute": false,
        "nom": "ACKET",
        "pre": "Joachim",
@@ -28930,7 +28808,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 9,
        "ajoute": false,
        "nom": "RAT",
        "pre": "Victor",
@@ -28941,7 +28819,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 10,
        "ajoute": false,
        "nom": "AMSALHEM",
        "pre": "Joseph",
@@ -28953,7 +28831,7 @@
        "lic": "9268631"
       },
       {
-       "pos": 12,
+       "pos": 11,
        "ajoute": false,
        "nom": "STRICKER",
        "pre": "Léo",
@@ -28965,7 +28843,7 @@
        "lic": "9267291"
       },
       {
-       "pos": 13,
+       "pos": 12,
        "ajoute": false,
        "nom": "GREMILLON",
        "pre": "Julian",
@@ -28976,7 +28854,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 13,
        "ajoute": false,
        "nom": "COUTANCE",
        "pre": "Hugo",
@@ -28987,7 +28865,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
+       "pos": 14,
        "ajoute": false,
        "nom": "GUIROUILH-BARBAT",
        "pre": "Matthieu",
@@ -28999,7 +28877,7 @@
        "lic": "9264495"
       },
       {
-       "pos": 16,
+       "pos": 15,
        "ajoute": false,
        "nom": "LYU",
        "pre": "Xingzhe",
@@ -29010,7 +28888,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 16,
        "ajoute": false,
        "nom": "PILOTAZ",
        "pre": "Edgar",
@@ -29018,6 +28896,17 @@
        "cat": "M2",
        "cats": "-13",
        "clt": 500,
+       "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "BRANDO",
+       "pre": "Evan",
+       "club": "CHATENAY MALABRY T T ASV",
+       "cat": "M1",
+       "cats": "-12",
+       "clt": 501,
        "acbb": false
       }
      ],
@@ -29027,11 +28916,9 @@
      "cat": "-13 ans Garçons",
      "rang": [
       1,
-      1,
-      0
+      1
      ],
-     "id": "t2-g18",
-     "niveau": "D"
+     "id": "t2-g18"
     },
     {
      "nom": "D1 -15 GARCONS",
@@ -29044,17 +28931,6 @@
       {
        "pos": 1,
        "ajoute": false,
-       "nom": "VICTORIEN",
-       "pre": "Dalil",
-       "club": "ISSY-LES-MOULINEAUX",
-       "cat": "C2",
-       "cats": "-15",
-       "clt": 1141,
-       "acbb": false
-      },
-      {
-       "pos": 2,
-       "ajoute": false,
        "nom": "SERGENT",
        "pre": "Enzo",
        "club": "BOULOGNE BILLANCOURT AC",
@@ -29063,6 +28939,17 @@
        "clt": 1218,
        "acbb": true,
        "lic": "9540663"
+      },
+      {
+       "pos": 2,
+       "ajoute": false,
+       "nom": "VICTORIEN",
+       "pre": "Dalil",
+       "club": "ISSY-LES-MOULINEAUX",
+       "cat": "C2",
+       "cats": "-15",
+       "clt": 1141,
+       "acbb": false
       },
       {
        "pos": 3,
@@ -29226,11 +29113,9 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1,
-      0
+      1
      ],
-     "id": "t2-g19",
-     "niveau": "D"
+     "id": "t2-g19"
     },
     {
      "nom": "D2 -15 GARCONS",
@@ -29424,11 +29309,9 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1,
-      0
+      1
      ],
-     "id": "t2-g20",
-     "niveau": "D"
+     "id": "t2-g20"
     },
     {
      "nom": "D2 -15 GARCONS",
@@ -29624,11 +29507,9 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1,
-      0
+      1
      ],
-     "id": "t2-g21",
-     "niveau": "D"
+     "id": "t2-g21"
     },
     {
      "nom": "D3 -15 GARCONS",
@@ -29716,17 +29597,6 @@
        "clt": 500,
        "acbb": true,
        "lic": "9268346"
-      },
-      {
-       "pos": 8,
-       "ajoute": false,
-       "nom": "CROQUELOIS",
-       "pre": "Maxence",
-       "club": "TennisTable Municipal Chatillon",
-       "cat": "C1",
-       "cats": "-14",
-       "clt": 500,
-       "acbb": false
       },
       {
        "pos": 9,
@@ -29845,11 +29715,9 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1,
-      0
+      1
      ],
-     "id": "t2-g22",
-     "niveau": "D"
+     "id": "t2-g22"
     },
     {
      "nom": "D3 -15 GARCONS",
@@ -30067,11 +29935,9 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1,
-      0
+      1
      ],
-     "id": "t2-g23",
-     "niveau": "D"
+     "id": "t2-g23"
     },
     {
      "nom": "D3 -15 GARCONS",
@@ -30205,29 +30071,6 @@
       {
        "pos": 12,
        "ajoute": false,
-       "nom": "BENILAN",
-       "pre": "Sandor",
-       "club": "USM MALAKOFF",
-       "cat": "C1",
-       "cats": "-14",
-       "clt": 508,
-       "acbb": false
-      },
-      {
-       "pos": 13,
-       "ajoute": false,
-       "nom": "MENU",
-       "pre": "Hadrien",
-       "club": "BOULOGNE BILLANCOURT AC",
-       "cat": "C1",
-       "cats": "-14",
-       "clt": 500,
-       "acbb": true,
-       "lic": "9266476"
-      },
-      {
-       "pos": 14,
-       "ajoute": false,
        "nom": "SCHMITZ",
        "pre": "Charles",
        "club": "BOULOGNE BILLANCOURT AC",
@@ -30238,19 +30081,7 @@
        "lic": "9268382"
       },
       {
-       "pos": 15,
-       "ajoute": false,
-       "nom": "VALDANT",
-       "pre": "Félix",
-       "club": "BOULOGNE BILLANCOURT AC",
-       "cat": "C1",
-       "cats": "-14",
-       "clt": 500,
-       "acbb": true,
-       "lic": "9266615"
-      },
-      {
-       "pos": 16,
+       "pos": 13,
        "ajoute": false,
        "nom": "RADENAC RAHMAN",
        "pre": "Naveed",
@@ -30261,7 +30092,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 14,
        "ajoute": false,
        "nom": "EINAUDI",
        "pre": "Lucien",
@@ -30272,7 +30103,7 @@
        "acbb": false
       },
       {
-       "pos": 18,
+       "pos": 15,
        "ajoute": false,
        "nom": "WURTZ ABOAB",
        "pre": "Joachim",
@@ -30280,6 +30111,40 @@
        "cat": "C1",
        "cats": "-14",
        "clt": 510,
+       "acbb": false
+      },
+      {
+       "pos": 16,
+       "ajoute": false,
+       "nom": "CARON LE DANTEC",
+       "pre": "Célestin",
+       "club": "CHATENAY MALABRY T T ASV",
+       "cat": "C2",
+       "cats": "-15",
+       "clt": 500,
+       "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "VALDANT",
+       "pre": "Félix",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "C1",
+       "cats": "-14",
+       "clt": 500,
+       "acbb": true,
+       "lic": "9266615"
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "BENILAN",
+       "pre": "Sandor",
+       "club": "USM MALAKOFF",
+       "cat": "C1",
+       "cats": "-14",
+       "clt": 508,
        "acbb": false
       }
      ],
@@ -30289,17 +30154,15 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1,
-      0
+      1
      ],
-     "id": "t2-g24",
-     "niveau": "D"
+     "id": "t2-g24"
     },
     {
      "nom": "D3 -15 GARCONS",
      "salle": "NEUILLY SUR SEINE - Espace Koenig – 23 boulevard du général Koenig",
-     "pointage": "14h00",
-     "debut": "14h30",
+     "pointage": "13h30",
+     "debut": "14h00",
      "contact": "cdtt92@gmail.com",
      "date": "14/11/2026",
      "joueurs": [
@@ -30492,17 +30355,6 @@
        "clt": 500,
        "acbb": true,
        "lic": "9264272"
-      },
-      {
-       "pos": 18,
-       "ajoute": false,
-       "nom": "THILLAYE DU BOULLAY",
-       "pre": "Elzéar",
-       "club": "BOIS COLOMBES SPORTS",
-       "cat": "C1",
-       "cats": "-14",
-       "clt": 500,
-       "acbb": false
       }
      ],
      "div": "D3",
@@ -30511,11 +30363,9 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1,
-      0
+      1
      ],
-     "id": "t2-g25",
-     "niveau": "D"
+     "id": "t2-g25"
     },
     {
      "nom": "D3 -15 GARCONS",
@@ -30734,11 +30584,9 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1,
-      0
+      1
      ],
-     "id": "t2-g26",
-     "niveau": "D"
+     "id": "t2-g26"
     },
     {
      "nom": "D3 -15 GARCONS",
@@ -30957,11 +30805,9 @@
      "cat": "-15 ans Garçons",
      "rang": [
       2,
-      1,
-      0
+      1
      ],
-     "id": "t2-g27",
-     "niveau": "D"
+     "id": "t2-g27"
     },
     {
      "nom": "D1 -19 FILLES",
@@ -30974,17 +30820,6 @@
       {
        "pos": 1,
        "ajoute": false,
-       "nom": "AUGOUVERNAIRE",
-       "pre": "Keity",
-       "club": "ANTONY SP TENNIS DE TABLE",
-       "cat": "J2",
-       "cats": "-17",
-       "clt": 978,
-       "acbb": false
-      },
-      {
-       "pos": 2,
-       "ajoute": false,
        "nom": "LENNON",
        "pre": "Clémence",
        "club": "BOULOGNE BILLANCOURT AC",
@@ -30995,7 +30830,7 @@
        "lic": "9259716"
       },
       {
-       "pos": 3,
+       "pos": 2,
        "ajoute": false,
        "nom": "MO",
        "pre": "Milina",
@@ -31006,7 +30841,7 @@
        "acbb": false
       },
       {
-       "pos": 4,
+       "pos": 3,
        "ajoute": false,
        "nom": "MASSON",
        "pre": "Lucile",
@@ -31017,7 +30852,7 @@
        "acbb": false
       },
       {
-       "pos": 5,
+       "pos": 4,
        "ajoute": false,
        "nom": "PINEAU",
        "pre": "Anna",
@@ -31028,7 +30863,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
+       "pos": 5,
        "ajoute": false,
        "nom": "DOUCHET",
        "pre": "Anabelle",
@@ -31039,7 +30874,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 6,
        "ajoute": false,
        "nom": "THOMAS",
        "pre": "Charlotte",
@@ -31050,7 +30885,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 7,
        "ajoute": false,
        "nom": "ALIPAO",
        "pre": "Juliana",
@@ -31061,7 +30896,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 8,
        "ajoute": false,
        "nom": "KESHAVARZHAGHVERDI",
        "pre": "Arisa",
@@ -31072,7 +30907,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 9,
        "ajoute": false,
        "nom": "BAUDRY",
        "pre": "Alice",
@@ -31089,11 +30924,9 @@
      "cat": "-19 ans Filles",
      "rang": [
       3,
-      0,
       0
      ],
-     "id": "t2-g28",
-     "niveau": "D"
+     "id": "t2-g28"
     },
     {
      "nom": "D1 ELITE DAMES",
@@ -31151,17 +30984,6 @@
       {
        "pos": 5,
        "ajoute": false,
-       "nom": "LEMOIGNE",
-       "pre": "Candice",
-       "club": "LEVALLOIS SPORTING CLUB TT",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 598,
-       "acbb": false
-      },
-      {
-       "pos": 6,
-       "ajoute": false,
        "nom": "HERROUIN",
        "pre": "Lena",
        "club": "CLAMART CSM",
@@ -31171,7 +30993,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 6,
        "ajoute": false,
        "nom": "DE BONNECHOSE",
        "pre": "Isabelle",
@@ -31183,19 +31005,7 @@
        "lic": "9256241"
       },
       {
-       "pos": 8,
-       "ajoute": false,
-       "nom": "ADMI",
-       "pre": "Johara",
-       "club": "BOULOGNE BILLANCOURT AC",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 582,
-       "acbb": true,
-       "lic": "7529318"
-      },
-      {
-       "pos": 9,
+       "pos": 7,
        "ajoute": false,
        "nom": "DOUEZY",
        "pre": "Anne",
@@ -31206,7 +31016,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 8,
        "ajoute": false,
        "nom": "HOURREGUE",
        "pre": "Pauline",
@@ -31217,7 +31027,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 9,
        "ajoute": false,
        "nom": "VILLATTE",
        "pre": "Gaëlle",
@@ -31228,7 +31038,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 10,
        "ajoute": false,
        "nom": "LE GOFFIC",
        "pre": "Caroline",
@@ -31240,7 +31050,7 @@
        "lic": "9266626"
       },
       {
-       "pos": 13,
+       "pos": 11,
        "ajoute": false,
        "nom": "LAIDAOUI",
        "pre": "Thiziri",
@@ -31251,7 +31061,18 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 12,
+       "ajoute": false,
+       "nom": "YVERNAY",
+       "pre": "Mélanie",
+       "club": "BOIS COLOMBES SPORTS",
+       "cat": "V45",
+       "cats": "45+",
+       "clt": 639,
+       "acbb": false
+      },
+      {
+       "pos": 13,
        "ajoute": false,
        "nom": "MOREL",
        "pre": "Leonie",
@@ -31263,7 +31084,7 @@
        "lic": "6110396"
       },
       {
-       "pos": 15,
+       "pos": 14,
        "ajoute": false,
        "nom": "GUIBERT",
        "pre": "Aude",
@@ -31274,7 +31095,7 @@
        "acbb": false
       },
       {
-       "pos": 16,
+       "pos": 15,
        "ajoute": false,
        "nom": "SALAUN",
        "pre": "Helene",
@@ -31285,7 +31106,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 16,
        "ajoute": false,
        "nom": "DE ROLLAND",
        "pre": "Marie-Laure",
@@ -31297,7 +31118,7 @@
        "lic": "9267050"
       },
       {
-       "pos": 18,
+       "pos": null,
        "ajoute": false,
        "nom": "RANDRIANATOAVINA",
        "pre": "Judith",
@@ -31308,7 +31129,7 @@
        "acbb": false
       },
       {
-       "pos": 19,
+       "pos": 17,
        "ajoute": false,
        "nom": "MIGNOT",
        "pre": "Annick",
@@ -31319,18 +31140,7 @@
        "acbb": false
       },
       {
-       "pos": 20,
-       "ajoute": false,
-       "nom": "HOLTZ",
-       "pre": "Beatrice",
-       "club": "CLAMART CSM",
-       "cat": "V50",
-       "cats": "50+",
-       "clt": 653,
-       "acbb": false
-      },
-      {
-       "pos": 21,
+       "pos": 18,
        "ajoute": false,
        "nom": "TRAN",
        "pre": "Catherine",
@@ -31341,7 +31151,19 @@
        "acbb": false
       },
       {
-       "pos": 22,
+       "pos": 19,
+       "ajoute": false,
+       "nom": "HAREL",
+       "pre": "Marie",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 500,
+       "acbb": true,
+       "lic": "4930753"
+      },
+      {
+       "pos": 20,
        "ajoute": false,
        "nom": "BERNARD",
        "pre": "Angélique",
@@ -31365,14 +31187,25 @@
       {
        "pos": null,
        "ajoute": true,
-       "nom": "HAREL",
-       "pre": "Marie",
+       "nom": "LEMOIGNE",
+       "pre": "Candice",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 598,
+       "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "ADMI",
+       "pre": "Johara",
        "club": "BOULOGNE BILLANCOURT AC",
        "cat": "S",
        "cats": "-40",
-       "clt": 500,
+       "clt": 582,
        "acbb": true,
-       "lic": "4930753"
+       "lic": "7529318"
       }
      ],
      "div": "D1",
@@ -31381,11 +31214,9 @@
      "cat": "Élite Dames",
      "rang": [
       4,
-      0,
       0
      ],
-     "id": "t2-g29",
-     "niveau": "D"
+     "id": "t2-g29"
     },
     {
      "nom": "D1 -19 GARCONS",
@@ -31579,11 +31410,9 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1,
-      0
+      1
      ],
-     "id": "t2-g30",
-     "niveau": "D"
+     "id": "t2-g30"
     },
     {
      "nom": "D2 -19 GARCONS",
@@ -31776,7 +31605,7 @@
        "pos": null,
        "ajoute": true,
        "nom": "LEBRUN",
-       "pre": "",
+       "pre": "Clement",
        "club": "PLESSIS ROBINSON TT",
        "cat": "J4",
        "cats": "-19",
@@ -31790,11 +31619,9 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1,
-      0
+      1
      ],
-     "id": "t2-g31",
-     "niveau": "D"
+     "id": "t2-g31"
     },
     {
      "nom": "D2 -19 GARCONS",
@@ -31818,17 +31645,6 @@
       {
        "pos": 2,
        "ajoute": false,
-       "nom": "RIVELINE",
-       "pre": "Arie",
-       "club": "LEVALLOIS SPORTING CLUB TT",
-       "cat": "J3",
-       "cats": "-18",
-       "clt": 1376,
-       "acbb": false
-      },
-      {
-       "pos": 3,
-       "ajoute": false,
        "nom": "YANG",
        "pre": "Axel",
        "club": "STADE DE VANVES",
@@ -31838,7 +31654,7 @@
        "acbb": false
       },
       {
-       "pos": 4,
+       "pos": 3,
        "ajoute": false,
        "nom": "WULFMAN",
        "pre": "Nathanaël",
@@ -31849,7 +31665,7 @@
        "acbb": false
       },
       {
-       "pos": 5,
+       "pos": 4,
        "ajoute": false,
        "nom": "MONIER",
        "pre": "Aurélien",
@@ -31860,7 +31676,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
+       "pos": 5,
        "ajoute": false,
        "nom": "TRILLAUD RUGGERI",
        "pre": "Marc-Antoine",
@@ -31873,17 +31689,6 @@
       {
        "pos": 7,
        "ajoute": false,
-       "nom": "VACCHAREZZA",
-       "pre": "Victor",
-       "club": "ASNIERES TT",
-       "cat": "J2",
-       "cats": "-17",
-       "clt": 875,
-       "acbb": false
-      },
-      {
-       "pos": 8,
-       "ajoute": false,
        "nom": "GAUTHRON",
        "pre": "Henri",
        "club": "RUEIL ATHLETIC CLUB TT",
@@ -31893,7 +31698,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 8,
        "ajoute": false,
        "nom": "DUFOUR",
        "pre": "Gaspard",
@@ -31904,7 +31709,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 9,
        "ajoute": false,
        "nom": "L ELEU DE LA SIMONE",
        "pre": "Antoine",
@@ -31915,7 +31720,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 10,
        "ajoute": false,
        "nom": "SAUDRAIS",
        "pre": "Nicolas",
@@ -31926,14 +31731,25 @@
        "acbb": false
       },
       {
+       "pos": 11,
+       "ajoute": false,
+       "nom": "GUERIN",
+       "pre": "Raphael",
+       "club": "ISSY-LES-MOULINEAUX",
+       "cat": "J3",
+       "cats": "-18",
+       "clt": 927,
+       "acbb": false
+      },
+      {
        "pos": 12,
        "ajoute": false,
-       "nom": "PERRIN",
-       "pre": "Noan",
-       "club": "TennisTable Municipal Chatillon",
-       "cat": "J1",
-       "cats": "-16",
-       "clt": 737,
+       "nom": "THOMAS",
+       "pre": "Noa",
+       "club": "BOIS COLOMBES SPORTS",
+       "cat": "J2",
+       "cats": "-17",
+       "clt": 641,
        "acbb": false
       },
       {
@@ -31970,14 +31786,25 @@
        "acbb": false
       },
       {
-       "pos": 16,
-       "ajoute": false,
+       "pos": null,
+       "ajoute": true,
        "nom": "PEREIRA DESCHAMPS",
        "pre": "Adriano",
        "club": "TennisTable Municipal Chatillon",
        "cat": "J2",
        "cats": "-17",
        "clt": 633,
+       "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "PERRIN",
+       "pre": "Noan",
+       "club": "TennisTable Municipal Chatillon",
+       "cat": "J1",
+       "cats": "-16",
+       "clt": 737,
        "acbb": false
       }
      ],
@@ -31987,11 +31814,9 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1,
-      0
+      1
      ],
-     "id": "t2-g32",
-     "niveau": "D"
+     "id": "t2-g32"
     },
     {
      "nom": "D3 -19 GARCONS",
@@ -32004,17 +31829,6 @@
       {
        "pos": 1,
        "ajoute": false,
-       "nom": "GUERIN",
-       "pre": "Raphael",
-       "club": "ISSY-LES-MOULINEAUX",
-       "cat": "J3",
-       "cats": "-18",
-       "clt": 927,
-       "acbb": false
-      },
-      {
-       "pos": 2,
-       "ajoute": false,
        "nom": "LATTES",
        "pre": "Oscar",
        "club": "SCEAUX T.T.",
@@ -32024,7 +31838,7 @@
        "acbb": false
       },
       {
-       "pos": 3,
+       "pos": 2,
        "ajoute": false,
        "nom": "ROUSSELLE",
        "pre": "Antoine",
@@ -32035,7 +31849,7 @@
        "acbb": false
       },
       {
-       "pos": 4,
+       "pos": 3,
        "ajoute": false,
        "nom": "GNONI LESCOURET",
        "pre": "Sandro",
@@ -32046,7 +31860,7 @@
        "acbb": false
       },
       {
-       "pos": 5,
+       "pos": 4,
        "ajoute": false,
        "nom": "FILLET",
        "pre": "Timothee",
@@ -32058,7 +31872,7 @@
        "lic": "9252181"
       },
       {
-       "pos": 6,
+       "pos": 5,
        "ajoute": false,
        "nom": "ANTUNES-ROBERT",
        "pre": "Gabriel",
@@ -32069,7 +31883,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 6,
        "ajoute": false,
        "nom": "LIEGEON",
        "pre": "Kais",
@@ -32080,7 +31894,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 7,
        "ajoute": false,
        "nom": "LAUTIE-LAUDAT",
        "pre": "Arthur",
@@ -32091,7 +31905,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 8,
        "ajoute": false,
        "nom": "GENIN",
        "pre": "Andrea",
@@ -32104,17 +31918,6 @@
       {
        "pos": 10,
        "ajoute": false,
-       "nom": "PROSPERT",
-       "pre": "Antoine",
-       "club": "BOIS COLOMBES SPORTS",
-       "cat": "J1",
-       "cats": "-16",
-       "clt": 514,
-       "acbb": false
-      },
-      {
-       "pos": 11,
-       "ajoute": false,
        "nom": "BAUGIN-BOULZE",
        "pre": "Louis",
        "club": "NEUILLY AS ST PIERRE",
@@ -32124,7 +31927,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 11,
        "ajoute": false,
        "nom": "CHALHOUB",
        "pre": "Dario",
@@ -32136,7 +31939,7 @@
        "lic": "9267204"
       },
       {
-       "pos": 13,
+       "pos": 12,
        "ajoute": false,
        "nom": "ROSTIN",
        "pre": "Antony",
@@ -32148,7 +31951,7 @@
        "lic": "9261240"
       },
       {
-       "pos": 14,
+       "pos": 13,
        "ajoute": false,
        "nom": "CHAMPONNOIS",
        "pre": "André",
@@ -32165,44 +31968,20 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1,
-      0
+      1
      ],
-     "id": "t2-g33",
-     "niveau": "D"
+     "id": "t2-g33"
     },
     {
      "nom": "D3 -19 GARCONS",
      "salle": "CHATENAY MALABRY - Gymnase Jules Verne – 254 Avenue de la Division Leclerc",
-     "pointage": "8h30",
-     "debut": "9h00",
+     "pointage": "14h00",
+     "debut": "14h30",
      "contact": "cdtt92@gmail.com",
      "date": "15/11/2026",
      "joueurs": [
       {
        "pos": 1,
-       "ajoute": false,
-       "nom": "THOMAS",
-       "pre": "Noa",
-       "club": "BOIS COLOMBES SPORTS",
-       "cat": "J2",
-       "cats": "-17",
-       "clt": 641,
-       "acbb": false
-      },
-      {
-       "pos": 2,
-       "ajoute": false,
-       "nom": "VIDAL",
-       "pre": "Rémi",
-       "club": "PUTEAUX TT CSM",
-       "cat": "J2",
-       "cats": "-17",
-       "clt": 627,
-       "acbb": false
-      },
-      {
-       "pos": 3,
        "ajoute": false,
        "nom": "SANDIER",
        "pre": "Clement",
@@ -32213,7 +31992,7 @@
        "acbb": false
       },
       {
-       "pos": 4,
+       "pos": 2,
        "ajoute": false,
        "nom": "LELIEPVRE",
        "pre": "Tom",
@@ -32224,7 +32003,7 @@
        "acbb": false
       },
       {
-       "pos": 5,
+       "pos": 3,
        "ajoute": false,
        "nom": "CHMIELARCZYK",
        "pre": "Paul",
@@ -32235,7 +32014,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
+       "pos": 4,
        "ajoute": false,
        "nom": "CHEN",
        "pre": "Aurelien",
@@ -32247,7 +32026,7 @@
        "lic": "9252207"
       },
       {
-       "pos": 7,
+       "pos": 5,
        "ajoute": false,
        "nom": "FAURY",
        "pre": "Antoine",
@@ -32259,7 +32038,7 @@
        "lic": "9266471"
       },
       {
-       "pos": 8,
+       "pos": 6,
        "ajoute": false,
        "nom": "CHAUVET",
        "pre": "Baptiste",
@@ -32270,7 +32049,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 7,
        "ajoute": false,
        "nom": "PUSHKARCHUK",
        "pre": "Artem",
@@ -32281,7 +32060,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 8,
        "ajoute": false,
        "nom": "TANZI",
        "pre": "William",
@@ -32292,7 +32071,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 9,
        "ajoute": false,
        "nom": "MARCADÉ",
        "pre": "Timothée",
@@ -32304,7 +32083,7 @@
        "lic": "9267515"
       },
       {
-       "pos": 12,
+       "pos": 10,
        "ajoute": false,
        "nom": "HACQUET",
        "pre": "Martin",
@@ -32315,7 +32094,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 11,
        "ajoute": false,
        "nom": "MICHON",
        "pre": "Clément",
@@ -32327,7 +32106,7 @@
        "lic": "9268685"
       },
       {
-       "pos": 14,
+       "pos": 12,
        "ajoute": false,
        "nom": "LEWINTRE DANTAS",
        "pre": "Axel",
@@ -32335,6 +32114,17 @@
        "cat": "J1",
        "cats": "-16",
        "clt": 500,
+       "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "VIDAL",
+       "pre": "Rémi",
+       "club": "PUTEAUX TT CSM",
+       "cat": "J2",
+       "cats": "-17",
+       "clt": 627,
        "acbb": false
       }
      ],
@@ -32344,11 +32134,9 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1,
-      0
+      1
      ],
-     "id": "t2-g34",
-     "niveau": "D"
+     "id": "t2-g34"
     },
     {
      "nom": "D3 -19 Groupe 3",
@@ -32532,11 +32320,9 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1,
-      0
+      1
      ],
-     "id": "t2-g35",
-     "niveau": "D"
+     "id": "t2-g35"
     },
     {
      "nom": "D3 -19 Groupe 4",
@@ -32628,17 +32414,6 @@
       {
        "pos": 8,
        "ajoute": false,
-       "nom": "DORE",
-       "pre": "Juliann",
-       "club": "CLICHY SUR SEINE CS",
-       "cat": "J1",
-       "cats": "-16",
-       "clt": 500,
-       "acbb": false
-      },
-      {
-       "pos": 9,
-       "ajoute": false,
        "nom": "BONNEMYE",
        "pre": "Alexandre",
        "club": "PLESSIS ROBINSON TT",
@@ -32648,7 +32423,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 9,
        "ajoute": false,
        "nom": "RICAUD",
        "pre": "Gaël",
@@ -32659,7 +32434,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 10,
        "ajoute": false,
        "nom": "HUNEAU",
        "pre": "Ethan",
@@ -32670,7 +32445,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 11,
        "ajoute": false,
        "nom": "GUESDON",
        "pre": "Guillaume",
@@ -32681,7 +32456,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 12,
        "ajoute": false,
        "nom": "COEURDACIER DE GESNES",
        "pre": "Basile",
@@ -32692,7 +32467,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 13,
        "ajoute": false,
        "nom": "DENIAUD",
        "pre": "Louis",
@@ -32703,13 +32478,24 @@
        "acbb": false
       },
       {
-       "pos": 15,
+       "pos": 14,
        "ajoute": false,
        "nom": "MAGNE",
        "pre": "Nathan",
        "club": "BOIS COLOMBES SPORTS",
        "cat": "J2",
        "cats": "-17",
+       "clt": 500,
+       "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "DORE",
+       "pre": "Juliann",
+       "club": "CLICHY SUR SEINE CS",
+       "cat": "J1",
+       "cats": "-16",
        "clt": 500,
        "acbb": false
       }
@@ -32720,11 +32506,9 @@
      "cat": "-19 ans Garçons",
      "rang": [
       3,
-      1,
-      0
+      1
      ],
-     "id": "t2-g36",
-     "niveau": "D"
+     "id": "t2-g36"
     },
     {
      "nom": "D1 ELITE MESSIEURS",
@@ -32737,17 +32521,6 @@
       {
        "pos": 1,
        "ajoute": false,
-       "nom": "BEN BRAHIM",
-       "pre": "Yannis",
-       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 1769,
-       "acbb": false
-      },
-      {
-       "pos": 2,
-       "ajoute": false,
        "nom": "CHABBERT",
        "pre": "Guillaume",
        "club": "USM MALAKOFF",
@@ -32757,7 +32530,7 @@
        "acbb": false
       },
       {
-       "pos": 3,
+       "pos": 2,
        "ajoute": false,
        "nom": "IMBERTY",
        "pre": "Matthieu",
@@ -32768,7 +32541,7 @@
        "acbb": false
       },
       {
-       "pos": 4,
+       "pos": 3,
        "ajoute": false,
        "nom": "RAMOND",
        "pre": "Theo",
@@ -32779,7 +32552,7 @@
        "acbb": false
       },
       {
-       "pos": 5,
+       "pos": 4,
        "ajoute": false,
        "nom": "FARSSI",
        "pre": "Mehdi",
@@ -32790,7 +32563,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
+       "pos": 5,
        "ajoute": false,
        "nom": "LE NEGARET",
        "pre": "Remi",
@@ -32801,7 +32574,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 6,
        "ajoute": false,
        "nom": "MERCIER",
        "pre": "Theo",
@@ -32812,7 +32585,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 7,
        "ajoute": false,
        "nom": "LEQUEUX",
        "pre": "Fabien",
@@ -32823,7 +32596,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 8,
        "ajoute": false,
        "nom": "AUDRAIN",
        "pre": "Baptiste",
@@ -32834,7 +32607,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 9,
        "ajoute": false,
        "nom": "CHAUDOREILLE",
        "pre": "Thomas",
@@ -32845,7 +32618,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 10,
        "ajoute": false,
        "nom": "MAS",
        "pre": "Arthur",
@@ -32856,7 +32629,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 11,
        "ajoute": false,
        "nom": "DUCA",
        "pre": "Stephane",
@@ -32867,7 +32640,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 12,
        "ajoute": false,
        "nom": "BEAUMONT",
        "pre": "Guillaume",
@@ -32878,7 +32651,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 13,
        "ajoute": false,
        "nom": "RODRIGUEZ",
        "pre": "Raphael",
@@ -32889,7 +32662,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
+       "pos": 14,
        "ajoute": false,
        "nom": "MORIO",
        "pre": "Maxence",
@@ -32900,7 +32673,7 @@
        "acbb": false
       },
       {
-       "pos": 16,
+       "pos": 15,
        "ajoute": false,
        "nom": "ION",
        "pre": "Alexandru",
@@ -32911,7 +32684,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 16,
        "ajoute": false,
        "nom": "CUSTOS",
        "pre": "Xavier",
@@ -32922,7 +32695,7 @@
        "acbb": false
       },
       {
-       "pos": 18,
+       "pos": 17,
        "ajoute": false,
        "nom": "HAO",
        "pre": "Charles",
@@ -32933,7 +32706,7 @@
        "acbb": false
       },
       {
-       "pos": 19,
+       "pos": 18,
        "ajoute": false,
        "nom": "CHAUSSIN",
        "pre": "Christophe",
@@ -32944,7 +32717,29 @@
        "acbb": false
       },
       {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "RAYNAUD",
+       "pre": "Nicolas",
+       "club": "PUTEAUX TT CSM",
+       "cat": "V40",
+       "cats": "40+",
+       "clt": 1475,
+       "acbb": false
+      },
+      {
        "pos": 20,
+       "ajoute": false,
+       "nom": "LEPINE",
+       "pre": "Pierre",
+       "club": "TennisTable Municipal Chatillon",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 1170,
+       "acbb": false
+      },
+      {
+       "pos": 21,
        "ajoute": false,
        "nom": "BERTOMEU",
        "pre": "Arnaud",
@@ -32955,7 +32750,7 @@
        "acbb": false
       },
       {
-       "pos": 21,
+       "pos": 22,
        "ajoute": false,
        "nom": "MAZERAT",
        "pre": "Hugo",
@@ -32966,7 +32761,7 @@
        "acbb": false
       },
       {
-       "pos": 22,
+       "pos": 23,
        "ajoute": false,
        "nom": "CARIOU",
        "pre": "Romain",
@@ -32977,7 +32772,7 @@
        "acbb": false
       },
       {
-       "pos": 23,
+       "pos": 24,
        "ajoute": false,
        "nom": "GUILLEMET",
        "pre": "Maxence",
@@ -32988,7 +32783,7 @@
        "acbb": false
       },
       {
-       "pos": 24,
+       "pos": 25,
        "ajoute": false,
        "nom": "BATANKEN",
        "pre": "Axel",
@@ -32996,17 +32791,6 @@
        "cat": "S",
        "cats": "-40",
        "clt": 1066,
-       "acbb": false
-      },
-      {
-       "pos": 25,
-       "ajoute": false,
-       "nom": "BLANCHARD",
-       "pre": "Bastien",
-       "club": "ISSY-LES-MOULINEAUX",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 1291,
        "acbb": false
       },
       {
@@ -33094,11 +32878,9 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1,
-      0
+      1
      ],
-     "id": "t2-g37",
-     "niveau": "D"
+     "id": "t2-g37"
     },
     {
      "nom": "D2 ELITE MESSIEURS",
@@ -33111,17 +32893,6 @@
       {
        "pos": 1,
        "ajoute": false,
-       "nom": "RAYNAUD",
-       "pre": "Nicolas",
-       "club": "PUTEAUX TT CSM",
-       "cat": "V40",
-       "cats": "40+",
-       "clt": 1475,
-       "acbb": false
-      },
-      {
-       "pos": 2,
-       "ajoute": false,
        "nom": "PERROT",
        "pre": "Charles",
        "club": "BOULOGNE BILLANCOURT AC",
@@ -33132,7 +32903,7 @@
        "lic": "7824630"
       },
       {
-       "pos": 3,
+       "pos": 2,
        "ajoute": false,
        "nom": "GNIZAKO",
        "pre": "Stephane",
@@ -33143,7 +32914,7 @@
        "acbb": false
       },
       {
-       "pos": 4,
+       "pos": 3,
        "ajoute": false,
        "nom": "GERBE",
        "pre": "Benoit",
@@ -33154,7 +32925,7 @@
        "acbb": false
       },
       {
-       "pos": 5,
+       "pos": 4,
        "ajoute": false,
        "nom": "NOWOCIEN",
        "pre": "Anthony",
@@ -33165,7 +32936,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
+       "pos": 5,
        "ajoute": false,
        "nom": "GIRET",
        "pre": "Bruno",
@@ -33176,7 +32947,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 6,
        "ajoute": false,
        "nom": "ARGUT",
        "pre": "Daniel",
@@ -33188,7 +32959,7 @@
        "lic": "9267937"
       },
       {
-       "pos": 8,
+       "pos": 7,
        "ajoute": false,
        "nom": "BECANE",
        "pre": "Pascal",
@@ -33199,7 +32970,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 8,
        "ajoute": false,
        "nom": "MOSSERI",
        "pre": "Rémy",
@@ -33210,7 +32981,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 9,
        "ajoute": false,
        "nom": "SINGH",
        "pre": "Arvind",
@@ -33221,18 +32992,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
-       "ajoute": false,
-       "nom": "BRICE",
-       "pre": "Benoit",
-       "club": "ISSY-LES-MOULINEAUX",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 1297,
-       "acbb": false
-      },
-      {
-       "pos": 12,
+       "pos": 10,
        "ajoute": false,
        "nom": "WAISFISCH",
        "pre": "Jeremie",
@@ -33243,7 +33003,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 11,
        "ajoute": false,
        "nom": "JUMEAU",
        "pre": "Pierre",
@@ -33254,7 +33014,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 12,
        "ajoute": false,
        "nom": "SEYER",
        "pre": "Guillaume",
@@ -33265,18 +33025,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
-       "ajoute": false,
-       "nom": "PLOYE",
-       "pre": "Julien",
-       "club": "BOIS COLOMBES SPORTS",
-       "cat": "V45",
-       "cats": "45+",
-       "clt": 1088,
-       "acbb": false
-      },
-      {
-       "pos": 16,
+       "pos": 14,
        "ajoute": false,
        "nom": "BOUQUET",
        "pre": "Jean",
@@ -33287,7 +33036,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 15,
        "ajoute": false,
        "nom": "AT KHEN",
        "pre": "Kresna",
@@ -33298,7 +33047,7 @@
        "acbb": false
       },
       {
-       "pos": 18,
+       "pos": 16,
        "ajoute": false,
        "nom": "GHAOUTI",
        "pre": "Saad",
@@ -33309,7 +33058,7 @@
        "acbb": false
       },
       {
-       "pos": 19,
+       "pos": 17,
        "ajoute": false,
        "nom": "BELKADI",
        "pre": "Mehdi",
@@ -33321,7 +33070,7 @@
        "lic": "7838141"
       },
       {
-       "pos": 20,
+       "pos": 18,
        "ajoute": false,
        "nom": "ENGEL",
        "pre": "Pierre",
@@ -33332,7 +33081,7 @@
        "acbb": false
       },
       {
-       "pos": 21,
+       "pos": 19,
        "ajoute": false,
        "nom": "BOTELLA",
        "pre": "Milosav",
@@ -33344,7 +33093,7 @@
        "lic": "9411975"
       },
       {
-       "pos": 22,
+       "pos": 20,
        "ajoute": false,
        "nom": "GAUTIER",
        "pre": "Olivier",
@@ -33356,18 +33105,7 @@
        "lic": "9227561"
       },
       {
-       "pos": 23,
-       "ajoute": false,
-       "nom": "CALVIE",
-       "pre": "Laurent",
-       "club": "PLESSIS ROBINSON TT",
-       "cat": "V55",
-       "cats": "55+",
-       "clt": 1068,
-       "acbb": false
-      },
-      {
-       "pos": 24,
+       "pos": 22,
        "ajoute": false,
        "nom": "FLE",
        "pre": "Nicolas",
@@ -33378,18 +33116,7 @@
        "acbb": false
       },
       {
-       "pos": 25,
-       "ajoute": false,
-       "nom": "BUTEL",
-       "pre": "Quentin",
-       "club": "COLOMBES ES",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 869,
-       "acbb": false
-      },
-      {
-       "pos": 26,
+       "pos": 23,
        "ajoute": false,
        "nom": "ISSA",
        "pre": "Thimothee",
@@ -33397,6 +33124,39 @@
        "cat": "S",
        "cats": "-40",
        "clt": 1156,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "DENIAU",
+       "pre": "Alban",
+       "club": "ISSY-LES-MOULINEAUX",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 1097,
+       "acbb": false
+      },
+      {
+       "pos": 25,
+       "ajoute": false,
+       "nom": "HAJJ CHEHADE",
+       "pre": "Tammam",
+       "club": "MEUDON AS",
+       "cat": "V40",
+       "cats": "40+",
+       "clt": 1052,
+       "acbb": false
+      },
+      {
+       "pos": 26,
+       "ajoute": false,
+       "nom": "CHRISTIAN",
+       "pre": "Stéphane",
+       "club": "PUTEAUX TT CSM",
+       "cat": "V55",
+       "cats": "55+",
+       "clt": 1033,
        "acbb": false
       },
       {
@@ -33465,6 +33225,17 @@
        "cats": "-40",
        "clt": 778,
        "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "BRICE",
+       "pre": "Benoit",
+       "club": "ISSY-LES-MOULINEAUX",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 1297,
+       "acbb": false
       }
      ],
      "div": "D2",
@@ -33473,11 +33244,9 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1,
-      0
+      1
      ],
-     "id": "t2-g38",
-     "niveau": "D"
+     "id": "t2-g38"
     },
     {
      "nom": "D2 ELITE MESSIEURS",
@@ -33490,17 +33259,6 @@
       {
        "pos": 1,
        "ajoute": false,
-       "nom": "LEPINE",
-       "pre": "Pierre",
-       "club": "TennisTable Municipal Chatillon",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 1170,
-       "acbb": false
-      },
-      {
-       "pos": 2,
-       "ajoute": false,
        "nom": "OBAM",
        "pre": "Nicolas",
        "club": "SM MONTROUGE",
@@ -33510,7 +33268,7 @@
        "acbb": false
       },
       {
-       "pos": 3,
+       "pos": 2,
        "ajoute": false,
        "nom": "GABARD",
        "pre": "Jean Gilles",
@@ -33521,7 +33279,7 @@
        "acbb": false
       },
       {
-       "pos": 4,
+       "pos": 3,
        "ajoute": false,
        "nom": "DUBOIS",
        "pre": "Loic",
@@ -33532,7 +33290,7 @@
        "acbb": false
       },
       {
-       "pos": 5,
+       "pos": 4,
        "ajoute": false,
        "nom": "COUCHOURON",
        "pre": "Sebastien",
@@ -33544,7 +33302,7 @@
        "lic": "2710453"
       },
       {
-       "pos": 6,
+       "pos": 5,
        "ajoute": false,
        "nom": "PEIGNE",
        "pre": "Gilles",
@@ -33556,7 +33314,7 @@
        "lic": "9243974"
       },
       {
-       "pos": 7,
+       "pos": 6,
        "ajoute": false,
        "nom": "ABDAT",
        "pre": "Enzo",
@@ -33567,7 +33325,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 7,
        "ajoute": false,
        "nom": "CHAUVEL",
        "pre": "Sylvain",
@@ -33579,7 +33337,7 @@
        "lic": "9526378"
       },
       {
-       "pos": 9,
+       "pos": 8,
        "ajoute": false,
        "nom": "WATINE",
        "pre": "Augustin",
@@ -33590,7 +33348,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 9,
        "ajoute": false,
        "nom": "AMADORU",
        "pre": "Chamod",
@@ -33601,7 +33359,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 10,
        "ajoute": false,
        "nom": "BOUCHARD",
        "pre": "Edouard",
@@ -33612,7 +33370,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 11,
        "ajoute": false,
        "nom": "MOSTAFAVI",
        "pre": "Mehdi",
@@ -33623,7 +33381,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 12,
        "ajoute": false,
        "nom": "GUERIN",
        "pre": "Christophe",
@@ -33634,7 +33392,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 13,
        "ajoute": false,
        "nom": "LE SAOS",
        "pre": "Cedric",
@@ -33645,7 +33403,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
+       "pos": 14,
        "ajoute": false,
        "nom": "PETRILLI",
        "pre": "Alexandre",
@@ -33656,7 +33414,7 @@
        "acbb": false
       },
       {
-       "pos": 16,
+       "pos": 15,
        "ajoute": false,
        "nom": "CALVIE",
        "pre": "Jules",
@@ -33667,7 +33425,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 16,
        "ajoute": false,
        "nom": "GUENA",
        "pre": "Pierre",
@@ -33678,18 +33436,7 @@
        "acbb": false
       },
       {
-       "pos": 18,
-       "ajoute": false,
-       "nom": "CAREAU",
-       "pre": "Jules",
-       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 1038,
-       "acbb": false
-      },
-      {
-       "pos": 19,
+       "pos": 17,
        "ajoute": false,
        "nom": "CARPENTIER",
        "pre": "Pascal",
@@ -33700,7 +33447,7 @@
        "acbb": false
       },
       {
-       "pos": 20,
+       "pos": 18,
        "ajoute": false,
        "nom": "FERLAY",
        "pre": "Olivier",
@@ -33711,7 +33458,7 @@
        "acbb": false
       },
       {
-       "pos": 21,
+       "pos": 19,
        "ajoute": false,
        "nom": "BOURTOUTIAN",
        "pre": "Rafi",
@@ -33722,7 +33469,7 @@
        "acbb": false
       },
       {
-       "pos": 22,
+       "pos": 20,
        "ajoute": false,
        "nom": "GARBARG",
        "pre": "Raphaël",
@@ -33735,45 +33482,45 @@
       {
        "pos": 23,
        "ajoute": false,
-       "nom": "STEPHANT",
-       "pre": "Jean-Patrice",
-       "club": "PLESSIS ROBINSON TT",
-       "cat": "V50",
-       "cats": "50+",
-       "clt": 1225,
-       "acbb": false
-      },
-      {
-       "pos": 24,
-       "ajoute": false,
-       "nom": "FREDON",
-       "pre": "Gaetan",
-       "club": "CLICHY SUR SEINE CS",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 967,
-       "acbb": false
-      },
-      {
-       "pos": 25,
-       "ajoute": false,
-       "nom": "YUAN",
-       "pre": "Baoxiang",
-       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 1191,
-       "acbb": false
-      },
-      {
-       "pos": 26,
-       "ajoute": false,
        "nom": "COLIN",
        "pre": "Pierre",
        "club": "ISSY-LES-MOULINEAUX",
        "cat": "S",
        "cats": "-40",
        "clt": 1191,
+       "acbb": false
+      },
+      {
+       "pos": 24,
+       "ajoute": false,
+       "nom": "DUBOIS",
+       "pre": "Franklin",
+       "club": "LA GARENNE COLOMBES AE",
+       "cat": "V45",
+       "cats": "45+",
+       "clt": 1143,
+       "acbb": false
+      },
+      {
+       "pos": 25,
+       "ajoute": false,
+       "nom": "RABARIJAONA",
+       "pre": "Zo",
+       "club": "LES VOLTIGEURS DE BILLANCOURT",
+       "cat": "V55",
+       "cats": "55+",
+       "clt": 1036,
+       "acbb": false
+      },
+      {
+       "pos": 26,
+       "ajoute": false,
+       "nom": "BUTEL",
+       "pre": "Pascal",
+       "club": "COLOMBES ES",
+       "cat": "V60",
+       "cats": "60+",
+       "clt": 1033,
        "acbb": false
       },
       {
@@ -33853,6 +33600,28 @@
        "cats": "-40",
        "clt": 1136,
        "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "FREDON",
+       "pre": "Gaetan",
+       "club": "CLICHY SUR SEINE CS",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 967,
+       "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "CAREAU",
+       "pre": "Jules",
+       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 1038,
+       "acbb": false
       }
      ],
      "div": "D2",
@@ -33861,11 +33630,9 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1,
-      0
+      1
      ],
-     "id": "t2-g39",
-     "niveau": "D"
+     "id": "t2-g39"
     },
     {
      "nom": "D3 ELITE MESSIEURS",
@@ -33878,39 +33645,6 @@
       {
        "pos": 1,
        "ajoute": false,
-       "nom": "DUBOIS",
-       "pre": "Franklin",
-       "club": "LA GARENNE COLOMBES AE",
-       "cat": "V45",
-       "cats": "45+",
-       "clt": 1143,
-       "acbb": false
-      },
-      {
-       "pos": 2,
-       "ajoute": false,
-       "nom": "RABARIJAONA",
-       "pre": "Zo",
-       "club": "LES VOLTIGEURS DE BILLANCOURT",
-       "cat": "V55",
-       "cats": "55+",
-       "clt": 1036,
-       "acbb": false
-      },
-      {
-       "pos": 3,
-       "ajoute": false,
-       "nom": "CHRISTIAN",
-       "pre": "Stéphane",
-       "club": "PUTEAUX TT CSM",
-       "cat": "V55",
-       "cats": "55+",
-       "clt": 1033,
-       "acbb": false
-      },
-      {
-       "pos": 4,
-       "ajoute": false,
        "nom": "VIEYRA",
        "pre": "Hubert Evariste",
        "club": "RUEIL ATHLETIC CLUB TT",
@@ -33920,7 +33654,7 @@
        "acbb": false
       },
       {
-       "pos": 5,
+       "pos": 2,
        "ajoute": false,
        "nom": "TRAFIMOVICH",
        "pre": "Vladislav",
@@ -33931,7 +33665,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
+       "pos": 3,
        "ajoute": false,
        "nom": "HONTARREDE",
        "pre": "Pierre-Alain",
@@ -33942,7 +33676,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 4,
        "ajoute": false,
        "nom": "LEJEUNE",
        "pre": "Thomas",
@@ -33953,7 +33687,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 5,
        "ajoute": false,
        "nom": "VENDEL",
        "pre": "Romain",
@@ -33964,7 +33698,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 6,
        "ajoute": false,
        "nom": "GOMES",
        "pre": "Renaud",
@@ -33975,7 +33709,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 7,
        "ajoute": false,
        "nom": "LONG",
        "pre": "Quoc-Tien",
@@ -33986,7 +33720,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 8,
        "ajoute": false,
        "nom": "FERREIRA",
        "pre": "Eliot",
@@ -33997,7 +33731,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 9,
        "ajoute": false,
        "nom": "DE LA MORANDIERE",
        "pre": "Cédric",
@@ -34008,7 +33742,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 10,
        "ajoute": false,
        "nom": "KLOETI",
        "pre": "Sebastien",
@@ -34019,7 +33753,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 11,
        "ajoute": false,
        "nom": "DANIEL",
        "pre": "Jérôme",
@@ -34030,7 +33764,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
+       "pos": 12,
        "ajoute": false,
        "nom": "BENDA",
        "pre": "Arthur",
@@ -34041,7 +33775,7 @@
        "acbb": false
       },
       {
-       "pos": 16,
+       "pos": 13,
        "ajoute": false,
        "nom": "JOSQUIN",
        "pre": "Felix",
@@ -34052,7 +33786,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 14,
        "ajoute": false,
        "nom": "PAICHARD",
        "pre": "Yoann",
@@ -34063,7 +33797,7 @@
        "acbb": false
       },
       {
-       "pos": 18,
+       "pos": 15,
        "ajoute": false,
        "nom": "LOZACH",
        "pre": "Antoine",
@@ -34074,7 +33808,7 @@
        "acbb": false
       },
       {
-       "pos": 19,
+       "pos": 16,
        "ajoute": false,
        "nom": "GEIN",
        "pre": "Julien",
@@ -34085,7 +33819,7 @@
        "acbb": false
       },
       {
-       "pos": 20,
+       "pos": 17,
        "ajoute": false,
        "nom": "LOU",
        "pre": "Shangzhi",
@@ -34096,7 +33830,7 @@
        "acbb": false
       },
       {
-       "pos": 21,
+       "pos": 18,
        "ajoute": false,
        "nom": "MSOLLI",
        "pre": "Wajdy",
@@ -34107,14 +33841,47 @@
        "acbb": false
       },
       {
-       "pos": 22,
+       "pos": 19,
        "ajoute": false,
-       "nom": "DOLLEANS",
-       "pre": "Alexandre",
-       "club": "CLAMART CSM",
+       "nom": "SEMYKOZ",
+       "pre": "Eduard",
+       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
        "cat": "V45",
        "cats": "45+",
-       "clt": 754,
+       "clt": 637,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "THIBAUT",
+       "pre": "Christophe",
+       "club": "BOURG LA REINE AS",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 901,
+       "acbb": false
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "WANG",
+       "pre": "Hao",
+       "club": "LES VOLTIGEURS DE BILLANCOURT",
+       "cat": "V55",
+       "cats": "55+",
+       "clt": 690,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "LEGAVRE",
+       "pre": "Julien",
+       "club": "ISSY-LES-MOULINEAUX",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 907,
        "acbb": false
       },
       {
@@ -34226,6 +33993,17 @@
        "cats": "40+",
        "clt": 542,
        "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "DOLLEANS",
+       "pre": "Alexandre",
+       "club": "CLAMART CSM",
+       "cat": "V45",
+       "cats": "45+",
+       "clt": 754,
+       "acbb": false
       }
      ],
      "div": "D3",
@@ -34234,11 +34012,9 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1,
-      0
+      1
      ],
-     "id": "t2-g40",
-     "niveau": "D"
+     "id": "t2-g40"
     },
     {
      "nom": "D3 ELITE MESSIEURS",
@@ -34251,50 +34027,6 @@
       {
        "pos": 1,
        "ajoute": false,
-       "nom": "DENIAU",
-       "pre": "Alban",
-       "club": "ISSY-LES-MOULINEAUX",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 1097,
-       "acbb": false
-      },
-      {
-       "pos": 2,
-       "ajoute": false,
-       "nom": "HAJJ CHEHADE",
-       "pre": "Tammam",
-       "club": "MEUDON AS",
-       "cat": "V40",
-       "cats": "40+",
-       "clt": 1052,
-       "acbb": false
-      },
-      {
-       "pos": 3,
-       "ajoute": false,
-       "nom": "BUTEL",
-       "pre": "Pascal",
-       "club": "COLOMBES ES",
-       "cat": "V60",
-       "cats": "60+",
-       "clt": 1033,
-       "acbb": false
-      },
-      {
-       "pos": 4,
-       "ajoute": false,
-       "nom": "DO",
-       "pre": "Steeve",
-       "club": "TennisTable Municipal Chatillon",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 1001,
-       "acbb": false
-      },
-      {
-       "pos": 5,
-       "ajoute": false,
        "nom": "NEGRONI",
        "pre": "Come",
        "club": "NEUILLY AS ST PIERRE",
@@ -34304,7 +34036,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
+       "pos": 2,
        "ajoute": false,
        "nom": "PLE",
        "pre": "Julien",
@@ -34315,7 +34047,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 3,
        "ajoute": false,
        "nom": "GISSON",
        "pre": "Anthony",
@@ -34326,7 +34058,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 4,
        "ajoute": false,
        "nom": "DURET",
        "pre": "Simon",
@@ -34337,7 +34069,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 5,
        "ajoute": false,
        "nom": "GOBIN",
        "pre": "Julien",
@@ -34348,7 +34080,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 6,
        "ajoute": false,
        "nom": "APAYDIN",
        "pre": "Cengiz",
@@ -34359,7 +34091,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 7,
        "ajoute": false,
        "nom": "LAVAL",
        "pre": "Benjamin",
@@ -34370,7 +34102,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 8,
        "ajoute": false,
        "nom": "TOSOLINI",
        "pre": "Pierre",
@@ -34381,7 +34113,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 9,
        "ajoute": false,
        "nom": "DELOFFRE",
        "pre": "Arthur",
@@ -34392,7 +34124,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 10,
        "ajoute": false,
        "nom": "LORRE",
        "pre": "Guillaume",
@@ -34403,19 +34135,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
-       "ajoute": false,
-       "nom": "PIQUET",
-       "pre": "Sebastien",
-       "club": "BOULOGNE BILLANCOURT AC",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 778,
-       "acbb": true,
-       "lic": "6221074"
-      },
-      {
-       "pos": 16,
+       "pos": 11,
        "ajoute": false,
        "nom": "MARTINS",
        "pre": "Enzo",
@@ -34426,7 +34146,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 12,
        "ajoute": false,
        "nom": "DUKUZE",
        "pre": "Honore",
@@ -34437,7 +34157,7 @@
        "acbb": false
       },
       {
-       "pos": 18,
+       "pos": 13,
        "ajoute": false,
        "nom": "CHEVRIER",
        "pre": "Matthias",
@@ -34448,29 +34168,7 @@
        "acbb": false
       },
       {
-       "pos": 19,
-       "ajoute": false,
-       "nom": "CABRAL",
-       "pre": "Marco",
-       "club": "NEUILLY AS ST PIERRE",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 746,
-       "acbb": false
-      },
-      {
-       "pos": 20,
-       "ajoute": false,
-       "nom": "VIOLAS",
-       "pre": "Noé",
-       "club": "TennisTable Municipal Chatillon",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 888,
-       "acbb": false
-      },
-      {
-       "pos": 21,
+       "pos": 15,
        "ajoute": false,
        "nom": "COMBES",
        "pre": "Antoine",
@@ -34481,7 +34179,7 @@
        "acbb": false
       },
       {
-       "pos": 22,
+       "pos": 16,
        "ajoute": false,
        "nom": "LERONDEL",
        "pre": "Sebastien",
@@ -34492,7 +34190,7 @@
        "acbb": false
       },
       {
-       "pos": 23,
+       "pos": 17,
        "ajoute": false,
        "nom": "CHAUMONT",
        "pre": "Damien",
@@ -34500,6 +34198,73 @@
        "cat": "V40",
        "cats": "40+",
        "clt": 889,
+       "acbb": false
+      },
+      {
+       "pos": 18,
+       "ajoute": false,
+       "nom": "VIOLANT",
+       "pre": "Kevin",
+       "club": "ASNIERES TT",
+       "cat": "V40",
+       "cats": "40+",
+       "clt": 672,
+       "acbb": false
+      },
+      {
+       "pos": 19,
+       "ajoute": false,
+       "nom": "JUMEAU",
+       "pre": "Cyril",
+       "club": "MEUDON AS",
+       "cat": "V50",
+       "cats": "50+",
+       "clt": 933,
+       "acbb": false
+      },
+      {
+       "pos": 20,
+       "ajoute": false,
+       "nom": "STEMLER",
+       "pre": "Grégoire",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 808,
+       "acbb": true,
+       "lic": "9254353"
+      },
+      {
+       "pos": 21,
+       "ajoute": false,
+       "nom": "LHOMER",
+       "pre": "Paul",
+       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 852,
+       "acbb": false
+      },
+      {
+       "pos": 22,
+       "ajoute": false,
+       "nom": "AUBERT",
+       "pre": "Jean Francois",
+       "club": "LEVALLOIS SPORTING CLUB TT",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 788,
+       "acbb": false
+      },
+      {
+       "pos": 23,
+       "ajoute": false,
+       "nom": "CHOUKROUN",
+       "pre": "Laurent",
+       "club": "SM MONTROUGE",
+       "cat": "V55",
+       "cats": "55+",
+       "clt": 785,
        "acbb": false
       },
       {
@@ -34623,6 +34388,40 @@
        "cats": "45+",
        "clt": 739,
        "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "DO",
+       "pre": "Steeve",
+       "club": "TennisTable Municipal Chatillon",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 1001,
+       "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "VIOLAS",
+       "pre": "Noé",
+       "club": "TennisTable Municipal Chatillon",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 888,
+       "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "PIQUET",
+       "pre": "Sebastien",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 778,
+       "acbb": true,
+       "lic": "6221074"
       }
      ],
      "div": "D3",
@@ -34631,11 +34430,9 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1,
-      0
+      1
      ],
-     "id": "t2-g41",
-     "niveau": "D"
+     "id": "t2-g41"
     },
     {
      "nom": "D4 ELITE MESSIEURS",
@@ -34648,40 +34445,6 @@
       {
        "pos": 1,
        "ajoute": false,
-       "nom": "STEMLER",
-       "pre": "Grégoire",
-       "club": "BOULOGNE BILLANCOURT AC",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 808,
-       "acbb": true,
-       "lic": "9254353"
-      },
-      {
-       "pos": 2,
-       "ajoute": false,
-       "nom": "WANG",
-       "pre": "Hao",
-       "club": "LES VOLTIGEURS DE BILLANCOURT",
-       "cat": "V55",
-       "cats": "55+",
-       "clt": 690,
-       "acbb": false
-      },
-      {
-       "pos": 3,
-       "ajoute": false,
-       "nom": "CHOUKROUN",
-       "pre": "Laurent",
-       "club": "SM MONTROUGE",
-       "cat": "V55",
-       "cats": "55+",
-       "clt": 785,
-       "acbb": false
-      },
-      {
-       "pos": 4,
-       "ajoute": false,
        "nom": "GALLAIS",
        "pre": "Marc",
        "club": "LEVALLOIS SPORTING CLUB TT",
@@ -34691,7 +34454,7 @@
        "acbb": false
       },
       {
-       "pos": 5,
+       "pos": 2,
        "ajoute": false,
        "nom": "MUSEUR",
        "pre": "Sylvain",
@@ -34702,7 +34465,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
+       "pos": 3,
        "ajoute": false,
        "nom": "MONNAYE",
        "pre": "Nicolas",
@@ -34713,7 +34476,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 4,
        "ajoute": false,
        "nom": "TOURKI",
        "pre": "Soufiane",
@@ -34724,7 +34487,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 5,
        "ajoute": false,
        "nom": "SINI",
        "pre": "Smail",
@@ -34735,7 +34498,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 6,
        "ajoute": false,
        "nom": "SAYAH",
        "pre": "Selim",
@@ -34746,7 +34509,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 7,
        "ajoute": false,
        "nom": "RAIMBAULT",
        "pre": "Alexandre",
@@ -34757,7 +34520,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 8,
        "ajoute": false,
        "nom": "POISSONNIER",
        "pre": "Xavier",
@@ -34768,7 +34531,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 9,
        "ajoute": false,
        "nom": "ALEXANDRE",
        "pre": "Thomas",
@@ -34779,7 +34542,7 @@
        "acbb": false
       },
       {
-       "pos": 13,
+       "pos": 10,
        "ajoute": false,
        "nom": "LEFEVRE",
        "pre": "Maxime",
@@ -34790,7 +34553,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 11,
        "ajoute": false,
        "nom": "CHAUVEL",
        "pre": "Vincent",
@@ -34801,7 +34564,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
+       "pos": 12,
        "ajoute": false,
        "nom": "LENAIN",
        "pre": "Christophe",
@@ -34812,7 +34575,7 @@
        "acbb": false
       },
       {
-       "pos": 16,
+       "pos": 13,
        "ajoute": false,
        "nom": "VERSCHELDE",
        "pre": "Sylvain",
@@ -34823,7 +34586,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 14,
        "ajoute": false,
        "nom": "NIKOLIC",
        "pre": "David",
@@ -34834,7 +34597,7 @@
        "acbb": false
       },
       {
-       "pos": 18,
+       "pos": 15,
        "ajoute": false,
        "nom": "BERMOND",
        "pre": "Mattieu",
@@ -34845,7 +34608,7 @@
        "acbb": false
       },
       {
-       "pos": 19,
+       "pos": 16,
        "ajoute": false,
        "nom": "MARCHI",
        "pre": "Gilles",
@@ -34856,18 +34619,7 @@
        "acbb": false
       },
       {
-       "pos": 20,
-       "ajoute": false,
-       "nom": "RAVAT",
-       "pre": "Jean-Loup",
-       "club": "ANTONY SP TENNIS DE TABLE",
-       "cat": "V65",
-       "cats": "65+",
-       "clt": 694,
-       "acbb": false
-      },
-      {
-       "pos": 21,
+       "pos": 17,
        "ajoute": false,
        "nom": "JOUFFROY",
        "pre": "Alexis",
@@ -34878,7 +34630,7 @@
        "acbb": false
       },
       {
-       "pos": 22,
+       "pos": 18,
        "ajoute": false,
        "nom": "KUNOVSKY",
        "pre": "Rostislav",
@@ -34889,7 +34641,7 @@
        "acbb": false
       },
       {
-       "pos": 23,
+       "pos": 19,
        "ajoute": false,
        "nom": "VIGOGNE",
        "pre": "Pascal",
@@ -34900,7 +34652,7 @@
        "acbb": false
       },
       {
-       "pos": 24,
+       "pos": 20,
        "ajoute": false,
        "nom": "BUCHET",
        "pre": "Christophe",
@@ -34912,7 +34664,7 @@
        "lic": "7511193"
       },
       {
-       "pos": 25,
+       "pos": 21,
        "ajoute": false,
        "nom": "GONON",
        "pre": "Guillaume",
@@ -34923,7 +34675,7 @@
        "acbb": false
       },
       {
-       "pos": 26,
+       "pos": 22,
        "ajoute": false,
        "nom": "LAVIROTTE",
        "pre": "Jean-Marie",
@@ -34934,7 +34686,7 @@
        "acbb": false
       },
       {
-       "pos": 27,
+       "pos": 23,
        "ajoute": false,
        "nom": "MARKOVIC",
        "pre": "Vukadin",
@@ -34946,7 +34698,7 @@
        "lic": "9267586"
       },
       {
-       "pos": 28,
+       "pos": 24,
        "ajoute": false,
        "nom": "WANG",
        "pre": "Ruiwen",
@@ -34958,7 +34710,7 @@
        "lic": "9268708"
       },
       {
-       "pos": 29,
+       "pos": 25,
        "ajoute": false,
        "nom": "BERTIN",
        "pre": "Jean-François",
@@ -34969,7 +34721,7 @@
        "acbb": false
       },
       {
-       "pos": 30,
+       "pos": 26,
        "ajoute": false,
        "nom": "DAILLY",
        "pre": "Laurent",
@@ -34980,7 +34732,7 @@
        "acbb": false
       },
       {
-       "pos": 31,
+       "pos": 27,
        "ajoute": false,
        "nom": "D OVIDIO",
        "pre": "Benjamin",
@@ -34991,7 +34743,7 @@
        "acbb": false
       },
       {
-       "pos": 32,
+       "pos": 28,
        "ajoute": false,
        "nom": "CHIRON",
        "pre": "Patrick",
@@ -35002,7 +34754,7 @@
        "acbb": false
       },
       {
-       "pos": 33,
+       "pos": 29,
        "ajoute": false,
        "nom": "ZIEBEN",
        "pre": "Mickael",
@@ -35013,7 +34765,7 @@
        "acbb": false
       },
       {
-       "pos": 34,
+       "pos": 30,
        "ajoute": false,
        "nom": "DALBERTO",
        "pre": "Maxime",
@@ -35024,7 +34776,7 @@
        "acbb": false
       },
       {
-       "pos": 35,
+       "pos": 31,
        "ajoute": false,
        "nom": "SOUVANNARATH",
        "pre": "Tran Thinh",
@@ -35032,6 +34784,17 @@
        "cat": "V40",
        "cats": "40+",
        "clt": 500,
+       "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "RAVAT",
+       "pre": "Jean-Loup",
+       "club": "ANTONY SP TENNIS DE TABLE",
+       "cat": "V65",
+       "cats": "65+",
+       "clt": 694,
        "acbb": false
       }
      ],
@@ -35041,11 +34804,9 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1,
-      0
+      1
      ],
-     "id": "t2-g42",
-     "niveau": "D"
+     "id": "t2-g42"
     },
     {
      "nom": "D4 ELITE MESSIEURS",
@@ -35058,27 +34819,16 @@
       {
        "pos": 1,
        "ajoute": false,
-       "nom": "SEMYKOZ",
-       "pre": "Eduard",
-       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
-       "cat": "V45",
-       "cats": "45+",
-       "clt": 637,
+       "nom": "BAUDRY",
+       "pre": "Sébastien",
+       "club": "BOURG LA REINE AS",
+       "cat": "V55",
+       "cats": "55+",
+       "clt": 778,
        "acbb": false
       },
       {
        "pos": 2,
-       "ajoute": false,
-       "nom": "JUMEAU",
-       "pre": "Cyril",
-       "club": "MEUDON AS",
-       "cat": "V50",
-       "cats": "50+",
-       "clt": 933,
-       "acbb": false
-      },
-      {
-       "pos": 3,
        "ajoute": false,
        "nom": "VANICHE",
        "pre": "Andre",
@@ -35089,18 +34839,7 @@
        "acbb": false
       },
       {
-       "pos": 4,
-       "ajoute": false,
-       "nom": "AUBERT",
-       "pre": "Jean Francois",
-       "club": "LEVALLOIS SPORTING CLUB TT",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 788,
-       "acbb": false
-      },
-      {
-       "pos": 5,
+       "pos": 3,
        "ajoute": false,
        "nom": "CHAILLOT",
        "pre": "Thomas",
@@ -35111,7 +34850,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
+       "pos": 4,
        "ajoute": false,
        "nom": "BISMUTH",
        "pre": "Nicolas",
@@ -35122,7 +34861,7 @@
        "acbb": false
       },
       {
-       "pos": 7,
+       "pos": 5,
        "ajoute": false,
        "nom": "YUNG",
        "pre": "Ki Cheuk",
@@ -35133,7 +34872,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 6,
        "ajoute": false,
        "nom": "COUSIN",
        "pre": "Brendon",
@@ -35144,7 +34883,7 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 7,
        "ajoute": false,
        "nom": "PASSERON",
        "pre": "Raphael",
@@ -35155,19 +34894,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
-       "ajoute": false,
-       "nom": "DE CAMPIGNEULLES",
-       "pre": "Cyril",
-       "club": "BOULOGNE BILLANCOURT AC",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 500,
-       "acbb": true,
-       "lic": "9247165"
-      },
-      {
-       "pos": 11,
+       "pos": 8,
        "ajoute": false,
        "nom": "BONZON",
        "pre": "Baptiste",
@@ -35178,7 +34905,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 9,
        "ajoute": false,
        "nom": "MA",
        "pre": "Qi",
@@ -35190,7 +34917,7 @@
        "lic": "9258734"
       },
       {
-       "pos": 13,
+       "pos": 10,
        "ajoute": false,
        "nom": "CARTERON",
        "pre": "Rémi",
@@ -35201,7 +34928,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 11,
        "ajoute": false,
        "nom": "MARTIN",
        "pre": "Stephane",
@@ -35212,7 +34939,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
+       "pos": 12,
        "ajoute": false,
        "nom": "HOUSSINE",
        "pre": "Koussai",
@@ -35223,7 +34950,7 @@
        "acbb": false
       },
       {
-       "pos": 16,
+       "pos": 13,
        "ajoute": false,
        "nom": "MARQUES",
        "pre": "Emanuel",
@@ -35234,7 +34961,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 14,
        "ajoute": false,
        "nom": "FINOT",
        "pre": "Florian",
@@ -35245,7 +34972,7 @@
        "acbb": false
       },
       {
-       "pos": 18,
+       "pos": 15,
        "ajoute": false,
        "nom": "FLOCH",
        "pre": "Romain",
@@ -35256,7 +34983,7 @@
        "acbb": false
       },
       {
-       "pos": 19,
+       "pos": 16,
        "ajoute": false,
        "nom": "PARADIS",
        "pre": "Frederic",
@@ -35267,7 +34994,7 @@
        "acbb": false
       },
       {
-       "pos": 20,
+       "pos": 17,
        "ajoute": false,
        "nom": "PICARD",
        "pre": "Jocelyn",
@@ -35278,7 +35005,7 @@
        "acbb": false
       },
       {
-       "pos": 21,
+       "pos": 18,
        "ajoute": false,
        "nom": "MARTINEZ",
        "pre": "Corentin",
@@ -35289,7 +35016,7 @@
        "acbb": false
       },
       {
-       "pos": 22,
+       "pos": 19,
        "ajoute": false,
        "nom": "PAUSAN",
        "pre": "Sebastian",
@@ -35300,7 +35027,7 @@
        "acbb": false
       },
       {
-       "pos": 23,
+       "pos": 20,
        "ajoute": false,
        "nom": "ROSSI",
        "pre": "Jérôme",
@@ -35311,7 +35038,7 @@
        "acbb": false
       },
       {
-       "pos": 24,
+       "pos": 21,
        "ajoute": false,
        "nom": "SIN",
        "pre": "Hung Hay",
@@ -35322,7 +35049,7 @@
        "acbb": false
       },
       {
-       "pos": 25,
+       "pos": 22,
        "ajoute": false,
        "nom": "JAOUEN",
        "pre": "Christophe",
@@ -35333,7 +35060,7 @@
        "acbb": false
       },
       {
-       "pos": 26,
+       "pos": 23,
        "ajoute": false,
        "nom": "MIENNÉ",
        "pre": "Nicolas",
@@ -35344,7 +35071,7 @@
        "acbb": false
       },
       {
-       "pos": 27,
+       "pos": 24,
        "ajoute": false,
        "nom": "BUTEL",
        "pre": "Damien",
@@ -35355,18 +35082,7 @@
        "acbb": false
       },
       {
-       "pos": 28,
-       "ajoute": false,
-       "nom": "LIND",
-       "pre": "David",
-       "club": "LES VOLTIGEURS DE BILLANCOURT",
-       "cat": "V40",
-       "cats": "40+",
-       "clt": 500,
-       "acbb": false
-      },
-      {
-       "pos": 29,
+       "pos": 25,
        "ajoute": false,
        "nom": "KIRKORYAN",
        "pre": "Kevork",
@@ -35377,7 +35093,7 @@
        "acbb": false
       },
       {
-       "pos": 30,
+       "pos": 26,
        "ajoute": false,
        "nom": "GERAY",
        "pre": "Philippe",
@@ -35388,7 +35104,7 @@
        "acbb": false
       },
       {
-       "pos": 31,
+       "pos": 27,
        "ajoute": false,
        "nom": "VOGEL",
        "pre": "Pascal",
@@ -35399,7 +35115,7 @@
        "acbb": false
       },
       {
-       "pos": 32,
+       "pos": 28,
        "ajoute": false,
        "nom": "ROHR",
        "pre": "Thierry",
@@ -35410,7 +35126,7 @@
        "acbb": false
       },
       {
-       "pos": 33,
+       "pos": 29,
        "ajoute": false,
        "nom": "BENHAMOU",
        "pre": "Jonathan",
@@ -35421,7 +35137,7 @@
        "acbb": false
       },
       {
-       "pos": 34,
+       "pos": 30,
        "ajoute": false,
        "nom": "COLLEVILLE",
        "pre": "Didier",
@@ -35432,13 +35148,24 @@
        "acbb": false
       },
       {
-       "pos": 35,
+       "pos": 31,
        "ajoute": false,
        "nom": "GAUDICHEAU",
        "pre": "Christophe",
        "club": "ISSY-LES-MOULINEAUX",
        "cat": "S",
        "cats": "-40",
+       "clt": 500,
+       "acbb": false
+      },
+      {
+       "pos": 32,
+       "ajoute": false,
+       "nom": "FAYEMENDY",
+       "pre": "Laurent",
+       "club": "STADE DE VANVES",
+       "cat": "V60",
+       "cats": "60+",
        "clt": 500,
        "acbb": false
       },
@@ -35463,6 +35190,29 @@
        "cats": "75+",
        "clt": 507,
        "acbb": false
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "DE CAMPIGNEULLES",
+       "pre": "Cyril",
+       "club": "BOULOGNE BILLANCOURT AC",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 500,
+       "acbb": true,
+       "lic": "9247165"
+      },
+      {
+       "pos": null,
+       "ajoute": true,
+       "nom": "LIND",
+       "pre": "David",
+       "club": "LES VOLTIGEURS DE BILLANCOURT",
+       "cat": "V40",
+       "cats": "40+",
+       "clt": 500,
+       "acbb": false
       }
      ],
      "div": "D4",
@@ -35471,11 +35221,9 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1,
-      0
+      1
      ],
-     "id": "t2-g43",
-     "niveau": "D"
+     "id": "t2-g43"
     },
     {
      "nom": "D4 ELITE MESSIEURS",
@@ -35488,50 +35236,6 @@
       {
        "pos": 1,
        "ajoute": false,
-       "nom": "THIBAUT",
-       "pre": "Christophe",
-       "club": "BOURG LA REINE AS",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 901,
-       "acbb": false
-      },
-      {
-       "pos": 2,
-       "ajoute": false,
-       "nom": "VIOLANT",
-       "pre": "Kevin",
-       "club": "ASNIERES TT",
-       "cat": "V40",
-       "cats": "40+",
-       "clt": 672,
-       "acbb": false
-      },
-      {
-       "pos": 3,
-       "ajoute": false,
-       "nom": "LEGAVRE",
-       "pre": "Julien",
-       "club": "ISSY-LES-MOULINEAUX",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 907,
-       "acbb": false
-      },
-      {
-       "pos": 4,
-       "ajoute": false,
-       "nom": "LHOMER",
-       "pre": "Paul",
-       "club": "COURBEVOIE SPORT TENNIS DE TABLE",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 852,
-       "acbb": false
-      },
-      {
-       "pos": 5,
-       "ajoute": false,
        "nom": "COPIN",
        "pre": "Jérôme",
        "club": "LES VOLTIGEURS DE BILLANCOURT",
@@ -35541,18 +35245,7 @@
        "acbb": false
       },
       {
-       "pos": 6,
-       "ajoute": false,
-       "nom": "KALBOUSSI",
-       "pre": "Mohamed",
-       "club": "TennisTable Municipal Chatillon",
-       "cat": "S",
-       "cats": "-40",
-       "clt": 729,
-       "acbb": false
-      },
-      {
-       "pos": 7,
+       "pos": 2,
        "ajoute": false,
        "nom": "LEBAUD",
        "pre": "Hugo",
@@ -35563,7 +35256,7 @@
        "acbb": false
       },
       {
-       "pos": 8,
+       "pos": 3,
        "ajoute": false,
        "nom": "DERRIEN",
        "pre": "Mael",
@@ -35574,7 +35267,18 @@
        "acbb": false
       },
       {
-       "pos": 9,
+       "pos": 4,
+       "ajoute": false,
+       "nom": "BICHOT",
+       "pre": "Vincent",
+       "club": "USM MALAKOFF",
+       "cat": "S",
+       "cats": "40",
+       "clt": 798,
+       "acbb": false
+      },
+      {
+       "pos": 5,
        "ajoute": false,
        "nom": "BOUKABOUS",
        "pre": "Kamel",
@@ -35585,7 +35289,7 @@
        "acbb": false
       },
       {
-       "pos": 10,
+       "pos": 6,
        "ajoute": false,
        "nom": "LANCELOT",
        "pre": "Maxime",
@@ -35596,7 +35300,7 @@
        "acbb": false
       },
       {
-       "pos": 11,
+       "pos": 7,
        "ajoute": false,
        "nom": "LARBRE",
        "pre": "Jean-Pascal",
@@ -35607,7 +35311,7 @@
        "acbb": false
       },
       {
-       "pos": 12,
+       "pos": 8,
        "ajoute": false,
        "nom": "SUCHER",
        "pre": "Antoine",
@@ -35619,7 +35323,18 @@
        "lic": "6311654"
       },
       {
-       "pos": 13,
+       "pos": 9,
+       "ajoute": false,
+       "nom": "ASSERAY",
+       "pre": "Riwan",
+       "club": "LA GARENNE COLOMBES AE",
+       "cat": "S",
+       "cats": "-40",
+       "clt": 691,
+       "acbb": false
+      },
+      {
+       "pos": 10,
        "ajoute": false,
        "nom": "MONTESINOS",
        "pre": "Paul",
@@ -35630,7 +35345,7 @@
        "acbb": false
       },
       {
-       "pos": 14,
+       "pos": 11,
        "ajoute": false,
        "nom": "LAGARDE",
        "pre": "Jeremie",
@@ -35641,7 +35356,7 @@
        "acbb": false
       },
       {
-       "pos": 15,
+       "pos": 12,
        "ajoute": false,
        "nom": "COULAUD",
        "pre": "Jérémie",
@@ -35652,7 +35367,7 @@
        "acbb": false
       },
       {
-       "pos": 16,
+       "pos": 13,
        "ajoute": false,
        "nom": "LALLEMAND",
        "pre": "Christian",
@@ -35663,7 +35378,7 @@
        "acbb": false
       },
       {
-       "pos": 17,
+       "pos": 14,
        "ajoute": false,
        "nom": "QUINCHON",
        "pre": "Etienne",
@@ -35674,7 +35389,7 @@
        "acbb": false
       },
       {
-       "pos": 18,
+       "pos": 15,
        "ajoute": false,
        "nom": "JIANG",
        "pre": "Kaizhong",
@@ -35685,7 +35400,7 @@
        "acbb": false
       },
       {
-       "pos": 19,
+       "pos": 16,
        "ajoute": false,
        "nom": "COMMECY",
        "pre": "Augustin",
@@ -35696,7 +35411,7 @@
        "acbb": false
       },
       {
-       "pos": 20,
+       "pos": 17,
        "ajoute": false,
        "nom": "DELALANDE",
        "pre": "Ronan",
@@ -35707,7 +35422,7 @@
        "acbb": false
       },
       {
-       "pos": 21,
+       "pos": 18,
        "ajoute": false,
        "nom": "GAYOT",
        "pre": "Christophe",
@@ -35718,7 +35433,7 @@
        "acbb": false
       },
       {
-       "pos": 22,
+       "pos": 19,
        "ajoute": false,
        "nom": "DRODELOT",
        "pre": "Max",
@@ -35730,7 +35445,7 @@
        "lic": "4440542"
       },
       {
-       "pos": 23,
+       "pos": 20,
        "ajoute": false,
        "nom": "THEBAULT",
        "pre": "Jean-Francois",
@@ -35741,7 +35456,7 @@
        "acbb": false
       },
       {
-       "pos": 24,
+       "pos": 21,
        "ajoute": false,
        "nom": "VASSILLE",
        "pre": "Eric",
@@ -35752,7 +35467,7 @@
        "acbb": false
       },
       {
-       "pos": 25,
+       "pos": 22,
        "ajoute": false,
        "nom": "BLACODON",
        "pre": "Daniel",
@@ -35763,7 +35478,7 @@
        "acbb": false
       },
       {
-       "pos": 26,
+       "pos": 23,
        "ajoute": false,
        "nom": "DELANDEMARE",
        "pre": "Stephane",
@@ -35774,7 +35489,7 @@
        "acbb": false
       },
       {
-       "pos": 27,
+       "pos": 24,
        "ajoute": false,
        "nom": "BRAUT",
        "pre": "Dylan",
@@ -35785,7 +35500,7 @@
        "acbb": false
       },
       {
-       "pos": 28,
+       "pos": 25,
        "ajoute": false,
        "nom": "ZAMBRANA",
        "pre": "Sami",
@@ -35796,7 +35511,7 @@
        "acbb": false
       },
       {
-       "pos": 29,
+       "pos": 26,
        "ajoute": false,
        "nom": "TANIGA",
        "pre": "Velan",
@@ -35808,7 +35523,7 @@
        "lic": "3818920"
       },
       {
-       "pos": 30,
+       "pos": 27,
        "ajoute": false,
        "nom": "BENILLOUCHE",
        "pre": "Fabrice",
@@ -35819,7 +35534,7 @@
        "acbb": false
       },
       {
-       "pos": 31,
+       "pos": 28,
        "ajoute": false,
        "nom": "CORNUDET",
        "pre": "Gilbert",
@@ -35830,7 +35545,7 @@
        "acbb": false
       },
       {
-       "pos": 32,
+       "pos": 29,
        "ajoute": false,
        "nom": "BARBET",
        "pre": "Philippe",
@@ -35841,7 +35556,7 @@
        "acbb": false
       },
       {
-       "pos": 33,
+       "pos": 30,
        "ajoute": false,
        "nom": "DE LESTRANGE",
        "pre": "Ithier",
@@ -35852,7 +35567,7 @@
        "acbb": false
       },
       {
-       "pos": 34,
+       "pos": 31,
        "ajoute": false,
        "nom": "DAVETTE",
        "pre": "Marc",
@@ -35863,7 +35578,7 @@
        "acbb": false
       },
       {
-       "pos": 35,
+       "pos": 32,
        "ajoute": false,
        "nom": "KRAWCZYK",
        "pre": "Rafal",
@@ -35887,45 +35602,12 @@
       {
        "pos": null,
        "ajoute": true,
-       "nom": "BOITEL",
-       "pre": "Christophe",
-       "club": "RUEIL ATHLETIC CLUB TT",
-       "cat": "V60",
-       "cats": "60+",
-       "clt": 500,
-       "acbb": false
-      },
-      {
-       "pos": null,
-       "ajoute": false,
-       "nom": "FAYEMENDY",
-       "pre": "Laurent",
-       "club": "STADE DE VANVES",
-       "cat": "V60",
-       "cats": "60+",
-       "clt": 500,
-       "acbb": false
-      },
-      {
-       "pos": null,
-       "ajoute": false,
-       "nom": "ASSERAY",
-       "pre": "Riwan",
-       "club": "LA GARENNE COLOMBES AE",
+       "nom": "KALBOUSSI",
+       "pre": "Mohamed",
+       "club": "TennisTable Municipal Chatillon",
        "cat": "S",
        "cats": "-40",
-       "clt": 691,
-       "acbb": false
-      },
-      {
-       "pos": null,
-       "ajoute": false,
-       "nom": "BICHOT",
-       "pre": "Vincent",
-       "club": "USM MALAKOFF",
-       "cat": "S",
-       "cats": "40",
-       "clt": 798,
+       "clt": 729,
        "acbb": false
       }
      ],
@@ -35935,11 +35617,9 @@
      "cat": "Élite Messieurs",
      "rang": [
       4,
-      1,
-      0
+      1
      ],
-     "id": "t2-g44",
-     "niveau": "D"
+     "id": "t2-g44"
     },
     {
      "nom": "R1 BENJAMINES",
@@ -43699,7 +43379,7 @@
    ]
   }
  },
- "maj": "2026-11-05",
+ "maj": "2026-11-13",
  "bilans": {
   "depuis": "01/07/2026",
   "jusqu": "04/10/2026",
