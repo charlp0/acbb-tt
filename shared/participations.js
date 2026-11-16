@@ -114,11 +114,26 @@
       k=ids.canonical(k);
       return events.filter(e=>e.k===k&&e.j<before&&(!genre||e.t[0]===genre)).sort((a,b)=>a.j-b.j||a.t.localeCompare(b.t));
     }
+    /* Journées antérieures pas encore jouées (date à venir, pas de feuille) : composer J6 avant que J5 soit jouée est
+       normal, ces feuilles ne sont pas « non confirmées », elles n'existent pas encore. Elles sortent de missing() et
+       se listent à part (upcoming) pour une note neutre dans la page. */
+    function upcoming(before,genre){
+      const out={};
+      Object.keys(poules).filter(t=>team(t)&&(!genre||t[0]===genre)).forEach(t=>{
+        (poules[t].cal||[]).forEach(c=>{
+          if(+c.j>=before||c.exempt||sheets[t+':'+c.j]||pending.has(t+':'+c.j)) return;
+          const d=dateISO(c.date); if(!(d&&d>today)) return;
+          (out[c.j]=out[c.j]||{j:+c.j,date:c.date,teams:[]}).teams.push(t);
+        });
+      });
+      return Object.values(out).sort((a,b)=>a.j-b.j);
+    }
     function missing(before,genre){
       const out=[];
       Object.keys(poules).filter(t=>team(t)&&(!genre||t[0]===genre)).forEach(t=>{
         (poules[t].cal||[]).forEach(c=>{
           if(+c.j>=before||pending.has(t+':'+c.j)) return;
+          const d=dateISO(c.date); if(d&&d>today&&!sheets[t+':'+c.j]) return;   // journée à venir : rien à confirmer encore
           const s=sheets[t+':'+c.j];
           if(!s||!s.complete) out.push({t,j:+c.j,reason:s?'identite':c.exempt?'declaration_exemption':'feuille'});
         });
@@ -159,7 +174,7 @@
         inconnus:jours.filter(x=>x.unknown).length,exemptions:jours.filter(x=>x.exempt).length,
         ailleurs:jours.filter(x=>x.t&&x.t!==t).map(x=>({j:x.j,t:x.t})),jours};
     }
-    return {context,events,sheets,unknown,canonical:ids.canonical,resolve:ids.resolve,calendar,lineup,history,missing,missingFor,assignments,rounds,parcours,isPending:(t,j)=>pending.has(t+':'+j)};
+    return {context,events,sheets,unknown,canonical:ids.canonical,resolve:ids.resolve,calendar,lineup,history,missing,upcoming,missingFor,assignments,rounds,parcours,isPending:(t,j)=>pending.has(t+':'+j)};
   }
   function historyRules(model,k,t,j,poules){
     const h=model.history(k,j,t[0]), perRound=new Map();

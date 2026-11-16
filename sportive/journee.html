@@ -616,10 +616,11 @@ function renderHero(){
   document.querySelectorAll('.jp').forEach(el=>el.onclick=()=>{ if(dirtyTeams().length&&!confirm('Des modifications de J'+J+' ne sont pas enregistrées. Changer de journée quand même ?'))return; J=+el.dataset.j; SEL=null; history.replaceState(null,'','?j='+J); renderAll(); });
 }
 function renderState(){
-  const missing=PARTS.missing(J), historyNote=document.getElementById('historyNote');
-  historyNote.hidden=!missing.length;
-  historyNote.textContent=missing.length?'Feuilles non confirmées : '+missing.map(x=>x.t+' J'+x.j).join(', ')
-    +'. Les alertes d’historique concernent uniquement les joueurs sans participation confirmée pour ces journées.':'';
+  const missing=PARTS.missing(J), upcoming=PARTS.upcoming(J), historyNote=document.getElementById('historyNote');
+  historyNote.hidden=!missing.length&&!upcoming.length;
+  historyNote.textContent=(missing.length?'Feuilles non confirmées : '+missing.map(x=>x.t+' J'+x.j).join(', ')
+    +'. Les alertes d’historique concernent uniquement les joueurs sans participation confirmée pour ces journées.':'')
+    +(upcoming.length?(missing.length?' ':'')+upcoming.map(u=>'J'+u.j+' ('+fmtD(u.date)+') pas encore jouée : le brûlage de J'+J+' sera recalculé avec ses feuilles.').join(' '):'');
   const pl=TEAMS.filter(t=>aFeuille(t,J)); let sent=0,valid=0,draft=0,errs=0,warns=0;
   pl.forEach(t=>{ const c=compo(J,t); if(c.st==='sent')sent++; else if(c.st==='valid')valid++; else draft++; const r=checkTeam(t,J); if(r.issues.some(i=>i.lvl==='err'))errs++; else if(r.issues.some(i=>i.lvl==='warn'))warns++; });
   const m=META[J];

@@ -127,7 +127,10 @@ test('une confirmation NJ future, non validée ou d’une autre saison/phase ne 
  for(const extra of [{confirmed:false},{saison:'2025/2026'},{phase:2}]){
   assert(model({nonParticipations:[{...n,...extra}]}).parcours('101','M11').inconnus>0);
  }
- assert(model({today:'2026-09-01',nonParticipations:[n]}).missingFor('101',2,'M').length>0);
+ // avant la journée, rien n'est à confirmer : J1 est « à venir », NJ ou pas ; le jour venu sans feuille, elle manque
+ assert.equal(model({today:'2026-09-01',nonParticipations:[n]}).missingFor('101',2,'M').length,0);
+ assert.equal(model({today:'2026-09-01',nonParticipations:[n]}).upcoming(2,'M').length,1);
+ assert(model({today:'2026-09-30',nonParticipations:[{...n,confirmed:false}]}).missingFor('101',2,'M').length>0);
 });
 test('une feuille réelle ultérieure prime sur une déclaration NJ',()=>{
  const m=model({nonParticipations:[{k:'101',j:1,championnat:'M',saison:'2026/2027',phase:1,confirmed:true}],site:{DATA:sheet('M11',1)}});
@@ -162,4 +165,14 @@ test('la deuxième rencontre au-dessus de l’équipe de base avertit : le joueu
  const m0=PART.create({today:'2026-10-28',players,poules,plans:{2:{M10:{p:['101'],st:'draft'}}}});
  assert.equal(RULES.check({model:m0,t:'M10',j:2,players:byKey,poules,homeTeam:base,size:4,sexes:{'101':'M'},extras:{ex:{},a_confirmer:{}}}).some(x=>x.code==='brulage_base'),false);
  assert.equal(RULES.check({model:m,t:'M11',j:2,players:byKey,poules,homeTeam:()=>'M9',size:4,sexes:{'101':'M'},extras:{ex:{},a_confirmer:{}}}).some(x=>x.code==='brulage_base'),false);
+});
+test('une journée antérieure encore à venir n’est pas une feuille manquante : elle est « à venir »',()=>{
+ // J2 (02/10) pas encore jouée le 30/09 : composer J3 ne doit pas alerter sur J2, mais J1 sans feuille reste à confirmer
+ const m=model({site:{DATA:sheet('M11',1,[players[0]])}});
+ assert.deepEqual(m.missing(3,'M').map(x=>x.t+x.j),['M91']);
+ assert.deepEqual(m.upcoming(3,'M'),[{j:2,date:'02/10/2026',teams:['M9','M11']}]);
+ assert.equal(m.missingFor('102',3,'M').length,1);   // Sam n'a pas de feuille J1 : seule la J1 reste incertaine
+ // le 28/10, J2 est passée sans feuille : elle redevient manquante
+ const m2=PART.create({today:'2026-10-28',players,poules:{M9:pool('M9'),M11:pool('M11')},site:{DATA:sheet('M11',1)}});
+ assert.ok(m2.missing(3,'M').some(x=>x.t==='M11'&&x.j===2));assert.deepEqual(m2.upcoming(3,'M'),[]);
 });
