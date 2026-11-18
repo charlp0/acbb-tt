@@ -48,7 +48,7 @@ const MAX_LICENCES_PAR_APPAREIL = 6;
 // Après, la réponse reste acceptée et la sportive la voit « en retard ».
 const CDP_ECHEANCE = new Date('2026-10-21T21:59:59Z');
 // Forme des équipes CDP, par numéro : nombre de groupes de 3 (règlement du 15/06/2026, art. 3 et 12).
-// Groupes de 3 par équipe (shared/cdp.js) : PE1, PE2, Promo Honneur, D2 (équipe 4), D2 (équipe 5) — engagement du 09/11/2026.
+// Groupes de 3 par équipe (shared/cdp.js) : PE1, PE2, Promo Honneur, Division 1 (équipe 4), Division 2 (équipe 5) — engagement du 09/11/2026, poules du 17/11/2026.
 const CDP_FORME: Record<string, number> = { '1': 3, '2': 3, '3': 2, '4': 1, '5': 1 };
 
 const PHOTO_MAX_OCTETS = 5 * 1024 * 1024;

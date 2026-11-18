@@ -38,6 +38,12 @@
   .ceq .nom{font-family:"Saira Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:20px;line-height:1}
   .dots{display:flex;gap:8px}.dots span{display:inline-flex;gap:3px}.dots i{width:10px;height:10px;border-radius:3px;background:var(--orange);display:block}
   .ceq .det{font-size:13px;color:var(--ink-2)}
+  .ceq .cal{list-style:none;margin:4px 0 0;padding:8px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:5px}
+  .ceq .cal li{display:flex;align-items:baseline;gap:7px;font-size:12.5px;line-height:1.25}
+  .ceq .cal li.past{opacity:.5}
+  .ceq .cal .cj{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:800;color:var(--orange);width:20px;flex:none}
+  .ceq .cal .cl{flex:none;font-size:12px}
+  .ceq .cal .ca{color:var(--ink-2);min-width:0}
   .note{margin:0;font-size:12.5px;color:var(--dim);line-height:1.5}
   /* popup centrée à toutes les tailles, défile si elle dépasse */
   .cbg{position:fixed;inset:0;z-index:50;display:flex;padding:24px;overflow-y:auto;background:rgba(11,11,13,.78)}
@@ -100,7 +106,7 @@
   <section class="sec" aria-labelledby="eqT">
     <div class="sech"><h2 id="eqT">Les 5 équipes engagées</h2><span class="lab" id="eqPl">30 joueurs chaque vendredi</span></div>
     <div class="ceqs" id="ceqs"></div>
-    <p class="note">Chaque équipe est faite de groupes de 3 joueurs, et chaque groupe dispute 9 simples. La sportive compose les équipes à partir de vos dispos et envoie la convocation à chacun : les compositions ne sont pas publiées sur le site.</p>
+    <p class="note">🏠 = ACBB reçoit, salle de la Piscine (165 rue du Vieux Pont de Sèvres) · 🚗 = déplacement, l'adresse de la salle est dans la convocation. Poules publiées par la ligue le 17/11/2026. Chaque équipe est faite de groupes de 3 joueurs, et chaque groupe dispute 9 simples. La sportive compose les équipes à partir de vos dispos et envoie la convocation à chacun : les compositions ne sont pas publiées sur le site.</p>
   </section>
 
   <div class="foot" style="margin-top:28px;padding-top:16px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)">ACBB Tennis de Table · Championnat de Paris Île-de-France, règlement du 15/06/2026</div>
@@ -170,7 +176,9 @@
 
   document.getElementById('cdates').innerHTML=CDP.JOURNEES.map(x=>{ const d=jourDe(x.date); return '<div class="cdate'+(d<auj?' past':'')+'"><span class="j">J'+x.j+'</span><span class="lab">vendredi</span><span class="n">'+d.getDate()+'</span><span class="m">'+MOIS[d.getMonth()]+' '+d.getFullYear()+'</span><span class="lab">20h30</span></div>'; }).join('');
   document.getElementById('eqPl').textContent=CDP.PLACES+' joueurs chaque vendredi';
-  document.getElementById('ceqs').innerHTML=CDP.EQUIPES.map(e=>'<div class="ceq"><div class="top"><span class="num">'+e.n+'</span><span class="nom">'+esc(e.nom)+'</span></div><div class="dots" aria-hidden="true">'+Array.from({length:e.groupes},()=>'<span><i></i><i></i><i></i></span>').join('')+'</div><span class="det">'+(3*e.groupes)+' joueurs · '+(e.groupes>1?e.groupes+' groupes de 3':'1 groupe')+'</span><span class="lab">'+e.tables+' tables</span></div>').join('');
+  document.getElementById('ceqs').innerHTML=CDP.EQUIPES.map(e=>{ const p=CDP.POULES[e.n]||{cal:[]};
+    const cal=p.cal.map(c=>{ const d=jourDe((CDP.JOURNEES[c.j-1]||{}).date); return '<li'+(d<auj?' class="past"':'')+'><span class="cj">J'+c.j+'</span><span class="cl" title="'+(c.dom?'à domicile, Piscine de Boulogne':'en déplacement')+'">'+(c.dom?'🏠':'🚗')+'</span><span class="ca">'+esc(c.adv)+'</span></li>'; }).join('');
+    return '<div class="ceq"><div class="top"><span class="num">'+e.n+'</span><span class="nom">'+esc(e.nom)+'</span></div><div class="dots" aria-hidden="true">'+Array.from({length:e.groupes},()=>'<span><i></i><i></i><i></i></span>').join('')+'</div><span class="det">'+(3*e.groupes)+' joueurs · '+(e.groupes>1?e.groupes+' groupes de 3':'1 groupe')+'</span><span class="lab">'+e.tables+' tables'+(p.poule?' · poule '+p.poule+' · n°'+p.position:'')+'</span>'+(cal?'<ol class="cal" aria-label="Calendrier de l\'équipe '+e.n+'">'+cal+'</ol>':'')+'</div>'; }).join('');
 
   /* ---------- la popup ---------- */
   const bg=document.getElementById('cbg'), s1=document.getElementById('cStep1'), s2=document.getElementById('cStep2'), s3=document.getElementById('cStep3');

@@ -2,11 +2,24 @@ const test=require('node:test'),assert=require('node:assert/strict');
 const CDP=require('../shared/cdp.js');
 const P={a:1822,b:1811,c:1703,d:1698,e:1660,f:1637,g:1624,h:1617,i:1600,j:1594,k:1587,l:1586,m:1577,n:1539,o:1525,p:1500,q:1465,r:1430};
 const pe=(g1,g2,g3)=>({...CDP.compoVide(),1:[g1,g2,g3]});
-test('30 places, 5 équipes (PE1, PE2, PH, deux D2), 7 vendredis',()=>{
+test('30 places, 5 équipes (PE1, PE2, PH, D1, D2), 7 vendredis',()=>{
   assert.equal(CDP.PLACES,30);assert.equal(CDP.EQUIPES.length,5);assert.equal(CDP.JOURNEES.length,7);
-  assert.deepEqual(CDP.EQUIPES.map(e=>e.groupes),[3,3,2,1,1]);assert.deepEqual(CDP.EQUIPES.map(e=>e.court),['PE1','PE2','PH','D2·4','D2·5']);
-  assert.equal(CDP.pourEquipes(5),'la D2·5');assert.equal(CDP.pourEquipes(4),'D2·4 et D2·5');assert.equal(CDP.pourEquipes(3),'les équipes 3 à 5 (PH, D2·4, D2·5)');
+  assert.deepEqual(CDP.EQUIPES.map(e=>e.groupes),[3,3,2,1,1]);assert.deepEqual(CDP.EQUIPES.map(e=>e.court),['PE1','PE2','PH','D1·4','D2·5']);
+  assert.equal(CDP.pourEquipes(5),'la D2·5');assert.equal(CDP.pourEquipes(4),'D1·4 et D2·5');assert.equal(CDP.pourEquipes(3),'les équipes 3 à 5 (PH, D1·4, D2·5)');
   CDP.JOURNEES.forEach(x=>assert.equal(new Date(x.date+'T12:00:00Z').getUTCDay(),5));   // tous des vendredis
+});
+test('poules de la ligue (17/11/2026) : 5 équipes, 7 rencontres chacune, le premier indiqué reçoit',()=>{
+  assert.deepEqual(Object.keys(CDP.POULES),['1','2','3','4','5']);
+  assert.deepEqual(CDP.EQUIPES.map(e=>CDP.POULES[e.n].division),['Promo Excellence','Promo Excellence',"Promotion d'Honneur",'Division 1','Division 2']);
+  CDP.EQUIPES.forEach(e=>{ const p=CDP.POULES[e.n];
+    assert.equal(p.equipes.length,8);assert.equal(p.equipes[p.position-1],'ACBB '+e.n);
+    assert.deepEqual(p.cal.map(c=>c.j),[1,2,3,4,5,6,7]);
+    assert.deepEqual(p.cal.map(c=>c.adv).sort(),p.equipes.filter(x=>x!=='ACBB '+e.n).sort());   // chaque adversaire une fois
+    p.cal.forEach(c=>assert.equal(!!c.adresse,!c.dom));   // adresse adverse en déplacement, salle ACBB à domicile
+  });
+  // ACBB 1 est n°3 de la poule 3 : J1 « 3/6 » → reçoit le n°6 (Triel), J2 « 5/3 » → chez le n°5 (La Frette)
+  assert.deepEqual(CDP.POULES[1].cal.slice(0,2).map(c=>[c.adv,c.dom]),[['Triel TT 1',true],['La Frette 1',false]]);
+  assert.equal(CDP.POULES[1].cal.filter(c=>c.dom).length,4);assert.equal(CDP.POULES[5].cal.filter(c=>c.dom).length,3);
 });
 test('historique : seules les journées antérieures comptent',()=>{
   const compos={1:{compo:{1:[['m','n',null]]}},2:{compo:{1:[['m','n',null]]}},3:{compo:{1:[['m',null,null]]}},4:{compo:{1:[['n',null,null]]}}};
