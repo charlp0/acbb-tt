@@ -385,9 +385,13 @@ test('CDP sportive : glisser-déposer, clic puis case, règles en direct et enre
   return [k,{id:k,journee:k,statut:'envoyee',created_at:'2026-09-20T10:00:00Z',auteur:'Test',compo:c}];}));
  await install(context,state);page.on('pageerror',e=>errors.push(e.message));
  state.cdpEffectif={[L[4]]:1,[L[2]]:3};
+ // un licencié sans aucun match cette saison (absent de scoring.json) : sélectionnable, rangé dans « Autres licenciés du club »
+ state.playersIndex=[{lic:'9299001',nom:'JEUNE',prenom:'Léo',officiel:500,mensuel:500,parties:0}];
  await page.goto('/sportive/cdp-compo.html?j=4');
  await expect(page.locator('#hJ')).toHaveText('J4');
  await expect(page.locator('#lDisp [data-carte]')).toHaveCount(5);
+ await expect(page.locator('#nHors')).toHaveText('1');await expect(page.locator('#lHors [data-carte="9299001"]')).toContainText('Léo JEUNE');
+ await expect(page.locator('#lSans [data-carte="9299001"]')).toHaveCount(0);
  // effectif : badge sur la carte, filtre de la liste, « + effectif » remplit les cases vides de l'équipe sans déplacer personne
  await expect(page.locator('#lDisp [data-carte="'+L[4]+'"] .tg.eff')).toHaveText('PE1');await expect(page.locator('#fe button')).toHaveCount(7);
  await page.locator('#fe button[data-fe="3"]').click();await expect(page.locator('#lDisp [data-carte]')).toHaveCount(1);await page.locator('#fe button[data-fe="0"]').click();

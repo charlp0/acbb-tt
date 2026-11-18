@@ -107,6 +107,7 @@
   .lst{display:flex;flex-direction:column;gap:6px}
   details summary{cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;color:var(--ink-2);padding:6px 0}
   details .lst{margin-top:4px}
+  details summary .sh{font-weight:400;color:var(--dim);text-transform:none}
   .rg{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;align-items:start}
   .ic{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:99px;font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:800}
   .ic.ok{background:rgba(61,214,140,.14);color:var(--win)}.ic.ko{background:rgba(242,99,86,.14);color:var(--lose)}.ic.av{background:rgba(250,204,21,.14);color:var(--warn)}.ic.in{background:rgba(96,165,250,.14);color:var(--blue)}
@@ -164,8 +165,9 @@
           <label class="srch"><input id="q" type="search" placeholder="chercher un joueur…" aria-label="Chercher un joueur" autocomplete="off"></label>
           <div class="fe" id="fe" role="group" aria-label="Filtrer par équipe d’effectif"></div>
           <div class="lst" id="lDisp"></div>
-          <details id="dSans"><summary>Pas répondu · <span id="nSans">0</span></summary><div class="lst" id="lSans"></div></details>
+          <details id="dSans"><summary>Pas répondu · <span id="nSans">0</span> <span class="sh">sélectionnables : glisse la carte dans une case</span></summary><div class="lst" id="lSans"></div></details>
           <details id="dNon"><summary>Pas dispo ce vendredi · <span id="nNon">0</span></summary><div class="lst" id="lNon"></div></details>
+          <details id="dHors"><summary>Autres licenciés du club · <span id="nHors">0</span> <span class="sh">aucun match cette saison, jeunes compris</span></summary><div class="lst" id="lHors"></div></details>
         </section>
         <section class="box" aria-labelledby="rT">
           <h2 id="rT">Règles vérifiées</h2>
@@ -341,17 +343,18 @@ function render(){
     return '<section class="eq" aria-label="Équipe '+e.n+', '+esc(e.nom)+'"><div class="eqh"><span class="num">'+e.n+'</span><span class="eqn"><b>'+esc(e.nom)+'</b><span>'+(3*e.groupes)+' joueurs · '+e.tables+' tables · '+n+' placé'+(n>1?'s':'')+(effL.length?' · effectif '+effL.length+' ('+effD.length+' dispo'+(effD.length>1?'s':'')+')':'')+'</span></span><span class="acts2">'+beff+bwa+'<span class="est '+st[1]+'">'+st[0]+'</span></span></div>'+grp+(R2.note&&!vide&&!eErr?'<span class="note">'+esc(R2.note)+'</span>':'')+renc+effz+'</section>';
   }).join('');
 
-  // listes : disponibles ce vendredi, pas répondu, pas dispo ; ceux qui ne jouent pas le CDP n'apparaissent qu'en cherchant
+  // listes : disponibles ce vendredi, pas répondu, pas dispo, autres licenciés (aucun match cette saison) ; ceux qui ne jouent pas le CDP n'apparaissent qu'en cherchant
   const qq=sansAccent(q), trouve=l=>(!qq||sansAccent(nomDe(l)).indexOf(qq)>=0)&&(!fe||(fe===-1?!EFF[l]:EFF[l]===fe));
   const nEff=x=>Object.keys(P).filter(l=>!places.has(l)&&(x===-1?!EFF[l]:EFF[l]===x)).length;
   document.getElementById('fe').innerHTML=[[0,'Tous',null]].concat(CDP.EQUIPES.map(e=>[e.n,e.court,nEff(e.n)])).concat([[-1,'sans équipe',nEff(-1)]]).map(f=>'<button type="button" data-fe="'+f[0]+'" aria-pressed="'+(fe===f[0])+'">'+esc(f[1])+(f[2]!=null?'<span>'+f[2]+'</span>':'')+'</button>').join('');
   const tous=Object.keys(P).filter(l=>!places.has(l)&&trouve(l)).sort((a,b)=>(ptsDe(b)-ptsDe(a))||nomDe(a).localeCompare(nomDe(b),'fr'));
-  const lD=tous.filter(l=>dispo[l]===true), lS=tous.filter(l=>dispo[l]===undefined), lN=tous.filter(l=>R[l]&&R[l].joue&&dispo[l]===false), lX=qq?tous.filter(l=>R[l]&&R[l].joue===false):[];
+  const lD=tous.filter(l=>dispo[l]===true), lS=tous.filter(l=>dispo[l]===undefined&&!P[l].hors), lH=tous.filter(l=>dispo[l]===undefined&&P[l].hors), lN=tous.filter(l=>R[l]&&R[l].joue&&dispo[l]===false), lX=qq?tous.filter(l=>R[l]&&R[l].joue===false):[];
   document.getElementById('lDisp').innerHTML=lD.map(l=>carte(l)).join('')+(lD.length?'':'<span class="expl">'+(qq?'Aucun disponible ne correspond.':'Tous les joueurs disponibles ce vendredi sont placés.')+'</span>')+lX.map(l=>carte(l)).join('');
   document.getElementById('lSans').innerHTML=lS.map(l=>carte(l)).join('');
   document.getElementById('lNon').innerHTML=lN.map(l=>carte(l)).join('');
-  document.getElementById('nSans').textContent=lS.length; document.getElementById('nNon').textContent=lN.length;
-  if(qq){ document.getElementById('dSans').open=lS.length>0; document.getElementById('dNon').open=lN.length>0; }
+  document.getElementById('lHors').innerHTML=lH.map(l=>carte(l)).join('');
+  document.getElementById('nSans').textContent=lS.length; document.getElementById('nNon').textContent=lN.length; document.getElementById('nHors').textContent=lH.length;
+  if(qq){ document.getElementById('dSans').open=lS.length>0; document.getElementById('dNon').open=lN.length>0; document.getElementById('dHors').open=lH.length>0&&!lD.length&&!lS.length; }
   const nLib=Object.keys(P).filter(l=>dispo[l]===true&&!places.has(l)).length;
   document.getElementById('lDate').textContent='vendredi '+dd(x.date)+' · '+nLib;
 
@@ -466,11 +469,15 @@ async function boot(){
   const IX={}; (Array.isArray(ix)?ix:[]).forEach(p=>{ if(p.lic) IX[String(p.lic)]=p; });   // tous les licenciés : nom d'un joueur hors scoring
   const inconnu=l=>{ const x=IX[l]; return x?{nom:x.nom||'',pre:x.prenom||'',pts:OFF[l]||x.officiel||x.mensuel||0}:{nom:'Licence '+l,pre:'',pts:OFF[l]||0}; };
   ((sc&&sc.players)||[]).forEach(p=>{ if(p.lic){ const l=String(p.lic); P[l]={nom:p.nom||'',pre:p.pre||'',pts:OFF[l]||p.men||0}; } });
+  // demande de Cyril (18/11/2026) : tous les licenciés du club, jeunes et adultes, sont sélectionnables même sans réponse ;
+  // ceux qui n'ont joué aucun match cette saison (absents de scoring.json) sont marqués « hors » et rangés à part
+  Object.keys(IX).forEach(l=>{ if(!P[l]) P[l]=Object.assign(inconnu(l),{hors:true}); });
   R=(rep&&rep.reponses)||{};
   Object.keys(R).forEach(l=>{ if(!P[l]) P[l]=inconnu(l); });
   COMPOS=(cps&&cps.compos)||{};
   RENC=(rc&&rc.rencontres)||{};
   EFF={}; Object.entries((eff&&eff.effectif)||{}).forEach(([l,n])=>{ if(n>=1&&n<=5){ EFF[String(l)]=+n; if(!P[l]) P[l]=inconnu(l); } });
+  Object.keys(P).forEach(l=>{ if(P[l].hors&&(EFF[l]||R[l])) delete P[l].hors; });   // un joueur de l'effectif ou qui a répondu reste dans les listes principales
   if(DEV){ const top=Object.keys(P).sort((a,b)=>ptsDe(b)-ptsDe(a)).slice(0,38); top.forEach((l,i)=>{ EFF[l]=i<12?1:i<24?2:i<32?3:i<35?4:5; }); }   // maquette : un effectif plausible
   // joueurs d'une composition enregistrée mais absents de la liste des points : on les garde, sous leur numéro
   Object.values(COMPOS).forEach(r=>Object.values((r&&r.compo)||{}).forEach(gs=>(gs||[]).forEach(g=>(g||[]).forEach(l=>{ if(l&&!P[l]) P[l]=inconnu(l); }))));
