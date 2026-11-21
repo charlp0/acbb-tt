@@ -675,8 +675,10 @@ test('Fin de phase : synthèse M2-M13, filtre toutes équipes, scénario de renf
  await page.locator('#filters .chip[data-f="all"]').click();await expect(page.locator('#synth tbody tr')).toHaveCount(19);
  await page.locator('#filters .chip[data-f="cyril"]').click();
  const card=page.locator('#card-M5');await expect(card.locator('.grid .pt tbody tr')).toHaveCount(8);
- await expect(card.locator('.mt li')).toHaveCount(12);await expect(card.locator('.mt li.key')).toHaveCount(1);   // 12 rencontres restantes, un match-clé
- await card.locator('[data-renfort="0"]').click();                                       // Boudjadja 2267 à la J5
+ // rencontres restantes lues dans les données réelles : leur nombre baisse à chaque journée jouée (12 avant la J5, 8 après)
+ const fdp=read('fin_de_phase');
+ await expect(card.locator('.mt li')).toHaveCount(fdp.teams.M5.remaining.length);await expect(card.locator('.mt li.key')).toHaveCount(1);   // un match-clé
+ await card.locator('[data-renfort="0"]').click();                                       // Boudjadja 2267 à la prochaine journée
  await expect(card.locator('.plan .row')).toHaveCount(1);await expect(card.locator('.plan .cls')).toHaveValue('2267');
  await card.locator('.run').click();
  await expect(card.locator('.alerts div').first()).toContainText('aucune rencontre jouée');
