@@ -1,5 +1,5 @@
 {
- "built": "2026-11-21T14:41:24.680589+00:00",
+ "built": "2026-11-21T18:05:32.226876+00:00",
  "division": "L08_R3 Messieurs phase 1 Poule 1",
  "D1": "263434",
  "organisme": "16",
@@ -12,8 +12,8 @@
      "poule": 1,
      "clt": 1,
      "equipe": "BOULOGNE BILLANCOURT 5",
-     "pts": 12,
-     "joue": 4,
+     "pts": 15,
+     "joue": 5,
      "numero": "08920049",
      "dept": "92"
     },
@@ -21,14 +21,32 @@
      "poule": 1,
      "clt": 2,
      "equipe": "VINCENNOIS TT 2",
-     "pts": 12,
-     "joue": 4,
+     "pts": 13,
+     "joue": 5,
      "numero": "08940096",
      "dept": "94"
     },
     {
      "poule": 1,
      "clt": 3,
+     "equipe": "PING PARIS 14 1",
+     "pts": 11,
+     "joue": 5,
+     "numero": "08751456",
+     "dept": "75"
+    },
+    {
+     "poule": 1,
+     "clt": 4,
+     "equipe": "PONTAULT UMS TT 5",
+     "pts": 11,
+     "joue": 5,
+     "numero": "08771170",
+     "dept": "77"
+    },
+    {
+     "poule": 1,
+     "clt": 5,
      "equipe": "VITRY ES 1",
      "pts": 10,
      "joue": 4,
@@ -37,48 +55,30 @@
     },
     {
      "poule": 1,
-     "clt": 4,
-     "equipe": "PING PARIS 14 1",
-     "pts": 8,
-     "joue": 4,
-     "numero": "08751456",
-     "dept": "75"
-    },
-    {
-     "poule": 1,
-     "clt": 5,
-     "equipe": "PONTAULT UMS TT 5",
-     "pts": 8,
-     "joue": 4,
-     "numero": "08771170",
-     "dept": "77"
-    },
-    {
-     "poule": 1,
      "clt": 6,
      "equipe": "PARIS US 2 1",
-     "pts": 6,
-     "joue": 4,
+     "pts": 7,
+     "joue": 5,
      "numero": "08751249",
      "dept": "75"
     },
     {
      "poule": 1,
      "clt": 7,
+     "equipe": "STAINS ES-PIERREFITTE AS 1",
+     "pts": 5,
+     "joue": 5,
+     "numero": "08931032",
+     "dept": "93"
+    },
+    {
+     "poule": 1,
+     "clt": 8,
      "equipe": "ATT XV 1",
      "pts": 4,
      "joue": 4,
      "numero": "08751260",
      "dept": "75"
-    },
-    {
-     "poule": 1,
-     "clt": 8,
-     "equipe": "STAINS ES-PIERREFITTE AS 1",
-     "pts": 4,
-     "joue": 4,
-     "numero": "08931032",
-     "dept": "93"
     }
    ],
    "rencontres": [
@@ -214,7 +214,9 @@
      "j": 5,
      "a": "PARIS US 2 1",
      "b": "PING PARIS 14 1",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 1,
+     "wb": 13
     },
     {
      "j": 5,
@@ -226,13 +228,17 @@
      "j": 5,
      "a": "BOULOGNE BILLANCOURT 5",
      "b": "VINCENNOIS TT 2",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 8,
+     "wb": 6
     },
     {
      "j": 5,
      "a": "STAINS ES-PIERREFITTE AS 1",
      "b": "PONTAULT UMS TT 5",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 2,
+     "wb": 12
     },
     {
      "j": 6,
@@ -292,14 +298,32 @@
      "poule": 2,
      "clt": 1,
      "equipe": "FONTENAY-TRESIGNY TT 1",
-     "pts": 12,
-     "joue": 4,
+     "pts": 15,
+     "joue": 5,
      "numero": "08771518",
      "dept": "77"
     },
     {
      "poule": 2,
      "clt": 2,
+     "equipe": "CLAMART CSM 3",
+     "pts": 12,
+     "joue": 5,
+     "numero": "08920111",
+     "dept": "92"
+    },
+    {
+     "poule": 2,
+     "clt": 3,
+     "equipe": "MONTMAGNY-GROSLAY 2",
+     "pts": 11,
+     "joue": 5,
+     "numero": "08950348",
+     "dept": "95"
+    },
+    {
+     "poule": 2,
+     "clt": 4,
      "equipe": "RUEIL ATHLETIC 5",
      "pts": 9,
      "joue": 4,
@@ -308,16 +332,16 @@
     },
     {
      "poule": 2,
-     "clt": 3,
-     "equipe": "CLAMART CSM 3",
+     "clt": 5,
+     "equipe": "CSMF PARIS TT 1",
      "pts": 9,
-     "joue": 4,
-     "numero": "08920111",
-     "dept": "92"
+     "joue": 5,
+     "numero": "08750007",
+     "dept": "75"
     },
     {
      "poule": 2,
-     "clt": 4,
+     "clt": 6,
      "equipe": "FRANCONVILLE 1",
      "pts": 8,
      "joue": 4,
@@ -326,28 +350,10 @@
     },
     {
      "poule": 2,
-     "clt": 5,
-     "equipe": "CSMF PARIS TT 1",
-     "pts": 8,
-     "joue": 4,
-     "numero": "08750007",
-     "dept": "75"
-    },
-    {
-     "poule": 2,
-     "clt": 6,
-     "equipe": "MONTMAGNY-GROSLAY 2",
-     "pts": 8,
-     "joue": 4,
-     "numero": "08950348",
-     "dept": "95"
-    },
-    {
-     "poule": 2,
      "clt": 7,
      "equipe": "CRETEIL USTT 3",
-     "pts": 6,
-     "joue": 4,
+     "pts": 7,
+     "joue": 5,
      "numero": "08940655",
      "dept": "94"
     },
@@ -355,8 +361,8 @@
      "poule": 2,
      "clt": 8,
      "equipe": "BOIS D ARCY AS 1",
-     "pts": 4,
-     "joue": 4,
+     "pts": 5,
+     "joue": 5,
      "numero": "08780447",
      "dept": "78"
     }
@@ -494,19 +500,25 @@
      "j": 5,
      "a": "BOIS D ARCY AS 1",
      "b": "FONTENAY-TRESIGNY TT 1",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 1,
+     "wb": 13
     },
     {
      "j": 5,
      "a": "CLAMART CSM 3",
      "b": "CSMF PARIS TT 1",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 12,
+     "wb": 2
     },
     {
      "j": 5,
      "a": "MONTMAGNY-GROSLAY 2",
      "b": "CRETEIL USTT 3",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 26,
+     "wb": 12
     },
     {
      "j": 5,
@@ -571,6 +583,15 @@
     {
      "poule": 3,
      "clt": 1,
+     "equipe": "BUSSY SAINT GEORGES CTT 1",
+     "pts": 12,
+     "joue": 5,
+     "numero": "08771398",
+     "dept": "77"
+    },
+    {
+     "poule": 3,
+     "clt": 2,
      "equipe": "CHELLES TT 2",
      "pts": 11,
      "joue": 4,
@@ -579,29 +600,20 @@
     },
     {
      "poule": 3,
-     "clt": 2,
-     "equipe": "BUSSY SAINT GEORGES CTT 1",
-     "pts": 10,
-     "joue": 4,
-     "numero": "08771398",
-     "dept": "77"
-    },
-    {
-     "poule": 3,
      "clt": 3,
-     "equipe": "CHILLY-MORANGIS CTT 3",
-     "pts": 10,
-     "joue": 4,
-     "numero": "08910918",
+     "equipe": "PALAISEAU 5",
+     "pts": 11,
+     "joue": 5,
+     "numero": "08910042",
      "dept": "91"
     },
     {
      "poule": 3,
      "clt": 4,
-     "equipe": "PALAISEAU 5",
-     "pts": 9,
+     "equipe": "CHILLY-MORANGIS CTT 3",
+     "pts": 10,
      "joue": 4,
-     "numero": "08910042",
+     "numero": "08910918",
      "dept": "91"
     },
     {
@@ -792,7 +804,9 @@
      "j": 5,
      "a": "BUSSY SAINT GEORGES CTT 1",
      "b": "PALAISEAU 5",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 7,
+     "wb": 7
     },
     {
      "j": 6,
@@ -1129,20 +1143,20 @@
     {
      "poule": 5,
      "clt": 1,
+     "equipe": "PALAISEAU US 4",
+     "pts": 14,
+     "joue": 5,
+     "numero": "08910042",
+     "dept": "91"
+    },
+    {
+     "poule": 5,
+     "clt": 2,
      "equipe": "CRETEIL USTT 1",
      "pts": 12,
      "joue": 4,
      "numero": "08940655",
      "dept": "94"
-    },
-    {
-     "poule": 5,
-     "clt": 2,
-     "equipe": "PALAISEAU US 4",
-     "pts": 11,
-     "joue": 4,
-     "numero": "08910042",
-     "dept": "91"
     },
     {
      "poule": 5,
@@ -1193,8 +1207,8 @@
      "poule": 5,
      "clt": 8,
      "equipe": "VERRIERES TU 1",
-     "pts": 4,
-     "joue": 4,
+     "pts": 5,
+     "joue": 5,
      "numero": "08911206",
      "dept": "91"
     }
@@ -1350,7 +1364,9 @@
      "j": 5,
      "a": "VERRIERES TU 1",
      "b": "PALAISEAU US 4",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 0,
+     "wb": 14
     },
     {
      "j": 6,
@@ -1427,6 +1443,15 @@
     {
      "poule": 6,
      "clt": 3,
+     "equipe": "FRESNES AAS 1",
+     "pts": 9,
+     "joue": 5,
+     "numero": "08940012",
+     "dept": "94"
+    },
+    {
+     "poule": 6,
+     "clt": 4,
      "equipe": "LEVALLOIS SPORT 9",
      "pts": 8,
      "joue": 4,
@@ -1435,7 +1460,7 @@
     },
     {
      "poule": 6,
-     "clt": 4,
+     "clt": 5,
      "equipe": "ORMESSON US 24",
      "pts": 8,
      "joue": 4,
@@ -1444,20 +1469,11 @@
     },
     {
      "poule": 6,
-     "clt": 5,
+     "clt": 6,
      "equipe": "VINCENNOIS TT 3",
      "pts": 8,
      "joue": 4,
      "numero": "08940096",
-     "dept": "94"
-    },
-    {
-     "poule": 6,
-     "clt": 6,
-     "equipe": "FRESNES AAS 1",
-     "pts": 6,
-     "joue": 4,
-     "numero": "08940012",
      "dept": "94"
     },
     {
@@ -1473,8 +1489,8 @@
      "poule": 6,
      "clt": 8,
      "equipe": "ROISSY TT US 2",
-     "pts": 4,
-     "joue": 4,
+     "pts": 5,
+     "joue": 5,
      "numero": "08770408",
      "dept": "77"
     }
@@ -1618,7 +1634,9 @@
      "j": 5,
      "a": "ROISSY TT US 2",
      "b": "FRESNES AAS 1",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 3,
+     "wb": 11
     },
     {
      "j": 5,
@@ -1698,6 +1716,15 @@
     {
      "poule": 7,
      "clt": 2,
+     "equipe": "NOISY LE GRAND CSTT 7",
+     "pts": 10,
+     "joue": 5,
+     "numero": "08930610",
+     "dept": "93"
+    },
+    {
+     "poule": 7,
+     "clt": 3,
      "equipe": "MALAKOFF USM 3",
      "pts": 9,
      "joue": 4,
@@ -1706,7 +1733,7 @@
     },
     {
      "poule": 7,
-     "clt": 3,
+     "clt": 4,
      "equipe": "COMBS SENART TT 4",
      "pts": 9,
      "joue": 4,
@@ -1715,7 +1742,7 @@
     },
     {
      "poule": 7,
-     "clt": 4,
+     "clt": 5,
      "equipe": "POISSY USC 2",
      "pts": 8,
      "joue": 4,
@@ -1724,21 +1751,12 @@
     },
     {
      "poule": 7,
-     "clt": 5,
+     "clt": 6,
      "equipe": "HERBLAY ASTT 7",
      "pts": 7,
      "joue": 4,
      "numero": "08950479",
      "dept": "95"
-    },
-    {
-     "poule": 7,
-     "clt": 6,
-     "equipe": "NOISY LE GRAND CSTT 7",
-     "pts": 7,
-     "joue": 4,
-     "numero": "08930610",
-     "dept": "93"
     },
     {
      "poule": 7,
@@ -1753,8 +1771,8 @@
      "poule": 7,
      "clt": 8,
      "equipe": "BREVANNAISE AS 2",
-     "pts": 5,
-     "joue": 4,
+     "pts": 6,
+     "joue": 5,
      "numero": "08940866",
      "dept": "94"
     }
@@ -1898,7 +1916,9 @@
      "j": 5,
      "a": "BREVANNAISE AS 2",
      "b": "NOISY LE GRAND CSTT 7",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 6,
+     "wb": 8
     },
     {
      "j": 5,
@@ -2005,20 +2025,20 @@
     {
      "poule": 8,
      "clt": 5,
+     "equipe": "ANTONY SPORT TT 3",
+     "pts": 9,
+     "joue": 5,
+     "numero": "08920031",
+     "dept": "92"
+    },
+    {
+     "poule": 8,
+     "clt": 6,
      "equipe": "MONTESSON TT 2",
      "pts": 6,
      "joue": 4,
      "numero": "08781017",
      "dept": "78"
-    },
-    {
-     "poule": 8,
-     "clt": 6,
-     "equipe": "ANTONY SPORT TT 3",
-     "pts": 6,
-     "joue": 4,
-     "numero": "08920031",
-     "dept": "92"
     },
     {
      "poule": 8,
@@ -2033,8 +2053,8 @@
      "poule": 8,
      "clt": 8,
      "equipe": "JUMP 5",
-     "pts": 4,
-     "joue": 4,
+     "pts": 5,
+     "joue": 5,
      "numero": "08750120",
      "dept": "75"
     }
@@ -2184,7 +2204,9 @@
      "j": 5,
      "a": "ANTONY SPORT TT 3",
      "b": "JUMP 5",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 12,
+     "wb": 2
     },
     {
      "j": 5,
@@ -2258,6 +2280,15 @@
     {
      "poule": 9,
      "clt": 2,
+     "equipe": "VERSAILLES SCTT 4",
+     "pts": 12,
+     "joue": 5,
+     "numero": "08780329",
+     "dept": "78"
+    },
+    {
+     "poule": 9,
+     "clt": 3,
      "equipe": "CORBEIL-ESSONNES AS 1",
      "pts": 11,
      "joue": 4,
@@ -2266,7 +2297,7 @@
     },
     {
      "poule": 9,
-     "clt": 3,
+     "clt": 4,
      "equipe": "DOMONT TT 1",
      "pts": 10,
      "joue": 4,
@@ -2275,19 +2306,10 @@
     },
     {
      "poule": 9,
-     "clt": 4,
-     "equipe": "VERSAILLES SCTT 4",
-     "pts": 9,
-     "joue": 4,
-     "numero": "08780329",
-     "dept": "78"
-    },
-    {
-     "poule": 9,
      "clt": 5,
      "equipe": "PARIS IX ATT 4",
-     "pts": 8,
-     "joue": 4,
+     "pts": 9,
+     "joue": 5,
      "numero": "08751124",
      "dept": "75"
     },
@@ -2470,7 +2492,9 @@
      "j": 5,
      "a": "PARIS IX ATT 4",
      "b": "VERSAILLES SCTT 4",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 5,
+     "wb": 9
     },
     {
      "j": 6,
@@ -2529,6 +2553,15 @@
     {
      "poule": 10,
      "clt": 1,
+     "equipe": "VILLECRESNES ALTT 3",
+     "pts": 13,
+     "joue": 5,
+     "numero": "08940458",
+     "dept": "94"
+    },
+    {
+     "poule": 10,
+     "clt": 2,
      "equipe": "COMBS SENART TT 5",
      "pts": 12,
      "joue": 4,
@@ -2537,19 +2570,10 @@
     },
     {
      "poule": 10,
-     "clt": 2,
-     "equipe": "VILLECRESNES ALTT 3",
-     "pts": 10,
-     "joue": 4,
-     "numero": "08940458",
-     "dept": "94"
-    },
-    {
-     "poule": 10,
      "clt": 3,
      "equipe": "JOSASSIEN TT 2",
-     "pts": 9,
-     "joue": 4,
+     "pts": 10,
+     "joue": 5,
      "numero": "08780440",
      "dept": "78"
     },
@@ -2557,8 +2581,8 @@
      "poule": 10,
      "clt": 4,
      "equipe": "AUBERGENVILLE C 1",
-     "pts": 8,
-     "joue": 4,
+     "pts": 9,
+     "joue": 5,
      "numero": "08780401",
      "dept": "78"
     },
@@ -2574,6 +2598,15 @@
     {
      "poule": 10,
      "clt": 6,
+     "equipe": "ESP REUILLY 3",
+     "pts": 8,
+     "joue": 5,
+     "numero": "08750074",
+     "dept": "75"
+    },
+    {
+     "poule": 10,
+     "clt": 7,
      "equipe": "FONTENAY USTT 6",
      "pts": 6,
      "joue": 4,
@@ -2582,21 +2615,12 @@
     },
     {
      "poule": 10,
-     "clt": 7,
+     "clt": 8,
      "equipe": "LEVALLOIS SPORT 8",
      "pts": 6,
      "joue": 4,
      "numero": "08921458",
      "dept": "92"
-    },
-    {
-     "poule": 10,
-     "clt": 8,
-     "equipe": "ESP REUILLY 3",
-     "pts": 5,
-     "joue": 4,
-     "numero": "08750074",
-     "dept": "75"
     }
    ],
    "rencontres": [
@@ -2732,7 +2756,9 @@
      "j": 5,
      "a": "VILLECRESNES ALTT 3",
      "b": "JOSASSIEN TT 2",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 9,
+     "wb": 5
     },
     {
      "j": 5,
@@ -2744,7 +2770,9 @@
      "j": 5,
      "a": "AUBERGENVILLE C 1",
      "b": "ESP REUILLY 3",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 6,
+     "wb": 8
     },
     {
      "j": 5,
@@ -2827,6 +2855,15 @@
     {
      "poule": 11,
      "clt": 3,
+     "equipe": "PARIS IX ATT 3",
+     "pts": 9,
+     "joue": 5,
+     "numero": "08751124",
+     "dept": "75"
+    },
+    {
+     "poule": 11,
+     "clt": 4,
      "equipe": "CHILLY-MORANGIS CTT 4",
      "pts": 8,
      "joue": 4,
@@ -2835,7 +2872,7 @@
     },
     {
      "poule": 11,
-     "clt": 4,
+     "clt": 5,
      "equipe": "CPS 10eme 1",
      "pts": 8,
      "joue": 4,
@@ -2844,16 +2881,16 @@
     },
     {
      "poule": 11,
-     "clt": 5,
+     "clt": 6,
      "equipe": "EZANVILLE 3",
-     "pts": 7,
-     "joue": 4,
+     "pts": 8,
+     "joue": 5,
      "numero": "08950481",
      "dept": "95"
     },
     {
      "poule": 11,
-     "clt": 6,
+     "clt": 7,
      "equipe": "BOIS COLOMBES S 4",
      "pts": 6,
      "joue": 4,
@@ -2862,21 +2899,12 @@
     },
     {
      "poule": 11,
-     "clt": 7,
+     "clt": 8,
      "equipe": "DRANCY JA 3",
      "pts": 6,
      "joue": 4,
      "numero": "08931057",
      "dept": "93"
-    },
-    {
-     "poule": 11,
-     "clt": 8,
-     "equipe": "PARIS IX ATT 3",
-     "pts": 6,
-     "joue": 4,
-     "numero": "08751124",
-     "dept": "75"
     }
    ],
    "rencontres": [
@@ -3030,7 +3058,9 @@
      "j": 5,
      "a": "PARIS IX ATT 3",
      "b": "EZANVILLE 3",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 13,
+     "wb": 1
     },
     {
      "j": 6,
@@ -3090,8 +3120,8 @@
      "poule": 12,
      "clt": 1,
      "equipe": "ESSARTS AGSE 1",
-     "pts": 12,
-     "joue": 4,
+     "pts": 15,
+     "joue": 5,
      "numero": "08781266",
      "dept": "78"
     },
@@ -3099,8 +3129,8 @@
      "poule": 12,
      "clt": 2,
      "equipe": "LIVRY-GARGAN EP 1",
-     "pts": 10,
-     "joue": 4,
+     "pts": 11,
+     "joue": 5,
      "numero": "08930430",
      "dept": "93"
     },
@@ -3292,7 +3322,9 @@
      "j": 5,
      "a": "ESSARTS AGSE 1",
      "b": "LIVRY-GARGAN EP 1",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 8,
+     "wb": 6
     },
     {
      "j": 5,
@@ -3369,6 +3401,15 @@
     {
      "poule": 13,
      "clt": 1,
+     "equipe": "PARIS SP20 TT 2",
+     "pts": 13,
+     "joue": 5,
+     "numero": "08751061",
+     "dept": "75"
+    },
+    {
+     "poule": 13,
+     "clt": 2,
      "equipe": "MENUCOURT 2",
      "pts": 12,
      "joue": 4,
@@ -3377,21 +3418,12 @@
     },
     {
      "poule": 13,
-     "clt": 2,
+     "clt": 3,
      "equipe": "POISSY USC 1",
      "pts": 11,
      "joue": 4,
      "numero": "08780108",
      "dept": "78"
-    },
-    {
-     "poule": 13,
-     "clt": 3,
-     "equipe": "PARIS SP20 TT 2",
-     "pts": 10,
-     "joue": 4,
-     "numero": "08751061",
-     "dept": "75"
     },
     {
      "poule": 13,
@@ -3405,6 +3437,15 @@
     {
      "poule": 13,
      "clt": 5,
+     "equipe": "CRETEIL USTT 2",
+     "pts": 9,
+     "joue": 5,
+     "numero": "08940655",
+     "dept": "94"
+    },
+    {
+     "poule": 13,
+     "clt": 6,
      "equipe": "CHATILLON TTM 3",
      "pts": 7,
      "joue": 4,
@@ -3413,19 +3454,10 @@
     },
     {
      "poule": 13,
-     "clt": 6,
-     "equipe": "CRETEIL USTT 2",
-     "pts": 6,
-     "joue": 4,
-     "numero": "08940655",
-     "dept": "94"
-    },
-    {
-     "poule": 13,
      "clt": 7,
      "equipe": "SAVIGNY SO PING 2",
-     "pts": 5,
-     "joue": 4,
+     "pts": 6,
+     "joue": 5,
      "numero": "08910310",
      "dept": "91"
     },
@@ -3433,8 +3465,8 @@
      "poule": 13,
      "clt": 8,
      "equipe": "CSMF PARIS TT 2",
-     "pts": 3,
-     "joue": 4,
+     "pts": 4,
+     "joue": 5,
      "numero": "08750007",
      "dept": "75"
     }
@@ -3578,13 +3610,17 @@
      "j": 5,
      "a": "PARIS SP20 TT 2",
      "b": "CSMF PARIS TT 2",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 13,
+     "wb": 1
     },
     {
      "j": 5,
      "a": "SAVIGNY SO PING 2",
      "b": "CRETEIL USTT 2",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 5,
+     "wb": 9
     },
     {
      "j": 5,
@@ -3650,35 +3686,35 @@
      "poule": 14,
      "clt": 1,
      "equipe": "RUEIL ATHLETIC 4",
-     "pts": 11,
-     "joue": 4,
+     "pts": 14,
+     "joue": 5,
      "numero": "08920309",
      "dept": "92"
     },
     {
      "poule": 14,
      "clt": 2,
-     "equipe": "STAINS ES-PIERREFITTE AS 2",
-     "pts": 10,
-     "joue": 4,
-     "numero": "08931032",
+     "equipe": "NEUILLY S/M TT 1",
+     "pts": 12,
+     "joue": 5,
+     "numero": "08930928",
      "dept": "93"
     },
     {
      "poule": 14,
      "clt": 3,
-     "equipe": "NEUILLY S/M TT 1",
-     "pts": 9,
-     "joue": 4,
-     "numero": "08930928",
+     "equipe": "STAINS ES-PIERREFITTE AS 2",
+     "pts": 11,
+     "joue": 5,
+     "numero": "08931032",
      "dept": "93"
     },
     {
      "poule": 14,
      "clt": 4,
      "equipe": "CHESNAY 78 AS 6",
-     "pts": 8,
-     "joue": 4,
+     "pts": 9,
+     "joue": 5,
      "numero": "08780080",
      "dept": "78"
     },
@@ -3852,7 +3888,9 @@
      "j": 5,
      "a": "NEUILLY S/M TT 1",
      "b": "CHESNAY 78 AS 6",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 8,
+     "wb": 6
     },
     {
      "j": 5,
@@ -3870,7 +3908,9 @@
      "j": 5,
      "a": "STAINS ES-PIERREFITTE AS 2",
      "b": "RUEIL ATHLETIC 4",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 14,
+     "wb": 25
     },
     {
      "j": 6,
@@ -3929,20 +3969,20 @@
     {
      "poule": 15,
      "clt": 1,
+     "equipe": "ROMAINVILLOIS TT 1",
+     "pts": 13,
+     "joue": 5,
+     "numero": "08930148",
+     "dept": "93"
+    },
+    {
+     "poule": 15,
+     "clt": 2,
      "equipe": "CHARENTON TT 3",
      "pts": 12,
      "joue": 4,
      "numero": "08940052",
      "dept": "94"
-    },
-    {
-     "poule": 15,
-     "clt": 2,
-     "equipe": "ROMAINVILLOIS TT 1",
-     "pts": 10,
-     "joue": 4,
-     "numero": "08930148",
-     "dept": "93"
     },
     {
      "poule": 15,
@@ -3965,6 +4005,15 @@
     {
      "poule": 15,
      "clt": 5,
+     "equipe": "MONTREUIL ES 1",
+     "pts": 8,
+     "joue": 5,
+     "numero": "08931358",
+     "dept": "93"
+    },
+    {
+     "poule": 15,
+     "clt": 6,
      "equipe": "LIMAY ALJ 1",
      "pts": 7,
      "joue": 4,
@@ -3973,21 +4022,12 @@
     },
     {
      "poule": 15,
-     "clt": 6,
+     "clt": 7,
      "equipe": "THIAIS AS TT 4",
      "pts": 7,
      "joue": 4,
      "numero": "08940459",
      "dept": "94"
-    },
-    {
-     "poule": 15,
-     "clt": 7,
-     "equipe": "MONTREUIL ES 1",
-     "pts": 7,
-     "joue": 4,
-     "numero": "08931358",
-     "dept": "93"
     },
     {
      "poule": 15,
@@ -4150,7 +4190,9 @@
      "j": 5,
      "a": "ROMAINVILLOIS TT 1",
      "b": "MONTREUIL ES 1",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 11,
+     "wb": 3
     },
     {
      "j": 6,
@@ -4210,14 +4252,23 @@
      "poule": 16,
      "clt": 1,
      "equipe": "SCEAUX TT 1",
-     "pts": 11,
-     "joue": 4,
+     "pts": 14,
+     "joue": 5,
      "numero": "08921164",
      "dept": "92"
     },
     {
      "poule": 16,
      "clt": 2,
+     "equipe": "SAINTE GENEVIEVE 2",
+     "pts": 12,
+     "joue": 5,
+     "numero": "08910876",
+     "dept": "91"
+    },
+    {
+     "poule": 16,
+     "clt": 3,
      "equipe": "PONTHIERRY COMT 2",
      "pts": 11,
      "joue": 4,
@@ -4226,7 +4277,16 @@
     },
     {
      "poule": 16,
-     "clt": 3,
+     "clt": 4,
+     "equipe": "ASNIERES TT 2",
+     "pts": 11,
+     "joue": 5,
+     "numero": "08920646",
+     "dept": "92"
+    },
+    {
+     "poule": 16,
+     "clt": 5,
      "equipe": "IGNY 5",
      "pts": 9,
      "joue": 4,
@@ -4235,48 +4295,30 @@
     },
     {
      "poule": 16,
-     "clt": 4,
-     "equipe": "SAINTE GENEVIEVE 2",
-     "pts": 9,
-     "joue": 4,
-     "numero": "08910876",
-     "dept": "91"
-    },
-    {
-     "poule": 16,
-     "clt": 5,
-     "equipe": "ASNIERES TT 2",
-     "pts": 8,
-     "joue": 4,
-     "numero": "08920646",
-     "dept": "92"
-    },
-    {
-     "poule": 16,
      "clt": 6,
      "equipe": "MELUNAISE US 1",
-     "pts": 8,
-     "joue": 4,
+     "pts": 9,
+     "joue": 5,
      "numero": "08771337",
      "dept": "77"
     },
     {
      "poule": 16,
      "clt": 7,
-     "equipe": "CHARENTON TT 5",
-     "pts": 4,
-     "joue": 4,
-     "numero": "08940052",
-     "dept": "94"
+     "equipe": "DRANCY JA 2",
+     "pts": 5,
+     "joue": 5,
+     "numero": "08931057",
+     "dept": "93"
     },
     {
      "poule": 16,
      "clt": 8,
-     "equipe": "DRANCY JA 2",
-     "pts": 4,
-     "joue": 4,
-     "numero": "08931057",
-     "dept": "93"
+     "equipe": "CHARENTON TT 5",
+     "pts": 5,
+     "joue": 5,
+     "numero": "08940052",
+     "dept": "94"
     }
    ],
    "rencontres": [
@@ -4412,7 +4454,9 @@
      "j": 5,
      "a": "MELUNAISE US 1",
      "b": "ASNIERES TT 2",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 1,
+     "wb": 13
     },
     {
      "j": 5,
@@ -4424,13 +4468,17 @@
      "j": 5,
      "a": "SAINTE GENEVIEVE 2",
      "b": "DRANCY JA 2",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 8,
+     "wb": 6
     },
     {
      "j": 5,
      "a": "SCEAUX TT 1",
      "b": "CHARENTON TT 5",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 14,
+     "wb": 0
     },
     {
      "j": 6,
@@ -4485,29 +4533,29 @@
  ],
  "n92": 15,
  "descentes_92": {
-  "sures": [],
+  "sures": [
+   [
+    10,
+    "LEVALLOIS SPORT 8"
+   ]
+  ],
   "a_risque": [
    [
     7,
     "CHATENAY ASVTT 1"
    ],
    [
-    10,
-    "LEVALLOIS SPORT 8"
+    11,
+    "BOIS COLOMBES S 4"
    ]
   ],
   "sixiemes": [
    [
-    8,
-    "ANTONY SPORT TT 3",
-    6
-   ],
-   [
-    11,
-    "BOIS COLOMBES S 4",
-    6
+    13,
+    "CHATILLON TTM 3",
+    7
    ]
   ],
-  "estimation": 1.0
+  "estimation": 2.0
  }
 }
