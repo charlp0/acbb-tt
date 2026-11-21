@@ -153,7 +153,7 @@
   individuelle rétrécie ; l'alignement d'une rencontre à venir est tiré parmi les alignements déjà vus. Quand A et B divergent, le match est incertain.
   <b>Classement final</b> simulé 10 000 fois : 3 points la victoire, 2 le nul, 1 la défaite ; ex æquo départagés par le mini-championnat entre eux puis
   les parties (art. 14 Ligue IDF). <b>Match-clé</b> = la rencontre dont le résultat déplace le plus les chances d'atteindre l'objectif.
-  <b>Limites</b> : quatre journées, c'est peu, les probabilités sont larges ; les alignements adverses de J5-J7 sont supposés semblables à J1-J4 ;
+  <b>Limites</b> : quelques journées, c'est peu, les probabilités sont larges ; les alignements adverses des journées restantes sont supposés semblables à ceux des journées jouées ;
   les quotas de montée et de descente dépendent des divisions supérieures (détail dans chaque fiche).
 </div>
 </div><!-- /app -->
@@ -303,7 +303,7 @@
     var el=document.createElement('article'); el.className='pcard'; el.id='card-'+k;
     var rows=T.teams.slice().sort(function(a,b){ return (a.pos||99)-(b.pos||99); }).map(function(t){
       return '<tr'+(t.acbb?' class="me"':'')+'><td class="pos">'+(t.pos||'?')+'</td><td class="tname">'+esc(shortName(t.name))+'</td><td class="r mono">'+(t.pts==null?'?':t.pts)+'</td>'
-        +'<td class="r mono" title="moyenne des points alignés J1-J4">'+(t.avg||'—')+'</td><td class="r mono" title="rating A (confrontations directes), en points">'+(t.rating>0?'+':'')+Math.round(t.rating)+'</td>'
+        +'<td class="r mono" title="moyenne des points alignés sur les journées jouées">'+(t.avg||'—')+'</td><td class="r mono" title="rating A (confrontations directes), en points">'+(t.rating>0?'+':'')+Math.round(t.rating)+'</td>'
         +'<td>'+heat(V.stat(t).ranks,n,q)+'</td><td class="r"><span class="pct '+(V.stat(t).pUp>=0.05?'up':'dim')+'">'+pctCls(V.stat(t).pUp)+'</span></td><td class="r"><span class="pct '+(V.stat(t).pDown>=0.05?'down':'dim')+'">'+pctCls(V.stat(t).pDown)+'</span></td></tr>';
     }).join('');
     var byJ={}; T.remaining.forEach(function(m){ (byJ[m.j]=byJ[m.j]||[]).push(m); });
@@ -320,7 +320,7 @@
       +'<div class="grid"><div><div class="pt-wrap"><table class="pt"><thead><tr><th>#</th><th>Équipe</th><th class="r">Pts</th><th class="r" title="moyenne des points alignés">Niveau</th><th class="r" title="rating A">A</th><th>Place finale 1 → '+n+'</th><th class="r">↑</th><th class="r">↓</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
       +'<div class="blk"><div class="meta">'+esc(q.note)+'</div></div></div>'
       +'<div class="blk"><h3>Rencontres restantes</h3><ul class="mt">'+lists+'</ul></div></div>'
-      +(players?'<div class="blk" style="border-top:1px solid var(--line)"><h3>Joueurs alignés J1-J4 · forme (écart de points entre résultats observés et attendus, rétréci)</h3><div class="pt-wrap"><table class="pt"><thead><tr><th>Joueur</th><th class="r">Pts</th><th class="r">Forme</th><th class="r">V / parties</th></tr></thead><tbody>'+players+'</tbody></table></div></div>':'')
+      +(players?'<div class="blk" style="border-top:1px solid var(--line)"><h3>Joueurs alignés sur les journées jouées · forme (écart de points entre résultats observés et attendus, rétréci)</h3><div class="pt-wrap"><table class="pt"><thead><tr><th>Joueur</th><th class="r">Pts</th><th class="r">Forme</th><th class="r">V / parties</th></tr></thead><tbody>'+players+'</tbody></table></div></div>':'')
       +simulatorHtml(k);
     bindSimulator(el,k);
     return el;
