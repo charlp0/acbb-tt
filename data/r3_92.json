@@ -1,5 +1,5 @@
 {
- "built": "2026-11-22T01:07:24.310513+00:00",
+ "built": "2026-11-22T14:39:18.334373+00:00",
  "division": "L08_R3 Messieurs phase 1 Poule 1",
  "D1": "263434",
  "organisme": "16",
@@ -2025,20 +2025,20 @@
     {
      "poule": 8,
      "clt": 1,
+     "equipe": "PONTOISE-CERGY 4",
+     "pts": 15,
+     "joue": 5,
+     "numero": "08950330",
+     "dept": "95"
+    },
+    {
+     "poule": 8,
+     "clt": 2,
      "equipe": "NEUILLY ASPN 4",
      "pts": 13,
      "joue": 5,
      "numero": "08920312",
      "dept": "92"
-    },
-    {
-     "poule": 8,
-     "clt": 2,
-     "equipe": "PONTOISE-CERGY 4",
-     "pts": 12,
-     "joue": 4,
-     "numero": "08950330",
-     "dept": "95"
     },
     {
      "poule": 8,
@@ -2053,8 +2053,8 @@
      "poule": 8,
      "clt": 4,
      "equipe": "MERY 1",
-     "pts": 9,
-     "joue": 4,
+     "pts": 10,
+     "joue": 5,
      "numero": "08951312",
      "dept": "95"
     },
@@ -2236,7 +2236,9 @@
      "j": 5,
      "a": "PONTOISE-CERGY 4",
      "b": "MERY 1",
-     "date": "21/11/2026"
+     "date": "21/11/2026",
+     "wa": 11,
+     "wb": 3
     },
     {
      "j": 5,
