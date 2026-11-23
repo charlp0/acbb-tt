@@ -1,9 +1,9 @@
 {
- "maj": "2026-11-16",
+ "maj": "2026-11-23",
  "salles": {
   "ANTONY SPORT TT 5": {
    "adresse": "Rue de l'Annapurna",
-   "checked_at": "2026-11-16T11:08:56.736355+00:00",
+   "checked_at": "2026-11-23T12:27:24.011124+00:00",
    "club": "ANTONY SP TENNIS DE TABLE",
    "cp": "92160",
    "lat": "48.736346",
@@ -16,7 +16,7 @@
   },
   "ANTONY SPORT TT 6": {
    "adresse": "Rue de l'Annapurna",
-   "checked_at": "2026-11-16T11:08:56.737431+00:00",
+   "checked_at": "2026-11-23T12:27:24.011830+00:00",
    "club": "ANTONY SP TENNIS DE TABLE",
    "cp": "92160",
    "lat": "48.736346",
@@ -29,7 +29,7 @@
   },
   "ANTONY SPORT TT 8": {
    "adresse": "Rue de l'Annapurna",
-   "checked_at": "2026-11-16T11:08:56.738213+00:00",
+   "checked_at": "2026-11-23T12:27:24.012354+00:00",
    "club": "ANTONY SP TENNIS DE TABLE",
    "cp": "92160",
    "lat": "48.736346",
@@ -42,7 +42,7 @@
   },
   "ASNIERES TT 10": {
    "adresse": "30 Avenue de la Lauziere",
-   "checked_at": "2026-11-16T11:08:58.509268+00:00",
+   "checked_at": "2026-11-23T12:27:25.815905+00:00",
    "club": "ASNIERES TT",
    "cp": "92600",
    "lat": "48.908245",
@@ -55,7 +55,7 @@
   },
   "ASNIERES TT 4": {
    "adresse": "30 Avenue de la Lauziere",
-   "checked_at": "2026-11-16T11:08:58.510233+00:00",
+   "checked_at": "2026-11-23T12:27:25.816632+00:00",
    "club": "ASNIERES TT",
    "cp": "92600",
    "lat": "48.908245",
@@ -68,7 +68,7 @@
   },
   "ASNIERES TT 5": {
    "adresse": "30 Avenue de la Lauziere",
-   "checked_at": "2026-11-16T11:08:58.511079+00:00",
+   "checked_at": "2026-11-23T12:27:25.817138+00:00",
    "club": "ASNIERES TT",
    "cp": "92600",
    "lat": "48.908245",
@@ -81,7 +81,7 @@
   },
   "ASNIERES TT 9": {
    "adresse": "30 Avenue de la Lauziere",
-   "checked_at": "2026-11-16T11:08:58.511764+00:00",
+   "checked_at": "2026-11-23T12:27:25.817647+00:00",
    "club": "ASNIERES TT",
    "cp": "92600",
    "lat": "48.908245",
@@ -94,7 +94,7 @@
   },
   "ATT XV 1": {
    "adresse": "198 RUE SAINT CHARLES",
-   "checked_at": "2026-11-16T11:08:58.903306+00:00",
+   "checked_at": "2026-11-23T12:27:26.298720+00:00",
    "club": "ASSOC.TENNIS DE TABLE PARIS XVe",
    "cp": "75015",
    "lat": "48.839562",
@@ -107,7 +107,7 @@
   },
   "BEAUCHAMP CTT 1": {
    "adresse": "25 avenue Curnonsky",
-   "checked_at": "2026-11-16T11:08:59.827869+00:00",
+   "checked_at": "2026-11-23T12:27:27.282040+00:00",
    "club": "BEAUCHAMP CTT",
    "cp": "95250",
    "lat": "49.015031",
@@ -120,7 +120,7 @@
   },
   "BOIS COLOMBES S 10": {
    "adresse": "Av du Reverend Pere C Cloarec",
-   "checked_at": "2026-11-16T11:09:03.663830+00:00",
+   "checked_at": "2026-11-23T12:27:30.859410+00:00",
    "club": "BOIS COLOMBES SPORTS",
    "cp": "92270",
    "lat": "48.913108",
@@ -133,7 +133,7 @@
   },
   "BOIS COLOMBES S 3": {
    "adresse": "Av du Reverend Pere C Cloarec",
-   "checked_at": "2026-11-16T11:09:03.665001+00:00",
+   "checked_at": "2026-11-23T12:27:30.860128+00:00",
    "club": "BOIS COLOMBES SPORTS",
    "cp": "92270",
    "lat": "48.913108",
@@ -146,7 +146,7 @@
   },
   "BOIS COLOMBES S 5": {
    "adresse": "Av du Reverend Pere C Cloarec",
-   "checked_at": "2026-11-16T11:09:03.665747+00:00",
+   "checked_at": "2026-11-23T12:27:30.860656+00:00",
    "club": "BOIS COLOMBES SPORTS",
    "cp": "92270",
    "lat": "48.913108",
@@ -159,7 +159,7 @@
   },
   "BOIS COLOMBES S 6": {
    "adresse": "Av du Reverend Pere C Cloarec",
-   "checked_at": "2026-11-16T11:09:03.666430+00:00",
+   "checked_at": "2026-11-23T12:27:30.861160+00:00",
    "club": "BOIS COLOMBES SPORTS",
    "cp": "92270",
    "lat": "48.913108",
@@ -172,7 +172,7 @@
   },
   "BOIS COLOMBES S 7": {
    "adresse": "Av du Reverend Pere C Cloarec",
-   "checked_at": "2026-11-16T11:09:03.667086+00:00",
+   "checked_at": "2026-11-23T12:27:30.861664+00:00",
    "club": "BOIS COLOMBES SPORTS",
    "cp": "92270",
    "lat": "48.913108",
@@ -185,7 +185,7 @@
   },
   "BOIS COLOMBES S 8": {
    "adresse": "Av du Reverend Pere C Cloarec",
-   "checked_at": "2026-11-16T11:09:03.667731+00:00",
+   "checked_at": "2026-11-23T12:27:30.862164+00:00",
    "club": "BOIS COLOMBES SPORTS",
    "cp": "92270",
    "lat": "48.913108",
@@ -198,7 +198,7 @@
   },
   "BOURG LA REINE 2": {
    "adresse": "14 bd Carnot digicode grille : 1692",
-   "checked_at": "2026-11-16T11:09:04.585777+00:00",
+   "checked_at": "2026-11-23T12:27:31.672047+00:00",
    "club": "BOURG  LA REINE AS",
    "cp": "92340",
    "lat": "48.778447",
@@ -211,7 +211,7 @@
   },
   "BOURG LA REINE 3": {
    "adresse": "14 bd Carnot digicode grille : 1692",
-   "checked_at": "2026-11-16T11:09:04.586864+00:00",
+   "checked_at": "2026-11-23T12:27:31.672766+00:00",
    "club": "BOURG  LA REINE AS",
    "cp": "92340",
    "lat": "48.778447",
@@ -224,7 +224,7 @@
   },
   "BRETIGNY CS 1": {
    "adresse": "Allee des Irlandais derriere college Pablo Neruda",
-   "checked_at": "2026-11-16T11:09:05.424334+00:00",
+   "checked_at": "2026-11-23T12:27:32.504814+00:00",
    "club": "BRETIGNY CS",
    "cp": "91220",
    "lat": "48.599076",
@@ -237,7 +237,7 @@
   },
   "CHATENAY ASVTT 4": {
    "adresse": "254 Av de la Division Leclerc Gymnase Jules Verne",
-   "checked_at": "2026-11-16T11:09:06.356506+00:00",
+   "checked_at": "2026-11-23T12:27:33.551000+00:00",
    "club": "CHATENAY MALABRY  T T ASV",
    "cp": "92290",
    "lat": "48.764602",
@@ -250,7 +250,7 @@
   },
   "CHATENAY ASVTT 5": {
    "adresse": "254 Av de la Division Leclerc Gymnase Jules Verne",
-   "checked_at": "2026-11-16T11:09:06.357646+00:00",
+   "checked_at": "2026-11-23T12:27:33.551727+00:00",
    "club": "CHATENAY MALABRY  T T ASV",
    "cp": "92290",
    "lat": "48.764602",
@@ -263,7 +263,7 @@
   },
   "CHATENAY ASVTT 6": {
    "adresse": "254 Av de la Division Leclerc Gymnase Jules Verne",
-   "checked_at": "2026-11-16T11:09:06.358457+00:00",
+   "checked_at": "2026-11-23T12:27:33.552256+00:00",
    "club": "CHATENAY MALABRY  T T ASV",
    "cp": "92290",
    "lat": "48.764602",
@@ -276,7 +276,7 @@
   },
   "CHATILLON TTM 2": {
    "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
-   "checked_at": "2026-11-16T11:09:07.703991+00:00",
+   "checked_at": "2026-11-23T12:27:35.025370+00:00",
    "club": "TennisTable Municipal Chatillon",
    "cp": "92320",
    "lat": "48.810014",
@@ -289,7 +289,7 @@
   },
   "CHESNAY 78 AS 4": {
    "adresse": "60 Rue Caruel de Saint-martin",
-   "checked_at": "2026-11-16T11:09:08.597335+00:00",
+   "checked_at": "2026-11-23T12:27:36.047863+00:00",
    "club": "CHESNAY 78 AS",
    "cp": "78150",
    "lat": "48.820714",
@@ -302,7 +302,7 @@
   },
   "CLAMART CSM 4": {
    "adresse": "52 rue Condorcet",
-   "checked_at": "2026-11-16T11:09:09.402055+00:00",
+   "checked_at": "2026-11-23T12:27:37.014585+00:00",
    "club": "CLAMART CSM",
    "cp": "92140",
    "lat": "48.811111",
@@ -315,7 +315,7 @@
   },
   "CLAMART CSM 7": {
    "adresse": "52 rue Condorcet",
-   "checked_at": "2026-11-16T11:09:09.403087+00:00",
+   "checked_at": "2026-11-23T12:27:37.015283+00:00",
    "club": "CLAMART CSM",
    "cp": "92140",
    "lat": "48.811111",
@@ -328,7 +328,7 @@
   },
   "CLAMART CSM 8": {
    "adresse": "52 rue Condorcet",
-   "checked_at": "2026-11-16T11:09:09.403925+00:00",
+   "checked_at": "2026-11-23T12:27:37.015793+00:00",
    "club": "CLAMART CSM",
    "cp": "92140",
    "lat": "48.811111",
@@ -341,7 +341,7 @@
   },
   "COMBS SENART TT 2": {
    "adresse": "Avenue du Paloisel",
-   "checked_at": "2026-11-16T11:09:10.469264+00:00",
+   "checked_at": "2026-11-23T12:27:37.891177+00:00",
    "club": "COMBS SENART TT",
    "cp": "77380",
    "lat": "48.661369",
@@ -354,7 +354,7 @@
   },
   "COURBEVOIE STT 13": {
    "adresse": "89 a 91 Boulevard de Verdun (face a la station Total)",
-   "checked_at": "2026-11-16T11:09:10.858219+00:00",
+   "checked_at": "2026-11-23T12:27:38.400605+00:00",
    "club": "COURBEVOIE SPORT TENNIS DE TABLE",
    "cp": "92400",
    "lat": "48.901644",
@@ -367,7 +367,7 @@
   },
   "COURBEVOIE STT 14": {
    "adresse": "89 a 91 Boulevard de Verdun (face a la station Total)",
-   "checked_at": "2026-11-16T11:09:10.859144+00:00",
+   "checked_at": "2026-11-23T12:27:38.401301+00:00",
    "club": "COURBEVOIE SPORT TENNIS DE TABLE",
    "cp": "92400",
    "lat": "48.901644",
@@ -380,7 +380,7 @@
   },
   "COURBEVOIE STT 15": {
    "adresse": "89 a 91 Boulevard de Verdun (face a la station Total)",
-   "checked_at": "2026-11-16T11:09:10.859926+00:00",
+   "checked_at": "2026-11-23T12:27:38.401802+00:00",
    "club": "COURBEVOIE SPORT TENNIS DE TABLE",
    "cp": "92400",
    "lat": "48.901644",
@@ -393,7 +393,7 @@
   },
   "COURBEVOIE STT 5": {
    "adresse": "89 a 91 Boulevard de Verdun (face a la station Total)",
-   "checked_at": "2026-11-16T11:09:10.860671+00:00",
+   "checked_at": "2026-11-23T12:27:38.402303+00:00",
    "club": "COURBEVOIE SPORT TENNIS DE TABLE",
    "cp": "92400",
    "lat": "48.901644",
@@ -406,7 +406,7 @@
   },
   "COURBEVOIE STT 9": {
    "adresse": "89 a 91 Boulevard de Verdun (face a la station Total)",
-   "checked_at": "2026-11-16T11:09:10.861392+00:00",
+   "checked_at": "2026-11-23T12:27:38.402795+00:00",
    "club": "COURBEVOIE SPORT TENNIS DE TABLE",
    "cp": "92400",
    "lat": "48.901644",
@@ -419,7 +419,7 @@
   },
   "CS CLICHY TT 1": {
    "adresse": "111 rue Henri Barbusse",
-   "checked_at": "2026-11-16T11:09:11.648519+00:00",
+   "checked_at": "2026-11-23T12:27:39.210973+00:00",
    "club": "CLICHY SUR SEINE CS",
    "cp": "92110",
    "lat": "48.90147",
@@ -432,7 +432,7 @@
   },
   "CS CLICHY TT 5": {
    "adresse": "111 rue Henri Barbusse",
-   "checked_at": "2026-11-16T11:09:11.649642+00:00",
+   "checked_at": "2026-11-23T12:27:39.212065+00:00",
    "club": "CLICHY SUR SEINE CS",
    "cp": "92110",
    "lat": "48.90147",
@@ -445,7 +445,7 @@
   },
   "CSM CLAMART 1": {
    "adresse": "52 rue Condorcet",
-   "checked_at": "2026-11-16T11:09:11.650403+00:00",
+   "checked_at": "2026-11-23T12:27:39.212987+00:00",
    "club": "CLAMART CSM",
    "cp": "92140",
    "lat": "48.811111",
@@ -458,7 +458,7 @@
   },
   "ES NANTERRE 1": {
    "adresse": "24 rue Salvador Allende",
-   "checked_at": "2026-11-16T11:09:12.505906+00:00",
+   "checked_at": "2026-11-23T12:27:40.004568+00:00",
    "club": "NANTERRE ES",
    "cp": "92000",
    "lat": "48.895776",
@@ -471,7 +471,7 @@
   },
   "ESP REUILLY 2": {
    "adresse": "26-28 Bld Carnot",
-   "checked_at": "2026-11-16T11:09:13.471730+00:00",
+   "checked_at": "2026-11-23T12:27:40.837953+00:00",
    "club": "ESPERANCE REUILLY",
    "cp": "75012",
    "lat": "48.843919",
@@ -484,7 +484,7 @@
   },
   "IVRY US TT 1": {
    "adresse": "52 boulevard de Brandebourg",
-   "checked_at": "2026-11-16T11:09:14.435950+00:00",
+   "checked_at": "2026-11-23T12:27:41.754150+00:00",
    "club": "IVRY US TT",
    "cp": "94200",
    "lat": "48.814642",
@@ -497,7 +497,7 @@
   },
   "JOSASSIEN TT 1": {
    "adresse": "35 Rue St Roch",
-   "checked_at": "2026-11-16T11:09:15.253165+00:00",
+   "checked_at": "2026-11-23T12:27:42.569921+00:00",
    "club": "JOSASSIEN TT",
    "cp": "78350",
    "lat": "48.762562",
@@ -510,7 +510,7 @@
   },
   "LA GARENNE COLO 4": {
    "adresse": "111 av. Ch. De Gaulle",
-   "checked_at": "2026-11-16T11:09:16.056815+00:00",
+   "checked_at": "2026-11-23T12:27:43.366102+00:00",
    "club": "LA GARENNE COLOMBES AE",
    "cp": "92250",
    "lat": "48.907694",
@@ -523,7 +523,7 @@
   },
   "LEVALLOIS SPORT 11": {
    "adresse": "152, rue Danton",
-   "checked_at": "2026-11-16T11:09:17.283946+00:00",
+   "checked_at": "2026-11-23T12:27:44.607605+00:00",
    "club": "LEVALLOIS SPORTING CLUB TT",
    "cp": "92300",
    "lat": "48.896309",
@@ -536,7 +536,7 @@
   },
   "LEVALLOIS SPORT 13": {
    "adresse": "152, rue Danton",
-   "checked_at": "2026-11-16T11:09:17.284975+00:00",
+   "checked_at": "2026-11-23T12:27:44.608307+00:00",
    "club": "LEVALLOIS SPORTING CLUB TT",
    "cp": "92300",
    "lat": "48.896309",
@@ -549,7 +549,7 @@
   },
   "LEVALLOIS SPORT 14": {
    "adresse": "152, rue Danton",
-   "checked_at": "2026-11-16T11:09:17.285724+00:00",
+   "checked_at": "2026-11-23T12:27:44.608809+00:00",
    "club": "LEVALLOIS SPORTING CLUB TT",
    "cp": "92300",
    "lat": "48.896309",
@@ -562,7 +562,7 @@
   },
   "LEVALLOIS SPORT 16": {
    "adresse": "152, rue Danton",
-   "checked_at": "2026-11-16T11:09:17.286395+00:00",
+   "checked_at": "2026-11-23T12:27:44.609324+00:00",
    "club": "LEVALLOIS SPORTING CLUB TT",
    "cp": "92300",
    "lat": "48.896309",
@@ -575,7 +575,7 @@
   },
   "LEVALLOIS SPORT 6": {
    "adresse": "152, rue Danton",
-   "checked_at": "2026-11-16T11:09:17.287055+00:00",
+   "checked_at": "2026-11-23T12:27:44.609829+00:00",
    "club": "LEVALLOIS SPORTING CLUB TT",
    "cp": "92300",
    "lat": "48.896309",
@@ -588,7 +588,7 @@
   },
   "MENUCOURT 1": {
    "adresse": "rue Bernard Astruc Complexe sportif",
-   "checked_at": "2026-11-16T11:09:18.111831+00:00",
+   "checked_at": "2026-11-23T12:27:45.435703+00:00",
    "club": "MENUCOURT ASTT",
    "cp": "95180",
    "lat": "49.029666",
@@ -601,7 +601,7 @@
   },
   "MEUDON AS 1": {
    "adresse": "14 Av.de Lattre de Tassigny",
-   "checked_at": "2026-11-16T11:09:18.893826+00:00",
+   "checked_at": "2026-11-23T12:27:46.233933+00:00",
    "club": "MEUDON AS",
    "cp": "92360",
    "lat": "48.787387",
@@ -614,7 +614,7 @@
   },
   "MEUDON AS 3": {
    "adresse": "14 Av.de Lattre de Tassigny",
-   "checked_at": "2026-11-16T11:09:18.895059+00:00",
+   "checked_at": "2026-11-23T12:27:46.234619+00:00",
    "club": "MEUDON AS",
    "cp": "92360",
    "lat": "48.787387",
@@ -627,7 +627,7 @@
   },
   "MEUDON AS 4": {
    "adresse": "14 Av.de Lattre de Tassigny",
-   "checked_at": "2026-11-16T11:09:18.895960+00:00",
+   "checked_at": "2026-11-23T12:27:46.235136+00:00",
    "club": "MEUDON AS",
    "cp": "92360",
    "lat": "48.787387",
@@ -640,7 +640,7 @@
   },
   "MEUDON AS 6": {
    "adresse": "14 Av.de Lattre de Tassigny",
-   "checked_at": "2026-11-16T11:09:18.896630+00:00",
+   "checked_at": "2026-11-23T12:27:46.235657+00:00",
    "club": "MEUDON AS",
    "cp": "92360",
    "lat": "48.787387",
@@ -652,21 +652,21 @@
    "ville": "MEUDON LA FORET"
   },
   "MONTMAGNY-GROSLAY 1": {
-   "adresse": "(place rue) Ferdinand Berthoud",
-   "checked_at": "2026-11-16T11:09:19.694679+00:00",
+   "adresse": "2 Rue Ferdinand Berthoud",
+   "checked_at": "2026-11-23T12:27:47.037530+00:00",
    "club": "MONTMAGNY GROSLAY TTC",
    "cp": "95410",
-   "lat": "",
-   "lon": "",
+   "lat": "48.985487",
+   "lon": "2.342421",
    "num": "08950348",
    "salle": "Salle Polyvalente Roger Donnet",
    "source": "fftt_club",
    "team_id": "08950348:1",
-   "ville": "GROSLAY"
+   "ville": "Groslay"
   },
   "NANTERRE ES 2": {
    "adresse": "24 rue Salvador Allende",
-   "checked_at": "2026-11-16T11:09:19.695681+00:00",
+   "checked_at": "2026-11-23T12:27:47.038204+00:00",
    "club": "NANTERRE ES",
    "cp": "92000",
    "lat": "48.895776",
@@ -679,7 +679,7 @@
   },
   "NANTERRE ES 3": {
    "adresse": "24 rue Salvador Allende",
-   "checked_at": "2026-11-16T11:09:19.696473+00:00",
+   "checked_at": "2026-11-23T12:27:47.038732+00:00",
    "club": "NANTERRE ES",
    "cp": "92000",
    "lat": "48.895776",
@@ -692,7 +692,7 @@
   },
   "NEUILLY ASPN 11": {
    "adresse": "Espace Koenig 23 boulevard du General Koenig",
-   "checked_at": "2026-11-16T11:09:21.175248+00:00",
+   "checked_at": "2026-11-23T12:27:48.323707+00:00",
    "club": "NEUILLY AS ST PIERRE",
    "cp": "92200",
    "lat": "48.883897",
@@ -705,7 +705,7 @@
   },
   "NEUILLY ASPN 5": {
    "adresse": "Espace Koenig 23 boulevard du General Koenig",
-   "checked_at": "2026-11-16T11:09:21.176390+00:00",
+   "checked_at": "2026-11-23T12:27:48.324422+00:00",
    "club": "NEUILLY AS ST PIERRE",
    "cp": "92200",
    "lat": "48.883897",
@@ -718,7 +718,7 @@
   },
   "NOISY LE GRAND 3": {
    "adresse": "7 Rue de l'Universite",
-   "checked_at": "2026-11-16T11:09:23.220374+00:00",
+   "checked_at": "2026-11-23T12:27:50.414438+00:00",
    "club": "NOISY LE GRAND CSTT",
    "cp": "93160",
    "lat": "48.838275",
@@ -731,7 +731,7 @@
   },
   "PALAISEAU US 2": {
    "adresse": "1 Rue des Ecoles",
-   "checked_at": "2026-11-16T11:09:24.128240+00:00",
+   "checked_at": "2026-11-23T12:27:51.263337+00:00",
    "club": "PALAISEAU US",
    "cp": "91120",
    "lat": "48.711052",
@@ -744,7 +744,7 @@
   },
   "PARIS IX ATT 2": {
    "adresse": "33, rue milton SAMEDI AU GYMNASE TOUR DES DAMES",
-   "checked_at": "2026-11-16T11:09:30.784901+00:00",
+   "checked_at": "2026-11-23T12:27:57.199395+00:00",
    "club": "PARIS IX ATT",
    "cp": "75009",
    "lat": "48.877762",
@@ -757,7 +757,7 @@
   },
   "PARIS US 2": {
    "adresse": "17,Rue Leopold Bellan",
-   "checked_at": "2026-11-16T11:09:31.222282+00:00",
+   "checked_at": "2026-11-23T12:27:57.579479+00:00",
    "club": "US 2 PARIS",
    "cp": "75002",
    "lat": "48.866568",
@@ -770,7 +770,7 @@
   },
   "PING PARIS 14 1": {
    "adresse": "3, avenue Maurice d'Ocagne",
-   "checked_at": "2026-11-16T11:09:31.596933+00:00",
+   "checked_at": "2026-11-23T12:27:57.957099+00:00",
    "club": "PING PARIS 14",
    "cp": "75014",
    "lat": "48.824389",
@@ -783,7 +783,7 @@
   },
   "PLESSIS ROBINS. 2": {
    "adresse": "23 bis Rue du Capt Georges Facq",
-   "checked_at": "2026-11-16T11:09:34.069186+00:00",
+   "checked_at": "2026-11-23T12:28:00.057315+00:00",
    "club": "PLESSIS ROBINSON TT",
    "cp": "92350",
    "lat": "48.776743",
@@ -796,7 +796,7 @@
   },
   "PLESSIS ROBINS. 3": {
    "adresse": "23 bis Rue du Capt Georges Facq",
-   "checked_at": "2026-11-16T11:09:34.070535+00:00",
+   "checked_at": "2026-11-23T12:28:00.058014+00:00",
    "club": "PLESSIS ROBINSON TT",
    "cp": "92350",
    "lat": "48.776743",
@@ -809,7 +809,7 @@
   },
   "PLESSIS ROBINS. 4": {
    "adresse": "23 bis Rue du Capt Georges Facq",
-   "checked_at": "2026-11-16T11:09:34.071489+00:00",
+   "checked_at": "2026-11-23T12:28:00.058541+00:00",
    "club": "PLESSIS ROBINSON TT",
    "cp": "92350",
    "lat": "48.776743",
@@ -822,7 +822,7 @@
   },
   "PLESSIS ROBINS. 5": {
    "adresse": "23 bis Rue du Capt Georges Facq",
-   "checked_at": "2026-11-16T11:09:34.072248+00:00",
+   "checked_at": "2026-11-23T12:28:00.059053+00:00",
    "club": "PLESSIS ROBINSON TT",
    "cp": "92350",
    "lat": "48.776743",
@@ -835,7 +835,7 @@
   },
   "PLESSIS ROBINS. 7": {
    "adresse": "23 bis Rue du Capt Georges Facq",
-   "checked_at": "2026-11-16T11:09:34.072930+00:00",
+   "checked_at": "2026-11-23T12:28:00.059566+00:00",
    "club": "PLESSIS ROBINSON TT",
    "cp": "92350",
    "lat": "48.776743",
@@ -848,7 +848,7 @@
   },
   "PONTAULT UMS TT 5": {
    "adresse": "121 Rue des Pres Saint Martin",
-   "checked_at": "2026-11-16T11:09:35.174035+00:00",
+   "checked_at": "2026-11-23T12:28:00.919085+00:00",
    "club": "UMS TT PONTAULT COMBAULT",
    "cp": "77340",
    "lat": "48.789227",
@@ -861,7 +861,7 @@
   },
   "PUTEAUX TT CSM 3": {
    "adresse": "4 cours du Marechal Leclerc",
-   "checked_at": "2026-11-16T11:09:35.976280+00:00",
+   "checked_at": "2026-11-23T12:28:01.881276+00:00",
    "club": "PUTEAUX TT CSM",
    "cp": "92800",
    "lat": "48.88631",
@@ -874,7 +874,7 @@
   },
   "PUTEAUX TT CSM 4": {
    "adresse": "4 cours du Marechal Leclerc",
-   "checked_at": "2026-11-16T11:09:35.977344+00:00",
+   "checked_at": "2026-11-23T12:28:01.881979+00:00",
    "club": "PUTEAUX TT CSM",
    "cp": "92800",
    "lat": "48.88631",
@@ -887,7 +887,7 @@
   },
   "PUTEAUX TT CSM 5": {
    "adresse": "4 cours du Marechal Leclerc",
-   "checked_at": "2026-11-16T11:09:35.978227+00:00",
+   "checked_at": "2026-11-23T12:28:01.882518+00:00",
    "club": "PUTEAUX TT CSM",
    "cp": "92800",
    "lat": "48.88631",
@@ -900,7 +900,7 @@
   },
   "RUEIL ATHLETIC 10": {
    "adresse": "41, rue Voltaire",
-   "checked_at": "2026-11-16T11:09:36.882229+00:00",
+   "checked_at": "2026-11-23T12:28:02.933446+00:00",
    "club": "RUEIL ATHLETIC CLUB TT",
    "cp": "92500",
    "lat": "48.873602",
@@ -913,7 +913,7 @@
   },
   "RUEIL ATHLETIC 11": {
    "adresse": "41, rue Voltaire",
-   "checked_at": "2026-11-16T11:09:36.883429+00:00",
+   "checked_at": "2026-11-23T12:28:02.934153+00:00",
    "club": "RUEIL ATHLETIC CLUB TT",
    "cp": "92500",
    "lat": "48.873602",
@@ -926,7 +926,7 @@
   },
   "RUEIL ATHLETIC 13": {
    "adresse": "41, rue Voltaire",
-   "checked_at": "2026-11-16T11:09:36.884202+00:00",
+   "checked_at": "2026-11-23T12:28:02.934699+00:00",
    "club": "RUEIL ATHLETIC CLUB TT",
    "cp": "92500",
    "lat": "48.873602",
@@ -939,7 +939,7 @@
   },
   "RUEIL ATHLETIC 14": {
    "adresse": "41, rue Voltaire",
-   "checked_at": "2026-11-16T11:09:36.884888+00:00",
+   "checked_at": "2026-11-23T12:28:02.935245+00:00",
    "club": "RUEIL ATHLETIC CLUB TT",
    "cp": "92500",
    "lat": "48.873602",
@@ -952,7 +952,7 @@
   },
   "RUEIL ATHLETIC 16": {
    "adresse": "41, rue Voltaire",
-   "checked_at": "2026-11-16T11:09:36.885542+00:00",
+   "checked_at": "2026-11-23T12:28:02.935759+00:00",
    "club": "RUEIL ATHLETIC CLUB TT",
    "cp": "92500",
    "lat": "48.873602",
@@ -965,7 +965,7 @@
   },
   "RUEIL ATHLETIC 3": {
    "adresse": "41, rue Voltaire",
-   "checked_at": "2026-11-16T11:09:36.886210+00:00",
+   "checked_at": "2026-11-23T12:28:02.936274+00:00",
    "club": "RUEIL ATHLETIC CLUB TT",
    "cp": "92500",
    "lat": "48.873602",
@@ -978,7 +978,7 @@
   },
   "RUEIL ATHLETIC 6": {
    "adresse": "41, rue Voltaire",
-   "checked_at": "2026-11-16T11:09:36.886879+00:00",
+   "checked_at": "2026-11-23T12:28:02.936774+00:00",
    "club": "RUEIL ATHLETIC CLUB TT",
    "cp": "92500",
    "lat": "48.873602",
@@ -991,7 +991,7 @@
   },
   "RUEIL ATHLETIC 8": {
    "adresse": "41, rue Voltaire",
-   "checked_at": "2026-11-16T11:09:36.887535+00:00",
+   "checked_at": "2026-11-23T12:28:02.937282+00:00",
    "club": "RUEIL ATHLETIC CLUB TT",
    "cp": "92500",
    "lat": "48.873602",
@@ -1004,7 +1004,7 @@
   },
   "SAINT MAUR VGA US 2": {
    "adresse": "31bis, ave du Port au Fouarre Centre sportif Arromanches",
-   "checked_at": "2026-11-16T11:09:37.274167+00:00",
+   "checked_at": "2026-11-23T12:28:03.312566+00:00",
    "club": "VGA ST MAUR US TT",
    "cp": "94100",
    "lat": "48.789625",
@@ -1017,7 +1017,7 @@
   },
   "SCEAUX TT 1": {
    "adresse": "4-6, rue Leo Delibes",
-   "checked_at": "2026-11-16T11:09:38.087632+00:00",
+   "checked_at": "2026-11-23T12:28:04.249374+00:00",
    "club": "SCEAUX T.T.",
    "cp": "92330",
    "lat": "48.783592",
@@ -1030,7 +1030,7 @@
   },
   "SM MONTROUGE 1": {
    "adresse": "11 Rue d'Arcueil",
-   "checked_at": "2026-11-16T11:09:38.960705+00:00",
+   "checked_at": "2026-11-23T12:28:05.098857+00:00",
    "club": "SM MONTROUGE",
    "cp": "92120",
    "lat": "48.810901",
@@ -1043,7 +1043,7 @@
   },
   "SM MONTROUGE 2": {
    "adresse": "11 Rue d'Arcueil",
-   "checked_at": "2026-11-16T11:09:38.961730+00:00",
+   "checked_at": "2026-11-23T12:28:05.099566+00:00",
    "club": "SM MONTROUGE",
    "cp": "92120",
    "lat": "48.810901",
@@ -1056,7 +1056,7 @@
   },
   "SM MONTROUGE 3": {
    "adresse": "11 Rue d'Arcueil",
-   "checked_at": "2026-11-16T11:09:38.962591+00:00",
+   "checked_at": "2026-11-23T12:28:05.100083+00:00",
    "club": "SM MONTROUGE",
    "cp": "92120",
    "lat": "48.810901",
@@ -1069,7 +1069,7 @@
   },
   "SM MONTROUGE 4": {
    "adresse": "11 Rue d'Arcueil",
-   "checked_at": "2026-11-16T11:09:38.963280+00:00",
+   "checked_at": "2026-11-23T12:28:05.100610+00:00",
    "club": "SM MONTROUGE",
    "cp": "92120",
    "lat": "48.810901",
@@ -1082,7 +1082,7 @@
   },
   "SQY PING 2": {
    "adresse": "Mail de Schenefeld",
-   "checked_at": "2026-11-16T11:09:43.471408+00:00",
+   "checked_at": "2026-11-23T12:28:09.437423+00:00",
    "club": "SQY PING",
    "cp": "78960",
    "lat": "48.760862",
@@ -1095,7 +1095,7 @@
   },
   "STADE DE VANVES 1": {
    "adresse": "10 rue Danton",
-   "checked_at": "2026-11-16T11:09:44.267925+00:00",
+   "checked_at": "2026-11-23T12:28:10.215357+00:00",
    "club": "STADE DE VANVES",
    "cp": "92170",
    "lat": "48.8247",
@@ -1108,7 +1108,7 @@
   },
   "STADE DE VANVES 2": {
    "adresse": "10 rue Danton",
-   "checked_at": "2026-11-16T11:09:44.269155+00:00",
+   "checked_at": "2026-11-23T12:28:10.216035+00:00",
    "club": "STADE DE VANVES",
    "cp": "92170",
    "lat": "48.8247",
@@ -1121,7 +1121,7 @@
   },
   "STAINS ES-PIERREFITTE AS 1": {
    "adresse": "31/33 Rue d'Amiens",
-   "checked_at": "2026-11-16T11:09:44.639869+00:00",
+   "checked_at": "2026-11-23T12:28:10.599000+00:00",
    "club": "STAINS ES-PIERREFITTE AS",
    "cp": "93240",
    "lat": "48.952477",
@@ -1134,7 +1134,7 @@
   },
   "THIAIS AS TT 3": {
    "adresse": "Place  VAN GOGH",
-   "checked_at": "2026-11-16T11:09:45.781358+00:00",
+   "checked_at": "2026-11-23T12:28:11.442378+00:00",
    "club": "THIAIS AS TT",
    "cp": "94320",
    "lat": "48.769375",
@@ -1147,7 +1147,7 @@
   },
   "TTMC CHATILLON 2": {
    "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
-   "checked_at": "2026-11-16T11:09:45.782600+00:00",
+   "checked_at": "2026-11-23T12:28:11.443073+00:00",
    "club": "TennisTable Municipal Chatillon",
    "cp": "92320",
    "lat": "48.810014",
@@ -1160,7 +1160,7 @@
   },
   "TTMC CHATILLON 5": {
    "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
-   "checked_at": "2026-11-16T11:09:45.783500+00:00",
+   "checked_at": "2026-11-23T12:28:11.443626+00:00",
    "club": "TennisTable Municipal Chatillon",
    "cp": "92320",
    "lat": "48.810014",
@@ -1173,7 +1173,7 @@
   },
   "TTMC CHATILLON 6": {
    "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
-   "checked_at": "2026-11-16T11:09:45.784285+00:00",
+   "checked_at": "2026-11-23T12:28:11.444138+00:00",
    "club": "TennisTable Municipal Chatillon",
    "cp": "92320",
    "lat": "48.810014",
@@ -1186,7 +1186,7 @@
   },
   "TTMC CHATILLON 7": {
    "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
-   "checked_at": "2026-11-16T11:09:45.784972+00:00",
+   "checked_at": "2026-11-23T12:28:11.444659+00:00",
    "club": "TennisTable Municipal Chatillon",
    "cp": "92320",
    "lat": "48.810014",
@@ -1199,7 +1199,7 @@
   },
   "TTMC CHATILLON 8": {
    "adresse": "Rue Roland GARROS Espace sportif Roland GARROS",
-   "checked_at": "2026-11-16T11:09:45.785624+00:00",
+   "checked_at": "2026-11-23T12:28:11.445164+00:00",
    "club": "TennisTable Municipal Chatillon",
    "cp": "92320",
    "lat": "48.810014",
@@ -1212,7 +1212,7 @@
   },
   "USM MALAKOFF 4": {
    "adresse": "1 Place de la Republique",
-   "checked_at": "2026-11-16T11:09:46.774510+00:00",
+   "checked_at": "2026-11-23T12:28:12.255667+00:00",
    "club": "USM MALAKOFF",
    "cp": "92240",
    "lat": "48.823019",
@@ -1225,7 +1225,7 @@
   },
   "USM MALAKOFF 5": {
    "adresse": "1 Place de la Republique",
-   "checked_at": "2026-11-16T11:09:46.775522+00:00",
+   "checked_at": "2026-11-23T12:28:12.256386+00:00",
    "club": "USM MALAKOFF",
    "cp": "92240",
    "lat": "48.823019",
@@ -1238,7 +1238,7 @@
   },
   "USM MALAKOFF 6": {
    "adresse": "1 Place de la Republique",
-   "checked_at": "2026-11-16T11:09:46.776461+00:00",
+   "checked_at": "2026-11-23T12:28:12.256901+00:00",
    "club": "USM MALAKOFF",
    "cp": "92240",
    "lat": "48.823019",
@@ -1251,7 +1251,7 @@
   },
   "VERSAILLES SCTT 3": {
    "adresse": "33 rue Henri Simon",
-   "checked_at": "2026-11-16T11:09:48.032077+00:00",
+   "checked_at": "2026-11-23T12:28:13.519338+00:00",
    "club": "VERSAILLES SCTT",
    "cp": "78000",
    "lat": "48.807996",
@@ -1264,7 +1264,7 @@
   },
   "VILLENEUVE LA G 1": {
    "adresse": "26 avenue Georges Pompidou (suivre direction Piscine)",
-   "checked_at": "2026-11-16T11:09:48.421407+00:00",
+   "checked_at": "2026-11-23T12:28:14.003075+00:00",
    "club": "VILLENEUVE LA GARENNE",
    "cp": "92390",
    "lat": "48.941688",
@@ -1277,7 +1277,7 @@
   },
   "VILLENEUVE LA G 2": {
    "adresse": "26 avenue Georges Pompidou (suivre direction Piscine)",
-   "checked_at": "2026-11-16T11:09:48.422470+00:00",
+   "checked_at": "2026-11-23T12:28:14.003792+00:00",
    "club": "VILLENEUVE LA GARENNE",
    "cp": "92390",
    "lat": "48.941688",
@@ -1290,7 +1290,7 @@
   },
   "VINCENNOIS TT 2": {
    "adresse": "25 rue du commandant MOWAT",
-   "checked_at": "2026-11-16T11:09:49.377230+00:00",
+   "checked_at": "2026-11-23T12:28:14.858681+00:00",
    "club": "VINCENNOIS TT",
    "cp": "94300",
    "lat": "48.849641",
@@ -1303,7 +1303,7 @@
   },
   "VITRY ES 1": {
    "adresse": "36 Rue Carpeaux",
-   "checked_at": "2026-11-16T11:09:50.188171+00:00",
+   "checked_at": "2026-11-23T12:28:15.693314+00:00",
    "club": "VITRY ES",
    "cp": "94400",
    "lat": "48.788679",
@@ -1316,7 +1316,7 @@
   },
   "VOLTIGEURS 2": {
    "adresse": "11, rue de Clamart",
-   "checked_at": "2026-11-16T11:09:50.975453+00:00",
+   "checked_at": "2026-11-23T12:28:16.506391+00:00",
    "club": "LES VOLTIGEURS DE BILLANCOURT",
    "cp": "92100",
    "lat": "48.830816",
@@ -1329,7 +1329,7 @@
   },
   "VOLTIGEURS 5": {
    "adresse": "11, rue de Clamart",
-   "checked_at": "2026-11-16T11:09:50.976557+00:00",
+   "checked_at": "2026-11-23T12:28:16.507095+00:00",
    "club": "LES VOLTIGEURS DE BILLANCOURT",
    "cp": "92100",
    "lat": "48.830816",
